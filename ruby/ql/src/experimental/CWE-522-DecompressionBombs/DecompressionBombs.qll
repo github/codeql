@@ -81,16 +81,18 @@ module ZipInputStream {
   /**
    * Gets a node of `Zip::InputStream` member
    *
-   * Note that if you use the lower level Zip::InputStream interface, rubyzip does not check the entry sizes.
+   * Note that if you use the lower level Zip::InputStream interface, rubyZip does not check the entry sizes.
    */
   private API::Node zipInputStream() {
     result = API::getTopLevelMember("Zip").getMember("InputStream")
   }
 
   /**
-   * The return values of following methods
-   * `ZipIO.read`
-   * `ZipEntry.extract`
+   * The methods
+   * `Zip::InputStream.read`
+   * `Zip::InputStream.extract`
+   *
+   * as source of decompression bombs, they need an additional taint step for a dataflow or taint tracking query
    */
   class DecompressionBombSink extends DecompressionBomb::Range {
     DecompressionBombSink() { this = zipInputStream().getMethod(["open", "new"]) }
