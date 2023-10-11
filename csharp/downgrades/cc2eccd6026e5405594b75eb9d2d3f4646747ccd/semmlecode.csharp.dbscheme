@@ -1292,7 +1292,7 @@ expr_argument_name(
 lambda_expr_return_type(
   unique int id: @lambda_expr ref,
   int type_id: @type_or_ref ref);
-
+  
 /** CONTROL/DATA FLOW **/
 
 @control_flow_element = @stmt | @expr;
@@ -2074,4 +2074,5 @@ cil_attribute_positional_argument(
 @metadata_entity = @cil_method | @cil_type | @cil_field | @cil_property | @field | @property |
     @callable | @value_or_ref_type | @void_type;
 
+#keyset[entity, location]
 metadata_handle(int entity : @metadata_entity ref, int location: @assembly ref, int handle: int ref)
