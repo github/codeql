@@ -7,6 +7,9 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - rest_framework_datatables
     - Member[pagination].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_datatables
+    - Member[pagination].Member[NotFound]
   - - rest_framework.response.Response~Subclass
     - rest_framework_datatables
     - Member[pagination].Member[Response]

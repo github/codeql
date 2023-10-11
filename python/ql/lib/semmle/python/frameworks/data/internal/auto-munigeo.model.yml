@@ -73,3 +73,6 @@ extensions:
   - - Django.db.models.Model~Subclass
     - munigeo
     - Member[models].Member[TranslatableModel]
+  - - rest_framework.exceptions.APIException~Subclass
+    - munigeo
+    - Member[api].Member[ParseError]

@@ -142,6 +142,24 @@ extensions:
   - - django.http.response.JsonResponse~Subclass
     - rest_framework
     - Member[exceptions].Member[JsonResponse]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework
+    - Member[fields].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework
+    - Member[pagination].Member[NotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework
+    - Member[parsers].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework
+    - Member[renderers].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework
+    - Member[serializers].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework
+    - Member[validators].Member[ValidationError]
   - - rest_framework.request.Request~Subclass
     - rest_framework
     - Member[views].Member[Request]

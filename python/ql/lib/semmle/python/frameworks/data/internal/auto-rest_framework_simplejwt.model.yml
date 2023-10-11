@@ -43,6 +43,24 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - rest_framework_simplejwt
     - Member[views].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_simplejwt
+    - Member[authentication].Member[AuthenticationFailed]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_simplejwt
+    - Member[authentication].Member[InvalidToken]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_simplejwt
+    - Member[exceptions].Member[AuthenticationFailed]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_simplejwt
+    - Member[exceptions].Member[InvalidToken]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_simplejwt
+    - Member[serializers].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_simplejwt
+    - Member[views].Member[InvalidToken]
   - - rest_framework.response.Response~Subclass
     - rest_framework_simplejwt
     - Member[views].Member[Response]

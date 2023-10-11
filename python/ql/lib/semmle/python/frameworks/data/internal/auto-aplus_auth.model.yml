@@ -28,6 +28,15 @@ extensions:
   - - requests.models.Response~Subclass
     - aplus_auth
     - Member[requests].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - aplus_auth
+    - Member[auth].Member[AuthenticationFailed]
+  - - rest_framework.exceptions.APIException~Subclass
+    - aplus_auth
+    - Member[auth].Member[django].Member[AuthenticationFailed]
+  - - rest_framework.exceptions.APIException~Subclass
+    - aplus_auth
+    - Member[exceptions].Member[AuthenticationFailed]
   - - rest_framework.request.Request~Subclass
     - aplus_auth
     - Member[auth].Member[django].Member[Request]
