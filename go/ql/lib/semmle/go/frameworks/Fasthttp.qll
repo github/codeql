@@ -131,7 +131,7 @@ module Fasthttp {
      * So if we called a method like `URIInstance.SetHost(pred)` then the URIInstance is succ.
      */
     class UriAdditionalStep extends AdditionalStep {
-      UriAdditionalStep() { this = "URI additioanl steps" }
+      UriAdditionalStep() { this = "URI additional steps" }
 
       override predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
         exists(DataFlow::MethodCallNode m, DataFlow::Variable frn |
@@ -367,7 +367,7 @@ module Fasthttp {
      * for SetURI the argument type is fasthttp.URI which is already modeled, look at URI module.
      */
     class RequestAdditionalStep extends AdditionalStep {
-      RequestAdditionalStep() { this = "Request additioanl steps" }
+      RequestAdditionalStep() { this = "Request additional steps" }
 
       override predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
         exists(DataFlow::MethodCallNode m, DataFlow::Variable frn |
