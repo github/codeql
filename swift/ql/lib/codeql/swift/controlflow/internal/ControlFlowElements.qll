@@ -12,7 +12,8 @@ newtype TControlFlowElement =
   TPropertyObserverElement(Accessor observer, AssignExpr assign) {
     isPropertyObserverElement(observer, assign)
   } or
-  TKeyPathElement(KeyPathExpr expr)
+  TKeyPathElement(KeyPathExpr expr) or
+  TNilCoalescingTestElement(NilCoalescingExpr expr)
 
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
 
@@ -203,4 +204,16 @@ class ClosureElement extends ControlFlowElement, TClosureElement {
   ExplicitClosureExpr getAst() { result = expr }
 
   override string toString() { result = expr.toString() }
+}
+
+class NilCoalescingElement extends ControlFlowElement, TNilCoalescingTestElement {
+  NilCoalescingExpr expr;
+
+  NilCoalescingElement() { this = TNilCoalescingTestElement(expr) }
+
+  override Location getLocation() { result = expr.getLocation() }
+
+  NilCoalescingExpr getAst() { result = expr }
+
+  override string toString() { result = "emptiness test for " + expr.toString() }
 }

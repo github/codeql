@@ -13,19 +13,6 @@ class HudsonWebMethod extends Method {
   }
 }
 
-private class FilePathRead extends LocalUserInput {
-  FilePathRead() {
-    this.asExpr()
-        .(MethodAccess)
-        .getMethod()
-        .hasQualifiedName("hudson", "FilePath",
-          [
-            "newInputStreamDenyingSymlinkAsNeeded", "openInputStream", "read", "readFromOffset",
-            "readToString"
-          ])
-  }
-}
-
 private class HudsonUtilXssSanitizer extends XssSanitizer {
   HudsonUtilXssSanitizer() {
     this.asExpr()

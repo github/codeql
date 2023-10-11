@@ -35,13 +35,6 @@ module SharedXss {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for XSS vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * An expression that is sent as part of an HTTP response body, considered as an
    * XSS sink.
    *

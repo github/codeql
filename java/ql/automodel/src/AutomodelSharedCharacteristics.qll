@@ -63,6 +63,11 @@ signature module CandidateSig {
   predicate isSink(Endpoint e, string kind, string provenance);
 
   /**
+   * Holds if `e` is a sink with the label `kind`, and provenance `provenance`.
+   */
+  predicate isSource(Endpoint e, string kind, string provenance);
+
+  /**
    * Holds if `e` is not a sink of any kind.
    */
   predicate isNeutral(Endpoint e);
@@ -91,17 +96,23 @@ module SharedCharacteristics<CandidateSig Candidate> {
 
   predicate isNeutral = Candidate::isNeutral/1;
 
+  predicate isModeled(Candidate::Endpoint e, string kind, string extensibleKind, string provenance) {
+    Candidate::isSink(e, kind, provenance) and extensibleKind = "sinkModel"
+    or
+    Candidate::isSource(e, kind, provenance) and extensibleKind = "sourceModel"
+  }
+
   /**
-   * Holds if `sink` is a known sink of type `endpointType`.
+   * Holds if `endpoint` is modeled as `endpointType` (endpoint type must not be negative).
    */
-  predicate isKnownSink(
-    Candidate::Endpoint sink, Candidate::EndpointType endpointType,
+  predicate isKnownAs(
+    Candidate::Endpoint endpoint, Candidate::EndpointType endpointType,
     EndpointCharacteristic characteristic
   ) {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
     not endpointType instanceof Candidate::NegativeEndpointType and
-    characteristic.appliesToEndpoint(sink) and
+    characteristic.appliesToEndpoint(endpoint) and
     characteristic.hasImplications(endpointType, true, maximalConfidence())
   }
 
@@ -210,6 +221,25 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
+   * A high-confidence characteristic that indicates that an endpoint is a source of a specified type. These endpoints can
+   * be used as positive samples for training or for a few-shot prompt.
+   */
+  abstract class SourceCharacteristic extends EndpointCharacteristic {
+    bindingset[this]
+    SourceCharacteristic() { any() }
+
+    abstract Candidate::EndpointType getSourceType();
+
+    final override predicate hasImplications(
+      Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
+    ) {
+      endpointType = this.getSourceType() and
+      isPositiveIndicator = true and
+      confidence = maximalConfidence()
+    }
+  }
+
+  /**
    * A high-confidence characteristic that indicates that an endpoint is not a sink of any type. These endpoints can be
    * used as negative samples for training or for a few-shot prompt.
    */
@@ -290,6 +320,25 @@ module SharedCharacteristics<CandidateSig Candidate> {
       }
 
       override Candidate::EndpointType getSinkType() { result = endpointType }
+    }
+
+    private class KnownSourceCharacteristic extends SourceCharacteristic {
+      string madKind;
+      Candidate::EndpointType endpointType;
+      string provenance;
+
+      KnownSourceCharacteristic() {
+        Candidate::isKnownKind(madKind, endpointType) and
+        // bind "this" to a unique string differing from that of the SinkType classes
+        this = madKind + "_" + provenance + "_characteristic" and
+        Candidate::isSource(_, madKind, provenance)
+      }
+
+      override predicate appliesToEndpoint(Candidate::Endpoint e) {
+        Candidate::isSource(e, madKind, provenance)
+      }
+
+      override Candidate::EndpointType getSourceType() { result = endpointType }
     }
 
     /**

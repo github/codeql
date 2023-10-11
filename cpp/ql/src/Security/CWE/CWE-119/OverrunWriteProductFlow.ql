@@ -38,7 +38,7 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
     // Compute `delta` as the constant difference between `x` and `x + 1`.
     bounded(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
       any(LoadInstruction load | load.getUnconvertedResultExpression() = va), delta) and
-    n.asConvertedExpr() = va.getFullyConverted() and
+    n.asExpr() = va and
     state = delta
   )
 }
@@ -213,7 +213,7 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
     // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
     // to the size of the allocation. This state is then checked in `isSinkPair`.
     exists(state1) and
-    hasSize(bufSource.asConvertedExpr(), sizeSource, state2) and
+    hasSize(bufSource.asExpr(), sizeSource, state2) and
     validState(sizeSource, state2)
   }
 

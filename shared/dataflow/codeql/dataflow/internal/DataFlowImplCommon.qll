@@ -1,4 +1,6 @@
 private import codeql.dataflow.DataFlow
+private import codeql.typetracking.TypeTracking as Tt
+private import codeql.util.Unit
 
 module MakeImplCommon<InputSig Lang> {
   private import Lang
@@ -52,7 +54,85 @@ module MakeImplCommon<InputSig Lang> {
     class FeatureEqualSourceSinkCallContext extends FlowFeature, TFeatureEqualSourceSinkCallContext {
       override string toString() { result = "FeatureEqualSourceSinkCallContext" }
     }
+
+    /**
+     * Holds if `source` is a relevant data flow source.
+     */
+    signature predicate sourceNode(Node source);
+
+    /**
+     * EXPERIMENTAL: This API is subject to change without notice.
+     *
+     * Given a source definition, this constructs a simple forward flow
+     * computation with an access path limit of 1.
+     */
+    module SimpleGlobal<sourceNode/1 source> {
+      import TypeTracking::TypeTrack<source/1>
+    }
   }
+
+  private module TypeTrackingInput implements Tt::TypeTrackingInput {
+    final class Node = Lang::Node;
+
+    class LocalSourceNode extends Node {
+      LocalSourceNode() {
+        storeStep(_, this, _) or
+        loadStep(_, this, _) or
+        jumpStepCached(_, this) or
+        this instanceof ParamNode or
+        this instanceof OutNodeExt
+      }
+    }
+
+    final private class LangContentSet = Lang::ContentSet;
+
+    class Content extends LangContentSet {
+      string toString() { result = "Content" }
+    }
+
+    class ContentFilter extends Unit {
+      Content getAMatchingContent() { none() }
+    }
+
+    predicate compatibleContents(Content storeContents, Content loadContents) {
+      storeContents.getAStoreContent() = loadContents.getAReadContent()
+    }
+
+    predicate simpleLocalSmallStep = simpleLocalFlowStepExt/2;
+
+    predicate levelStepNoCall(Node n1, LocalSourceNode n2) { none() }
+
+    predicate levelStepCall(Node n1, LocalSourceNode n2) {
+      argumentValueFlowsThrough(n1, TReadStepTypesNone(), n2)
+    }
+
+    // TODO: support setters
+    predicate storeStep(Node n1, Node n2, Content f) { storeSet(n1, f, n2, _, _) }
+
+    predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
+      readSet(n1, f, n2)
+      or
+      argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2)
+    }
+
+    predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content f1, Content f2) { none() }
+
+    predicate withContentStep(Node nodeFrom, LocalSourceNode nodeTo, ContentFilter f) { none() }
+
+    predicate withoutContentStep(Node nodeFrom, LocalSourceNode nodeTo, ContentFilter f) { none() }
+
+    predicate jumpStep(Node n1, LocalSourceNode n2) { jumpStepCached(n1, n2) }
+
+    predicate callStep(Node n1, LocalSourceNode n2) { viableParamArg(_, n2, n1) }
+
+    predicate returnStep(Node n1, LocalSourceNode n2) {
+      viableReturnPosOut(_, getReturnPosition(n1), n2)
+    }
+
+    predicate hasFeatureBacktrackStoreTarget() { none() }
+  }
+
+  private module TypeTracking = Tt::TypeTracking<TypeTrackingInput>;
 
   /**
    * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
@@ -645,7 +725,7 @@ module MakeImplCommon<InputSig Lang> {
          * If a read step was taken, then `read` captures the `Content`, the
          * container type, and the content type.
          */
-        pragma[nomagic]
+        cached
         predicate argumentValueFlowsThrough(ArgNode arg, ReadStepTypesOption read, Node out) {
           exists(DataFlowCall call, ReturnKind kind |
             argumentValueFlowsThrough0(call, arg, kind, read) and
@@ -891,6 +971,9 @@ module MakeImplCommon<InputSig Lang> {
     predicate allowParameterReturnInSelfCached(ParamNode p) { allowParameterReturnInSelf(p) }
 
     cached
+    predicate paramMustFlow(ParamNode p, ArgNode arg) { localMustFlowStep+(p, arg) }
+
+    cached
     newtype TCallContext =
       TAnyCallContext() or
       TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or
@@ -956,6 +1039,395 @@ module MakeImplCommon<InputSig Lang> {
     newtype TApproxAccessPathFrontOption =
       TApproxAccessPathFrontNone() or
       TApproxAccessPathFrontSome(ApproxAccessPathFront apf)
+  }
+
+  bindingset[t1, t2]
+  pragma[inline_late]
+  private predicate typeStrongerThan0(DataFlowType t1, DataFlowType t2) { typeStrongerThan(t1, t2) }
+
+  private predicate callEdge(DataFlowCall call, DataFlowCallable c, ArgNode arg, ParamNode p) {
+    viableParamArg(call, p, arg) and
+    c = getNodeEnclosingCallable(p)
+  }
+
+  signature module TypeFlowInput {
+    predicate enableTypeFlow();
+
+    /** Holds if the edge is possibly needed in the direction `call` to `c`. */
+    predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c);
+
+    /** Holds if the edge is possibly needed in the direction `c` to `call`. */
+    predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c);
+
+    /**
+     * Holds if the edge is followed in data flow in the direction `call` to `c`
+     * and the call context `cc`.
+     */
+    predicate dataFlowTakenCallEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc);
+
+    /**
+     * Holds if the edge is followed in data flow in the direction `c` to `call`.
+     */
+    predicate dataFlowTakenCallEdgeOut(DataFlowCall call, DataFlowCallable c);
+
+    /**
+     * Holds if data flow enters `c` with call context `cc` without using a call
+     * edge.
+     */
+    predicate dataFlowNonCallEntry(DataFlowCallable c, boolean cc);
+  }
+
+  /**
+   * Given a call graph for a set of flow paths, this module calculates the type
+   * flow between parameter and argument nodes in the cases where it is possible
+   * for a type to first be weakened and then strengthened again. When the
+   * stronger types at the end-points of such a type flow path are incompatible,
+   * the relevant call edges can be excluded as impossible.
+   *
+   * The predicates `relevantCallEdgeIn` and `relevantCallEdgeOut` give the
+   * graph to be explored prior to the recursion, and the other three predicates
+   * are calculated in mutual recursion with the output of this module, which is
+   * given in `typeFlowValidEdgeIn` and `typeFlowValidEdgeOut`.
+   */
+  module TypeFlow<TypeFlowInput Input> {
+    private predicate relevantCallEdge(
+      DataFlowCall call, DataFlowCallable c, ArgNode arg, ParamNode p
+    ) {
+      callEdge(call, c, arg, p) and
+      (
+        Input::relevantCallEdgeIn(call, c) or
+        Input::relevantCallEdgeOut(call, c)
+      )
+    }
+
+    /**
+     * Holds if a sequence of calls may propagate the value of `p` to some
+     * argument-to-parameter call edge that strengthens the static type.
+     */
+    pragma[nomagic]
+    private predicate trackedParamTypeCand(ParamNode p) {
+      exists(ArgNode arg |
+        trackedArgTypeCand(arg) and
+        paramMustFlow(p, arg)
+      )
+    }
+
+    /**
+     * Holds if a sequence of calls may propagate the value of `arg` to some
+     * argument-to-parameter call edge that strengthens the static type.
+     */
+    pragma[nomagic]
+    private predicate trackedArgTypeCand(ArgNode arg) {
+      Input::enableTypeFlow() and
+      (
+        exists(ParamNode p, DataFlowType at, DataFlowType pt |
+          at = getNodeType(arg) and
+          pt = getNodeType(p) and
+          relevantCallEdge(_, _, arg, p) and
+          typeStrongerThan0(pt, at)
+        )
+        or
+        exists(ParamNode p, DataFlowType at, DataFlowType pt |
+          // A call edge may implicitly strengthen a type by ensuring that a
+          // specific argument node was reached if the type of that argument was
+          // strengthened via a cast.
+          at = getNodeType(arg) and
+          pt = getNodeType(p) and
+          paramMustFlow(p, arg) and
+          relevantCallEdge(_, _, arg, _) and
+          typeStrongerThan0(at, pt)
+        )
+        or
+        exists(ParamNode p |
+          trackedParamTypeCand(p) and
+          relevantCallEdge(_, _, arg, p)
+        )
+      )
+    }
+
+    /**
+     * Holds if `p` is part of a value-propagating call path where the
+     * end-points have stronger types than the intermediate parameter and
+     * argument nodes.
+     */
+    private predicate trackedParamType(ParamNode p) {
+      exists(
+        DataFlowCall call1, DataFlowCallable c1, ArgNode argOut, DataFlowCall call2,
+        DataFlowCallable c2, ArgNode argIn
+      |
+        // Data flow may exit `call1` and enter `call2`. If a stronger type is
+        // known for `argOut`, `argIn` may reach a strengthening, and both are
+        // determined by the same parameter `p` so we know they're equal, then
+        // we should track those nodes.
+        trackedParamTypeCand(p) and
+        callEdge(call1, c1, argOut, _) and
+        Input::relevantCallEdgeOut(call1, c1) and
+        trackedArgTypeCand(argOut) and
+        paramMustFlow(p, argOut) and
+        callEdge(call2, c2, argIn, _) and
+        Input::relevantCallEdgeIn(call2, c2) and
+        trackedArgTypeCand(argIn) and
+        paramMustFlow(p, argIn)
+      )
+      or
+      exists(ArgNode arg, DataFlowType at, DataFlowType pt |
+        trackedParamTypeCand(p) and
+        at = getNodeType(arg) and
+        pt = getNodeType(p) and
+        relevantCallEdge(_, _, arg, p) and
+        typeStrongerThan0(at, pt)
+      )
+      or
+      exists(ArgNode arg |
+        trackedArgType(arg) and
+        relevantCallEdge(_, _, arg, p) and
+        trackedParamTypeCand(p)
+      )
+    }
+
+    /**
+     * Holds if `arg` is part of a value-propagating call path where the
+     * end-points have stronger types than the intermediate parameter and
+     * argument nodes.
+     */
+    private predicate trackedArgType(ArgNode arg) {
+      exists(ParamNode p |
+        trackedParamType(p) and
+        paramMustFlow(p, arg) and
+        trackedArgTypeCand(arg)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate returnCallDeterminesParam(DataFlowCall call, ParamNode p) {
+      exists(ArgNode arg |
+        trackedArgType(arg) and
+        arg.argumentOf(call, _) and
+        paramMustFlow(p, arg)
+      )
+    }
+
+    private predicate returnCallLeavesParamUndetermined(DataFlowCall call, ParamNode p) {
+      trackedParamType(p) and
+      call.getEnclosingCallable() = getNodeEnclosingCallable(p) and
+      not returnCallDeterminesParam(call, p)
+    }
+
+    pragma[nomagic]
+    private predicate trackedParamWithType(ParamNode p, DataFlowType t, DataFlowCallable c) {
+      trackedParamType(p) and
+      c = getNodeEnclosingCallable(p) and
+      nodeDataFlowType(p, t)
+    }
+
+    pragma[nomagic]
+    private predicate dataFlowTakenCallEdgeIn(
+      DataFlowCall call, DataFlowCallable c, ArgNode arg, ParamNode p, boolean cc
+    ) {
+      Input::dataFlowTakenCallEdgeIn(call, c, cc) and
+      callEdge(call, c, arg, p) and
+      trackedParamType(p)
+    }
+
+    pragma[nomagic]
+    private predicate dataFlowTakenCallEdgeOut(
+      DataFlowCall call, DataFlowCallable c, ArgNode arg, ParamNode p
+    ) {
+      Input::dataFlowTakenCallEdgeOut(call, c) and
+      callEdge(call, c, arg, p) and
+      trackedArgType(arg) and
+      paramMustFlow(_, arg)
+    }
+
+    /**
+     * Gets the strongest of the two types `t1` and `t2`. If neither type is
+     * stronger then compatibility is checked and `t1` is returned.
+     */
+    bindingset[t1, t2]
+    DataFlowType getStrongestType(DataFlowType t1, DataFlowType t2) {
+      if typeStrongerThan(t2, t1) then result = t2 else (compatibleTypes(t1, t2) and result = t1)
+    }
+
+    /**
+     * Holds if `t` is a possible type for an argument reaching the tracked
+     * parameter `p` through an in-going edge in the current data flow stage.
+     */
+    pragma[nomagic]
+    private predicate typeFlowParamTypeCand(ParamNode p, DataFlowType t) {
+      exists(ArgNode arg, boolean outercc |
+        dataFlowTakenCallEdgeIn(_, _, arg, p, outercc) and
+        if trackedArgType(arg) then typeFlowArgType(arg, t, outercc) else nodeDataFlowType(arg, t)
+      )
+    }
+
+    /**
+     * Holds if `t` is a possible type for the tracked parameter `p` in the call
+     * context `cc` and that the current data flow stage has reached this
+     * context.
+     */
+    private predicate typeFlowParamType(ParamNode p, DataFlowType t, boolean cc) {
+      exists(DataFlowCallable c |
+        Input::dataFlowNonCallEntry(c, cc) and
+        trackedParamWithType(p, t, c)
+      )
+      or
+      exists(DataFlowType t1, DataFlowType t2 |
+        cc = true and
+        typeFlowParamTypeCand(p, t1) and
+        nodeDataFlowType(p, t2) and
+        t = getStrongestType(t1, t2)
+      )
+      or
+      exists(ArgNode arg, DataFlowType t1, DataFlowType t2 |
+        cc = false and
+        typeFlowArgTypeFromReturn(arg, t1) and
+        paramMustFlow(p, arg) and
+        nodeDataFlowType(p, t2) and
+        t = getStrongestType(t1, t2)
+      )
+      or
+      exists(DataFlowCall call |
+        cc = false and
+        Input::dataFlowTakenCallEdgeOut(call, _) and
+        returnCallLeavesParamUndetermined(call, p) and
+        nodeDataFlowType(p, t)
+      )
+    }
+
+    /**
+     * Holds if `t` is a possible type for the tracked argument `arg` and that
+     * the current data flow stage has reached the call of `arg` from one of its
+     * call targets.
+     */
+    private predicate typeFlowArgTypeFromReturn(ArgNode arg, DataFlowType t) {
+      exists(ParamNode p, DataFlowType t1, DataFlowType t2 |
+        dataFlowTakenCallEdgeOut(_, _, arg, p) and
+        (if trackedParamType(p) then typeFlowParamType(p, t1, false) else nodeDataFlowType(p, t1)) and
+        nodeDataFlowType(arg, t2) and
+        t = getStrongestType(t1, t2)
+      )
+    }
+
+    /**
+     * Holds if `t` is a possible type for the tracked argument `arg` in the call
+     * context `cc` and that the current data flow stage has reached this
+     * context.
+     */
+    private predicate typeFlowArgType(ArgNode arg, DataFlowType t, boolean cc) {
+      trackedArgType(arg) and
+      (
+        exists(ParamNode p, DataFlowType t1, DataFlowType t2 |
+          paramMustFlow(p, arg) and
+          typeFlowParamType(p, t1, cc) and
+          nodeDataFlowType(arg, t2) and
+          t = getStrongestType(t1, t2)
+        )
+        or
+        cc = [true, false] and
+        not paramMustFlow(_, arg) and
+        nodeDataFlowType(arg, t)
+      )
+    }
+
+    predicate typeFlowStats(int nodes, int tuples) {
+      nodes =
+        count(Node n |
+          typeFlowParamType(n, _, _) or typeFlowArgTypeFromReturn(n, _) or typeFlowArgType(n, _, _)
+        ) and
+      tuples =
+        count(Node n, DataFlowType t, boolean cc |
+          typeFlowParamType(n, t, cc)
+          or
+          typeFlowArgTypeFromReturn(n, t) and cc = false
+          or
+          typeFlowArgType(n, t, cc)
+        )
+    }
+
+    /**
+     * Holds if the `arg`-to-`p` edge should be considered for validation of the
+     * corresponding call edge in the in-going direction.
+     */
+    private predicate relevantArgParamIn(ArgNode arg, ParamNode p, DataFlowType pt) {
+      exists(DataFlowCall call, DataFlowCallable c |
+        Input::relevantCallEdgeIn(call, c) and
+        callEdge(call, c, arg, p) and
+        paramMustFlow(_, arg) and
+        trackedArgType(arg) and
+        nodeDataFlowType(p, pt)
+      )
+    }
+
+    /**
+     * Holds if there is a possible type for `arg` in the call context `cc` that
+     * is consistent with the static type of `p`.
+     */
+    private predicate validArgParamIn(ArgNode arg, ParamNode p, boolean cc) {
+      exists(DataFlowType t1, DataFlowType t2 |
+        typeFlowArgType(arg, t1, cc) and
+        relevantArgParamIn(arg, p, t2) and
+        compatibleTypes(t1, t2)
+      )
+    }
+
+    /**
+     * Holds if the edge `call`-to-`c` is valid in the in-going direction in the
+     * call context `cc`.
+     */
+    pragma[nomagic]
+    predicate typeFlowValidEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc) {
+      Input::relevantCallEdgeIn(call, c) and
+      cc = [true, false] and
+      (
+        not Input::enableTypeFlow()
+        or
+        forall(ArgNode arg, ParamNode p |
+          callEdge(call, c, arg, p) and trackedArgType(arg) and paramMustFlow(_, arg)
+        |
+          validArgParamIn(arg, p, cc)
+        )
+      )
+    }
+
+    /**
+     * Holds if the `arg`-to-`p` edge should be considered for validation of the
+     * corresponding call edge in the out-going direction.
+     */
+    private predicate relevantArgParamOut(ArgNode arg, ParamNode p, DataFlowType argt) {
+      exists(DataFlowCall call, DataFlowCallable c |
+        Input::relevantCallEdgeOut(call, c) and
+        callEdge(call, c, arg, p) and
+        trackedParamType(p) and
+        nodeDataFlowType(arg, argt)
+      )
+    }
+
+    /**
+     * Holds if there is a possible type for `p` in the call context `false`
+     * that is consistent with the static type of `arg`.
+     */
+    private predicate validArgParamOut(ArgNode arg, ParamNode p) {
+      exists(DataFlowType t1, DataFlowType t2 |
+        typeFlowParamType(p, t1, false) and
+        relevantArgParamOut(arg, p, t2) and
+        compatibleTypes(t1, t2)
+      )
+    }
+
+    /**
+     * Holds if the edge `call`-to-`c` is valid in the out-going direction.
+     */
+    pragma[nomagic]
+    predicate typeFlowValidEdgeOut(DataFlowCall call, DataFlowCallable c) {
+      Input::relevantCallEdgeOut(call, c) and
+      (
+        not Input::enableTypeFlow()
+        or
+        forall(ArgNode arg, ParamNode p | callEdge(call, c, arg, p) and trackedParamType(p) |
+          validArgParamOut(arg, p)
+        )
+      )
+    }
   }
 
   /**
@@ -1309,15 +1781,32 @@ module MakeImplCommon<InputSig Lang> {
     call = prunedViableImplInCallContextReverse(callable, cc)
   }
 
-  /**
-   * Resolves a call from `call` in `cc` to `result`.
-   */
-  bindingset[call, cc]
-  DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
-    result = prunedViableImplInCallContext(call, cc)
-    or
-    noPrunedViableImplInCallContext(call, cc) and
-    result = viableCallableExt(call)
+  signature predicate relevantResolveTargetSig(DataFlowCallable c);
+
+  module ResolveCall<relevantResolveTargetSig/1 relevantResolveTarget> {
+    pragma[nomagic]
+    private DataFlowCallable prunedRelevantViableImplInCallContext(DataFlowCall call, CallContext cc) {
+      result = prunedViableImplInCallContext(call, cc) and
+      relevantResolveTarget(result)
+    }
+
+    pragma[nomagic]
+    private DataFlowCallable viableRelevantCallableExt(DataFlowCall call) {
+      result = viableCallableExt(call) and
+      relevantResolveTarget(result)
+    }
+
+    /**
+     * Resolves a call from `call` in `cc` to `result`, where `result` is
+     * restricted by `relevantResolveTarget`.
+     */
+    bindingset[call, cc]
+    DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
+      result = prunedRelevantViableImplInCallContext(call, cc)
+      or
+      noPrunedViableImplInCallContext(call, cc) and
+      result = viableRelevantCallableExt(call)
+    }
   }
 
   /** An optional Boolean value. */

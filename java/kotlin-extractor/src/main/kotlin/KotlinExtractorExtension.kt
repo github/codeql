@@ -101,26 +101,6 @@ class KotlinExtractorExtension(
         val usesK2 = usesK2(pluginContext)
         // This default should be kept in sync with com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
-        val compression_env_var = "CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"
-        val compression_option = System.getenv(compression_env_var)
-        val defaultCompression = Compression.GZIP
-        val (compression, compressionWarning) =
-            if (compression_option == null) {
-                Pair(defaultCompression, null)
-            } else {
-                try {
-                    @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
-                    val requested_compression = Compression.valueOf(compression_option.uppercase())
-                    if (requested_compression == Compression.BROTLI) {
-                      Pair(Compression.GZIP, "Kotlin extractor doesn't support Brotli compression. Using GZip instead.")
-                    } else {
-                      Pair(requested_compression, null)
-                    }
-                } catch (e: IllegalArgumentException) {
-                    Pair(defaultCompression,
-                         "Unsupported compression type (\$$compression_env_var) \"$compression_option\". Supported values are ${Compression.values().joinToString()}")
-                }
-            }
         // The invocation TRAP file will already have been started
         // before the plugin is run, so we always use no compression
         // and we open it in append mode.
@@ -152,9 +132,7 @@ class KotlinExtractorExtension(
             if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
                 logger.info("moduleFragment:\n" + moduleFragment.dump())
             }
-            if (compressionWarning != null) {
-                logger.warn(compressionWarning)
-            }
+            val compression = getCompression(logger)
 
             val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
             // FIXME: FileUtil expects a static global logger
@@ -179,6 +157,29 @@ class KotlinExtractorExtension(
             tw.writeCompilation_finished(compilation, -1.0, compilationTimeMs.toDouble() / 1000, invocationExtractionProblems.extractionResult())
             tw.flush()
             loggerBase.close()
+        }
+    }
+
+    private fun getCompression(logger: Logger): Compression {
+        val compression_env_var = "CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"
+        val compression_option = System.getenv(compression_env_var)
+        val defaultCompression = Compression.GZIP
+        if (compression_option == null) {
+            return defaultCompression
+        } else {
+            try {
+                @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
+                val compression_option_upper = compression_option.uppercase()
+                if (compression_option_upper == "BROTLI") {
+                    logger.warn("Kotlin extractor doesn't support Brotli compression. Using GZip instead.")
+                    return Compression.GZIP
+                } else {
+                    return Compression.valueOf(compression_option_upper)
+                }
+            } catch (e: IllegalArgumentException) {
+                logger.warn("Unsupported compression type (\$$compression_env_var) \"$compression_option\". Supported values are ${Compression.values().joinToString()}.")
+                return defaultCompression
+            }
         }
     }
 
@@ -361,18 +362,12 @@ private fun doFile(
     }
 }
 
-enum class Compression { NONE, GZIP, BROTLI }
+enum class Compression { NONE, GZIP }
 
 private fun getTrapFileWriter(compression: Compression, logger: FileLogger, trapFileName: String): TrapFileWriter {
     return when (compression) {
         Compression.NONE -> NonCompressedTrapFileWriter(logger, trapFileName)
         Compression.GZIP -> GZipCompressedTrapFileWriter(logger, trapFileName)
-        Compression.BROTLI -> {
-            // Brotli should have been replaced with gzip earlier, but
-            // if we somehow manage to get here then keep going
-            logger.error("Impossible Brotli compression requested. Using Gzip instead.")
-            getTrapFileWriter(Compression.GZIP, logger, trapFileName)
-        }
     }
 }
 

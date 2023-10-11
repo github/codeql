@@ -133,6 +133,39 @@ private module Cached {
   }
 }
 
+/**
+ * Holds if the value of `node2` is given by `node1`.
+ */
+predicate localMustFlowStep(Node node1, Node node2) {
+  exists(Callable c | node1.(InstanceParameterNode).getCallable() = c |
+    exists(InstanceAccess ia |
+      ia = node2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()
+    )
+    or
+    c =
+      node2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable()
+  )
+  or
+  exists(SsaImplicitInit init |
+    init.isParameterDefinition(node1.asParameter()) and init.getAUse() = node2.asExpr()
+  )
+  or
+  exists(SsaExplicitUpdate upd |
+    upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() and
+    upd.getAUse() = node2.asExpr()
+  )
+  or
+  node2.asExpr().(CastingExpr).getExpr() = node1.asExpr()
+  or
+  node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
+  or
+  node1 =
+    unique(FlowSummaryNode n1 |
+      FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
+        node2.(FlowSummaryNode).getSummaryNode(), true)
+    )
+}
+
 import Cached
 
 private predicate capturedVariableRead(Node n) {
@@ -350,32 +383,6 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       guardChecks(g, v.getAUse(), branch) and
       use = v.getAUse() and
       g.controls(use.getBasicBlock(), branch) and
-      result.asExpr() = use
-    )
-  }
-}
-
-/**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-deprecated class BarrierGuard extends Guard {
-  /** Holds if this guard validates `e` upon evaluating to `branch`. */
-  abstract predicate checks(Expr e, boolean branch);
-
-  /** Gets a node guarded by this guard. */
-  final Node getAGuardedNode() {
-    exists(SsaVariable v, boolean branch, RValue use |
-      this.checks(v.getAUse(), branch) and
-      use = v.getAUse() and
-      this.controls(use.getBasicBlock(), branch) and
       result.asExpr() = use
     )
   }

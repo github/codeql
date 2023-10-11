@@ -1,3 +1,14 @@
+## 0.10.5
+
+No user-facing changes.
+
+## 0.10.4
+
+### Minor Analysis Improvements
+
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+* Added `shlex.quote` as a sanitizer for the `py/shell-command-constructed-from-input` query.
+
 ## 0.10.3
 
 ### Minor Analysis Improvements

@@ -99,17 +99,17 @@ class CodeInjectionSink extends DataFlow::ExprNode {
 }
 
 /**
- * A taint configuration for tracking flow from `RemoteFlowSource` to a Jython method call
+ * A taint configuration for tracking flow from `ThreatModelFlowSource` to a Jython method call
  * `CodeInjectionSink` that executes injected code.
  */
 module CodeInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
 }
 
 /**
- * Taint tracking flow from `RemoteFlowSource` to a Jython method call
+ * Taint tracking flow from `ThreatModelFlowSource` to a Jython method call
  * `CodeInjectionSink` that executes injected code.
  */
 module CodeInjectionFlow = TaintTracking::Global<CodeInjectionConfig>;

@@ -28,7 +28,7 @@ deprecated class FragmentInjectionTaintConf extends TaintTracking::Configuration
  * that is used to create Android fragments dynamically.
  */
 module FragmentInjectionTaintConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof FragmentInjectionSink }
 

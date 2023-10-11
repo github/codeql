@@ -201,11 +201,8 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
 }
 
 private predicate sqlFragmentArgument(DataFlow::CallNode call, DataFlow::Node sink) {
-  exists(DataFlow::Node arg |
-    sqlFragmentArgumentInner(call, arg) and
-    sink = [arg, arg.(DataFlow::ArrayLiteralNode).getElement(0)] and
-    unsafeSqlExpr(sink.asExpr().getExpr())
-  )
+  sqlFragmentArgumentInner(call, sink) and
+  unsafeSqlExpr(sink.asExpr().getExpr())
 }
 
 // An expression that, if tainted by unsanitized input, should not be used as

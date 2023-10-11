@@ -19,5 +19,22 @@ Test.java:
 #    5|               1: [ConstCase] case ...
 #    5|                 -1: [IntegerLiteral] 2
 #    5|                 0: [StringLiteral] "c"
-#    6|               2: [DefaultCase] default
-#    6|                 -1: [IntegerLiteral] 3
+#    6|               2: [ConstCase] case ...
+#    6|                 -1: [IntegerLiteral] 2
+#    6|                 0: [StringLiteral] "d"
+#    7|               3: [DefaultCase] default
+#    7|                 -1: [IntegerLiteral] 3
+#    9|         1: [SwitchStmt] switch (...)
+#    9|           -1: [VarAccess] s
+#   10|           0: [ConstCase] case ...
+#   10|             -1: [BlockStmt] { ... }
+#   10|             0: [StringLiteral] "a"
+#   10|             1: [StringLiteral] "b"
+#   11|           1: [ConstCase] case ...
+#   11|             -1: [BlockStmt] { ... }
+#   11|             0: [StringLiteral] "c"
+#   12|           2: [ConstCase] case ...
+#   12|             -1: [BlockStmt] { ... }
+#   12|             0: [StringLiteral] "d"
+#   13|           3: [DefaultCase] default
+#   13|             -1: [BlockStmt] { ... }
