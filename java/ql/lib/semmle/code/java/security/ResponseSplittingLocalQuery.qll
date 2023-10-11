@@ -13,8 +13,21 @@ module ResponseSplittingLocalConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
+    node.getType() instanceof PrimitiveType
+    or
     node.getType() instanceof BoxedType
+    or
+    exists(MethodAccess ma, string methodName, CompileTimeConstantExpr target |
+      node.asExpr() = ma and
+      ma.getMethod().hasQualifiedName("java.lang", "String", methodName) and
+      target = ma.getArgument(0) and
+      (
+        methodName = "replace" and target.getIntValue() = [10, 13] // 10 == "\n", 13 == "\r"
+        or
+        methodName = "replaceAll" and
+        target.getStringValue().regexpMatch(".*([\n\r]|\\[\\^[^\\]\r\n]*\\]).*")
+      )
+    )
   }
 }
 
