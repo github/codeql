@@ -148,8 +148,9 @@ module ReflectedXss {
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
-  private class JsonStringifySanitzier extends Sanitizer instanceof JsonStringifyCall, HttpResponseSink {
-  }
+  private class JsonStringifySanitzier extends Sanitizer instanceof JsonStringifyCall,
+    HttpResponseSink
+  { }
 
   /** A third-party controllable request input, considered as a flow source for reflected XSS. */
   class ThirdPartyRequestInputAccessAsSource extends Source {
