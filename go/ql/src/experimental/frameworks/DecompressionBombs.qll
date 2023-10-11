@@ -4,7 +4,7 @@ module DecompressionBombs {
   class FlowState = DataFlow::FlowState;
 
   /**
-   * the Sinks of uncontrolled data decompression
+   * The Sinks of uncontrolled data decompression
    */
   class Sink extends DataFlow::Node {
     Sink() { this = any(Range r).sink() }
