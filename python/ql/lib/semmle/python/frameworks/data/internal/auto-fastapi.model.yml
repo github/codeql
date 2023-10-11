@@ -132,6 +132,12 @@ extensions:
     - Member[openapi].Member[utils].Member[OpenAPI]
   - - pydantic.BaseModel~Subclass
     - fastapi
+    - Member[param_functions].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[params].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
     - Member[security].Member[APIKeyCookie]
   - - pydantic.BaseModel~Subclass
     - fastapi

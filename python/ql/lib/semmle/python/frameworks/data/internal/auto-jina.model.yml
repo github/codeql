@@ -60,6 +60,9 @@ extensions:
     - Member[serve].Member[runtimes].Member[gateway].Member[models].Member[JinaResponseModel]
   - - pydantic.BaseModel~Subclass
     - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[models].Member[PydanticDocument]
+  - - pydantic.BaseModel~Subclass
+    - jina
     - Member[serve].Member[runtimes].Member[head].Member[request_handling].Member[AnyDoc]
   - - pydantic.BaseModel~Subclass
     - jina

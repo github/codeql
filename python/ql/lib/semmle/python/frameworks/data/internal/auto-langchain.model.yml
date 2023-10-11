@@ -55,6 +55,9 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - langchain
     - Member[callbacks].Member[tracers].Member[wandb].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langchain
+    - Member[vectorstores].Member[docarray].Member[base].Member[BaseDoc]
   - - requests.models.Response~Subclass
     - langchain
     - Member[chains].Member[api].Member[openapi].Member[chain].Member[Response]
