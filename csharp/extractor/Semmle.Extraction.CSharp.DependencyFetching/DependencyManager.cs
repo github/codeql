@@ -225,6 +225,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 "runtime.linux-x64.microsoft.netcore.app",
                 "runtime.osx-x64.microsoft.netcore.app",
                 "runtime.win-x64.microsoft.netcore.app",
+
+                // Internal implementation packages not meant for direct consumption:
+                "runtime."
             };
             RemoveNugetPackageReference(runtimePackagePrefixes);
         }
