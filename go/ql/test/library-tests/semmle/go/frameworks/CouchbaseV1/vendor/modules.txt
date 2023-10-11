@@ -7,15 +7,20 @@ github.com/google/uuid
 # github.com/opentracing/opentracing-go v1.2.0
 ## explicit
 github.com/opentracing/opentracing-go
+github.com/opentracing/opentracing-go/log
 # github.com/pkg/errors v0.9.1
 ## explicit
-github.com/pkg/errors
-# golang.org/x/net v0.0.0-20201224014010-6772e930b67b
+# golang.org/x/net v0.17.0
 ## explicit
-golang.org/x/net
-# golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
-## explicit
-golang.org/x/sync
+golang.org/x/net/http/httpguts
+golang.org/x/net/http2
+golang.org/x/net/http2/hpack
+golang.org/x/net/idna
+# golang.org/x/text v0.13.0
+golang.org/x/text/secure/bidirule
+golang.org/x/text/transform
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
 # gopkg.in/couchbase/gocb.v1 v1.6.7
 ## explicit
 gopkg.in/couchbase/gocb.v1
@@ -27,7 +32,6 @@ gopkg.in/couchbase/gocbcore.v7
 gopkg.in/couchbaselabs/gocbconnstr.v1
 # gopkg.in/couchbaselabs/gojcbmock.v1 v1.0.4
 ## explicit
-gopkg.in/couchbaselabs/gojcbmock.v1
 # gopkg.in/couchbaselabs/jsonx.v1 v1.0.0
 ## explicit
 gopkg.in/couchbaselabs/jsonx.v1
