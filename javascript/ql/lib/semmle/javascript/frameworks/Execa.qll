@@ -97,65 +97,50 @@ module Execa {
   }
 
   /**
-   * A call to `execa.$` or `execa.$.sync` tag functions
+   * A call to `execa.$` or `execa.$.sync` or `execa.$({})` or `execa.$.sync({})` tag functions
    */
-  private class ExecaScriptExpr extends DataFlow::ExprNode {
+  private class ExecaScriptCall extends API::CallNode {
     boolean isSync;
 
-    ExecaScriptExpr() {
-      this.asExpr() =
-        [
-          API::moduleImport("execa").getMember("$"),
-          API::moduleImport("execa").getMember("$").getReturn()
-        ].getAValueReachableFromSource().asExpr() and
-      isSync = false
-      or
-      this.asExpr() =
-        [
-          API::moduleImport("execa").getMember("$").getMember("sync"),
-          API::moduleImport("execa").getMember("$").getMember("sync").getReturn()
-        ].getAValueReachableFromSource().asExpr() and
-      isSync = true
+    ExecaScriptCall() {
+      exists(API::Node script |
+        script =
+          [
+            API::moduleImport("execa").getMember("$"),
+            API::moduleImport("execa").getMember("$").getReturn()
+          ]
+      |
+        this = script.getACall() and
+        isSync = false
+        or
+        this = script.getMember("sync").getACall() and
+        isSync = true
+      )
     }
   }
+
+  API::Node test() { result = API::moduleImport("execa").getMember("$").getASuccessor*() }
 
   /**
    * The system command execution nodes for `execa.$` or `execa.$.sync` tag functions
    */
-  class ExecaScriptEec extends SystemCommandExecution, ExecaScriptExpr {
-    ExecaScriptEec() { isSync = [false, true] }
+  class ExecaScript extends SystemCommandExecution, ExecaScriptCall {
+    ExecaScript() { isSync = [false, true] }
 
-    override DataFlow::Node getACommandArgument() {
-      exists(TemplateLiteral tl | isFirstTaggedTemplateParameter(this.asExpr(), tl) |
-        result.asExpr() = tl.getChildExpr(0) and
-        not result.asExpr().mayHaveStringValue(" ") // exclude whitespace
-      )
-    }
+    override DataFlow::Node getACommandArgument() { result = this.getParameter(1).asSink() }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
-      // $({shell: true})`${cmd} ${arg0} ... ${arg1}`
-      // ISSUE: $`cmd args` I can't reach the tag function argument easily
-      exists(TemplateLiteral tmpL | isFirstTaggedTemplateParameter(this.asExpr(), tmpL) |
-        arg.asExpr() = tmpL.getAChildExpr() and
-        isExecaShellEnableWithExpr(this.asExpr().(CallExpr).getArgument(0)) and
-        not arg.asExpr().mayHaveStringValue(" ") // exclude whitespace
-      )
+      isExecaShellEnable(this.getParameter(0)) and
+      arg = this.getParameter(0).asSink()
     }
 
     override DataFlow::Node getArgumentList() {
-      // $`${cmd} ${arg0} ... ${argn}`
-      exists(TemplateLiteral tmpL | isFirstTaggedTemplateParameter(this.asExpr(), tmpL) |
-        result.asExpr() = tmpL.getAChildExpr() and
-        not result.asExpr() = tmpL.getChildExpr(0) and
-        not result.asExpr().mayHaveStringValue(" ") // exclude whitespace
-      )
+      result = this.getParameter(any(int i | i > 1)).asSink()
     }
 
     override predicate isSync() { isSync = true }
 
-    override DataFlow::Node getOptionsArg() {
-      result = this.asExpr().getAChildExpr().flow() and result.asExpr() instanceof ObjectExpr
-    }
+    override DataFlow::Node getOptionsArg() { result = this.getParameter(0).asSink() }
   }
 
   /**
@@ -207,28 +192,11 @@ module Execa {
     }
   }
 
-  // Holds if left parameter is the left child of a template literal and returns the template literal
-  private predicate isFirstTaggedTemplateParameter(Expr left, TemplateLiteral templateLiteral) {
-    exists(TaggedTemplateExpr parent |
-      templateLiteral = parent.getTemplate() and
-      left = parent.getChildExpr(0)
-    )
-  }
-
   /**
    * Holds whether Execa has shell enabled options or not, get Parameter responsible for options
    */
   pragma[inline]
   private predicate isExecaShellEnable(API::Node n) {
     n.getMember("shell").asSink().asExpr().(BooleanLiteral).getValue() = "true"
-  }
-
-  // Holds whether Execa has shell enabled options or not, get Parameter responsible for options
-  private predicate isExecaShellEnableWithExpr(Expr n) {
-    exists(ObjectExpr o, Property p | o = n.getAChildExpr*() |
-      o.getAChild() = p and
-      p.getAChild().(Label).getName() = "shell" and
-      p.getAChild().(Literal).getValue() = "true"
-    )
   }
 }
