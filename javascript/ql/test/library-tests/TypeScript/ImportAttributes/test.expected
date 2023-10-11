@@ -28,7 +28,7 @@ getImportAttributesFromExport
 | ts-import-attributes.ts:22:1:22:52 | export  ... son" }; | ts-import-attributes.ts:22:36:22:51 | { type: "json" } |
 | ts-import-attributes.ts:23:1:23:47 | export  ... son" }; | ts-import-attributes.ts:23:31:23:46 | { type: "json" } |
 | ts-import-attributes.ts:24:1:24:53 | export  ... son" }; | ts-import-attributes.ts:24:37:24:52 | { type: "json" } |
-getImportAttributes
+getImportOptions
 | js-import-attributes.js:10:12:10:55 | import( ... n" } }) | js-import-attributes.js:10:29:10:54 | { with: ... on" } } |
 | js-import-attributes.js:24:12:24:57 | import( ... n" } }) | js-import-attributes.js:24:29:24:56 | { asser ... on" } } |
 | ts-import-attributes.ts:12:12:12:55 | import( ... n" } }) | ts-import-attributes.ts:12:29:12:54 | { with: ... on" } } |

@@ -2828,7 +2828,18 @@ class DynamicImportExpr extends @dynamic_import, Expr, Import {
    * import('foo', { with: { type: "json" }})
    * ```
    */
-  Expr getImportAttributes() { result = this.getChildExpr(1) }
+  Expr getImportOptions() { result = this.getChildExpr(1) }
+
+  /**
+   * DEPRECATED: use `getImportOptions` instead.
+   * Gets the second "argument" to the import expression, that is, the `Y` in `import(X, Y)`.
+   *
+   * For example, gets the `{ with: { type: "json" }}` expression in the following:
+   * ```js
+   * import('foo', { with: { type: "json" }})
+   * ```
+   */
+  deprecated Expr getImportAttributes() { result = this.getImportOptions() }
 
   override Module getEnclosingModule() { result = this.getTopLevel() }
 
