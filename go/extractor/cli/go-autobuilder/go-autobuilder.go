@@ -61,11 +61,19 @@ var goVersion = ""
 // Returns the current Go version as returned by 'go version', e.g. go1.14.4
 func getEnvGoVersion() string {
 	if goVersion == "" {
-		gover, err := exec.Command("go", "version").CombinedOutput()
+		// Since Go 1.21, running 'go version' in a directory with a 'go.mod' file will attempt to
+		// download the version of Go specified in there. That may either fail or result in us just
+		// being told what's already in 'go.mod'. Setting 'GOTOOLCHAIN' to 'local' will force it
+		// to use the local Go toolchain instead.
+		cmd := exec.Command("go", "version")
+		cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+		out, err := cmd.CombinedOutput()
+
 		if err != nil {
 			log.Fatalf("Unable to run the go command, is it installed?\nError: %s", err.Error())
 		}
-		goVersion = parseGoVersion(string(gover))
+
+		goVersion = parseGoVersion(string(out))
 	}
 	return goVersion
 }
@@ -367,8 +375,15 @@ func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
 	return GoGetNoModules, "."
 }
 
+type GoVersionInfo struct {
+	// The version string, if any
+	Version string
+	// A value indicating whether a version string was found
+	Found bool
+}
+
 // Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
-func tryReadGoDirective(buildInfo BuildInfo) (string, bool) {
+func tryReadGoDirective(buildInfo BuildInfo) GoVersionInfo {
 	if buildInfo.DepMode == GoGetWithModules {
 		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)$`)
 		goMod, err := os.ReadFile(filepath.Join(buildInfo.BaseDir, "go.mod"))
@@ -378,12 +393,12 @@ func tryReadGoDirective(buildInfo BuildInfo) (string, bool) {
 			matches := versionRe.FindSubmatch(goMod)
 			if matches != nil {
 				if len(matches) > 1 {
-					return string(matches[1]), true
+					return GoVersionInfo{string(matches[1]), true}
 				}
 			}
 		}
 	}
-	return "", false
+	return GoVersionInfo{"", false}
 }
 
 // Returns the appropriate ModMode for the current project
@@ -771,13 +786,15 @@ func installDependenciesAndBuild() {
 		os.Setenv("GO111MODULE", "auto")
 	}
 
-	goModVersion, goModVersionFound := tryReadGoDirective(buildInfo)
+	goVersionInfo := tryReadGoDirective(buildInfo)
 
-	if goModVersionFound && semver.Compare("v"+goModVersion, getEnvGoSemVer()) > 0 {
+	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
+	// Go tooling should install required Go versions as needed.
+	if semver.Compare(getEnvGoSemVer(), "v1.21.0") < 0 && goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, getEnvGoSemVer()) > 0 {
 		diagnostics.EmitNewerGoVersionNeeded()
 	}
 
-	fixGoVendorIssues(&buildInfo, goModVersionFound)
+	fixGoVendorIssues(&buildInfo, goVersionInfo.Found)
 
 	tryUpdateGoModAndGoSum(buildInfo)
 
@@ -1092,7 +1109,8 @@ func isGoInstalled() bool {
 func identifyEnvironment() {
 	var v versionInfo
 	buildInfo := getBuildInfo(false)
-	v.goModVersion, v.goModVersionFound = tryReadGoDirective(buildInfo)
+	goVersionInfo := tryReadGoDirective(buildInfo)
+	v.goModVersion, v.goModVersionFound = goVersionInfo.Version, goVersionInfo.Found
 
 	v.goEnvVersionFound = isGoInstalled()
 	if v.goEnvVersionFound {

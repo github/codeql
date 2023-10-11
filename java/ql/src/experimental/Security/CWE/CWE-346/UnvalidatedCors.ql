@@ -63,7 +63,7 @@ module CorsSourceReachesCheckConfig implements DataFlow::ConfigSig {
 module CorsSourceReachesCheckFlow = TaintTracking::Global<CorsSourceReachesCheckConfig>;
 
 private module CorsOriginConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess corsHeader, MethodAccess allowCredentialsHeader |

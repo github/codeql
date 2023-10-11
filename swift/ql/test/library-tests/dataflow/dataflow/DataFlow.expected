@@ -468,15 +468,27 @@ edges
 | test.swift:774:16:774:23 | call to source() | test.swift:774:5:774:12 | DictionarySubscriptNode [Tuple element at index 1] |
 | test.swift:776:15:776:15 | dict1 [Collection element, Tuple element at index 1] | test.swift:776:15:776:22 | DictionarySubscriptNode [Tuple element at index 1] |
 | test.swift:776:15:776:22 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:776:15:776:22 | ...[...] |
+| test.swift:778:17:778:29 | [...] [Collection element, Tuple element at index 0] | test.swift:781:25:781:25 | dict2 [Collection element, Tuple element at index 0] |
+| test.swift:778:18:778:25 | call to source() | test.swift:778:18:778:28 | (...) [Tuple element at index 0] |
+| test.swift:778:18:778:28 | (...) [Tuple element at index 0] | test.swift:778:17:778:29 | [...] [Collection element, Tuple element at index 0] |
+| test.swift:781:5:781:5 | $generator [Collection element, Tuple element at index 0] | test.swift:781:5:781:5 | call to next() [some:0, Tuple element at index 0] |
+| test.swift:781:5:781:5 | call to next() [some:0, Tuple element at index 0] | test.swift:781:9:781:20 | (...) [Tuple element at index 0] |
+| test.swift:781:9:781:20 | (...) [Tuple element at index 0] | test.swift:781:10:781:10 | key |
+| test.swift:781:10:781:10 | key | test.swift:782:19:782:19 | key |
+| test.swift:781:25:781:25 | call to makeIterator() [Collection element, Tuple element at index 0] | test.swift:781:5:781:5 | $generator [Collection element, Tuple element at index 0] |
+| test.swift:781:25:781:25 | dict2 [Collection element, Tuple element at index 0] | test.swift:781:25:781:25 | call to makeIterator() [Collection element, Tuple element at index 0] |
 | test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:787:15:787:15 | dict3 [Collection element, Tuple element at index 1] |
 | test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:789:5:789:5 | dict3 [Collection element, Tuple element at index 1] |
 | test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:792:15:792:15 | dict3 [Collection element, Tuple element at index 1] |
+| test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] |
 | test.swift:786:18:786:28 | (...) [Tuple element at index 1] | test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] |
 | test.swift:786:21:786:28 | call to source() | test.swift:786:18:786:28 | (...) [Tuple element at index 1] |
 | test.swift:787:15:787:15 | dict3 [Collection element, Tuple element at index 1] | test.swift:787:15:787:22 | DictionarySubscriptNode [Tuple element at index 1] |
 | test.swift:787:15:787:22 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:787:15:787:22 | ...[...] |
 | test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 0] | test.swift:791:15:791:15 | dict3 [Collection element, Tuple element at index 0] |
+| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 0] | test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 0] |
 | test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 1] | test.swift:792:15:792:15 | dict3 [Collection element, Tuple element at index 1] |
+| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 1] | test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] |
 | test.swift:789:5:789:5 | dict3 [Collection element, Tuple element at index 1] | test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 1] |
 | test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 0] | test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 0] |
 | test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 1] |
@@ -487,6 +499,18 @@ edges
 | test.swift:792:15:792:15 | dict3 [Collection element, Tuple element at index 1] | test.swift:792:15:792:35 | call to randomElement() [some:0, Tuple element at index 1] |
 | test.swift:792:15:792:35 | call to randomElement() [some:0, Tuple element at index 1] | test.swift:792:15:792:36 | ...! [Tuple element at index 1] |
 | test.swift:792:15:792:36 | ...! [Tuple element at index 1] | test.swift:792:15:792:38 | .1 |
+| test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 0] | test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 0] |
+| test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 1] | test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 1] |
+| test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 0] | test.swift:794:9:794:20 | (...) [Tuple element at index 0] |
+| test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 1] | test.swift:794:9:794:20 | (...) [Tuple element at index 1] |
+| test.swift:794:9:794:20 | (...) [Tuple element at index 0] | test.swift:794:10:794:10 | key |
+| test.swift:794:9:794:20 | (...) [Tuple element at index 1] | test.swift:794:15:794:15 | value |
+| test.swift:794:10:794:10 | key | test.swift:795:19:795:19 | key |
+| test.swift:794:15:794:15 | value | test.swift:796:19:796:19 | value |
+| test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 0] | test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 0] |
+| test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 1] | test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 1] |
+| test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 0] | test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 0] |
+| test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] | test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 1] |
 | test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | test.swift:800:15:800:15 | dict4 [Collection element, Tuple element at index 1] |
 | test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | test.swift:801:15:801:15 | dict4 [Collection element, Tuple element at index 1] |
 | test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | test.swift:803:15:803:15 | dict4 [Collection element, Tuple element at index 1] |
@@ -546,9 +570,15 @@ edges
 | test.swift:849:19:849:24 | v | test.swift:850:15:850:15 | v |
 | test.swift:856:29:856:40 | args [Collection element] | test.swift:859:15:859:15 | args [Collection element] |
 | test.swift:856:29:856:40 | args [Collection element] | test.swift:860:15:860:15 | args [Collection element] |
+| test.swift:856:29:856:40 | args [Collection element] | test.swift:862:16:862:16 | args [Collection element] |
 | test.swift:856:29:856:40 | args [Collection element] | test.swift:867:15:867:15 | args [Collection element] |
 | test.swift:859:15:859:15 | args [Collection element] | test.swift:859:15:859:21 | ...[...] |
 | test.swift:860:15:860:15 | args [Collection element] | test.swift:860:15:860:21 | ...[...] |
+| test.swift:862:5:862:5 | $arg$generator [Collection element] | test.swift:862:5:862:5 | call to next() [some:0] |
+| test.swift:862:5:862:5 | call to next() [some:0] | test.swift:862:9:862:9 | arg |
+| test.swift:862:9:862:9 | arg | test.swift:863:19:863:19 | arg |
+| test.swift:862:16:862:16 | args [Collection element] | test.swift:862:16:862:16 | call to makeIterator() [Collection element] |
+| test.swift:862:16:862:16 | call to makeIterator() [Collection element] | test.swift:862:5:862:5 | $arg$generator [Collection element] |
 | test.swift:866:21:866:29 | enter #keyPath(...) [Collection element] | test.swift:866:27:866:29 | KeyPathComponent [Collection element] |
 | test.swift:866:27:866:29 | KeyPathComponent [Collection element] | test.swift:866:21:866:29 | exit #keyPath(...) |
 | test.swift:867:15:867:15 | args [Collection element] | test.swift:866:21:866:29 | enter #keyPath(...) [Collection element] |
@@ -560,6 +590,19 @@ edges
 | test.swift:873:21:873:31 | [...] [Collection element] | test.swift:856:29:856:40 | args [Collection element] |
 | test.swift:873:21:873:31 | [...] [Collection element] | test.swift:873:21:873:31 | [...] [Collection element] |
 | test.swift:873:24:873:31 | call to source() | test.swift:873:21:873:31 | [...] [Collection element] |
+| test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] | test.swift:879:17:879:17 | set1 [Collection element] |
+| test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] | test.swift:883:21:883:21 | set1 [Collection element] |
+| test.swift:877:20:877:29 | [...] [Collection element] | test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] |
+| test.swift:877:21:877:28 | call to source() | test.swift:877:20:877:29 | [...] [Collection element] |
+| test.swift:879:5:879:5 | $elem$generator [Collection element] | test.swift:879:5:879:5 | call to next() [some:0] |
+| test.swift:879:5:879:5 | call to next() [some:0] | test.swift:879:9:879:9 | elem |
+| test.swift:879:9:879:9 | elem | test.swift:880:19:880:19 | elem |
+| test.swift:879:17:879:17 | call to makeIterator() [Collection element] | test.swift:879:5:879:5 | $elem$generator [Collection element] |
+| test.swift:879:17:879:17 | set1 [Collection element] | test.swift:879:17:879:17 | call to makeIterator() [Collection element] |
+| test.swift:883:21:883:21 | set1 [Collection element] | test.swift:883:21:883:39 | call to makeIterator() [Collection element] |
+| test.swift:883:21:883:39 | call to makeIterator() [Collection element] | test.swift:884:15:884:15 | generator [Collection element] |
+| test.swift:884:15:884:15 | generator [Collection element] | test.swift:884:15:884:30 | call to next() [some:0] |
+| test.swift:884:15:884:30 | call to next() [some:0] | test.swift:884:15:884:31 | ...! |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .s [x] | semmle.label | .s [x] |
@@ -1070,6 +1113,16 @@ nodes
 | test.swift:776:15:776:15 | dict1 [Collection element, Tuple element at index 1] | semmle.label | dict1 [Collection element, Tuple element at index 1] |
 | test.swift:776:15:776:22 | ...[...] | semmle.label | ...[...] |
 | test.swift:776:15:776:22 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test.swift:778:17:778:29 | [...] [Collection element, Tuple element at index 0] | semmle.label | [...] [Collection element, Tuple element at index 0] |
+| test.swift:778:18:778:25 | call to source() | semmle.label | call to source() |
+| test.swift:778:18:778:28 | (...) [Tuple element at index 0] | semmle.label | (...) [Tuple element at index 0] |
+| test.swift:781:5:781:5 | $generator [Collection element, Tuple element at index 0] | semmle.label | $generator [Collection element, Tuple element at index 0] |
+| test.swift:781:5:781:5 | call to next() [some:0, Tuple element at index 0] | semmle.label | call to next() [some:0, Tuple element at index 0] |
+| test.swift:781:9:781:20 | (...) [Tuple element at index 0] | semmle.label | (...) [Tuple element at index 0] |
+| test.swift:781:10:781:10 | key | semmle.label | key |
+| test.swift:781:25:781:25 | call to makeIterator() [Collection element, Tuple element at index 0] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 0] |
+| test.swift:781:25:781:25 | dict2 [Collection element, Tuple element at index 0] | semmle.label | dict2 [Collection element, Tuple element at index 0] |
+| test.swift:782:19:782:19 | key | semmle.label | key |
 | test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
 | test.swift:786:18:786:28 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
 | test.swift:786:21:786:28 | call to source() | semmle.label | call to source() |
@@ -1090,6 +1143,20 @@ nodes
 | test.swift:792:15:792:35 | call to randomElement() [some:0, Tuple element at index 1] | semmle.label | call to randomElement() [some:0, Tuple element at index 1] |
 | test.swift:792:15:792:36 | ...! [Tuple element at index 1] | semmle.label | ...! [Tuple element at index 1] |
 | test.swift:792:15:792:38 | .1 | semmle.label | .1 |
+| test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 0] | semmle.label | $generator [Collection element, Tuple element at index 0] |
+| test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 1] | semmle.label | $generator [Collection element, Tuple element at index 1] |
+| test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 0] | semmle.label | call to next() [some:0, Tuple element at index 0] |
+| test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 1] | semmle.label | call to next() [some:0, Tuple element at index 1] |
+| test.swift:794:9:794:20 | (...) [Tuple element at index 0] | semmle.label | (...) [Tuple element at index 0] |
+| test.swift:794:9:794:20 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| test.swift:794:10:794:10 | key | semmle.label | key |
+| test.swift:794:15:794:15 | value | semmle.label | value |
+| test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 0] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 0] |
+| test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 1] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 1] |
+| test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 0] | semmle.label | dict3 [Collection element, Tuple element at index 0] |
+| test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] | semmle.label | dict3 [Collection element, Tuple element at index 1] |
+| test.swift:795:19:795:19 | key | semmle.label | key |
+| test.swift:796:19:796:19 | value | semmle.label | value |
 | test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
 | test.swift:799:18:799:27 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
 | test.swift:799:20:799:27 | call to source() | semmle.label | call to source() |
@@ -1152,6 +1219,12 @@ nodes
 | test.swift:859:15:859:21 | ...[...] | semmle.label | ...[...] |
 | test.swift:860:15:860:15 | args [Collection element] | semmle.label | args [Collection element] |
 | test.swift:860:15:860:21 | ...[...] | semmle.label | ...[...] |
+| test.swift:862:5:862:5 | $arg$generator [Collection element] | semmle.label | $arg$generator [Collection element] |
+| test.swift:862:5:862:5 | call to next() [some:0] | semmle.label | call to next() [some:0] |
+| test.swift:862:9:862:9 | arg | semmle.label | arg |
+| test.swift:862:16:862:16 | args [Collection element] | semmle.label | args [Collection element] |
+| test.swift:862:16:862:16 | call to makeIterator() [Collection element] | semmle.label | call to makeIterator() [Collection element] |
+| test.swift:863:19:863:19 | arg | semmle.label | arg |
 | test.swift:866:21:866:29 | enter #keyPath(...) [Collection element] | semmle.label | enter #keyPath(...) [Collection element] |
 | test.swift:866:21:866:29 | exit #keyPath(...) | semmle.label | exit #keyPath(...) |
 | test.swift:866:27:866:29 | KeyPathComponent [Collection element] | semmle.label | KeyPathComponent [Collection element] |
@@ -1164,6 +1237,20 @@ nodes
 | test.swift:873:21:873:31 | [...] [Collection element] | semmle.label | [...] [Collection element] |
 | test.swift:873:21:873:31 | [...] [Collection element] | semmle.label | [...] [Collection element] |
 | test.swift:873:24:873:31 | call to source() | semmle.label | call to source() |
+| test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] | semmle.label | call to Set<Element>.init(_:) [Collection element] |
+| test.swift:877:20:877:29 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| test.swift:877:21:877:28 | call to source() | semmle.label | call to source() |
+| test.swift:879:5:879:5 | $elem$generator [Collection element] | semmle.label | $elem$generator [Collection element] |
+| test.swift:879:5:879:5 | call to next() [some:0] | semmle.label | call to next() [some:0] |
+| test.swift:879:9:879:9 | elem | semmle.label | elem |
+| test.swift:879:17:879:17 | call to makeIterator() [Collection element] | semmle.label | call to makeIterator() [Collection element] |
+| test.swift:879:17:879:17 | set1 [Collection element] | semmle.label | set1 [Collection element] |
+| test.swift:880:19:880:19 | elem | semmle.label | elem |
+| test.swift:883:21:883:21 | set1 [Collection element] | semmle.label | set1 [Collection element] |
+| test.swift:883:21:883:39 | call to makeIterator() [Collection element] | semmle.label | call to makeIterator() [Collection element] |
+| test.swift:884:15:884:15 | generator [Collection element] | semmle.label | generator [Collection element] |
+| test.swift:884:15:884:30 | call to next() [some:0] | semmle.label | call to next() [some:0] |
+| test.swift:884:15:884:31 | ...! | semmle.label | ...! |
 subpaths
 | test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:32:75:32 | [post] y |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -1337,9 +1424,12 @@ subpaths
 | test.swift:757:15:757:19 | .v3 | test.swift:747:14:747:21 | call to source() | test.swift:757:15:757:19 | .v3 | result |
 | test.swift:767:15:767:28 | \\...[...] | test.swift:764:18:764:25 | call to source() | test.swift:767:15:767:28 | \\...[...] | result |
 | test.swift:776:15:776:22 | ...[...] | test.swift:774:16:774:23 | call to source() | test.swift:776:15:776:22 | ...[...] | result |
+| test.swift:782:19:782:19 | key | test.swift:778:18:778:25 | call to source() | test.swift:782:19:782:19 | key | result |
 | test.swift:787:15:787:22 | ...[...] | test.swift:786:21:786:28 | call to source() | test.swift:787:15:787:22 | ...[...] | result |
 | test.swift:791:15:791:38 | .0 | test.swift:789:11:789:18 | call to source() | test.swift:791:15:791:38 | .0 | result |
 | test.swift:792:15:792:38 | .1 | test.swift:786:21:786:28 | call to source() | test.swift:792:15:792:38 | .1 | result |
+| test.swift:795:19:795:19 | key | test.swift:789:11:789:18 | call to source() | test.swift:795:19:795:19 | key | result |
+| test.swift:796:19:796:19 | value | test.swift:786:21:786:28 | call to source() | test.swift:796:19:796:19 | value | result |
 | test.swift:800:15:800:53 | ...! | test.swift:799:20:799:27 | call to source() | test.swift:800:15:800:53 | ...! | result |
 | test.swift:801:15:801:53 | ...! | test.swift:799:20:799:27 | call to source() | test.swift:801:15:801:53 | ...! | result |
 | test.swift:802:15:802:38 | .0 | test.swift:800:44:800:51 | call to source() | test.swift:802:15:802:38 | .0 | result |
@@ -1354,4 +1444,7 @@ subpaths
 | test.swift:850:15:850:15 | v | test.swift:872:18:872:25 | call to source() | test.swift:850:15:850:15 | v | result |
 | test.swift:859:15:859:21 | ...[...] | test.swift:873:24:873:31 | call to source() | test.swift:859:15:859:21 | ...[...] | result |
 | test.swift:860:15:860:21 | ...[...] | test.swift:873:24:873:31 | call to source() | test.swift:860:15:860:21 | ...[...] | result |
+| test.swift:863:19:863:19 | arg | test.swift:873:24:873:31 | call to source() | test.swift:863:19:863:19 | arg | result |
 | test.swift:867:15:867:38 | \\...[...] | test.swift:873:24:873:31 | call to source() | test.swift:867:15:867:38 | \\...[...] | result |
+| test.swift:880:19:880:19 | elem | test.swift:877:21:877:28 | call to source() | test.swift:880:19:880:19 | elem | result |
+| test.swift:884:15:884:31 | ...! | test.swift:877:21:877:28 | call to source() | test.swift:884:15:884:31 | ...! | result |

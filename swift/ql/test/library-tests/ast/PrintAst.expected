@@ -703,18 +703,25 @@ cfg.swift:
 #  155|         Type = Int?
 #  138|     getElement(0): [ForEachStmt] for ... in ... { ... }
 #  138|       getPattern(): [AnyPattern] _
-#  138|       getSequence(): [CallExpr] call to makeIterator()
-#  138|         getFunction(): [MethodLookupExpr] .makeIterator()
-#  138|           getBase(): [BinaryExpr] ... ....(_:_:) ...
-#  138|             getFunction(): [MethodLookupExpr] ....(_:_:)
-#  138|               getBase(): [TypeExpr] Int.Type
-#  138|                 getTypeRepr(): [TypeRepr] Int
-#  138|               getMethodRef(): [DeclRefExpr] ...(_:_:)
-#  138|             getArgument(0): [Argument] : 0
-#  138|               getExpr(): [IntegerLiteralExpr] 0
-#  138|             getArgument(1): [Argument] : 10
-#  138|               getExpr(): [IntegerLiteralExpr] 10
-#-----|           getMethodRef(): [DeclRefExpr] makeIterator()
+#-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
+#  138|         getInit(0): [CallExpr] call to makeIterator()
+#  138|           getFunction(): [MethodLookupExpr] .makeIterator()
+#  138|             getBase(): [BinaryExpr] ... ....(_:_:) ...
+#  138|               getFunction(): [MethodLookupExpr] ....(_:_:)
+#  138|                 getBase(): [TypeExpr] Int.Type
+#  138|                   getTypeRepr(): [TypeRepr] Int
+#  138|                 getMethodRef(): [DeclRefExpr] ...(_:_:)
+#  138|               getArgument(0): [Argument] : 0
+#  138|                 getExpr(): [IntegerLiteralExpr] 0
+#  138|               getArgument(1): [Argument] : 10
+#  138|                 getExpr(): [IntegerLiteralExpr] 10
+#-----|             getMethodRef(): [DeclRefExpr] makeIterator()
+#  138|         getPattern(0): [NamedPattern] $generator
+#  138|       getNextCall(): [CallExpr] call to next()
+#  138|         getFunction(): [MethodLookupExpr] .next()
+#  138|           getBase(): [DeclRefExpr] $generator
+#  138|           getBase().getFullyConverted(): [InOutExpr] &...
+#-----|           getMethodRef(): [DeclRefExpr] next()
 #  138|       getBody(): [BraceStmt] { ... }
 #  140|     getElement(1): [SwitchStmt] switch x { ... }
 #  140|       getExpr(): [DeclRefExpr] x
@@ -837,6 +844,8 @@ cfg.swift:
 #  158|       getElse(): [BraceStmt] { ... }
 #  159|         getElement(0): [ReturnStmt] return ...
 #  159|           getResult(): [BooleanLiteralExpr] false
+#  138| [ConcreteVarDecl] $generator
+#  138|     Type = IndexingIterator<ClosedRange<Int>>
 #  141| [ConcreteVarDecl] $match
 #  141|     Type = Int
 #  141| [ConcreteVarDecl] $match
@@ -3250,18 +3259,25 @@ cfg.swift:
 #  525|                       getBody(): [BraceStmt] { ... }
 #  526|                         getElement(0): [ForEachStmt] for ... in ... { ... }
 #  526|                           getPattern(): [NamedPattern] i
-#  526|                           getSequence(): [CallExpr] call to makeIterator()
-#  526|                             getFunction(): [MethodLookupExpr] .makeIterator()
-#  526|                               getBase(): [BinaryExpr] ... ....(_:_:) ...
-#  526|                                 getFunction(): [MethodLookupExpr] ....(_:_:)
-#  526|                                   getBase(): [TypeExpr] Int.Type
-#  526|                                     getTypeRepr(): [TypeRepr] Int
-#  526|                                   getMethodRef(): [DeclRefExpr] ...(_:_:)
-#  526|                                 getArgument(0): [Argument] : 1
-#  526|                                   getExpr(): [IntegerLiteralExpr] 1
-#  526|                                 getArgument(1): [Argument] : 100
-#  526|                                   getExpr(): [IntegerLiteralExpr] 100
-#-----|                               getMethodRef(): [DeclRefExpr] makeIterator()
+#-----|                           getIteratorVar(): [PatternBindingDecl] var ... = ...
+#  526|                             getInit(0): [CallExpr] call to makeIterator()
+#  526|                               getFunction(): [MethodLookupExpr] .makeIterator()
+#  526|                                 getBase(): [BinaryExpr] ... ....(_:_:) ...
+#  526|                                   getFunction(): [MethodLookupExpr] ....(_:_:)
+#  526|                                     getBase(): [TypeExpr] Int.Type
+#  526|                                       getTypeRepr(): [TypeRepr] Int
+#  526|                                     getMethodRef(): [DeclRefExpr] ...(_:_:)
+#  526|                                   getArgument(0): [Argument] : 1
+#  526|                                     getExpr(): [IntegerLiteralExpr] 1
+#  526|                                   getArgument(1): [Argument] : 100
+#  526|                                     getExpr(): [IntegerLiteralExpr] 100
+#-----|                                 getMethodRef(): [DeclRefExpr] makeIterator()
+#  526|                             getPattern(0): [NamedPattern] $i$generator
+#  526|                           getNextCall(): [CallExpr] call to next()
+#  526|                             getFunction(): [MethodLookupExpr] .next()
+#  526|                               getBase(): [DeclRefExpr] $i$generator
+#  526|                               getBase().getFullyConverted(): [InOutExpr] &...
+#-----|                               getMethodRef(): [DeclRefExpr] next()
 #  526|                           getBody(): [BraceStmt] { ... }
 #  527|                             getElement(0): [CallExpr] call to yield(_:)
 #  527|                               getFunction(): [MethodLookupExpr] .yield(_:)
@@ -3278,11 +3294,19 @@ cfg.swift:
 #  523|       getPattern(0): [NamedPattern] stream
 #  533|     getElement(1): [ForEachStmt] for ... in ... { ... }
 #  533|       getPattern(): [NamedPattern] i
-#  533|       getSequence(): [CallExpr] call to makeAsyncIterator()
-#  533|         getFunction(): [MethodLookupExpr] .makeAsyncIterator()
-#  533|           getBase(): [DeclRefExpr] stream
-#  533|           getBase().getFullyConverted(): [LoadExpr] (AsyncStream<Int>) ...
-#-----|           getMethodRef(): [DeclRefExpr] makeAsyncIterator()
+#-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
+#  533|         getInit(0): [CallExpr] call to makeAsyncIterator()
+#  533|           getFunction(): [MethodLookupExpr] .makeAsyncIterator()
+#  533|             getBase(): [DeclRefExpr] stream
+#  533|             getBase().getFullyConverted(): [LoadExpr] (AsyncStream<Int>) ...
+#-----|             getMethodRef(): [DeclRefExpr] makeAsyncIterator()
+#  533|         getPattern(0): [NamedPattern] $i$generator
+#  533|       getNextCall(): [CallExpr] call to next()
+#  533|         getFunction(): [MethodLookupExpr] .next()
+#  533|           getBase(): [DeclRefExpr] $i$generator
+#  533|           getBase().getFullyConverted(): [InOutExpr] &...
+#-----|           getMethodRef(): [DeclRefExpr] next()
+#-----|       getNextCall().getFullyConverted(): [AwaitExpr] await ...
 #  533|       getBody(): [BraceStmt] { ... }
 #  534|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #  534|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -3298,8 +3322,12 @@ cfg.swift:
 #  525| [NilLiteralExpr] nil
 #  526| [ConcreteVarDecl] i
 #  526|     Type = Int
+#  526| [ConcreteVarDecl] $i$generator
+#  526|     Type = IndexingIterator<ClosedRange<Int>>
 #  533| [ConcreteVarDecl] i
 #  533|     Type = Int
+#  533| [ConcreteVarDecl] $i$generator
+#  533|     Type = AsyncStream<Int>.Iterator
 #  538| [NamedFunction] testNilCoalescing(x:)
 #  538|     InterfaceType = (Int?) -> Int
 #  538|   getParam(0): [ParamDecl] x
@@ -6625,18 +6653,25 @@ statements.swift:
 #    9|         Type = Int
 #    2|     getElement(0): [ForEachStmt] for ... in ... { ... }
 #    2|       getPattern(): [NamedPattern] i
-#    2|       getSequence(): [CallExpr] call to makeIterator()
-#    2|         getFunction(): [MethodLookupExpr] .makeIterator()
-#    2|           getBase(): [BinaryExpr] ... ....(_:_:) ...
-#    2|             getFunction(): [MethodLookupExpr] ....(_:_:)
-#    2|               getBase(): [TypeExpr] Int.Type
-#    2|                 getTypeRepr(): [TypeRepr] Int
-#    2|               getMethodRef(): [DeclRefExpr] ...(_:_:)
-#    2|             getArgument(0): [Argument] : 1
-#    2|               getExpr(): [IntegerLiteralExpr] 1
-#    2|             getArgument(1): [Argument] : 5
-#    2|               getExpr(): [IntegerLiteralExpr] 5
-#-----|           getMethodRef(): [DeclRefExpr] makeIterator()
+#-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
+#    2|         getInit(0): [CallExpr] call to makeIterator()
+#    2|           getFunction(): [MethodLookupExpr] .makeIterator()
+#    2|             getBase(): [BinaryExpr] ... ....(_:_:) ...
+#    2|               getFunction(): [MethodLookupExpr] ....(_:_:)
+#    2|                 getBase(): [TypeExpr] Int.Type
+#    2|                   getTypeRepr(): [TypeRepr] Int
+#    2|                 getMethodRef(): [DeclRefExpr] ...(_:_:)
+#    2|               getArgument(0): [Argument] : 1
+#    2|                 getExpr(): [IntegerLiteralExpr] 1
+#    2|               getArgument(1): [Argument] : 5
+#    2|                 getExpr(): [IntegerLiteralExpr] 5
+#-----|             getMethodRef(): [DeclRefExpr] makeIterator()
+#    2|         getPattern(0): [NamedPattern] $i$generator
+#    2|       getNextCall(): [CallExpr] call to next()
+#    2|         getFunction(): [MethodLookupExpr] .next()
+#    2|           getBase(): [DeclRefExpr] $i$generator
+#    2|           getBase().getFullyConverted(): [InOutExpr] &...
+#-----|           getMethodRef(): [DeclRefExpr] next()
 #    2|       getBody(): [BraceStmt] { ... }
 #    3|         getElement(0): [IfStmt] if ... then { ... } else { ... }
 #    3|           getCondition(): [StmtCondition] StmtCondition
@@ -6776,6 +6811,8 @@ statements.swift:
 #   29|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
 #    2| [ConcreteVarDecl] i
 #    2|     Type = Int
+#    2| [ConcreteVarDecl] $i$generator
+#    2|     Type = IndexingIterator<ClosedRange<Int>>
 #   21| [ConcreteVarDecl] error
 #   21|     Type = Error
 #   29| [ConcreteVarDecl] error
@@ -7049,10 +7086,6 @@ statements.swift:
 #   71|   getBody(): [BraceStmt] { ... }
 #   71|     getElement(0): [ForEachStmt] for ... in ... where ... { ... }
 #   71|       getPattern(): [NamedPattern] number
-#   71|       getSequence(): [CallExpr] call to makeIterator()
-#   71|         getFunction(): [MethodLookupExpr] .makeIterator()
-#   71|           getBase(): [DeclRefExpr] numbers
-#-----|           getMethodRef(): [DeclRefExpr] makeIterator()
 #   71|       getWhere(): [BinaryExpr] ... .==(_:_:) ...
 #   71|         getFunction(): [MethodLookupExpr] .==(_:_:)
 #   71|           getBase(): [TypeExpr] Int.Type
@@ -7070,9 +7103,22 @@ statements.swift:
 #   71|               getExpr(): [IntegerLiteralExpr] 2
 #   71|         getArgument(1): [Argument] : 0
 #   71|           getExpr(): [IntegerLiteralExpr] 0
+#-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
+#   71|         getInit(0): [CallExpr] call to makeIterator()
+#   71|           getFunction(): [MethodLookupExpr] .makeIterator()
+#   71|             getBase(): [DeclRefExpr] numbers
+#-----|             getMethodRef(): [DeclRefExpr] makeIterator()
+#   71|         getPattern(0): [NamedPattern] $number$generator
+#   71|       getNextCall(): [CallExpr] call to next()
+#   71|         getFunction(): [MethodLookupExpr] .next()
+#   71|           getBase(): [DeclRefExpr] $number$generator
+#   71|           getBase().getFullyConverted(): [InOutExpr] &...
+#-----|           getMethodRef(): [DeclRefExpr] next()
 #   71|       getBody(): [BraceStmt] { ... }
 #   71| [ConcreteVarDecl] number
 #   71|     Type = Int
+#   71| [ConcreteVarDecl] $number$generator
+#   71|     Type = IndexingIterator<[Int]>
 #   74| [StructDecl] HasModifyAccessorDecl
 #   75|   getMember(0): [PatternBindingDecl] var ... = ...
 #   75|     getPattern(0): [TypedPattern] ... as ...

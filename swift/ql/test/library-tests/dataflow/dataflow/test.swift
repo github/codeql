@@ -779,7 +779,7 @@ func testDictionary() {
     sink(arg: dict2[1])
 
     for (key, value) in dict2 {
-        sink(arg: key) // $ MISSING: flow=778
+        sink(arg: key) // $ flow=778
         sink(arg: value)
     }
 
@@ -792,8 +792,8 @@ func testDictionary() {
     sink(arg: dict3.randomElement()!.1) // $ flow=786
 
     for (key, value) in dict3 {
-        sink(arg: key) // $ MISSING: flow=789
-        sink(arg: value) // $ MISSING: flow=786
+        sink(arg: key) // $ flow=789
+        sink(arg: value) // $ flow=786
     }
 
     var dict4 = [1:source()]
@@ -860,7 +860,7 @@ func testVarargs3(_ v: Int, _ args: Int...) {
     sink(arg: args[1]) // $ flow=873
 
     for arg in args {
-        sink(arg: arg) // $ MISSING: flow=873
+        sink(arg: arg) // $ flow=873
     }
 
     let myKeyPath = \[Int][1]
@@ -871,4 +871,31 @@ func testVarargsCaller() {
     testVarargs1(args: source())
     testVarargs2(source(), 2, 3)
     testVarargs3(1, 2, source())
+}
+
+func testSetForEach() {
+    var set1 = Set([source()])
+    
+    for elem in set1 {
+        sink(arg: elem) // $ flow=877
+    }
+
+    var generator = set1.makeIterator()
+    sink(arg: generator.next()!) // $ flow=877
+}
+
+func testAsyncFor () async {
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
+            Task.detached {
+                for _ in 1...100 {
+                    continuation.yield(source())
+                }
+                continuation.finish()
+            }
+    })
+
+    for try await i in stream {
+        sink(arg: i) // $ MISSING: flow=892
+    }
 }
