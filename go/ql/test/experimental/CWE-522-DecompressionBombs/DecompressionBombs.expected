@@ -21,8 +21,13 @@ edges
 | test.go:108:25:108:32 | filename | test.go:108:2:108:33 | ... := ...[0] |
 | test.go:110:3:110:19 | ... := ...[0] | test.go:112:37:112:38 | rc |
 | test.go:110:12:110:12 | f | test.go:110:3:110:19 | ... := ...[0] |
-| test.go:121:2:121:51 | ... := ...[0] | test.go:125:37:125:38 | rc |
+| test.go:121:2:121:51 | ... := ...[0] | test.go:122:20:122:29 | implicit dereference |
 | test.go:121:43:121:50 | filename | test.go:121:2:121:51 | ... := ...[0] |
+| test.go:122:20:122:29 | implicit dereference | test.go:122:20:122:29 | implicit dereference |
+| test.go:122:20:122:29 | implicit dereference | test.go:122:20:122:29 | implicit read of field Reader |
+| test.go:122:20:122:29 | implicit read of field Reader | test.go:123:12:123:12 | f |
+| test.go:123:12:123:12 | f | test.go:123:12:123:19 | call to Open |
+| test.go:123:12:123:19 | call to Open | test.go:125:37:125:38 | rc |
 | test.go:136:19:136:22 | definition of file | test.go:137:25:137:28 | file |
 | test.go:137:2:137:29 | ... := ...[0] | test.go:138:48:138:52 | file1 |
 | test.go:137:25:137:28 | file | test.go:137:2:137:29 | ... := ...[0] |
@@ -34,9 +39,11 @@ edges
 | test.go:147:20:147:23 | definition of file | test.go:148:25:148:28 | file |
 | test.go:148:2:148:29 | ... := ...[0] | test.go:149:66:149:70 | file2 |
 | test.go:148:25:148:28 | file | test.go:148:2:148:29 | ... := ...[0] |
-| test.go:149:2:149:87 | ... := ...[0] | test.go:154:36:154:51 | fileReaderCloser |
+| test.go:149:2:149:87 | ... := ...[0] | test.go:153:26:153:29 | file |
 | test.go:149:50:149:71 | call to NewReader | test.go:149:2:149:87 | ... := ...[0] |
 | test.go:149:66:149:70 | file2 | test.go:149:50:149:71 | call to NewReader |
+| test.go:153:26:153:29 | file | test.go:153:26:153:36 | call to Open |
+| test.go:153:26:153:36 | call to Open | test.go:154:36:154:51 | fileReaderCloser |
 | test.go:166:22:166:25 | definition of file | test.go:169:41:169:44 | file |
 | test.go:166:22:166:25 | definition of file | test.go:175:28:175:31 | file |
 | test.go:166:22:166:25 | definition of file | test.go:182:28:182:31 | file |
@@ -180,6 +187,10 @@ nodes
 | test.go:112:37:112:38 | rc | semmle.label | rc |
 | test.go:121:2:121:51 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:121:43:121:50 | filename | semmle.label | filename |
+| test.go:122:20:122:29 | implicit dereference | semmle.label | implicit dereference |
+| test.go:122:20:122:29 | implicit read of field Reader | semmle.label | implicit read of field Reader |
+| test.go:123:12:123:12 | f | semmle.label | f |
+| test.go:123:12:123:19 | call to Open | semmle.label | call to Open |
 | test.go:125:37:125:38 | rc | semmle.label | rc |
 | test.go:136:19:136:22 | definition of file | semmle.label | definition of file |
 | test.go:137:2:137:29 | ... := ...[0] | semmle.label | ... := ...[0] |
@@ -196,6 +207,8 @@ nodes
 | test.go:149:2:149:87 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:149:50:149:71 | call to NewReader | semmle.label | call to NewReader |
 | test.go:149:66:149:70 | file2 | semmle.label | file2 |
+| test.go:153:26:153:29 | file | semmle.label | file |
+| test.go:153:26:153:36 | call to Open | semmle.label | call to Open |
 | test.go:154:36:154:51 | fileReaderCloser | semmle.label | fileReaderCloser |
 | test.go:166:22:166:25 | definition of file | semmle.label | definition of file |
 | test.go:169:3:169:73 | ... := ...[0] | semmle.label | ... := ...[0] |
