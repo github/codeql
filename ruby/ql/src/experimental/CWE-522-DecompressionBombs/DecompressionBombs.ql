@@ -11,124 +11,10 @@
  *       external/cwe/cwe-409
  */
 
-import codeql.ruby.AST
-import codeql.ruby.frameworks.Files
-import codeql.ruby.ApiGraphs
-import codeql.ruby.DataFlow
-import codeql.ruby.dataflow.RemoteFlowSources
-import codeql.ruby.TaintTracking
-import DataFlow::PathGraph
-
-module DecompressionBombs {
-  abstract class DecompressionBombSink extends DataFlow::Node { }
-
-  module Zlib {
-    /**
-     * `Zlib::GzipReader`
-     * > Note that if you use the lower level Zip::InputStream interface, rubyzip does not check the entry sizes.
-     *
-     * according to above warning from Doc we don't need to go forward after open()
-     * or new() methods, we just need the argument node of them
-     */
-    private API::Node gzipReaderInstance() {
-      result = API::getTopLevelMember("Zlib").getMember("GzipReader")
-    }
-
-    /**
-     * A return values of following methods
-     * `Zlib::GzipReader.open`
-     * `Zlib::GzipReader.zcat`
-     * `Zlib::GzipReader.new`
-     */
-    class ZipSink extends DecompressionBombSink {
-      ZipSink() {
-        this = gzipReaderInstance().getMethod(["open", "new", "zcat"]).getReturn().asSource()
-      }
-    }
-
-    predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(API::Node zipnode | zipnode = gzipReaderInstance().getMethod(["open", "new", "zcat"]) |
-        nodeFrom = zipnode.getParameter(0).asSink() and
-        nodeTo = zipnode.getReturn().asSource()
-      )
-    }
-  }
-
-  module ZipInputStream {
-    /**
-     * `Zip::InputStream`
-     * > Note that if you use the lower level Zip::InputStream interface, rubyzip does not check the entry sizes.
-     *
-     * according to above warning from Doc we don't need to go forward after open()
-     * or new() methods, we just need the argument node of them
-     */
-    private API::Node zipInputStream() {
-      result = API::getTopLevelMember("Zip").getMember("InputStream")
-    }
-
-    /**
-     * A return values of following methods
-     * `ZipIO.read`
-     * `ZipEntry.extract`
-     */
-    class ZipSink extends DecompressionBombSink {
-      ZipSink() {
-        this = zipInputStream().getMethod(["open", "new"]).getReturn().asSource() and
-        not this.getLocation().getFile().getBaseName().matches("%spec%")
-      }
-    }
-
-    predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(API::Node zipnode | zipnode = zipInputStream().getMethod(["open", "new"]) |
-        nodeFrom = zipnode.getParameter(0).asSink() and
-        nodeTo = zipnode.getReturn().asSource()
-      )
-    }
-  }
-
-  module ZipFile {
-    API::Node rubyZipNode() {
-      result = zipFile()
-      or
-      result = rubyZipNode().getMethod(_)
-      or
-      result = rubyZipNode().getReturn()
-      or
-      result = rubyZipNode().getParameter(_)
-      or
-      result = rubyZipNode().getAnElement()
-      or
-      result = rubyZipNode().getBlock()
-    }
-
-    /**
-     * A return values of following methods
-     * `ZipIO.read`
-     * `ZipEntry.extract`
-     * sanitize the nodes which have `entry.size > someOBJ`
-     */
-    class ZipSink extends DecompressionBombSink {
-      ZipSink() {
-        exists(API::Node zipnodes | zipnodes = rubyZipNode() |
-          this = zipnodes.getMethod(["extract", "read"]).getReturn().asSource() and
-          not exists(zipnodes.getMethod("size").getReturn().getMethod(">").getParameter(0))
-        )
-      }
-    }
-
-    predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(API::Node zipnodes | zipnodes = rubyZipNode() |
-        nodeTo = zipnodes.getMethod(["extract", "read"]).getReturn().asSource() and
-        nodeFrom = zipnodes.getMethod(["new", "open"]).getParameter(0).asSink()
-      )
-    }
-
-    /**
-     * `Zip::File`
-     */
-    API::Node zipFile() { result = API::getTopLevelCall("Zip").getMember("File") }
-  }
-}
+private import codeql.ruby.Concepts
+private import codeql.ruby.DataFlow
+private import codeql.ruby.TaintTracking
+import DecompressionBombs
 
 /**
  * A call to `IO.copy_stream`
@@ -139,30 +25,17 @@ class IoCopyStream extends DataFlow::CallNode {
   DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }
 
-class Bombs extends TaintTracking::Configuration {
-  Bombs() { this = "Decompression Bombs" }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    not node.getLocation().hasLocationInfo("%spec%", _, _, _, _)
+module BombsConfig implements DataFlow::ConfigSig {
+  predicate isBarrier(DataFlow::Node node) {
+    node.getLocation().hasLocationInfo("%spec%", _, _, _, _)
   }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
-    // or
-    // source instanceof DataFlow::LocalSourceNode
-    // source = API::getTopLevelCall("Zip").getMember("InputStream").getASuccessor*()
-  }
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof DecompressionBombs::DecompressionBombSink
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionBomb::Sink }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    DecompressionBombs::ZipFile::isAdditionalTaintStep(nodeFrom, nodeTo)
-    or
-    DecompressionBombs::ZipInputStream::isAdditionalTaintStep(nodeFrom, nodeTo)
-    or
-    DecompressionBombs::Zlib::isAdditionalTaintStep(nodeFrom, nodeTo)
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(DecompressionBomb::AdditionalTaintStep ats).isAdditionalTaintStep(nodeFrom, nodeTo)
     or
     exists(API::Node n | n = API::root().getMember("File").getMethod("open") |
       nodeFrom = n.getParameter(0).asSink() and
@@ -194,7 +67,11 @@ class Bombs extends TaintTracking::Configuration {
   }
 }
 
-from Bombs cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This file extraction depends on a $@.", source.getNode(),
+module Bombs = TaintTracking::Global<BombsConfig>;
+
+import Bombs::PathGraph
+
+from Bombs::PathNode source, Bombs::PathNode sink
+where Bombs::flowPath(source, sink)
+select sink.getNode(), source, sink, "This file Decompression depends on a $@.", source.getNode(),
   "potentially untrusted source"
