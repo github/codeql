@@ -1,5 +1,7 @@
 package test
 
+//go:generate depstubber -vendor  github.com/labstack/echo/v4 Context New
+
 import (
 	"strings"
 
@@ -210,4 +212,18 @@ func testNonExploitableFields(ctx echo.Context) error {
 	cookies := ctx.Cookies()
 	ctx.Redirect(301, cookies[0].Value)
 	return nil
+}
+
+// BAD: using user-provided data as paths in file-system operations
+func fsOpsTest() {
+	e := echo.New()
+	e.GET("/", func(c echo.Context) error {
+		filepath := c.QueryParam("filePath")
+		return c.File(filepath) // $ FileSystemAccess=filepath
+	})
+	e.GET("/attachment", func(c echo.Context) error {
+		filepath := c.QueryParam("filePath")
+		return c.Attachment(filepath, "file name in response") // $ FileSystemAccess=filepath
+	})
+	_ = e.Start(":1323")
 }

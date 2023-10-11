@@ -1,3 +1,9 @@
+## 0.8.0
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
 ## 0.7.5
 
 No user-facing changes.
