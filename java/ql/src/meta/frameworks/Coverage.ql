@@ -1,6 +1,6 @@
 /**
  * @name Framework coverage
- * @description The number of API endpoints covered by CSV models sorted by
+ * @description The number of API endpoints covered by MaD models sorted by
  *              package and source-, sink-, and summary-kind.
  * @kind table
  * @id java/meta/framework-coverage
