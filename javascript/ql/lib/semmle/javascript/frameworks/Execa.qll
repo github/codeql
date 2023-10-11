@@ -119,8 +119,6 @@ module Execa {
     }
   }
 
-  API::Node test() { result = API::moduleImport("execa").getMember("$").getASuccessor*() }
-
   /**
    * The system command execution nodes for `execa.$` or `execa.$.sync` tag functions
    */
@@ -131,16 +129,17 @@ module Execa {
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       isExecaShellEnable(this.getParameter(0)) and
-      arg = this.getParameter(0).asSink()
+      arg = this.getAParameter().asSink()
     }
 
     override DataFlow::Node getArgumentList() {
-      result = this.getParameter(any(int i | i > 1)).asSink()
+      result = this.getParameter(any(int i | i > 1)).asSink() and
+      not exists(string s | this.getACall().getArgument(0).mayHaveStringValue(s) | s.matches(""))
     }
 
-    override predicate isSync() { isSync = true }
-
     override DataFlow::Node getOptionsArg() { result = this.getParameter(0).asSink() }
+
+    override predicate isSync() { isSync = true }
   }
 
   /**
