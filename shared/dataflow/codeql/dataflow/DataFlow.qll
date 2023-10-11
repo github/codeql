@@ -861,22 +861,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     // non-sink PathNode with the same `(node, toString)` value and the same successors, but is transitively
     // reachable from a different set of PathNodes. (And conversely for sources).
     //
-    /**
-     * Gets a successor of `node`, taking `subpaths` into account.
-     */
-    private InputPathNode getASuccessorLike(InputPathNode node) {
-      Graph::edges(node, result)
-      or
-      Graph::subpaths(node, _, _, result) // arg -> out
-      //
-      // Note that there is no case for `arg -> param` or `ret -> out` for subpaths.
-      // It is OK to collapse nodes inside a subpath while calls to that subpaths aren't collapsed and vice versa.
-    }
-
-    private InputPathNode getAPredecessorLike(InputPathNode node) {
-      node = getASuccessorLike(result)
-    }
-
     pragma[nomagic]
     private InputPathNode getAPathNode(Node node, string toString) {
       result.getNode() = node and
@@ -885,7 +869,11 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
     private signature predicate collapseCandidateSig(Node node, string toString);
 
-    private signature InputPathNode stepSig(InputPathNode node);
+    private signature predicate stepSig(InputPathNode node1, InputPathNode node2);
+
+    private signature predicate subpathStepSig(
+      InputPathNode arg, InputPathNode param, InputPathNode ret, InputPathNode out
+    );
 
     /**
      * Performs a forward or backward pass computing which `(node, toString)` pairs can subsume their corresponding
@@ -898,12 +886,14 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
      * Comments are written as if this checks for outgoing edges and propagates backward, though the module is also
      * used to perform the opposite direction.
      */
-    private module MakeDiscriminatorPass<collapseCandidateSig/2 collapseCandidate, stepSig/1 step> {
+    private module MakeDiscriminatorPass<
+      collapseCandidateSig/2 collapseCandidate, stepSig/2 step, subpathStepSig/4 subpathStep>
+    {
       /**
        * Gets the number of `(node, toString)` pairs reachable in one step from `pathNode`.
        */
       private int getOutDegreeFromPathNode(InputPathNode pathNode) {
-        result = count(Node node, string toString | step(pathNode) = getAPathNode(node, toString))
+        result = count(Node node, string toString | step(pathNode, getAPathNode(node, toString)))
       }
 
       /**
@@ -912,13 +902,46 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       private int getOutDegreeFromNode(Node node, string toString) {
         result =
           strictcount(Node node2, string toString2 |
-            step(getAPathNode(node, toString)) = getAPathNode(node2, toString2)
+            step(getAPathNode(node, toString), getAPathNode(node2, toString2))
           )
       }
 
+      /**
+       * Like `getOutDegreeFromPathNode` except counts `subpath` tuples.
+       */
+      private int getSubpathOutDegreeFromPathNode(InputPathNode pathNode) {
+        result =
+          count(Node n1, string s1, Node n2, string s2, Node n3, string s3 |
+            subpathStep(pathNode, getAPathNode(n1, s1), getAPathNode(n2, s2), getAPathNode(n3, s3))
+          )
+      }
+
+      /**
+       * Like `getOutDegreeFromNode` except counts `subpath` tuples.
+       */
+      private int getSubpathOutDegreeFromNode(Node node, string toString) {
+        result =
+          strictcount(Node n1, string s1, Node n2, string s2, Node n3, string s3 |
+            subpathStep(getAPathNode(node, toString), getAPathNode(n1, s1), getAPathNode(n2, s2),
+              getAPathNode(n3, s3))
+          )
+      }
+
+      /** Gets a successor of `node` including subpath flow-through. */
+      InputPathNode stepEx(InputPathNode node) {
+        step(node, result)
+        or
+        subpathStep(node, _, _, result) // assuming the input is pruned properly, all subpaths have flow-through
+      }
+
+      InputPathNode enterSubpathStep(InputPathNode node) { subpathStep(node, result, _, _) }
+
+      InputPathNode exitSubpathStep(InputPathNode node) { subpathStep(_, _, node, result) }
+
       /** Holds if `(node, toString)` cannot be collapsed (but was a candidate for being collapsed). */
-      predicate discriminatedPair(Node node, string toString) {
+      predicate discriminatedPair(Node node, string toString, boolean hasEnter) {
         collapseCandidate(node, toString) and
+        hasEnter = false and
         (
           // Check if all corresponding PathNodes have the same successor sets when projected to `(node, toString)`.
           // To do this, we check that each successor set has the same size as the union of the succesor sets.
@@ -928,27 +951,62 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
           getOutDegreeFromPathNode(getAPathNode(node, toString)) <
             getOutDegreeFromNode(node, toString)
           or
+          // Same as above but counting associated subpath triples instead
+          getSubpathOutDegreeFromPathNode(getAPathNode(node, toString)) <
+            getSubpathOutDegreeFromNode(node, toString)
+        )
+        or
+        collapseCandidate(node, toString) and
+        (
           // Retain flow state if one of the successors requires it to be retained
-          discriminatedPathNode(step(getAPathNode(node, toString)))
+          discriminatedPathNode(stepEx(getAPathNode(node, toString)), hasEnter)
+          or
+          // Enter a subpath
+          discriminatedPathNode(enterSubpathStep(getAPathNode(node, toString)), _) and
+          hasEnter = true
+          or
+          // Exit a subpath
+          discriminatedPathNode(exitSubpathStep(getAPathNode(node, toString)), false) and
+          hasEnter = false
         )
       }
 
       /** Holds if `pathNode` cannot be collapsed. */
-      predicate discriminatedPathNode(InputPathNode pathNode) {
+      private predicate discriminatedPathNode(InputPathNode pathNode, boolean hasEnter) {
         exists(Node node, string toString |
-          discriminatedPair(node, toString) and
+          discriminatedPair(node, toString, hasEnter) and
           getAPathNode(node, toString) = pathNode
         )
       }
+
+      /** Holds if `(node, toString)` cannot be collapsed (but was a candidate for being collapsed). */
+      predicate discriminatedPair(Node node, string toString) {
+        discriminatedPair(node, toString, _)
+      }
+
+      /** Holds if `pathNode` cannot be collapsed. */
+      predicate discriminatedPathNode(InputPathNode pathNode) { discriminatedPathNode(pathNode, _) }
     }
 
     private predicate initialCandidate(Node node, string toString) {
       exists(getAPathNode(node, toString))
     }
 
-    private module Pass1 = MakeDiscriminatorPass<initialCandidate/2, getASuccessorLike/1>;
+    private module Pass1 =
+      MakeDiscriminatorPass<initialCandidate/2, Graph::edges/2, Graph::subpaths/4>;
 
-    private module Pass2 = MakeDiscriminatorPass<Pass1::discriminatedPair/2, getAPredecessorLike/1>;
+    private predicate edgesRev(InputPathNode node1, InputPathNode node2) {
+      Graph::edges(node2, node1)
+    }
+
+    private predicate subpathsRev(
+      InputPathNode n1, InputPathNode n2, InputPathNode n3, InputPathNode n4
+    ) {
+      Graph::subpaths(n4, n3, n2, n1)
+    }
+
+    private module Pass2 =
+      MakeDiscriminatorPass<Pass1::discriminatedPair/2, edgesRev/2, subpathsRev/4>;
 
     private newtype TPathNode =
       TPreservedPathNode(InputPathNode node) { Pass2::discriminatedPathNode(node) } or
