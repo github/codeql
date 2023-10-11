@@ -399,6 +399,7 @@ private module SsaComputeImpl {
       b2 = b1.getASuccessor() and
       blockPrecedesVar(v, b2)
       or
+      not b1 = b2 and
       exists(BasicBlock mid |
         varBlockReaches(v, b1, mid) and
         b2 = mid.getASuccessor() and
