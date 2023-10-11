@@ -11,6 +11,73 @@ import (
 	io "io"
 )
 
-func NewReader(_ io.Reader) interface{} {
+type Reader struct{}
+
+func NewReader(_ io.Reader) *Reader {
 	return nil
+}
+
+
+func (_ *Reader) DecodeConcurrent(_ io.Writer, _ int) (int64, error) {
+	return 0, nil
+}
+
+func (_ *Reader) Read(_ []byte) (int, error) {
+	return 0, nil
+}
+
+func (_ *Reader) ReadByte() (byte, error) {
+	return 0, nil
+}
+
+func (_ *Reader) ReadSeeker(_ bool, _ []byte) (*ReadSeeker, error) {
+	return nil, nil
+}
+
+func (_ *Reader) Reset(_ io.Reader) {}
+
+func (_ *Reader) Skip(_ int64) error {
+	return nil
+}
+
+func (_ *Reader) SkippableCB(_ byte, _ func(io.Reader) error) error {
+	return nil
+}
+
+type ReadSeeker struct {
+	Reader *Reader
+}
+
+func (_ ReadSeeker) DecodeConcurrent(_ io.Writer, _ int) (int64, error) {
+	return 0, nil
+}
+
+func (_ ReadSeeker) Read(_ []byte) (int, error) {
+	return 0, nil
+}
+
+func (_ ReadSeeker) ReadByte() (byte, error) {
+	return 0, nil
+}
+
+func (_ ReadSeeker) ReadSeeker(_ bool, _ []byte) (*ReadSeeker, error) {
+	return nil, nil
+}
+
+func (_ ReadSeeker) Reset(_ io.Reader) {}
+
+func (_ ReadSeeker) Skip(_ int64) error {
+	return nil
+}
+
+func (_ ReadSeeker) SkippableCB(_ byte, _ func(io.Reader) error) error {
+	return nil
+}
+
+func (_ *ReadSeeker) ReadAt(_ []byte, _ int64) (int, error) {
+	return 0, nil
+}
+
+func (_ *ReadSeeker) Seek(_ int64, _ int) (int64, error) {
+	return 0, nil
 }

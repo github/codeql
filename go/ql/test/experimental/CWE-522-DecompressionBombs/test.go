@@ -220,16 +220,12 @@ func TarDecompressor(file io.Reader, compressionType string) {
 	}
 	if compressionType == "snappyKlauspost" {
 		snappyklauspost := snappyKlauspost.NewReader(file)
-		//snappyklauspost.Reader == s2.Reader
-		// depstubber didn't work, I'm doing following because of it:
-		s2Reader := s2.NewReader(file)
-		s2Reader = snappyklauspost
 		var out []byte = make([]byte, 70)
-		s2Reader.Read(out)
+		snappyklauspost.Read(out)
 		var buf bytes.Buffer
-		s2Reader.DecodeConcurrent(&buf, 2)
-		s2Reader.ReadByte()
-		tarRead = tar.NewReader(s2Reader)
+		snappyklauspost.DecodeConcurrent(&buf, 2)
+		snappyklauspost.ReadByte()
+		tarRead = tar.NewReader(snappyklauspost)
 	}
 	if compressionType == "s2" {
 		S2 := s2.NewReader(file)

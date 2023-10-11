@@ -16,10 +16,13 @@ edges
 | test.go:102:11:102:44 | call to LimitReader | test.go:103:23:103:28 | newSrc |
 | test.go:102:26:102:30 | gzipR | test.go:102:11:102:44 | call to LimitReader |
 | test.go:106:20:106:27 | definition of filename | test.go:108:25:108:32 | filename |
+| test.go:106:20:106:27 | definition of filename | test.go:121:43:121:50 | filename |
 | test.go:108:2:108:33 | ... := ...[0] | test.go:110:12:110:12 | f |
 | test.go:108:25:108:32 | filename | test.go:108:2:108:33 | ... := ...[0] |
 | test.go:110:3:110:19 | ... := ...[0] | test.go:112:37:112:38 | rc |
 | test.go:110:12:110:12 | f | test.go:110:3:110:19 | ... := ...[0] |
+| test.go:121:2:121:51 | ... := ...[0] | test.go:125:37:125:38 | rc |
+| test.go:121:43:121:50 | filename | test.go:121:2:121:51 | ... := ...[0] |
 | test.go:136:19:136:22 | definition of file | test.go:137:25:137:28 | file |
 | test.go:137:2:137:29 | ... := ...[0] | test.go:138:48:138:52 | file1 |
 | test.go:137:25:137:28 | file | test.go:137:2:137:29 | ... := ...[0] |
@@ -43,116 +46,113 @@ edges
 | test.go:166:22:166:25 | definition of file | test.go:209:29:209:32 | file |
 | test.go:166:22:166:25 | definition of file | test.go:215:30:215:33 | file |
 | test.go:166:22:166:25 | definition of file | test.go:222:48:222:51 | file |
-| test.go:166:22:166:25 | definition of file | test.go:235:22:235:25 | file |
-| test.go:166:22:166:25 | definition of file | test.go:245:33:245:36 | file |
-| test.go:166:22:166:25 | definition of file | test.go:251:47:251:50 | file |
-| test.go:166:22:166:25 | definition of file | test.go:260:43:260:46 | file |
-| test.go:166:22:166:25 | definition of file | test.go:268:38:268:41 | file |
-| test.go:166:22:166:25 | definition of file | test.go:279:33:279:36 | file |
-| test.go:166:22:166:25 | definition of file | test.go:285:29:285:32 | file |
+| test.go:166:22:166:25 | definition of file | test.go:231:22:231:25 | file |
+| test.go:166:22:166:25 | definition of file | test.go:241:33:241:36 | file |
+| test.go:166:22:166:25 | definition of file | test.go:247:47:247:50 | file |
+| test.go:166:22:166:25 | definition of file | test.go:256:43:256:46 | file |
+| test.go:166:22:166:25 | definition of file | test.go:264:38:264:41 | file |
+| test.go:166:22:166:25 | definition of file | test.go:275:33:275:36 | file |
+| test.go:166:22:166:25 | definition of file | test.go:281:29:281:32 | file |
 | test.go:169:3:169:73 | ... := ...[0] | test.go:171:3:171:12 | bzip2dsnet |
 | test.go:169:3:169:73 | ... := ...[0] | test.go:172:27:172:36 | bzip2dsnet |
 | test.go:169:41:169:44 | file | test.go:169:3:169:73 | ... := ...[0] |
-| test.go:172:13:172:37 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:172:13:172:37 | call to NewReader | test.go:301:25:301:31 | tarRead |
+| test.go:172:13:172:37 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:172:13:172:37 | call to NewReader | test.go:297:25:297:31 | tarRead |
 | test.go:172:27:172:36 | bzip2dsnet | test.go:172:13:172:37 | call to NewReader |
 | test.go:175:12:175:32 | call to NewReader | test.go:177:3:177:7 | Bzip2 |
 | test.go:175:12:175:32 | call to NewReader | test.go:178:27:178:31 | Bzip2 |
 | test.go:175:28:175:31 | file | test.go:175:12:175:32 | call to NewReader |
-| test.go:178:13:178:32 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:178:13:178:32 | call to NewReader | test.go:301:25:301:31 | tarRead |
+| test.go:178:13:178:32 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:178:13:178:32 | call to NewReader | test.go:297:25:297:31 | tarRead |
 | test.go:178:27:178:31 | Bzip2 | test.go:178:13:178:32 | call to NewReader |
 | test.go:182:12:182:32 | call to NewReader | test.go:184:3:184:7 | Flate |
 | test.go:182:12:182:32 | call to NewReader | test.go:185:27:185:31 | Flate |
 | test.go:182:28:182:31 | file | test.go:182:12:182:32 | call to NewReader |
-| test.go:185:13:185:32 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:185:13:185:32 | call to NewReader | test.go:301:25:301:31 | tarRead |
+| test.go:185:13:185:32 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:185:13:185:32 | call to NewReader | test.go:297:25:297:31 | tarRead |
 | test.go:185:27:185:31 | Flate | test.go:185:13:185:32 | call to NewReader |
 | test.go:189:20:189:49 | call to NewReader | test.go:191:3:191:15 | zlibklauspost |
 | test.go:189:20:189:49 | call to NewReader | test.go:192:27:192:39 | zlibklauspost |
 | test.go:189:45:189:48 | file | test.go:189:20:189:49 | call to NewReader |
-| test.go:192:13:192:40 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:192:13:192:40 | call to NewReader | test.go:301:25:301:31 | tarRead |
+| test.go:192:13:192:40 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:192:13:192:40 | call to NewReader | test.go:297:25:297:31 | tarRead |
 | test.go:192:27:192:39 | zlibklauspost | test.go:192:13:192:40 | call to NewReader |
 | test.go:195:3:195:73 | ... := ...[0] | test.go:197:3:197:12 | flatedsnet |
 | test.go:195:3:195:73 | ... := ...[0] | test.go:198:27:198:36 | flatedsnet |
 | test.go:195:41:195:44 | file | test.go:195:3:195:73 | ... := ...[0] |
-| test.go:198:13:198:37 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:198:13:198:37 | call to NewReader | test.go:301:25:301:31 | tarRead |
+| test.go:198:13:198:37 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:198:13:198:37 | call to NewReader | test.go:297:25:297:31 | tarRead |
 | test.go:198:27:198:36 | flatedsnet | test.go:198:13:198:37 | call to NewReader |
 | test.go:202:3:202:51 | ... := ...[0] | test.go:204:3:204:15 | zlibklauspost |
 | test.go:202:3:202:51 | ... := ...[0] | test.go:205:27:205:39 | zlibklauspost |
 | test.go:202:47:202:50 | file | test.go:202:3:202:51 | ... := ...[0] |
-| test.go:205:13:205:40 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:205:13:205:40 | call to NewReader | test.go:301:25:301:31 | tarRead |
+| test.go:205:13:205:40 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:205:13:205:40 | call to NewReader | test.go:297:25:297:31 | tarRead |
 | test.go:205:27:205:39 | zlibklauspost | test.go:205:13:205:40 | call to NewReader |
 | test.go:209:3:209:33 | ... := ...[0] | test.go:211:3:211:6 | Zlib |
 | test.go:209:3:209:33 | ... := ...[0] | test.go:212:27:212:30 | Zlib |
 | test.go:209:29:209:32 | file | test.go:209:3:209:33 | ... := ...[0] |
-| test.go:212:13:212:31 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:212:13:212:31 | call to NewReader | test.go:301:25:301:31 | tarRead |
+| test.go:212:13:212:31 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:212:13:212:31 | call to NewReader | test.go:297:25:297:31 | tarRead |
 | test.go:212:27:212:30 | Zlib | test.go:212:13:212:31 | call to NewReader |
 | test.go:215:13:215:34 | call to NewReader | test.go:217:3:217:8 | Snappy |
 | test.go:215:13:215:34 | call to NewReader | test.go:218:3:218:8 | Snappy |
 | test.go:215:13:215:34 | call to NewReader | test.go:219:27:219:32 | Snappy |
 | test.go:215:30:215:33 | file | test.go:215:13:215:34 | call to NewReader |
-| test.go:219:13:219:33 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:219:13:219:33 | call to NewReader | test.go:301:25:301:31 | tarRead |
+| test.go:219:13:219:33 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:219:13:219:33 | call to NewReader | test.go:297:25:297:31 | tarRead |
 | test.go:219:27:219:32 | Snappy | test.go:219:13:219:33 | call to NewReader |
-| test.go:222:22:222:52 | call to NewReader | test.go:228:3:228:10 | s2Reader |
-| test.go:222:22:222:52 | call to NewReader | test.go:230:3:230:10 | s2Reader |
-| test.go:222:22:222:52 | call to NewReader | test.go:231:3:231:10 | s2Reader |
-| test.go:222:22:222:52 | call to NewReader | test.go:232:27:232:34 | s2Reader |
+| test.go:222:22:222:52 | call to NewReader | test.go:228:27:228:41 | snappyklauspost |
 | test.go:222:48:222:51 | file | test.go:222:22:222:52 | call to NewReader |
-| test.go:232:13:232:35 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:232:13:232:35 | call to NewReader | test.go:301:25:301:31 | tarRead |
-| test.go:232:27:232:34 | s2Reader | test.go:232:13:232:35 | call to NewReader |
-| test.go:235:9:235:26 | call to NewReader | test.go:237:3:237:4 | S2 |
-| test.go:235:9:235:26 | call to NewReader | test.go:239:3:239:4 | S2 |
-| test.go:235:9:235:26 | call to NewReader | test.go:242:27:242:28 | S2 |
-| test.go:235:22:235:25 | file | test.go:235:9:235:26 | call to NewReader |
-| test.go:242:13:242:29 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:242:13:242:29 | call to NewReader | test.go:301:25:301:31 | tarRead |
-| test.go:242:27:242:28 | S2 | test.go:242:13:242:29 | call to NewReader |
-| test.go:245:3:245:37 | ... := ...[0] | test.go:247:3:247:10 | gzipRead |
-| test.go:245:3:245:37 | ... := ...[0] | test.go:248:27:248:34 | gzipRead |
-| test.go:245:33:245:36 | file | test.go:245:3:245:37 | ... := ...[0] |
-| test.go:248:13:248:35 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:248:13:248:35 | call to NewReader | test.go:301:25:301:31 | tarRead |
-| test.go:248:27:248:34 | gzipRead | test.go:248:13:248:35 | call to NewReader |
-| test.go:251:3:251:51 | ... := ...[0] | test.go:253:3:253:15 | gzipklauspost |
-| test.go:251:3:251:51 | ... := ...[0] | test.go:255:3:255:15 | gzipklauspost |
-| test.go:251:3:251:51 | ... := ...[0] | test.go:256:27:256:39 | gzipklauspost |
-| test.go:251:47:251:50 | file | test.go:251:3:251:51 | ... := ...[0] |
-| test.go:256:13:256:40 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:256:13:256:40 | call to NewReader | test.go:301:25:301:31 | tarRead |
-| test.go:256:27:256:39 | gzipklauspost | test.go:256:13:256:40 | call to NewReader |
-| test.go:260:3:260:47 | ... := ...[0] | test.go:264:3:264:11 | gzippgzip |
-| test.go:260:3:260:47 | ... := ...[0] | test.go:265:27:265:35 | gzippgzip |
-| test.go:260:43:260:46 | file | test.go:260:3:260:47 | ... := ...[0] |
-| test.go:265:13:265:36 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:265:13:265:36 | call to NewReader | test.go:301:25:301:31 | tarRead |
-| test.go:265:27:265:35 | gzippgzip | test.go:265:13:265:36 | call to NewReader |
-| test.go:268:3:268:42 | ... := ...[0] | test.go:270:3:270:6 | zstd |
-| test.go:268:3:268:42 | ... := ...[0] | test.go:272:3:272:6 | zstd |
-| test.go:268:3:268:42 | ... := ...[0] | test.go:274:3:274:6 | zstd |
-| test.go:268:3:268:42 | ... := ...[0] | test.go:275:27:275:30 | zstd |
-| test.go:268:38:268:41 | file | test.go:268:3:268:42 | ... := ...[0] |
-| test.go:275:13:275:31 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:275:13:275:31 | call to NewReader | test.go:301:25:301:31 | tarRead |
-| test.go:275:27:275:30 | zstd | test.go:275:13:275:31 | call to NewReader |
-| test.go:279:11:279:37 | call to NewReader | test.go:281:3:281:6 | zstd |
-| test.go:279:11:279:37 | call to NewReader | test.go:282:27:282:30 | zstd |
-| test.go:279:33:279:36 | file | test.go:279:11:279:37 | call to NewReader |
-| test.go:282:13:282:31 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:282:13:282:31 | call to NewReader | test.go:301:25:301:31 | tarRead |
-| test.go:282:27:282:30 | zstd | test.go:282:13:282:31 | call to NewReader |
-| test.go:285:3:285:33 | ... := ...[0] | test.go:287:3:287:8 | xzRead |
-| test.go:285:3:285:33 | ... := ...[0] | test.go:288:27:288:32 | xzRead |
-| test.go:285:29:285:32 | file | test.go:285:3:285:33 | ... := ...[0] |
-| test.go:288:13:288:33 | call to NewReader | test.go:291:2:291:8 | tarRead |
-| test.go:288:13:288:33 | call to NewReader | test.go:301:25:301:31 | tarRead |
-| test.go:288:27:288:32 | xzRead | test.go:288:13:288:33 | call to NewReader |
+| test.go:228:13:228:42 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:228:13:228:42 | call to NewReader | test.go:297:25:297:31 | tarRead |
+| test.go:228:27:228:41 | snappyklauspost | test.go:228:13:228:42 | call to NewReader |
+| test.go:231:9:231:26 | call to NewReader | test.go:233:3:233:4 | S2 |
+| test.go:231:9:231:26 | call to NewReader | test.go:235:3:235:4 | S2 |
+| test.go:231:9:231:26 | call to NewReader | test.go:238:27:238:28 | S2 |
+| test.go:231:22:231:25 | file | test.go:231:9:231:26 | call to NewReader |
+| test.go:238:13:238:29 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:238:13:238:29 | call to NewReader | test.go:297:25:297:31 | tarRead |
+| test.go:238:27:238:28 | S2 | test.go:238:13:238:29 | call to NewReader |
+| test.go:241:3:241:37 | ... := ...[0] | test.go:243:3:243:10 | gzipRead |
+| test.go:241:3:241:37 | ... := ...[0] | test.go:244:27:244:34 | gzipRead |
+| test.go:241:33:241:36 | file | test.go:241:3:241:37 | ... := ...[0] |
+| test.go:244:13:244:35 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:244:13:244:35 | call to NewReader | test.go:297:25:297:31 | tarRead |
+| test.go:244:27:244:34 | gzipRead | test.go:244:13:244:35 | call to NewReader |
+| test.go:247:3:247:51 | ... := ...[0] | test.go:249:3:249:15 | gzipklauspost |
+| test.go:247:3:247:51 | ... := ...[0] | test.go:251:3:251:15 | gzipklauspost |
+| test.go:247:3:247:51 | ... := ...[0] | test.go:252:27:252:39 | gzipklauspost |
+| test.go:247:47:247:50 | file | test.go:247:3:247:51 | ... := ...[0] |
+| test.go:252:13:252:40 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:252:13:252:40 | call to NewReader | test.go:297:25:297:31 | tarRead |
+| test.go:252:27:252:39 | gzipklauspost | test.go:252:13:252:40 | call to NewReader |
+| test.go:256:3:256:47 | ... := ...[0] | test.go:260:3:260:11 | gzippgzip |
+| test.go:256:3:256:47 | ... := ...[0] | test.go:261:27:261:35 | gzippgzip |
+| test.go:256:43:256:46 | file | test.go:256:3:256:47 | ... := ...[0] |
+| test.go:261:13:261:36 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:261:13:261:36 | call to NewReader | test.go:297:25:297:31 | tarRead |
+| test.go:261:27:261:35 | gzippgzip | test.go:261:13:261:36 | call to NewReader |
+| test.go:264:3:264:42 | ... := ...[0] | test.go:266:3:266:6 | zstd |
+| test.go:264:3:264:42 | ... := ...[0] | test.go:268:3:268:6 | zstd |
+| test.go:264:3:264:42 | ... := ...[0] | test.go:270:3:270:6 | zstd |
+| test.go:264:3:264:42 | ... := ...[0] | test.go:271:27:271:30 | zstd |
+| test.go:264:38:264:41 | file | test.go:264:3:264:42 | ... := ...[0] |
+| test.go:271:13:271:31 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:271:13:271:31 | call to NewReader | test.go:297:25:297:31 | tarRead |
+| test.go:271:27:271:30 | zstd | test.go:271:13:271:31 | call to NewReader |
+| test.go:275:11:275:37 | call to NewReader | test.go:277:3:277:6 | zstd |
+| test.go:275:11:275:37 | call to NewReader | test.go:278:27:278:30 | zstd |
+| test.go:275:33:275:36 | file | test.go:275:11:275:37 | call to NewReader |
+| test.go:278:13:278:31 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:278:13:278:31 | call to NewReader | test.go:297:25:297:31 | tarRead |
+| test.go:278:27:278:30 | zstd | test.go:278:13:278:31 | call to NewReader |
+| test.go:281:3:281:33 | ... := ...[0] | test.go:283:3:283:8 | xzRead |
+| test.go:281:3:281:33 | ... := ...[0] | test.go:284:27:284:32 | xzRead |
+| test.go:281:29:281:32 | file | test.go:281:3:281:33 | ... := ...[0] |
+| test.go:284:13:284:33 | call to NewReader | test.go:287:2:287:8 | tarRead |
+| test.go:284:13:284:33 | call to NewReader | test.go:297:25:297:31 | tarRead |
+| test.go:284:27:284:32 | xzRead | test.go:284:13:284:33 | call to NewReader |
 nodes
 | test.go:57:18:57:29 | selection of Body | semmle.label | selection of Body |
 | test.go:58:15:58:26 | selection of Body | semmle.label | selection of Body |
@@ -178,6 +178,9 @@ nodes
 | test.go:110:3:110:19 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:110:12:110:12 | f | semmle.label | f |
 | test.go:112:37:112:38 | rc | semmle.label | rc |
+| test.go:121:2:121:51 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:121:43:121:50 | filename | semmle.label | filename |
+| test.go:125:37:125:38 | rc | semmle.label | rc |
 | test.go:136:19:136:22 | definition of file | semmle.label | definition of file |
 | test.go:137:2:137:29 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:137:25:137:28 | file | semmle.label | file |
@@ -238,71 +241,69 @@ nodes
 | test.go:219:27:219:32 | Snappy | semmle.label | Snappy |
 | test.go:222:22:222:52 | call to NewReader | semmle.label | call to NewReader |
 | test.go:222:48:222:51 | file | semmle.label | file |
-| test.go:228:3:228:10 | s2Reader | semmle.label | s2Reader |
-| test.go:230:3:230:10 | s2Reader | semmle.label | s2Reader |
-| test.go:231:3:231:10 | s2Reader | semmle.label | s2Reader |
-| test.go:232:13:232:35 | call to NewReader | semmle.label | call to NewReader |
-| test.go:232:27:232:34 | s2Reader | semmle.label | s2Reader |
-| test.go:235:9:235:26 | call to NewReader | semmle.label | call to NewReader |
-| test.go:235:22:235:25 | file | semmle.label | file |
-| test.go:237:3:237:4 | S2 | semmle.label | S2 |
-| test.go:239:3:239:4 | S2 | semmle.label | S2 |
-| test.go:242:13:242:29 | call to NewReader | semmle.label | call to NewReader |
-| test.go:242:27:242:28 | S2 | semmle.label | S2 |
-| test.go:245:3:245:37 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:245:33:245:36 | file | semmle.label | file |
-| test.go:247:3:247:10 | gzipRead | semmle.label | gzipRead |
-| test.go:248:13:248:35 | call to NewReader | semmle.label | call to NewReader |
-| test.go:248:27:248:34 | gzipRead | semmle.label | gzipRead |
-| test.go:251:3:251:51 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:251:47:251:50 | file | semmle.label | file |
-| test.go:253:3:253:15 | gzipklauspost | semmle.label | gzipklauspost |
-| test.go:255:3:255:15 | gzipklauspost | semmle.label | gzipklauspost |
-| test.go:256:13:256:40 | call to NewReader | semmle.label | call to NewReader |
-| test.go:256:27:256:39 | gzipklauspost | semmle.label | gzipklauspost |
-| test.go:260:3:260:47 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:260:43:260:46 | file | semmle.label | file |
-| test.go:264:3:264:11 | gzippgzip | semmle.label | gzippgzip |
-| test.go:265:13:265:36 | call to NewReader | semmle.label | call to NewReader |
-| test.go:265:27:265:35 | gzippgzip | semmle.label | gzippgzip |
-| test.go:268:3:268:42 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:268:38:268:41 | file | semmle.label | file |
+| test.go:228:13:228:42 | call to NewReader | semmle.label | call to NewReader |
+| test.go:228:27:228:41 | snappyklauspost | semmle.label | snappyklauspost |
+| test.go:231:9:231:26 | call to NewReader | semmle.label | call to NewReader |
+| test.go:231:22:231:25 | file | semmle.label | file |
+| test.go:233:3:233:4 | S2 | semmle.label | S2 |
+| test.go:235:3:235:4 | S2 | semmle.label | S2 |
+| test.go:238:13:238:29 | call to NewReader | semmle.label | call to NewReader |
+| test.go:238:27:238:28 | S2 | semmle.label | S2 |
+| test.go:241:3:241:37 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:241:33:241:36 | file | semmle.label | file |
+| test.go:243:3:243:10 | gzipRead | semmle.label | gzipRead |
+| test.go:244:13:244:35 | call to NewReader | semmle.label | call to NewReader |
+| test.go:244:27:244:34 | gzipRead | semmle.label | gzipRead |
+| test.go:247:3:247:51 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:247:47:247:50 | file | semmle.label | file |
+| test.go:249:3:249:15 | gzipklauspost | semmle.label | gzipklauspost |
+| test.go:251:3:251:15 | gzipklauspost | semmle.label | gzipklauspost |
+| test.go:252:13:252:40 | call to NewReader | semmle.label | call to NewReader |
+| test.go:252:27:252:39 | gzipklauspost | semmle.label | gzipklauspost |
+| test.go:256:3:256:47 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:256:43:256:46 | file | semmle.label | file |
+| test.go:260:3:260:11 | gzippgzip | semmle.label | gzippgzip |
+| test.go:261:13:261:36 | call to NewReader | semmle.label | call to NewReader |
+| test.go:261:27:261:35 | gzippgzip | semmle.label | gzippgzip |
+| test.go:264:3:264:42 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:264:38:264:41 | file | semmle.label | file |
+| test.go:266:3:266:6 | zstd | semmle.label | zstd |
+| test.go:268:3:268:6 | zstd | semmle.label | zstd |
 | test.go:270:3:270:6 | zstd | semmle.label | zstd |
-| test.go:272:3:272:6 | zstd | semmle.label | zstd |
-| test.go:274:3:274:6 | zstd | semmle.label | zstd |
-| test.go:275:13:275:31 | call to NewReader | semmle.label | call to NewReader |
-| test.go:275:27:275:30 | zstd | semmle.label | zstd |
-| test.go:279:11:279:37 | call to NewReader | semmle.label | call to NewReader |
-| test.go:279:33:279:36 | file | semmle.label | file |
-| test.go:281:3:281:6 | zstd | semmle.label | zstd |
-| test.go:282:13:282:31 | call to NewReader | semmle.label | call to NewReader |
-| test.go:282:27:282:30 | zstd | semmle.label | zstd |
-| test.go:285:3:285:33 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:285:29:285:32 | file | semmle.label | file |
-| test.go:287:3:287:8 | xzRead | semmle.label | xzRead |
-| test.go:288:13:288:33 | call to NewReader | semmle.label | call to NewReader |
-| test.go:288:27:288:32 | xzRead | semmle.label | xzRead |
-| test.go:291:2:291:8 | tarRead | semmle.label | tarRead |
-| test.go:291:2:291:8 | tarRead | semmle.label | tarRead |
-| test.go:291:2:291:8 | tarRead | semmle.label | tarRead |
-| test.go:291:2:291:8 | tarRead | semmle.label | tarRead |
-| test.go:291:2:291:8 | tarRead | semmle.label | tarRead |
-| test.go:291:2:291:8 | tarRead | semmle.label | tarRead |
-| test.go:291:2:291:8 | tarRead | semmle.label | tarRead |
-| test.go:291:2:291:8 | tarRead | semmle.label | tarRead |
-| test.go:301:25:301:31 | tarRead | semmle.label | tarRead |
-| test.go:301:25:301:31 | tarRead | semmle.label | tarRead |
-| test.go:301:25:301:31 | tarRead | semmle.label | tarRead |
-| test.go:301:25:301:31 | tarRead | semmle.label | tarRead |
-| test.go:301:25:301:31 | tarRead | semmle.label | tarRead |
-| test.go:301:25:301:31 | tarRead | semmle.label | tarRead |
-| test.go:301:25:301:31 | tarRead | semmle.label | tarRead |
-| test.go:301:25:301:31 | tarRead | semmle.label | tarRead |
+| test.go:271:13:271:31 | call to NewReader | semmle.label | call to NewReader |
+| test.go:271:27:271:30 | zstd | semmle.label | zstd |
+| test.go:275:11:275:37 | call to NewReader | semmle.label | call to NewReader |
+| test.go:275:33:275:36 | file | semmle.label | file |
+| test.go:277:3:277:6 | zstd | semmle.label | zstd |
+| test.go:278:13:278:31 | call to NewReader | semmle.label | call to NewReader |
+| test.go:278:27:278:30 | zstd | semmle.label | zstd |
+| test.go:281:3:281:33 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:281:29:281:32 | file | semmle.label | file |
+| test.go:283:3:283:8 | xzRead | semmle.label | xzRead |
+| test.go:284:13:284:33 | call to NewReader | semmle.label | call to NewReader |
+| test.go:284:27:284:32 | xzRead | semmle.label | xzRead |
+| test.go:287:2:287:8 | tarRead | semmle.label | tarRead |
+| test.go:287:2:287:8 | tarRead | semmle.label | tarRead |
+| test.go:287:2:287:8 | tarRead | semmle.label | tarRead |
+| test.go:287:2:287:8 | tarRead | semmle.label | tarRead |
+| test.go:287:2:287:8 | tarRead | semmle.label | tarRead |
+| test.go:287:2:287:8 | tarRead | semmle.label | tarRead |
+| test.go:287:2:287:8 | tarRead | semmle.label | tarRead |
+| test.go:287:2:287:8 | tarRead | semmle.label | tarRead |
+| test.go:297:25:297:31 | tarRead | semmle.label | tarRead |
+| test.go:297:25:297:31 | tarRead | semmle.label | tarRead |
+| test.go:297:25:297:31 | tarRead | semmle.label | tarRead |
+| test.go:297:25:297:31 | tarRead | semmle.label | tarRead |
+| test.go:297:25:297:31 | tarRead | semmle.label | tarRead |
+| test.go:297:25:297:31 | tarRead | semmle.label | tarRead |
+| test.go:297:25:297:31 | tarRead | semmle.label | tarRead |
+| test.go:297:25:297:31 | tarRead | semmle.label | tarRead |
 subpaths
 #select
 | test.go:83:37:83:38 | rc | test.go:61:20:61:48 | call to PostFormValue | test.go:83:37:83:38 | rc | This decompression is $@. | test.go:61:20:61:48 | call to PostFormValue | decompressing compressed data without managing output size |
 | test.go:103:23:103:28 | newSrc | test.go:63:17:63:28 | selection of Body | test.go:103:23:103:28 | newSrc | This decompression is $@. | test.go:63:17:63:28 | selection of Body | decompressing compressed data without managing output size |
 | test.go:112:37:112:38 | rc | test.go:60:16:60:46 | call to FormValue | test.go:112:37:112:38 | rc | This decompression is $@. | test.go:60:16:60:46 | call to FormValue | decompressing compressed data without managing output size |
+| test.go:125:37:125:38 | rc | test.go:60:16:60:46 | call to FormValue | test.go:125:37:125:38 | rc | This decompression is $@. | test.go:60:16:60:46 | call to FormValue | decompressing compressed data without managing output size |
 | test.go:142:36:142:51 | fileReaderCloser | test.go:58:15:58:26 | selection of Body | test.go:142:36:142:51 | fileReaderCloser | This decompression is $@. | test.go:58:15:58:26 | selection of Body | decompressing compressed data without managing output size |
 | test.go:154:36:154:51 | fileReaderCloser | test.go:59:16:59:27 | selection of Body | test.go:154:36:154:51 | fileReaderCloser | This decompression is $@. | test.go:59:16:59:27 | selection of Body | decompressing compressed data without managing output size |
 | test.go:171:3:171:12 | bzip2dsnet | test.go:57:18:57:29 | selection of Body | test.go:171:3:171:12 | bzip2dsnet | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
@@ -314,33 +315,30 @@ subpaths
 | test.go:211:3:211:6 | Zlib | test.go:57:18:57:29 | selection of Body | test.go:211:3:211:6 | Zlib | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
 | test.go:217:3:217:8 | Snappy | test.go:57:18:57:29 | selection of Body | test.go:217:3:217:8 | Snappy | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
 | test.go:218:3:218:8 | Snappy | test.go:57:18:57:29 | selection of Body | test.go:218:3:218:8 | Snappy | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:228:3:228:10 | s2Reader | test.go:57:18:57:29 | selection of Body | test.go:228:3:228:10 | s2Reader | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:230:3:230:10 | s2Reader | test.go:57:18:57:29 | selection of Body | test.go:230:3:230:10 | s2Reader | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:231:3:231:10 | s2Reader | test.go:57:18:57:29 | selection of Body | test.go:231:3:231:10 | s2Reader | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:237:3:237:4 | S2 | test.go:57:18:57:29 | selection of Body | test.go:237:3:237:4 | S2 | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:239:3:239:4 | S2 | test.go:57:18:57:29 | selection of Body | test.go:239:3:239:4 | S2 | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:247:3:247:10 | gzipRead | test.go:57:18:57:29 | selection of Body | test.go:247:3:247:10 | gzipRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:253:3:253:15 | gzipklauspost | test.go:57:18:57:29 | selection of Body | test.go:253:3:253:15 | gzipklauspost | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:255:3:255:15 | gzipklauspost | test.go:57:18:57:29 | selection of Body | test.go:255:3:255:15 | gzipklauspost | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:264:3:264:11 | gzippgzip | test.go:57:18:57:29 | selection of Body | test.go:264:3:264:11 | gzippgzip | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:233:3:233:4 | S2 | test.go:57:18:57:29 | selection of Body | test.go:233:3:233:4 | S2 | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:235:3:235:4 | S2 | test.go:57:18:57:29 | selection of Body | test.go:235:3:235:4 | S2 | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:243:3:243:10 | gzipRead | test.go:57:18:57:29 | selection of Body | test.go:243:3:243:10 | gzipRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:249:3:249:15 | gzipklauspost | test.go:57:18:57:29 | selection of Body | test.go:249:3:249:15 | gzipklauspost | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:251:3:251:15 | gzipklauspost | test.go:57:18:57:29 | selection of Body | test.go:251:3:251:15 | gzipklauspost | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:260:3:260:11 | gzippgzip | test.go:57:18:57:29 | selection of Body | test.go:260:3:260:11 | gzippgzip | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:266:3:266:6 | zstd | test.go:57:18:57:29 | selection of Body | test.go:266:3:266:6 | zstd | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:268:3:268:6 | zstd | test.go:57:18:57:29 | selection of Body | test.go:268:3:268:6 | zstd | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
 | test.go:270:3:270:6 | zstd | test.go:57:18:57:29 | selection of Body | test.go:270:3:270:6 | zstd | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:272:3:272:6 | zstd | test.go:57:18:57:29 | selection of Body | test.go:272:3:272:6 | zstd | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:274:3:274:6 | zstd | test.go:57:18:57:29 | selection of Body | test.go:274:3:274:6 | zstd | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:281:3:281:6 | zstd | test.go:57:18:57:29 | selection of Body | test.go:281:3:281:6 | zstd | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:287:3:287:8 | xzRead | test.go:57:18:57:29 | selection of Body | test.go:287:3:287:8 | xzRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:291:2:291:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:291:2:291:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:291:2:291:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:291:2:291:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:291:2:291:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:291:2:291:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:291:2:291:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:291:2:291:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:291:2:291:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:291:2:291:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:291:2:291:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:291:2:291:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:291:2:291:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:291:2:291:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:291:2:291:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:291:2:291:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:301:25:301:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:301:25:301:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:301:25:301:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:301:25:301:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:301:25:301:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:301:25:301:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:301:25:301:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:301:25:301:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:301:25:301:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:301:25:301:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:301:25:301:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:301:25:301:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:301:25:301:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:301:25:301:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
-| test.go:301:25:301:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:301:25:301:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:277:3:277:6 | zstd | test.go:57:18:57:29 | selection of Body | test.go:277:3:277:6 | zstd | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:283:3:283:8 | xzRead | test.go:57:18:57:29 | selection of Body | test.go:283:3:283:8 | xzRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:287:2:287:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:287:2:287:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:287:2:287:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:287:2:287:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:287:2:287:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:287:2:287:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:287:2:287:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:287:2:287:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:287:2:287:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:287:2:287:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:287:2:287:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:287:2:287:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:287:2:287:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:287:2:287:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:287:2:287:8 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:287:2:287:8 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:297:25:297:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:297:25:297:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:297:25:297:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:297:25:297:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:297:25:297:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:297:25:297:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:297:25:297:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:297:25:297:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:297:25:297:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:297:25:297:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:297:25:297:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:297:25:297:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:297:25:297:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:297:25:297:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:297:25:297:31 | tarRead | test.go:57:18:57:29 | selection of Body | test.go:297:25:297:31 | tarRead | This decompression is $@. | test.go:57:18:57:29 | selection of Body | decompressing compressed data without managing output size |

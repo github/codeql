@@ -11,13 +11,19 @@ import (
 	io "io"
 	fs "io/fs"
 	time "time"
+	"os"
 )
 
 type Decompressor func(io.Reader) io.ReadCloser
 
 type File struct {
-	FileHeader FileHeader
+	FileHeader
+	zip          *Reader
+	zipr         io.ReaderAt
+	headerOffset int64 // includes overall ZIP archive baseOffset
+	zip64        bool  // zip64 extended information extra field presence
 }
+
 
 func (_ *File) DataOffset() (int64, error) {
 	return 0, nil
@@ -92,7 +98,8 @@ func OpenReader(_ string) (*ReadCloser, error) {
 }
 
 type ReadCloser struct {
-	Reader Reader
+	f *os.File
+	Reader
 }
 
 func (_ *ReadCloser) Close() error {
