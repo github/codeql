@@ -133,7 +133,12 @@ module Execa {
     }
 
     override DataFlow::Node getArgumentList() {
+      result = this.getParameter(any(int i | i > 2)).asSink() and
+      // here I should check if the first parameter of Template literal is the rightmost string of this Template literal then the arguments of this command execution will be the second and third and .. parameters
+      not exists(string s | this.getACall().getArgument(0).mayHaveStringValue(s) | s.matches(""))
+      or
       result = this.getParameter(any(int i | i > 1)).asSink() and
+      // here I should check if the first parameter of Template literal is a constant which is the command, then the arguments of this command execution will be the first, second and third and .. parameters
       not exists(string s | this.getACall().getArgument(0).mayHaveStringValue(s) | s.matches(""))
     }
 
