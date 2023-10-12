@@ -160,8 +160,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                  *  loading the same assembly from different locations.
                  */
                 using var pereader = new System.Reflection.PortableExecutable.PEReader(new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read));
+                if (!pereader.HasMetadata)
+                {
+                    throw new AssemblyLoadException();
+                }
+
                 using var sha1 = SHA1.Create();
                 var metadata = pereader.GetMetadata();
+
                 unsafe
                 {
                     var reader = new MetadataReader(metadata.Pointer, metadata.Length);
