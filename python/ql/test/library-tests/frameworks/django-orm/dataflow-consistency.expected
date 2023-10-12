@@ -106,23 +106,5 @@ uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
 uniqueContentApprox
 identityLocalStep
-| testapp/orm_tests.py:217:24:217:29 | ControlFlowNode for SOURCE | Node steps to itself |
-| testapp/orm_tests.py:244:24:244:29 | ControlFlowNode for SOURCE | Node steps to itself |
-| testapp/orm_tests.py:283:20:283:25 | ControlFlowNode for SOURCE | Node steps to itself |
-| testapp/orm_tests.py:299:15:299:22 | ControlFlowNode for TestLoad | Node steps to itself |
-| testapp/orm_tests.py:300:20:300:25 | ControlFlowNode for SOURCE | Node steps to itself |
-| testapp/orm_tests.py:310:9:310:12 | ControlFlowNode for SINK | Node steps to itself |
-| testapp/orm_tests.py:316:9:316:12 | ControlFlowNode for SINK | Node steps to itself |
-| testapp/orm_tests.py:326:9:326:12 | ControlFlowNode for SINK | Node steps to itself |
-| testapp/orm_tests.py:333:9:333:12 | ControlFlowNode for SINK | Node steps to itself |
-| testapp/orm_tests.py:339:9:339:12 | ControlFlowNode for SINK | Node steps to itself |
-| testapp/orm_tests.py:346:9:346:12 | ControlFlowNode for SINK | Node steps to itself |
-| testapp/orm_tests.py:352:9:352:12 | ControlFlowNode for SINK | Node steps to itself |
-| testapp/orm_tests.py:358:9:358:12 | ControlFlowNode for SINK | Node steps to itself |
-| testapp/orm_tests.py:365:9:365:12 | ControlFlowNode for SINK | Node steps to itself |
-| testapp/tests.py:12:13:12:14 | ControlFlowNode for re | Node steps to itself |
-| testapp/tests.py:16:9:16:18 | ControlFlowNode for test_names | Node steps to itself |
-| testapp/tests.py:25:13:25:14 | ControlFlowNode for re | Node steps to itself |
-| testapp/tests.py:31:9:31:18 | ControlFlowNode for test_names | Node steps to itself |
 missingArgumentCall
 multipleArgumentCall

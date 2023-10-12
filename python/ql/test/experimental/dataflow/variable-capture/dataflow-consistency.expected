@@ -29,8 +29,5 @@ uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
 uniqueContentApprox
 identityLocalStep
-| test_collections.py:36:10:36:15 | ControlFlowNode for SOURCE | Node steps to itself |
-| test_collections.py:45:19:45:21 | ControlFlowNode for mod | Node steps to itself |
-| test_collections.py:52:13:52:21 | ControlFlowNode for mod_local | Node steps to itself |
 missingArgumentCall
 multipleArgumentCall
