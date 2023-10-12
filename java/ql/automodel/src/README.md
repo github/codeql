@@ -43,11 +43,17 @@ For example, a query suite selecting all example extraction queries (positive an
 
 Endpoints are source code locations of interest. All +/- examples and all candidates are endpoints, but not all endpoints are examples or candidates. Each mode decides what endpoints are relevant. For instance, if the Java application mode wants to support candidates for sinks that are arguments passed to unknown method calls, then the Java application mode implementation needs to make sure that method arguments are endpoints. If you look at the `TApplicationModeEndpoint` implementation in [AutomodelApplicationModeCharacteristics.qll](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeCharacteristics.qll), you can see that this is the case: the `TExplicitArgument` implements this behavior.
 
+Whether or not an endpoint is a +/- example, or a candidate depends on the individual extraction queries.
+
 ### Concept: `EndpointCharacteristics`
 
 In the file [AutomodelSharedCharacteristics.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelSharedCharacteristics.ql), you will find the definition of the QL class `EndpointCharacteristic`.
 
 An endpoint characteristic is a QL class that "tags" all endpoints for which the characteristic's `appliesToEndpoint` predicate holds. The characteristic defines a `hasImplications` predicate that declares whether all the endpoints should be considered as sinks/sources/negatives, and with which confidence.
+
+The +/- and candidate extraction queries largely<sup>[1](#largely-use-characteristics)</sup> use characteristics to decide which endpoint to select. For instance, if a characteristic exists that applies to an endpoint, and the characteristic implies (cf. `hasImplications`) that the endpoint is a sink with a high confidence &ndash; then that endpoint will be selected as a positive example. See the use of `isKnownAs` in [AutomodelFrameworkModeExtractPositiveExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractPositiveExamples.ql).
+
+<a name="largely-use-characteristics">1</a>: Candidate extraction queries are an exception, they treat `UninterestingToModelCharacteristic` differently.
 
 #### :warning: Warning
 
