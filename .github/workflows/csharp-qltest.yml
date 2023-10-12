@@ -91,7 +91,7 @@ jobs:
         run: |
           # Generate (Asp)NetCore stubs
           STUBS_PATH=stubs_output
-          python3 ql/src/Stubs/make_stubs_nuget.py webapp Swashbuckle.AspNetCore.Swagger latest "$STUBS_PATH"
+          python3 ql/src/Stubs/make_stubs_nuget.py webapp Swashbuckle.AspNetCore.Swagger 6.5.0 "$STUBS_PATH"
           rm -rf ql/test/resources/stubs/_frameworks
           # Update existing stubs in the repo with the freshly generated ones
           mv "$STUBS_PATH/output/stubs/_frameworks" ql/test/resources/stubs/
