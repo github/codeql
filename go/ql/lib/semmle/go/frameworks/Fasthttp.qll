@@ -220,7 +220,7 @@ module Fasthttp {
       RequestForgerySink() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Client", ["Get", "GetDeadline", "GetTimeout", "Post"]) and
-          this = m.getACall().getArgument(0)
+          this = m.getACall().getArgument(1)
         )
       }
 
