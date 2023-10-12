@@ -1,11 +1,2 @@
-| fasthttp.go:194:34:194:58 | type conversion |
-| fasthttp.go:195:40:195:56 | "user Controlled" |
-| fasthttp.go:198:31:198:55 | type conversion |
-| fasthttp.go:199:37:199:53 | "user Controlled" |
-| fasthttp.go:200:34:200:58 | type conversion |
-| fasthttp.go:201:37:201:45 | dstReader |
-| fasthttp.go:207:26:207:39 | type conversion |
-| fasthttp.go:208:32:208:37 | "body" |
-| fasthttp.go:213:34:213:90 | call to AppendQuotedArg |
-| fasthttp.go:214:34:214:83 | call to AppendHTMLEscape |
-| fasthttp.go:215:34:215:96 | call to AppendHTMLEscapeBytes |
+testFailures
+failures

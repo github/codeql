@@ -344,6 +344,42 @@ module Fasthttp {
   }
 
   /**
+   * Provide modeling for fasthttp.Response Type
+   */
+  module Response {
+    /**
+     * A Method That send files from its input and it does not check input path against path traversal attacks, so it is a dangerous method
+     */
+    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+      FileSystemAccess() {
+        exists(Method mcn |
+          mcn.hasQualifiedName(packagePath(), "Response", "SendFile") and
+          this = mcn.getACall()
+        )
+      }
+
+      override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+    }
+
+    /**
+     * The methods that can write to HTTP Response Body.
+     * These methods can be dangerous if they are user controllable.
+     */
+    class HttpResponseBodySink extends SharedXss::Sink {
+      HttpResponseBodySink() {
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "Response",
+            [
+              "AppendBody", "AppendBodyString", "SetBody", "SetBodyString", "SetBodyRaw",
+              "SetBodyStream"
+            ]) and
+          this = m.getACall().getArgument(0)
+        )
+      }
+    }
+  }
+
+  /**
    * Provide modeling for fasthttp.Request Type
    */
   module Request {
@@ -368,42 +404,6 @@ module Fasthttp {
           frn.getARead() = m.getReceiver() and
           succ = frn.getARead()
         )
-      }
-    }
-
-    /**
-     * Provide modeling for fasthttp.Response Type
-     */
-    module Response {
-      /**
-       * A Method That send files from its input and it does not check input path against path traversal attacks, so it is a dangerous method
-       */
-      class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
-        FileSystemAccess() {
-          exists(Method mcn |
-            mcn.hasQualifiedName(packagePath(), "Response", "SendFile") and
-            this = mcn.getACall()
-          )
-        }
-
-        override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
-      }
-
-      /**
-       * The methods that can write to HTTP Response Body.
-       * These methods can be dangerous if they are user controllable.
-       */
-      class HttpResponseBodySink extends SharedXss::Sink {
-        HttpResponseBodySink() {
-          exists(Method m |
-            m.hasQualifiedName(packagePath(), "Response",
-              [
-                "AppendBody", "AppendBodyString", "SetBody", "SetBodyString", "SetBodyRaw",
-                "SetBodyStream"
-              ]) and
-            this = m.getACall().getArgument(0)
-          )
-        }
       }
     }
 

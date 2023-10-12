@@ -22,7 +22,6 @@ func fasthttpClient() {
 	res := &fasthttp.Response{}
 	req := &fasthttp.Request{}
 	uri := fasthttp.AcquireURI()
-	uri2 := fasthttp.AcquireURI()
 	fasthttp.Get(resByte, "http://127.0.0.1:8909")                      // $ SSRF="http://127.0.0.1:8909"
 	fasthttp.GetDeadline(resByte, "http://127.0.0.1:8909", time.Time{}) // $ SSRF="http://127.0.0.1:8909"
 	fasthttp.GetTimeout(resByte, "http://127.0.0.1:8909", 5)            // $ SSRF="http://127.0.0.1:8909"
@@ -174,35 +173,35 @@ func fasthttpServer() {
 
 		// Response methods
 		// Xss Sinks Related method
-		requestCtx.Response.AppendBody([]byte("user Controlled")) // $ XSS=[]byte("user Controlled")
-		requestCtx.Response.AppendBodyString("user Controlled")   // $ XSS="user Controlled"
-		rspWriter := requestCtx.Response.BodyWriter()
-		rspWriter.Write([]byte("XSS"))                            // $ XSS=[]byte("XSS")
-		requestCtx.Response.SetBody([]byte("user Controlled"))    // $ XSS=[]byte("XSS")
-		requestCtx.Response.SetBodyString("user Controlled")      // $ XSS=[]byte("XSS")
-		requestCtx.Response.SetBodyRaw([]byte("user Controlled")) // $ XSS=[]byte("XSS")
-		requestCtx.Response.SetBodyStream(dstReader, 100)         // $ XSS=[]byte("XSS")
+		userInput := "user Controlled input"
+		userInputByte := []byte("user Controlled input")
+		requestCtx.Response.AppendBody(userInputByte)   // $ XssSink=userInputByte
+		requestCtx.Response.AppendBodyString(userInput) // $ XssSink=userInput
+		rspWriter := requestCtx.Response.BodyWriter()   // IDK how to handle this that returns a `io.Writer`
+		rspWriter.Write(userInputByte)
+		requestCtx.Response.SetBody(userInputByte)        // $ XssSink=userInputByte
+		requestCtx.Response.SetBodyString(userInput)      // $ XssSink=userInput
+		requestCtx.Response.SetBodyRaw(userInputByte)     // $ XssSink=userInputByte
+		requestCtx.Response.SetBodyStream(dstReader, 100) // $ XssSink=dstReader
 		// mostly related to header writers
-		requestCtx.Response.Header.Set("Content-Type", "")
-		requestCtx.Response.Header.Add("Content-Type", "")
-		requestCtx.Response.Header.SetContentTypeBytes([]byte(""))
-		requestCtx.Response.Header.SetContentType("")
-		requestCtx.Success("", []byte("body")) // $ XSS=[]byte("body")
-		requestCtx.SuccessString("", "body")   // $ XSS="body"
-		requestCtx.SetContentType("")
-		requestCtx.SetContentTypeBytes([]byte(""))
+		requestCtx.Success("", userInputByte)   // $ XssSink=userInputByte
+		requestCtx.SuccessString("", userInput) // $ XssSink=userInput
 
 		// sanitizers
-		requestCtx.Response.AppendBody(fasthttp.AppendQuotedArg([]byte(""), []byte("<>\"':()&"))) // $ Sanitizer=AppendBody
+		userInputByte = []byte("<>\"':()&")
+		userInput = "<>\"':()&"
+		fasthttp.AppendQuotedArg([]byte(""), userInputByte) // $ Sanitizer=userInputByte
 		// %3C%3E%22%27%3A%28%29%26
-		requestCtx.Response.AppendBody(fasthttp.AppendHTMLEscape([]byte(""), "<>\"':()&")) // $ Sanitizer=AppendBody
+		fasthttp.AppendHTMLEscape([]byte(""), userInput) // $ Sanitizer=userInput
 		// &lt;&gt;&#34;&#39;:()&amp;
-		requestCtx.Response.AppendBody(fasthttp.AppendHTMLEscapeBytes([]byte(""), []byte("<>\"':()&"))) // $ Sanitizer=AppendBody
+		fasthttp.AppendHTMLEscapeBytes([]byte(""), userInputByte) // $ Sanitizer=userInputByte
 		// &lt;&gt;&#34;&#39;:()&amp;
 
 		// open redirect Sinks
-		requestCtx.Redirect("https://userControlled.com", 301)              // $ OpenRedirect="https://userControlled.com"
-		requestCtx.RedirectBytes([]byte("https://userControlled.com"), 301) // $ OpenRedirect=[]byte("https://userControlled.com")
+		userInput = "https://userControlled.com"
+		requestCtx.Redirect(userInput, 301) // $ OpenRedirect=userInput
+		userInputByte = []byte("https://userControlled.com")
+		requestCtx.RedirectBytes(userInputByte, 301) // $ OpenRedirect=userInputByte
 	}
 	fasthttp.Serve(ln, requestHandler)
 }

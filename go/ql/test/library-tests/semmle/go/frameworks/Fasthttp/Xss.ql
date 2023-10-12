@@ -1,3 +1,19 @@
 import go
+import TestUtilities.InlineExpectationsTest
 
-select any(SharedXss::Sink s)
+module FasthttpTest implements TestSig {
+  string getARelevantTag() { result = "XssSink" }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(SharedXss::Sink xssSink |
+      xssSink
+          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      element = xssSink.toString() and
+      value = xssSink.toString() and
+      tag = "XssSink"
+    )
+  }
+}
+
+import MakeTest<FasthttpTest>
