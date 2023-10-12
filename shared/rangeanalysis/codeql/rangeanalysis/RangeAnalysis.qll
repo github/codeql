@@ -649,15 +649,25 @@ module RangeStage<
     or
     // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
     // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
-    exists(
-      Sem::SsaVariable v2, Sem::Guard guardEq, boolean eqIsTrue, D::Delta d1, D::Delta d2,
-      D::Delta oldDelta
-    |
-      guardEq = semEqFlowCond(v, semSsaRead(pragma[only_bind_into](v2), d1), d2, true, eqIsTrue) and
+    exists(Sem::SsaVariable v2, D::Delta oldDelta, float d |
+      // equality needs to control guard
+      result.getBasicBlock() = eqSsaCondDirectlyControls(v, v2, d) and
       result = boundFlowCond(v2, e, oldDelta, upper, testIsTrue) and
-      // guardEq needs to control guard
-      guardEq.directlyControls(result.getBasicBlock(), eqIsTrue) and
-      delta = D::fromFloat(D::toFloat(oldDelta) - D::toFloat(d1) + D::toFloat(d2))
+      delta = D::fromFloat(D::toFloat(oldDelta) + d)
+    )
+  }
+
+  /**
+   * Gets a basic block in which `v1` equals `v2 + delta`.
+   */
+  pragma[nomagic]
+  private Sem::BasicBlock eqSsaCondDirectlyControls(
+    Sem::SsaVariable v1, Sem::SsaVariable v2, float delta
+  ) {
+    exists(Sem::Guard guardEq, D::Delta d1, D::Delta d2, boolean eqIsTrue |
+      guardEq = semEqFlowCond(v1, semSsaRead(v2, d1), d2, true, eqIsTrue) and
+      delta = D::toFloat(d2) - D::toFloat(d1) and
+      guardEq.directlyControls(result, eqIsTrue)
     )
   }
 
