@@ -125,7 +125,10 @@ module Execa {
   class ExecaScript extends SystemCommandExecution, ExecaScriptCall {
     ExecaScript() { isSync = [false, true] }
 
-    override DataFlow::Node getACommandArgument() { result = this.getParameter(1).asSink() }
+    override DataFlow::Node getACommandArgument() {
+      result = this.getParameter(1).asSink() and
+      not isTaggedTemplateFirstChildAnElement(this.getParameter(1).asSink().asExpr().getParent())
+    }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       isExecaShellEnable(this.getParameter(0)) and
@@ -133,13 +136,11 @@ module Execa {
     }
 
     override DataFlow::Node getArgumentList() {
-      result = this.getParameter(any(int i | i > 2)).asSink() and
-      // here I should check if the first parameter of Template literal is the rightmost string of this Template literal then the arguments of this command execution will be the second and third and .. parameters
-      not exists(string s | this.getACall().getArgument(0).mayHaveStringValue(s) | s.matches(""))
+      result = this.getParameter(any(int i | i >= 1)).asSink() and
+      isTaggedTemplateFirstChildAnElement(this.getParameter(1).asSink().asExpr().getParent())
       or
-      result = this.getParameter(any(int i | i > 1)).asSink() and
-      // here I should check if the first parameter of Template literal is a constant which is the command, then the arguments of this command execution will be the first, second and third and .. parameters
-      not exists(string s | this.getACall().getArgument(0).mayHaveStringValue(s) | s.matches(""))
+      result = this.getParameter(any(int i | i >= 2)).asSink() and
+      not isTaggedTemplateFirstChildAnElement(this.getParameter(1).asSink().asExpr().getParent())
     }
 
     override DataFlow::Node getOptionsArg() { result = this.getParameter(0).asSink() }
@@ -194,6 +195,11 @@ module Execa {
     override DataFlow::Node getOptionsArg() {
       result = this.getLastArgument() and result.asExpr() instanceof ObjectExpr
     }
+  }
+
+  /** Gets a TemplateLiteral and check if first child is a template element */
+  private predicate isTaggedTemplateFirstChildAnElement(TemplateLiteral templateLit) {
+    exists(templateLit.getChildExpr(0).(TemplateElement))
   }
 
   /**
