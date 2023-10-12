@@ -10,15 +10,12 @@ import (
 )
 
 func fasthttpClient() {
-	userInput := "user Controlled input"
+	userInput := "127.0.0.1:8909"
 	userInputByte := []byte("user Controlled input")
-	// #SSRF
-	response, _ := fasthttp.DialDualStack("127.0.0.1:8909")
-	response, _ = fasthttp.Dial("google.com:80")
-	response, _ = fasthttp.DialTimeout("google.com:80", 5)
-	response, _ = fasthttp.DialDualStackTimeout("google.com:80", 5)
-	resByte := make([]byte, 1000)
-	_, _ = response.Read(resByte)
+	fasthttp.DialDualStack(userInput)           // $ SsrfSink=userInput
+	fasthttp.Dial(userInput)                    // $ SsrfSink=userInput
+	fasthttp.DialTimeout(userInput, 5)          // $ SsrfSink=userInput
+	fasthttp.DialDualStackTimeout(userInput, 5) // $ SsrfSink=userInput
 
 	res := &fasthttp.Response{}
 	req := &fasthttp.Request{}
@@ -39,53 +36,56 @@ func fasthttpClient() {
 	uri.Parse(userInputByte, userInputByte) // $ UriPred=userInputByte UriPred=userInputByte UriSucc=uri
 	req.SetURI(uri)                         // $ ReqSucc=req ReqPred=uri UriSucc=uri
 
-	fasthttp.Get(resByte, "http://127.0.0.1:8909")                      // $ SSRF="http://127.0.0.1:8909"
-	fasthttp.GetDeadline(resByte, "http://127.0.0.1:8909", time.Time{}) // $ SSRF="http://127.0.0.1:8909"
-	fasthttp.GetTimeout(resByte, "http://127.0.0.1:8909", 5)            // $ SSRF="http://127.0.0.1:8909"
-	fasthttp.Post(resByte, "http://127.0.0.1:8909", nil)                // $ SSRF="http://127.0.0.1:8909"
-	fasthttp.Do(req, res)                                               // $ ReqSucc=req
-	fasthttp.DoRedirects(req, res, 2)                                   // $ ReqSucc=req
-	fasthttp.DoDeadline(req, res, time.Time{})                          // $ ReqSucc=req
-	fasthttp.DoTimeout(req, res, 5)                                     // $ ReqSucc=req
+	resByte := make([]byte, 1000)
+	userInput = "http://127.0.0.1:8909"
+	fasthttp.Get(resByte, userInput)                      // $ SsrfSink=userInput
+	fasthttp.GetDeadline(resByte, userInput, time.Time{}) // $ SsrfSink=userInput
+	fasthttp.GetTimeout(resByte, userInput, 5)            // $ SsrfSink=userInput
+	fasthttp.Post(resByte, userInput, nil)                // $ SsrfSink=userInput
+	fasthttp.Do(req, res)                                 // $ ReqSucc=req SsrfSink=req
+	fasthttp.DoRedirects(req, res, 2)                     // $ ReqSucc=req SsrfSink=req
+	fasthttp.DoDeadline(req, res, time.Time{})            // $ ReqSucc=req SsrfSink=req
+	fasthttp.DoTimeout(req, res, 5)                       // $ ReqSucc=req SsrfSink=req
 
 	hostClient := &fasthttp.HostClient{
 		Addr: "localhost:8080",
 	}
-	hostClient.Get(resByte, "http://127.0.0.1:8909")                      // $ SSRF="http://127.0.0.1:8909"
-	hostClient.GetDeadline(resByte, "http://127.0.0.1:8909", time.Time{}) // $ SSRF="http://127.0.0.1:8909"
-	hostClient.GetTimeout(resByte, "http://127.0.0.1:8909", 5)            // $ SSRF="http://127.0.0.1:8909"
-	hostClient.Post(resByte, "http://127.0.0.1:8909", nil)                // $ SSRF="http://127.0.0.1:8909"
-	hostClient.Do(req, res)                                               // $ ReqSucc=req
-	hostClient.DoDeadline(req, res, time.Time{})                          // $ ReqSucc=req
-	hostClient.DoRedirects(req, res, 2)                                   // $ ReqSucc=req
-	hostClient.DoTimeout(req, res, 5)                                     // $ ReqSucc=req
+	hostClient.Get(resByte, userInput)                      // $ SsrfSink=userInput
+	hostClient.GetDeadline(resByte, userInput, time.Time{}) // $ SsrfSink=userInput
+	hostClient.GetTimeout(resByte, userInput, 5)            // $ SsrfSink=userInput
+	hostClient.Post(resByte, userInput, nil)                // $ SsrfSink=userInput
+	hostClient.Do(req, res)                                 // $ ReqSucc=req SsrfSink=req
+	hostClient.DoDeadline(req, res, time.Time{})            // $ ReqSucc=req SsrfSink=req
+	hostClient.DoRedirects(req, res, 2)                     // $ ReqSucc=req SsrfSink=req
+	hostClient.DoTimeout(req, res, 5)                       // $ ReqSucc=req SsrfSink=req
 
 	var lbclient fasthttp.LBClient
 	lbclient.Clients = append(lbclient.Clients, hostClient)
-	lbclient.Do(req, res)                      // $ ReqSucc=req
-	lbclient.DoDeadline(req, res, time.Time{}) // $ ReqSucc=req
-	lbclient.DoTimeout(req, res, 5)            // $ ReqSucc=req
+	lbclient.Do(req, res)                      // $ ReqSucc=req SsrfSink=req
+	lbclient.DoDeadline(req, res, time.Time{}) // $ ReqSucc=req SsrfSink=req
+	lbclient.DoTimeout(req, res, 5)            // $ ReqSucc=req SsrfSink=req
 
 	client := fasthttp.Client{}
-	client.Get(resByte, "http://127.0.0.1:8909")                      // $ SSRF="http://127.0.0.1:8909"
-	client.GetDeadline(resByte, "http://127.0.0.1:8909", time.Time{}) // $ SSRF="http://127.0.0.1:8909"
-	client.GetTimeout(resByte, "http://127.0.0.1:8909", 5)            // $ SSRF="http://127.0.0.1:8909"
-	client.Post(resByte, "http://127.0.0.1:8909", nil)                // $ SSRF="http://127.0.0.1:8909"
-	client.Do(req, res)                                               // $ ReqSucc=req SSRF=req
-	client.DoDeadline(req, res, time.Time{})                          // $ ReqSucc=req SSRF=req
-	client.DoRedirects(req, res, 2)                                   // $ ReqSucc=req SSRF=req
-	client.DoTimeout(req, res, 5)                                     // $ ReqSucc=req SSRF=req
+	client.Get(resByte, userInput)                      // $ SsrfSink=userInput
+	client.GetDeadline(resByte, userInput, time.Time{}) // $ SsrfSink=userInput
+	client.GetTimeout(resByte, userInput, 5)            // $ SsrfSink=userInput
+	client.Post(resByte, userInput, nil)                // $ SsrfSink=userInput
+	client.Do(req, res)                                 // $ ReqSucc=req SsrfSink=req SsrfSink=req
+	client.DoDeadline(req, res, time.Time{})            // $ ReqSucc=req SsrfSink=req SsrfSink=req
+	client.DoRedirects(req, res, 2)                     // $ ReqSucc=req SsrfSink=req SsrfSink=req
+	client.DoTimeout(req, res, 5)                       // $ ReqSucc=req SsrfSink=req SsrfSink=req
 
 	pipelineClient := fasthttp.PipelineClient{}
-	pipelineClient.Do(req, res)                      // $ ReqSucc=req SSRF=req
-	pipelineClient.DoDeadline(req, res, time.Time{}) // $ ReqSucc=req SSRF=req
-	pipelineClient.DoTimeout(req, res, 5)            // $ ReqSucc=req SSRF=req
+	pipelineClient.Do(req, res)                      // $ ReqSucc=req SsrfSink=req SsrfSink=req
+	pipelineClient.DoDeadline(req, res, time.Time{}) // $ ReqSucc=req SsrfSink=req SsrfSink=req
+	pipelineClient.DoTimeout(req, res, 5)            // $ ReqSucc=req SsrfSink=req SsrfSink=req
 
 	tcpDialer := fasthttp.TCPDialer{}
-	tcpDialer.Dial("127.0.0.1:8909")                    // $ SSRF="127.0.0.1:8909"
-	tcpDialer.DialTimeout("127.0.0.1:8909", 5)          // $ SSRF="127.0.0.1:8909"
-	tcpDialer.DialDualStack("127.0.0.1:8909")           // $ SSRF="127.0.0.1:8909"
-	tcpDialer.DialDualStackTimeout("127.0.0.1:8909", 5) // $ SSRF="127.0.0.1:8909"
+	userInput = "127.0.0.1:8909"
+	tcpDialer.Dial(userInput)                    // $ SsrfSink=userInput
+	tcpDialer.DialTimeout(userInput, 5)          // $ SsrfSink=userInput
+	tcpDialer.DialDualStack(userInput)           // $ SsrfSink=userInput
+	tcpDialer.DialDualStackTimeout(userInput, 5) // $ SsrfSink=userInput
 }
 
 func main() {
