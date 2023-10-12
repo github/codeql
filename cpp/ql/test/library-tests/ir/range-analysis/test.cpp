@@ -117,3 +117,16 @@ void test_sub(int x, int y, int n) {
     }
   }
 }
+
+void test_div(int x) {
+  if (3 <= x && x <= 7) {
+    range(x / 2); // $ SPURIOUS: range=>=1.5 SPURIOUS: range=<=3.5
+    range(x / 3); // $ range=>=1 SPURIOUS: range=<=2.333333
+    range(x >> 2); // $ SPURIOUS: range=>=0.75 SPURIOUS: range=<=1.75
+  }
+  if (2 <= x && x <= 8) {
+    range(x / 2); // $ range=>=1 range=<=4
+    range(x / 3); // $ SPURIOUS: range=>=0.666667 SPURIOUS: range=<=2.666667
+    range(x >> 2); // $ SPURIOUS: range=>=0.5 range=<=2
+  }
+}
