@@ -102,17 +102,17 @@ func os_log(_ message: StaticString,
 // --- tests ---
 
 func test1(password: String, passwordHash : String, passphrase: String, pass_phrase: String) {
-	print(password) // $ hasCleartextLogging=105
-	print(password, separator: "") // $ $ hasCleartextLogging=106
-	print("", separator: password) // $ hasCleartextLogging=107
-	print(password, separator: "", terminator: "") // $ hasCleartextLogging=108
-	print("", separator: password, terminator: "") // $ hasCleartextLogging=109
-	print("", separator: "", terminator: password) // $ hasCleartextLogging=110
+    print(password) // $ hasCleartextLogging=105
+    print(password, separator: "") // $ $ hasCleartextLogging=106
+    print("", separator: password) // $ hasCleartextLogging=107
+    print(password, separator: "", terminator: "") // $ hasCleartextLogging=108
+    print("", separator: password, terminator: "") // $ hasCleartextLogging=109
+    print("", separator: "", terminator: password) // $ hasCleartextLogging=110
     print(passwordHash) // safe
 
-	debugPrint(password) // $ hasCleartextLogging=113
+    debugPrint(password) // $ hasCleartextLogging=113
 
-	dump(password) // $ hasCleartextLogging=115
+    dump(password) // $ hasCleartextLogging=115
 
     NSLog(password) // $ hasCleartextLogging=117
     NSLog("%@", password) // $ hasCleartextLogging=118
@@ -258,7 +258,7 @@ func test4(harmless: String, password: String) {
 	print(myString12) // $ hasCleartextLogging=257
 
 	print(password, to: &myString13) // $ safe - only printed to another string
-    debugPrint(password, to: &myString13) // $ safe - only printed to another string
+	debugPrint(password, to: &myString13) // $ safe - only printed to another string
 	dump(password, to: &myString13) // $ safe - only printed to another string
 	myString13.write(password) // safe - only printed to another string
 	password.write(to: &myString13) // safe - only printed to another string
