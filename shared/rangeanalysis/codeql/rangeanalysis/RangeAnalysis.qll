@@ -793,6 +793,7 @@ module RangeStage<
    * therefore only valid for non-negative numbers.
    */
   private predicate boundFlowStepDiv(Sem::Expr e2, Sem::Expr e1, D::Delta factor) {
+    getTrackedType(e2) instanceof Sem::IntegerType and
     exists(Sem::ConstantIntegerExpr c, D::Delta k |
       k = D::fromInt(c.getIntValue()) and D::toFloat(k) > 0
     |
@@ -1165,6 +1166,9 @@ module RangeStage<
   bindingset[x]
   private float normalizeFloatUp(float x) { result = x + 0.0 }
 
+  bindingset[x, y]
+  private float truncatingDiv(float x, float y) { result = (x - (x % y)) / y }
+
   /**
    * Holds if `b + delta` is a valid bound for `e`.
    * - `upper = true`  : `e <= b + delta`
@@ -1223,7 +1227,7 @@ module RangeStage<
         bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
         b instanceof SemZeroBound and
         D::toFloat(d) >= 0 and
-        delta = D::fromFloat(D::toFloat(d) / D::toFloat(factor))
+        delta = D::fromFloat(truncatingDiv(D::toFloat(d), D::toFloat(factor)))
       )
       or
       exists(NarrowingCastExpr cast |
