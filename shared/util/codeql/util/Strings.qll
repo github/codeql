@@ -64,6 +64,12 @@ string getCodepointAt(string s, int i) {
 }
 
 /**
+ * Gets any unicode character that appears in `s`.
+ */
+bindingset[s]
+string getACodepoint(string s) { result = s.codePointAt(_).toUnicode() }
+
+/**
  * Gets the number of unicode codepoints in `s` not counting unpaired surrogates.
  */
 bindingset[str]
