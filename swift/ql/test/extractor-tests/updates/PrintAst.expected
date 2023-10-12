@@ -148,18 +148,18 @@ v5.8.swift:
 #-----|           getResult(0): [MemberRefExpr] .tapHandler
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
-#   29|   getMember(2): [Initializer] Button.init()
-#   29|       InterfaceType = (Button.Type) -> () -> Button
-#   29|     getSelfParam(): [ParamDecl] self
-#   29|         Type = Button
-#   29|     getBody(): [BraceStmt] { ... }
-#   29|       getElement(0): [ReturnStmt] return
-#   29|   getMember(3): [Initializer] Button.init(tapHandler:)
+#   29|   getMember(2): [Initializer] Button.init(tapHandler:)
 #   29|       InterfaceType = (Button.Type) -> ((() -> ())?) -> Button
 #   29|     getSelfParam(): [ParamDecl] self
 #   29|         Type = Button
 #   29|     getParam(0): [ParamDecl] tapHandler
 #   29|         Type = (() -> ())?
+#   29|   getMember(3): [Initializer] Button.init()
+#   29|       InterfaceType = (Button.Type) -> () -> Button
+#   29|     getSelfParam(): [ParamDecl] self
+#   29|         Type = Button
+#   29|     getBody(): [BraceStmt] { ... }
+#   29|       getElement(0): [ReturnStmt] return
 #   33| [ClassDecl] ViewController
 #   34|   getMember(0): [PatternBindingDecl] var ... = ...
 #   34|     getInit(0): [CallExpr] call to Button.init()
