@@ -135,5 +135,5 @@ There are two methods for using CodeQL model packs with code scanning:
 For more information, see the following articles on the GitHub Docs site:
 
 - Default setup of code scanning: `Extending CodeQL coverage with CodeQL model packs in default setup <https://docs.github.com/en/code-security/code-scanning/managing-your-code-scanning-configuration/editing-your-configuration-of-default-setup#extending-codeql-coverage-with-codeql-model-packs-in-default-setup>`__
-- Advanced setup of code scanning: `Extending CodeQL coverage with CodeQL model packs <https://docs.github.com//en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-codeql-model-packs>`__
+- Advanced setup of code scanning: `Extending CodeQL coverage with CodeQL model packs <https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-codeql-model-packs>`__
 - CodeQL CLI setup in external CI system: `Using model packs to analyze calls to custom dependencies <https://docs.github.com/en/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system#using-model-packs-to-analyze-calls-to-custom-dependencies>`__
