@@ -132,6 +132,50 @@ private module WithFlowState<FlowStateSig FlowState> {
 }
 
 /**
+ * Projects the dominator tree onto a tree that only considers dominance between `ConditionGuardNode`s.
+ *
+ * This exists to speeds up the dominance check for barrier guards acting on an access path, avoiding the following two
+ * bad join orders:
+ *
+ * - Enumerate all basic blocks dominated by a barrier guard, and then find uses of the access path in those blocks.
+ * - Enumerate all uses of an access path and then select those that are in a dominated block.
+ *
+ * Both joins have pathological cases in different benchmarks.
+ *
+ * We use a join order that is essentially the first one above, except we only enumerate condition guards, not all the blocks.
+ */
+cached
+private module ConditionGuardDominators {
+  /** Gets the condition guard that most-immediately dominates `bb`. */
+  private ConditionGuardNode getDominatingCondition(ReachableBasicBlock bb) {
+    result.getBasicBlock() = bb
+    or
+    not bb = any(ConditionGuardNode guard).getBasicBlock() and
+    result = getDominatingCondition(bb.getImmediateDominator())
+  }
+
+  private predicate immediateDom(ConditionGuardNode dominator, ConditionGuardNode dominated) {
+    dominator = getDominatingCondition(dominated.getBasicBlock().getImmediateDominator())
+    or
+    dominator = dominated // make the fastTC below reflexive
+  }
+
+  /** Gets a condition guard dominated by `node` */
+  cached
+  ConditionGuardNode getADominatedConditionGuard(ConditionGuardNode node) =
+    fastTC(immediateDom/2)(node, result)
+
+  /** Gets a use of `ap` and binds `guard` to its immediately-dominating condition guard (if any). */
+  cached
+  Expr getAnAccessPathUseUnderCondition(AccessPath ap, ConditionGuardNode guard) {
+    exists(ReachableBasicBlock bb |
+      result = ap.getAnInstanceIn(bb) and
+      guard = getDominatingCondition(bb)
+    )
+  }
+}
+
+/**
  * Converts a barrier guard class to a set of nodes to include in an implementation of `isBarrier(node, state)`.
  */
 module MakeStateBarrierGuard<
@@ -153,7 +197,7 @@ module MakeStateBarrierGuard<
    * Gets a node and flow state that is blocked by a barrier guard.
    */
   pragma[nomagic]
-  DataFlow::Node getABarrierNode(FlowState state) { barrierGuardBlocksNode(_, result, state) }
+  DataFlow::Node getABarrierNode(FlowState state) { barrierGuardBlocksNode(result, state) }
 
   //
   // ================================================================================================
@@ -163,6 +207,7 @@ module MakeStateBarrierGuard<
   //  - BarrierGuardNode and AdditionalBarrierGuardNode are replaced by the BarrierGuard class defined above
   //  - `barrierGuardBlocksEdge` is missing as dataflow2 does not support barrier edges
   //  - `barrierGuardIsRelevant` does not check pruning results as we can't access that from here
+  //  - `barrierGuardBlocksNode` has been rewritten to perform better without pruning.
   // ================================================================================================
   //
   /**
@@ -237,27 +282,46 @@ module MakeStateBarrierGuard<
     )
   }
 
+  /** Holds if a barrier guard blocks uses of `ap` in basic blocks dominated by `cond`. */
+  pragma[nomagic]
+  private predicate barrierGuardBlocksAccessPathIn(
+    AccessPath ap, ConditionGuardNode cond, FlowState state
+  ) {
+    exists(BarrierGuard guard, boolean outcome |
+      barrierGuardBlocksAccessPath(guard, outcome, ap, state) and
+      barrierGuardUsedInCondition(guard, cond, outcome)
+    )
+  }
+
+  /**
+   * Holds if `expr` is an access path reference that is blocked by a barrier guard.
+   */
+  pragma[noopt]
+  private predicate barrierGuardBlocksAccessPathUse(Expr use, FlowState state) {
+    exists(AccessPath p, ConditionGuardNode cond, ConditionGuardNode useDominator |
+      barrierGuardBlocksAccessPathIn(p, cond, state) and
+      useDominator = ConditionGuardDominators::getADominatedConditionGuard(cond) and
+      use = ConditionGuardDominators::getAnAccessPathUseUnderCondition(p, useDominator)
+    )
+  }
+
   /**
    * Holds if data flow node `nd` acts as a barrier for data flow, possibly due to aliasing
    * through an access path.
    *
-   * `state` is bound to the blocked state, or the empty FlowState if all labels should be blocked.
+   * `state` is bound to the blocked state.
    */
   pragma[nomagic]
-  private predicate barrierGuardBlocksNode(BarrierGuard guard, DataFlow::Node nd, FlowState state) {
-    // 1) `nd` is a use of a refinement node that blocks its input variable
-    exists(SsaRefinementNode ref, boolean outcome |
+  private predicate barrierGuardBlocksNode(DataFlow::Node nd, FlowState state) {
+    exists(BarrierGuard guard, SsaRefinementNode ref, boolean outcome |
       nd = DataFlow::ssaDefinitionNode(ref) and
       outcome = ref.getGuard().(ConditionGuardNode).getOutcome() and
       barrierGuardBlocksSsaRefinement(guard, outcome, ref, state)
     )
     or
-    // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
-    exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
-      nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
-      barrierGuardUsedInCondition(guard, cond, outcome) and
-      barrierGuardBlocksAccessPath(guard, outcome, p, state) and
-      cond.dominates(bb)
+    exists(Expr use |
+      barrierGuardBlocksAccessPathUse(use, state) and
+      nd = DataFlow::valueNode(use)
     )
   }
 
