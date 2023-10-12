@@ -267,9 +267,9 @@ func taintThroughSimpleStringOperations() {
   }))
 
   sink(arg: [clean, clean].joined())
-  sink(arg: [tainted, clean].joined()) // $ MISSING: tainted=217
-  sink(arg: [clean, tainted].joined()) // $ MISSING: tainted=217
-  sink(arg: [tainted, tainted].joined()) // $ MISSING: tainted=217
+  sink(arg: [tainted, clean].joined()) // $ tainted=217
+  sink(arg: [clean, tainted].joined()) // $ tainted=217
+  sink(arg: [tainted, tainted].joined()) // $ tainted=217
 
   sink(arg: clean.description)
   sink(arg: tainted.description) // $ tainted=217
