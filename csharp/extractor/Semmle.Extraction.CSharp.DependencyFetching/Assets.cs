@@ -159,6 +159,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return false;
             }
         }
+
+        public static IEnumerable<string> GetCompilationDependencies(ProgressMonitor progressMonitor, IEnumerable<string> assets)
+        {
+            var parser = new Assets(progressMonitor);
+            return assets.SelectMany(asset =>
+            {
+                var json = File.ReadAllText(asset);
+                return parser.TryParse(json, out var dependencies) ? dependencies : Array.Empty<string>();
+            });
+        }
     }
 
     internal static class JsonExtensions

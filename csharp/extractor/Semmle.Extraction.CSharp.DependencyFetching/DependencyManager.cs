@@ -34,6 +34,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly TemporaryDirectory tempWorkingDirectory;
         private readonly bool cleanupTempWorkingDirectory;
 
+        private readonly Lazy<Runtime> runtimeLazy;
+        private Runtime Runtime => runtimeLazy.Value;
+
         /// <summary>
         /// Performs C# dependency fetching.
         /// </summary>
@@ -53,6 +56,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             try
             {
                 this.dotnet = DotNet.Make(options, progressMonitor, tempWorkingDirectory);
+                runtimeLazy = new Lazy<Runtime>(() => new Runtime(dotnet));
             }
             catch
             {
@@ -80,7 +84,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (options.UseNuGet)
             {
-                dllDirNames.Add(packageDirectory.DirInfo.FullName);
                 try
                 {
                     var nuget = new NugetPackages(sourceDir.FullName, packageDirectory, progressMonitor);
@@ -91,37 +94,27 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     progressMonitor.MissingNuGet();
                 }
 
-                var restoredProjects = RestoreSolutions(solutions);
+                var restoredProjects = RestoreSolutions(solutions, out var assets1);
                 var projects = allProjects.Except(restoredProjects);
-                RestoreProjects(projects);
+                RestoreProjects(projects, out var assets2);
+
+                var dependencies = Assets.GetCompilationDependencies(progressMonitor, assets1.Union(assets2));
+
+                var paths = dependencies
+                    .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
+                    .ToList();
+
+                // TODO: Rename the dllDirNames var - it's not only dirs anymore.
+                dllDirNames.AddRange(paths);
                 DownloadMissingPackages(allNonBinaryFiles);
             }
-
-            var existsNetCoreRefNugetPackage = false;
-            var existsNetFrameworkRefNugetPackage = false;
-            var existsNetstandardLibRefNugetPackage = false;
-            var existsNetstandardLibNugetPackage = false;
 
             // Find DLLs in the .Net / Asp.Net Framework
             // This block needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
             if (options.ScanNetFrameworkDlls)
             {
-                existsNetCoreRefNugetPackage = IsNugetPackageAvailable("microsoft.netcore.app.ref");
-                existsNetFrameworkRefNugetPackage = IsNugetPackageAvailable("microsoft.netframework.referenceassemblies");
-                existsNetstandardLibRefNugetPackage = IsNugetPackageAvailable("netstandard.library.ref");
-                existsNetstandardLibNugetPackage = IsNugetPackageAvailable("netstandard.library");
-
-                if (existsNetCoreRefNugetPackage
-                    || existsNetFrameworkRefNugetPackage
-                    || existsNetstandardLibRefNugetPackage
-                    || existsNetstandardLibNugetPackage)
-                {
-                    progressMonitor.LogInfo("Found .NET Core/Framework DLLs in NuGet packages. Not adding installation directory.");
-                }
-                else
-                {
-                    AddNetFrameworkDlls(dllDirNames);
-                }
+                AddNetFrameworkDlls(dllDirNames);
+                AddAspNetFrameworkDlls(dllDirNames);
             }
 
             assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
@@ -132,7 +125,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseReference(filename);
             }
 
-            RemoveUnnecessaryNugetPackages(existsNetCoreRefNugetPackage, existsNetFrameworkRefNugetPackage, existsNetstandardLibRefNugetPackage, existsNetstandardLibNugetPackage);
+            RemoveUnnecessaryNugetPackages();
             ResolveConflicts();
 
             // Output the findings
@@ -167,8 +160,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 DateTime.Now - startTime);
         }
 
-        private void RemoveUnnecessaryNugetPackages(bool existsNetCoreRefNugetPackage, bool existsNetFrameworkRefNugetPackage,
-            bool existsNetstandardLibRefNugetPackage, bool existsNetstandardLibNugetPackage)
+        private void RemoveUnnecessaryNugetPackages()
         {
             RemoveNugetAnalyzerReferences();
             RemoveRuntimeNugetPackageReferences();
@@ -178,40 +170,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 // This might have been restored by the CLI even though the project isn't an asp.net core one.
                 RemoveNugetPackageReference("microsoft.aspnetcore.app.ref");
-            }
-
-            // Multiple dotnet framework packages could be present. We keep only one.
-            // The order of the packages is important, we're keeping the first one that is present in the nuget cache.
-            var packagesInPrioOrder = new (bool isPresent, string prefix)[]
-            {
-                // net7.0, ... net5.0, netcoreapp3.1, netcoreapp3.0
-                (existsNetCoreRefNugetPackage, "microsoft.netcore.app.ref"),
-                // net48, ..., net20
-                (existsNetFrameworkRefNugetPackage, "microsoft.netframework.referenceassemblies."),
-                // netstandard2.1
-                (existsNetstandardLibRefNugetPackage, "netstandard.library.ref"),
-                // netstandard2.0
-                (existsNetstandardLibNugetPackage, "netstandard.library")
-            };
-
-            for (var i = 0; i < packagesInPrioOrder.Length; i++)
-            {
-                var (isPresent, _) = packagesInPrioOrder[i];
-                if (!isPresent)
-                {
-                    continue;
-                }
-
-                // Package is present, remove all the lower priority packages:
-                for (var j = i + 1; j < packagesInPrioOrder.Length; j++)
-                {
-                    var (otherIsPresent, otherPrefix) = packagesInPrioOrder[j];
-                    if (otherIsPresent)
-                    {
-                        RemoveNugetPackageReference(otherPrefix);
-                    }
-                }
-                break;
             }
 
             // TODO: There could be multiple `microsoft.netframework.referenceassemblies` packages,
@@ -258,35 +216,68 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
         }
+
         private void AddNetFrameworkDlls(List<string> dllDirNames)
         {
-            var runtime = new Runtime(dotnet);
+            // Multiple dotnet framework packages could be present.
+            // The order of the packages is important, we're adding the first one that is present in the nuget cache.
+            var packagesInPrioOrder = new string[]
+            {
+                "microsoft.netcore.app.ref", // net7.0, ... net5.0, netcoreapp3.1, netcoreapp3.0
+                "microsoft.netframework.referenceassemblies.", // net48, ..., net20
+                "netstandard.library.ref", // netstandard2.1
+                "netstandard.library" // netstandard2.0
+            };
+
+            var frameworkPath = packagesInPrioOrder
+                    .Select(GetPackageDirectory)
+                    .FirstOrDefault(dir => dir is not null);
+
+            if (frameworkPath is not null)
+            {
+                dllDirNames.Add(frameworkPath);
+                progressMonitor.LogInfo("Found .NET Core/Framework DLLs in NuGet packages. Not adding installation directory.");
+                return;
+            }
+
             string? runtimeLocation = null;
 
             if (options.UseSelfContainedDotnet)
             {
-                runtimeLocation = runtime.ExecutingRuntime;
+                runtimeLocation = Runtime.ExecutingRuntime;
             }
             else if (fileContent.IsNewProjectStructureUsed)
             {
-                runtimeLocation = runtime.NetCoreRuntime;
+                runtimeLocation = Runtime.NetCoreRuntime;
             }
             else if (fileContent.IsLegacyProjectStructureUsed)
             {
-                runtimeLocation = runtime.DesktopRuntime;
+                runtimeLocation = Runtime.DesktopRuntime;
             }
 
-            runtimeLocation ??= runtime.ExecutingRuntime;
+            runtimeLocation ??= Runtime.ExecutingRuntime;
 
             progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
             dllDirNames.Add(runtimeLocation);
+        }
 
-            if (fileContent.IsNewProjectStructureUsed
-                && fileContent.UseAspNetCoreDlls
-                && runtime.AspNetCoreRuntime is string aspRuntime)
+        private void AddAspNetFrameworkDlls(List<string> dllDirNames)
+        {
+            if (!fileContent.IsNewProjectStructureUsed || !fileContent.UseAspNetCoreDlls)
             {
-                progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspRuntime}");
-                dllDirNames.Add(aspRuntime);
+                return;
+            }
+
+            // First try to find ASP.NET assemblies in the NuGet packages
+            if (GetPackageDirectory("microsoft.aspnetcore.app.ref") is string aspNetCorePackage)
+            {
+                progressMonitor.LogInfo($"Found ASP.NET Core in NuGet packages. Not adding installation directory.");
+                dllDirNames.Add(aspNetCorePackage);
+            }
+            else if (Runtime.AspNetCoreRuntime is string aspNetCoreRuntime)
+            {
+                progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspNetCoreRuntime}");
+                dllDirNames.Add(aspNetCoreRuntime);
             }
         }
 
@@ -336,16 +327,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private bool IsNugetPackageAvailable(string packagePrefix)
+        private string? GetPackageDirectory(string packagePrefix)
         {
             if (!options.UseNuGet)
             {
-                return false;
+                return null;
             }
 
             return new DirectoryInfo(packageDirectory.DirInfo.FullName)
                 .EnumerateDirectories(packagePrefix + "*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
-                .Any();
+                .FirstOrDefault()?
+                .FullName;
         }
 
         private void GenerateSourceFileFromImplicitUsings()
@@ -634,27 +626,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// As opposed to RestoreProjects this is not run in parallel using PLINQ
         /// as `dotnet restore` on a solution already uses multiple threads for restoring
         /// the projects (this can be disabled with the `--disable-parallel` flag).
+        /// Populates assets with the relative paths to the assets files generated by the restore.
         /// Returns a list of projects that are up to date with respect to restore.
         /// </summary>
         /// <param name="solutions">A list of paths to solution files.</param>
-        private IEnumerable<string> RestoreSolutions(IEnumerable<string> solutions) =>
-            solutions.SelectMany(solution =>
+        private IEnumerable<string> RestoreSolutions(IEnumerable<string> solutions, out IEnumerable<string> assets)
+        {
+            var assetFiles = new List<string>();
+            var projects = solutions.SelectMany(solution =>
                 {
-                    RestoreSolution(solution, out var restoredProjects, out var assets);
+                    RestoreSolution(solution, out var restoredProjects, out var a);
+                    assetFiles.AddRange(a);
                     return restoredProjects;
                 });
+            assets = assetFiles;
+            return projects;
+        }
 
         /// <summary>
         /// Executes `dotnet restore` on all projects in projects.
         /// This is done in parallel for performance reasons.
+        /// Populates assets with the relative paths to the assets files generated by the restore.
         /// </summary>
         /// <param name="projects">A list of paths to project files.</param>
-        private void RestoreProjects(IEnumerable<string> projects)
+        private void RestoreProjects(IEnumerable<string> projects, out IEnumerable<string> assets)
         {
+            var assetFiles = new List<string>();
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
-                RestoreProject(project, forceDotnetRefAssemblyFetching: true, out var assets);
+                RestoreProject(project, forceDotnetRefAssemblyFetching: true, out var a);
+                assetFiles.AddRange(a);
             });
+            assets = assetFiles;
         }
 
         private void DownloadMissingPackages(List<FileInfo> allFiles)
