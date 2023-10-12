@@ -38,7 +38,6 @@ func fasthttpClient() {
 	uri.Update("http://httpbin.org/ip")               // $ URI=uri
 	uri.UpdateBytes([]byte("http://httpbin.org/ip"))  // $ URI=uri
 	uri.Parse(nil, []byte("http://httpbin.org/ip"))   // $ URI=uri
-	uri.CopyTo(uri2)                                  // $ URI=uri
 
 	req.SetHost("UserControlled.com:80")                         // $ req=req
 	req.SetHostBytes([]byte("UserControlled.com:80"))            // $ req=req
@@ -94,7 +93,7 @@ func main() {
 func fasthttpServer() {
 	ln, _ := net.Listen("tcp4", "127.0.0.1:8080")
 	requestHandler := func(requestCtx *fasthttp.RequestCtx) {
-		filePath := requestCtx.QueryArgs().Peek("filePath") // $ UntrustedFlowSource='call to Peek'
+		filePath := requestCtx.QueryArgs().Peek("filePath") // $ UntrustedFlowSource="call to Peek"
 		// File System Access
 		_ = requestCtx.Response.SendFile(string(filePath)) // $ FileSystemAccess=string(filePath)
 		requestCtx.SendFile(string(filePath))              // $ FileSystemAccess=string(filePath)
@@ -106,80 +105,70 @@ func fasthttpServer() {
 		fasthttp.ServeFileBytes(requestCtx, filePath)                // $ FileSystemAccess=filePath
 		fasthttp.ServeFileBytesUncompressed(requestCtx, filePath)    // $ FileSystemAccess=filePath
 
-		dstWriter := &bufio.Writer{}
 		dstReader := &bufio.Reader{}
 		// user controlled methods as source
 		requestHeader := &fasthttp.RequestHeader{}
-		requestCtx.Request.Header.CopyTo(requestHeader) // $ UntrustedFlowSource=requestHeader
-		requestHeader.Write(dstWriter)                  // $ UntrustedFlowSource=dstWriter
-		requestHeader.Header()                          // $ UntrustedFlowSource=Header
-		requestHeader.TrailerHeader()                   // $ UntrustedFlowSource=TrailerHeader
-		requestHeader.String()                          // $ UntrustedFlowSource=String
-		requestHeader.RequestURI()                      // $ UntrustedFlowSource=RequestURI
-		requestHeader.Host()                            // $ UntrustedFlowSource=Host
-		requestHeader.UserAgent()                       // $ UntrustedFlowSource=UserAgent
-		requestHeader.ContentEncoding()                 // $ UntrustedFlowSource=ContentEncoding
-		requestHeader.ContentType()                     // $ UntrustedFlowSource=ContentType
-		requestHeader.Cookie("ACookie")                 // $ UntrustedFlowSource=Cookie
-		requestHeader.CookieBytes([]byte("ACookie"))    // $ UntrustedFlowSource=CookieBytes
-		requestHeader.MultipartFormBoundary()           // $ UntrustedFlowSource=MultipartFormBoundary
-		requestHeader.Peek("AHeaderName")               // $ UntrustedFlowSource=Peek
-		requestHeader.PeekAll("AHeaderName")            // $ UntrustedFlowSource=PeekAll
-		requestHeader.PeekBytes([]byte("AHeaderName"))  // $ UntrustedFlowSource=PeekBytes
-		requestHeader.PeekKeys()                        // $ UntrustedFlowSource=PeekKeys
-		requestHeader.PeekTrailerKeys()                 // $ UntrustedFlowSource=PeekTrailerKeys
-		requestHeader.Referer()                         // $ UntrustedFlowSource=Referer
-		requestHeader.RawHeaders()                      // $ UntrustedFlowSource=RawHeaders
+		requestHeader.Header()                         // $ UntrustedFlowSource="call to Header"
+		requestHeader.TrailerHeader()                  // $ UntrustedFlowSource="call to TrailerHeader"
+		requestHeader.String()                         // $ UntrustedFlowSource="call to String"
+		requestHeader.RequestURI()                     // $ UntrustedFlowSource="call to RequestURI"
+		requestHeader.Host()                           // $ UntrustedFlowSource="call to Host"
+		requestHeader.UserAgent()                      // $ UntrustedFlowSource="call to UserAgent"
+		requestHeader.ContentEncoding()                // $ UntrustedFlowSource="call to ContentEncoding"
+		requestHeader.ContentType()                    // $ UntrustedFlowSource="call to ContentType"
+		requestHeader.Cookie("ACookie")                // $ UntrustedFlowSource="call to Cookie"
+		requestHeader.CookieBytes([]byte("ACookie"))   // $ UntrustedFlowSource="call to CookieBytes"
+		requestHeader.MultipartFormBoundary()          // $ UntrustedFlowSource="call to MultipartFormBoundary"
+		requestHeader.Peek("AHeaderName")              // $ UntrustedFlowSource="call to Peek"
+		requestHeader.PeekAll("AHeaderName")           // $ UntrustedFlowSource="call to PeekAll"
+		requestHeader.PeekBytes([]byte("AHeaderName")) // $ UntrustedFlowSource="call to PeekBytes"
+		requestHeader.PeekKeys()                       // $ UntrustedFlowSource="call to PeekKeys"
+		requestHeader.PeekTrailerKeys()                // $ UntrustedFlowSource="call to PeekTrailerKeys"
+		requestHeader.Referer()                        // $ UntrustedFlowSource="call to Referer"
+		requestHeader.RawHeaders()                     // $ UntrustedFlowSource="call to RawHeaders"
 		// multipart.Form is already implemented
 		// requestCtx.MultipartForm()
-		requestCtx.URI().Path()         // $ UntrustedFlowSource=newArgs
-		requestCtx.URI().PathOriginal() // $ UntrustedFlowSource=newArgs
-		newURI := &fasthttp.URI{}
-		requestCtx.URI().CopyTo(newURI)     // $ UntrustedFlowSource=CopyTo
-		requestCtx.URI().FullURI()          // $ UntrustedFlowSource=FullURI
-		requestCtx.URI().LastPathSegment()  // $ UntrustedFlowSource=LastPathSegment
-		requestCtx.URI().QueryString()      // $ UntrustedFlowSource=QueryString
-		requestCtx.URI().String()           // $ UntrustedFlowSource=String
-		requestCtx.URI().WriteTo(dstWriter) // $ UntrustedFlowSource=WriteTo
+		requestCtx.URI().Path()            // $ UntrustedFlowSource="call to Path"
+		requestCtx.URI().PathOriginal()    // $ UntrustedFlowSource="call to PathOriginal"
+		requestCtx.URI().FullURI()         // $ UntrustedFlowSource="call to FullURI"
+		requestCtx.URI().LastPathSegment() // $ UntrustedFlowSource="call to LastPathSegment"
+		requestCtx.URI().QueryString()     // $ UntrustedFlowSource="call to QueryString"
+		requestCtx.URI().String()          // $ UntrustedFlowSource="call to String"
 
-		newArgs := &fasthttp.Args{}
 		//or requestCtx.PostArgs()
-		requestCtx.URI().QueryArgs().CopyTo(newArgs)                // $ UntrustedFlowSource=newArgs
-		requestCtx.URI().QueryArgs().Peek("arg1")                   // $ UntrustedFlowSource=Peek
-		requestCtx.URI().QueryArgs().PeekBytes([]byte("arg1"))      // $ UntrustedFlowSource=PeekBytes
-		requestCtx.URI().QueryArgs().PeekMulti("arg1")              // $ UntrustedFlowSource=PeekMulti
-		requestCtx.URI().QueryArgs().PeekMultiBytes([]byte("arg1")) // $ UntrustedFlowSource=PeekMultiBytes
-		requestCtx.URI().QueryArgs().QueryString()                  // $ UntrustedFlowSource=QueryString
-		requestCtx.URI().QueryArgs().String()                       // $ UntrustedFlowSource=String
-		requestCtx.URI().QueryArgs().WriteTo(dstWriter)             // $ UntrustedFlowSource=dstWriter
+		requestCtx.URI().QueryArgs().Peek("arg1")                   // $ UntrustedFlowSource="call to Peek"
+		requestCtx.URI().QueryArgs().PeekBytes([]byte("arg1"))      // $ UntrustedFlowSource="call to PeekBytes"
+		requestCtx.URI().QueryArgs().PeekMulti("arg1")              // $ UntrustedFlowSource="call to PeekMulti"
+		requestCtx.URI().QueryArgs().PeekMultiBytes([]byte("arg1")) // $ UntrustedFlowSource="call to PeekMultiBytes"
+		requestCtx.URI().QueryArgs().QueryString()                  // $ UntrustedFlowSource="call to QueryString"
+		requestCtx.URI().QueryArgs().String()                       // $ UntrustedFlowSource="call to String"
+		requestCtx.String()                                         // $ UntrustedFlowSource="call to String"
 		// not sure what is the best way to write query for following
 		//requestCtx.URI().QueryArgs().VisitAll(type func(,))
 
-		requestCtx.Path()
+		requestCtx.Path() // $ UntrustedFlowSource="call to Path"
 		// multipart.Form is already implemented
 		// requestCtx.FormFile("FileName")
 		// requestCtx.FormValue("ValueName")
-		requestCtx.Referer()           // $ UntrustedFlowSource=Referer
-		requestCtx.PostBody()          // $ UntrustedFlowSource=PostBody
-		requestCtx.RequestBodyStream() // $ UntrustedFlowSource=RequestBodyStream
-		requestCtx.RequestURI()        // $ UntrustedFlowSource=RequestURI
-		requestCtx.UserAgent()         // $ UntrustedFlowSource=UserAgent
-		requestCtx.Host()              // $ UntrustedFlowSource=Host
+		requestCtx.Referer()           // $ UntrustedFlowSource="call to Referer"
+		requestCtx.PostBody()          // $ UntrustedFlowSource="call to PostBody"
+		requestCtx.RequestBodyStream() // $ UntrustedFlowSource="call to RequestBodyStream"
+		requestCtx.RequestURI()        // $ UntrustedFlowSource="call to RequestURI"
+		requestCtx.UserAgent()         // $ UntrustedFlowSource="call to UserAgent"
+		requestCtx.Host()              // $ UntrustedFlowSource="call to Host"
 
-		requestCtx.Request.Host()                                       // $ UntrustedFlowSource=Host
-		requestCtx.Request.Body()                                       // $ UntrustedFlowSource=Body
-		requestCtx.Request.RequestURI()                                 // $ UntrustedFlowSource=RequestURI
-		requestCtx.Request.BodyGunzip()                                 // $ UntrustedFlowSource=BodyGunzip
-		requestCtx.Request.BodyInflate()                                // $ UntrustedFlowSource=BodyInflate
-		requestCtx.Request.BodyUnbrotli()                               // $ UntrustedFlowSource=BodyUnbrotli
-		requestCtx.Request.BodyStream()                                 // $ UntrustedFlowSource=BodyStream
-		requestCtx.Request.BodyWriteTo(dstWriter)                       // $ UntrustedFlowSource=dstWriter
-		requestCtx.Request.WriteTo(dstWriter)                           // $ UntrustedFlowSource=dstWriter
-		requestCtx.Request.BodyUncompressed()                           // $ UntrustedFlowSource=BodyUncompressed
-		requestCtx.Request.ReadBody(dstReader, 100, 1000)               // $ UntrustedFlowSource=dstReader
-		requestCtx.Request.ReadLimitBody(dstReader, 100)                // $ UntrustedFlowSource=dstReader
-		requestCtx.Request.ContinueReadBodyStream(dstReader, 100, true) // $ UntrustedFlowSource=dstReader
-		requestCtx.Request.ContinueReadBody(dstReader, 100)             // $ UntrustedFlowSource=dstReader
+		requestCtx.Request.Host()             // $ UntrustedFlowSource="call to Host"
+		requestCtx.Request.Body()             // $ UntrustedFlowSource="call to Body"
+		requestCtx.Request.RequestURI()       // $ UntrustedFlowSource="call to RequestURI"
+		requestCtx.Request.BodyGunzip()       // $ UntrustedFlowSource="call to BodyGunzip"
+		requestCtx.Request.BodyInflate()      // $ UntrustedFlowSource="call to BodyInflate"
+		requestCtx.Request.BodyUnbrotli()     // $ UntrustedFlowSource="call to BodyUnbrotli"
+		requestCtx.Request.BodyStream()       // $ UntrustedFlowSource="call to BodyStream"
+		requestCtx.Request.BodyUncompressed() // $ UntrustedFlowSource="call to BodyUncompressed"
+		requestCtx.Request.ReadBody(dstReader, 100, 1000)
+		requestCtx.Request.ReadLimitBody(dstReader, 100)
+		requestCtx.Request.ContinueReadBodyStream(dstReader, 100, true)
+		requestCtx.Request.ContinueReadBody(dstReader, 100)
 		// not sure what is the best way to write query for following
 		//requestCtx.Request.Header.VisitAllCookie()
 

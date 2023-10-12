@@ -147,13 +147,6 @@ module Fasthttp {
           frn.getARead() = m.getReceiver() and
           succ = frn.getARead()
         )
-        or
-        // CopyTo method copy receiver to first argument
-        exists(DataFlow::MethodCallNode m |
-          m.getTarget().hasQualifiedName(packagePath(), "URI", "CopyTo") and
-          pred = m.getReceiver() and
-          succ = m.getArgument(1)
-        )
       }
     }
 
@@ -166,9 +159,6 @@ module Fasthttp {
           m.hasQualifiedName(packagePath(), "URI",
             ["Path", "PathOriginal", "LastPathSegment", "FullURI", "QueryString", "String"]) and
           this = m.getACall()
-          or
-          m.hasQualifiedName(packagePath(), "URI", "WriteTo") and
-          this = m.getACall().getArgument(0)
         )
       }
     }
@@ -187,9 +177,6 @@ module Fasthttp {
           m.hasQualifiedName(packagePath(), "Args",
             ["Peek", "PeekBytes", "PeekMulti", "PeekMultiBytes", "QueryString", "String"]) and
           this = m.getACall()
-          or
-          m.hasQualifiedName(packagePath(), "Args", "WriteTo") and
-          this = m.getACall().getArgument(0)
         )
       }
     }
@@ -373,7 +360,10 @@ module Fasthttp {
         exists(DataFlow::MethodCallNode m, DataFlow::Variable frn |
           m.getTarget()
               .hasQualifiedName(packagePath(), "Request",
-                ["SetRequestURI", "SetRequestURIBytes", "SetURI", "SetHost", "SetHostBytes"]) and
+                [
+                  "SetRequestURI", "SetRequestURIBytes", "SetURI", "String", "SetHost",
+                  "SetHostBytes"
+                ]) and
           pred = m.getArgument(0) and
           frn.getARead() = m.getReceiver() and
           succ = frn.getARead()
@@ -429,13 +419,6 @@ module Fasthttp {
               "BodyStream", "BodyUncompressed"
             ]) and
           this = m.getACall()
-          or
-          m.hasQualifiedName(packagePath(), "Request",
-            [
-              "BodyWriteTo", "WriteTo", "ReadBody", "ReadLimitBody", "ContinueReadBodyStream",
-              "ContinueReadBody"
-            ]) and
-          this = m.getACall().getArgument(0)
         )
       }
     }
@@ -485,7 +468,10 @@ module Fasthttp {
       UntrustedFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestCtx",
-            ["Path", "Referer", "PostBody", "RequestBodyStream", "RequestURI", "UserAgent", "Host"]) and
+            [
+              "Path", "Referer", "PostBody", "RequestBodyStream", "RequestURI", "UserAgent", "Host",
+              "String"
+            ]) and
           this = m.getACall()
         )
       }
@@ -519,12 +505,9 @@ module Fasthttp {
             [
               "Header", "TrailerHeader", "RequestURI", "Host", "UserAgent", "ContentEncoding",
               "ContentType", "Cookie", "CookieBytes", "MultipartFormBoundary", "Peek", "PeekAll",
-              "PeekBytes", "PeekKeys", "PeekTrailerKeys", "Referer", "RawHeaders"
+              "PeekBytes", "PeekKeys", "PeekTrailerKeys", "Referer", "RawHeaders", "String"
             ]) and
           this = m.getACall()
-          or
-          m.hasQualifiedName(packagePath(), "RequestHeader", "Write") and
-          this = m.getACall().getArgument(0)
         )
       }
     }

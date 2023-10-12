@@ -9,7 +9,7 @@ module FasthttpTest implements TestSig {
       q.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = q.toString() and
-      value = q.toString() and
+      value = "\"" + q.toString() + "\"" and
       tag = "UntrustedFlowSource"
     )
   }
