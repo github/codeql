@@ -25,5 +25,9 @@ updates:
     allow:
       - dependency-name: "golang.org/x/mod"
       - dependency-name: "golang.org/x/tools"
+    group:
+      extractor-dependencies:
+        patterns:
+          - "golang.org/x/*"
     reviewers:
       - "github/codeql-go"
