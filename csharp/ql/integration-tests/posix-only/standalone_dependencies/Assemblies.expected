@@ -8,15 +8,6 @@
 | /microsoft.netcore.app.ref/6.0.13/ref/net6.0/System.Data.dll |
 | /microsoft.netcore.app.ref/6.0.13/ref/net6.0/System.Xml.dll |
 | /microsoft.netcore.app.ref/6.0.13/ref/net6.0/System.dll |
-| /microsoft.netcore.app.ref/7.0.2/analyzers/dotnet/cs/Microsoft.Interop.JavaScript.JSImportGenerator.dll |
-| /microsoft.netcore.app.ref/7.0.2/analyzers/dotnet/cs/Microsoft.Interop.LibraryImportGenerator.dll |
-| /microsoft.netcore.app.ref/7.0.2/analyzers/dotnet/cs/Microsoft.Interop.SourceGeneration.dll |
-| /microsoft.netcore.app.ref/7.0.2/analyzers/dotnet/cs/System.Text.Json.SourceGeneration.dll |
-| /microsoft.netcore.app.ref/7.0.2/analyzers/dotnet/cs/System.Text.RegularExpressions.Generator.dll |
-| /microsoft.netcore.app.ref/7.0.2/analyzers/dotnet/cs/zh-Hant/Microsoft.Interop.LibraryImportGenerator.resources.dll |
-| /microsoft.netcore.app.ref/7.0.2/analyzers/dotnet/cs/zh-Hant/Microsoft.Interop.SourceGeneration.resources.dll |
-| /microsoft.netcore.app.ref/7.0.2/analyzers/dotnet/cs/zh-Hant/System.Text.Json.SourceGeneration.resources.dll |
-| /microsoft.netcore.app.ref/7.0.2/analyzers/dotnet/cs/zh-Hant/System.Text.RegularExpressions.Generator.resources.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/Microsoft.CSharp.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/Microsoft.VisualBasic.Core.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/Microsoft.VisualBasic.dll |

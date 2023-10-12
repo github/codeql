@@ -161,6 +161,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void RemoveUnnecessaryNugetPackages(bool existsNetCoreRefNugetPackage, bool existsNetFrameworkRefNugetPackage)
         {
+            RemoveNugetAnalyzerReferences();
             RemoveRuntimeNugetPackageReferences();
 
             if (fileContent.IsNewProjectStructureUsed
@@ -181,6 +182,45 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // (if the file names match)
         }
 
+        private void RemoveNugetAnalyzerReferences()
+        {
+            if (!options.UseNuGet)
+            {
+                return;
+            }
+
+            var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
+            if (packageFolder == null)
+            {
+                return;
+            }
+
+            foreach (var filename in usedReferences.Keys)
+            {
+                var lowerFilename = filename.ToLowerInvariant();
+
+                if (lowerFilename.StartsWith(packageFolder))
+                {
+                    var firstDirectorySeparatorCharIndex = lowerFilename.IndexOf(Path.DirectorySeparatorChar, packageFolder.Length + 1);
+                    if (firstDirectorySeparatorCharIndex == -1)
+                    {
+                        continue;
+                    }
+                    var secondDirectorySeparatorCharIndex = lowerFilename.IndexOf(Path.DirectorySeparatorChar, firstDirectorySeparatorCharIndex + 1);
+                    if (secondDirectorySeparatorCharIndex == -1)
+                    {
+                        continue;
+                    }
+                    var subFolderIndex = secondDirectorySeparatorCharIndex + 1;
+                    var isInAnalyzersFolder = lowerFilename.IndexOf("analyzers", subFolderIndex) == subFolderIndex;
+                    if (isInAnalyzersFolder)
+                    {
+                        usedReferences.Remove(filename);
+                        progressMonitor.RemovedReference(filename);
+                    }
+                }
+            }
+        }
         private void AddNetFrameworkDlls(List<string> dllDirNames)
         {
             var runtime = new Runtime(dotnet);
@@ -240,6 +280,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
+            if (packageFolder == null)
+            {
+                return;
+            }
+
             var packagePathPrefixes = packagePrefixes.Select(p => Path.Combine(packageFolder, p.ToLowerInvariant()));
 
             foreach (var filename in usedReferences.Keys)
