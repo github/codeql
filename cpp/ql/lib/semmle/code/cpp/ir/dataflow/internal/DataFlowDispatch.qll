@@ -27,6 +27,9 @@ DataFlowCallable viableCallable(DataFlowCall call) {
   or
   // Virtual dispatch
   result = call.(VirtualDispatch::DataSensitiveCall).resolve()
+  or
+  // Additional call targets
+  result = any(AdditionalCallTarget additional).viableTarget(call.getUnconvertedResultExpression())
 }
 
 /**

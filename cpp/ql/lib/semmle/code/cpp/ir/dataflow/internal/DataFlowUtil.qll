@@ -14,6 +14,7 @@ private import DataFlowPrivate
 private import ModelUtil
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
+private import codeql.util.Unit
 
 /**
  * The IR dataflow graph consists of the following nodes:
@@ -2236,4 +2237,16 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
       g.controls(use.getDef().getBlock(), edge)
     )
   }
+}
+
+/**
+ * A unit class for adding additional call steps.
+ *
+ * Extend this class to add additional call steps to the data flow graph.
+ */
+class AdditionalCallTarget extends Unit {
+  /**
+   * Gets a viable target for `call`.
+   */
+  abstract DataFlowCallable viableTarget(Call call);
 }
