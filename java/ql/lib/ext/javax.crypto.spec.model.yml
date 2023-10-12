@@ -23,5 +23,3 @@ extensions:
       - ["javax.crypto.spec", "DESedeKeySpec", False, "isParityAdjusted", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]
       - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[],String)", "", "Argument[0]", "credentials-key", "hq-generated"]
       - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[],int,int,String)", "", "Argument[0]", "credentials-key", "hq-generated"]
-      - ["javax.crypto.spec", "IvParameterSpec", False, "IvParameterSpec", "(byte[])", "", "Argument[0]", "encryption-iv", "hq-generated"]
-      - ["javax.crypto.spec", "IvParameterSpec", False, "IvParameterSpec", "(byte[],int,int)", "", "Argument[0]", "encryption-iv", "hq-generated"]
