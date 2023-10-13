@@ -8,18 +8,22 @@ import ruby
 import codeql.ruby.StringOps
 import codeql.ruby.StringConcatenation
 
+private StringConcatenation::Operand getAnOperandPredecessor(StringConcatenation::Operand op) {
+  result.asDataFlowNode() = op.asDataFlowNode().getAPredecessor()
+}
+
 /**
- * Holds if the string value of `nd` prevents anything appended after it
+ * Holds if the string value of `op` prevents anything appended after it
  * from affecting the hostname or path of a URL.
  *
  * Specifically, this holds if the string contains `?` or `#`.
  */
-private predicate hasSanitizingSubstring(DataFlow::Node nd) {
-  nd.getConstantValue().getStringlikeValue().regexpMatch(".*[?#].*")
+private predicate hasSanitizingSubstring(StringConcatenation::Operand op) {
+  op.getConstantValue().getStringlikeValue().regexpMatch(".*[?#].*")
   or
-  hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
+  hasSanitizingSubstring(StringConcatenation::getAnOperand(op.asDataFlowNode()))
   or
-  hasSanitizingSubstring(nd.getAPredecessor())
+  hasSanitizingSubstring(getAnOperandPredecessor(op))
 }
 
 /**
@@ -36,7 +40,7 @@ predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
 }
 
 /**
- * Holds if the string value of `nd` prevents anything appended after it
+ * Holds if the string value of `op` prevents anything appended after it
  * from affecting the hostname of a URL.
  *
  * Specifically, this holds if the string contains any of the following:
@@ -48,14 +52,14 @@ predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
  * In the latter two cases, the additional check is necessary to avoid a `/` that could be interpreted as
  * the `//` separating the (optional) scheme from the hostname.
  */
-private predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
-  nd.getConstantValue()
+private predicate hasHostnameSanitizingSubstring(StringConcatenation::Operand op) {
+  op.getConstantValue()
       .getStringlikeValue()
       .regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*")
   or
-  hasHostnameSanitizingSubstring(StringConcatenation::getAnOperand(nd))
+  hasHostnameSanitizingSubstring(StringConcatenation::getAnOperand(op.asDataFlowNode()))
   or
-  hasHostnameSanitizingSubstring(nd.getAPredecessor())
+  hasHostnameSanitizingSubstring(getAnOperandPredecessor(op))
 }
 
 /**
@@ -75,8 +79,10 @@ predicate hostnameSanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sin
  * A check that sanitizes the hostname of a URL.
  */
 predicate hostnameGuard(Cfg::CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch) {
-  exists(StringOps::StartsWith startsWith |
-    hasHostnameSanitizingSubstring(startsWith.getSubstring()) and
+  exists(StringOps::StartsWith startsWith, StringConcatenation::Operand substringOp |
+    substringOp.asDataFlowNode() = startsWith.getSubstring()
+  |
+    hasHostnameSanitizingSubstring(substringOp) and
     g = startsWith.asExpr() and
     branch = startsWith.getPolarity() and
     e = startsWith.getBaseString().asExpr()

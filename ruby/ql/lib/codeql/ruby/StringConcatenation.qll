@@ -9,17 +9,43 @@ import codeql.ruby.AST
  * Provides predicates for analyzing string concatenations and their operands.
  */
 module StringConcatenation {
-  /** Gets the `n`th operand to the string concatenation defining `node`. */
-  pragma[nomagic]
-  DataFlow::Node getOperand(DataFlow::Node node, int n) {
-    exists(AddExpr add | node.asExpr().getExpr() = add |
-      n = 0 and result.asExpr().getExpr() = add.getLeftOperand()
+  private newtype TOperand =
+    TDataFlowNode(DataFlow::Node n) or
+    TStringComponent(StringComponent c)
+
+  /**
+   * A potential operand to a string concatenation operation.
+   */
+  class Operand extends TOperand {
+    /** Gets this operand as a `DataFlow::Node`, if applicable. */
+    DataFlow::Node asDataFlowNode() { this = TDataFlowNode(result) }
+
+    /** Gets this operand as a `StringComponent`, if applicable. */
+    StringComponent asStringComponent() { this = TStringComponent(result) }
+
+    /** Gets the constant value of this operand, if any. */
+    ConstantValue getConstantValue() {
+      result = this.asDataFlowNode().getConstantValue()
       or
-      n = 1 and result.asExpr().getExpr() = add.getRightOperand()
-    )
-    or
-    exists(StringlikeLiteral str | node.asExpr().getExpr() = str |
-      result.asExpr().getExpr() = str.getComponent(n)
+      result = this.asStringComponent().getConstantValue()
+    }
+
+    /** Gets a string representation of this operand. */
+    string toString() {
+      result = this.asDataFlowNode().toString()
+      or
+      result = this.asStringComponent().toString()
+    }
+  }
+
+  pragma[nomagic]
+  private DataFlow::Node getDataFlowOperand(DataFlow::Node node, int n) {
+    exists(DataFlow::BinaryOperationNode binop, AddExpr add |
+      binop.asOperationAstNode() = add and binop = node
+    |
+      n = 0 and result = binop.getLeftOperand()
+      or
+      n = 1 and result = binop.getRightOperand()
     )
     or
     exists(DataFlow::ArrayLiteralNode array, DataFlow::CallNode call |
@@ -55,25 +81,33 @@ module StringConcatenation {
     )
   }
 
+  private StringComponent getStringComponentOperand(DataFlow::Node node, int n) {
+    result = node.asExpr().getExpr().(StringlikeLiteral).getComponent(n)
+  }
+
+  /** Gets the `n`th operand to the string concatenation defining `node`. */
+  Operand getOperand(DataFlow::Node node, int n) {
+    result = TDataFlowNode(getDataFlowOperand(node, n)) or
+    result = TStringComponent(getStringComponentOperand(node, n))
+  }
+
   /** Gets an operand to the string concatenation defining `node`. */
-  DataFlow::Node getAnOperand(DataFlow::Node node) { result = getOperand(node, _) }
+  Operand getAnOperand(DataFlow::Node node) { result = getOperand(node, _) }
 
   /** Gets the number of operands to the given concatenation. */
   int getNumOperand(DataFlow::Node node) { result = strictcount(getAnOperand(node)) }
 
   /** Gets the first operand to the string concatenation defining `node`. */
-  DataFlow::Node getFirstOperand(DataFlow::Node node) { result = getOperand(node, 0) }
+  Operand getFirstOperand(DataFlow::Node node) { result = getOperand(node, 0) }
 
   /** Gets the last operand to the string concatenation defining `node`. */
-  DataFlow::Node getLastOperand(DataFlow::Node node) {
-    result = getOperand(node, getNumOperand(node) - 1)
-  }
+  Operand getLastOperand(DataFlow::Node node) { result = getOperand(node, getNumOperand(node) - 1) }
 
   /**
    * Holds if `src` flows to `dst` through the `n`th operand of the given concatenation operator.
    */
   predicate taintStep(DataFlow::Node src, DataFlow::Node dst, DataFlow::Node operator, int n) {
-    src = getOperand(dst, n) and
+    src = getOperand(dst, n).asDataFlowNode() and
     operator = dst
   }
 
@@ -89,7 +123,7 @@ module StringConcatenation {
    */
   predicate isRoot(DataFlow::Node node) {
     exists(getAnOperand(node)) and
-    not node = getAnOperand(_)
+    not node = getAnOperand(_).asDataFlowNode()
   }
 
   /**
@@ -100,7 +134,7 @@ module StringConcatenation {
     result = node
     or
     exists(DataFlow::Node operator |
-      node = getAnOperand(operator) and
+      node = getAnOperand(operator).asDataFlowNode() and
       result = getRoot(operator)
     )
   }

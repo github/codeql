@@ -1170,6 +1170,21 @@ class OperationNode extends ExprNode {
 }
 
 /**
+ * A data flow node corresponding to a binary operation expression.
+ */
+class BinaryOperationNode extends OperationNode {
+  private CfgNodes::ExprNodes::BinaryOperationCfgNode binaryOperationCfgNode;
+
+  BinaryOperationNode() { this.asExpr() = binaryOperationCfgNode }
+
+  /** Gets the left operand of this operation. */
+  final Node getLeftOperand() { result.asExpr() = binaryOperationCfgNode.getLeftOperand() }
+
+  /** Gets the right operand of this operation. */
+  final Node getRightOperand() { result.asExpr() = binaryOperationCfgNode.getRightOperand() }
+}
+
+/**
  * A data flow node corresponding to a control expression (e.g. `if`, `while`, `for`).
  */
 class ControlExprNode extends ExprNode {
