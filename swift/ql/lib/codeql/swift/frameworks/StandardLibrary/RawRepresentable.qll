@@ -17,19 +17,12 @@ private class RawRepresentableSummaries extends SummaryModelCsv {
 }
 
 /**
- * A content implying that, if an `RawRepresentable` is tainted, then
- * the `rawValue` field is tainted as well.
+ * A content implying that, if a `RawRepresentable` is tainted, then the
+ * `rawValue` field is tainted as well. This model has been extended to assume
+ * that any object's `rawValue` field also inherits taint.
  */
 private class RawRepresentableFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
-  RawRepresentableFieldsInheritTaint() {
-    exists(FieldDecl fieldDecl, Decl declaringDecl, TypeDecl namedTypeDecl |
-      namedTypeDecl.getFullName() = "RawRepresentable" and
-      fieldDecl.getName() = "rawValue" and
-      declaringDecl.getAMember() = fieldDecl and
-      declaringDecl.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*() and
-      this.getField() = fieldDecl
-    )
-  }
+  RawRepresentableFieldsInheritTaint() { this.getField().getName() = "rawValue" }
 }
