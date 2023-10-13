@@ -451,6 +451,12 @@ class RestFrameworkApiException extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() { result = RestFramework::ApiException::classRef() }
 }
 
+class ElementTree extends FindSubclassesSpec {
+  ElementTree() { this = "xml.etree.ElementTree~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = StdlibPrivate::elementTreeClassRef() }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
