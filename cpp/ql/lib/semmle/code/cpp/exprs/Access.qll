@@ -314,7 +314,7 @@ private predicate exprHasReferenceConversion(Expr e) { referenceConversion(e.get
 class ImplicitThisFieldAccess extends FieldAccess {
   override string getAPrimaryQlClass() { result = "ImplicitThisFieldAccess" }
 
-  ImplicitThisFieldAccess() { not exists(this.getQualifier()) }
+  ImplicitThisFieldAccess() { this.getQualifier().isCompilerGenerated() or not exists(this.getQualifier()) }
 }
 
 /**
