@@ -32,3 +32,20 @@ abstract class FunctionalPackageSummary extends SummarizedCallable {
     result = API::moduleImport(this.getAPackageName()).getAnInvocation()
   }
 }
+
+/**
+ * Gets a content from a set of contents that together represent all valid array indices.
+ *
+ * This can be used to generate flow summaries that should preserve precise array indices,
+ * in cases where `WithArrayElement` is not sufficient.
+ */
+string getAnArrayContent() {
+  // Values stored at a known, small index
+  result = "ArrayElement[" + getAPreciseArrayIndex() + "!]"
+  or
+  // Values stored at a known, but large index
+  result = "ArrayElement[" + (getMaxPreciseArrayIndex() + 1) + "..]"
+  or
+  // Values stored at an unknown index
+  result = "ArrayElement[?]"
+}

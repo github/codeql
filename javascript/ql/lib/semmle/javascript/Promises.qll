@@ -6,7 +6,9 @@ import javascript
 private import dataflow.internal.StepSummary
 
 /**
- * A definition of a `Promise` object.
+ * A call to the `Promise` constructor, such as `new Promise((resolve, reject) => { ... })`.
+ *
+ * This includes calls to the built-in `Promise` constructor as well as promise implementations from known libraries, such as `bluebird`.
  */
 abstract class PromiseDefinition extends DataFlow::SourceNode {
   /** Gets the executor function of this promise object. */
@@ -196,6 +198,8 @@ module Promises {
 
     override string getAProperty() { result = [valueProp(), errorProp()] }
   }
+
+  predicate promiseConstructorRef = getAPromiseObject/0;
 }
 
 /**
@@ -267,7 +271,7 @@ private import semmle.javascript.dataflow.internal.PreCallGraphStep
  * These steps are for `await p`, `new Promise()`, `Promise.resolve()`,
  * `Promise.then()`, `Promise.catch()`, and `Promise.finally()`.
  */
-private class PromiseStep extends PreCallGraphStep {
+private class PromiseStep extends LegacyPreCallGraphStep {
   override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
     PromiseFlow::loadStep(obj, element, prop)
   }
@@ -459,7 +463,7 @@ module PromiseFlow {
   }
 }
 
-private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
+private class PromiseTaintStep extends TaintTracking::LegacyTaintStep {
   override predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
     // from `x` to `new Promise((res, rej) => res(x))`
     pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
@@ -530,7 +534,7 @@ private module AsyncReturnSteps {
   /**
    * A data-flow step for ordinary and exceptional returns from async functions.
    */
-  private class AsyncReturn extends PreCallGraphStep {
+  private class AsyncReturn extends LegacyPreCallGraphStep {
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
         // ordinary return
@@ -548,7 +552,7 @@ private module AsyncReturnSteps {
   /**
    * A data-flow step for ordinary return from an async function in a taint configuration.
    */
-  private class AsyncTaintReturn extends TaintTracking::SharedTaintStep {
+  private class AsyncTaintReturn extends TaintTracking::LegacyTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Function f |
         f.isAsync() and
@@ -665,7 +669,7 @@ private module ClosurePromise {
   /**
    * Taint steps through closure promise methods.
    */
-  private class ClosurePromiseTaintStep extends TaintTracking::SharedTaintStep {
+  private class ClosurePromiseTaintStep extends TaintTracking::LegacyTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // static methods in goog.Promise
       exists(DataFlow::CallNode call, string name |
@@ -699,7 +703,7 @@ private module DynamicImportSteps {
    * let Foo = await import('./foo');
    * ```
    */
-  class DynamicImportStep extends PreCallGraphStep {
+  class DynamicImportStep extends LegacyPreCallGraphStep {
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DynamicImportExpr imprt |
         pred = imprt.getImportedModule().getAnExportedValue("default") and
