@@ -116,7 +116,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public string? DesktopRuntime => DesktopRuntimes?.FirstOrDefault();
 
         /// <summary>
-        /// Gets the executiing runtime location, this is the self contained runtime shipped in the CodeQL CLI bundle.
+        /// Gets the executing runtime location, this is the self contained runtime shipped in the CodeQL CLI bundle.
         /// </summary>
         public string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 

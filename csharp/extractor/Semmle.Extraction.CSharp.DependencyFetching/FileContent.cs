@@ -162,19 +162,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         }
 
                         // Determine if ASP.NET is used.
-                        if (!useAspNetCoreDlls)
-                        {
-                            useAspNetCoreDlls =
-                                IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web") ||
-                                IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App");
-                        }
+                        useAspNetCoreDlls = useAspNetCoreDlls
+                            || IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web")
+                            || IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App");
+
 
                         // Determine if implicit usings are used.
-                        if (!useImplicitUsings)
-                        {
-                            useImplicitUsings = line.Contains("<ImplicitUsings>enable</ImplicitUsings>".AsSpan(), StringComparison.Ordinal) ||
-                                                line.Contains("<ImplicitUsings>true</ImplicitUsings>".AsSpan(), StringComparison.Ordinal);
-                        }
+                        useImplicitUsings = useImplicitUsings
+                            || line.Contains("<ImplicitUsings>enable</ImplicitUsings>".AsSpan(), StringComparison.Ordinal)
+                            || line.Contains("<ImplicitUsings>true</ImplicitUsings>".AsSpan(), StringComparison.Ordinal);
 
                         // Find all custom implicit usings.
                         foreach (var valueMatch in CustomImplicitUsingDeclarations().EnumerateMatches(line))
@@ -187,9 +183,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         }
 
                         // Determine project structure:
-                        isLegacyProjectStructureUsed |= MicrosoftCSharpTargets().IsMatch(line);
-                        isNewProjectStructureUsed |= ProjectSdk().IsMatch(line);
-                        isNewProjectStructureUsed |= FrameworkReference().IsMatch(line);
+                        isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || MicrosoftCSharpTargets().IsMatch(line);
+                        isNewProjectStructureUsed = isNewProjectStructureUsed
+                            || ProjectSdk().IsMatch(line)
+                            || FrameworkReference().IsMatch(line);
                         // TODO: we could also check `<Sdk Name="Microsoft.NET.Sdk" />`
                     }
                 }

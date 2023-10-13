@@ -1,7 +1,7 @@
 using Xunit;
+using System;
 using System.Collections.Generic;
 using Semmle.Extraction.CSharp.DependencyFetching;
-using System;
 
 namespace Semmle.Extraction.Tests
 {

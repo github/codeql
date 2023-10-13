@@ -101,6 +101,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var existsNetFrameworkRefNugetPackage = false;
 
             // Find DLLs in the .Net / Asp.Net Framework
+            // This block needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
             if (options.ScanNetFrameworkDlls)
             {
                 existsNetCoreRefNugetPackage = IsNugetPackageAvailable("microsoft.netcore.app.ref");
