@@ -35,7 +35,9 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.asExpr().getUnspecifiedType() instanceof IntegralType
+    isSink(node) and node.asExpr().getUnspecifiedType() instanceof ArithmeticType
+    or
+    node.asInstruction().(StoreInstruction).getResultType() instanceof ArithmeticType
   }
 }
 
