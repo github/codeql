@@ -32,6 +32,10 @@
 | attributes.cs:126:9:126:11 | get_Prop1 | attributes.cs:125:18:125:29 | [return: My3(...)] | My3Attribute |
 | attributes.cs:130:9:130:11 | set_Prop1 | attributes.cs:128:10:128:21 | [My3(...)] | My3Attribute |
 | attributes.cs:130:9:130:11 | value | attributes.cs:129:17:129:28 | [My3(...)] | My3Attribute |
+| attributes.cs:142:17:142:18 | M1 | attributes.cs:141:6:141:11 | [Params(...)] | Class1+ParamsAttribute |
+| attributes.cs:145:17:145:18 | M2 | attributes.cs:144:6:144:11 | [Params(...)] | Class1+ParamsAttribute |
+| attributes.cs:148:17:148:18 | M3 | attributes.cs:147:6:147:11 | [Params(...)] | Class1+ParamsAttribute |
+| attributes.cs:151:17:151:18 | M4 | attributes.cs:150:6:150:11 | [Params(...)] | Class1+ParamsAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:10:12:10:24 | [assembly: AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:30 | [assembly: AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:32 | [assembly: AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
