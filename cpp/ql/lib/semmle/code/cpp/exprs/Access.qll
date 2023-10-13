@@ -306,15 +306,13 @@ private predicate exprHasReferenceConversion(Expr e) { referenceConversion(e.get
  *   }
  * };
  * ```
- * Note: the C++ front-end often automatically desugars `field` to
- * `this->field`, so most accesses of `this->field` are instances
- * of `PointerFieldAccess` (with `ThisExpr` as the qualifier), not
- * `ImplicitThisFieldAccess`.
  */
 class ImplicitThisFieldAccess extends FieldAccess {
   override string getAPrimaryQlClass() { result = "ImplicitThisFieldAccess" }
 
-  ImplicitThisFieldAccess() { this.getQualifier().isCompilerGenerated() or not exists(this.getQualifier()) }
+  ImplicitThisFieldAccess() {
+    this.getQualifier().isCompilerGenerated() or not exists(this.getQualifier())
+  }
 }
 
 /**
