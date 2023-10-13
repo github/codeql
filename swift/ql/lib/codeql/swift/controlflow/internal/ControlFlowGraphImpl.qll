@@ -1148,6 +1148,10 @@ module Exprs {
     }
   }
 
+  /**
+   * The control flow for an explicit closure or a normal autoclosure in its
+   * role as a control flow scope.
+   */
   class ClosureExprTree extends StandardPreOrderTree, TClosureElement {
     ClosureExpr expr;
 

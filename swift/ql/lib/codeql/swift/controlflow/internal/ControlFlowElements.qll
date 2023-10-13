@@ -42,6 +42,8 @@ predicate isPropertyGetterElement(PropertyGetterElement pge, Accessor accessor, 
 }
 
 predicate isNormalAutoClosureOrExplicitClosure(ClosureExpr clos) {
+  // short-circuiting operators have a `BinaryExpr` as the parent of the `AutoClosureExpr`,
+  // so we exclude them by checking for a `CallExpr`.
   clos instanceof AutoClosureExpr and
   exists(CallExpr call | call.getAnArgument().getExpr() = clos)
   or
@@ -201,6 +203,10 @@ class KeyPathElement extends ControlFlowElement, TKeyPathElement {
   override string toString() { result = expr.toString() }
 }
 
+/**
+ * A control flow element representing a closure in its role as a control flow
+ * scope.
+ */
 class ClosureElement extends ControlFlowElement, TClosureElement {
   ClosureExpr expr;
 
