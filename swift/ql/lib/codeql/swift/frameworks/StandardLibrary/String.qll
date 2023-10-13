@@ -111,8 +111,6 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;init(validatingPlatformString:);;;Argument[0].CollectionElement;ReturnValue.OptionalSome;taint",
         ";String;true;localizedStringWithFormat(_:_:);;;Argument[0];ReturnValue;taint",
         ";String;true;localizedStringWithFormat(_:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
-        ";String;true;write(_:);;;Argument[0];Argument[-1];taint",
-        ";String;true;write(to:);;;Argument[-1];Argument[0];taint",
         ";String;true;insert(contentsOf:at:);;;Argument[0];Argument[-1];taint",
         ";String;true;replaceSubrange(_:with:);;;Argument[1];Argument[-1];taint",
         ";String;true;max();;;Argument[-1];ReturnValue;taint",
