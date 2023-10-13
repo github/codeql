@@ -70,7 +70,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var info in assemblyInfoByFileName.Values
                 .OrderBy(info => info.Name)
                 .ThenBy(info => info.NetCoreVersion ?? emptyVersion)
-                .ThenBy(info => info.Version ?? emptyVersion))
+                .ThenBy(info => info.Version ?? emptyVersion)
+                .ThenBy(info => info.Filename))
             {
                 foreach (var index in info.IndexStrings)
                 {

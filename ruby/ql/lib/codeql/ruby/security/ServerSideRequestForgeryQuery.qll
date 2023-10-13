@@ -31,10 +31,6 @@ deprecated class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerOut(DataFlow::Node node) { node instanceof SanitizerOut }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
 }
 
 private module ServerSideRequestForgeryConfig implements DataFlow::ConfigSig {

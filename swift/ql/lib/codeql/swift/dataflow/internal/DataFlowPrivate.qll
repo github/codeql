@@ -213,6 +213,11 @@ private module Cached {
     //   retaining this case increases robustness of flow).
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
+    // read of an optional .some member via `let x: T = y: T?` pattern matching
+    // note: similar to `ForceValueExpr` this is ideally a content `readStep` but
+    //   in practice we sometimes have taint on the optional itself.
+    nodeTo.asPattern() = nodeFrom.asPattern().(OptionalSomePattern).getSubPattern()
+    or
     // flow through `?` and `?.`
     nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
     or
@@ -220,6 +225,9 @@ private module Cached {
     or
     // flow through unary `+` (which does nothing)
     nodeFrom.asExpr() = nodeTo.asExpr().(UnaryPlusExpr).getOperand()
+    or
+    // flow through varargs expansions (that wrap an `ArrayExpr` where varargs enter a call)
+    nodeFrom.asExpr() = nodeTo.asExpr().(VarargExpansionExpr).getSubExpr()
     or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
@@ -297,7 +305,6 @@ private module Cached {
     TFieldContent(FieldDecl f) or
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
     TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
-    TArrayContent() or
     TCollectionContent()
 }
 
@@ -842,7 +849,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(ArrayExpr arr |
     node1.asExpr() = arr.getAnElement() and
     node2.asExpr() = arr and
-    c.isSingleton(any(Content::ArrayContent ac))
+    c.isSingleton(any(Content::CollectionContent ac))
   )
   or
   // array assignment `a[n] = x`
@@ -851,7 +858,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
     subscript = assign.getDest() and
     subscript.getBase().getType() instanceof ArrayType and
-    c.isSingleton(any(Content::ArrayContent ac))
+    c.isSingleton(any(Content::CollectionContent ac))
   )
   or
   // creation of an optional via implicit wrapping keypath component
@@ -948,7 +955,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     (
       c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
       or
-      c.isSingleton(any(Content::ArrayContent ac)) and
+      c.isSingleton(any(Content::CollectionContent ac)) and
       component.isSubscript()
       or
       c instanceof OptionalSomeContentSet and
@@ -967,16 +974,11 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
   )
   or
-  // read of an array member via subscript operator
+  // read of array or collection content via subscript operator
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-    (
-      subscript.getBase().getType() instanceof ArrayType and
-      c.isSingleton(any(Content::ArrayContent ac))
-      or
-      c.isSingleton(any(Content::CollectionContent ac))
-    )
+    c.isSingleton(any(Content::CollectionContent ac))
   )
   or
   // read of a dictionary value via subscript operator
@@ -988,6 +990,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     subscript = node2.asExpr() and
     node1.(DictionarySubscriptNode).getExpr() = subscript and
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
+  )
+  or
+  // read of an optional into the loop variable via foreach
+  exists(ForEachStmt for |
+    node1.asExpr() = for.getNextCall() and
+    node2.asPattern() = for.getPattern() and
+    c instanceof OptionalSomeContentSet
   )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
@@ -1037,6 +1046,8 @@ class DataFlowType extends TDataFlowType {
 }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
@@ -1098,9 +1109,7 @@ class DataFlowExpr = Expr;
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) {
-  c instanceof Content::ArrayContent or c instanceof Content::CollectionContent
-}
+predicate forceHighPrecision(Content c) { c instanceof Content::CollectionContent }
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
@@ -1151,12 +1160,3 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

@@ -1,3 +1,17 @@
+## 0.8.0
+
+### New Queries
+
+* Added a new query, `cs/web/insecure-direct-object-reference`, to find instances of missing authorization checks for resources selected by an ID parameter.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+No user-facing changes.
+
 ## 0.7.3
 
 No user-facing changes.

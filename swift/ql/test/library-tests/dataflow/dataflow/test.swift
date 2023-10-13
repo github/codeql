@@ -272,9 +272,9 @@ func test_optionals(y: Int?) {
     sink(opt: y?.signum())
 
     sink(arg: x ?? 0) // $ flow=259
-    sink(arg: x ?? source()) // $ flow=259 MISSING: flow=276
+    sink(arg: x ?? source()) // $ flow=259 flow=275
     sink(arg: y ?? 0)
-    sink(arg: y ?? source()) // $ MISSING: flow=278
+    sink(arg: y ?? source()) // $ flow=277
 
     sink(arg: x != nil ? x! : 0) // $ flow=259
     sink(arg: x != nil ? x! : source()) // $ flow=259 flow=280
@@ -706,7 +706,7 @@ func testArray() {
     sink(arg: arr4[0]) // $ MISSING: flow=692
 
     var arr5 = Array(repeating: source(), count: 2)
-    sink(arg: arr5[0]) // $ MISSING: flow=708
+    sink(arg: arr5[0]) // $ flow=708
 
     var arr6 = [1,2,3]
     arr6.insert(source(), at: 2)
@@ -779,7 +779,7 @@ func testDictionary() {
     sink(arg: dict2[1])
 
     for (key, value) in dict2 {
-        sink(arg: key) // $ MISSING: flow=778
+        sink(arg: key) // $ flow=778
         sink(arg: value)
     }
 
@@ -792,8 +792,8 @@ func testDictionary() {
     sink(arg: dict3.randomElement()!.1) // $ flow=786
 
     for (key, value) in dict3 {
-        sink(arg: key) // $ MISSING: flow=789
-        sink(arg: value) // $ MISSING: flow=786
+        sink(arg: key) // $ flow=789
+        sink(arg: value) // $ flow=786
     }
 
     var dict4 = [1:source()]
@@ -839,4 +839,63 @@ func testNestedKeyPathWrite() {
   var f = \S2.s.x
   s2[keyPath: f] = source()
   sink(arg: s2.s.x) // $ flow=840
+}
+
+func testVarargs1(args: Int...) {
+    sink(arg: args)
+    sink(arg: args[0]) // $ flow=871
+}
+
+func testVarargs2(_ v: Int, _ args: Int...) {
+    sink(arg: v) // $ flow=872
+    sink(arg: args)
+    sink(arg: args[0])
+    sink(arg: args[1])
+}
+
+func testVarargs3(_ v: Int, _ args: Int...) {
+    sink(arg: v)
+    sink(arg: args)
+    sink(arg: args[0]) // $ SPURIOUS: flow=873
+    sink(arg: args[1]) // $ flow=873
+
+    for arg in args {
+        sink(arg: arg) // $ flow=873
+    }
+
+    let myKeyPath = \[Int][1]
+    sink(arg: args[keyPath: myKeyPath]) // $ flow=873
+}
+
+func testVarargsCaller() {
+    testVarargs1(args: source())
+    testVarargs2(source(), 2, 3)
+    testVarargs3(1, 2, source())
+}
+
+func testSetForEach() {
+    var set1 = Set([source()])
+    
+    for elem in set1 {
+        sink(arg: elem) // $ flow=877
+    }
+
+    var generator = set1.makeIterator()
+    sink(arg: generator.next()!) // $ flow=877
+}
+
+func testAsyncFor () async {
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
+            Task.detached {
+                for _ in 1...100 {
+                    continuation.yield(source())
+                }
+                continuation.finish()
+            }
+    })
+
+    for try await i in stream {
+        sink(arg: i) // $ MISSING: flow=892
+    }
 }

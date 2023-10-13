@@ -19,24 +19,8 @@ module ReflectedXss {
   /** A sanitizer for reflected XSS vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for reflected XSS vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
   /** A shared XSS sanitizer as a sanitizer for reflected XSS. */
   private class SharedXssSanitizer extends Sanitizer instanceof SharedXss::Sanitizer { }
-
-  /** A shared XSS sanitizer guard as a sanitizer guard for reflected XSS. */
-  deprecated private class SharedXssSanitizerGuard extends SanitizerGuard {
-    SharedXss::SanitizerGuard self;
-
-    SharedXssSanitizerGuard() { this = self }
-
-    override predicate checks(Expr e, boolean b) { self.checks(e, b) }
-  }
 
   /**
    * A third-party controllable input, considered as a flow source for reflected XSS.

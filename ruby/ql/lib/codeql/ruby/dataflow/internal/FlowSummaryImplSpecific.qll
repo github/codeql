@@ -128,6 +128,9 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     or
     arg = "hash-splat" and
     ppos.isHashSplat()
+    or
+    arg = "splat" and
+    ppos.isSplat(0)
   )
   or
   result = interpretElementArg(c.getAnArgument("Element"))
@@ -229,6 +232,9 @@ string getParameterPosition(ParameterPosition pos) {
   or
   pos.isHashSplat() and
   result = "hash-splat"
+  or
+  pos.isSplat(0) and
+  result = "splat"
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */

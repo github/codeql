@@ -179,6 +179,12 @@ module Sinatra {
     }
   }
 
+  bindingset[local]
+  pragma[inline_late]
+  private predicate isPairKey(string local) {
+    local = any(Pair p).getKey().getConstantValue().getStringlikeValue()
+  }
+
   /**
    * A summary for accessing a local variable in an ERB template.
    * This is the second half of the modeling of the flow from the `locals`
@@ -192,7 +198,7 @@ module Sinatra {
     ErbLocalsAccessSummary() {
       this = "sinatra_erb_locals_access()" + global.getId() + "#" + local and
       local = any(MethodCall c | c.getLocation().getFile() = global.getErbFile()).getMethodName() and
-      local = any(Pair p).getKey().getConstantValue().getStringlikeValue()
+      isPairKey(local)
     }
 
     override MethodCall getACall() {
