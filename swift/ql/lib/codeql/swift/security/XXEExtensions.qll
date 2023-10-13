@@ -184,10 +184,6 @@ private class Libxml2XxeSink extends XxeSink {
  */
 private predicate lib2xmlOptionLocalTaintStep(DataFlow::Node source, DataFlow::Node sink) {
   TaintTracking::localTaintStep(source, sink)
-  or
-  exists(MemberRefExpr rawValue | rawValue.getMember().(VarDecl).getName() = "rawValue" |
-    source.asExpr() = rawValue.getBase() and sink.asExpr() = rawValue
-  )
 }
 
 /**
