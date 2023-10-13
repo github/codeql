@@ -99,7 +99,9 @@ module Flask {
   }
 
   /** Gets a reference to the `flask.request` object. */
-  API::Node request() { result = API::moduleImport("flask").getMember("request") }
+  API::Node request() {
+    result = API::moduleImport(["flask", "flask_restful"]).getMember("request")
+  }
 
   /**
    * Provides models for the `flask.Response` class
