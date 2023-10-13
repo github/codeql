@@ -1298,7 +1298,7 @@ module StdlibPrivate {
   // pickle
   // ---------------------------------------------------------------------------
   /** Gets a reference to any of the `pickle` modules. */
-  API::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]) }
+  API::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle", "cloudpickle"]) }
 
   /**
    * A call to `pickle.load`
