@@ -172,18 +172,10 @@ private class Libxml2XxeSink extends XxeSink {
   Libxml2XxeSink() {
     exists(Libxml2ParseCall c, Libxml2BadOption opt |
       this.asExpr() = c.getXml() and
-      lib2xmlOptionLocalTaintStep*(DataFlow::exprNode(opt.getAnAccess()),
+      TaintTracking::localTaintStep*(DataFlow::exprNode(opt.getAnAccess()),
         DataFlow::exprNode(c.getOptions()))
     )
   }
-}
-
-/**
- * Holds if taint can flow from `source` to `sink` in one local step,
- * including bitwise operations, accesses to `.rawValue`, and casts to `Int32`.
- */
-private predicate lib2xmlOptionLocalTaintStep(DataFlow::Node source, DataFlow::Node sink) {
-  TaintTracking::localTaintStep(source, sink)
 }
 
 /**
