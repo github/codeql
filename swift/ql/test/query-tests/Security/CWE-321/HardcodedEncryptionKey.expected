@@ -1,5 +1,10 @@
 edges
+| SQLite.swift:54:25:54:33 | [...] | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) |
+| cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:80:10:80:28 | call to getConstantString() |
 | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:92:18:92:36 | call to getConstantString() |
+| cryptoswift.swift:80:2:80:34 | call to Array<Element>.init(_:) [Collection element] | cryptoswift.swift:91:13:91:30 | call to getConstantArray() [Collection element] |
+| cryptoswift.swift:80:10:80:28 | call to getConstantString() | cryptoswift.swift:80:10:80:30 | .utf8 |
+| cryptoswift.swift:80:10:80:30 | .utf8 | cryptoswift.swift:80:2:80:34 | call to Array<Element>.init(_:) [Collection element] |
 | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:117:22:117:22 | key |
 | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:118:22:118:22 | key |
 | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:128:26:128:26 | key |
@@ -10,6 +15,8 @@ edges
 | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:151:26:151:26 | key |
 | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:161:24:161:24 | key |
 | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:163:24:163:24 | key |
+| cryptoswift.swift:91:13:91:30 | call to getConstantArray() [Collection element] | cryptoswift.swift:106:21:106:21 | key2 |
+| cryptoswift.swift:91:13:91:30 | call to getConstantArray() [Collection element] | cryptoswift.swift:107:21:107:21 | key2 |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:108:21:108:21 | keyString |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:109:21:109:21 | keyString |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() | cryptoswift.swift:119:22:119:22 | keyString |
@@ -57,10 +64,27 @@ edges
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:81:102:81:102 | myConstKey |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:83:92:83:92 | myConstKey |
 | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) |
+| sqlite3_c_api.swift:33:19:33:38 | call to Data.init(_:) | sqlite3_c_api.swift:40:2:40:2 | myConstKey |
+| sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | sqlite3_c_api.swift:33:19:33:38 | call to Data.init(_:) |
+| sqlite3_c_api.swift:40:2:40:2 | myConstKey | sqlite3_c_api.swift:40:31:40:31 | buffer [Collection element] |
+| sqlite3_c_api.swift:40:31:40:31 | buffer [Collection element] | sqlite3_c_api.swift:41:36:41:36 | buffer |
+| sqlite3_c_api.swift:40:31:40:31 | buffer [Collection element] | sqlite3_c_api.swift:42:38:42:38 | buffer |
 nodes
+| SQLite.swift:43:13:43:13 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:45:23:45:23 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:47:15:47:15 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:49:79:49:79 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | semmle.label | call to Blob.init(bytes:) |
+| SQLite.swift:54:25:54:33 | [...] | semmle.label | [...] |
 | cryptoswift.swift:76:3:76:3 | this string is constant | semmle.label | this string is constant |
+| cryptoswift.swift:80:2:80:34 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
+| cryptoswift.swift:80:10:80:28 | call to getConstantString() | semmle.label | call to getConstantString() |
+| cryptoswift.swift:80:10:80:30 | .utf8 | semmle.label | .utf8 |
 | cryptoswift.swift:90:26:90:121 | [...] | semmle.label | [...] |
+| cryptoswift.swift:91:13:91:30 | call to getConstantArray() [Collection element] | semmle.label | call to getConstantArray() [Collection element] |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() | semmle.label | call to getConstantString() |
+| cryptoswift.swift:106:21:106:21 | key2 | semmle.label | key2 |
+| cryptoswift.swift:107:21:107:21 | key2 | semmle.label | key2 |
 | cryptoswift.swift:108:21:108:21 | keyString | semmle.label | keyString |
 | cryptoswift.swift:109:21:109:21 | keyString | semmle.label | keyString |
 | cryptoswift.swift:117:22:117:22 | key | semmle.label | key |
@@ -119,12 +143,25 @@ nodes
 | rncryptor.swift:80:94:80:94 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:81:102:81:102 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:83:92:83:92 | myConstKey | semmle.label | myConstKey |
+| sqlite3_c_api.swift:33:19:33:38 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | semmle.label | abcdef123456 |
+| sqlite3_c_api.swift:40:2:40:2 | myConstKey | semmle.label | myConstKey |
+| sqlite3_c_api.swift:40:31:40:31 | buffer [Collection element] | semmle.label | buffer [Collection element] |
+| sqlite3_c_api.swift:41:36:41:36 | buffer | semmle.label | buffer |
+| sqlite3_c_api.swift:42:38:42:38 | buffer | semmle.label | buffer |
 subpaths
 | misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self | misc.swift:53:2:53:2 | [post] config |
 | misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:53:2:53:2 | [post] config [encryptionKey] |
 | misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self | misc.swift:57:2:57:18 | [post] getter for .config |
 | misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:57:2:57:18 | [post] getter for .config [encryptionKey] |
 #select
+| SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:43:13:43:13 | hardcoded_key | hardcoded_key |
+| SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:45:23:45:23 | hardcoded_key | hardcoded_key |
+| SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:47:15:47:15 | hardcoded_key | hardcoded_key |
+| SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:49:79:49:79 | hardcoded_key | hardcoded_key |
+| SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | SQLite.swift:54:25:54:33 | [...] | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | The key 'call to Blob.init(bytes:)' has been initialized with hard-coded values from $@. | SQLite.swift:54:25:54:33 | [...] | [...] |
+| cryptoswift.swift:106:21:106:21 | key2 | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:106:21:106:21 | key2 | The key 'key2' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
+| cryptoswift.swift:107:21:107:21 | key2 | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:107:21:107:21 | key2 | The key 'key2' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
 | cryptoswift.swift:108:21:108:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:108:21:108:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
 | cryptoswift.swift:109:21:109:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:109:21:109:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
 | cryptoswift.swift:117:22:117:22 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:117:22:117:22 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
@@ -167,3 +204,5 @@ subpaths
 | rncryptor.swift:80:94:80:94 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:80:94:80:94 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
 | rncryptor.swift:81:102:81:102 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:81:102:81:102 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
 | rncryptor.swift:83:92:83:92 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:83:92:83:92 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| sqlite3_c_api.swift:41:36:41:36 | buffer | sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | sqlite3_c_api.swift:41:36:41:36 | buffer | The key 'buffer' has been initialized with hard-coded values from $@. | sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | abcdef123456 |
+| sqlite3_c_api.swift:42:38:42:38 | buffer | sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | sqlite3_c_api.swift:42:38:42:38 | buffer | The key 'buffer' has been initialized with hard-coded values from $@. | sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | abcdef123456 |
