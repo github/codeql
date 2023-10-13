@@ -9,13 +9,6 @@ import codeql.ruby.AST
  * Provides predicates for analyzing string concatenations and their operands.
  */
 module StringConcatenation {
-  /** Gets a data flow node referring to the result of the given concatenation. */
-  private DataFlow::Node getAssignAddResult(AssignAddExpr expr) {
-    result.asExpr().getExpr() = expr
-    or
-    result.asExpr().getExpr() = expr.getLeftOperand()
-  }
-
   /** Gets the `n`th operand to the string concatenation defining `node`. */
   pragma[nomagic]
   DataFlow::Node getOperand(DataFlow::Node node, int n) {
@@ -27,12 +20,6 @@ module StringConcatenation {
     or
     exists(StringlikeLiteral str | node.asExpr().getExpr() = str |
       result.asExpr().getExpr() = str.getComponent(n)
-    )
-    or
-    exists(AssignAddExpr assign | node = getAssignAddResult(assign) |
-      n = 0 and result.asExpr().getExpr() = assign.getLeftOperand()
-      or
-      n = 1 and result.asExpr().getExpr() = assign.getRightOperand()
     )
     or
     exists(DataFlow::ArrayLiteralNode array, DataFlow::CallNode call |
