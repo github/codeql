@@ -66,4 +66,7 @@ deprecated predicate javaApiCallableCryptoKeyParam(Callable c, int i) {
  * DEPRECATED: Use the `CredentialsSinkNode` class instead.
  * Holds if callable `c` from a known API expects a credential parameter at index `i`.
  */
-deprecated predicate otherApiCallableCredentialParam(Callable c, int i) { none() }
+deprecated predicate otherApiCallableCredentialParam(Callable c, int i) {
+  c.hasQualifiedName("javax.crypto.spec", "IvParameterSpec", "IvParameterSpec") and
+  i = 0
+}
