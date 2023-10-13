@@ -3,13 +3,13 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.mongodb", "MongoCredential", False, "createCredential", "", "", "Argument[0]", "credentials-username", "hq-generated"]
-      - ["com.mongodb", "MongoCredential", False, "createCredential", "", "", "Argument[2]", "credentials-password", "hq-generated"]
-      - ["com.mongodb", "MongoCredential", False, "createGSSAPICredential", "", "", "Argument[0]", "credentials-username", "hq-generated"]
-      - ["com.mongodb", "MongoCredential", False, "createMongoCRCredential", "", "", "Argument[0]", "credentials-username", "hq-generated"]
-      - ["com.mongodb", "MongoCredential", False, "createMongoCRCredential", "", "", "Argument[2]", "credentials-password", "hq-generated"]
-      - ["com.mongodb", "MongoCredential", False, "createMongoX509Credential", "", "", "Argument[0]", "credentials-username", "hq-generated"]
-      - ["com.mongodb", "MongoCredential", False, "createPlainCredential", "", "", "Argument[0]", "credentials-username", "hq-generated"]
-      - ["com.mongodb", "MongoCredential", False, "createPlainCredential", "", "", "Argument[2]", "credentials-password", "hq-generated"]
-      - ["com.mongodb", "MongoCredential", False, "createScramSha1Credential", "", "", "Argument[0]", "credentials-username", "hq-generated"]
-      - ["com.mongodb", "MongoCredential", False, "createScramSha1Credential", "", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["com.mongodb", "MongoCredential", False, "createCredential", "", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createCredential", "", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createGSSAPICredential", "", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createMongoCRCredential", "", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createMongoCRCredential", "", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createMongoX509Credential", "", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createPlainCredential", "", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createPlainCredential", "", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createScramSha1Credential", "", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createScramSha1Credential", "", "", "Argument[2]", "credentials-password", "manual"]

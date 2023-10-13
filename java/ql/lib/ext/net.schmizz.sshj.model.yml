@@ -3,10 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["net.schmizz.sshj", "SSHClient", False, "auth", "", "", "Argument[0]", "credentials-username", "hq-generated"]
-      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "", "", "Argument[0]", "credentials-username", "hq-generated"]
-      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String,String)", "", "Argument[1]", "credentials-password", "hq-generated"]
-      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
-      - ["net.schmizz.sshj", "SSHClient", False, "authPublicKey", "", "", "Argument[0]", "credentials-username", "hq-generated"]
-      - ["net.schmizz.sshj", "SSHClient", False, "loadKeys", "(String,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
-      - ["net.schmizz.sshj", "SSHClient", False, "loadKeys", "(String,String)", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "", "", "Argument[0]", "credentials-username", "manual"]
+      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String,String)", "", "Argument[1]", "credentials-password", "manual"]
+      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String,char[])", "", "Argument[1]", "credentials-password", "manual"]
