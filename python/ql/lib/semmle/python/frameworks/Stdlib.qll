@@ -3616,6 +3616,12 @@ module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // xml.etree.ElementTree
   // ---------------------------------------------------------------------------
+  /** A reference to the `xml.etree.ElementTree` class */
+  API::Node elementTreeClassRef() {
+    result = API::moduleImport("xml").getMember("etree").getMember("ElementTree").getASubclass*() or
+    result = ModelOutput::getATypeNode("xml.etree.ElementTree~Subclass").getASubclass*()
+  }
+
   /**
    * An instance of `xml.etree.ElementTree.ElementTree`.
    *
@@ -3623,20 +3629,10 @@ module StdlibPrivate {
    */
   private API::Node elementTreeInstance() {
     //parse to a tree
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("parse")
-          .getReturn()
+    result = elementTreeClassRef().getMember("parse").getReturn()
     or
     // construct a tree without parsing
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("ElementTree")
-          .getReturn()
+    result = elementTreeClassRef().getMember("ElementTree").getReturn()
   }
 
   /**
@@ -3649,21 +3645,9 @@ module StdlibPrivate {
     result = elementTreeInstance().getMember(["parse", "getroot"]).getReturn()
     or
     // parse directly to an element
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember(["fromstring", "fromstringlist", "XML"])
-          .getReturn()
+    result = elementTreeClassRef().getMember(["fromstring", "fromstringlist", "XML"]).getReturn()
     or
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("XMLParser")
-          .getReturn()
-          .getMember("close")
-          .getReturn()
+    result = elementTreeClassRef().getMember("XMLParser").getReturn().getMember("close").getReturn()
   }
 
   /**
@@ -3708,12 +3692,7 @@ module StdlibPrivate {
     /** A direct instantiation of `xml.etree` parsers. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
       ClassInstantiation() {
-        this =
-          API::moduleImport("xml")
-              .getMember("etree")
-              .getMember("ElementTree")
-              .getMember(["XMLParser", "XMLPullParser"])
-              .getACall()
+        this = elementTreeClassRef().getMember(["XMLParser", "XMLPullParser"]).getACall()
       }
     }
 
@@ -3770,9 +3749,7 @@ module StdlibPrivate {
   private class XmlEtreeParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
     XmlEtreeParsing() {
       this =
-        API::moduleImport("xml")
-            .getMember("etree")
-            .getMember("ElementTree")
+        elementTreeClassRef()
             .getMember(["fromstring", "fromstringlist", "XML", "XMLID", "parse", "iterparse"])
             .getACall()
       or
@@ -3820,12 +3797,7 @@ module StdlibPrivate {
    */
   private class FileAccessFromXmlEtreeParsing extends XmlEtreeParsing, FileSystemAccess::Range {
     FileAccessFromXmlEtreeParsing() {
-      this =
-        API::moduleImport("xml")
-            .getMember("etree")
-            .getMember("ElementTree")
-            .getMember(["parse", "iterparse"])
-            .getACall()
+      this = elementTreeClassRef().getMember(["parse", "iterparse"]).getACall()
       or
       this = elementTreeInstance().getMember("parse").getACall()
       // I considered whether we should try to reduce FPs from people passing file-like
