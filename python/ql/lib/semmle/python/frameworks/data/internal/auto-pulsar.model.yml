@@ -22,3 +22,6 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - pulsar
     - Member[managers].Member[util].Member[tes].Member[TesTask]
+  - - xml.etree.ElementTree~Subclass
+    - pulsar
+    - Member[tools].Member[toolbox].Member[ElementTree]

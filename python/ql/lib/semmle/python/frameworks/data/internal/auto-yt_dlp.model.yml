@@ -7,3 +7,6 @@ extensions:
   - - io.StringIO~Subclass
     - yt_dlp
     - Member[downloader].Member[f4m].Member[FlvReader]
+  - - xml.etree.ElementTree~Subclass
+    - yt_dlp
+    - Member[extractor].Member[adobepass].Member[etree]

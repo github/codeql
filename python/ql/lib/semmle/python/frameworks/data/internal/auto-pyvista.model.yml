@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - pyvista
+    - Member[core].Member[utilities].Member[reader].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - pyvista
+    - Member[plotting].Member[camera].Member[ElementTree]

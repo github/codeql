@@ -7,3 +7,6 @@ extensions:
   - - io.StringIO~Subclass
     - rest_framework_csv
     - Member[renderers].Member[BytesIO]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_csv
+    - Member[renderers].Member[ParseError]

@@ -1708,6 +1708,57 @@ extensions:
   - - io.StringIO~Subclass
     - pulpcore
     - Member[app].Member[tasks].Member[importer].Member[StringIO]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[models].Member[publication].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[models].Member[repository].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[serializers].Member[acs].Member[DRFValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[serializers].Member[acs].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[tasks].Member[importer].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[tasks].Member[repository].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[util].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[base].Member[DRFValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[base].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[custom_filters].Member[DRFValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[custom_filters].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[domain].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[task].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[user].Member[PermissionDenied]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[user].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[content].Member[authentication].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - pulpcore
+    - Member[plugin].Member[serializers].Member[content].Member[ValidationError]
   - - rest_framework.request.Request~Subclass
     - pulpcore
     - Member[cache].Member[cache].Member[ApiRequest]

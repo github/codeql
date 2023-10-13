@@ -18,6 +18,9 @@ extensions:
     - Member[contracts].Member[graph].Member[semantic_manifest].Member[PydanticProjectConfiguration]
   - - pydantic.BaseModel~Subclass
     - dbt
+    - Member[contracts].Member[graph].Member[semantic_manifest].Member[PydanticSavedQuery]
+  - - pydantic.BaseModel~Subclass
+    - dbt
     - Member[contracts].Member[graph].Member[semantic_manifest].Member[PydanticSemanticManifest]
   - - pydantic.BaseModel~Subclass
     - dbt

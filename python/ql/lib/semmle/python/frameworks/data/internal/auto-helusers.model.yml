@@ -25,3 +25,6 @@ extensions:
   - - django.http.response.HttpResponseRedirect~Subclass
     - helusers
     - Member[admin_site].Member[HttpResponseRedirect]
+  - - rest_framework.exceptions.APIException~Subclass
+    - helusers
+    - Member[_oidc_auth_impl].Member[AuthenticationFailed]

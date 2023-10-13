@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - PyQt6
+    - Member[lupdate].Member[translation_file].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - PyQt6
+    - Member[uic].Member[ui_file].Member[ElementTree]

@@ -10,3 +10,9 @@ extensions:
   - - io.StringIO~Subclass
     - bleach
     - Member[_vendor].Member[html5lib].Member[_inputstream].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - bleach
+    - Member[_vendor].Member[html5lib].Member[_utils].Member[default_etree]
+  - - xml.etree.ElementTree~Subclass
+    - bleach
+    - Member[_vendor].Member[html5lib].Member[treebuilders].Member[default_etree]

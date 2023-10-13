@@ -69,6 +69,9 @@ extensions:
     - Member[implementations].Member[filters].Member[where_filter].Member[HashableBaseModel]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
+    - Member[implementations].Member[filters].Member[where_filter].Member[PydanticWhereFilterIntersection]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
     - Member[implementations].Member[filters].Member[where_filter].Member[PydanticWhereFilter]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
@@ -105,6 +108,9 @@ extensions:
     - Member[implementations].Member[metric].Member[PydanticMetric]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[PydanticWhereFilterIntersection]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
     - Member[implementations].Member[metric].Member[PydanticWhereFilter]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
@@ -126,6 +132,21 @@ extensions:
     - Member[implementations].Member[project_configuration].Member[PydanticTimeSpineTableConfiguration]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
+    - Member[implementations].Member[saved_query].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[saved_query].Member[ModelWithMetadataParsing]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[saved_query].Member[PydanticMetadata]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[saved_query].Member[PydanticSavedQuery]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[saved_query].Member[PydanticWhereFilterIntersection]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
     - Member[implementations].Member[semantic_manifest].Member[HashableBaseModel]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
@@ -133,6 +154,9 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
     - Member[implementations].Member[semantic_manifest].Member[PydanticProjectConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_manifest].Member[PydanticSavedQuery]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
     - Member[implementations].Member[semantic_manifest].Member[PydanticSemanticManifest]
@@ -237,6 +261,15 @@ extensions:
     - Member[validations].Member[entities].Member[ValidationIssue]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
+    - Member[validations].Member[labels].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[labels].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[labels].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
     - Member[validations].Member[measures].Member[FileContext]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
@@ -309,6 +342,18 @@ extensions:
     - Member[validations].Member[reserved_keywords].Member[ValidationIssue]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
+    - Member[validations].Member[saved_query].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[saved_query].Member[SavedQueryContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[saved_query].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[saved_query].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
     - Member[validations].Member[semantic_manifest_validator].Member[SemanticManifestValidationResults]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
@@ -349,6 +394,9 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
     - Member[validations].Member[validator_helpers].Member[MetricContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[SavedQueryContext]
   - - pydantic.BaseModel~Subclass
     - dbt_semantic_interfaces
     - Member[validations].Member[validator_helpers].Member[SemanticManifestValidationResults]

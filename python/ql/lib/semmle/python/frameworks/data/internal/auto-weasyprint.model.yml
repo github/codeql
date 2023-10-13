@@ -13,3 +13,12 @@ extensions:
   - - io.StringIO~Subclass
     - weasyprint
     - Member[text].Member[fonts].Member[BytesIO]
+  - - xml.etree.ElementTree~Subclass
+    - weasyprint
+    - Member[draw].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - weasyprint
+    - Member[images].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - weasyprint
+    - Member[svg].Member[ElementTree]

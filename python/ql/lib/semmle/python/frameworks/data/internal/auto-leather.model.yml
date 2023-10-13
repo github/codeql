@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - leather
+    - Member[axis].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - leather
+    - Member[chart].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - leather
+    - Member[grid].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - leather
+    - Member[shapes].Member[bars].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - leather
+    - Member[shapes].Member[base].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - leather
+    - Member[shapes].Member[columns].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - leather
+    - Member[shapes].Member[dots].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - leather
+    - Member[shapes].Member[line].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - leather
+    - Member[svg].Member[ET]

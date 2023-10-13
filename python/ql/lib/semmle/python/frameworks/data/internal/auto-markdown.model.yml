@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - markdown
+    - Member[blockparser].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - markdown
+    - Member[blockprocessors].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - markdown
+    - Member[inlinepatterns].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - markdown
+    - Member[treeprocessors].Member[etree]

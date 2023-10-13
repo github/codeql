@@ -13,3 +13,6 @@ extensions:
   - - requests.models.Response~Subclass
     - google
     - Member[cloud].Member[storage].Member[batch].Member[_FutureResponse]
+  - - xml.etree.ElementTree~Subclass
+    - google
+    - Member[resumable_media].Member[_upload].Member[ElementTree]

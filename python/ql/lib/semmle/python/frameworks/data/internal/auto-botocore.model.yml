@@ -40,3 +40,12 @@ extensions:
   - - urllib3.PoolManager~Subclass
     - botocore
     - Member[httpsession].Member[PoolManager]
+  - - xml.etree.ElementTree~Subclass
+    - botocore
+    - Member[handlers].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - botocore
+    - Member[parsers].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - botocore
+    - Member[serialize].Member[ElementTree]

@@ -10,3 +10,21 @@ extensions:
   - - io.StringIO~Subclass
     - xmlschema
     - Member[resources].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - xmlschema
+    - Member[documents].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - xmlschema
+    - Member[resources].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - xmlschema
+    - Member[resources].Member[PyElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - xmlschema
+    - Member[validators].Member[groups].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - xmlschema
+    - Member[validators].Member[simple_types].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - xmlschema
+    - Member[validators].Member[xsdbase].Member[ElementTree]

@@ -7,3 +7,102 @@ extensions:
   - - io.StringIO~Subclass
     - nltk
     - Member[toolbox].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[chunk].Member[named_entity].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[chunk].Member[named_entity].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[api].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[bcp47].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[bcp47].Member[et]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[bnc].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[bracket_parse].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[chasen].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[childes].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[chunked].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[cmudict].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[conll].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[dependency].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[indian].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[nombank].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[nps_chat].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[panlex_swadesh].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[plaintext].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[ppattach].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[propbank].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[rte].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[senseval].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[sinica_treebank].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[string_category].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[switchboard].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[tagged].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[toolbox].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[util].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[wordlist].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[xmldocs].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[corpus].Member[reader].Member[ycoe].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[downloader].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - nltk
+    - Member[internals].Member[ElementTree]

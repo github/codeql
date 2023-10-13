@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - saml2
+    - Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - saml2
+    - Member[pack].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - saml2
+    - Member[soap].Member[ElementTree]

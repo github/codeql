@@ -10,3 +10,18 @@ extensions:
   - - http.server.BaseHTTPRequestHandler~Subclass
     - msal
     - Member[oauth2cli].Member[authcode].Member[_AuthCodeHandler]
+  - - xml.etree.ElementTree~Subclass
+    - msal
+    - Member[application].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - msal
+    - Member[mex].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - msal
+    - Member[mex].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - msal
+    - Member[wstrust_response].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - msal
+    - Member[wstrust_response].Member[ElementTree]

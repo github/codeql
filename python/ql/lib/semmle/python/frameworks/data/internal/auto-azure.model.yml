@@ -46,3 +46,15 @@ extensions:
   - - io.StringIO~Subclass
     - azure
     - Member[storage].Member[blob].Member[_shared].Member[uploads].Member[BytesIO]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[core].Member[pipeline].Member[policies].Member[_universal].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[core].Member[pipeline].Member[transport].Member[_base].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[core].Member[rest].Member[_helpers].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[storage].Member[blob].Member[_generated].Member[_serialization].Member[ET]

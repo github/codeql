@@ -22,3 +22,9 @@ extensions:
   - - wsgiref.simple_server.WSGIServer~Subclass
     - mkdocs
     - Member[plugins].Member[LiveReloadServer]
+  - - xml.etree.ElementTree~Subclass
+    - mkdocs
+    - Member[structure].Member[pages].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - mkdocs
+    - Member[structure].Member[pages].Member[etree]

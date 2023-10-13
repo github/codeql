@@ -4,9 +4,6 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
-  - - io.StringIO~Subclass
-    - ocrmypdf
-    - Member[helpers].Member[StringIO]
   - - xml.etree.ElementTree~Subclass
-    - ocrmypdf
-    - Member[hocrtransform].Member[ElementTree]
+    - rdflib
+    - Member[compat].Member[etree]

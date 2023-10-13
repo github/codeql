@@ -49,3 +49,6 @@ extensions:
   - - logging.Logger~Subclass
     - ddtrace
     - Member[internal].Member[logger].Member[DDLogger]
+  - - xml.etree.ElementTree~Subclass
+    - ddtrace
+    - Member[vendor].Member[psutil].Member[_psbsd].Member[ET]

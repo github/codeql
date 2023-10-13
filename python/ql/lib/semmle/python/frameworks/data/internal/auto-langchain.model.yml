@@ -76,3 +76,6 @@ extensions:
   - - sqlalchemy.orm.Session~Subclass
     - langchain
     - Member[vectorstores].Member[pgvector].Member[Session]
+  - - xml.etree.ElementTree~Subclass
+    - langchain
+    - Member[output_parsers].Member[xml].Member[ET]

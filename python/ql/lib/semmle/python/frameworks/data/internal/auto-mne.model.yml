@@ -58,3 +58,12 @@ extensions:
   - - io.StringIO~Subclass
     - mne
     - Member[viz].Member[_brain].Member[_brain].Member[BytesIO]
+  - - xml.etree.ElementTree~Subclass
+    - mne
+    - Member[channels].Member[_dig_montage_utils].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - mne
+    - Member[channels].Member[_standard_montage_utils].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - mne
+    - Member[io].Member[nedf].Member[nedf].Member[ElementTree]

@@ -28,3 +28,9 @@ extensions:
   - - io.StringIO~Subclass
     - datasets
     - Member[utils].Member[py_utils].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - datasets
+    - Member[download].Member[streaming_download_manager].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - datasets
+    - Member[download].Member[streaming_download_manager].Member[ElementTree]

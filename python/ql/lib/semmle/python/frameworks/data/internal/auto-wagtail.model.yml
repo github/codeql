@@ -2428,6 +2428,33 @@ extensions:
   - - io.StringIO~Subclass
     - wagtail
     - Member[models].Member[StringIO]
+  - - rest_framework.exceptions.APIException~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[convert_alias].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[copy].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[copy_for_translation].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[create_alias].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[delete].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[move].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[publish].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[revert_to_page_revision].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[unpublish].Member[ValidationError]
   - - rest_framework.response.Response~Subclass
     - wagtail
     - Member[admin].Member[api].Member[actions].Member[convert_alias].Member[Response]
