@@ -188,13 +188,6 @@ private predicate lib2xmlOptionLocalTaintStep(DataFlow::Node source, DataFlow::N
   exists(MemberRefExpr rawValue | rawValue.getMember().(VarDecl).getName() = "rawValue" |
     source.asExpr() = rawValue.getBase() and sink.asExpr() = rawValue
   )
-  or
-  exists(ApplyExpr int32Init |
-    int32Init.getStaticTarget().(Initializer).getEnclosingDecl().asNominalTypeDecl().getName() =
-      "SignedInteger"
-  |
-    source.asExpr() = int32Init.getAnArgument().getExpr() and sink.asExpr() = int32Init
-  )
 }
 
 /**
