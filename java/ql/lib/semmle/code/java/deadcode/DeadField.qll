@@ -9,7 +9,7 @@ import semmle.code.java.frameworks.jackson.JacksonSerializability
  *
  * This defines the set of fields for which we will determine liveness.
  */
-library class SourceField extends Field {
+class SourceField extends Field {
   SourceField() { this.fromSource() }
 }
 

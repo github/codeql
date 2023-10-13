@@ -654,7 +654,7 @@ class DisposeMethod extends Method {
 }
 
 /** A method with the signature `void Dispose(bool)`. */
-library class DisposeBoolMethod extends Method {
+class DisposeBoolMethod extends Method {
   DisposeBoolMethod() {
     this.hasName("Dispose") and
     this.getReturnType() instanceof VoidType and

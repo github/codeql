@@ -140,7 +140,7 @@ class NamespaceClass extends RefType {
  * This represents the set of classes and interfaces for which we will determine liveness. Each
  * `SourceClassOrInterfacce` will either be a `LiveClass` or `DeadClass`.
  */
-library class SourceClassOrInterface extends ClassOrInterface {
+class SourceClassOrInterface extends ClassOrInterface {
   SourceClassOrInterface() { this.fromSource() }
 }
 
