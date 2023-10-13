@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.DataFlow2
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Holds if `array` is initialized only with constants.
@@ -113,34 +114,7 @@ private class StaticInitializationVectorSource extends DataFlow::Node {
  * A sink that initializes a cipher with unsafe parameters.
  */
 private class EncryptionInitializationSink extends DataFlow::Node {
-  EncryptionInitializationSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.hasQualifiedName("javax.crypto", "Cipher", "init") and
-      m.getParameterType(2)
-          .(RefType)
-          .hasQualifiedName("java.security.spec", "AlgorithmParameterSpec") and
-      ma.getArgument(2) = this.asExpr()
-    )
-  }
-}
-
-/**
- * Holds if `fromNode` to `toNode` is a dataflow step
- * that creates cipher's parameters with initialization vector.
- */
-private predicate createInitializationVectorSpecStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(ConstructorCall cc, RefType type |
-    cc = toNode.asExpr() and type = cc.getConstructedType()
-  |
-    type.hasQualifiedName("javax.crypto.spec", "IvParameterSpec") and
-    cc.getArgument(0) = fromNode.asExpr()
-    or
-    type.hasQualifiedName("javax.crypto.spec", ["GCMParameterSpec", "RC2ParameterSpec"]) and
-    cc.getArgument(1) = fromNode.asExpr()
-    or
-    type.hasQualifiedName("javax.crypto.spec", "RC5ParameterSpec") and
-    cc.getArgument(3) = fromNode.asExpr()
-  )
+  EncryptionInitializationSink() { sinkNode(this, "encryption-iv") }
 }
 
 /**
@@ -156,10 +130,6 @@ deprecated class StaticInitializationVectorConfig extends TaintTracking::Configu
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    createInitializationVectorSpecStep(fromNode, toNode)
-  }
 }
 
 /**
@@ -169,10 +139,6 @@ module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof StaticInitializationVectorSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }
-
-  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    createInitializationVectorSpecStep(fromNode, toNode)
-  }
 }
 
 /** Tracks the flow from a static initialization vector to the initialization of a cipher */
