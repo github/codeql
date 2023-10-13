@@ -36,11 +36,11 @@ func testRawRepresentable() {
 
   sink(arg: rr1)
   sink(arg: rr2)
-  sink(arg: rr3) // $ MISSING: tainted=
+  sink(arg: rr3) // $ tainted=35
 
   sink(arg: rr1.rawValue)
   sink(arg: rr2.rawValue)
-  sink(arg: rr3.rawValue) // $ MISSING: tainted=
+  sink(arg: rr3.rawValue) // $ tainted=35
 }
 
 // ---
@@ -57,10 +57,10 @@ func testOptionSet() {
 	sink(arg: MyOptionSet.red)
 	sink(arg: MyOptionSet([.red, .green]))
 	sink(arg: MyOptionSet(rawValue: 0))
-	sink(arg: MyOptionSet(rawValue: sourceUInt())) // $ MISSING: tainted=
+	sink(arg: MyOptionSet(rawValue: sourceUInt())) // $ tainted=60
 
 	sink(arg: MyOptionSet.red.rawValue)
 	sink(arg: MyOptionSet([.red, .green]).rawValue)
 	sink(arg: MyOptionSet(rawValue: 0).rawValue)
-	sink(arg: MyOptionSet(rawValue: sourceUInt()).rawValue) // $ MISSING: tainted=
+	sink(arg: MyOptionSet(rawValue: sourceUInt()).rawValue) // $ tainted=65
 }
