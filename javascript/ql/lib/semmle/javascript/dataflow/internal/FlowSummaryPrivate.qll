@@ -38,31 +38,42 @@ ArgumentPosition callbackSelfParameterPosition() { result.isFunctionSelfReferenc
 SummaryCall summaryDataFlowCall(Private::SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
-DataFlowType getContentType(ContentSet c) { any() }
+DataFlowType getContentType(ContentSet c) { result = TAnyType() and exists(c) }
 
 /** Gets the type of the parameter at the given position. */
 bindingset[c, pos]
-DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) { any() }
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
+  // TODO: we could assign a more precise type to the function self-reference parameter
+  result = TAnyType() and exists(c) and exists(pos)
+}
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c, rk]
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }
+DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
+  result = TAnyType() and exists(c) and exists(rk)
+}
 
 /**
  * Gets the type of the `i`th parameter in a synthesized call that targets a
  * callback of type `t`.
  */
 bindingset[t, pos]
-DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { any() }
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
+  result = TAnyType() and exists(t) and exists(pos)
+}
 
 /**
  * Gets the return type of kind `rk` in a synthesized call that targets a
  * callback of type `t`.
  */
-DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { any() }
+DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
+  result = TAnyType() and exists(t) and exists(rk)
+}
 
 /** Gets the type of synthetic global `sg`. */
-DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }
+DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) {
+  result = TAnyType() and exists(sg)
+}
 
 /**
  * Holds if an external flow summary exists for `c` with input specification

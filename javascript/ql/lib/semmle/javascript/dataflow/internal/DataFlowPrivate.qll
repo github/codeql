@@ -296,7 +296,7 @@ DataFlowCallable nodeGetEnclosingCallable(Node node) {
   node = TGenericSynthesizedNode(_, _, result)
 }
 
-private newtype TDataFlowType =
+newtype TDataFlowType =
   TFunctionType(Function f) or
   TAnyType()
 
