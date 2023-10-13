@@ -1,3 +1,10 @@
+## 0.3.1
+
+### Minor Analysis Improvements
+
+* Added sinks for the GRDB database library to the `swift/hardcoded-key` query.
+* Added sqlite3 and SQLite.swift sinks and flow summaries for the `swift/cleartext-storage-database` query.
+
 ## 0.3.0
 
 ### Minor Analysis Improvements
