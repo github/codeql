@@ -1993,6 +1993,10 @@ The following built-in predicates are members of type ``int``:
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 | ``toUnicode``           | string      |                | The result is the unicode character for the receiver seen as a unicode code point.                             |
 +-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
+| ``codePointAt``         | int         | int            | The result is the unicode code point at the index given by the argument.                                       |
++-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
+| ``codePointCount``      | int         | int, int       | The result is the number of unicode code points in the receiver between the given indices.                     |
++-------------------------+-------------+----------------+----------------------------------------------------------------------------------------------------------------+
 
 The leftmost bit after ``bitShiftRightSigned`` depends on sign extension, whereas after ``bitShiftRight`` it is zero.
 
