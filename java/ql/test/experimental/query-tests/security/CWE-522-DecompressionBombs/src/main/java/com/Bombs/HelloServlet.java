@@ -10,6 +10,8 @@ import static com.Bombs.ZipHandler.*;
 
 import java.io.*;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.zip.DataFormatException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -36,6 +38,16 @@ public class HelloServlet extends HttpServlet {
     ZipInputStreamUnsafe(remoteFile.getInputStream());
     GZipInputStreamUnsafe(request.getPart("zipFile").getInputStream());
     InflaterInputStreamUnsafe(request.getPart("zipFile").getInputStream());
+    try {
+      InflaterUnsafe(request.getParameter("data").getBytes(StandardCharsets.UTF_8));
+    } catch (DataFormatException e) {
+      throw new RuntimeException(e);
+    }
+    try {
+      ZipFile1(request.getParameter("zipFileName"));
+    } catch (DataFormatException e) {
+      throw new RuntimeException(e);
+    }
 
     // Zip4j
     zip4jZipInputStream(remoteFile.getInputStream());
