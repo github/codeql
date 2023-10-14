@@ -1,35 +1,14 @@
 import go
 import TestUtilities.InlineExpectationsTest
+import TestUtilities.InlineFlowTest
 
-class SourceFunction extends Function {
-  SourceFunction() { this.getName() = "source" }
-}
+module ValueFlow = DataFlow::Global<DefaultFlowConfig>;
 
-class SinkFunction extends Function {
-  SinkFunction() { this.getName() = "sink" }
-}
+module PromotedMethodsTest implements TestSig {
+  string getARelevantTag() { result = "promotedmethods" }
 
-class TestConfig extends DataFlow::Configuration {
-  TestConfig() { this = "testconfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source = any(SourceFunction f).getACall().getAResult()
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(SinkFunction f).getACall().getAnArgument()
-  }
-}
-
-class PromotedMethodsTest extends InlineExpectationsTest {
-  PromotedMethodsTest() { this = "PromotedMethodsTest" }
-
-  override string getARelevantTag() { result = "promotedmethods" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(TestConfig config, DataFlow::Node source, DataFlow::Node sink |
-      config.hasFlow(source, sink)
-    |
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(DataFlow::Node source, DataFlow::Node sink | ValueFlow::flow(source, sink) |
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = sink.toString() and
@@ -38,3 +17,5 @@ class PromotedMethodsTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<PromotedMethodsTest>

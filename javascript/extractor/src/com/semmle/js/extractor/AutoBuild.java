@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -221,6 +222,7 @@ public class AutoBuild {
   private boolean installDependencies = false;
   private final VirtualSourceRoot virtualSourceRoot;
   private ExtractorState state;
+  private final long maximumFileSizeInMegabytes;
 
   /** The default timeout when installing dependencies, in milliseconds. */
   public static final int INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT = 10 * 60 * 1000; // 10 minutes
@@ -235,6 +237,7 @@ public class AutoBuild {
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
     this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS"));
     this.virtualSourceRoot = makeVirtualSourceRoot();
+    this.maximumFileSizeInMegabytes = EnvironmentVariables.getMegabyteCountFromPrefixedEnv("MAX_FILE_SIZE", 10);
     setupFileTypes();
     setupXmlMode();
     setupMatchers();
@@ -445,8 +448,8 @@ public class AutoBuild {
   }
 
   /**
-   * Returns whether the autobuilder has seen code. 
-   * This is overridden in tests. 
+   * Returns whether the autobuilder has seen code.
+   * This is overridden in tests.
    */
   protected boolean hasSeenCode() {
     return seenCode;
@@ -740,12 +743,12 @@ public class AutoBuild {
       dependencyInstallationResult = this.preparePackagesAndDependencies(filesToExtract);
     }
     Set<Path> extractedFiles = new LinkedHashSet<>();
-    
+
     // Extract HTML files as they may contain TypeScript
     CompletableFuture<?> htmlFuture = extractFiles(
         filesToExtract, extractedFiles, extractors,
         f -> extractors.fileType(f) == FileType.HTML);
-    
+
     htmlFuture.join(); // Wait for HTML extraction to be finished.
 
     // extract TypeScript projects and files
@@ -1228,6 +1231,11 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       warn("Skipping " + file + ", which does not exist.");
       return;
     }
+    long fileSize = f.length();
+    if (fileSize > 1_000_000L * this.maximumFileSizeInMegabytes) {
+      warn("Skipping " + file + " because it is too large (" + StringUtil.printFloat(fileSize / 1_000_000.0) + " MB). The limit is " + this.maximumFileSizeInMegabytes + " MB.");
+      return;
+    }
 
     try {
       long start = logBeginProcess("Extracting " + file);
@@ -1237,19 +1245,29 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       List<ParseError> errors = loc == null ? Collections.emptyList() : loc.getParseErrors();
       for (ParseError err : errors) {
         String msg = "A parse error occurred: " + StringUtil.quoteWithBackticks(err.getMessage().trim())
-            + ". Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
-        // file, relative to the source root
-        DiagnosticLocation.Builder builder = DiagnosticLocation.builder();
+            + ".";
+
+        Optional<DiagnosticLocation> diagLoc = Optional.empty();
         if (file.startsWith(LGTM_SRC)) {
-          builder = builder.setFile(file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString());
-        }
-        DiagnosticLocation diagLoc = builder
+          diagLoc = DiagnosticLocation.builder()
+            .setFile(file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString()) // file, relative to the source root
             .setStartLine(err.getPosition().getLine())
             .setStartColumn(err.getPosition().getColumn() + 1) // convert from 0-based to 1-based
             .setEndLine(err.getPosition().getLine())
             .setEndColumn(err.getPosition().getColumn() + 1) // convert from 0-based to 1-based
-            .build();
-        writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc);
+            .build()
+            .getOk();
+    }
+    if (diagLoc.isPresent()) {
+      msg += " Check the syntax of the file. If the file is invalid, correct the error or "
+          + "[exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-"
+          + "your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
+      writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc.get());
+    } else {
+      msg += " The affected file is not located within the code being analyzed."
+          + (Env.systemEnv().isActions() ? " Please see the workflow run logs for more information." : "");
+      writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR);
+    }
       }
       logEndProcess(start, "Done extracting " + file);
     } catch (OutOfMemoryError oom) {

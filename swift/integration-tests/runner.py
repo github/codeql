@@ -43,6 +43,8 @@ def skipped(test):
 def main(opts):
     test_dirs = opts.test_dir or [this_dir]
     tests = [t for d in test_dirs for t in d.rglob("test.py") if not skipped(t)]
+    if opts.learn:
+        os.environ["CODEQL_INTEGRATION_TEST_LEARN"] = "true"
 
     if not tests:
         print("No tests found", file=sys.stderr)

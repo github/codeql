@@ -27,32 +27,32 @@ func testSpew(w io.Writer) {
 	p := Person{}
 	pUntrusted := getUntrustedStruct()
 
-	spew.Dump(pUntrusted)      // NOT OK
-	spew.Print(pUntrusted)     // NOT OK
-	spew.Println(pUntrusted)   // NOT OK
-	spew.Errorf(sUntrusted, p) // NOT OK
-	spew.Errorf(s, pUntrusted) // NOT OK
-	spew.Printf(sUntrusted, p) // NOT OK
-	spew.Printf(s, pUntrusted) // NOT OK
+	spew.Dump(pUntrusted)      // $ hasValueFlow="pUntrusted"
+	spew.Print(pUntrusted)     // $ hasValueFlow="pUntrusted"
+	spew.Println(pUntrusted)   // $ hasValueFlow="pUntrusted"
+	spew.Errorf(sUntrusted, p) // $ hasValueFlow="sUntrusted"
+	spew.Errorf(s, pUntrusted) // $ hasValueFlow="pUntrusted"
+	spew.Printf(sUntrusted, p) // $ hasValueFlow="sUntrusted"
+	spew.Printf(s, pUntrusted) // $ hasValueFlow="pUntrusted"
 
-	spew.Fdump(w, pUntrusted)      // NOT OK
-	spew.Fprint(w, pUntrusted)     // NOT OK
-	spew.Fprintln(w, pUntrusted)   // NOT OK
-	spew.Fprintf(w, sUntrusted, p) // NOT OK
-	spew.Fprintf(w, s, pUntrusted) // NOT OK
+	spew.Fdump(w, pUntrusted)      // $ hasValueFlow="pUntrusted"
+	spew.Fprint(w, pUntrusted)     // $ hasValueFlow="pUntrusted"
+	spew.Fprintln(w, pUntrusted)   // $ hasValueFlow="pUntrusted"
+	spew.Fprintf(w, sUntrusted, p) // $ hasValueFlow="sUntrusted"
+	spew.Fprintf(w, s, pUntrusted) // $ hasValueFlow="pUntrusted"
 
 	str1 := spew.Sdump(pUntrusted)
-	sinkString(str1) // NOT OK
+	sinkString(str1) // $ hasTaintFlow="str1"
 
 	str2 := spew.Sprint(pUntrusted)
-	sinkString(str2) // NOT OK
+	sinkString(str2) // $ hasTaintFlow="str2"
 
 	str3 := spew.Sprintf(sUntrusted, p)
-	sinkString(str3) // NOT OK
+	sinkString(str3) // $ hasTaintFlow="str3"
 
 	str4 := spew.Sprintf(s, pUntrusted)
-	sinkString(str4) // NOT OK
+	sinkString(str4) // $ hasTaintFlow="str4"
 
 	str5 := spew.Sprintln(pUntrusted)
-	sinkString(str5) // NOT OK
+	sinkString(str5) // $ hasTaintFlow="str5"
 }

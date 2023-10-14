@@ -1,6 +1,6 @@
 private import codeql.swift.generated.expr.BinaryExpr
 private import codeql.swift.elements.expr.Expr
-private import codeql.swift.elements.decl.AbstractFunctionDecl
+private import codeql.swift.elements.decl.Function
 
 /**
  * A Swift binary expression, that is, an expression that appears between its
@@ -23,7 +23,7 @@ class BinaryExpr extends Generated::BinaryExpr {
   /**
    * Gets the operator of this binary expression (the function that is called).
    */
-  AbstractFunctionDecl getOperator() { result = this.getStaticTarget() }
+  Function getOperator() { result = this.getStaticTarget() }
 
   /**
    * Gets an operand of this binary expression (left or right).
@@ -32,5 +32,5 @@ class BinaryExpr extends Generated::BinaryExpr {
 
   override string toString() { result = "... " + this.getFunction().toString() + " ..." }
 
-  override AbstractFunctionDecl getStaticTarget() { result = super.getStaticTarget() }
+  override Function getStaticTarget() { result = super.getStaticTarget() }
 }

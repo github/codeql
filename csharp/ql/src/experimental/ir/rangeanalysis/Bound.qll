@@ -41,7 +41,7 @@ abstract class Bound extends TBound {
   abstract Instruction getInstruction(int delta);
 
   /** Gets an expression that equals this bound. */
-  Instruction getInstruction() { result = getInstruction(0) }
+  Instruction getInstruction() { result = this.getInstruction(0) }
 
   abstract Location getLocation();
 }

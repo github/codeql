@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 func main() {}
@@ -90,4 +91,49 @@ func good(req *http.Request) {
 		converted := template.HTML("<b>" + template.HTMLEscapeString(src) + "</b>")
 		checkError(tmpl.Execute(os.Stdout, converted))
 	}
+}
+
+// good: the following example demonstrates data flow from untrusted input
+// to a passthrough type and data flow from a passthrough type to
+// a template, but crucially no data flow from the untrusted input to the
+// template without a sanitizer.
+func getId(r *http.Request) string {
+	return r.Form.Get("id") // untrusted
+}
+
+func passthrough(x string) template.HTML {
+	return template.HTML(x) // passthrough type
+}
+
+func sink(wr http.ResponseWriter, x any) {
+	tmpl, _ := template.New("test").Parse(`Hello, {{.}}\n`)
+	tmpl.Execute(wr, x) // template sink
+}
+
+func source2waypoint() {
+	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		x := getId(r)
+		passthrough(x) // untrusted input goes to the passthrough type
+	})
+}
+
+func waypoint2sink() {
+	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		// passthrough type with trusted input goes to the sink
+		sink(w, passthrough("not tainted"))
+	})
+}
+
+func source2sinkSanitized() {
+	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+		x := getId(r) // untrusted input
+		// TODO: We expected this test to fail with the current implementation, since the A->C
+		// taint tracking configuration does not actually check for sanitizers. However, the
+		// sink in `sink` only gets flagged if we remove the line with the sanitizer here.
+		// While this behaviour is desired, it's unclear why it works right now.
+		// Once we rewrite the query using the new data flow implementation, we should
+		// probably use flow states for this query, which will then also address this issue.
+		y, _ := strconv.Atoi(x) // sanitizer
+		sink(w, y)              // sink
+	})
 }

@@ -28,8 +28,10 @@ routeHandler
 | src/returned-handler.js:5:12:5:32 | functio ... res) {} |
 | src/tst.js:4:23:4:43 | functio ... res) {} |
 | src/tst.js:74:5:76:5 | functio ... \\n\\n    } |
+| src/tst.js:79:5:81:5 | functio ... \\n\\n    } |
 | src/tst.js:91:5:93:5 | functio ... \\n\\n    } |
 | src/tst.js:116:16:118:9 | functio ...       } |
+| src/tst.js:124:16:126:9 | functio ...       } |
 | src/tst.js:142:16:144:9 | functio ...       } |
 routeHandlerCandidate
 | src/RouterExample.js:4:65:10:1 | (req, r ... ;\\n  }\\n} |

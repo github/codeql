@@ -15,16 +15,16 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class InsufficientHashIterationsSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for insufficient hash interation vulnerabilities.
+ * A barrier for insufficient hash interation vulnerabilities.
  */
-abstract class InsufficientHashIterationsSanitizer extends DataFlow::Node { }
+abstract class InsufficientHashIterationsBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class InsufficientHashIterationsAdditionalTaintStep extends Unit {
+class InsufficientHashIterationsAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to insufficient hash interation vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
@@ -36,7 +36,7 @@ class InsufficientHashIterationsAdditionalTaintStep extends Unit {
 private class CryptoSwiftHashIterationsSink extends InsufficientHashIterationsSink {
   CryptoSwiftHashIterationsSink() {
     // `iterations` arg in `init` is a sink
-    exists(NominalTypeDecl c, ConstructorDecl f, CallExpr call |
+    exists(NominalTypeDecl c, Initializer f, CallExpr call |
       c.getName() = ["PBKDF1", "PBKDF2"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and

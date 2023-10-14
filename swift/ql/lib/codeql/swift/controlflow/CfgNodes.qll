@@ -136,7 +136,7 @@ class PropertyGetterCfgNode extends CfgNode {
 
   CfgNode getBase() { result.getAst() = n.getBase() }
 
-  AccessorDecl getAccessorDecl() { result = n.getAccessorDecl() }
+  Accessor getAccessor() { result = n.getAccessor() }
 }
 
 /** A control-flow node that wraps a property setter. */
@@ -149,7 +149,7 @@ class PropertySetterCfgNode extends CfgNode {
 
   CfgNode getSource() { result.getAst() = n.getAssignExpr().getSource() }
 
-  AccessorDecl getAccessorDecl() { result = n.getAccessorDecl() }
+  Accessor getAccessor() { result = n.getAccessor() }
 }
 
 class PropertyObserverCfgNode extends CfgNode {
@@ -161,7 +161,7 @@ class PropertyObserverCfgNode extends CfgNode {
 
   CfgNode getSource() { result.getAst() = n.getAssignExpr().getSource() }
 
-  AccessorDecl getAccessorDecl() { result = n.getObserver() }
+  Accessor getAccessor() { result = n.getObserver() }
 }
 
 class ApplyExprCfgNode extends ExprCfgNode {
@@ -171,7 +171,7 @@ class ApplyExprCfgNode extends ExprCfgNode {
 
   CfgNode getQualifier() { result.getAst() = e.getQualifier() }
 
-  AbstractFunctionDecl getStaticTarget() { result = e.getStaticTarget() }
+  Callable getStaticTarget() { result = e.getStaticTarget() }
 
   Expr getFunction() { result = e.getFunction() }
 }

@@ -13,29 +13,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import NumericCastCommon
-
-module NumericCastFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
-    sink.asExpr() instanceof VarAccess
-  }
-
-  predicate isBarrier(DataFlow::Node node) {
-    boundedRead(node.asExpr()) or
-    castCheck(node.asExpr()) or
-    node.getType() instanceof SmallType or
-    smallExpr(node.asExpr()) or
-    node.getEnclosingCallable() instanceof HashCodeMethod or
-    exists(RightShiftOp e | e.getShiftedVariable().getAnAccess() = node.asExpr())
-  }
-}
-
-module NumericCastFlow = TaintTracking::Global<NumericCastFlowConfig>;
-
+import semmle.code.java.security.NumericCastTaintedQuery
 import NumericCastFlow::PathGraph
 
 from NumericCastFlow::PathNode source, NumericCastFlow::PathNode sink, NumericNarrowingCastExpr exp

@@ -13,8 +13,8 @@ void arithAssignments(int source1, int clean1) {
   source1++;
   ++source1;
   source1 += 1;
-  sink(source1); // $ ast,ir
-  sink(++source1); // $ ast,ir
+  sink(source1); // $ ast ir=12:13 ir=12:22
+  sink(++source1); // $ ast ir=12:13 ir=12:22
 }
 
 // --- globals ---
@@ -134,7 +134,7 @@ void pointer_test() {
 	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast,ir
+	sink(*p3); // $ SPURIOUS: ast
 }
 
 // --- return values ---
@@ -693,4 +693,21 @@ void test_argument_source_field_to_obj() {
 	sink(s); // $ SPURIOUS: ast,ir
 	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
+}
+
+namespace strings {
+	void test_write_to_read_then_incr_then_deref() {
+		char* s = source();
+		char* p;
+		*p++ = *s;
+		sink(p); // $ ast ir
+	}
+}
+
+char * strncpy (char *, const char *, unsigned long);
+
+void test_strncpy(char* d, char* s) {
+	argument_source(s);
+	strncpy(d, s, 16);
+	sink(d); // $ ast ir
 }

@@ -13,19 +13,19 @@ private class StandardDeallocationFunction extends DeallocationFunction {
   int freedArg;
 
   StandardDeallocationFunction() {
-    hasGlobalOrStdOrBslName([
+    this.hasGlobalOrStdOrBslName([
         // --- C library allocation
         "free", "realloc"
       ]) and
     freedArg = 0
     or
-    hasGlobalName([
+    this.hasGlobalName([
         // --- OpenSSL memory allocation
         "CRYPTO_free", "CRYPTO_secure_free"
       ]) and
     freedArg = 0
     or
-    hasGlobalOrStdName([
+    this.hasGlobalOrStdName([
         // --- Windows Memory Management for Windows Drivers
         "ExFreePoolWithTag", "ExDeleteTimer", "IoFreeMdl", "IoFreeWorkItem", "IoFreeErrorLogEntry",
         "MmFreeContiguousMemory", "MmFreeContiguousMemorySpecifyCache", "MmFreeNonCachedMemory",
@@ -44,7 +44,7 @@ private class StandardDeallocationFunction extends DeallocationFunction {
       ]) and
     freedArg = 0
     or
-    hasGlobalOrStdName([
+    this.hasGlobalOrStdName([
         // --- Windows Memory Management for Windows Drivers
         "ExFreeToLookasideListEx", "ExFreeToPagedLookasideList", "ExFreeToNPagedLookasideList",
         // --- NetBSD pool manager
@@ -52,7 +52,7 @@ private class StandardDeallocationFunction extends DeallocationFunction {
       ]) and
     freedArg = 1
     or
-    hasGlobalOrStdName(["HeapFree", "HeapReAlloc"]) and
+    this.hasGlobalOrStdName(["HeapFree", "HeapReAlloc"]) and
     freedArg = 2
   }
 
@@ -65,9 +65,9 @@ private class StandardDeallocationFunction extends DeallocationFunction {
 private class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
   DeallocationFunction target;
 
-  CallDeallocationExpr() { target = getTarget() }
+  CallDeallocationExpr() { target = this.getTarget() }
 
-  override Expr getFreedExpr() { result = getArgument(target.getFreedArg()) }
+  override Expr getFreedExpr() { result = this.getArgument(target.getFreedArg()) }
 }
 
 /**
@@ -76,7 +76,7 @@ private class CallDeallocationExpr extends DeallocationExpr, FunctionCall {
 private class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
   DeleteDeallocationExpr() { this instanceof DeleteExpr }
 
-  override Expr getFreedExpr() { result = getExpr() }
+  override Expr getFreedExpr() { result = this.getExpr() }
 }
 
 /**
@@ -85,5 +85,5 @@ private class DeleteDeallocationExpr extends DeallocationExpr, DeleteExpr {
 private class DeleteArrayDeallocationExpr extends DeallocationExpr, DeleteArrayExpr {
   DeleteArrayDeallocationExpr() { this instanceof DeleteArrayExpr }
 
-  override Expr getFreedExpr() { result = getExpr() }
+  override Expr getFreedExpr() { result = this.getExpr() }
 }

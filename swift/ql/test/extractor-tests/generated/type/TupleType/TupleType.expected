@@ -1,3 +1,5 @@
+| (Builtin.IntLiteral, Builtin.IntLiteral) | getName: | (IntLiteral, IntLiteral) | getCanonicalType: | (Builtin.IntLiteral, Builtin.IntLiteral) | getNumberOfTypes: | 2 |
+| (Builtin.IntLiteral, Builtin.IntLiteral) | getName: | (IntLiteral, IntLiteral) | getCanonicalType: | (Builtin.IntLiteral, Builtin.IntLiteral) | getNumberOfTypes: | 2 |
 | (Int, Int, Int, Int, Int) | getName: | (Int, Int, Int, Int, Int) | getCanonicalType: | (Int, Int, Int, Int, Int) | getNumberOfTypes: | 5 |
 | (Int, String, Double) | getName: | (Int, String, Double) | getCanonicalType: | (Int, String, Double) | getNumberOfTypes: | 3 |
 | (Int, s: String, Double) | getName: | (Int, s: String, Double) | getCanonicalType: | (Int, s: String, Double) | getNumberOfTypes: | 3 |

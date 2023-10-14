@@ -72,12 +72,10 @@ private class ImportConfiguration extends DataFlow::Configuration {
   }
 }
 
-class ResolutionTest extends InlineExpectationsTest {
-  ResolutionTest() { this = "ResolutionTest" }
+module ResolutionTest implements TestSig {
+  string getARelevantTag() { result = "prints" }
 
-  override string getARelevantTag() { result = "prints" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     (
       exists(DataFlow::PathNode source, DataFlow::PathNode sink, ImportConfiguration config |
         config.hasFlowPath(source, sink) and
@@ -105,12 +103,10 @@ private string getTagForVersion(int version) {
   version = major_version()
 }
 
-class VersionSpecificResolutionTest extends InlineExpectationsTest {
-  VersionSpecificResolutionTest() { this = "VersionSpecificResolutionTest" }
+module VersionSpecificResolutionTest implements TestSig {
+  string getARelevantTag() { result = getTagForVersion(_) }
 
-  override string getARelevantTag() { result = getTagForVersion(_) }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     (
       exists(DataFlow::PathNode source, DataFlow::PathNode sink, ImportConfiguration config |
         config.hasFlowPath(source, sink) and
@@ -130,3 +126,5 @@ class VersionSpecificResolutionTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests<ResolutionTest, VersionSpecificResolutionTest>>

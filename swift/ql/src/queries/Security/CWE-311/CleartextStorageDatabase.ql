@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
- * @precision medium
+ * @precision high
  * @id swift/cleartext-storage-database
  * @tags security
  *       external/cwe/cwe-312

@@ -3,8 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["io.netty.util.internal", "PlatformDependent", False, "createTempFile", "(String,String,File)", "", "Argument[2]", "create-file", "ai-manual"]
-      - ["io.netty.util.internal", "SocketUtils", False, "connect", "(Socket,SocketAddress,int)", "", "Argument[1]", "open-url", "ai-manual"]
+      - ["io.netty.util.internal", "PlatformDependent", False, "createTempFile", "(String,String,File)", "", "Argument[2]", "path-injection", "ai-manual"]
+      - ["io.netty.util.internal", "SocketUtils", False, "connect", "(Socket,SocketAddress,int)", "", "Argument[1]", "request-forgery", "ai-manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

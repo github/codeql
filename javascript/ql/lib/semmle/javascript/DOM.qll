@@ -421,6 +421,9 @@ module DOM {
     t.startInProp("target") and
     result = domEventSource()
     or
+    t.startInProp(DataFlow::PseudoProperties::arrayElement()) and
+    result = domElementCollection()
+    or
     exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
   }
 

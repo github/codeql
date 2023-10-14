@@ -1,7 +1,7 @@
 import python
 import semmle.python.regex
 
-predicate part(Regex r, int start, int end, string kind) {
+predicate part(RegExp r, int start, int end, string kind) {
   r.alternation(start, end) and kind = "choice"
   or
   r.normalCharacter(start, end) and kind = "char"
@@ -23,6 +23,6 @@ predicate part(Regex r, int start, int end, string kind) {
   r.qualifiedItem(start, end, _, _) and kind = "qualified"
 }
 
-from Regex r, int start, int end, string kind
+from RegExp r, int start, int end, string kind
 where part(r, start, end, kind) and r.getLocation().getFile().getBaseName() = "test.py"
 select r.getText(), kind, start, end

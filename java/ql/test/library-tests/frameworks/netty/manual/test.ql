@@ -1,15 +1,16 @@
 import java
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineFlowTest
 
-class Conf extends DefaultTaintFlowConf {
-  override predicate isSource(DataFlow::Node node) {
-    super.isSource(node)
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    DefaultFlowConfig::isSource(node)
     or
-    node instanceof RemoteFlowSource
+    node instanceof ThreatModelFlowSource
   }
+
+  predicate isSink = DefaultFlowConfig::isSink/1;
 }
 
-class LegacyConfig extends EnableLegacyConfiguration {
-  LegacyConfig() { this instanceof Unit }
-}
+import FlowTest<DefaultFlowConfig, Config>

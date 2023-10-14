@@ -1,12 +1,13 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Entities.Expressions;
-using Semmle.Extraction.Kinds;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.CSharp.Entities.Expressions;
+using Semmle.Extraction.CSharp.Util;
+using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -205,10 +206,20 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 // this can happen in VB.NET
                 cx.ExtractionError($"Extracting default argument value 'object {parameter.Name} = default' instead of 'object {parameter.Name} = {defaultValue}'. The latter is not supported in C#.",
-                    null, null, severity: Util.Logging.Severity.Warning);
+                    null, null, severity: Semmle.Util.Logging.Severity.Warning);
 
                 // we're generating a default expression:
                 return Default.CreateGenerated(cx, parent, childIndex, location, ValueAsString(null));
+            }
+
+            if (type.SpecialType is SpecialType.None)
+            {
+                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+            }
+
+            if (type.SpecialType is SpecialType.System_DateTime)
+            {
+                return DateTimeObjectCreation.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
             }
 
             // const literal:
@@ -240,7 +251,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 var callType = GetCallType(Context, node);
                 if (callType == CallType.Dynamic)
                 {
-                    UserOperator.TryGetOperatorSymbol(method.Name, out var operatorName);
+                    method.TryGetOperatorSymbol(out var operatorName);
                     trapFile.dynamic_member_name(this, operatorName);
                     return;
                 }

@@ -8,9 +8,9 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import com.intellij.mock.MockProject
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
+import com.github.codeql.Kotlin2ComponentRegistrar
 
-@OptIn(ExperimentalCompilerApi::class)
-class KotlinExtractorComponentRegistrar : ComponentRegistrar {
+class KotlinExtractorComponentRegistrar : Kotlin2ComponentRegistrar() {
     override fun registerProjectComponents(
         project: MockProject,
         configuration: CompilerConfiguration

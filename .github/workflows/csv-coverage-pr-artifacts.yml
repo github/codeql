@@ -10,6 +10,7 @@ on:
       - "*/ql/src/**/*.qll"
       - "*/ql/lib/**/*.ql"
       - "*/ql/lib/**/*.qll"
+      - "*/ql/lib/ext/**/*.yml"
       - "misc/scripts/library-coverage/*.py"
       # input data files
       - "*/documentation/library-coverage/cwe-sink.csv"
@@ -30,11 +31,11 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github.event) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Clone self (github/codeql) - MERGE
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: merge
       - name: Clone self (github/codeql) - BASE
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
           path: base

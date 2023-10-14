@@ -192,13 +192,18 @@ private predicate typePrefixContains_ext_neq(ParameterizedPrefix pps, Parameteri
 }
 
 pragma[nomagic]
+private TTypeParam parameterizedPrefixWithWildcard(ParameterizedPrefix pps0, Wildcard s) {
+  result = TTypeParam(pps0, s)
+}
+
+pragma[nomagic]
 private predicate typePrefixContainsAux1(
   ParameterizedPrefix pps, ParameterizedPrefix ppt0, RefType s
 ) {
   exists(ParameterizedPrefix pps0 |
     typePrefixContains(pps0, ppt0) and
-    pps = TTypeParam(pps0, s) and
-    s instanceof Wildcard // manual magic, implied by `typeArgumentContains(_, s, t, _)`
+    // `s instanceof Wildcard` is manual magic, implied by `typeArgumentContains(_, s, t, _)`
+    pps = parameterizedPrefixWithWildcard(pps0, s)
   )
 }
 
@@ -304,7 +309,6 @@ private predicate hasSubtypeStar1(RefType t, RefType sub) {
 /**
  * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardLowerBound(sub)`.
  */
-pragma[assume_small_delta]
 pragma[nomagic]
 private predicate hasSubtypeStar2(RefType t, RefType sub) {
   sub = t and getAWildcardLowerBound(sub)
@@ -705,6 +709,12 @@ class Class extends ClassOrInterface {
     )
   }
 
+  /**
+   * Holds if this class is a Kotlin "file class", e.g. the class FooKt
+   * for top-level entities in Foo.kt.
+   */
+  predicate isFileClass() { file_class(this) }
+
   override string getAPrimaryQlClass() { result = "Class" }
 }
 
@@ -804,7 +814,9 @@ class AnonymousClass extends NestedClass {
     // Include super.toString, i.e. the name given in the database, because for Kotlin anonymous
     // classes we can get specialisations of anonymous generic types, and this will supply the
     // trailing type arguments.
-    result = "new " + this.getClassInstanceExpr().getTypeName() + "(...) { ... }" + super.toString()
+    result =
+      "new " + pragma[only_bind_out](this.getClassInstanceExpr().getTypeName()).toString() +
+        "(...) { ... }" + super.toString()
   }
 
   /**
@@ -980,6 +992,17 @@ private string getAPublicObjectMethodSignature() {
   )
 }
 
+pragma[nomagic]
+private predicate interfaceInheritsOverridingNonAbstractMethod(Interface interface, Method m) {
+  interface.inherits(m) and
+  not m.isAbstract() and
+  m.overrides(_)
+}
+
+bindingset[m]
+pragma[inline_late]
+private Method getAnOverridden(Method m) { m.overrides(result) }
+
 private Method getAnAbstractMethod(Interface interface) {
   interface.inherits(result) and
   result.isAbstract() and
@@ -988,9 +1011,8 @@ private Method getAnAbstractMethod(Interface interface) {
   // Make sure that there is no other non-abstract method
   // (e.g. `default`) which overrides the abstract one
   not exists(Method m |
-    interface.inherits(m) and
-    not m.isAbstract() and
-    m.overrides(result)
+    interfaceInheritsOverridingNonAbstractMethod(interface, m) and
+    result = getAnOverridden(m)
   )
 }
 
@@ -1239,6 +1261,7 @@ predicate notHaveIntersection(RefType t1, RefType t2) {
  * Holds if there is a common (reflexive, transitive) subtype of the erased
  * types `t1` and `t2`.
  */
+pragma[nomagic]
 predicate erasedHaveIntersection(RefType t1, RefType t2) {
   exists(SrcRefType commonSub |
     commonSub.getASourceSupertype*() = t1 and commonSub.getASourceSupertype*() = t2

@@ -73,37 +73,8 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
-
-/**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import codeql.swift.frameworks.StandardLibrary.Collection
-  private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
-  private import codeql.swift.frameworks.StandardLibrary.Data
-  private import codeql.swift.frameworks.StandardLibrary.FileManager
-  private import codeql.swift.frameworks.StandardLibrary.FilePath
-  private import codeql.swift.frameworks.StandardLibrary.InputStream
-  private import codeql.swift.frameworks.StandardLibrary.NsData
-  private import codeql.swift.frameworks.StandardLibrary.NsObject
-  private import codeql.swift.frameworks.StandardLibrary.NsString
-  private import codeql.swift.frameworks.StandardLibrary.NsUrl
-  private import codeql.swift.frameworks.StandardLibrary.Sequence
-  private import codeql.swift.frameworks.StandardLibrary.String
-  private import codeql.swift.frameworks.StandardLibrary.Url
-  private import codeql.swift.frameworks.StandardLibrary.UrlSession
-  private import codeql.swift.frameworks.StandardLibrary.WebView
-  private import codeql.swift.frameworks.Alamofire.Alamofire
-  private import codeql.swift.security.CleartextLoggingExtensions
-  private import codeql.swift.security.CleartextStorageDatabaseExtensions
-  private import codeql.swift.security.ECBEncryptionExtensions
-  private import codeql.swift.security.HardcodedEncryptionKeyExtensions
-  private import codeql.swift.security.PathInjectionExtensions
-  private import codeql.swift.security.PredicateInjectionExtensions
-  private import codeql.swift.security.StringLengthConflationExtensions
-  private import codeql.swift.security.WeakSensitiveDataHashingExtensions
-}
+private import FlowSummary as FlowSummary
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
  * A unit class for adding additional source model rows.
@@ -293,13 +264,15 @@ module CsvValidation {
     )
   }
 
-  private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
   }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSubtype() {
     exists(string pred, string row |
@@ -365,7 +338,7 @@ module CsvValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
+        getInvalidModelSubtype(), getInvalidModelColumnCount(), KindVal::getInvalidModelKind()
       ]
   }
 }
@@ -378,7 +351,7 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
-private string paramsStringPart(AbstractFunctionDecl c, int i) {
+private string paramsStringPart(Function c, int i) {
   i = -1 and result = "(" and exists(c)
   or
   exists(int n, string p | c.getParam(n).getType().toString() = p |
@@ -397,12 +370,10 @@ private string paramsStringPart(AbstractFunctionDecl c, int i) {
  * Parameter types are represented by their type erasure.
  */
 cached
-string paramsString(AbstractFunctionDecl c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
+string paramsString(Function c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 bindingset[func]
-predicate matchesSignature(AbstractFunctionDecl func, string signature) {
+predicate matchesSignature(Function func, string signature) {
   signature = "" or
   paramsString(func) = signature
 }
@@ -425,17 +396,17 @@ private Element interpretElement0(
   namespace = "" and // TODO: Fill out when we properly extract modules.
   (
     // Non-member functions
-    exists(AbstractFunctionDecl func |
+    exists(Function func |
       func.getName() = name and
       type = "" and
       matchesSignature(func, signature) and
       subtypes = false and
-      not result instanceof MethodDecl and
+      not result instanceof Method and
       result = func
     )
     or
     // Member functions
-    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, MethodDecl method |
+    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, Method method |
       method.getName() = name and
       method = declWithMethod.getAMember() and
       namedTypeDecl.getFullName() = type and
@@ -445,14 +416,6 @@ private Element interpretElement0(
       // member declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
       declWithMethod.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
-      or
-      // member declared in a type that's extended with a protocol that is the named type
-      exists(ExtensionDecl e |
-        e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithMethod.asNominalTypeDecl()
-      |
-        subtypes = true and
-        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
-      )
       or
       // member declared directly in the named type (or an extension of it)
       subtypes = false and
@@ -470,14 +433,6 @@ private Element interpretElement0(
       // field declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
       declWithField.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
-      or
-      // field declared in a type that's extended with a protocol that is the named type
-      exists(ExtensionDecl e |
-        e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithField.asNominalTypeDecl()
-      |
-        subtypes = true and
-        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
-      )
       or
       // field declared directly in the named type (or an extension of it)
       subtypes = false and
@@ -505,9 +460,33 @@ private predicate parseField(AccessPathToken c, Content::FieldContent f) {
   )
 }
 
+private predicate parseTuple(AccessPathToken c, Content::TupleContent t) {
+  c.getName() = "TupleElement" and
+  t.getIndex() = c.getAnArgument().toInt()
+}
+
+private predicate parseEnum(AccessPathToken c, Content::EnumContent e) {
+  c.getName() = "EnumElement" and
+  c.getAnArgument() = e.getSignature()
+  or
+  c.getName() = "OptionalSome" and
+  e.getSignature() = "some:0"
+}
+
 /** Holds if the specification component parses as a `Content`. */
 predicate parseContent(AccessPathToken component, Content content) {
   parseField(component, content)
+  or
+  parseTuple(component, content)
+  or
+  parseEnum(component, content)
+  or
+  // map legacy "ArrayElement" specification components to `CollectionContent`
+  component.getName() = "ArrayElement" and
+  content instanceof Content::CollectionContent
+  or
+  component.getName() = "CollectionElement" and
+  content instanceof Content::CollectionContent
 }
 
 cached

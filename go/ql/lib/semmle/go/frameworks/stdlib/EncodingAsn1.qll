@@ -9,8 +9,8 @@ module EncodingAsn1 {
   /** The `Marshal` or `MarshalWithParams` function in the `encoding/asn1` package. */
   private class MarshalFunction extends MarshalingFunction::Range {
     MarshalFunction() {
-      hasQualifiedName("encoding/asn1", "Marshal") or
-      hasQualifiedName("encoding/asn1", "MarshalWithParams")
+      this.hasQualifiedName("encoding/asn1", "Marshal") or
+      this.hasQualifiedName("encoding/asn1", "MarshalWithParams")
     }
 
     override FunctionInput getAnInput() { result.isParameter(0) }
@@ -23,8 +23,8 @@ module EncodingAsn1 {
   /** The `Unmarshal` or `UnmarshalWithParams` function in the `encoding/asn1` package. */
   private class UnmarshalFunction extends UnmarshalingFunction::Range {
     UnmarshalFunction() {
-      hasQualifiedName("encoding/asn1", "Unmarshal") or
-      hasQualifiedName("encoding/asn1", "UnmarshalWithParams")
+      this.hasQualifiedName("encoding/asn1", "Unmarshal") or
+      this.hasQualifiedName("encoding/asn1", "UnmarshalWithParams")
     }
 
     override FunctionInput getAnInput() { result.isParameter(0) }

@@ -123,7 +123,8 @@ private module Cached {
     TConstantWriteAccessSynth(Ast::AstNode parent, int i, string value) {
       mkSynthChild(ConstantWriteAccessKind(value), parent, i)
     } or
-    TDefinedExpr(Ruby::Unary g) { g instanceof @ruby_unary_definedquestion } or
+    TDefinedExprReal(Ruby::Unary g) { g instanceof @ruby_unary_definedquestion } or
+    TDefinedExprSynth(Ast::AstNode parent, int i) { mkSynthChild(DefinedExprKind(), parent, i) } or
     TDelimitedSymbolLiteral(Ruby::DelimitedSymbol g) or
     TDestructuredLeftAssignment(Ruby::DestructuredLeftAssignment g) {
       not strictcount(int i | exists(g.getParent().(Ruby::LeftAssignmentList).getChild(i))) = 1
@@ -228,7 +229,8 @@ private module Cached {
     TNilLiteralReal(Ruby::Nil g) or
     TNilLiteralSynth(Ast::AstNode parent, int i) { mkSynthChild(NilLiteralKind(), parent, i) } or
     TNoRegExpMatchExpr(Ruby::Binary g) { g instanceof @ruby_binary_bangtilde } or
-    TNotExpr(Ruby::Unary g) { g instanceof @ruby_unary_bang or g instanceof @ruby_unary_not } or
+    TNotExprReal(Ruby::Unary g) { g instanceof @ruby_unary_bang or g instanceof @ruby_unary_not } or
+    TNotExprSynth(Ast::AstNode parent, int i) { mkSynthChild(NotExprKind(), parent, i) } or
     TOptionalParameter(Ruby::OptionalParameter g) or
     TPair(Ruby::Pair g) or
     TParenthesizedExpr(Ruby::ParenthesizedStatements g) or
@@ -354,21 +356,21 @@ private module Cached {
         TBitwiseOrExprReal or TBitwiseXorExprReal or TBlockArgument or TBlockParameter or
         TBraceBlockReal or TBreakStmt or TCaseEqExpr or TCaseExpr or TCaseMatchReal or
         TCharacterLiteral or TClassDeclaration or TClassVariableAccessReal or TComplementExpr or
-        TComplexLiteral or TDefinedExpr or TDelimitedSymbolLiteral or TDestructuredLeftAssignment or
-        TDestructuredParameter or TDivExprReal or TDo or TDoBlock or TElementReference or
-        TElseReal or TElsif or TEmptyStmt or TEncoding or TEndBlock or TEnsure or TEqExpr or
-        TExponentExprReal or TFalseLiteral or TFile or TFindPattern or TFloatLiteral or TForExpr or
-        TForwardParameter or TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
-        THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExpr or
-        THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or
-        TIfReal or TIfModifierExpr or TInClauseReal or TInstanceVariableAccessReal or
-        TIntegerLiteralReal or TKeywordParameter or TLEExpr or TLShiftExprReal or TLTExpr or
-        TLambda or TLeftAssignmentList or TLine or TLocalVariableAccessReal or
-        TLogicalAndExprReal or TLogicalOrExprReal or TMethod or TMatchPattern or
-        TModuleDeclaration or TModuloExprReal or TMulExprReal or TNEExpr or TNextStmt or
-        TNilLiteralReal or TNoRegExpMatchExpr or TNotExpr or TOptionalParameter or TPair or
-        TParenthesizedExpr or TParenthesizedPattern or TRShiftExprReal or TRangeLiteralReal or
-        TRationalLiteral or TRedoStmt or TRegExpLiteral or TRegExpMatchExpr or
+        TComplexLiteral or TDefinedExprReal or TDelimitedSymbolLiteral or
+        TDestructuredLeftAssignment or TDestructuredParameter or TDivExprReal or TDo or TDoBlock or
+        TElementReference or TElseReal or TElsif or TEmptyStmt or TEncoding or TEndBlock or
+        TEnsure or TEqExpr or TExponentExprReal or TFalseLiteral or TFile or TFindPattern or
+        TFloatLiteral or TForExpr or TForwardParameter or TForwardArgument or TGEExpr or TGTExpr or
+        TGlobalVariableAccessReal or THashKeySymbolLiteral or THashLiteral or THashPattern or
+        THashSplatExpr or THashSplatNilParameter or THashSplatParameter or THereDoc or
+        TIdentifierMethodCall or TIfReal or TIfModifierExpr or TInClauseReal or
+        TInstanceVariableAccessReal or TIntegerLiteralReal or TKeywordParameter or TLEExpr or
+        TLShiftExprReal or TLTExpr or TLambda or TLeftAssignmentList or TLine or
+        TLocalVariableAccessReal or TLogicalAndExprReal or TLogicalOrExprReal or TMethod or
+        TMatchPattern or TModuleDeclaration or TModuloExprReal or TMulExprReal or TNEExpr or
+        TNextStmt or TNilLiteralReal or TNoRegExpMatchExpr or TNotExprReal or TOptionalParameter or
+        TPair or TParenthesizedExpr or TParenthesizedPattern or TRShiftExprReal or
+        TRangeLiteralReal or TRationalLiteral or TRedoStmt or TRegExpLiteral or TRegExpMatchExpr or
         TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or TRegularSuperCall or
         TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
         TScopeResolutionConstantAccess or TSelfReal or TSimpleParameterReal or
@@ -438,7 +440,7 @@ private module Cached {
     n = TClassVariableAccessReal(result, _) or
     n = TComplementExpr(result) or
     n = TComplexLiteral(result) or
-    n = TDefinedExpr(result) or
+    n = TDefinedExprReal(result) or
     n = TDelimitedSymbolLiteral(result) or
     n = TDestructuredLeftAssignment(result) or
     n = TDivExprReal(result) or
@@ -495,7 +497,7 @@ private module Cached {
     n = TNextStmt(result) or
     n = TNilLiteralReal(result) or
     n = TNoRegExpMatchExpr(result) or
-    n = TNotExpr(result) or
+    n = TNotExprReal(result) or
     n = TOptionalParameter(result) or
     n = TPair(result) or
     n = TParenthesizedExpr(result) or
@@ -585,6 +587,8 @@ private module Cached {
     or
     result = TConstantWriteAccessSynth(parent, i, _)
     or
+    result = TDefinedExprSynth(parent, i)
+    or
     result = TDivExprSynth(parent, i)
     or
     result = TElseSynth(parent, i)
@@ -616,6 +620,8 @@ private module Cached {
     result = TMulExprSynth(parent, i)
     or
     result = TNilLiteralSynth(parent, i)
+    or
+    result = TNotExprSynth(parent, i)
     or
     result = TRangeLiteralSynth(parent, i, _)
     or
@@ -789,9 +795,13 @@ class TNamespace = TClassDeclaration or TModuleDeclaration;
 
 class TOperation = TUnaryOperation or TBinaryOperation or TAssignment;
 
+class TDefinedExpr = TDefinedExprReal or TDefinedExprSynth;
+
 class TUnaryOperation =
   TUnaryLogicalOperation or TUnaryArithmeticOperation or TUnaryBitwiseOperation or TDefinedExpr or
       TSplatExpr or THashSplatExpr;
+
+class TNotExpr = TNotExprReal or TNotExprSynth;
 
 class TUnaryLogicalOperation = TNotExpr;
 

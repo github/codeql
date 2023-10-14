@@ -1,9 +1,9 @@
-using Semmle.Util;
-using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -267,7 +267,7 @@ namespace Semmle.Autobuild.Shared
 
         protected DiagnosticClassifier DiagnosticClassifier { get; }
 
-        private readonly ILogger logger = new ConsoleLogger(Verbosity.Info);
+        private readonly ILogger logger = new ConsoleLogger(Verbosity.Info, logThreadId: false);
 
         private readonly IDiagnosticsWriter diagnostics;
 

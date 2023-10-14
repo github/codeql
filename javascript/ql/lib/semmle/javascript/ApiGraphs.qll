@@ -153,12 +153,6 @@ module API {
      */
     DataFlow::SourceNode asSource() { Impl::use(this, result) }
 
-    /** DEPRECATED. This predicate has been renamed to `asSource`. */
-    deprecated DataFlow::SourceNode getAnImmediateUse() { result = this.asSource() }
-
-    /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource`. */
-    deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
-
     /**
      * Gets a call to the function represented by this API component.
      */
@@ -211,12 +205,6 @@ module API {
      * See `asSink()` for examples.
      */
     DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
-
-    /** DEPRECATED. This predicate has been renamed to `asSink`. */
-    deprecated DataFlow::Node getARhs() { result = this.asSink() }
-
-    /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink`. */
-    deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -491,6 +479,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this node.
      */
+    pragma[inline]
     predicate refersTo(Node that) { this.asSink() = that.getAValueReachableFromSource() }
 
     /**
@@ -621,12 +610,6 @@ module API {
     bindingset[this]
     EntryPoint() { any() }
 
-    /** DEPRECATED. This predicate has been renamed to `getASource`. */
-    deprecated DataFlow::SourceNode getAUse() { none() }
-
-    /** DEPRECATED. This predicate has been renamed to `getASink`. */
-    deprecated DataFlow::SourceNode getARhs() { none() }
-
     /** Gets a data-flow node where a value enters the current codebase through this entry-point. */
     DataFlow::SourceNode getASource() { none() }
 
@@ -635,9 +618,6 @@ module API {
 
     /** Gets an API-node for this entry point. */
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
-
-    /** DEPRECATED. Use `getANode()` instead. */
-    deprecated API::Node getNode() { result = this.getANode() }
   }
 
   /**

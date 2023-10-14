@@ -1,5 +1,5 @@
 int source();
-void sink(int); void sink(const int *); void sink(int **);
+void sink(int); void sink(const int *); void sink(int **); void indirect_sink(...);
 
 void intraprocedural_with_local_flow() {
   int t2;
@@ -626,5 +626,174 @@ void test_def_via_phi_read(bool b)
     use(buffer);
   }
   intPointerSource(buffer);
-  sink(buffer); // $ ast,ir
+  indirect_sink(buffer); // $ ast,ir
+}
+
+void test_static_local_1() {
+  static int x = source();
+  sink(x); // $ ast,ir
+}
+
+void test_static_local_2() {
+  static int x = source();
+  x = 0;
+  sink(x); // clean
+}
+
+void test_static_local_3() {
+  static int x = 0;
+  sink(x); // $ ir MISSING: ast
+  x = source();
+}
+
+void test_static_local_4() {
+  static int x = 0;
+  sink(x); // clean
+  x = source();
+  x = 0;
+}
+
+void test_static_local_5() {
+  static int x = 0;
+  sink(x); // $ ir MISSING: ast
+  x = 0;
+  x = source();
+}
+
+void test_static_local_6() {
+  static int s = source();
+  static int* ptr_to_s = &s;
+  sink(*ptr_to_s); // $ ir MISSING: ast
+}
+
+void test_static_local_7() {
+  static int s = source();
+  s = 0;
+  static int* ptr_to_s = &s;
+  sink(*ptr_to_s); // clean
+}
+
+void test_static_local_8() {
+  static int s;
+  static int* ptr_to_s = &s;
+  sink(*ptr_to_s); // $ ir MISSING: ast
+
+  s = source();
+}
+
+void test_static_local_9() {
+  static int s;
+  static int* ptr_to_s = &s;
+  sink(*ptr_to_s); // clean
+
+  s = source();
+  s = 0;
+}
+
+void increment_buf(int** buf) { // $ ast-def=buf ir-def=*buf ir-def=**buf
+  *buf += 10;
+  sink(buf); // $ SPURIOUS: ast
+}
+
+void call_increment_buf(int** buf) { // $ ast-def=buf
+  increment_buf(buf);
+}
+
+void test_conflation_regression(int* source) { // $ ast-def=source
+  int* buf = source;
+  call_increment_buf(&buf);
+}
+
+void write_to_star_star_p(unsigned char **p) // $ ast-def=p ir-def=**p ir-def=*p
+{
+  **p = 0;
+}
+
+void write_to_star_buf(unsigned char *buf) // $ ast-def=buf
+{
+  unsigned char *c = buf;
+  write_to_star_star_p(&c);
+}
+
+void test_write_to_star_buf(unsigned char *source) // $ ast-def=source
+{
+  write_to_star_buf(source);
+  sink(*source); // clean
+}
+
+void does_not_write_source_to_dereference(int *p) // $ ast-def=p ir-def=*p
+{
+  int x = source();
+  p = &x;
+  *p = 42;
+}
+
+void test_does_not_write_source_to_dereference()
+{
+  int x;
+  does_not_write_source_to_dereference(&x);
+  sink(x); // $ ast=733:7 ir SPURIOUS: ast=726:11
+}
+
+void sometimes_calls_sink_eq(int x, int n) {
+  if(n == 0) {
+    sink(x); // $ ast,ir=751:27 ast,ir=755:32 SPURIOUS: ast=749:27 ast,ir=753:32 // IR spurious results because we only have call contexts of depth 1
+  }
+}
+
+void call_sometimes_calls_sink_eq(int x, int n) {
+  sometimes_calls_sink_eq(x, n);
+}
+
+void test_sometimes_calls_sink_eq_1() {
+  sometimes_calls_sink_eq(source(), 1);
+  sometimes_calls_sink_eq(0, 0);
+  sometimes_calls_sink_eq(source(), 0);
+
+  call_sometimes_calls_sink_eq(source(), 1);
+  call_sometimes_calls_sink_eq(0, 0);
+  call_sometimes_calls_sink_eq(source(), 0);
+}
+
+void sometimes_calls_sink_lt(int x, int n) {
+  if(n < 10) {
+    sink(x); // $ ast,ir=771:27 ast,ir=775:32 SPURIOUS: ast=769:27 ast,ir=773:32 // IR spurious results because we only have call contexts of depth 1
+  }
+}
+
+void call_sometimes_calls_sink_lt(int x, int n) {
+  sometimes_calls_sink_lt(x, n);
+}
+
+void test_sometimes_calls_sink_lt() {
+  sometimes_calls_sink_lt(source(), 10);
+  sometimes_calls_sink_lt(0, 0);
+  sometimes_calls_sink_lt(source(), 2);
+
+  call_sometimes_calls_sink_lt(source(), 10);
+  call_sometimes_calls_sink_lt(0, 0);
+  call_sometimes_calls_sink_lt(source(), 2);
+
+}
+
+void sometimes_calls_sink_switch(int x, int n) {
+  switch(n) {
+    case 0:
+      sink(x); // $ ast,ir=790:31 SPURIOUS: ast,ir=788:31 // IR spurious results because IRGuard doesn't understand switch statements.
+      break;
+  }
+}
+
+void test_sometimes_calls_sink_switch() {
+  sometimes_calls_sink_switch(source(), 1);
+  sometimes_calls_sink_switch(0, 0);
+  sometimes_calls_sink_switch(source(), 0);
+}
+
+void intPointerSource(int *ref_source, const int* another_arg);
+
+void test() {
+  MyStruct a;
+  intPointerSource(a.content, a.content);
+  indirect_sink(a.content); // $ ast ir
 }

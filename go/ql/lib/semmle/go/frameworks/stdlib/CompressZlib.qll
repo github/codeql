@@ -13,15 +13,15 @@ module CompressZlib {
 
     FunctionModels() {
       // signature: func NewWriter(w io.Writer) *Writer
-      hasQualifiedName("compress/zlib", "NewWriter") and
+      this.hasQualifiedName("compress/zlib", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
       or
       // signature: func NewWriterLevel(w io.Writer, level int) (*Writer, error)
-      hasQualifiedName("compress/zlib", "NewWriterLevel") and
+      this.hasQualifiedName("compress/zlib", "NewWriterLevel") and
       (inp.isResult(0) and outp.isParameter(0))
       or
       // signature: func NewWriterLevelDict(w io.Writer, level int, dict []byte) (*Writer, error)
-      hasQualifiedName("compress/zlib", "NewWriterLevelDict") and
+      this.hasQualifiedName("compress/zlib", "NewWriterLevelDict") and
       (inp.isResult(0) and outp.isParameter(0))
     }
 

@@ -14,7 +14,7 @@ CODEQL_PLATFORM = osx64
 endif
 endif
 
-CODEQL_TOOLS = $(addprefix codeql-tools/,autobuild.cmd autobuild.sh pre-finalize.cmd pre-finalize.sh index.cmd index.sh tracing-config.lua)
+CODEQL_TOOLS = $(addprefix codeql-tools/,autobuild.cmd autobuild.sh baseline-config-empty.json baseline-config-vendor.json configure-baseline.cmd configure-baseline.sh identify-environment.cmd identify-environment.sh index.cmd index.sh pre-finalize.cmd pre-finalize.sh tracing-config.lua)
 
 EXTRACTOR_PACK_OUT = build/codeql-extractor-go
 
@@ -32,7 +32,12 @@ autoformat:
 	find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -w
 
 check-formatting:
-	test -z "$$(find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
+	@output=$$(find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -l 2>&1); \
+	if [ -n "$$output" ]; then \
+		echo "The following files need to be reformatted using gofmt or have compilation errors:"; \
+		echo "$$output"; \
+	fi; \
+	test -z "$$output"
 
 ifeq ($(QHELP_OUT_DIR),)
 # If not otherwise specified, compile qhelp to markdown in place
@@ -46,7 +51,7 @@ tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.j
 
 .PHONY: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES)))
 $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))):
-	go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
+	go build -C extractor -mod=vendor -o ../$@ ./cli/$(basename $(@F))
 
 tools-codeql: tools-$(CODEQL_PLATFORM)
 
@@ -56,19 +61,19 @@ tools-linux64: $(addprefix tools/linux64/,$(BINARIES))
 
 .PHONY: $(addprefix tools/linux64/,$(BINARIES))
 $(addprefix tools/linux64/,$(BINARIES)):
-	GOOS=linux GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(@F)
+	GOOS=linux GOARCH=amd64 go build -C extractor -mod=vendor -o ../$@ ./cli/$(@F)
 
 tools-osx64: $(addprefix tools/osx64/,$(BINARIES))
 
 .PHONY: $(addprefix tools/osx64/,$(BINARIES))
 $(addprefix tools/osx64/,$(BINARIES)):
-	GOOS=darwin GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(@F)
+	GOOS=darwin GOARCH=amd64 go build -C extractor -mod=vendor -o ../$@ ./cli/$(@F)
 
 tools-win64: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES)))
 
 .PHONY: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES)))
 $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))):
-	env GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
+	env GOOS=windows GOARCH=amd64 go build -C extractor -mod=vendor -o ../$@ ./cli/$(basename $(@F))
 
 .PHONY: extractor-common extractor extractor-full
 extractor-common: codeql-extractor.yml LICENSE ql/lib/go.dbscheme \
@@ -113,9 +118,9 @@ ql/lib/go.dbscheme.stats: ql/lib/go.dbscheme build/stats/src.stamp extractor
 
 test: all build/testdb/check-upgrade-path
 	codeql test run -j0 ql/test --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency --compilation-cache=$(cache)
-  #	use GOOS=linux because GOOS=darwin GOARCH=386 is no longer supported
+#	use GOOS=linux because GOOS=darwin GOARCH=386 is no longer supported
 	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency --compilation-cache=$(cache)
-	cd extractor; go test -mod=vendor ./... | grep -vF "[no test files]"
+	cd extractor; go test -mod=vendor ./...
 	bash extractor-smoke-test/test.sh || (echo "Extractor smoke test FAILED"; exit 1)
 
 .PHONY: build/testdb/check-upgrade-path

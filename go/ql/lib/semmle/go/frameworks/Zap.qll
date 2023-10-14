@@ -32,8 +32,6 @@ module Zap {
     ZapFormatter() { this.getName().matches("%f") }
 
     override int getFormatStringIndex() { result = 0 }
-
-    override int getFirstFormattedParameterIndex() { result = 1 }
   }
 
   /**
@@ -45,7 +43,7 @@ module Zap {
   private class ZapCall extends LoggerCall::Range, DataFlow::MethodCallNode {
     ZapCall() { this = any(ZapFunction f).getACall() }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.

@@ -15,28 +15,7 @@
 import java
 import semmle.code.java.security.SqlConcatenatedLib
 import semmle.code.java.security.SqlInjectionQuery
-
-class UncontrolledStringBuilderSource extends DataFlow::ExprNode {
-  UncontrolledStringBuilderSource() {
-    exists(StringBuilderVar sbv |
-      uncontrolledStringBuilderQuery(sbv, _) and
-      this.getExpr() = sbv.getToStringCall()
-    )
-  }
-}
-
-module UncontrolledStringBuilderSourceFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof UncontrolledStringBuilderSource }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
-
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
-}
-
-module UncontrolledStringBuilderSourceFlow =
-  TaintTracking::Global<UncontrolledStringBuilderSourceFlowConfig>;
+import semmle.code.java.security.SqlConcatenatedQuery
 
 from QueryInjectionSink query, Expr uncontrolled
 where

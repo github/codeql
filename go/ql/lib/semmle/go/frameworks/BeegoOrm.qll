@@ -33,7 +33,7 @@ module BeegoOrm {
     // Note this class doesn't do any escaping, unlike the true ORM part of the package
     QueryBuilderSink() {
       exists(Method impl | impl.implements(packagePath(), "QueryBuilder", _) |
-        this = impl.getACall().getAnArgument()
+        this = impl.getACall().getASyntacticArgument()
       ) and
       this.getType().getUnderlyingType() instanceof StringType
     }

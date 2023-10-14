@@ -220,7 +220,7 @@ private class DomBasedXssSinkCharacteristic extends EndpointCharacteristic {
   ) {
     endpointClass instanceof XssSinkType and
     isPositiveIndicator = true and
-    confidence = maximalConfidence()
+    confidence = this.maximalConfidence()
   }
 }
 
@@ -238,7 +238,7 @@ private class TaintedPathSinkCharacteristic extends EndpointCharacteristic {
   ) {
     endpointClass instanceof TaintedPathSinkType and
     isPositiveIndicator = true and
-    confidence = maximalConfidence()
+    confidence = this.maximalConfidence()
   }
 }
 
@@ -256,7 +256,7 @@ private class SqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   ) {
     endpointClass instanceof SqlInjectionSinkType and
     isPositiveIndicator = true and
-    confidence = maximalConfidence()
+    confidence = this.maximalConfidence()
   }
 }
 
@@ -274,7 +274,7 @@ private class NosqlInjectionSinkCharacteristic extends EndpointCharacteristic {
   ) {
     endpointClass instanceof NosqlInjectionSinkType and
     isPositiveIndicator = true and
-    confidence = maximalConfidence()
+    confidence = this.maximalConfidence()
   }
 }
 
@@ -296,7 +296,7 @@ private class ShellCommandInjectionFromEnvironmentSinkCharacteristic extends End
   ) {
     endpointClass instanceof ShellCommandInjectionFromEnvironmentSinkType and
     isPositiveIndicator = true and
-    confidence = maximalConfidence()
+    confidence = this.maximalConfidence()
   }
 }
 
@@ -335,7 +335,7 @@ abstract private class NotASinkCharacteristic extends EndpointCharacteristic {
   ) {
     endpointClass instanceof NegativeType and
     isPositiveIndicator = true and
-    confidence = highConfidence()
+    confidence = this.highConfidence()
   }
 }
 
@@ -354,7 +354,7 @@ abstract class LikelyNotASinkCharacteristic extends EndpointCharacteristic {
   ) {
     endpointClass instanceof NegativeType and
     isPositiveIndicator = true and
-    confidence = mediumConfidence()
+    confidence = this.mediumConfidence()
   }
 }
 
@@ -685,7 +685,7 @@ abstract private class StandardEndpointFilterCharacteristic extends EndpointFilt
   ) {
     endpointClass instanceof NegativeType and
     isPositiveIndicator = true and
-    confidence = mediumConfidence()
+    confidence = this.mediumConfidence()
   }
 }
 
@@ -786,7 +786,7 @@ abstract private class NosqlInjectionSinkEndpointFilterCharacteristic extends En
   ) {
     endpointClass instanceof NosqlInjectionSinkType and
     isPositiveIndicator = false and
-    confidence = mediumConfidence()
+    confidence = this.mediumConfidence()
   }
 }
 
@@ -817,7 +817,7 @@ private class ModeledSinkCharacteristic extends NosqlInjectionSinkEndpointFilter
   override predicate appliesToEndpoint(DataFlow::Node n) {
     exists(DataFlow::CallNode call | n = call.getAnArgument() |
       // Remove modeled sinks
-      isArgumentToKnownLibrarySinkFunction(n)
+      this.isArgumentToKnownLibrarySinkFunction(n)
     )
   }
 }
@@ -928,7 +928,7 @@ abstract private class SqlInjectionSinkEndpointFilterCharacteristic extends Endp
   ) {
     endpointClass instanceof SqlInjectionSinkType and
     isPositiveIndicator = false and
-    confidence = mediumConfidence()
+    confidence = this.mediumConfidence()
   }
 }
 
@@ -1002,7 +1002,7 @@ abstract private class TaintedPathSinkEndpointFilterCharacteristic extends Endpo
   ) {
     endpointClass instanceof TaintedPathSinkType and
     isPositiveIndicator = false and
-    confidence = mediumConfidence()
+    confidence = this.mediumConfidence()
   }
 }
 
@@ -1055,7 +1055,7 @@ abstract private class XssSinkEndpointFilterCharacteristic extends EndpointFilte
   ) {
     endpointClass instanceof XssSinkType and
     isPositiveIndicator = false and
-    confidence = mediumConfidence()
+    confidence = this.mediumConfidence()
   }
 }
 

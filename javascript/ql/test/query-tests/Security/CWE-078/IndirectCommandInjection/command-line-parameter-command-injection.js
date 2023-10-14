@@ -144,4 +144,6 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
 
 	cp.exec("cmd.sh " + program.opts().pizzaType); // NOT OK
 	cp.exec("cmd.sh " + program.pizzaType); // NOT OK
+
+	cp.execFile(program.opts().pizzaType, ["foo", "bar"]); // OK
 });

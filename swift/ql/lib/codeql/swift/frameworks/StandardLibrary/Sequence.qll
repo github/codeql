@@ -25,6 +25,10 @@ private class SequenceSummaries extends SummaryModelCsv {
         ";Sequence;true;joined();;;Argument[-1];ReturnValue;taint",
         ";Sequence;true;joined(separator:);;;Argument[-1..0];ReturnValue;taint",
         ";Sequence;true;first(where:);;;Argument[-1];ReturnValue;taint",
+        ";Sequence;true;withContiguousStorageIfAvailable(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
+        ";Sequence;true;withContiguousStorageIfAvailable(_:);;;Argument[-1].CollectionElement;Argument[0].Parameter[0].CollectionElement;value",
+        ";Sequence;true;withContiguousStorageIfAvailable(_:);;;Argument[0].ReturnValue;ReturnValue.OptionalSome;value",
+        ";Sequence;true;makeIterator();;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value"
       ]
   }
 }
@@ -36,13 +40,5 @@ private class SequenceSummaries extends SummaryModelCsv {
 private class SequenceFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
-  SequenceFieldsInheritTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      (
-        f.getEnclosingDecl().(NominalTypeDecl).getName() = "Sequence" or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() = "Sequence"
-      ) and
-      f.getName() = "lazy"
-    )
-  }
+  SequenceFieldsInheritTaint() { this.getField().hasQualifiedName("Sequence", "lazy") }
 }

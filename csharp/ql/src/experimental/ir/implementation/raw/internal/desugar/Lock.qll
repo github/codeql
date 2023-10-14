@@ -208,7 +208,7 @@ private class TranslatedIfCondition extends TranslatedCompilerGeneratedValueCond
     )
   }
 
-  override Instruction valueExprResult() { result = getValueExpr().getResult() }
+  override Instruction valueExprResult() { result = this.getValueExpr().getResult() }
 }
 
 /**
@@ -254,7 +254,7 @@ private class TranslatedWasTakenConst extends TranslatedCompilerGeneratedConstan
     result = "false"
   }
 
-  override Instruction getResult() { result = getInstruction(OnlyInstructionTag()) }
+  override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
 
   override Type getResultType() { result instanceof BoolType }
 }
@@ -285,9 +285,9 @@ private class TranslatedLockWasTakenDecl extends TranslatedCompilerGeneratedDecl
     )
   }
 
-  override Type getVarType() { result = getInitialization().getResultType() }
+  override Type getVarType() { result = this.getInitialization().getResultType() }
 
-  override Instruction getInitializationResult() { result = getInitialization().getResult() }
+  override Instruction getInitializationResult() { result = this.getInitialization().getResult() }
 }
 
 /**
@@ -316,7 +316,7 @@ private class TranslatedLockedVarDecl extends TranslatedCompilerGeneratedDeclara
 
   override Type getVarType() { result = generatedBy.getExpr().getType() }
 
-  override Instruction getInitializationResult() { result = getInitialization().getResult() }
+  override Instruction getInitializationResult() { result = this.getInitialization().getResult() }
 }
 
 /**
@@ -335,12 +335,12 @@ private class TranslatedMonitorEnterVarAcc extends TTranslatedCompilerGeneratedE
 
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockedVarTemp() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(this.getResultType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = AddressTag() and
-    result = getTempVariable(LockedVarTemp())
+    result = this.getTempVariable(LockedVarTemp())
   }
 
   override predicate needsLoad() { any() }
@@ -362,12 +362,12 @@ private class TranslatedMonitorExitVarAcc extends TTranslatedCompilerGeneratedEl
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = AddressTag() and
-    result = getTempVariable(LockedVarTemp())
+    result = this.getTempVariable(LockedVarTemp())
   }
 
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockedVarTemp() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(this.getResultType())
   }
 
   override predicate needsLoad() { any() }
@@ -388,12 +388,12 @@ private class TranslatedLockWasTakenCondVarAcc extends TTranslatedCompilerGenera
 
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockWasTakenTemp() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(this.getResultType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = AddressTag() and
-    result = getTempVariable(LockWasTakenTemp())
+    result = this.getTempVariable(LockWasTakenTemp())
   }
 
   override predicate needsLoad() { any() }
@@ -414,12 +414,12 @@ private class TranslatedLockWasTakenRefArg extends TTranslatedCompilerGeneratedE
 
   override predicate hasTempVariable(TempVariableTag tag, CSharpType type) {
     tag = LockWasTakenTemp() and
-    type = getTypeForPRValue(getResultType())
+    type = getTypeForPRValue(this.getResultType())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = AddressTag() and
-    result = getTempVariable(LockWasTakenTemp())
+    result = this.getTempVariable(LockWasTakenTemp())
   }
 
   override predicate needsLoad() { none() }

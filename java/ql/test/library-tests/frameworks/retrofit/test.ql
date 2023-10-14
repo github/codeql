@@ -1,10 +1,14 @@
 import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.ExternalFlow
 import TestUtilities.InlineFlowTest
 
-class EnableLegacy extends EnableLegacyConfiguration {
-  EnableLegacy() { exists(this) }
+module FlowConfig implements DataFlow::ConfigSig {
+  predicate isSource = DefaultFlowConfig::isSource/1;
+
+  predicate isSink(DataFlow::Node n) {
+    DefaultFlowConfig::isSink(n) or sinkNode(n, "request-forgery")
+  }
 }
 
-class FlowConf extends DefaultValueFlowConf {
-  override predicate isSink(DataFlow::Node n) { super.isSink(n) or sinkNode(n, "open-url") }
-}
+import FlowTest<FlowConfig, DefaultFlowConfig>

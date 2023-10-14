@@ -885,10 +885,14 @@
 | delegatedProperties.kt:87:34:87:46 | this | delegatedProperties.kt:87:34:87:46 | invoke | ThisAccess |
 | exprs.kt:0:0:0:0 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | Color | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | Color[] | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | Direction[] | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | EnumEntries<Color> | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | EnumEntries<Direction> | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:4:1:142:1 | int | file://:0:0:0:0 | <none> | TypeAccess |

@@ -257,11 +257,22 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
   or
   // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
   // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
-  exists(SsaVariable v2, Guard guardEq, boolean eqIsTrue, int d1, int d2 |
-    guardEq = eqFlowCond(v, ssaRead(v2, d1), d2, true, eqIsTrue) and
-    result = boundFlowCond(v2, e, delta + d1 - d2, upper, testIsTrue) and
-    // guardEq needs to control guard
-    guardEq.directlyControls(result.getBasicBlock(), eqIsTrue)
+  exists(SsaVariable v2, int d |
+    // equality needs to control guard
+    result.getBasicBlock() = eqSsaCondDirectlyControls(v, v2, d) and
+    result = boundFlowCond(v2, e, delta - d, upper, testIsTrue)
+  )
+}
+
+/**
+ * Gets a basic block in which `v1` equals `v2 + delta`.
+ */
+pragma[nomagic]
+private BasicBlock eqSsaCondDirectlyControls(SsaVariable v1, SsaVariable v2, int delta) {
+  exists(Guard guardEq, int d1, int d2, boolean eqIsTrue |
+    guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
+    delta = d2 - d1 and
+    guardEq.directlyControls(result, eqIsTrue)
   )
 }
 
@@ -292,7 +303,7 @@ class CondReason extends Reason, TCondReason {
   /** Gets the condition that is the reason for the bound. */
   Guard getCond() { this = TCondReason(result) }
 
-  override string toString() { result = getCond().toString() }
+  override string toString() { result = this.getCond().toString() }
 }
 
 /**
@@ -362,7 +373,7 @@ private predicate safeCast(Type fromtyp, Type totyp) {
  */
 private class RangeAnalysisSafeCastingExpr extends CastingExpr {
   RangeAnalysisSafeCastingExpr() {
-    safeCast(getExpr().getType(), getType()) or
+    safeCast(this.getExpr().getType(), this.getType()) or
     this instanceof ImplicitCastExpr or
     this instanceof ImplicitNotNullExpr or
     this instanceof ImplicitCoercionToUnitExpr
@@ -388,14 +399,14 @@ private predicate typeBound(Type typ, int lowerbound, int upperbound) {
 private class NarrowingCastingExpr extends CastingExpr {
   NarrowingCastingExpr() {
     not this instanceof RangeAnalysisSafeCastingExpr and
-    typeBound(getType(), _, _)
+    typeBound(this.getType(), _, _)
   }
 
   /** Gets the lower bound of the resulting type. */
-  int getLowerBound() { typeBound(getType(), result, _) }
+  int getLowerBound() { typeBound(this.getType(), result, _) }
 
   /** Gets the upper bound of the resulting type. */
-  int getUpperBound() { typeBound(getType(), _, result) }
+  int getUpperBound() { typeBound(this.getType(), _, result) }
 }
 
 /** Holds if `e >= 1` as determined by sign analysis. */
@@ -757,7 +768,7 @@ private predicate baseBound(Expr e, int b, boolean upper) {
   or
   exists(Method read |
     e.(MethodAccess).getMethod().overrides*(read) and
-    read.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
+    read.getDeclaringType() instanceof TypeInputStream and
     read.hasName("read") and
     read.getNumberOfParameters() = 0
   |

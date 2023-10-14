@@ -1,0 +1,24 @@
+<metadata modelVersion="1.1.0">
+  <groupId>com.github.my.snapshot.test</groupId>
+  <artifactId>snapshottest</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <versioning>
+    <lastUpdated>20230101020304</lastUpdated>
+    <snapshot>
+      <timestamp>20230901.050514</timestamp>
+      <buildNumber>100</buildNumber>
+    </snapshot>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.0-20230901.050514-100</value>
+        <updated>20230101020304</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.0-20230901.050514-100</value>
+        <updated>20230101020304</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

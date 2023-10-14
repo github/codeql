@@ -25,5 +25,5 @@ class SourceMappingComment extends Comment {
   string getSourceMappingUrl() { result = url }
 
   /** DEPRECATED: Alias for getSourceMappingUrl */
-  deprecated string getSourceMappingURL() { result = getSourceMappingUrl() }
+  deprecated string getSourceMappingURL() { result = this.getSourceMappingUrl() }
 }

@@ -1,20 +1,16 @@
 using System;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-using Semmle.Util.Logging;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Util;
-
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp
 {
-    public class TracingAnalyser : Analyser, IDisposable
+    public class TracingAnalyser : Analyser
     {
-        private Entities.Compilation? compilationEntity;
-        private IDisposable? compilationTrapFile;
-
         private bool init;
 
         public TracingAnalyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
@@ -54,20 +50,6 @@ namespace Semmle.Extraction.CSharp
             SetReferencePaths();
 
             CompilationErrors += FilteredDiagnostics.Count();
-        }
-
-        public override void Dispose()
-        {
-            compilationTrapFile?.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
-        /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
-        /// </summary>
-        public void AnalyseCompilation()
-        {
-            extractionTasks.Add(() => DoAnalyseCompilation());
         }
 
         /// <summary>
@@ -191,25 +173,6 @@ namespace Semmle.Extraction.CSharp
                     compilation.
                     GetDiagnostics().
                     Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id));
-            }
-        }
-
-        private void DoAnalyseCompilation()
-        {
-            try
-            {
-                var assemblyPath = ((TracingExtractor?)extractor).OutputPath;
-                var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
-                var assembly = compilation.Assembly;
-                var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
-                compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
-
-                compilationEntity = Entities.Compilation.Create(cx);
-            }
-            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
-            {
-                Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", "compilation", ex);
             }
         }
 

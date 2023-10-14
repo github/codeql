@@ -4,19 +4,19 @@ import codeql.swift.dataflow.FlowSources
 import codeql.swift.security.PathInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
-class PathInjectionTest extends InlineExpectationsTest {
-  PathInjectionTest() { this = "PathInjectionTest" }
+module PathInjectionTest implements TestSig {
+  string getARelevantTag() { result = "hasPathInjection" }
 
-  override string getARelevantTag() { result = "hasPathInjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node source, DataFlow::Node sink, Expr sinkExpr |
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(DataFlow::Node source, DataFlow::Node sink |
       PathInjectionFlow::flow(source, sink) and
-      sinkExpr = sink.asExpr() and
-      location = sinkExpr.getLocation() and
-      element = sinkExpr.toString() and
+      location = sink.getLocation() and
+      element = sink.toString() and
       tag = "hasPathInjection" and
+      location.getFile().getName() != "" and
       value = source.asExpr().getLocation().getStartLine().toString()
     )
   }
 }
+
+import MakeTest<PathInjectionTest>

@@ -20,14 +20,12 @@ module Log {
     LogFormatter() { this.getName().matches("%f") }
 
     override int getFormatStringIndex() { result = 0 }
-
-    override int getFirstFormattedParameterIndex() { result = 1 }
   }
 
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
     LogCall() { this = any(LogFunction f).getACall() }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   /** A fatal log function, which calls `os.Exit`. */

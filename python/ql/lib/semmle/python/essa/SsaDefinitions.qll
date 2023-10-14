@@ -20,7 +20,12 @@ module SsaSource {
   /** Holds if `v` is defined by assignment at `defn` and given `value`. */
   cached
   predicate assignment_definition(Variable v, ControlFlowNode defn, ControlFlowNode value) {
-    defn.(NameNode).defines(v) and defn.(DefinitionNode).getValue() = value
+    defn.(NameNode).defines(v) and
+    defn.(DefinitionNode).getValue() = value and
+    // since parameter will be considered a DefinitionNode, if it has a default value,
+    // we need to exclude it here since it is already covered by parameter_definition
+    // (and points-to was unhappy that it was included in both)
+    not parameter_definition(v, defn)
   }
 
   /** Holds if `v` is defined by assignment of the captured exception. */

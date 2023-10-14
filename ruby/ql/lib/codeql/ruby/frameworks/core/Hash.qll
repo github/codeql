@@ -34,7 +34,7 @@ module Hash {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // we make use of the special `hash-splat` argument kind, which contains all keyword
       // arguments wrapped in an implicit hash, as well as explicit hash splat arguments
-      input = "Argument[hash-splat].WithElement[any]" and
+      input = "Argument[hash-splat]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -199,11 +199,13 @@ module Hash {
     }
   }
 
-  private class AssocUnknownSummary extends AssocSummary {
-    AssocUnknownSummary() {
-      this = "assoc" and
-      mc.getNumberOfArguments() = 1 and
-      not exists(DataFlow::Content::getKnownElementIndex(mc.getArgument(0)))
+  private class AssocUnknownSummary extends SummarizedCallable {
+    AssocUnknownSummary() { this = "assoc-unknown-arg" }
+
+    override MethodCall getACallSimple() {
+      result.getMethodName() = "assoc" and
+      result.getNumberOfArguments() = 1 and
+      not exists(DataFlow::Content::getKnownElementIndex(result.getArgument(0)))
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {

@@ -15,51 +15,19 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class CleartextTransmissionSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for cleartext transmission vulnerabilities.
+ * A barrier for cleartext transmission vulnerabilities.
  */
-abstract class CleartextTransmissionSanitizer extends DataFlow::Node { }
+abstract class CleartextTransmissionBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class CleartextTransmissionAdditionalTaintStep extends Unit {
+class CleartextTransmissionAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to cleartext transmission vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
-}
-
-/**
- * An `Expr` that is transmitted with `NWConnection.send`.
- */
-private class NWConnectionSendSink extends CleartextTransmissionSink {
-  NWConnectionSendSink() {
-    // `content` arg to `NWConnection.send` is a sink
-    exists(CallExpr call |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName("NWConnection", "send(content:contentContext:isComplete:completion:)") and
-      call.getArgument(0).getExpr() = this.asExpr()
-    )
-  }
-}
-
-/**
- * An `Expr` that is used to form a `URL`. Such expressions are very likely to
- * be transmitted over a network, because that's what URLs are for.
- */
-private class UrlSink extends CleartextTransmissionSink {
-  UrlSink() {
-    // `string` arg in `URL.init` is a sink
-    // (we assume here that the URL goes on to be used in a network operation)
-    exists(CallExpr call |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName("URL", ["init(string:)", "init(string:relativeTo:)"]) and
-      call.getArgument(0).getExpr() = this.asExpr()
-    )
-  }
 }
 
 /**
@@ -70,7 +38,7 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
     // sinks are the first argument containing the URL, and the `parameters`
     // and `headers` arguments to appropriate methods of `Session`.
     exists(CallExpr call, string fName |
-      call.getStaticTarget().(MethodDecl).hasQualifiedName("Session", fName) and
+      call.getStaticTarget().(Method).hasQualifiedName("Session", fName) and
       fName.regexpMatch("(request|streamRequest|download)\\(.*") and
       (
         call.getArgument(0).getExpr() = this.asExpr() or
@@ -81,10 +49,26 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
 }
 
 /**
- * An encryption sanitizer for cleartext transmission vulnerabilities.
+ * A barrier for cleartext transmission vulnerabilities.
+ *  - encryption; encrypted values are not cleartext.
+ *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
-private class CleartextTransmissionEncryptionSanitizer extends CleartextTransmissionSanitizer {
-  CleartextTransmissionEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
+private class CleartextTransmissionDefaultBarrier extends CleartextTransmissionBarrier {
+  CleartextTransmissionDefaultBarrier() {
+    this.asExpr() instanceof EncryptedExpr or
+    this.asExpr().getType().getUnderlyingType() instanceof BoolType
+  }
+}
+
+/**
+ * An additional taint step for cleartext transmission vulnerabilities.
+ */
+private class CleartextTransmissionFieldAdditionalFlowStep extends CleartextTransmissionAdditionalFlowStep
+{
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // if an object is sensitive, its fields are always sensitive.
+    nodeTo.asExpr().(MemberRefExpr).getBase() = nodeFrom.asExpr()
+  }
 }
 
 /**
@@ -92,4 +76,17 @@ private class CleartextTransmissionEncryptionSanitizer extends CleartextTransmis
  */
 private class DefaultCleartextTransmissionSink extends CleartextTransmissionSink {
   DefaultCleartextTransmissionSink() { sinkNode(this, "transmission") }
+}
+
+private class TransmissionSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";NWConnection;true;send(content:contentContext:isComplete:completion:);;;Argument[0];transmission",
+        // an `Expr` that is used to form a `URL` is very likely to be transmitted over a network, because
+        // that's what URLs are for.
+        ";URL;true;init(string:);;;Argument[0];transmission",
+        ";URL;true;init(string:relativeTo:);;;Argument[0];transmission",
+      ]
+  }
 }

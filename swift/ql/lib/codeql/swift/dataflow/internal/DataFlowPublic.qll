@@ -33,7 +33,7 @@ class Node extends TNode {
   }
 
   /**
-   * Gets this node's underlying expression, if any.
+   * Gets the expression that corresponds to this node, if any.
    */
   Expr asExpr() { none() }
 
@@ -43,7 +43,7 @@ class Node extends TNode {
   Pattern asPattern() { none() }
 
   /**
-   * Gets this data flow node's corresponding control flow node.
+   * Gets the control flow node that corresponds to this data flow node.
    */
   ControlFlowNode getCfgNode() { none() }
 
@@ -129,13 +129,15 @@ class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
   Node getPreUpdateNode() { result = super.getPreUpdateNode() }
 }
 
-/** Gets a node corresponding to expression `e`. */
+/**
+ * Gets a node corresponding to expression `e`.
+ */
 ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
-ParameterNode parameterNode(DataFlowParameter p) { result.getParameter() = p }
+ParameterNode parameterNode(ParamDecl p) { result.getParameter() = p }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -200,10 +202,38 @@ module Content {
     /** Gets the declaration of the enum parameter. */
     ParamDecl getParam() { result = p }
 
-    override string toString() {
+    /**
+     * Gets a string describing this enum content, of the form: `EnumElementName:N` where `EnumElementName`
+     * is the name of the enum element declaration within the enum, and `N` is the 0-based index of the
+     * parameter that this content is for. For example in the following code there is only one `EnumContent`
+     * and it's signature is `myValue:0`:
+     * ```
+     * enum MyEnum {
+     *   case myValue(Int)
+     * }
+     * ```
+     */
+    string getSignature() {
       exists(EnumElementDecl d, int pos | d.getParam(pos) = p | result = d.toString() + ":" + pos)
     }
+
+    override string toString() { result = this.getSignature() }
   }
+
+  /**
+   * An element of a collection. This is a broad class including:
+   *  - elements of collections, such as `Set<Element>`.
+   *  - elements of buffers, such as `UnsafeBufferPointer<Element>`.
+   *  - the pointee of a pointer, such as `UnsafePointer<Pointee>`.
+   */
+  class CollectionContent extends Content, TCollectionContent {
+    override string toString() { result = "Collection element" }
+  }
+
+  /**
+   * DEPRECATED: An element of a collection. This is an alias for the general CollectionContent.
+   */
+  deprecated class ArrayContent = CollectionContent;
 }
 
 /**
@@ -229,13 +259,4 @@ class ContentSet extends TContentSet {
 
   /** Gets a content that may be read from when reading from this set. */
   Content getAReadContent() { this.isSingleton(result) }
-}
-
-/**
- * DEPRECATED: Do not use.
- */
-abstract deprecated class BarrierGuard extends DataFlowExpr {
-  BarrierGuard() { none() }
-
-  final Node getAGuardedNode() { none() }
 }

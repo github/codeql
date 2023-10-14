@@ -1940,3 +1940,107 @@ ssa.cpp:
 #  417|     v417_4(void)             = ReturnVoid         : 
 #  417|     v417_5(void)             = AliasedUse         : ~m?
 #  417|     v417_6(void)             = ExitFunction       : 
+
+#  423| int noreturnTest(int)
+#  423|   Block 0
+#  423|     v423_1(void)       = EnterFunction          : 
+#  423|     mu423_2(unknown)   = AliasedDefinition      : 
+#  423|     mu423_3(unknown)   = InitializeNonLocal     : 
+#  423|     r423_4(glval<int>) = VariableAddress[x]     : 
+#  423|     m423_5(int)        = InitializeParameter[x] : &:r423_4
+#  424|     r424_1(glval<int>) = VariableAddress[x]     : 
+#  424|     r424_2(int)        = Load[x]                : &:r424_1, m423_5
+#  424|     r424_3(int)        = Constant[10]           : 
+#  424|     r424_4(bool)       = CompareLT              : r424_2, r424_3
+#  424|     v424_5(void)       = ConditionalBranch      : r424_4
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  425|   Block 1
+#  425|     r425_1(glval<int>) = VariableAddress[#return] : 
+#  425|     r425_2(glval<int>) = VariableAddress[x]       : 
+#  425|     r425_3(int)        = Load[x]                  : &:r425_2, m423_5
+#  425|     m425_4(int)        = Store[#return]           : &:r425_1, r425_3
+#  423|     r423_6(glval<int>) = VariableAddress[#return] : 
+#  423|     v423_7(void)       = ReturnValue              : &:r423_6, m425_4
+#  423|     v423_8(void)       = AliasedUse               : ~m?
+#  423|     v423_9(void)       = ExitFunction             : 
+
+#  427|   Block 2
+#  427|     r427_1(glval<unknown>) = FunctionAddress[noreturnFunc] : 
+#  427|     v427_2(void)           = Call[noreturnFunc]            : func:r427_1
+#  427|     mu427_3(unknown)       = ^CallSideEffect               : ~m?
+#  423|     v423_10(void)          = Unreached                     : 
+
+#  431| int noreturnTest2(int)
+#  431|   Block 0
+#  431|     v431_1(void)       = EnterFunction          : 
+#  431|     mu431_2(unknown)   = AliasedDefinition      : 
+#  431|     mu431_3(unknown)   = InitializeNonLocal     : 
+#  431|     r431_4(glval<int>) = VariableAddress[x]     : 
+#  431|     m431_5(int)        = InitializeParameter[x] : &:r431_4
+#  432|     r432_1(glval<int>) = VariableAddress[x]     : 
+#  432|     r432_2(int)        = Load[x]                : &:r432_1, m431_5
+#  432|     r432_3(int)        = Constant[10]           : 
+#  432|     r432_4(bool)       = CompareLT              : r432_2, r432_3
+#  432|     v432_5(void)       = ConditionalBranch      : r432_4
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  433|   Block 1
+#  433|     r433_1(glval<unknown>) = FunctionAddress[noreturnFunc] : 
+#  433|     v433_2(void)           = Call[noreturnFunc]            : func:r433_1
+#  433|     mu433_3(unknown)       = ^CallSideEffect               : ~m?
+#  431|     v431_6(void)           = Unreached                     : 
+
+#  435|   Block 2
+#  435|     r435_1(glval<int>) = VariableAddress[#return] : 
+#  435|     r435_2(glval<int>) = VariableAddress[x]       : 
+#  435|     r435_3(int)        = Load[x]                  : &:r435_2, m431_5
+#  435|     m435_4(int)        = Store[#return]           : &:r435_1, r435_3
+#  431|     r431_7(glval<int>) = VariableAddress[#return] : 
+#  431|     v431_8(void)       = ReturnValue              : &:r431_7, m435_4
+#  431|     v431_9(void)       = AliasedUse               : ~m?
+#  431|     v431_10(void)      = ExitFunction             : 
+
+#  438| void Conditional(bool, int, int)
+#  438|   Block 0
+#  438|     v438_1(void)        = EnterFunction          : 
+#  438|     mu438_2(unknown)    = AliasedDefinition      : 
+#  438|     mu438_3(unknown)    = InitializeNonLocal     : 
+#  438|     r438_4(glval<bool>) = VariableAddress[a]     : 
+#  438|     m438_5(bool)        = InitializeParameter[a] : &:r438_4
+#  438|     r438_6(glval<int>)  = VariableAddress[x]     : 
+#  438|     m438_7(int)         = InitializeParameter[x] : &:r438_6
+#  438|     r438_8(glval<int>)  = VariableAddress[y]     : 
+#  438|     m438_9(int)         = InitializeParameter[y] : &:r438_8
+#  439|     r439_1(glval<int>)  = VariableAddress[z]     : 
+#  439|     r439_2(glval<bool>) = VariableAddress[a]     : 
+#  439|     r439_3(bool)        = Load[a]                : &:r439_2, m438_5
+#  439|     v439_4(void)        = ConditionalBranch      : r439_3
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#  439|   Block 1
+#  439|     m439_5(int)        = Phi                          : from 2:m439_12, from 3:m439_16
+#  439|     r439_6(glval<int>) = VariableAddress[#temp439:13] : 
+#  439|     r439_7(int)        = Load[#temp439:13]            : &:r439_6, m439_5
+#  439|     m439_8(int)        = Store[z]                     : &:r439_1, r439_7
+#  440|     v440_1(void)       = NoOp                         : 
+#  438|     v438_10(void)      = ReturnVoid                   : 
+#  438|     v438_11(void)      = AliasedUse                   : ~m?
+#  438|     v438_12(void)      = ExitFunction                 : 
+
+#  439|   Block 2
+#  439|     r439_9(glval<int>)  = VariableAddress[x]           : 
+#  439|     r439_10(int)        = Load[x]                      : &:r439_9, m438_7
+#  439|     r439_11(glval<int>) = VariableAddress[#temp439:13] : 
+#  439|     m439_12(int)        = Store[#temp439:13]           : &:r439_11, r439_10
+#-----|   Goto -> Block 1
+
+#  439|   Block 3
+#  439|     r439_13(glval<int>) = VariableAddress[y]           : 
+#  439|     r439_14(int)        = Load[y]                      : &:r439_13, m438_9
+#  439|     r439_15(glval<int>) = VariableAddress[#temp439:13] : 
+#  439|     m439_16(int)        = Store[#temp439:13]           : &:r439_15, r439_14
+#-----|   Goto -> Block 1

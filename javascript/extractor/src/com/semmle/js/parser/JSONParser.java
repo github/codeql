@@ -21,6 +21,7 @@ import com.semmle.util.exception.Exceptions;
 import com.semmle.util.io.WholeIO;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +33,6 @@ public class JSONParser {
   private int offset;
   private int length;
   private String src;
-  private List<ParseError> recoverableErrors;
 
   public static Pair<JSONValue, List<ParseError>> parseValue(String json) throws ParseError {
     JSONParser parser = new JSONParser(json);
@@ -41,14 +41,13 @@ public class JSONParser {
     parser.consumeWhitespace();
     if (parser.offset < parser.length) parser.raise("Expected end of input");
 
-    return Pair.make(value, parser.recoverableErrors);
+    return Pair.make(value, Collections.emptyList());
   }
 
   private JSONParser(String json) throws ParseError {
     this.line = 1;
     this.column = 0;
     this.offset = 0;
-    this.recoverableErrors = new ArrayList<ParseError>();
 
     if (json == null) raise("Input string may not be null");
     this.length = json.length();
@@ -351,17 +350,16 @@ public class JSONParser {
     }
   }
 
-  /** Skips the line comment starting at the current position and records a recoverable error. */
+  /** Skips the line comment starting at the current position. */
   private void skipLineComment() throws ParseError {
     Position pos = new Position(line, column, offset);
     char c;
     next();
     next();
     while ((c = peek()) != '\r' && c != '\n' && c != -1) next();
-    recoverableErrors.add(new ParseError("Comments are not legal in JSON.", pos));
   }
 
-  /** Skips the block comment starting at the current position and records a recoverable error. */
+  /** Skips the block comment starting at the current position. */
   private void skipBlockComment() throws ParseError {
     Position pos = new Position(line, column, offset);
     char c;
@@ -376,7 +374,6 @@ public class JSONParser {
         break;
       }
     } while (true);
-    recoverableErrors.add(new ParseError("Comments are not legal in JSON.", pos));
   }
 
   private void consume(char token) throws ParseError {

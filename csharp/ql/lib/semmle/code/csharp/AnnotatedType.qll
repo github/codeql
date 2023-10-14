@@ -401,6 +401,8 @@ class AnnotatedArrayType extends AnnotatedType {
 class AnnotatedConstructedType extends AnnotatedType {
   override ConstructedType type;
 
+  AnnotatedConstructedType() { not type instanceof NullableType }
+
   /** Gets the `i`th type argument of this constructed type. */
   AnnotatedType getTypeArgument(int i) {
     result.getType() = type.getTypeArgument(i) and

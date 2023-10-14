@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(Path,Path)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(Path,Path)", "", "Argument[1]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(Path,String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(Path,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(String,String,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(String,String,String)", "", "Argument[2]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(String,String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(String,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(URI)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]

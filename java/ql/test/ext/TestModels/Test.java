@@ -82,7 +82,7 @@ public class Test {
             Connection con = DriverManager.getConnection("");
             PreparedStatement ps1 = con.prepareStatement("UPDATE EMPLOYEES SET NAME = ? WHERE ID = ?");
             ps1.setString(1, (String)source());
-            sink(ps1); // $hasValueFlow
+            sink(ps1); // safe
 
             // java.util.concurrent.atomic
             AtomicReference ar = new AtomicReference(source());
@@ -93,7 +93,7 @@ public class Test {
             sink(sj1.add((CharSequence)source())); // $hasTaintFlow
 
             StringJoiner sj2 = (StringJoiner)source();
-            sink(sj2.add("test")); // $hasTaintFlow
+            sink(sj2.add("test")); // $hasValueFlow
         }
 
         // top 300-500 JDK APIs tests

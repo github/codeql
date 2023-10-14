@@ -64,14 +64,16 @@ module ShellJS {
     /** Holds if the first argument starts with a `-`, indicating it is an option. */
     predicate hasOptionsArg() {
       exists(string val |
-        getArgument(0).mayHaveStringValue(val) and
+        this.getArgument(0).mayHaveStringValue(val) and
         val.matches("-%")
       )
     }
 
     /** Gets the `n`th argument after the initial options argument, if any. */
     DataFlow::Node getTranslatedArgument(int n) {
-      if hasOptionsArg() then result = getArgument(n + 1) else result = getArgument(n)
+      if this.hasOptionsArg()
+      then result = this.getArgument(n + 1)
+      else result = this.getArgument(n)
     }
   }
 
@@ -83,7 +85,7 @@ module ShellJS {
       name = ["cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv", "rm"]
     }
 
-    override DataFlow::Node getAPathArgument() { result = getAnArgument() }
+    override DataFlow::Node getAPathArgument() { result = this.getAnArgument() }
   }
 
   /**
@@ -102,7 +104,7 @@ module ShellJS {
   private class ShellJSRead extends FileSystemReadAccess, ShellJSCall {
     ShellJSRead() { name = ["cat", "head", "sort", "tail", "uniq"] }
 
-    override DataFlow::Node getAPathArgument() { result = getAnArgument() }
+    override DataFlow::Node getAPathArgument() { result = this.getAnArgument() }
 
     override DataFlow::Node getADataNode() { result = this }
   }
@@ -124,7 +126,7 @@ module ShellJS {
       // Do not treat regex patterns as filenames.
       exists(int arg |
         arg >= offset and
-        result = getTranslatedArgument(arg)
+        result = this.getTranslatedArgument(arg)
       )
     }
 
@@ -137,15 +139,15 @@ module ShellJS {
   private class ShellJSExec extends SystemCommandExecution, ShellJSCall {
     ShellJSExec() { name = "exec" }
 
-    override DataFlow::Node getACommandArgument() { result = getArgument(0) }
+    override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
 
-    override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument() }
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getACommandArgument() }
 
     override predicate isSync() { none() }
 
     override DataFlow::Node getOptionsArg() {
-      result = getLastArgument() and
-      not result = getArgument(0) and
+      result = this.getLastArgument() and
+      not result = this.getArgument(0) and
       not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
       not result.getALocalSource() instanceof DataFlow::ArrayCreationNode // looks like argumentlist
     }
@@ -163,8 +165,8 @@ module ShellJS {
       )
     }
 
-    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 
-    override DataFlow::Node getADataNode() { result = getReceiver() }
+    override DataFlow::Node getADataNode() { result = this.getReceiver() }
   }
 }

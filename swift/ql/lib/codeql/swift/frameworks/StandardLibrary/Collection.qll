@@ -8,7 +8,7 @@ private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSteps
 
 /**
- * A model for `Collection` members that permit taint flow.
+ * A model for `Collection` and related Swift class members that permit taint flow.
  */
 private class CollectionSummaries extends SummaryModelCsv {
   override predicate row(string row) {
@@ -26,6 +26,7 @@ private class CollectionSummaries extends SummaryModelCsv {
         ";Collection;true;split(separator:maxSplits:omittingEmptySubsequences:);;;Argument[-1];ReturnValue;taint",
         ";Collection;true;removeFirst();;;Argument[-1];ReturnValue;taint",
         ";Collection;true;popFirst();;;Argument[-1];ReturnValue;taint",
+        ";Collection;true;randomElement();;;Argument[-1].CollectionElement;ReturnValue.OptionalSome;value",
         ";RangeReplaceableCollection;true;append(_:);;;Argument[0];Argument[-1];taint",
         ";RangeReplaceableCollection;true;append(contentsOf:);;;Argument[0];Argument[-1];taint",
         ";RangeReplaceableCollection;true;remove(at:);;;Argument[-1];ReturnValue;taint",
@@ -35,6 +36,10 @@ private class CollectionSummaries extends SummaryModelCsv {
         ";BidirectionalCollection;true;joined(separator:);;;Argument[-1..0];ReturnValue;taint",
         ";BidirectionalCollection;true;last(where:);;;Argument[-1];ReturnValue;taint",
         ";BidirectionalCollection;true;popLast();;;Argument[-1];ReturnValue;taint",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[-1].CollectionElement;Argument[0].Parameter[0].CollectionElement;value",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[0].Parameter[0].CollectionElement;Argument[-1].CollectionElement;value",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[0].ReturnValue;ReturnValue.OptionalSome;value",
       ]
   }
 }
@@ -47,13 +52,6 @@ private class CollectionFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   CollectionFieldsInheritTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      (
-        f.getEnclosingDecl().(NominalTypeDecl).getName() = ["Collection", "BidirectionalCollection"] or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() =
-          ["Collection", "BidirectionalCollection"]
-      ) and
-      f.getName() = ["first", "last"]
-    )
+    this.getField().hasQualifiedName(["Collection", "BidirectionalCollection"], ["first", "last"])
   }
 }

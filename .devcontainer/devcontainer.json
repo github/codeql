@@ -1,6 +1,6 @@
 {
   "extensions": [
-    "rust-lang.rust",
+    "rust-lang.rust-analyzer",
     "bungcip.better-toml",
     "github.vscode-codeql",
     "hbenl.vscode-test-explorer",

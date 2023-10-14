@@ -145,6 +145,12 @@ module Stages {
       exists(any(DataFlow::PropRef ref).getBase())
       or
       exists(any(DataFlow::ClassNode cls))
+      or
+      exists(any(DataFlow::CallNode node).getArgument(_))
+      or
+      exists(any(DataFlow::CallNode node).getAnArgument())
+      or
+      exists(any(DataFlow::CallNode node).getLastArgument())
     }
   }
 
@@ -285,9 +291,6 @@ module Stages {
       )
     }
   }
-
-  /** DEPRECATED: Alias for ApiStage */
-  deprecated module APIStage = ApiStage;
 
   /**
    * The `taint` stage.

@@ -17,7 +17,7 @@ import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.internal.DataFlowPublic
 import codeql.ruby.security.ConditionalBypassQuery
 import codeql.ruby.security.SensitiveActions
-import DataFlow::PathGraph
+import ConditionalBypassFlow::PathGraph
 
 /**
  * Holds if the value of `nd` flows into `guard`.
@@ -69,15 +69,18 @@ class SensitiveActionGuardComparisonOperand extends Sink {
  * control if `action` should be executed or not.
  */
 predicate isTaintedGuardForSensitiveAction(
-  DataFlow::PathNode sink, DataFlow::PathNode source, SensitiveAction action
+  ConditionalBypassFlow::PathNode sink, ConditionalBypassFlow::PathNode source,
+  SensitiveAction action
 ) {
   action = sink.getNode().(Sink).getAction() and
   // exclude the intermediary sink
   not sink.getNode() instanceof SensitiveActionGuardComparisonOperand and
-  exists(Configuration cfg | cfg.hasFlowPath(source, sink))
+  ConditionalBypassFlow::flowPath(source, sink)
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, SensitiveAction action
+from
+  ConditionalBypassFlow::PathNode source, ConditionalBypassFlow::PathNode sink,
+  SensitiveAction action
 where isTaintedGuardForSensitiveAction(sink, source, action)
 select sink.getNode(), source, sink, "This condition guards a sensitive $@, but a $@ controls it.",
   action, "action", source.getNode(), "user-provided value"

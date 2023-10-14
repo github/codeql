@@ -10,7 +10,6 @@ import (
 	"go/token"
 	"go/types"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -92,6 +91,10 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
 	if err != nil {
+		// the toolchain directive is only supported in Go 1.21 and above
+		if strings.Contains(err.Error(), "unknown directive: toolchain") {
+			diagnostics.EmitNewerSystemGoRequired("1.21.0")
+		}
 		return err
 	}
 	log.Println("Done running packages.Load.")
@@ -1807,7 +1810,7 @@ func extractNumLines(tw *trap.Writer, fileName string, ast *ast.File) {
 
 	// count lines of code by tokenizing
 	linesOfCode := 0
-	src, err := ioutil.ReadFile(fileName)
+	src, err := os.ReadFile(fileName)
 	if err != nil {
 		log.Fatalf("Unable to read file %s.", fileName)
 	}
@@ -1947,48 +1950,14 @@ func populateTypeParamParents(tw *trap.Writer, typeparams *types.TypeParamList, 
 // some changes to the object to avoid returning objects relating to instantiated
 // types.
 func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
-	obj := tw.Package.TypesInfo.Uses[ident]
-	if obj == nil {
-		return nil
+	switch obj := tw.Package.TypesInfo.Uses[ident].(type) {
+	case *types.Var:
+		return obj.Origin()
+	case *types.Func:
+		return obj.Origin()
+	default:
+		return obj
 	}
-	if override, ok := tw.ObjectsOverride[obj]; ok {
-		return override
-	}
-	if funcObj, ok := obj.(*types.Func); ok {
-		sig := funcObj.Type().(*types.Signature)
-		if recv := sig.Recv(); recv != nil {
-			recvType := recv.Type()
-			originType, isSame := tryGetGenericType(recvType)
-
-			if originType == nil {
-				if pointerType, ok := recvType.(*types.Pointer); ok {
-					originType, isSame = tryGetGenericType(pointerType.Elem())
-				}
-			}
-
-			if originType == nil || isSame {
-				return obj
-			}
-
-			for i := 0; i < originType.NumMethods(); i++ {
-				meth := originType.Method(i)
-				if meth.Name() == funcObj.Name() {
-					return meth
-				}
-			}
-			if interfaceType, ok := originType.Underlying().(*types.Interface); ok {
-				for i := 0; i < interfaceType.NumMethods(); i++ {
-					meth := interfaceType.Method(i)
-					if meth.Name() == funcObj.Name() {
-						return meth
-					}
-				}
-			}
-			log.Fatalf("Could not find method %s on type %s", funcObj.Name(), originType)
-		}
-	}
-
-	return obj
 }
 
 // tryGetGenericType returns the generic type of `tp`, and a boolean indicating

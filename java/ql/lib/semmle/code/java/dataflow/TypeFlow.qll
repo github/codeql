@@ -24,17 +24,17 @@ private newtype TTypeFlowNode =
  */
 private class TypeFlowNode extends TTypeFlowNode {
   string toString() {
-    result = asField().toString() or
-    result = asSsa().toString() or
-    result = asExpr().toString() or
-    result = asMethod().toString()
+    result = this.asField().toString() or
+    result = this.asSsa().toString() or
+    result = this.asExpr().toString() or
+    result = this.asMethod().toString()
   }
 
   Location getLocation() {
-    result = asField().getLocation() or
-    result = asSsa().getLocation() or
-    result = asExpr().getLocation() or
-    result = asMethod().getLocation()
+    result = this.asField().getLocation() or
+    result = this.asSsa().getLocation() or
+    result = this.asExpr().getLocation() or
+    result = this.asMethod().getLocation()
   }
 
   Field asField() { this = TField(result) }
@@ -46,10 +46,10 @@ private class TypeFlowNode extends TTypeFlowNode {
   Method asMethod() { this = TMethod(result) }
 
   RefType getType() {
-    result = asField().getType() or
-    result = asSsa().getSourceVariable().getType() or
-    result = boxIfNeeded(asExpr().getType()) or
-    result = asMethod().getReturnType()
+    result = this.asField().getType() or
+    result = this.asSsa().getSourceVariable().getType() or
+    result = boxIfNeeded(this.asExpr().getType()) or
+    result = this.asMethod().getReturnType()
   }
 }
 
@@ -241,7 +241,6 @@ private module ForAll<NodeSig Node, RankedEdge<Node> E, TypePropagation T> {
    * Holds if `t` is a candidate bound for `n` that is also valid for data coming
    * through the edges into `n` ranked from `1` to `r`.
    */
-  pragma[assume_small_delta]
   private predicate flowJoin(int r, Node n, T::Typ t) {
     (
       r = 1 and candJoinType(n, t)
@@ -442,6 +441,18 @@ predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
 }
 
 /**
+ * Holds if `t` is the type of the `this` value corresponding to the the
+ * `SuperAccess`. As the `SuperAccess` expression has the type of the supertype,
+ * the type `t` is a stronger type bound.
+ */
+private predicate superAccess(SuperAccess sup, RefType t) {
+  sup.isEnclosingInstanceAccess(t)
+  or
+  sup.isOwnInstanceAccess() and
+  t = sup.getEnclosingCallable().getDeclaringType()
+}
+
+/**
  * Holds if `n` has type `t` and this information is discarded, such that `t`
  * might be a better type bound for nodes where `n` flows to. This might include
  * multiple bounds for a single node.
@@ -453,7 +464,8 @@ private predicate typeFlowBaseCand(TypeFlowNode n, RefType t) {
     downcastSuccessor(n.asExpr(), srctype) or
     instanceOfGuarded(n.asExpr(), srctype) or
     arrayInstanceOfGuarded(n.asExpr(), srctype) or
-    n.asExpr().(FunctionalExpr).getConstructedType() = srctype
+    n.asExpr().(FunctionalExpr).getConstructedType() = srctype or
+    superAccess(n.asExpr(), srctype)
   |
     t = srctype.(BoundedType).getAnUltimateUpperBoundType()
     or

@@ -1,22 +1,10 @@
-/**
- * @kind path-problem
- */
-
 import go
-import DataFlow::PathGraph
+import TestUtilities.InlineFlowTest
 
-class Config extends TaintTracking::Configuration {
-  Config() { this = "config" }
+module Flow = TaintTracking::Global<DefaultFlowConfig>;
 
-  override predicate isSource(DataFlow::Node n) {
-    n = any(DataFlow::CallNode call | call.getTarget().getName() = "source").getResult()
-  }
+import Flow::PathGraph
 
-  override predicate isSink(DataFlow::Node n) {
-    n = any(DataFlow::CallNode call | call.getTarget().getName() = "sink").getAnArgument()
-  }
-}
-
-from DataFlow::PathNode source, DataFlow::PathNode sink, Config c
-where c.hasFlowPath(source, sink)
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
 select source, source, sink, "Path"

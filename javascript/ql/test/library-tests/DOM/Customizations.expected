@@ -3,6 +3,7 @@ test_documentRef
 | event-handler-receiver.js:1:1:1:8 | document |
 | event-handler-receiver.js:5:1:5:8 | document |
 | nameditems.js:1:1:1:8 | document |
+| querySelectorAll.js:2:5:2:12 | document |
 test_locationRef
 | customization.js:3:3:3:14 | doc.location |
 test_domValueRef
@@ -20,5 +21,8 @@ test_domValueRef
 | nameditems.js:1:1:1:23 | documen ... entById |
 | nameditems.js:1:1:1:30 | documen ... ('foo') |
 | nameditems.js:1:1:2:19 | documen ... em('x') |
+| querySelectorAll.js:2:5:2:29 | documen ... ctorAll |
+| querySelectorAll.js:2:5:2:36 | documen ... ('foo') |
+| querySelectorAll.js:2:46:2:48 | elm |
 | tst.js:49:3:49:8 | window |
 | tst.js:50:3:50:8 | window |

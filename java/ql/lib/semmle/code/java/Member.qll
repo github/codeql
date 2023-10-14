@@ -33,6 +33,7 @@ class Member extends Element, Annotatable, Modifiable, @member {
    * Holds if this member has the specified name and is declared in the
    * specified package and type.
    */
+  pragma[nomagic]
   predicate hasQualifiedName(string package, string type, string name) {
     this.getDeclaringType().hasQualifiedName(package, type) and this.hasName(name)
   }
@@ -336,6 +337,60 @@ class Callable extends StmtParent, Member, @callable {
         this.getParameterType(paramIdx - extraLeadingParams).getErasure() =
           eraseRaw(result.getParameterType(paramIdx))
       )
+    )
+  }
+}
+
+/**
+ * Holds if the given type is public and, if it is a nested type, that all of
+ * its enclosing types are public as well.
+ */
+private predicate veryPublic(RefType t) {
+  t.isPublic() and
+  (
+    not t instanceof NestedType or
+    veryPublic(t.(NestedType).getEnclosingType())
+  )
+}
+
+/** A callable that is the same as its source declaration. */
+class SrcCallable extends Callable {
+  SrcCallable() { this.isSourceDeclaration() }
+
+  /**
+   * Holds if this callable is effectively public in the sense that it can be
+   * called from outside the codebase. This means either a `public` callable on
+   * a sufficiently public type or a `protected` callable on a sufficiently
+   * public non-`final` type.
+   */
+  predicate isEffectivelyPublic() {
+    exists(RefType t | t = this.getDeclaringType() |
+      this.isPublic() and veryPublic(t)
+      or
+      this.isProtected() and not t.isFinal() and veryPublic(t)
+    )
+    or
+    exists(SrcRefType tsub, Method m |
+      veryPublic(tsub) and
+      tsub.hasMethod(m, _) and
+      m.getSourceDeclaration() = this
+    |
+      this.isPublic()
+      or
+      this.isProtected() and not tsub.isFinal()
+    )
+  }
+
+  /**
+   * Holds if this callable is implicitly public in the sense that it can be the
+   * target of virtual dispatch by a call from outside the codebase.
+   */
+  predicate isImplicitlyPublic() {
+    this.isEffectivelyPublic()
+    or
+    exists(SrcMethod m |
+      m.(SrcCallable).isEffectivelyPublic() and
+      m.getAPossibleImplementationOfSrcMethod() = this
     )
   }
 }
@@ -682,7 +737,6 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
   /** Gets the number of fields declared in this declaration. */
   int getNumField() { result = max(int idx | fieldDeclaredIn(_, this, idx) | idx) + 1 }
 
-  pragma[assume_small_delta]
   override string toString() {
     if this.getNumField() = 1
     then result = this.getTypeAccess() + " " + this.getField(0) + ";"

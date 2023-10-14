@@ -11,6 +11,6 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.nio", "Buffer", "position", "()", "manual"]
-      - ["java.nio", "Buffer", "remaining", "()", "manual"]
-      - ["java.nio", "ByteBuffer", "allocate", "(int)", "manual"]
+      - ["java.nio", "Buffer", "position", "()", "summary", "manual"]
+      - ["java.nio", "Buffer", "remaining", "()", "summary", "manual"]
+      - ["java.nio", "ByteBuffer", "allocate", "(int)", "summary", "manual"]

@@ -814,9 +814,6 @@ private predicate floatingPointTypeMapping(
   // _Float128
   kind = 49 and base = 2 and domain = TRealDomain() and realKind = 49 and extended = false
   or
-  // _Float128x
-  kind = 50 and base = 2 and domain = TRealDomain() and realKind = 50 and extended = true
-  or
   // _Float16
   kind = 52 and base = 2 and domain = TRealDomain() and realKind = 52 and extended = false
   or
@@ -1699,7 +1696,28 @@ class AutoType extends TemplateParameter {
 
 private predicate suppressUnusedThis(Type t) { any() }
 
-/** A source code location referring to a type */
+/**
+ * A source code location referring to a user-defined type.
+ *
+ * Note that only _user-defined_ types have `TypeMention`s. In particular,
+ * built-in types, and derived types with built-in types as their base don't
+ * have any `TypeMention`s. For example, given
+ * ```cpp
+ * struct S { ... };
+ * void f(S s1, int i1) {
+ *   S s2;
+ *   S* s3;
+ *   S& s4 = s2;
+ *   decltype(s2) s5;
+ *
+ *   int i2;
+ *   int* i3;
+ *   int i4[10];
+ * }
+ * ```
+ * there will be a `TypeMention` for the mention of `S` at `S s1`, `S s2`, and `S& s4 = s2`,
+ * but not at `decltype(s2) s5`. Additionally, there will be no `TypeMention`s for `int`.
+ */
 class TypeMention extends Locatable, @type_mention {
   override string toString() { result = "type mention" }
 

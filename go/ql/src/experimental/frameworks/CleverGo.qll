@@ -278,7 +278,7 @@ private module CleverGo {
           or
           // signature: func (*Context) Stringf(code int, format string, a ...interface{}) error
           methodName = "Stringf" and
-          bodyNode = bodySetterCall.getArgument([1, any(int i | i >= 2)]) and
+          bodyNode = bodySetterCall.getSyntacticArgument([1, any(int i | i >= 2)]) and
           contentTypeString = "text/plain"
           or
           // signature: func (*Context) XML(code int, data interface{}) error

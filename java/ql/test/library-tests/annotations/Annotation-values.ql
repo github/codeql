@@ -2,7 +2,7 @@ import java
 
 class RelevantAnnotation extends Annotation {
   RelevantAnnotation() {
-    getCompilationUnit().hasName("AnnotationValues") and getCompilationUnit().fromSource()
+    this.getCompilationUnit().hasName("AnnotationValues") and this.getCompilationUnit().fromSource()
   }
 }
 

@@ -64,7 +64,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TAccessorDecl(Raw::AccessorDecl id) { constructAccessorDecl(id) } or
+    TAccessor(Raw::Accessor id) { constructAccessor(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -80,19 +80,11 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TConcreteFuncDecl(Raw::ConcreteFuncDecl id) { constructConcreteFuncDecl(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TConcreteVarDecl(Raw::ConcreteVarDecl id) { constructConcreteVarDecl(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TConstructorDecl(Raw::ConstructorDecl id) { constructConstructorDecl(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TDestructorDecl(Raw::DestructorDecl id) { constructDestructorDecl(id) } or
+    TDeinitializer(Raw::Deinitializer id) { constructDeinitializer(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -128,11 +120,19 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TInitializer(Raw::Initializer id) { constructInitializer(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TMissingMemberDecl(Raw::MissingMemberDecl id) { constructMissingMemberDecl(id) } or
     /**
      * INTERNAL: Do not use.
      */
     TModuleDecl(Raw::ModuleDecl id) { constructModuleDecl(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TNamedFunction(Raw::NamedFunction id) { constructNamedFunction(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -260,10 +260,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TClosureExpr(Raw::ClosureExpr id) { constructClosureExpr(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TCoerceExpr(Raw::CoerceExpr id) { constructCoerceExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -283,10 +279,6 @@ module Synth {
     TConditionalCheckedCastExpr(Raw::ConditionalCheckedCastExpr id) {
       constructConditionalCheckedCastExpr(id)
     } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TConstructorRefCallExpr(Raw::ConstructorRefCallExpr id) { constructConstructorRefCallExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -382,6 +374,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TExplicitClosureExpr(Raw::ExplicitClosureExpr id) { constructExplicitClosureExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TFloatLiteralExpr(Raw::FloatLiteralExpr id) { constructFloatLiteralExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -420,6 +416,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TInitializerRefCallExpr(Raw::InitializerRefCallExpr id) { constructInitializerRefCallExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TInjectIntoOptionalExpr(Raw::InjectIntoOptionalExpr id) { constructInjectIntoOptionalExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -450,7 +450,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TLazyInitializerExpr(Raw::LazyInitializerExpr id) { constructLazyInitializerExpr(id) } or
+    TLazyInitializationExpr(Raw::LazyInitializationExpr id) { constructLazyInitializationExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -530,8 +530,8 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TOtherConstructorDeclRefExpr(Raw::OtherConstructorDeclRefExpr id) {
-      constructOtherConstructorDeclRefExpr(id)
+    TOtherInitializerRefExpr(Raw::OtherInitializerRefExpr id) {
+      constructOtherInitializerRefExpr(id)
     } or
     /**
      * INTERNAL: Do not use.
@@ -568,8 +568,8 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRebindSelfInConstructorExpr(Raw::RebindSelfInConstructorExpr id) {
-      constructRebindSelfInConstructorExpr(id)
+    TRebindSelfInInitializerExpr(Raw::RebindSelfInInitializerExpr id) {
+      constructRebindSelfInInitializerExpr(id)
     } or
     /**
      * INTERNAL: Do not use.
@@ -1027,7 +1027,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TCallable = TAbstractClosureExpr or TAbstractFunctionDecl;
+  class TCallable = TClosureExpr or TFunction;
 
   /**
    * INTERNAL: Do not use.
@@ -1056,17 +1056,17 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TAbstractFunctionDecl = TConstructorDecl or TDestructorDecl or TFuncDecl;
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class TAbstractStorageDecl = TSubscriptDecl or TVarDecl;
 
   /**
    * INTERNAL: Do not use.
    */
   class TAbstractTypeParamDecl = TAssociatedTypeDecl or TGenericTypeParamDecl;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TAccessorOrNamedFunction = TAccessor or TNamedFunction;
 
   /**
    * INTERNAL: Do not use.
@@ -1079,13 +1079,12 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TFuncDecl = TAccessorDecl or TConcreteFuncDecl;
+  class TFunction = TAccessorOrNamedFunction or TDeinitializer or TInitializer;
 
   /**
    * INTERNAL: Do not use.
    */
-  class TGenericContext =
-    TAbstractFunctionDecl or TExtensionDecl or TGenericTypeDecl or TSubscriptDecl;
+  class TGenericContext = TExtensionDecl or TFunction or TGenericTypeDecl or TSubscriptDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1110,17 +1109,12 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TValueDecl = TAbstractFunctionDecl or TAbstractStorageDecl or TEnumElementDecl or TTypeDecl;
+  class TValueDecl = TAbstractStorageDecl or TEnumElementDecl or TFunction or TTypeDecl;
 
   /**
    * INTERNAL: Do not use.
    */
   class TVarDecl = TConcreteVarDecl or TParamDecl;
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class TAbstractClosureExpr = TAutoClosureExpr or TClosureExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1147,6 +1141,11 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TClosureExpr = TAutoClosureExpr or TExplicitClosureExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TCollectionExpr = TArrayExpr or TDictionaryExpr;
 
   /**
@@ -1163,16 +1162,16 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TExpr =
-    TAbstractClosureExpr or TAnyTryExpr or TAppliedPropertyWrapperExpr or TApplyExpr or
-        TAssignExpr or TBindOptionalExpr or TCaptureListExpr or TCollectionExpr or TDeclRefExpr or
+    TAnyTryExpr or TAppliedPropertyWrapperExpr or TApplyExpr or TAssignExpr or TBindOptionalExpr or
+        TCaptureListExpr or TClosureExpr or TCollectionExpr or TDeclRefExpr or
         TDefaultArgumentExpr or TDiscardAssignmentExpr or TDotSyntaxBaseIgnoredExpr or
         TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or TExplicitCastExpr or TForceValueExpr or
         TIdentityExpr or TIfExpr or TImplicitConversionExpr or TInOutExpr or
-        TKeyPathApplicationExpr or TKeyPathDotExpr or TKeyPathExpr or TLazyInitializerExpr or
+        TKeyPathApplicationExpr or TKeyPathDotExpr or TKeyPathExpr or TLazyInitializationExpr or
         TLiteralExpr or TLookupExpr or TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or
         TOneWayExpr or TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
-        TOtherConstructorDeclRefExpr or TOverloadedDeclRefExpr or
-        TPropertyWrapperValuePlaceholderExpr or TRebindSelfInConstructorExpr or TSequenceExpr or
+        TOtherInitializerRefExpr or TOverloadedDeclRefExpr or
+        TPropertyWrapperValuePlaceholderExpr or TRebindSelfInInitializerExpr or TSequenceExpr or
         TSuperRefExpr or TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or
         TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
         TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or TVarargExpansionExpr;
@@ -1220,7 +1219,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TSelfApplyExpr = TConstructorRefCallExpr or TDotSyntaxCallExpr;
+  class TSelfApplyExpr = TDotSyntaxCallExpr or TInitializerRefCallExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1419,10 +1418,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TAccessorDecl`, if possible.
+   * Converts a raw element to a synthesized `TAccessor`, if possible.
    */
   cached
-  TAccessorDecl convertAccessorDeclFromRaw(Raw::Element e) { result = TAccessorDecl(e) }
+  TAccessor convertAccessorFromRaw(Raw::Element e) { result = TAccessor(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1449,13 +1448,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TConcreteFuncDecl`, if possible.
-   */
-  cached
-  TConcreteFuncDecl convertConcreteFuncDeclFromRaw(Raw::Element e) { result = TConcreteFuncDecl(e) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TConcreteVarDecl`, if possible.
    */
   cached
@@ -1463,17 +1455,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TConstructorDecl`, if possible.
+   * Converts a raw element to a synthesized `TDeinitializer`, if possible.
    */
   cached
-  TConstructorDecl convertConstructorDeclFromRaw(Raw::Element e) { result = TConstructorDecl(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TDestructorDecl`, if possible.
-   */
-  cached
-  TDestructorDecl convertDestructorDeclFromRaw(Raw::Element e) { result = TDestructorDecl(e) }
+  TDeinitializer convertDeinitializerFromRaw(Raw::Element e) { result = TDeinitializer(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1537,6 +1522,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TInitializer`, if possible.
+   */
+  cached
+  TInitializer convertInitializerFromRaw(Raw::Element e) { result = TInitializer(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TMissingMemberDecl`, if possible.
    */
   cached
@@ -1550,6 +1542,13 @@ module Synth {
    */
   cached
   TModuleDecl convertModuleDeclFromRaw(Raw::Element e) { result = TModuleDecl(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TNamedFunction`, if possible.
+   */
+  cached
+  TNamedFunction convertNamedFunctionFromRaw(Raw::Element e) { result = TNamedFunction(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1789,13 +1788,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TClosureExpr`, if possible.
-   */
-  cached
-  TClosureExpr convertClosureExprFromRaw(Raw::Element e) { result = TClosureExpr(e) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TCoerceExpr`, if possible.
    */
   cached
@@ -1826,15 +1818,6 @@ module Synth {
   cached
   TConditionalCheckedCastExpr convertConditionalCheckedCastExprFromRaw(Raw::Element e) {
     result = TConditionalCheckedCastExpr(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TConstructorRefCallExpr`, if possible.
-   */
-  cached
-  TConstructorRefCallExpr convertConstructorRefCallExprFromRaw(Raw::Element e) {
-    result = TConstructorRefCallExpr(e)
   }
 
   /**
@@ -2007,6 +1990,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TExplicitClosureExpr`, if possible.
+   */
+  cached
+  TExplicitClosureExpr convertExplicitClosureExprFromRaw(Raw::Element e) {
+    result = TExplicitClosureExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TFloatLiteralExpr`, if possible.
    */
   cached
@@ -2078,6 +2070,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TInitializerRefCallExpr`, if possible.
+   */
+  cached
+  TInitializerRefCallExpr convertInitializerRefCallExprFromRaw(Raw::Element e) {
+    result = TInitializerRefCallExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TInjectIntoOptionalExpr`, if possible.
    */
   cached
@@ -2135,11 +2136,11 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TLazyInitializerExpr`, if possible.
+   * Converts a raw element to a synthesized `TLazyInitializationExpr`, if possible.
    */
   cached
-  TLazyInitializerExpr convertLazyInitializerExprFromRaw(Raw::Element e) {
-    result = TLazyInitializerExpr(e)
+  TLazyInitializationExpr convertLazyInitializationExprFromRaw(Raw::Element e) {
+    result = TLazyInitializationExpr(e)
   }
 
   /**
@@ -2283,11 +2284,11 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TOtherConstructorDeclRefExpr`, if possible.
+   * Converts a raw element to a synthesized `TOtherInitializerRefExpr`, if possible.
    */
   cached
-  TOtherConstructorDeclRefExpr convertOtherConstructorDeclRefExprFromRaw(Raw::Element e) {
-    result = TOtherConstructorDeclRefExpr(e)
+  TOtherInitializerRefExpr convertOtherInitializerRefExprFromRaw(Raw::Element e) {
+    result = TOtherInitializerRefExpr(e)
   }
 
   /**
@@ -2351,11 +2352,11 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRebindSelfInConstructorExpr`, if possible.
+   * Converts a raw element to a synthesized `TRebindSelfInInitializerExpr`, if possible.
    */
   cached
-  TRebindSelfInConstructorExpr convertRebindSelfInConstructorExprFromRaw(Raw::Element e) {
-    result = TRebindSelfInConstructorExpr(e)
+  TRebindSelfInInitializerExpr convertRebindSelfInInitializerExprFromRaw(Raw::Element e) {
+    result = TRebindSelfInInitializerExpr(e)
   }
 
   /**
@@ -3205,9 +3206,9 @@ module Synth {
    */
   cached
   TCallable convertCallableFromRaw(Raw::Element e) {
-    result = convertAbstractClosureExprFromRaw(e)
+    result = convertClosureExprFromRaw(e)
     or
-    result = convertAbstractFunctionDeclFromRaw(e)
+    result = convertFunctionFromRaw(e)
   }
 
   /**
@@ -3301,19 +3302,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TAbstractFunctionDecl`, if possible.
-   */
-  cached
-  TAbstractFunctionDecl convertAbstractFunctionDeclFromRaw(Raw::Element e) {
-    result = convertConstructorDeclFromRaw(e)
-    or
-    result = convertDestructorDeclFromRaw(e)
-    or
-    result = convertFuncDeclFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TAbstractStorageDecl`, if possible.
    */
   cached
@@ -3332,6 +3320,17 @@ module Synth {
     result = convertAssociatedTypeDeclFromRaw(e)
     or
     result = convertGenericTypeParamDeclFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TAccessorOrNamedFunction`, if possible.
+   */
+  cached
+  TAccessorOrNamedFunction convertAccessorOrNamedFunctionFromRaw(Raw::Element e) {
+    result = convertAccessorFromRaw(e)
+    or
+    result = convertNamedFunctionFromRaw(e)
   }
 
   /**
@@ -3367,13 +3366,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TFuncDecl`, if possible.
+   * Converts a raw DB element to a synthesized `TFunction`, if possible.
    */
   cached
-  TFuncDecl convertFuncDeclFromRaw(Raw::Element e) {
-    result = convertAccessorDeclFromRaw(e)
+  TFunction convertFunctionFromRaw(Raw::Element e) {
+    result = convertAccessorOrNamedFunctionFromRaw(e)
     or
-    result = convertConcreteFuncDeclFromRaw(e)
+    result = convertDeinitializerFromRaw(e)
+    or
+    result = convertInitializerFromRaw(e)
   }
 
   /**
@@ -3382,9 +3383,9 @@ module Synth {
    */
   cached
   TGenericContext convertGenericContextFromRaw(Raw::Element e) {
-    result = convertAbstractFunctionDeclFromRaw(e)
-    or
     result = convertExtensionDeclFromRaw(e)
+    or
+    result = convertFunctionFromRaw(e)
     or
     result = convertGenericTypeDeclFromRaw(e)
     or
@@ -3451,11 +3452,11 @@ module Synth {
    */
   cached
   TValueDecl convertValueDeclFromRaw(Raw::Element e) {
-    result = convertAbstractFunctionDeclFromRaw(e)
-    or
     result = convertAbstractStorageDeclFromRaw(e)
     or
     result = convertEnumElementDeclFromRaw(e)
+    or
+    result = convertFunctionFromRaw(e)
     or
     result = convertTypeDeclFromRaw(e)
   }
@@ -3469,17 +3470,6 @@ module Synth {
     result = convertConcreteVarDeclFromRaw(e)
     or
     result = convertParamDeclFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TAbstractClosureExpr`, if possible.
-   */
-  cached
-  TAbstractClosureExpr convertAbstractClosureExprFromRaw(Raw::Element e) {
-    result = convertAutoClosureExprFromRaw(e)
-    or
-    result = convertClosureExprFromRaw(e)
   }
 
   /**
@@ -3542,6 +3532,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TClosureExpr`, if possible.
+   */
+  cached
+  TClosureExpr convertClosureExprFromRaw(Raw::Element e) {
+    result = convertAutoClosureExprFromRaw(e)
+    or
+    result = convertExplicitClosureExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TCollectionExpr`, if possible.
    */
   cached
@@ -3579,8 +3580,6 @@ module Synth {
    */
   cached
   TExpr convertExprFromRaw(Raw::Element e) {
-    result = convertAbstractClosureExprFromRaw(e)
-    or
     result = convertAnyTryExprFromRaw(e)
     or
     result = convertAppliedPropertyWrapperExprFromRaw(e)
@@ -3592,6 +3591,8 @@ module Synth {
     result = convertBindOptionalExprFromRaw(e)
     or
     result = convertCaptureListExprFromRaw(e)
+    or
+    result = convertClosureExprFromRaw(e)
     or
     result = convertCollectionExprFromRaw(e)
     or
@@ -3627,7 +3628,7 @@ module Synth {
     or
     result = convertKeyPathExprFromRaw(e)
     or
-    result = convertLazyInitializerExprFromRaw(e)
+    result = convertLazyInitializationExprFromRaw(e)
     or
     result = convertLiteralExprFromRaw(e)
     or
@@ -3645,13 +3646,13 @@ module Synth {
     or
     result = convertOptionalEvaluationExprFromRaw(e)
     or
-    result = convertOtherConstructorDeclRefExprFromRaw(e)
+    result = convertOtherInitializerRefExprFromRaw(e)
     or
     result = convertOverloadedDeclRefExprFromRaw(e)
     or
     result = convertPropertyWrapperValuePlaceholderExprFromRaw(e)
     or
-    result = convertRebindSelfInConstructorExprFromRaw(e)
+    result = convertRebindSelfInInitializerExprFromRaw(e)
     or
     result = convertSequenceExprFromRaw(e)
     or
@@ -3813,9 +3814,9 @@ module Synth {
    */
   cached
   TSelfApplyExpr convertSelfApplyExprFromRaw(Raw::Element e) {
-    result = convertConstructorRefCallExprFromRaw(e)
-    or
     result = convertDotSyntaxCallExprFromRaw(e)
+    or
+    result = convertInitializerRefCallExprFromRaw(e)
   }
 
   /**
@@ -4224,10 +4225,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TAccessorDecl` to a raw DB element, if possible.
+   * Converts a synthesized `TAccessor` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertAccessorDeclToRaw(TAccessorDecl e) { e = TAccessorDecl(result) }
+  Raw::Element convertAccessorToRaw(TAccessor e) { e = TAccessor(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -4254,13 +4255,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TConcreteFuncDecl` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertConcreteFuncDeclToRaw(TConcreteFuncDecl e) { e = TConcreteFuncDecl(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TConcreteVarDecl` to a raw DB element, if possible.
    */
   cached
@@ -4268,17 +4262,10 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TConstructorDecl` to a raw DB element, if possible.
+   * Converts a synthesized `TDeinitializer` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertConstructorDeclToRaw(TConstructorDecl e) { e = TConstructorDecl(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TDestructorDecl` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertDestructorDeclToRaw(TDestructorDecl e) { e = TDestructorDecl(result) }
+  Raw::Element convertDeinitializerToRaw(TDeinitializer e) { e = TDeinitializer(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -4342,6 +4329,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TInitializer` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertInitializerToRaw(TInitializer e) { e = TInitializer(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TMissingMemberDecl` to a raw DB element, if possible.
    */
   cached
@@ -4355,6 +4349,13 @@ module Synth {
    */
   cached
   Raw::Element convertModuleDeclToRaw(TModuleDecl e) { e = TModuleDecl(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TNamedFunction` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertNamedFunctionToRaw(TNamedFunction e) { e = TNamedFunction(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -4594,13 +4595,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TClosureExpr` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertClosureExprToRaw(TClosureExpr e) { e = TClosureExpr(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TCoerceExpr` to a raw DB element, if possible.
    */
   cached
@@ -4631,15 +4625,6 @@ module Synth {
   cached
   Raw::Element convertConditionalCheckedCastExprToRaw(TConditionalCheckedCastExpr e) {
     e = TConditionalCheckedCastExpr(result)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TConstructorRefCallExpr` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertConstructorRefCallExprToRaw(TConstructorRefCallExpr e) {
-    e = TConstructorRefCallExpr(result)
   }
 
   /**
@@ -4812,6 +4797,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TExplicitClosureExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertExplicitClosureExprToRaw(TExplicitClosureExpr e) {
+    e = TExplicitClosureExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TFloatLiteralExpr` to a raw DB element, if possible.
    */
   cached
@@ -4883,6 +4877,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TInitializerRefCallExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertInitializerRefCallExprToRaw(TInitializerRefCallExpr e) {
+    e = TInitializerRefCallExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TInjectIntoOptionalExpr` to a raw DB element, if possible.
    */
   cached
@@ -4940,11 +4943,11 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TLazyInitializerExpr` to a raw DB element, if possible.
+   * Converts a synthesized `TLazyInitializationExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertLazyInitializerExprToRaw(TLazyInitializerExpr e) {
-    e = TLazyInitializerExpr(result)
+  Raw::Element convertLazyInitializationExprToRaw(TLazyInitializationExpr e) {
+    e = TLazyInitializationExpr(result)
   }
 
   /**
@@ -5086,11 +5089,11 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TOtherConstructorDeclRefExpr` to a raw DB element, if possible.
+   * Converts a synthesized `TOtherInitializerRefExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertOtherConstructorDeclRefExprToRaw(TOtherConstructorDeclRefExpr e) {
-    e = TOtherConstructorDeclRefExpr(result)
+  Raw::Element convertOtherInitializerRefExprToRaw(TOtherInitializerRefExpr e) {
+    e = TOtherInitializerRefExpr(result)
   }
 
   /**
@@ -5154,11 +5157,11 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRebindSelfInConstructorExpr` to a raw DB element, if possible.
+   * Converts a synthesized `TRebindSelfInInitializerExpr` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertRebindSelfInConstructorExprToRaw(TRebindSelfInConstructorExpr e) {
-    e = TRebindSelfInConstructorExpr(result)
+  Raw::Element convertRebindSelfInInitializerExprToRaw(TRebindSelfInInitializerExpr e) {
+    e = TRebindSelfInInitializerExpr(result)
   }
 
   /**
@@ -6008,9 +6011,9 @@ module Synth {
    */
   cached
   Raw::Element convertCallableToRaw(TCallable e) {
-    result = convertAbstractClosureExprToRaw(e)
+    result = convertClosureExprToRaw(e)
     or
-    result = convertAbstractFunctionDeclToRaw(e)
+    result = convertFunctionToRaw(e)
   }
 
   /**
@@ -6104,19 +6107,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TAbstractFunctionDecl` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertAbstractFunctionDeclToRaw(TAbstractFunctionDecl e) {
-    result = convertConstructorDeclToRaw(e)
-    or
-    result = convertDestructorDeclToRaw(e)
-    or
-    result = convertFuncDeclToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TAbstractStorageDecl` to a raw DB element, if possible.
    */
   cached
@@ -6135,6 +6125,17 @@ module Synth {
     result = convertAssociatedTypeDeclToRaw(e)
     or
     result = convertGenericTypeParamDeclToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TAccessorOrNamedFunction` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertAccessorOrNamedFunctionToRaw(TAccessorOrNamedFunction e) {
+    result = convertAccessorToRaw(e)
+    or
+    result = convertNamedFunctionToRaw(e)
   }
 
   /**
@@ -6170,13 +6171,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TFuncDecl` to a raw DB element, if possible.
+   * Converts a synthesized `TFunction` to a raw DB element, if possible.
    */
   cached
-  Raw::Element convertFuncDeclToRaw(TFuncDecl e) {
-    result = convertAccessorDeclToRaw(e)
+  Raw::Element convertFunctionToRaw(TFunction e) {
+    result = convertAccessorOrNamedFunctionToRaw(e)
     or
-    result = convertConcreteFuncDeclToRaw(e)
+    result = convertDeinitializerToRaw(e)
+    or
+    result = convertInitializerToRaw(e)
   }
 
   /**
@@ -6185,9 +6188,9 @@ module Synth {
    */
   cached
   Raw::Element convertGenericContextToRaw(TGenericContext e) {
-    result = convertAbstractFunctionDeclToRaw(e)
-    or
     result = convertExtensionDeclToRaw(e)
+    or
+    result = convertFunctionToRaw(e)
     or
     result = convertGenericTypeDeclToRaw(e)
     or
@@ -6254,11 +6257,11 @@ module Synth {
    */
   cached
   Raw::Element convertValueDeclToRaw(TValueDecl e) {
-    result = convertAbstractFunctionDeclToRaw(e)
-    or
     result = convertAbstractStorageDeclToRaw(e)
     or
     result = convertEnumElementDeclToRaw(e)
+    or
+    result = convertFunctionToRaw(e)
     or
     result = convertTypeDeclToRaw(e)
   }
@@ -6272,17 +6275,6 @@ module Synth {
     result = convertConcreteVarDeclToRaw(e)
     or
     result = convertParamDeclToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TAbstractClosureExpr` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertAbstractClosureExprToRaw(TAbstractClosureExpr e) {
-    result = convertAutoClosureExprToRaw(e)
-    or
-    result = convertClosureExprToRaw(e)
   }
 
   /**
@@ -6345,6 +6337,17 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TClosureExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertClosureExprToRaw(TClosureExpr e) {
+    result = convertAutoClosureExprToRaw(e)
+    or
+    result = convertExplicitClosureExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TCollectionExpr` to a raw DB element, if possible.
    */
   cached
@@ -6382,8 +6385,6 @@ module Synth {
    */
   cached
   Raw::Element convertExprToRaw(TExpr e) {
-    result = convertAbstractClosureExprToRaw(e)
-    or
     result = convertAnyTryExprToRaw(e)
     or
     result = convertAppliedPropertyWrapperExprToRaw(e)
@@ -6395,6 +6396,8 @@ module Synth {
     result = convertBindOptionalExprToRaw(e)
     or
     result = convertCaptureListExprToRaw(e)
+    or
+    result = convertClosureExprToRaw(e)
     or
     result = convertCollectionExprToRaw(e)
     or
@@ -6430,7 +6433,7 @@ module Synth {
     or
     result = convertKeyPathExprToRaw(e)
     or
-    result = convertLazyInitializerExprToRaw(e)
+    result = convertLazyInitializationExprToRaw(e)
     or
     result = convertLiteralExprToRaw(e)
     or
@@ -6448,13 +6451,13 @@ module Synth {
     or
     result = convertOptionalEvaluationExprToRaw(e)
     or
-    result = convertOtherConstructorDeclRefExprToRaw(e)
+    result = convertOtherInitializerRefExprToRaw(e)
     or
     result = convertOverloadedDeclRefExprToRaw(e)
     or
     result = convertPropertyWrapperValuePlaceholderExprToRaw(e)
     or
-    result = convertRebindSelfInConstructorExprToRaw(e)
+    result = convertRebindSelfInInitializerExprToRaw(e)
     or
     result = convertSequenceExprToRaw(e)
     or
@@ -6616,9 +6619,9 @@ module Synth {
    */
   cached
   Raw::Element convertSelfApplyExprToRaw(TSelfApplyExpr e) {
-    result = convertConstructorRefCallExprToRaw(e)
-    or
     result = convertDotSyntaxCallExprToRaw(e)
+    or
+    result = convertInitializerRefCallExprToRaw(e)
   }
 
   /**

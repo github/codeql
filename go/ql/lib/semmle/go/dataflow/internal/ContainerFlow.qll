@@ -10,7 +10,7 @@ private import semmle.go.dataflow.ExternalFlow
  * Holds if the step from `node1` to `node2` stores a value in an array, a
  * slice, a collection or a map. Thus, `node2` references an object with a
  * content `c` that contains the value of `node1`. This covers array
- * assignments and initializers as well as implicit array creations for
+ * assignments and initializers as well as implicit slice creations for
  * varargs.
  */
 predicate containerStoreStep(Node node1, Node node2, Content c) {
@@ -20,7 +20,11 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
       node2.getType() instanceof ArrayType or
       node2.getType() instanceof SliceType
     ) and
-    exists(Write w | w.writesElement(node2, _, node1))
+    (
+      exists(Write w | w.writesElement(node2, _, node1))
+      or
+      node1 = node2.(ImplicitVarargsSlice).getCallNode().getAnImplicitVarargsArgument()
+    )
   )
   or
   c instanceof CollectionContent and

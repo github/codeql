@@ -17,8 +17,8 @@ class Sink extends DataFlow::Node {
  */
 class UntaintableNode extends DataFlow::Node {
   UntaintableNode() {
-    not analyze().getAType() = TTObject() and
-    not analyze().getAType() = TTString()
+    not this.analyze().getAType() = TTObject() and
+    not this.analyze().getAType() = TTString()
   }
 }
 
@@ -46,7 +46,7 @@ class BasicSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::C
   BasicSanitizerGuard() { this = getACall("isSafe") }
 
   override predicate sanitizes(boolean outcome, Expr e) {
-    outcome = true and e = getArgument(0).asExpr()
+    outcome = true and e = this.getArgument(0).asExpr()
   }
 }
 

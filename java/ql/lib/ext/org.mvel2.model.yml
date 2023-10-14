@@ -3,10 +3,10 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.mvel2", "MVEL", False, "eval", "", "", "Argument[0]", "mvel", "manual"]
-      - ["org.mvel2", "MVEL", False, "evalToBoolean", "", "", "Argument[0]", "mvel", "manual"]
-      - ["org.mvel2", "MVEL", False, "evalToString", "", "", "Argument[0]", "mvel", "manual"]
-      - ["org.mvel2", "MVEL", False, "executeAllExpression", "", "", "Argument[0]", "mvel", "manual"]
-      - ["org.mvel2", "MVEL", False, "executeExpression", "", "", "Argument[0]", "mvel", "manual"]
-      - ["org.mvel2", "MVEL", False, "executeSetExpression", "", "", "Argument[0]", "mvel", "manual"]
-      - ["org.mvel2", "MVELRuntime", False, "execute", "", "", "Argument[1]", "mvel", "manual"]
+      - ["org.mvel2", "MVEL", False, "eval", "", "", "Argument[0]", "mvel-injection", "manual"]
+      - ["org.mvel2", "MVEL", False, "evalToBoolean", "", "", "Argument[0]", "mvel-injection", "manual"]
+      - ["org.mvel2", "MVEL", False, "evalToString", "", "", "Argument[0]", "mvel-injection", "manual"]
+      - ["org.mvel2", "MVEL", False, "executeAllExpression", "", "", "Argument[0]", "mvel-injection", "manual"]
+      - ["org.mvel2", "MVEL", False, "executeExpression", "", "", "Argument[0]", "mvel-injection", "manual"]
+      - ["org.mvel2", "MVEL", False, "executeSetExpression", "", "", "Argument[0]", "mvel-injection", "manual"]
+      - ["org.mvel2", "MVELRuntime", False, "execute", "", "", "Argument[1]", "mvel-injection", "manual"]

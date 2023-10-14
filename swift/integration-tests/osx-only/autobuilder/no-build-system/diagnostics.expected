@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "`autobuild` detected neither an Xcode project or workspace, nor a Swift package\n\nSet up a [manual build command][1].\n\n[1]: https://docs.github.com/en/enterprise-server/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language",
+  "severity": "error",
+  "source": {
+    "extractorName": "swift",
+    "id": "swift/autobuilder/no-project-found",
+    "name": "No Xcode project or workspace found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

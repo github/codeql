@@ -17,13 +17,19 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CleartextLoggingSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof CleartextLoggingSanitizer }
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof CleartextLoggingBarrier }
 
   // Disregard paths that contain other paths. This helps with performance.
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-    any(CleartextLoggingAdditionalTaintStep s).step(n1, n2)
+    any(CleartextLoggingAdditionalFlowStep s).step(n1, n2)
+  }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    // flow out from collection content at the sink.
+    isSink(node) and
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
   }
 }
 

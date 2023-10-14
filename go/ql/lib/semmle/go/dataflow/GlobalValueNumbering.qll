@@ -300,14 +300,14 @@ class GVN extends GvnBase {
     // just an arbitrary way to pick an expression with this `GVN`.
     result =
       min(DataFlow::Node e, string f, int l, int c, string k |
-        e = getANode() and e.hasLocationInfo(f, l, c, _, _) and k = e.getNodeKind()
+        e = this.getANode() and e.hasLocationInfo(f, l, c, _, _) and k = e.getNodeKind()
       |
         e order by f, l, c, k
       )
   }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = exampleNode().toString() }
+  string toString() { result = this.exampleNode().toString() }
 
   /**
    * Holds if this element is at the specified location.
@@ -319,7 +319,7 @@ class GVN extends GvnBase {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exampleNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.exampleNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 

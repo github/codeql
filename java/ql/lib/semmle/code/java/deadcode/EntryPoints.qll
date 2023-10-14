@@ -456,9 +456,6 @@ class ArbitraryXmlEntryPoint extends ReflectivelyConstructedClass {
   }
 }
 
-/** DEPRECATED: Alias for ArbitraryXmlEntryPoint */
-deprecated class ArbitraryXMLEntryPoint = ArbitraryXmlEntryPoint;
-
 /** A Selenium PageObject, created by a call to PageFactory.initElements(..). */
 class SeleniumPageObjectEntryPoint extends ReflectivelyConstructedClass instanceof SeleniumPageObject
 { }

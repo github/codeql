@@ -51,7 +51,7 @@ private CryptographicAlgorithm getBestAlgorithmForName(string name) {
  */
 abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
   /** Gets a textual representation of this element. */
-  string toString() { result = getName() }
+  string toString() { result = this.getName() }
 
   /**
    * Gets the normalized name of this algorithm (upper-case, no spaces, dashes or underscores).

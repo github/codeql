@@ -1,4 +1,0 @@
-WARNING: Type HttpResponseTaintSink has been deprecated and may be removed in future (HttpResponseSinks.ql:5,6-27)
-| test.py:8:12:8:31 | pyramid.routed.response | externally controlled string |
-| test.py:17:12:17:41 | pyramid.routed.response | externally controlled string |
-| test.py:25:12:25:43 | pyramid.routed.response | externally controlled string |

@@ -6,7 +6,7 @@ import go
 
 /* A special helper function used inside the test code */
 class Link extends TaintTracking::FunctionModel {
-  Link() { hasQualifiedName(_, "link") }
+  Link() { this.hasQualifiedName(_, "link") }
 
   override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isParameter(0) and outp.isParameter(1)
@@ -25,26 +25,24 @@ predicate callArgumentisSink(DataFlow::Node sink, DataFlow::CallNode call) {
   )
 }
 
-class FlowConf extends TaintTracking::Configuration {
-  FlowConf() { this = "FlowConf" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { callResultisSource(source, _) }
 
-  override predicate isSource(DataFlow::Node source) { callResultisSource(source, _) }
-
-  override predicate isSink(DataFlow::Node sink) { callArgumentisSink(sink, _) }
+  predicate isSink(DataFlow::Node sink) { callArgumentisSink(sink, _) }
 }
+
+module Flow = TaintTracking::Global<Config>;
 
 /**
  * True if the result of the provided sourceCall flows to the corresponding sink,
  * both marked by the same numeric first argument.
  */
 predicate flowsToSink(DataFlow::CallNode sourceCall) {
-  exists(
-    FlowConf cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::CallNode sinkCall
-  |
-    cfg.hasFlowPath(source, sink) and
+  exists(DataFlow::Node source, DataFlow::Node sink, DataFlow::CallNode sinkCall |
+    Flow::flow(source, sink) and
     (
-      callResultisSource(source.getNode(), sourceCall) and
-      callArgumentisSink(sink.getNode(), sinkCall) and
+      callResultisSource(source, sourceCall) and
+      callArgumentisSink(sink, sinkCall) and
       sourceCall.getArgument(0).getIntValue() = sinkCall.getArgument(0).getIntValue()
     )
   )
