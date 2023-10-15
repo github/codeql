@@ -1,4 +1,5 @@
 ---
 category: newQuery
 ---
-* Added two new experimental query, `rb/jwt-empty-secret-or-algorithm`, to detect when application uses an empty secreat or weak algorithm. And `rb/jwt-missing-verification`, when the application does not verify the JWT payload.
+* Added a new experimental query, `rb/jwt-empty-secret-or-algorithm`, to detect when application uses an empty secret or weak algorithm.
+* Added a new experimental query, `rb/jwt-missing-verification`, to detect when the application does not verify a JWT payload.
