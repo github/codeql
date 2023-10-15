@@ -1,6 +1,6 @@
 from create_database_utils import *
 
-def check_extension(directory, expected_extension):
+def check_extensions(directory, counts):
     if platform.system() == 'Windows':
         # It's important that the path is a Unicode path on Windows, so
         # that the right system calls get used.
@@ -8,48 +8,59 @@ def check_extension(directory, expected_extension):
         if not directory.startswith("\\\\?\\"):
             directory = "\\\\?\\" + os.path.abspath(directory)
 
-    if expected_extension == '.trap':
-        # We start TRAP files with a comment
-        expected_start = b'//'
-    elif expected_extension == '.trap.gz':
-        # The GZip magic numbers
-        expected_start = b'\x1f\x8b'
-    else:
-        raise Exception('Unknown expected extension ' + expected_extension)
-    count = check_extension_worker(directory, expected_extension, expected_start)
-    if count != 1:
-        raise Exception('Expected 1 relevant file, but found ' + str(count) + ' in ' + directory)
+    check_extensions_worker(counts, directory)
+    check_counts('non-compressed', counts.expected_none, counts.count_none)
+    check_counts('gzipped', counts.expected_gzip, counts.count_gzip)
 
-def check_extension_worker(directory, expected_extension, expected_start):
-    count = 0
+def check_counts(name, expected, count):
+    if expected == -1:
+        if count < 10:
+            raise Exception('Expected lots of ' + name + ' files, but got ' + str(count))
+    elif expected != count:
+        raise Exception('Expected ' + str(expected) + ' ' + name + ' files, but got ' + str(count))
+
+class Counts:
+    def __init__(self, expected_none, expected_gzip):
+        self.expected_none = expected_none
+        self.expected_gzip = expected_gzip
+        self.count_none = 0
+        self.count_gzip = 0
+
+def check_extensions_worker(counts, directory):
     for f in os.listdir(directory):
         x = os.path.join(directory, f)
         if os.path.isdir(x):
-            count += check_extension_worker(x, expected_extension, expected_start)
-        else:
-            if f.startswith('test.kt') and not f.endswith('.set'):
-                if f.endswith(expected_extension):
-                    with open(x, 'rb') as f_in:
-                        content = f_in.read()
-                    if content.startswith(expected_start):
-                        count += 1
-                    else:
-                        raise Exception('Unexpected start to content of ' + x)
-                else:
-                    raise Exception('Expected test.kt TRAP file to have extension ' + expected_extension + ', but found ' + x)
-    return count
+            check_extensions_worker(counts, x)
+        elif f.endswith('.trap'):
+            counts.count_none += 1
+            if not startsWith(x, b'//'): # We start TRAP files with a comment
+                raise Exception("TRAP file that doesn't start with a comment: " + f)
+        elif f.endswith('.trap.gz'):
+            counts.count_gzip += 1
+            if not startsWith(x, b'\x1f\x8b'): # The GZip magic numbers
+                raise Exception("GZipped TRAP file that doesn't start with GZip magic numbers: " + f)
 
+def startsWith(f, b):
+    with open(f, 'rb') as f_in:
+        content = f_in.read()
+    return content.startswith(b)
+
+# In the counts, we expect lots of files of the compression type chosen
+# (so expected count is -1), but the diagnostic TRAP files will always
+# be uncompressed (so count_none is always 1 or -1) and the
+# sourceLocationPrefix TRAP file is always gzipped (so count_gzip is
+# always 1 or -1).
 run_codeql_database_create(['kotlinc test.kt'], test_db="default-db", db=None, lang="java")
-check_extension('default-db/trap', '.trap.gz')
+check_extensions('default-db/trap', Counts(1, -1))
 os.environ["CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"] = "nOnE"
 run_codeql_database_create(['kotlinc test.kt'], test_db="none-db", db=None, lang="java")
-check_extension('none-db/trap', '.trap')
+check_extensions('none-db/trap', Counts(-1, 1))
 os.environ["CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"] = "gzip"
 run_codeql_database_create(['kotlinc test.kt'], test_db="gzip-db", db=None, lang="java")
-check_extension('gzip-db/trap', '.trap.gz')
+check_extensions('gzip-db/trap', Counts(1, -1))
 os.environ["CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"] = "brotli"
 run_codeql_database_create(['kotlinc test.kt'], test_db="brotli-db", db=None, lang="java")
-check_extension('brotli-db/trap', '.trap.gz')
+check_extensions('brotli-db/trap', Counts(1, -1))
 os.environ["CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"] = "invalidValue"
 run_codeql_database_create(['kotlinc test.kt'], test_db="invalid-db", db=None, lang="java")
-check_extension('invalid-db/trap', '.trap.gz')
+check_extensions('invalid-db/trap', Counts(1, -1))

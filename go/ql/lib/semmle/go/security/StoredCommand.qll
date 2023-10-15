@@ -36,10 +36,6 @@ module StoredCommand {
       super.isSanitizer(node) or
       node instanceof CommandInjection::Sanitizer
     }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof CommandInjection::SanitizerGuard
-    }
   }
 
   private module Config implements DataFlow::ConfigSig {

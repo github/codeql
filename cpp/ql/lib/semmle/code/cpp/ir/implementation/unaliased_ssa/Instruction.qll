@@ -116,14 +116,14 @@ class Instruction extends Construction::TStageInstruction {
 
   private int getLineRank() {
     this.shouldGenerateDumpStrings() and
-    this =
-      rank[result](Instruction instr |
-        instr =
-          getAnInstructionAtLine(this.getEnclosingIRFunction(), this.getLocation().getFile(),
-            this.getLocation().getStartLine())
-      |
-        instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
-      )
+    exists(IRFunction enclosing, Language::File file, int line |
+      this =
+        rank[result](Instruction instr |
+          instr = getAnInstructionAtLine(enclosing, file, line)
+        |
+          instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
+        )
+    )
   }
 
   /**

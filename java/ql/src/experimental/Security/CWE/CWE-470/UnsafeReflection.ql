@@ -32,7 +32,7 @@ private predicate equalsSanitizer(Guard g, Expr e, boolean branch) {
 }
 
 module UnsafeReflectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeReflectionSink }
 

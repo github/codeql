@@ -1,4 +1,11 @@
-func bad(w http.ResponseWriter, req *http.Request, []byte secret) (interface{}, error) {
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func bad(w http.ResponseWriter, req *http.Request, secret []byte) (interface{}, error) {
 
 	secretHeader := "X-Secret"
 

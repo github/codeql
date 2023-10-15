@@ -47,20 +47,6 @@ class Annotation extends @annotation, Expr {
   }
 
   /**
-   * DEPRECATED: Getting the value of _any_ annotation element is error-prone because
-   * it could lead to selecting the value of the wrong element by accident (for example
-   * when an annotation type is extended in the future). Prefer the predicate `getValue(string)`
-   * and explicitly specify the element name. Use `getValue(_)` if it is really desired to
-   * get the value of any element.
-   *
-   * Gets a value of an annotation element. This includes default values in case
-   * no explicit value is specified. For elements with an array value type this
-   * might have an `ArrayInit` as result. To properly handle array values, prefer
-   * the predicate `getAnArrayValue`.
-   */
-  deprecated Expr getAValue() { filteredAnnotValue(this, _, result) }
-
-  /**
    * Gets the value of the annotation element with the specified `name`.
    * This includes default values in case no explicit value is specified.
    * For elements with an array value type this might get an `ArrayInit` instance.
@@ -156,11 +142,6 @@ class Annotation extends @annotation, Expr {
    * elements of that array. Otherwise, the result will be the single expression used as value.
    */
   Expr getAnArrayValue(string name) { result = this.getArrayValue(name, _) }
-
-  /**
-   * DEPRECATED: Predicate has been renamed to `getAnArrayValue`
-   */
-  deprecated Expr getAValue(string name) { result = this.getAnArrayValue(name) }
 
   /**
    * Gets a value of the annotation element with the specified `name`, which must be declared as an enum

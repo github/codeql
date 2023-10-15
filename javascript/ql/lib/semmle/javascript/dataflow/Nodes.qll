@@ -92,13 +92,20 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * but the position of `z` cannot be determined, hence there are no first and second
    * argument nodes.
    */
-  DataFlow::Node getArgument(int i) { result = super.getArgument(i) }
+  cached
+  DataFlow::Node getArgument(int i) {
+    result = super.getArgument(i) and Stages::DataFlowStage::ref()
+  }
 
   /** Gets the data flow node corresponding to an argument of this invocation. */
-  DataFlow::Node getAnArgument() { result = super.getAnArgument() }
+  cached
+  DataFlow::Node getAnArgument() { result = super.getAnArgument() and Stages::DataFlowStage::ref() }
 
   /** Gets the data flow node corresponding to the last argument of this invocation. */
-  DataFlow::Node getLastArgument() { result = this.getArgument(this.getNumArgument() - 1) }
+  cached
+  DataFlow::Node getLastArgument() {
+    result = this.getArgument(this.getNumArgument() - 1) and Stages::DataFlowStage::ref()
+  }
 
   /**
    * Gets a data flow node corresponding to an array of values being passed as
@@ -1151,28 +1158,10 @@ module ClassNode {
     abstract FunctionNode getStaticMember(string name, MemberKind kind);
 
     /**
-     * DEPRECATED. Override `getStaticMember` instead.
-     *
-     * Gets the static method of this class with the given name.
-     */
-    cached
-    deprecated FunctionNode getStaticMethod(string name) { none() }
-
-    /**
      * Gets a static member of this class of the given kind.
      */
     cached
     abstract FunctionNode getAStaticMember(MemberKind kind);
-
-    /**
-     * DEPRECATED. Override `getAStaticMember` instead.
-     *
-     * Gets a static method of this class.
-     *
-     * The constructor is not considered a static method.
-     */
-    cached
-    deprecated FunctionNode getAStaticMethod() { none() }
 
     /**
      * Gets a dataflow node representing a class to be used as the super-class

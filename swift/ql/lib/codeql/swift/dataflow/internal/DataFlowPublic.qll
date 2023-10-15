@@ -260,12 +260,3 @@ class ContentSet extends TContentSet {
   /** Gets a content that may be read from when reading from this set. */
   Content getAReadContent() { this.isSingleton(result) }
 }
-
-/**
- * DEPRECATED: Do not use.
- */
-abstract deprecated class BarrierGuard extends DataFlowExpr {
-  BarrierGuard() { none() }
-
-  final Node getAGuardedNode() { none() }
-}

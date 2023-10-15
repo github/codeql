@@ -17,7 +17,9 @@ abstract class KeySource extends Expr { }
  * A literal byte array is a key source.
  */
 class ByteArrayLiteralSource extends KeySource {
-  ByteArrayLiteralSource() { this = any(ArrayExpr arr | arr.getType().getName() = "Array<UInt8>") }
+  ByteArrayLiteralSource() {
+    this = any(ArrayExpr arr | arr.getType().getName() = ["Array<UInt8>", "[UInt8]"])
+  }
 }
 
 /**
@@ -38,6 +40,12 @@ module HardcodedKeyConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(HardcodedEncryptionKeyAdditionalFlowStep s).step(nodeFrom, nodeTo)
+  }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    // flow out of collections at the sink
+    isSink(node) and
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
   }
 }
 
