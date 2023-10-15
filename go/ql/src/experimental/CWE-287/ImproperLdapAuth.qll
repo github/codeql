@@ -22,12 +22,9 @@ abstract class LdapSanitizer extends DataFlow::Node { }
  */
 private class GoLdapBindSink extends LdapAuthSink {
   GoLdapBindSink() {
-    exists(Method meth, string base, string t, string m |
-      t = ["Conn"] and
-      meth.hasQualifiedName(["gopkg.in/ldap.v2"], t, m) and
+    exists(Method meth |
+      meth.hasQualifiedName("gopkg.in/ldap.v2", "Conn", "Bind") and
       this = meth.getACall().getArgument(1)
-    |
-      base = ["Bind"] and m = base
     )
   }
 }

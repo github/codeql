@@ -9,7 +9,7 @@ func good() interface{} {
 	defer l.Close()
 
 	if bindPassword != "" {
-		l.Bind(bindDN, bindPassword)
+		err = l.Bind("cn=admin,dc=example,dc=com", bindPassword)
 		if err != nil {
 			log.Fatalf("LDAP bind failed: %v", err)
 		}

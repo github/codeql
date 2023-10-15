@@ -95,5 +95,5 @@ func main() {
 	bad(nil, nil)
 	good1(nil, nil)
 	good2(nil, nil)
-	bad2(nil, nil)
+	bad2(nil)
 }
