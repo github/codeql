@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id javascript/jwt-hardcodedkey
+ * @id javascript/jwt-hardcoded-key
  * @tags security
  *       experimental
  *       external/cwe/CWE-321
@@ -18,11 +18,19 @@ class JWTDecodeConfig extends TaintTracking::Configuration {
   JWTDecodeConfig() { this = "JWTConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof ConstantString 
+    source.asExpr() instanceof ConstantString and
+    // following prevent custom secret key generators that exist in source code
+    not source.asExpr().mayHaveStringValue(["", " ", any(string s | s.length() = 1)])
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.getFile()
+        .getLocation()
+        .hasLocationInfo(any(string s | s.matches(["%test%", "%demo%", "%example%", "%sample%"])),
+          _, _, _, _)
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    // any() or
     sink = API::moduleImport("jsonwebtoken").getMember(["sign", "verify"]).getParameter(1).asSink() or
     sink = API::moduleImport("jose").getMember("jwtVerify").getParameter(1).asSink() or
     sink = API::moduleImport("jwt-simple").getMember("decode").getParameter(1).asSink() or
