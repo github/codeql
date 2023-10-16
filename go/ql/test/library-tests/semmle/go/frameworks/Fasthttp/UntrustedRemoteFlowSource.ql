@@ -6,8 +6,9 @@ module FasthttpTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(UntrustedFlowSource source |
-      source.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      source
+          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = source.toString() and
       value = "\"" + source.toString() + "\"" and
       tag = "UntrustedFlowSource"
