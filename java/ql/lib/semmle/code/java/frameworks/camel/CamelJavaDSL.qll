@@ -21,7 +21,7 @@ import semmle.code.java.frameworks.spring.Spring
 /**
  * A method call to a ProcessorDefinition element.
  */
-library class ProcessorDefinitionElement extends MethodAccess {
+class ProcessorDefinitionElement extends MethodAccess {
   ProcessorDefinitionElement() {
     this.getMethod()
         .getDeclaringType()
