@@ -47,6 +47,22 @@ void good_server2(char* query) {
   printf("\n<p>%i</p>\n", i);
 }
 
+typedef unsigned long size_t;
+size_t strlen(const char *s);
+char *strcpy(char *dst, const char *src);
+char *strcat(char *s1, const char *s2);
+
+void bad_server3(char* query) {
+  char query_text[strlen(query) + 8];
+  strcpy(query_text, "query: ");
+  strcat(query_text, query);
+
+  puts("<p>Query results for ");
+  // BAD: Printing out an HTTP parameter with no escaping
+  puts(query_text);
+  puts("\n<p>\n");
+}
+
 int main(int argc, char** argv) {
   char* raw_query = getenv("QUERY_STRING");
   if (strcmp("good1", argv[0]) == 0) {
@@ -57,5 +73,7 @@ int main(int argc, char** argv) {
     bad_server2(raw_query);
   } else if (strcmp("good2", argv[0]) == 0) {
     good_server2(raw_query);
+  } else if (strcmp("bad3", argv[0]) == 0) {
+    bad_server3(raw_query);
   }
 }

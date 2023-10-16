@@ -99,16 +99,16 @@ private class LoggingSinks extends SinkModelCsv {
       [
         ";;false;print(_:separator:terminator:);;;Argument[0..2];log-injection",
         ";;false;print(_:separator:terminator:toStream:);;;Argument[0..2];log-injection",
-        ";;false;print(_:separator:terminator:to:);;;Argument[0..2];log-injection",
         ";;false;debugPrint(_:separator:terminator:);;;Argument[0..2];log-injection",
-        ";;false;debugPrint(_:separator:terminator:to:);;;Argument[0..2];log-injection",
         ";;false;dump(_:name:indent:maxDepth:maxItems:);;;Argument[0..1];log-injection",
-        ";;false;dump(_:to:name:indent:maxDepth:maxItems:);;;Argument[0];log-injection",
-        ";;false;dump(_:to:name:indent:maxDepth:maxItems:);;;Argument[2];log-injection",
+        ";;false;assert(_:_:file:line:);;;Argument[1];log-injection",
+        ";;false;assertionFailure(_:file:line:);;;Argument[0];log-injection",
+        ";;false;precondition(_:_:file:line:);;;Argument[1];log-injection",
+        ";;false;preconditionFailure(_:file:line:);;;Argument[0];log-injection",
         ";;false;fatalError(_:file:line:);;;Argument[0];log-injection",
         ";;false;NSLog(_:_:);;;Argument[0..1];log-injection",
         ";;false;NSLogv(_:_:);;;Argument[0..1];log-injection",
-        ";;false;vfprintf(_:_:_:);;;Agument[1..2];log-injection",
+        ";;false;vfprintf(_:_:_:);;;Argument[1..2];log-injection",
         ";Logger;true;log(_:);;;Argument[0];log-injection",
         ";Logger;true;log(level:_:);;;Argument[1];log-injection",
         ";Logger;true;trace(_:);;;Argument[1];log-injection",
@@ -119,6 +119,10 @@ private class LoggingSinks extends SinkModelCsv {
         ";Logger;true;error(_:);;;Argument[1];log-injection",
         ";Logger;true;critical(_:);;;Argument[1];log-injection",
         ";Logger;true;fault(_:);;;Argument[1];log-injection",
+        ";;false;os_log(_:);;;Argument[0];log-injection",
+        ";;false;os_log(_:log:_:);;;Argument[2];log-injection",
+        ";;false;os_log(_:dso:log:_:_:);;;Argument[0,4];log-injection",
+        ";;false;os_log(_:dso:log:type:_:);;;Argument[0,4];log-injection",
       ]
   }
 }

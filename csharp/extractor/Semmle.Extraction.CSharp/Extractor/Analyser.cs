@@ -19,6 +19,8 @@ namespace Semmle.Extraction.CSharp
         protected Extraction.Extractor? extractor;
         protected CSharpCompilation? compilation;
         protected CommonOptions? options;
+        private protected Entities.Compilation? compilationEntity;
+        private IDisposable? compilationTrapFile;
 
         private readonly object progressMutex = new object();
 
@@ -226,7 +228,34 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
+        private void DoAnalyseCompilation()
+        {
+            try
+            {
+                var assemblyPath = extractor.OutputPath;
+                var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
+                var assembly = compilation.Assembly;
+                var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
+                compilationTrapFile = trapWriter;  // Dispose later
+                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+
+                compilationEntity = Entities.Compilation.Create(cx);
+            }
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            {
+                Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", "compilation", ex);
+            }
+        }
+
 #nullable restore warnings
+
+        /// <summary>
+        /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
+        /// </summary>
+        public void AnalyseCompilation()
+        {
+            extractionTasks.Add(() => DoAnalyseCompilation());
+        }
 
         private static bool FileIsUpToDate(string src, string dest)
         {
@@ -275,6 +304,8 @@ namespace Semmle.Extraction.CSharp
                 Logger.Log(Severity.Info, "EXTRACTION SUCCEEDED in {0}", stopWatch.Elapsed);
 
             Logger.Dispose();
+
+            compilationTrapFile?.Dispose();
         }
 
         /// <summary>

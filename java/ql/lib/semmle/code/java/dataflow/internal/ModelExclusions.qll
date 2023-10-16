@@ -25,7 +25,7 @@ class TestLibrary extends RefType {
 }
 
 /** Holds if the given file is a test file. */
-private predicate isInTestFile(File file) {
+predicate isInTestFile(File file) {
   file.getAbsolutePath().matches(["%/test/%", "%/guava-tests/%", "%/guava-testlib/%"]) and
   not file.getAbsolutePath().matches(["%/ql/test/%", "%/ql/automodel/test/%"]) // allows our test cases to work
 }

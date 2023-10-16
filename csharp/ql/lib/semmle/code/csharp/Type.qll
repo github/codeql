@@ -397,7 +397,7 @@ class NonNestedType extends ValueOrRefType {
 /**
  * The `void` type.
  */
-class VoidType extends DotNet::ValueOrRefType, Type, @void_type {
+class VoidType extends ValueOrRefType, @void_type {
   override predicate hasQualifiedName(string qualifier, string name) {
     qualifier = "System" and
     name = "Void"

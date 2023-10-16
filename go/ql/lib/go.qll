@@ -30,6 +30,7 @@ import semmle.go.dataflow.GlobalValueNumbering
 import semmle.go.dataflow.SSA
 import semmle.go.dataflow.TaintTracking
 import semmle.go.dataflow.TaintTracking2
+import semmle.go.frameworks.Afero
 import semmle.go.frameworks.Beego
 import semmle.go.frameworks.BeegoOrm
 import semmle.go.frameworks.Chi
@@ -38,11 +39,14 @@ import semmle.go.frameworks.Echo
 import semmle.go.frameworks.ElazarlGoproxy
 import semmle.go.frameworks.Email
 import semmle.go.frameworks.Encoding
+import semmle.go.frameworks.Fiber
 import semmle.go.frameworks.Gin
 import semmle.go.frameworks.Glog
+import semmle.go.frameworks.GoKit
 import semmle.go.frameworks.GoMicro
 import semmle.go.frameworks.GoRestfulHttp
 import semmle.go.frameworks.Gqlgen
+import semmle.go.frameworks.Iris
 import semmle.go.frameworks.K8sIoApimachineryPkgRuntime
 import semmle.go.frameworks.K8sIoApiCoreV1
 import semmle.go.frameworks.K8sIoClientGo

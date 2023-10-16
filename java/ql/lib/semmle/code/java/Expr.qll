@@ -609,9 +609,6 @@ class LongLiteral extends Literal, @longliteral {
   override string getAPrimaryQlClass() { result = "LongLiteral" }
 }
 
-/** DEPRECATED: Alias for FloatLiteral */
-deprecated class FloatingPointLiteral = FloatLiteral;
-
 /**
  * A float literal. For example, `4.2f`.
  *
@@ -1199,15 +1196,15 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   }
 
   /**
-   * Gets a type argument provided to the constructor of this class instance creation expression.
+   * Gets a type argument of the type of the created instance.
    *
-   * This is used for instantiations of parameterized classes.
+   * This is used for instantiations of parameterized classes. For example for
+   * `new ArrayList<String>()` the result would be the expression representing `String`.
    */
   Expr getATypeArgument() { result = this.getTypeName().(TypeAccess).getATypeArgument() }
 
   /**
-   * Gets the type argument provided to the constructor of this class instance creation expression
-   * at the specified (zero-based) position.
+   * Gets the type argument of the type of the created instance, at the specified (zero-based) position.
    */
   Expr getTypeArgument(int index) {
     result = this.getTypeName().(TypeAccess).getTypeArgument(index)
@@ -1333,6 +1330,40 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
    */
   override Method asMethod() { result = this.getAnonymousClass().getAMethod() }
 
+  private Expr getResultExpr() {
+    exists(Stmt stmt |
+      stmt = this.asMethod().getBody().(SingletonBlock).getStmt() and
+      (
+        result = stmt.(ReturnStmt).getResult()
+        or
+        // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
+        result = stmt.(ExprStmt).getExpr()
+      )
+    )
+  }
+
+  /**
+   * Gets the expression whose member this member reference refers to, that is, the left
+   * side of the `::`. For example, for the member reference `this::toString` the receiver
+   * expression is the `this` expression.
+   *
+   * This predicate might not have a result in all cases where the receiver expression is
+   * a type access, for example `MyClass::...`.
+   */
+  Expr getReceiverExpr() {
+    exists(Expr resultExpr | resultExpr = this.getResultExpr() |
+      result = resultExpr.(Call).getQualifier() and
+      // Ignore if the qualifier is a parameter of the method of the synthetic anonymous class
+      // (this is the case for method refs of instance methods which don't capture the instance, e.g. `Object::toString`)
+      // Could try to use TypeAccess as result here from child of MemberRefExpr, but that complexity might not be worth it
+      not this.asMethod().getAParameter().getAnAccess() = result
+      or
+      result = resultExpr.(ClassInstanceExpr).getTypeName()
+      // Don't cover array creation because ArrayCreationExpr currently does not have a predicate
+      // to easily get ArrayTypeAccess which should probably be the result here
+    )
+  }
+
   /**
    * Gets the receiver type whose member this expression refers to. The result might not be
    * the type which actually declares the member. For example, for the member reference `ArrayList::toString`,
@@ -1340,15 +1371,7 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
    * `getReferencedCallable` will have `java.util.AbstractCollection.toString` as result, which `ArrayList` inherits.
    */
   RefType getReceiverType() {
-    exists(Stmt stmt, Expr resultExpr |
-      stmt = this.asMethod().getBody().(SingletonBlock).getStmt() and
-      (
-        resultExpr = stmt.(ReturnStmt).getResult()
-        or
-        // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
-        resultExpr = stmt.(ExprStmt).getExpr()
-      )
-    |
+    exists(Expr resultExpr | resultExpr = this.getResultExpr() |
       result = resultExpr.(MethodAccess).getReceiverType() or
       result = resultExpr.(ClassInstanceExpr).getConstructedType() or
       result = resultExpr.(ArrayCreationExpr).getType()

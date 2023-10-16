@@ -188,30 +188,6 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 }
 
 /**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-deprecated class BarrierGuard extends Guard {
-  /** Holds if this guard validates `e` upon evaluating to `v`. */
-  abstract predicate checks(Expr e, AbstractValue v);
-
-  /** Gets a node guarded by this guard. */
-  final ExprNode getAGuardedNode() {
-    exists(Expr e, AbstractValue v |
-      this.checks(e, v) and
-      this.controlsNode(result.getControlFlowNode(), e, v)
-    )
-  }
-}
-
-/**
  * A reference contained in an object. This is either a field, a property,
  * or an element in a collection.
  */

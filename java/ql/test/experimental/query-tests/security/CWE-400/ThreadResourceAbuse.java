@@ -209,4 +209,30 @@ public class ThreadResourceAbuse extends HttpServlet {
 			UploadListener listener = new UploadListener(uploadDelay, getContentLength(request));
 		} catch (Exception e) { }
 	}
+
+	protected void doHead5(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// BAD: Get thread pause time from request header with binary multiplication expression and without validation
+		String header = request.getHeader("Retry-After");
+		int retryAfter = Integer.parseInt(header);
+
+		try {
+			Thread.sleep(retryAfter * 1000);
+		} catch (InterruptedException ignore) {
+			// ignore
+		}
+	}
+
+	protected void doHead6(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// BAD: Get thread pause time from request header with multiplication assignment operator and without validation
+		String header = request.getHeader("Retry-After");
+		int retryAfter = Integer.parseInt(header);
+
+		retryAfter *= 1000;
+
+		try {
+			Thread.sleep(retryAfter);
+		} catch (InterruptedException ignore) {
+			// ignore
+		}
+	}
 }

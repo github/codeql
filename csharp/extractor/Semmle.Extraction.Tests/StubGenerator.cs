@@ -13,7 +13,7 @@ namespace Semmle.Extraction.Tests;
 /// </summary>
 public class StubGeneratorTests
 {
-    // [Fact]
+    [Fact]
     public void StubGeneratorFieldTest()
     {
         // Setup
@@ -36,7 +36,7 @@ public const string MyField2 = default;
         Assert.Equal(expected, stub);
     }
 
-    // [Fact]
+    [Fact]
     public void StubGeneratorMethodTest()
     {
         // Setup
@@ -61,7 +61,7 @@ public int M1(string arg1) => throw null;
         var st = CSharpSyntaxTree.ParseText(source);
         var compilation = CSharpCompilation.Create(null, new[] { st });
         var sb = new StringBuilder();
-        var visitor = new StubVisitor(new StringWriter(sb), new RelevantSymbolStub());
+        var visitor = new StubVisitor(new StringWriter(sb) { NewLine = "\n" }, new RelevantSymbolStub());
         compilation.GlobalNamespace.Accept(visitor);
         return sb.ToString();
     }

@@ -113,3 +113,5 @@ func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
 	sink(arg: getMyProtocol().source())
 	sink(arg: getMyProtocolImpl().source())
 }
+
+// ---

@@ -31,21 +31,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private bool useAspNetDlls = false;
+        private bool useAspNetCoreDlls = false;
 
         /// <summary>
-        /// True if any file in the source directory indicates that ASP.NET is used.
-        /// The following heuristic is used to decide, if ASP.NET is used:
+        /// True if any file in the source directory indicates that ASP.NET Core is used.
+        /// The following heuristic is used to decide, if ASP.NET Core is used:
         /// If any file in the source directory contains something like (this will most like be a .csproj file)
         ///     <Project Sdk="Microsoft.NET.Sdk.Web">
         ///     <FrameworkReference Include="Microsoft.AspNetCore.App"/>
         /// </summary>
-        public bool UseAspNetDlls
+        public bool UseAspNetCoreDlls
         {
             get
             {
                 initialize.Run();
-                return useAspNetDlls;
+                return useAspNetCoreDlls;
             }
         }
 
@@ -57,6 +57,27 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 initialize.Run();
                 return useImplicitUsings;
+            }
+        }
+
+        private bool isLegacyProjectStructureUsed = false;
+
+        public bool IsLegacyProjectStructureUsed
+        {
+            get
+            {
+                initialize.Run();
+                return isLegacyProjectStructureUsed;
+            }
+        }
+
+        private bool isNewProjectStructureUsed = false;
+        public bool IsNewProjectStructureUsed
+        {
+            get
+            {
+                initialize.Run();
+                return isNewProjectStructureUsed;
             }
         }
 
@@ -141,19 +162,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         }
 
                         // Determine if ASP.NET is used.
-                        if (!useAspNetDlls)
-                        {
-                            useAspNetDlls =
-                                IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web") ||
-                                IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App");
-                        }
+                        useAspNetCoreDlls = useAspNetCoreDlls
+                            || IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web")
+                            || IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App");
+
 
                         // Determine if implicit usings are used.
-                        if (!useImplicitUsings)
-                        {
-                            useImplicitUsings = line.Contains("<ImplicitUsings>enable</ImplicitUsings>".AsSpan(), StringComparison.Ordinal) ||
-                                                line.Contains("<ImplicitUsings>true</ImplicitUsings>".AsSpan(), StringComparison.Ordinal);
-                        }
+                        useImplicitUsings = useImplicitUsings
+                            || line.Contains("<ImplicitUsings>enable</ImplicitUsings>".AsSpan(), StringComparison.Ordinal)
+                            || line.Contains("<ImplicitUsings>true</ImplicitUsings>".AsSpan(), StringComparison.Ordinal);
 
                         // Find all custom implicit usings.
                         foreach (var valueMatch in CustomImplicitUsingDeclarations().EnumerateMatches(line))
@@ -164,6 +181,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                                 implicitUsingNamespaces.Add(ns);
                             }
                         }
+
+                        // Determine project structure:
+                        isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || MicrosoftCSharpTargets().IsMatch(line);
+                        isNewProjectStructureUsed = isNewProjectStructureUsed
+                            || ProjectSdk().IsMatch(line)
+                            || FrameworkReference().IsMatch(line);
+                        // TODO: we could also check `<Sdk Name="Microsoft.NET.Sdk" />`
                     }
                 }
                 catch (Exception ex)
@@ -184,6 +208,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         [GeneratedRegex("<Using.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex CustomImplicitUsingDeclarations();
+
+        [GeneratedRegex("<Import.*\\sProject=\".*Microsoft\\.CSharp\\.targets\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex MicrosoftCSharpTargets();
     }
 
     internal interface IUnsafeFileReader

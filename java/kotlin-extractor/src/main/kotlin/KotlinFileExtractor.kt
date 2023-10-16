@@ -2395,7 +2395,7 @@ open class KotlinFileExtractor(
             // This is in a file class.
             val fqName = getFileClassFqName(target)
             if (fqName == null) {
-                logger.error("Can't get FqName for element in external package fragment ${target.javaClass}")
+                logger.error("Can't get FqName for static type access qualifier in external package fragment ${target.javaClass}")
             } else {
                 extractTypeAccess(useFileClassType(fqName), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
             }

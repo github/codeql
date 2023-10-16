@@ -1,2 +1,10 @@
 testFailures
+| test.swift:917:12:917:21 | OpenExistentialExpr | Unexpected result: flow=917 |
+| test.swift:917:24:918:1 | // $ flow=888\n | Missing result:flow=888 |
+| test.swift:918:12:918:21 | call to source() | Unexpected result: flow=918 |
+| test.swift:918:24:919:1 | // $ flow=889\n | Missing result:flow=889 |
+| test.swift:919:12:919:35 | OpenExistentialExpr | Unexpected result: flow=919 |
+| test.swift:919:38:920:1 | // $ flow=890\n | Missing result:flow=890 |
+| test.swift:920:12:920:39 | call to source() | Unexpected result: flow=920 |
+| test.swift:920:42:921:1 | // $ flow=891\n | Missing result:flow=891 |
 failures

@@ -535,6 +535,18 @@ func testAsyncFor () async {
     }
 }
 
+func testNilCoalescing(x: Int?) -> Int {
+  return x ?? 0
+}
+
+func testNilCoalescing2(x: Bool?) -> Int {
+  if x ?? false {
+    return 1
+  } else {
+    return 0
+  }
+}
+
 // ---
 
 protocol MyProtocol {
@@ -556,3 +568,5 @@ func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
 	sink(arg: getMyProtocol().source())
 	sink(arg: getMyProtocolImpl().source())
 }
+
+// ---

@@ -1,5 +1,4 @@
 import go
-import semmle.go.frameworks.GoKit
 import TestUtilities.InlineExpectationsTest
 
 module UntrustedFlowSourceTest implements TestSig {

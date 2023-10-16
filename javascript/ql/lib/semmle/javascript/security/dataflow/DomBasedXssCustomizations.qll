@@ -120,9 +120,6 @@ module DomBasedXss {
     WriteUrlSink() { super.isXssSink() }
   }
 
-  /** DEPRECATED: Alias for `WriteUrlSink`. */
-  deprecated class WriteURLSink = WriteUrlSink;
-
   /**
    * An expression whose value is interpreted as HTML or CSS
    * and may be inserted into the DOM.

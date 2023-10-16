@@ -27,10 +27,6 @@ deprecated class DnConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof DnSink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof DnSanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof DnSanitizerGuard
-  }
 }
 
 private module LdapInjectionDnConfig implements DataFlow::ConfigSig {
@@ -58,10 +54,6 @@ deprecated class FilterConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof FilterSink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof FilterSanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof FilterSanitizerGuard
-  }
 }
 
 private module LdapInjectionFilterConfig implements DataFlow::ConfigSig {
