@@ -7,6 +7,9 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - pip
     - Member[_vendor].Member[distlib].Member[util].Member[HTTPSConnection]
+  - - http.client.HTTPResponse~Subclass
+    - pip
+    - Member[_vendor].Member[cachecontrol].Member[filewrapper].Member[HTTPResponse]
   - - io.StringIO~Subclass
     - pip
     - Member[_internal].Member[utils].Member[misc].Member[StreamWrapper]

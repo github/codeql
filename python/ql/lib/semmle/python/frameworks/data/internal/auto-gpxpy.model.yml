@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - lxml.etree~Alias
+    - gpxpy
+    - Member[parser].Member[mod_etree]
   - - xml.etree.ElementTree~Subclass
     - gpxpy
     - Member[parser].Member[mod_etree]

@@ -46,3 +46,6 @@ extensions:
   - - io.StringIO~Subclass
     - pandas
     - Member[io].Member[stata].Member[BytesIO]
+  - - lxml.etree~Alias
+    - pandas
+    - Member[io].Member[xml].Member[etree]

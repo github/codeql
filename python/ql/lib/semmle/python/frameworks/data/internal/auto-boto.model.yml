@@ -40,3 +40,6 @@ extensions:
   - - io.StringIO~Subclass
     - boto
     - Member[vendored].Member[six].Member[StringIO]
+  - - lxml.etree~Alias
+    - boto
+    - Member[mturk].Member[question].Member[etree]

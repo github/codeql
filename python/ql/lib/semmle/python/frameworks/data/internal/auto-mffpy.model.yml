@@ -7,3 +7,9 @@ extensions:
   - - io.StringIO~Subclass
     - mffpy
     - Member[bin_writer].Member[BytesIO]
+  - - lxml.etree~Alias
+    - mffpy
+    - Member[xml_files].Member[ET]
+  - - lxml.etree~Alias
+    - mffpy
+    - Member[xml_files].Member[etree]

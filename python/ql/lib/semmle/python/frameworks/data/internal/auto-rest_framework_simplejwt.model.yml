@@ -27,6 +27,9 @@ extensions:
     - Member[views].Member[TokenViewBase]
   - - Django.db.models.Model~Subclass
     - rest_framework_simplejwt
+    - Member[authentication].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_simplejwt
     - Member[serializers].Member[BlacklistedToken]
   - - Django.db.models.Model~Subclass
     - rest_framework_simplejwt
@@ -34,6 +37,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - rest_framework_simplejwt
     - Member[token_blacklist].Member[models].Member[OutstandingToken]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_simplejwt
+    - Member[tokens].Member[AbstractBaseUser]
   - - Django.db.models.Model~Subclass
     - rest_framework_simplejwt
     - Member[tokens].Member[BlacklistedToken]
@@ -61,6 +67,12 @@ extensions:
   - - rest_framework.exceptions.APIException~Subclass
     - rest_framework_simplejwt
     - Member[views].Member[InvalidToken]
+  - - rest_framework.request.Request~Subclass
+    - rest_framework_simplejwt
+    - Member[authentication].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - rest_framework_simplejwt
+    - Member[views].Member[Request]
   - - rest_framework.response.Response~Subclass
     - rest_framework_simplejwt
     - Member[views].Member[Response]

@@ -10,3 +10,6 @@ extensions:
   - - io.StringIO~Subclass
     - pikepdf
     - Member[models].Member[metadata].Member[BytesIO]
+  - - lxml.etree~Alias
+    - pikepdf
+    - Member[models].Member[metadata].Member[etree]

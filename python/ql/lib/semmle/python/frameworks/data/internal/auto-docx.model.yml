@@ -13,3 +13,12 @@ extensions:
   - - io.StringIO~Subclass
     - docx
     - Member[image].Member[jpeg].Member[BytesIO]
+  - - lxml.etree~Alias
+    - docx
+    - Member[opc].Member[oxml].Member[etree]
+  - - lxml.etree~Alias
+    - docx
+    - Member[oxml].Member[etree]
+  - - lxml.etree~Alias
+    - docx
+    - Member[oxml].Member[xmlchemy].Member[etree]

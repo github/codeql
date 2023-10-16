@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - xml2rfc
+    - Member[writers].Member[base].Member[etree]
+  - - lxml.etree~Alias
+    - xml2rfc
+    - Member[writers].Member[expand].Member[etree]
+  - - lxml.etree~Alias
+    - xml2rfc
+    - Member[writers].Member[preptool].Member[etree]
+  - - lxml.etree~Alias
+    - xml2rfc
+    - Member[writers].Member[text].Member[etree]
+  - - lxml.etree~Alias
+    - xml2rfc
+    - Member[writers].Member[unprep].Member[etree]

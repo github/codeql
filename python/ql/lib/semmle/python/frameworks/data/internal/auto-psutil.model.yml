@@ -7,3 +7,6 @@ extensions:
   - - xml.etree.ElementTree~Subclass
     - psutil
     - Member[_psbsd].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - psutil
+    - Member[_psbsd].Member[ElementTree]

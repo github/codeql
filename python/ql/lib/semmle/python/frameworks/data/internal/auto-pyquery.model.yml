@@ -5,8 +5,5 @@ extensions:
     pack: codeql/python-all
   data:
   - - lxml.etree~Alias
-    - rdflib
-    - Member[compat].Member[etree]
-  - - xml.etree.ElementTree~Subclass
-    - rdflib
-    - Member[compat].Member[etree]
+    - pyquery
+    - Member[pyquery].Member[etree]

@@ -19,3 +19,12 @@ extensions:
   - - io.StringIO~Subclass
     - pptx
     - Member[shapes].Member[shapetree].Member[BytesIO]
+  - - lxml.etree~Alias
+    - pptx
+    - Member[opc].Member[oxml].Member[etree]
+  - - lxml.etree~Alias
+    - pptx
+    - Member[oxml].Member[etree]
+  - - lxml.etree~Alias
+    - pptx
+    - Member[oxml].Member[xmlchemy].Member[etree]
