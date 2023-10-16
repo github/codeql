@@ -849,3 +849,14 @@ void test16_with_malloc(size_t index) {
     newname[index] = 0; // $ SPURIOUS: alloc=L848 deref=L849 // GOOD [FALSE POSITIVE]
   }
 }
+
+# define MyMalloc(size) malloc(((size) == 0 ? 1 : (size)))
+
+void test_regression(size_t size) {
+  int* p = (int*)MyMalloc(size + 1);
+  int* chend = p + (size + 1); // $ alloc=L856+1
+
+  if(p <= chend) {
+    *p = 42; // $ deref=L860 // BAD
+  }
+}
