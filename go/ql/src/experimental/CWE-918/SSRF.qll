@@ -15,6 +15,7 @@ module ServerSideRequestForgery {
   private import semmle.go.security.UrlConcatenation
   private import semmle.go.dataflow.barrierguardutil.RegexpCheck
   private import semmle.go.dataflow.Properties
+  private import semmle.go.frameworks.Fasthttp
 
   /**
    * DEPRECATED: Use `Flow` instead.
@@ -175,4 +176,30 @@ module ServerSideRequestForgery {
    * of the error binding exists, and the tag to check is one of "alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric".
    */
   class ValidatorAsSanitizer extends Sanitizer, ValidatorVarCheckBarrier { }
+
+  /**
+   * A additional step that can be used mostly for request forgery related queries
+   */
+  bindingset[this]
+  abstract class AdditionalStep extends string {
+    /**
+     * Holds if `pred` to `succ` is an additional taint-propagating step for this query.
+     */
+    abstract predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ);
+  }
+
+  /**
+   * An additional step for Fasthttp framework uri and request instances.
+   *
+   * These steps can help to track the user provided URI to a dangerous SSRF sink.
+   */
+  class FasthttpAdditionalStep extends AdditionalStep {
+    FasthttpAdditionalStep() { this = "FastHTtp additional steps" }
+
+    override predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+      any(Fasthttp::Request::RequestAdditionalStep r).hasTaintStep(pred, succ)
+      or
+      any(Fasthttp::URI::UriAdditionalStep r).hasTaintStep(pred, succ)
+    }
+  }
 }
