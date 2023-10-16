@@ -1,3 +1,9 @@
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* The `cs/web/insecure-direct-object-reference` and `cs/web/missing-function-level-access-control` have been improved to better recognize attributes on generic classes.
+
 ## 0.8.0
 
 ### New Queries
