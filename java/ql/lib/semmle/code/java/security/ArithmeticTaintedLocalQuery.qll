@@ -13,6 +13,8 @@ module ArithmeticTaintedLocalOverflowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
   predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /**
@@ -30,6 +32,8 @@ module ArithmeticTaintedLocalUnderflowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
   predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /**

@@ -17,7 +17,9 @@ module LocalUserInputToQueryInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+    node.getType() instanceof PrimitiveType or
+    node.getType() instanceof BoxedType or
+    node.getType() instanceof NumberType
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
