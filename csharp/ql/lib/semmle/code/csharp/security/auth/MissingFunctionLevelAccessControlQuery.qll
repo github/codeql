@@ -82,9 +82,13 @@ predicate hasAuthViaXml(ActionMethod m) {
 /** Holds if the given action has an attribute that indications authorization. */
 predicate hasAuthViaAttribute(ActionMethod m) {
   exists(Attribute attr | attr.getType().getName().toLowerCase().matches("%auth%") |
-    attr = m.getAnAttribute() or
-    attr = m.getDeclaringType().getABaseType*().getAnAttribute()
+    attr = m.getOverridee*().getAnAttribute() or
+    attr = getAnUnboundBaseType*(m.getDeclaringType()).getAnAttribute()
   )
+}
+
+private ValueOrRefType getAnUnboundBaseType(ValueOrRefType t) {
+  result = t.getABaseType().getUnboundDeclaration()
 }
 
 /** Holds if `m` is a method that should have an auth check, but is missing it. */

@@ -51,29 +51,31 @@ private predicate callsPlus(Callable c1, Callable c2) = fastTC(calls/2)(c1, c2)
 /** Holds if `m`, its containing class, or a parent class has an attribute that extends `AuthorizeAttribute` */
 private predicate hasAuthorizeAttribute(ActionMethod m) {
   exists(Attribute attr |
-    attr.getType()
-        .getABaseType*()
+    getAnUnboundBaseType*(attr.getType())
         .hasQualifiedName([
             "Microsoft.AspNetCore.Authorization", "System.Web.Mvc", "System.Web.Http"
           ], "AuthorizeAttribute")
   |
     attr = m.getOverridee*().getAnAttribute() or
-    attr = m.getDeclaringType().getABaseType*().getAnAttribute()
+    attr = getAnUnboundBaseType*(m.getDeclaringType()).getAnAttribute()
   )
 }
 
 /** Holds if `m`, its containing class, or a parent class has an attribute that extends `AllowAnonymousAttribute` */
 private predicate hasAllowAnonymousAttribute(ActionMethod m) {
   exists(Attribute attr |
-    attr.getType()
-        .getABaseType*()
+    getAnUnboundBaseType*(attr.getType())
         .hasQualifiedName([
             "Microsoft.AspNetCore.Authorization", "System.Web.Mvc", "System.Web.Http"
           ], "AllowAnonymousAttribute")
   |
     attr = m.getOverridee*().getAnAttribute() or
-    attr = m.getDeclaringType().getABaseType*().getAnAttribute()
+    attr = getAnUnboundBaseType*(m.getDeclaringType()).getAnAttribute()
   )
+}
+
+private ValueOrRefType getAnUnboundBaseType(ValueOrRefType t) {
+  result = t.getABaseType().getUnboundDeclaration()
 }
 
 /** Holds if `m` is authorized via an `Authorize` attribute */
