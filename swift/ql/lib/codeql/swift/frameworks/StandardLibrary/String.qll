@@ -125,6 +125,9 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;enumerated();;;Argument[-1];ReturnValue;taint",
         ";String;true;encode(to:);;;Argument[-1];Argument[0];taint",
         ";LosslessStringConvertible;true;init(_:);;;Argument[0];ReturnValue;taint",
+        ";Substring;true;withUTF8(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
+        ";Substring;true;withUTF8(_:);;;Argument[0].Parameter[0].CollectionElement;Argument[-1];taint",
+        ";Substring;true;withUTF8(_:);;;Argument[0].ReturnValue;ReturnValue;value",
       ]
   }
 }
@@ -154,6 +157,9 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
         or
         namedTypeDecl.getFullName() = "CustomDebugStringConvertible" and
         fieldDecl.getName() = "debugDescription"
+        or
+        namedTypeDecl.getFullName() = "Substring" and
+        fieldDecl.getName() = "base"
       ) and
       declaringDecl.getAMember() = fieldDecl and
       declaringDecl.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*() and

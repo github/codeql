@@ -655,7 +655,7 @@ func testSubstringMembers() {
 
   let sub1 = tainted[..<tainted.index(tainted.endIndex, offsetBy: -5)]
   sink(arg: sub1) // $ tainted=654
-  sink(arg: sub1.base) // $ MISSING: tainted=
+  sink(arg: sub1.base) // $ tainted=654
   sink(arg: sub1.utf8) // $ tainted=654
   sink(arg: sub1.capitalized) // $ tainted=654
   sink(arg: sub1.description) // $ tainted=654
@@ -664,10 +664,10 @@ func testSubstringMembers() {
   sink(arg: sub2) // $ tainted=654
   let result1 = sub2.withUTF8({
     buffer in
-    sink(arg: buffer[0]) // $ MISSING: tainted=
+    sink(arg: buffer[0]) // $ tainted=654
     return source()
   })
-  sink(arg: result1) // $ MISSING: tainted=
+  sink(arg: result1) // $ tainted=668
 
   let sub3 = Substring(sub2.utf8)
   sink(arg: sub3) // $ tainted=654
