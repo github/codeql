@@ -854,9 +854,9 @@ void test16_with_malloc(size_t index) {
 
 void test_regression(size_t size) {
   int* p = (int*)MyMalloc(size + 1);
-  int* chend = p + (size + 1);
+  int* chend = p + (size + 1); // $ alloc=L856+1
 
   if(p <= chend) {
-    *p = 42; // BAD [NOT DETECTED]
+    *p = 42; // $ deref=L860 // BAD
   }
 }
