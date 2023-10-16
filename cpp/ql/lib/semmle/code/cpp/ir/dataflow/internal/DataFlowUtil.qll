@@ -2243,6 +2243,34 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
  * A unit class for adding additional call steps.
  *
  * Extend this class to add additional call steps to the data flow graph.
+ *
+ * For example, if the following subclass is added:
+ * ```ql
+ * class MyAdditionalCallTarget extends DataFlow::AdditionalCallTarget {
+ *   override Function viableTarget(Call call) {
+ *     call.getTarget().hasName("f") and
+ *     result.hasName("g")
+ *   }
+ * }
+ * ```
+ * then flow from `source()` to `x` in `sink(x)` is reported in the following example:
+ * ```cpp
+ * void sink(int);
+ * int source();
+ * void f(int);
+ *
+ * void g(int x) {
+ *   sink(x);
+ * }
+ *
+ * void test() {
+ *   int x = source();
+ *   f(x);
+ * }
+ * ```
+ *
+ * Note: To prevent reevaluation of cached dataflow-related predicates any
+ * subclass of `AdditionalCallTarget` must be imported in all dataflow queries.
  */
 class AdditionalCallTarget extends Unit {
   /**
