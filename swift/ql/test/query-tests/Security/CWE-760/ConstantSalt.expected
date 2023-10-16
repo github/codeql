@@ -19,26 +19,6 @@ edges
 | test.swift:43:35:43:130 | [...] | test.swift:56:59:56:59 | constantSalt |
 | test.swift:43:35:43:130 | [...] | test.swift:62:59:62:59 | constantSalt |
 | test.swift:43:35:43:130 | [...] | test.swift:67:53:67:53 | constantSalt |
-| test.swift:43:35:43:130 | [...] [Collection element] | test.swift:51:49:51:49 | constantSalt |
-| test.swift:43:35:43:130 | [...] [Collection element] | test.swift:56:59:56:59 | constantSalt |
-| test.swift:43:35:43:130 | [...] [Collection element] | test.swift:62:59:62:59 | constantSalt |
-| test.swift:43:35:43:130 | [...] [Collection element] | test.swift:67:53:67:53 | constantSalt |
-| test.swift:43:36:43:36 | 0x2a | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:42:43:42 | 0x3a | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:48:43:48 | 0x80 | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:54:43:54 | 0x05 | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:60:43:60 | 0xaf | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:66:43:66 | 0x46 | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:72:43:72 | 0x58 | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:78:43:78 | 0x2d | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:84:43:84 | 0x66 | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:90:43:90 | 0x52 | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:96:43:96 | 0x10 | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:102:43:102 | 0xae | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:108:43:108 | 0x86 | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:114:43:114 | 0xd3 | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:120:43:120 | 0x8e | test.swift:43:35:43:130 | [...] [Collection element] |
-| test.swift:43:126:43:126 | 0x8f | test.swift:43:35:43:130 | [...] [Collection element] |
 | test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | test.swift:52:49:52:49 | constantStringSalt |
 | test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | test.swift:57:59:57:59 | constantStringSalt |
 | test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | test.swift:63:59:63:59 | constantStringSalt |
@@ -63,23 +43,6 @@ nodes
 | test.swift:33:10:33:28 | call to getConstantString() | semmle.label | call to getConstantString() |
 | test.swift:33:10:33:30 | .utf8 | semmle.label | .utf8 |
 | test.swift:43:35:43:130 | [...] | semmle.label | [...] |
-| test.swift:43:35:43:130 | [...] [Collection element] | semmle.label | [...] [Collection element] |
-| test.swift:43:36:43:36 | 0x2a | semmle.label | 0x2a |
-| test.swift:43:42:43:42 | 0x3a | semmle.label | 0x3a |
-| test.swift:43:48:43:48 | 0x80 | semmle.label | 0x80 |
-| test.swift:43:54:43:54 | 0x05 | semmle.label | 0x05 |
-| test.swift:43:60:43:60 | 0xaf | semmle.label | 0xaf |
-| test.swift:43:66:43:66 | 0x46 | semmle.label | 0x46 |
-| test.swift:43:72:43:72 | 0x58 | semmle.label | 0x58 |
-| test.swift:43:78:43:78 | 0x2d | semmle.label | 0x2d |
-| test.swift:43:84:43:84 | 0x66 | semmle.label | 0x66 |
-| test.swift:43:90:43:90 | 0x52 | semmle.label | 0x52 |
-| test.swift:43:96:43:96 | 0x10 | semmle.label | 0x10 |
-| test.swift:43:102:43:102 | 0xae | semmle.label | 0xae |
-| test.swift:43:108:43:108 | 0x86 | semmle.label | 0x86 |
-| test.swift:43:114:43:114 | 0xd3 | semmle.label | 0xd3 |
-| test.swift:43:120:43:120 | 0x8e | semmle.label | 0x8e |
-| test.swift:43:126:43:126 | 0x8f | semmle.label | 0x8f |
 | test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | semmle.label | call to getConstantArray() [Collection element] |
 | test.swift:51:49:51:49 | constantSalt | semmle.label | constantSalt |
 | test.swift:52:49:52:49 | constantStringSalt | semmle.label | constantStringSalt |
@@ -102,74 +65,10 @@ subpaths
 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | The value 'abcdef123456' is used as a constant salt, which is insecure for hashing passwords. |
 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | The value '0' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:51:49:51:49 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:51:49:51:49 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:36:43:36 | 0x2a | test.swift:51:49:51:49 | constantSalt | The value '0x2a' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:42:43:42 | 0x3a | test.swift:51:49:51:49 | constantSalt | The value '0x3a' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:48:43:48 | 0x80 | test.swift:51:49:51:49 | constantSalt | The value '0x80' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:54:43:54 | 0x05 | test.swift:51:49:51:49 | constantSalt | The value '0x05' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:60:43:60 | 0xaf | test.swift:51:49:51:49 | constantSalt | The value '0xaf' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:66:43:66 | 0x46 | test.swift:51:49:51:49 | constantSalt | The value '0x46' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:72:43:72 | 0x58 | test.swift:51:49:51:49 | constantSalt | The value '0x58' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:78:43:78 | 0x2d | test.swift:51:49:51:49 | constantSalt | The value '0x2d' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:84:43:84 | 0x66 | test.swift:51:49:51:49 | constantSalt | The value '0x66' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:90:43:90 | 0x52 | test.swift:51:49:51:49 | constantSalt | The value '0x52' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:96:43:96 | 0x10 | test.swift:51:49:51:49 | constantSalt | The value '0x10' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:102:43:102 | 0xae | test.swift:51:49:51:49 | constantSalt | The value '0xae' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:108:43:108 | 0x86 | test.swift:51:49:51:49 | constantSalt | The value '0x86' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:114:43:114 | 0xd3 | test.swift:51:49:51:49 | constantSalt | The value '0xd3' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:120:43:120 | 0x8e | test.swift:51:49:51:49 | constantSalt | The value '0x8e' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:126:43:126 | 0x8f | test.swift:51:49:51:49 | constantSalt | The value '0x8f' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:52:49:52:49 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:52:49:52:49 | constantStringSalt | The value 'this string is constant' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:56:59:56:59 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:56:59:56:59 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:36:43:36 | 0x2a | test.swift:56:59:56:59 | constantSalt | The value '0x2a' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:42:43:42 | 0x3a | test.swift:56:59:56:59 | constantSalt | The value '0x3a' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:48:43:48 | 0x80 | test.swift:56:59:56:59 | constantSalt | The value '0x80' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:54:43:54 | 0x05 | test.swift:56:59:56:59 | constantSalt | The value '0x05' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:60:43:60 | 0xaf | test.swift:56:59:56:59 | constantSalt | The value '0xaf' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:66:43:66 | 0x46 | test.swift:56:59:56:59 | constantSalt | The value '0x46' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:72:43:72 | 0x58 | test.swift:56:59:56:59 | constantSalt | The value '0x58' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:78:43:78 | 0x2d | test.swift:56:59:56:59 | constantSalt | The value '0x2d' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:84:43:84 | 0x66 | test.swift:56:59:56:59 | constantSalt | The value '0x66' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:90:43:90 | 0x52 | test.swift:56:59:56:59 | constantSalt | The value '0x52' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:96:43:96 | 0x10 | test.swift:56:59:56:59 | constantSalt | The value '0x10' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:102:43:102 | 0xae | test.swift:56:59:56:59 | constantSalt | The value '0xae' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:108:43:108 | 0x86 | test.swift:56:59:56:59 | constantSalt | The value '0x86' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:114:43:114 | 0xd3 | test.swift:56:59:56:59 | constantSalt | The value '0xd3' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:120:43:120 | 0x8e | test.swift:56:59:56:59 | constantSalt | The value '0x8e' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:126:43:126 | 0x8f | test.swift:56:59:56:59 | constantSalt | The value '0x8f' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:57:59:57:59 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:57:59:57:59 | constantStringSalt | The value 'this string is constant' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:62:59:62:59 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:62:59:62:59 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:36:43:36 | 0x2a | test.swift:62:59:62:59 | constantSalt | The value '0x2a' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:42:43:42 | 0x3a | test.swift:62:59:62:59 | constantSalt | The value '0x3a' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:48:43:48 | 0x80 | test.swift:62:59:62:59 | constantSalt | The value '0x80' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:54:43:54 | 0x05 | test.swift:62:59:62:59 | constantSalt | The value '0x05' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:60:43:60 | 0xaf | test.swift:62:59:62:59 | constantSalt | The value '0xaf' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:66:43:66 | 0x46 | test.swift:62:59:62:59 | constantSalt | The value '0x46' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:72:43:72 | 0x58 | test.swift:62:59:62:59 | constantSalt | The value '0x58' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:78:43:78 | 0x2d | test.swift:62:59:62:59 | constantSalt | The value '0x2d' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:84:43:84 | 0x66 | test.swift:62:59:62:59 | constantSalt | The value '0x66' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:90:43:90 | 0x52 | test.swift:62:59:62:59 | constantSalt | The value '0x52' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:96:43:96 | 0x10 | test.swift:62:59:62:59 | constantSalt | The value '0x10' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:102:43:102 | 0xae | test.swift:62:59:62:59 | constantSalt | The value '0xae' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:108:43:108 | 0x86 | test.swift:62:59:62:59 | constantSalt | The value '0x86' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:114:43:114 | 0xd3 | test.swift:62:59:62:59 | constantSalt | The value '0xd3' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:120:43:120 | 0x8e | test.swift:62:59:62:59 | constantSalt | The value '0x8e' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:126:43:126 | 0x8f | test.swift:62:59:62:59 | constantSalt | The value '0x8f' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:63:59:63:59 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:63:59:63:59 | constantStringSalt | The value 'this string is constant' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:67:53:67:53 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:67:53:67:53 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:36:43:36 | 0x2a | test.swift:67:53:67:53 | constantSalt | The value '0x2a' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:42:43:42 | 0x3a | test.swift:67:53:67:53 | constantSalt | The value '0x3a' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:48:43:48 | 0x80 | test.swift:67:53:67:53 | constantSalt | The value '0x80' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:54:43:54 | 0x05 | test.swift:67:53:67:53 | constantSalt | The value '0x05' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:60:43:60 | 0xaf | test.swift:67:53:67:53 | constantSalt | The value '0xaf' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:66:43:66 | 0x46 | test.swift:67:53:67:53 | constantSalt | The value '0x46' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:72:43:72 | 0x58 | test.swift:67:53:67:53 | constantSalt | The value '0x58' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:78:43:78 | 0x2d | test.swift:67:53:67:53 | constantSalt | The value '0x2d' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:84:43:84 | 0x66 | test.swift:67:53:67:53 | constantSalt | The value '0x66' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:90:43:90 | 0x52 | test.swift:67:53:67:53 | constantSalt | The value '0x52' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:96:43:96 | 0x10 | test.swift:67:53:67:53 | constantSalt | The value '0x10' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:102:43:102 | 0xae | test.swift:67:53:67:53 | constantSalt | The value '0xae' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:108:43:108 | 0x86 | test.swift:67:53:67:53 | constantSalt | The value '0x86' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:114:43:114 | 0xd3 | test.swift:67:53:67:53 | constantSalt | The value '0xd3' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:120:43:120 | 0x8e | test.swift:67:53:67:53 | constantSalt | The value '0x8e' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:126:43:126 | 0x8f | test.swift:67:53:67:53 | constantSalt | The value '0x8f' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:68:53:68:53 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:68:53:68:53 | constantStringSalt | The value 'this string is constant' is used as a constant salt, which is insecure for hashing passwords. |
