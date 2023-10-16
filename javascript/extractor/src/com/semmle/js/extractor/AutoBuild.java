@@ -153,7 +153,7 @@ import com.semmle.util.trap.TrapWriter;
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
  *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
- *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb").
+ *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb", ".jsp").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
  *       FileType#YAML} (currently ".raml", ".yaml", ".yml").
  *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
