@@ -25,7 +25,6 @@ struct Locale {
 
 
 
-
 enum CInterop {
   typealias Char = CChar
   typealias PlatformChar = CInterop.Char
@@ -104,6 +103,7 @@ extension StringProtocol {
   func substring(from index: Self.Index) -> String { return "" }
   func trimmingCharacters(in set: CharacterSet) -> String { return "" }
   func appending<T>(_ aString: T) -> String where T : StringProtocol { return "" }
+  func appendingFormat<T>(_ format: T, _ arguments: CVarArg...) -> String where T : StringProtocol { return "" }
   func padding<T>(toLength newLength: Int, withPad padString: T, startingAt padIndex: Int) -> String where T: StringProtocol { return "" }
   func components(separatedBy separator: CharacterSet) -> [String] { return [] }
   func folding(options: String.CompareOptions = [], locale: Locale?) -> String { return "" }
@@ -647,4 +647,18 @@ func furtherTaintThroughCallbacks() {
   sink(arg: result5!)
   let result6 = try? tainted.withContiguousStorageIfAvailable(callbackWithTaintedPointer)
   sink(arg: result6!) // $ tainted=612
+}
+
+func testAppendingFormat() {
+  var s1 = source2()
+  sink(arg: s1.appendingFormat("%s %i", "", 0)) // $ tainted=653
+
+  var s2 = ""
+  sink(arg: s2.appendingFormat(source2(), "", 0)) // $ tainted=657
+
+  var s3 = ""
+  sink(arg: s3.appendingFormat("%s %i", source2(), 0)) // $ MISSING: tainted=660
+
+  var s4 = ""
+  sink(arg: s4.appendingFormat("%s %i", "", source())) // $ MISSING: tainted=663
 }
