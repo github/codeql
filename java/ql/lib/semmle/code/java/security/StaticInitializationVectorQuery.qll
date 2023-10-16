@@ -2,7 +2,6 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.DataFlow2
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
