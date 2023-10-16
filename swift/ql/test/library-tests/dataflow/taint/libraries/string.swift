@@ -675,5 +675,5 @@ func testSubstringMembers() {
   var sub4 = clean.prefix(10)
   sink(arg: sub4)
   sub4.replaceSubrange(..<clean.endIndex, with: sub1)
-  sink(arg: sub4) // $ MISSING: tainted=
+  sink(arg: sub4) // $ tainted=654
 }
