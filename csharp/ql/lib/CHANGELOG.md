@@ -1,3 +1,23 @@
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* The `--nostdlib` extractor option for the standalone extractor has been removed.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* The query library for `cs/hardcoded-credentials` now excludes benign properties such as `UserNameClaimType` and `AllowedUserNameCharacters` from `Microsoft.AspNetCore.Identity` options classes.
+
 ## 0.7.2
 
 No user-facing changes.

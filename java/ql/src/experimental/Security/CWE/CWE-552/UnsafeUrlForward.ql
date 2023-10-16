@@ -21,7 +21,7 @@ import UnsafeUrlForwardFlow::PathGraph
 
 module UnsafeUrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource and
+    source instanceof ThreatModelFlowSource and
     not exists(MethodAccess ma, Method m | ma.getMethod() = m |
       (
         m instanceof HttpServletRequestGetRequestUriMethod or

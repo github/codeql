@@ -1,3 +1,49 @@
+## 0.8.0
+
+### New Features
+
+* Kotlin versions up to 1.9.20 are now supported.
+
+### Minor Analysis Improvements
+
+* Fixed a control-flow bug where case rule statements would incorrectly include a fall-through edge.
+* Added support for default cases as proper guards in switch expressions to match switch statements.
+* Improved the class `ArithExpr` of the `Overflow.qll` module to also include compound operators. Because of this, new alerts may be raised in queries related to overflows/underflows.
+* Added new dataflow models for the Apache CXF framework.
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+
+### Bug Fixes
+
+* The regular expressions library no longer incorrectly matches mode flag characters against the input.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Features
+
+* Kotlin versions up to 1.9.10 are now supported.
+
+### Minor Analysis Improvements
+
+* Fixed the MaD signature specifications to use proper nested type names.
+* Added new sanitizer to Java command injection model
+* Added more dataflow models for JAX-RS.
+* The predicate `JaxWsEndpoint::getARemoteMethod` no longer requires the result to be annotated with `@WebMethod`. Instead, the requirements listed in the JAX-RPC Specification 1.1 for required parameter and return types are used. Applications using JAX-RS may see an increase in results.
+
+## 0.7.3
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
+### Minor Analysis Improvements
+
+* Modified the `getSecureAlgorithmName` predicate in `Encryption.qll` to also include `SHA-256` and `SHA-512`. Previously only the versions of the names without dashes were considered secure.
+* Add support for `WithElement` and `WithoutElement` for MaD access paths.
+
 ## 0.7.2
 
 ### New Features

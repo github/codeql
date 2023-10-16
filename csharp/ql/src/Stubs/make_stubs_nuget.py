@@ -18,19 +18,25 @@ def write_csproj_prefix(ioWrapper):
 
 print('Script to generate stub file from a nuget package')
 print(' Usage: python3 ' + sys.argv[0] +
-      ' NUGET_PACKAGE_NAME [VERSION=latest] [WORK_DIR=tempDir]')
+      ' TEMPLATE NUGET_PACKAGE_NAME [VERSION=latest] [WORK_DIR=tempDir]')
 print(' The script uses the dotnet cli, codeql cli, and dotnet format global tool')
+print(' TEMPLATE should be either classlib or webapp, depending on the nuget package. For example, `Swashbuckle.AspNetCore.Swagger` should use `webapp` while `newtonsoft.json` should use `classlib`.')
 
 if len(sys.argv) < 2:
+    print("\nPlease supply a template name.")
+    exit(1)
+
+if len(sys.argv) < 3:
     print("\nPlease supply a nuget package name.")
     exit(1)
 
 thisScript = sys.argv[0]
 thisDir = os.path.abspath(os.path.dirname(thisScript))
-nuget = sys.argv[1]
+template = sys.argv[1]
+nuget = sys.argv[2]
 
 # /input contains a dotnet project that's being extracted
-workDir = os.path.abspath(helpers.get_argv(3, "tempDir"))
+workDir = os.path.abspath(helpers.get_argv(4, "tempDir"))
 projectNameIn = "input"
 projectDirIn = os.path.join(workDir, projectNameIn)
 
@@ -57,10 +63,10 @@ outputName = "stub"
 outputFile = os.path.join(projectDirOut, outputName + '.cs')
 bqrsFile = os.path.join(rawOutputDir, outputName + '.bqrs')
 jsonFile = os.path.join(rawOutputDir, outputName + '.json')
-version = helpers.get_argv(2, "latest")
+version = helpers.get_argv(3, "latest")
 
 print("\n* Creating new input project")
-run_cmd(['dotnet', 'new', 'classlib', "-f", "net7.0", "--language", "C#", '--name',
+run_cmd(['dotnet', 'new', template, "-f", "net7.0", "--language", "C#", '--name',
                  projectNameIn, '--output', projectDirIn])
 helpers.remove_files(projectDirIn, '.cs')
 
@@ -75,36 +81,27 @@ sdk_version = '7.0.102'
 print("\n* Creating new global.json file and setting SDK to " + sdk_version)
 run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', workDir])
 
-print("\n* Creating DB")
-run_cmd(['codeql', 'database', 'create', dbDir, '--language=csharp',
-                 '--command', 'dotnet build /t:rebuild ' + projectDirIn])
-
-if not os.path.isdir(dbDir):
-    print("Expected database directory " + dbDir + " not found.")
-    exit(1)
-
-print("\n* Running stubbing CodeQL query")
-run_cmd(['codeql', 'query', 'run', os.path.join(
-    thisDir, 'AllStubsFromReference.ql'), '--database', dbDir, '--output', bqrsFile])
-
-run_cmd(['codeql', 'bqrs', 'decode', bqrsFile, '--output',
-                 jsonFile, '--format=json'])
+print("\n* Running stub generator")
+helpers.run_cmd_cwd(['dotnet', 'run', '--project', thisDir + '/../../../extractor/Semmle.Extraction.CSharp.DependencyStubGenerator/Semmle.Extraction.CSharp.DependencyStubGenerator.csproj'], projectDirIn)
 
 print("\n* Creating new raw output project")
 rawSrcOutputDirName = 'src'
 rawSrcOutputDir = os.path.join(rawOutputDir, rawSrcOutputDirName)
-run_cmd(['dotnet', 'new', 'classlib', "--language", "C#",
+run_cmd(['dotnet', 'new', template, "--language", "C#",
                 '--name', rawSrcOutputDirName, '--output', rawSrcOutputDir])
 helpers.remove_files(rawSrcOutputDir, '.cs')
 
-# load json from query result file and split it into separate .cs files
+# copy each file from projectDirIn to rawSrcOutputDir
 pathInfos = {}
-with open(jsonFile) as json_data:
-    data = json.load(json_data)
-    for row in data['#select']['tuples']:
-        pathInfos[row[3]] = os.path.join(rawSrcOutputDir, row[1] + '.cs')
-        with open(pathInfos[row[3]], 'a') as f:
-            f.write(row[4])
+codeqlStubsDir = os.path.join(projectDirIn, 'codeql_csharp_stubs')
+for root, dirs, files in os.walk(codeqlStubsDir):
+    for file in files:
+        if file.endswith('.cs'):
+            path = os.path.join(root, file)
+            relPath, _ = os.path.splitext(os.path.relpath(path, codeqlStubsDir))
+            origDllPath = "/" + relPath + ".dll"
+            pathInfos[origDllPath] = os.path.join(rawSrcOutputDir, file)
+            shutil.copy2(path, rawSrcOutputDir)
 
 print("\n --> Generated stub files: " + rawSrcOutputDir)
 
@@ -196,7 +193,7 @@ for framework in frameworks:
         pf.write('</Project>\n')
 
         for pathInfo in pathInfos:
-            if 'packs/' + framework.lower() in pathInfo.lower():
+            if framework.lower() + '.ref' in pathInfo.lower():
                 copiedFiles.add(pathInfo)
                 shutil.copy2(pathInfos[pathInfo], os.path.join(
                     frameworksDir, framework))
@@ -210,7 +207,7 @@ with open(os.path.join(frameworksDir, 'Microsoft.NETCore.App', 'Microsoft.NETCor
     pf.write('</Project>\n')
 
     for pathInfo in pathInfos:
-        if 'packs/microsoft.netcore.app.ref/' in pathInfo.lower():
+        if 'microsoft.netcore.app.ref/' in pathInfo.lower():
             copiedFiles.add(pathInfo)
             shutil.copy2(pathInfos[pathInfo], frameworkDir)
 

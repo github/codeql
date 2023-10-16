@@ -74,6 +74,8 @@ To use the starter workspace:
 
 #. In VS Code, use the **File** > **Open Workspace** option to open the ``vscode-codeql-starter.code-workspace`` file from your checkout of the workspace repository.
 
+Remember to update the ``ql`` submodule in the starter workspace periodically to ensure that it remains compatible with newer versions of the VS Code extension and the CodeQL CLI.
+
 .. _existing-workspace:
 
 Updating an existing workspace for CodeQL

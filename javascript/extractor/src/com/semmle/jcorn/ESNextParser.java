@@ -314,8 +314,9 @@ public class ESNextParser extends JSXParser {
         this.parseExportSpecifiersMaybe(specifiers, exports);
       }
       Literal source = (Literal) this.parseExportFrom(specifiers, null, true);
-      Expression assertion = this.parseImportOrExportAssertionAndSemicolon();
-      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source, assertion));
+      Expression attributes = this.parseImportOrExportAttributesAndSemicolon();
+      return this.finishNode(
+          new ExportNamedDeclaration(exportStart, null, specifiers, source, attributes));
     }
 
     return super.parseExportRest(exportStart, exports);
@@ -331,8 +332,9 @@ public class ESNextParser extends JSXParser {
       List<ExportSpecifier> specifiers = CollectionUtil.makeList(nsSpec);
       this.parseExportSpecifiersMaybe(specifiers, exports);
       Literal source = (Literal) this.parseExportFrom(specifiers, null, true);
-      Expression assertion = this.parseImportOrExportAssertionAndSemicolon();
-      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source, assertion));
+      Expression attributes = this.parseImportOrExportAttributesAndSemicolon();
+      return this.finishNode(
+          new ExportNamedDeclaration(exportStart, null, specifiers, source, attributes));
     }
 
     return super.parseExportAll(exportStart, starLoc, exports);

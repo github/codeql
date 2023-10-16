@@ -145,6 +145,12 @@ module Stages {
       exists(any(DataFlow::PropRef ref).getBase())
       or
       exists(any(DataFlow::ClassNode cls))
+      or
+      exists(any(DataFlow::CallNode node).getArgument(_))
+      or
+      exists(any(DataFlow::CallNode node).getAnArgument())
+      or
+      exists(any(DataFlow::CallNode node).getLastArgument())
     }
   }
 

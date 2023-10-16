@@ -1,5 +1,5 @@
 name: codeql/cpp-all
-version: 0.9.1-dev
+version: 0.10.1-dev
 groups: cpp
 dbscheme: semmlecode.cpp.dbscheme
 extractor: cpp

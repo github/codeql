@@ -6,7 +6,6 @@
 
 private import ruby
 private import codeql.ruby.DataFlow
-private import codeql.ruby.DataFlow2
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.core.Gem::Gem as Gem
 private import codeql.ruby.Concepts as Concepts

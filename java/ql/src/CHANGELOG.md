@@ -1,3 +1,25 @@
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Queries
+
+* Added the `java/trust-boundary-violation` query to detect trust boundary violations between HTTP requests and the HTTP session. Also added the `trust-boundary-violation` sink kind for sinks which may cross a trust boundary, such as calls to the `HttpSession#setAttribute` method.
+
+### Minor Analysis Improvements
+
+* The queries "Resolving XML external entity in user-controlled data" (`java/xxe`) and "Resolving XML external entity in user-controlled data from local source" (`java/xxe-local`) now recognize sinks in the MDHT library.
+
+## 0.7.3
+
+No user-facing changes.
+
 ## 0.7.2
 
 ### Minor Analysis Improvements

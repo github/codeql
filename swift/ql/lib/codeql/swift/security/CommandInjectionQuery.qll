@@ -1,6 +1,6 @@
 /**
  * Provides a taint-tracking configuration for reasoning about system
- * commands built from user-controlled sources (that is, Command injection
+ * commands built from user-controlled sources (that is, command injection
  * vulnerabilities).
  */
 
@@ -11,7 +11,7 @@ import codeql.swift.dataflow.FlowSources
 import codeql.swift.security.CommandInjectionExtensions
 
 /**
- * A taint configuration for tainted data that reaches a Command Injection sink.
+ * A taint configuration for tainted data that reaches a command injection sink.
  */
 module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
@@ -23,9 +23,15 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(CommandInjectionAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    // flow out from array elements of at the sink, for example in `task.arguments = [tainted]`.
+    isSink(node) and
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
+  }
 }
 
 /**
- * Detect taint flow of tainted data that reaches a Command Injection sink.
+ * Detect taint flow of tainted data that reaches a command injection sink.
  */
 module CommandInjectionFlow = TaintTracking::Global<CommandInjectionConfig>;

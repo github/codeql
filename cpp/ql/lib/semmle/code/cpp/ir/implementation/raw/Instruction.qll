@@ -116,14 +116,14 @@ class Instruction extends Construction::TStageInstruction {
 
   private int getLineRank() {
     this.shouldGenerateDumpStrings() and
-    this =
-      rank[result](Instruction instr |
-        instr =
-          getAnInstructionAtLine(this.getEnclosingIRFunction(), this.getLocation().getFile(),
-            this.getLocation().getStartLine())
-      |
-        instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
-      )
+    exists(IRFunction enclosing, Language::File file, int line |
+      this =
+        rank[result](Instruction instr |
+          instr = getAnInstructionAtLine(enclosing, file, line)
+        |
+          instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
+        )
+    )
   }
 
   /**
@@ -574,6 +574,22 @@ class VariableAddressInstruction extends VariableInstruction {
  */
 class FunctionAddressInstruction extends FunctionInstruction {
   FunctionAddressInstruction() { this.getOpcode() instanceof Opcode::FunctionAddress }
+}
+
+/**
+ * An instruction that returns the address of a "virtual" delete function.
+ *
+ * This function, which does not actually exist in the source code, is used to
+ * delete objects of a class with a virtual destructor. In that case the deacllocation
+ * function is selected at runtime based on the dynamic type of the object. So this
+ * function dynamically dispatches to the correct deallocation function.
+ * It also should pass in the required extra arguments to the deallocation function
+ * which may differ dynamically depending on the type of the object.
+ */
+class VirtualDeleteFunctionAddressInstruction extends Instruction {
+  VirtualDeleteFunctionAddressInstruction() {
+    this.getOpcode() instanceof Opcode::VirtualDeleteFunctionAddress
+  }
 }
 
 /**

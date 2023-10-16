@@ -32,14 +32,21 @@ extensions:
       # These are potential vulnerabilities, but not for command-injection. No query for this kind of vulnerability currently exists.
       # - ["java.lang", "System", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
       # - ["java.lang", "System", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,Object)", "", "Argument[1]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String)", "", "Argument[1]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Object[])", "", "Argument[1..2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier)", "", "Argument[1..2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier,Throwable)", "", "Argument[1..2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Throwable)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,Object)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Object[])", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Supplier)", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Supplier,Throwable)", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Throwable)", "", "Argument[1]", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.lang", "System", False, "getenv", "", "", "ReturnValue", "environment", "manual"]
+      - ["java.lang", "System", False, "getProperties", "", "", "ReturnValue", "environment", "manual"]
+      - ["java.lang", "System", False, "getProperty", "", "", "ReturnValue", "environment", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
@@ -130,6 +137,7 @@ extensions:
       - ["java.lang", "Thread", True, "getName", "()", "", "Argument[this].SyntheticField[java.lang.Thread.name]", "ReturnValue", "value", "manual"]
       - ["java.lang", "ThreadLocal", True, "get", "()", "", "Argument[this].SyntheticField[java.lang.ThreadLocal.value]", "ReturnValue", "value", "manual"]
       - ["java.lang", "ThreadLocal", True, "set", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.ThreadLocal.value]", "value", "manual"]
+      - ["java.lang", "ThreadLocal", False, "withInitial", "(Supplier)", "", "Argument[0].ReturnValue", "ReturnValue.SyntheticField[java.lang.ThreadLocal.value]", "value", "manual"]
       - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
       - ["java.lang", "Throwable", False, "Throwable", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "Throwable", True, "getCause", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "ReturnValue", "value", "manual"]

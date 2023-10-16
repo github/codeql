@@ -231,6 +231,7 @@ typeInferenceMismatch
 | tst.js:2:13:2:20 | source() | tst.js:47:10:47:30 | Buffer. ...  'hex') |
 | tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |
 | tst.js:2:13:2:20 | source() | tst.js:51:10:51:31 | seriali ... ript(x) |
+| tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
 | xml.js:12:17:12:24 | source() | xml.js:13:14:13:19 | result |
 | xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |

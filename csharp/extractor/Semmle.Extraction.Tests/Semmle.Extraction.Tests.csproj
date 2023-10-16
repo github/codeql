@@ -16,6 +16,7 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Semmle.Extraction.CSharp.StubGenerator\Semmle.Extraction.CSharp.StubGenerator.csproj" />
 		<ProjectReference Include="..\Semmle.Extraction.CSharp.Standalone\Semmle.Extraction.CSharp.Standalone.csproj" />
 		<ProjectReference Include="..\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
 		<ProjectReference Include="..\Semmle.Extraction\Semmle.Extraction.csproj" />

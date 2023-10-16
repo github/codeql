@@ -82,14 +82,6 @@ private import internal.AccessPathSyntax
 private import FlowSummary
 private import codeql.mad.ModelValidation as SharedModelVal
 
-/**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import semmle.go.frameworks.Stdlib
-}
-
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel = Extensions::sourceModel/9;
 

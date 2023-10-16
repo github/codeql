@@ -9,22 +9,53 @@ private import internal.ParseRegex
 private import internal.RegexTracking
 
 /**
+ * A data flow node whose value may flow to a position where it is interpreted
+ * as a part of a regular expression. For example the string literal
+ * `"(a|b).*"` in:
+ * ```
+ * Regex("(a|b).*").firstMatch(in: myString)
+ * ```
+ */
+abstract class RegexPatternSource extends DataFlow::Node {
+  /**
+   * Gets a node where the pattern of this node is parsed as a part of
+   * a regular expression.
+   */
+  abstract DataFlow::Node getAParse();
+
+  /**
+   * Gets the root term of the regular expression parsed from this pattern.
+   */
+  abstract RegExpTerm getRegExpTerm();
+}
+
+/**
+ * For each `RegexPatternSource` data flow node, the corresponding `Expr` is
+ * a `Regex`. This is a simple wrapper to make that happen.
+ */
+private class RegexFromRegexPatternSource extends RegExp {
+  RegexFromRegexPatternSource() { this = any(RegexPatternSource node).asExpr() }
+}
+
+/**
  * A string literal that is used as a regular expression. For example
  * the string literal `"(a|b).*"` in:
  * ```
  * Regex("(a|b).*").firstMatch(in: myString)
  * ```
  */
-private class ParsedStringRegex extends RegExp, StringLiteralExpr {
+private class ParsedStringRegex extends RegexPatternSource {
+  StringLiteralExpr expr;
   DataFlow::Node use;
 
-  ParsedStringRegex() { StringLiteralUseFlow::flow(DataFlow::exprNode(this), use) }
+  ParsedStringRegex() {
+    expr = this.asExpr() and
+    StringLiteralUseFlow::flow(this, use)
+  }
 
-  /**
-   * Gets a dataflow node where this string literal is used as a regular
-   * expression.
-   */
-  DataFlow::Node getUse() { result = use }
+  override DataFlow::Node getAParse() { result = use }
+
+  override RegExpTerm getRegExpTerm() { result.getRegExp() = expr }
 }
 
 /**
@@ -89,7 +120,8 @@ private newtype TRegexParseMode =
   MkVerbose() or // ignores whitespace and `#` comments within patterns
   MkDotAll() or // dot matches all characters, including line terminators
   MkMultiLine() or // `^` and `$` also match beginning and end of lines
-  MkUnicode() // Unicode UAX 29 word boundary mode
+  MkUnicodeBoundary() or // Unicode UAX 29 word boundary mode
+  MkUnicode() // Unicode matching
 
 /**
  * A regular expression parse mode flag.
@@ -106,6 +138,8 @@ class RegexParseMode extends TRegexParseMode {
     this = MkDotAll() and result = "DOTALL"
     or
     this = MkMultiLine() and result = "MULTILINE"
+    or
+    this = MkUnicodeBoundary() and result = "UNICODEBOUNDARY"
     or
     this = MkUnicode() and result = "UNICODE"
   }
@@ -218,7 +252,7 @@ class NSRegularExpressionRegexAdditionalFlowStep extends RegexAdditionalFlowStep
         .getMember()
         .(FieldDecl)
         .hasQualifiedName("NSRegularExpression.Options", "useUnicodeWordBoundaries") and
-    mode = MkUnicode() and
+    mode = MkUnicodeBoundary() and
     isSet = true
   }
 }
@@ -246,11 +280,11 @@ abstract class RegexEval extends CallExpr {
    */
   RegExp getARegex() {
     // string literal used directly as a regex
-    result.(ParsedStringRegex).getUse().asExpr() = this.getRegexInput()
+    DataFlow::exprNode(result).(ParsedStringRegex).getAParse().asExpr() = this.getRegexInput()
     or
     // string literal -> regex object -> use
     exists(RegexCreation regexCreation |
-      result.(ParsedStringRegex).getUse() = regexCreation.getStringInput() and
+      DataFlow::exprNode(result).(ParsedStringRegex).getAParse() = regexCreation.getStringInput() and
       RegexUseFlow::flow(regexCreation, DataFlow::exprNode(this.getRegexInput()))
     )
   }

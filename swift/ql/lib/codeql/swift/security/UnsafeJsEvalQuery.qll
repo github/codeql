@@ -22,6 +22,16 @@ module UnsafeJsEvalConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(UnsafeJsEvalAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    // flow out from content a the sink
+    (
+      isSink(node)
+      or
+      isAdditionalFlowStep(node, _)
+    ) and
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
+  }
 }
 
 /**

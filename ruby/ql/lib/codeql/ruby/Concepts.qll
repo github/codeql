@@ -1096,10 +1096,7 @@ module Cryptography {
    * extend `CryptographicOperation::Range` instead.
    */
   class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
-  {
-    /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
-    deprecated predicate isWeak() { super.isWeak() }
-  }
+  { }
 
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
   module CryptographicOperation {
@@ -1110,10 +1107,7 @@ module Cryptography {
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `CryptographicOperation` instead.
      */
-    abstract class Range extends SC::CryptographicOperation::Range {
-      /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
-      deprecated predicate isWeak() { this.getAlgorithm().isWeak() or this.getBlockMode().isWeak() }
-    }
+    abstract class Range extends SC::CryptographicOperation::Range { }
   }
 
   class BlockMode = SC::BlockMode;
@@ -1251,13 +1245,12 @@ module LdapExecution {
   }
 }
 
-/*
+/**
  * A data-flow node that collects methods binding a LDAP connection.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `LdapBind::Range` instead.
  */
-
 class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
   /** Gets the argument containing the binding host */
   DataFlow::Node getHost() { result = super.getHost() }

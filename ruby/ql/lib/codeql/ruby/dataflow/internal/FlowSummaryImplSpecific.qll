@@ -24,7 +24,7 @@ class NeutralCallableBase = string;
 DataFlowCallable inject(SummarizedCallable c) { result.asLibraryCallable() = c }
 
 /** Gets the parameter position representing a callback itself, if any. */
-ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `self` for callbacks
+ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
 
 /** Gets the synthesized data-flow call for `receiver`. */
 SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
@@ -128,6 +128,9 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     or
     arg = "hash-splat" and
     ppos.isHashSplat()
+    or
+    arg = "splat" and
+    ppos.isSplat(0)
   )
   or
   result = interpretElementArg(c.getAnArgument("Element"))
@@ -215,6 +218,9 @@ string getParameterPosition(ParameterPosition pos) {
   pos.isSelf() and
   result = "self"
   or
+  pos.isLambdaSelf() and
+  result = "lambda-self"
+  or
   pos.isBlock() and
   result = "block"
   or
@@ -226,11 +232,16 @@ string getParameterPosition(ParameterPosition pos) {
   or
   pos.isHashSplat() and
   result = "hash-splat"
+  or
+  pos.isSplat(0) and
+  result = "splat"
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
 string getArgumentPosition(ArgumentPosition pos) {
   pos.isSelf() and result = "self"
+  or
+  pos.isLambdaSelf() and result = "lambda-self"
   or
   pos.isBlock() and result = "block"
   or
@@ -372,6 +383,9 @@ ArgumentPosition parseParamBody(string s) {
   s = "self" and
   result.isSelf()
   or
+  s = "lambda-self" and
+  result.isLambdaSelf()
+  or
   s = "block" and
   result.isBlock()
   or
@@ -401,6 +415,9 @@ ParameterPosition parseArgBody(string s) {
   or
   s = "self" and
   result.isSelf()
+  or
+  s = "lambda-self" and
+  result.isLambdaSelf()
   or
   s = "block" and
   result.isBlock()

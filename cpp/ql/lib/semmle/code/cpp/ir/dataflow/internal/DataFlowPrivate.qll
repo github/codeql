@@ -2,7 +2,6 @@ private import cpp as Cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
-private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
@@ -220,9 +219,10 @@ private module IndirectOperands {
     int indirectionIndex;
 
     IndirectOperandFromIRRepr() {
-      exists(Operand repr |
-        repr = Ssa::getIRRepresentationOfIndirectOperand(operand, indirectionIndex) and
-        nodeHasOperand(this, repr, indirectionIndex - 1)
+      exists(Operand repr, int indirectionIndexRepr |
+        Ssa::hasIRRepresentationOfIndirectOperand(operand, indirectionIndex, repr,
+          indirectionIndexRepr) and
+        nodeHasOperand(this, repr, indirectionIndexRepr)
       )
     }
 
@@ -262,9 +262,10 @@ private module IndirectInstructions {
     int indirectionIndex;
 
     IndirectInstructionFromIRRepr() {
-      exists(Instruction repr |
-        repr = Ssa::getIRRepresentationOfIndirectInstruction(instr, indirectionIndex) and
-        nodeHasInstruction(this, repr, indirectionIndex - 1)
+      exists(Instruction repr, int indirectionIndexRepr |
+        Ssa::hasIRRepresentationOfIndirectInstruction(instr, indirectionIndex, repr,
+          indirectionIndexRepr) and
+        nodeHasInstruction(this, repr, indirectionIndexRepr)
       )
     }
 
@@ -554,7 +555,7 @@ predicate instructionForFullyConvertedCall(Instruction instr, CallInstruction ca
 }
 
 /** Holds if `node` represents the output node for `call`. */
-private predicate simpleOutNode(Node node, CallInstruction call) {
+predicate simpleOutNode(Node node, CallInstruction call) {
   operandForFullyConvertedCall(node.asOperand(), call)
   or
   instructionForFullyConvertedCall(node.asInstruction(), call)
@@ -690,7 +691,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) { storeStepImpl(node1,
 private predicate numberOfLoadsFromOperandRec(
   Operand operandFrom, Operand operandTo, int ind, boolean certain
 ) {
-  exists(Instruction load | Ssa::isDereference(load, operandFrom) |
+  exists(Instruction load | Ssa::isDereference(load, operandFrom, _) |
     operandTo = operandFrom and ind = 0 and certain = true
     or
     numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1, certain)
@@ -714,7 +715,7 @@ private predicate numberOfLoadsFromOperand(
 ) {
   numberOfLoadsFromOperandRec(operandFrom, operandTo, n, certain)
   or
-  not Ssa::isDereference(_, operandFrom) and
+  not Ssa::isDereference(_, operandFrom, _) and
   not conversionFlow(operandFrom, _, _, _) and
   operandFrom = operandTo and
   n = 0 and
@@ -802,6 +803,8 @@ predicate clearsContent(Node n, ContentSet c) {
 predicate expectsContent(Node n, ContentSet c) { none() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
@@ -1009,14 +1012,6 @@ ContentApprox getContentApprox(Content c) {
     u = c.(UnionContent).getUnion() and
     unionHasApproxName(u, prefix)
   )
-}
-
-private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    // The rules for whether an IR argument gets a post-update node are too
-    // complex to model here.
-    any()
-  }
 }
 
 /**

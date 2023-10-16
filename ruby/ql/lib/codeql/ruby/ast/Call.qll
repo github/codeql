@@ -118,6 +118,17 @@ class MethodCall extends Call instanceof MethodCallImpl {
   final Block getBlock() { result = super.getBlockImpl() }
 
   /**
+   * Gets the block argument of this method call, if any.
+   * ```rb
+   * foo(&block)
+   * ```
+   */
+  final BlockArgument getBlockArgument() { result = this.getAnArgument() }
+
+  /** Holds if this method call has a block or block argument. */
+  final predicate hasBlock() { exists(this.getBlock()) or exists(this.getBlockArgument()) }
+
+  /**
    * Holds if the safe navigation operator (`&.`) is used in this call.
    * ```rb
    * foo&.empty?

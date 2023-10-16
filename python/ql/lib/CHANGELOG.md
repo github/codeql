@@ -1,3 +1,37 @@
+## 0.11.0
+
+### Minor Analysis Improvements
+
+* Django Rest Framework better handles custom `ModelViewSet` classes functions
+* Regular expression fragments residing inside implicitly concatenated strings now have better location information.
+
+### Bug Fixes
+
+* Subterms of regular expressions encoded as single-line string literals now have better source-location information.
+
+## 0.10.5
+
+No user-facing changes.
+
+## 0.10.4
+
+### Minor Analysis Improvements
+
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+* Added `shlex.quote` as a sanitizer for the `py/shell-command-constructed-from-input` query.
+
+## 0.10.3
+
+### Minor Analysis Improvements
+
+* Support analyzing packages (folders with python code) that do not have `__init__.py` files, although this is technically required, we see real world projects that don't have this.
+* Added modeling of AWS Lambda handlers that can be identified with `AWS::Serverless::Function` in YAML files, where the event parameter is modeled as a remote-flow-source.
+* Improvements of the `aiohttp` models including remote-flow-sources from type annotations, new path manipulation, and SSRF sinks.
+
+### Bug Fixes
+
+* Fixed the computation of locations for imports with aliases in jump-to-definition.
+
 ## 0.10.2
 
 No user-facing changes.

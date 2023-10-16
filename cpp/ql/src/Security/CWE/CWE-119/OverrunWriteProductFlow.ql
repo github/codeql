@@ -20,27 +20,9 @@ import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
+import semmle.code.cpp.rangeanalysis.new.RangeAnalysisUtil
 import StringSizeFlow::PathGraph1
 import codeql.util.Unit
-
-pragma[nomagic]
-Instruction getABoundIn(SemBound b, IRFunction func) {
-  getSemanticExpr(result) = b.getExpr(0) and
-  result.getEnclosingIRFunction() = func
-}
-
-/**
- * Holds if `i <= b + delta`.
- */
-bindingset[i]
-pragma[inline_late]
-predicate bounded(Instruction i, Instruction b, int delta) {
-  exists(SemBound bound, IRFunction func |
-    semBounded(getSemanticExpr(i), bound, delta, true, _) and
-    b = getABoundIn(bound, func) and
-    i.getEnclosingIRFunction() = func
-  )
-}
 
 VariableAccess getAVariableAccess(Expr e) { e.getAChild*() = result }
 
@@ -56,7 +38,7 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
     // Compute `delta` as the constant difference between `x` and `x + 1`.
     bounded(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
       any(LoadInstruction load | load.getUnconvertedResultExpression() = va), delta) and
-    n.asConvertedExpr() = va.getFullyConverted() and
+    n.asExpr() = va and
     state = delta
   )
 }
@@ -100,36 +82,20 @@ module ValidState {
    * library will perform, and visit all the places where the size argument is modified.
    * 2. Once that dataflow traversal is done, we accumulate the offsets added at each places
    * where the offset is modified (see `validStateImpl`).
-   *
-   * Because we want to guarantee that each place where we modify the offset has a `PathNode`
-   * we "flip" a boolean flow state in each `isAdditionalFlowStep`. This ensures that the node
-   * has a corresponding `PathNode`.
    */
-  private module ValidStateConfig implements DataFlow::StateConfigSig {
-    class FlowState = boolean;
+  private module ValidStateConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { hasSize(_, source, _) }
 
-    predicate isSource(DataFlow::Node source, FlowState state) {
-      hasSize(_, source, _) and
-      state = false
-    }
+    predicate isSink(DataFlow::Node sink) { isSinkPairImpl(_, _, sink, _, _) }
 
-    predicate isSink(DataFlow::Node sink, FlowState state) {
-      isSinkPairImpl(_, _, sink, _, _) and
-      state = [false, true]
-    }
-
-    predicate isAdditionalFlowStep(
-      DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
-    ) {
-      isAdditionalFlowStep2(node1, node2, _) and
-      state1 = [false, true] and
-      state2 = state1.booleanNot()
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      isAdditionalFlowStep2(node1, node2, _)
     }
 
     predicate includeHiddenNodes() { any() }
   }
 
-  private import DataFlow::GlobalWithState<ValidStateConfig>
+  private import DataFlow::Global<ValidStateConfig>
 
   private predicate inLoop(PathNode n) { n.getASuccessor+() = n }
 
@@ -231,7 +197,7 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
     // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
     // to the size of the allocation. This state is then checked in `isSinkPair`.
     exists(state1) and
-    hasSize(bufSource.asConvertedExpr(), sizeSource, state2) and
+    hasSize(bufSource.asExpr(), sizeSource, state2) and
     validState(sizeSource, state2)
   }
 

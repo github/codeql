@@ -161,7 +161,7 @@ private predicate annotatesAtPosition(SalPosition pos, DeclarationEntry d, File 
  * A SAL element, that is, a SAL annotation or a declaration entry
  * that may have SAL annotations.
  */
-library class SalElement extends Element {
+class SalElement extends Element {
   SalElement() {
     containsSalAnnotation(this.(DeclarationEntry).getFile()) or
     this instanceof SalAnnotation

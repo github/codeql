@@ -660,7 +660,7 @@ module RangeStage<
    * - `upper = false` : `v >= b + delta`
    */
   private predicate boundedSsa(
-    SemSsaVariable v, SemSsaReadPosition pos, SemBound b, D::Delta delta, boolean upper,
+    SemSsaVariable v, SemBound b, D::Delta delta, SemSsaReadPosition pos, boolean upper,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
     exists(SemExpr mid, D::Delta d1, D::Delta d2, SemReason r1, SemReason r2 |
@@ -673,10 +673,13 @@ module RangeStage<
     )
     or
     exists(D::Delta d, SemReason r1, SemReason r2 |
-      boundedSsa(v, pos, b, d, upper, fromBackEdge, origdelta, r2) or
-      boundedPhi(v, b, d, upper, fromBackEdge, origdelta, r2)
+      boundedSsa(pragma[only_bind_into](v), pragma[only_bind_into](b), pragma[only_bind_into](d),
+        pragma[only_bind_into](pos), upper, fromBackEdge, origdelta, r2)
+      or
+      boundedPhi(pragma[only_bind_into](v), pragma[only_bind_into](b), pragma[only_bind_into](d),
+        upper, fromBackEdge, origdelta, r2)
     |
-      unequalIntegralSsa(v, pos, b, d, r1) and
+      unequalIntegralSsa(v, b, d, pos, r1) and
       (
         upper = true and delta = D::fromFloat(D::toFloat(d) - 1)
         or
@@ -694,7 +697,7 @@ module RangeStage<
    * Holds if `v != b + delta` at `pos` and `v` is of integral type.
    */
   private predicate unequalIntegralSsa(
-    SemSsaVariable v, SemSsaReadPosition pos, SemBound b, D::Delta delta, SemReason reason
+    SemSsaVariable v, SemBound b, D::Delta delta, SemSsaReadPosition pos, SemReason reason
   ) {
     exists(SemExpr e, D::Delta d1, D::Delta d2 |
       unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
@@ -746,7 +749,7 @@ module RangeStage<
   ) {
     edge.phiInput(phi, inp) and
     exists(D::Delta d, boolean fromBackEdge0 |
-      boundedSsa(inp, edge, b, d, upper, fromBackEdge0, origdelta, reason)
+      boundedSsa(inp, b, d, edge, upper, fromBackEdge0, origdelta, reason)
       or
       boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason)
       or
@@ -914,25 +917,46 @@ module RangeStage<
     bounded(cast.getOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
+  pragma[nomagic]
+  private predicate initialBoundedUpper(SemExpr e) {
+    exists(D::Delta d |
+      initialBounded(e, _, d, false, _, _, _) and
+      D::toFloat(d) >= 0
+    )
+  }
+
+  private predicate noOverflow0(SemExpr e, boolean upper) {
+    exists(boolean lower | lower = upper.booleanNot() |
+      semExprDoesNotOverflow(lower, e)
+      or
+      upper = [true, false] and
+      not potentiallyOverflowingExpr(lower, e)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate initialBoundedLower(SemExpr e) {
+    exists(D::Delta d |
+      initialBounded(e, _, d, true, _, _, _) and
+      D::toFloat(d) <= 0
+    )
+  }
+
+  pragma[nomagic]
+  private predicate noOverflow(SemExpr e, boolean upper) {
+    noOverflow0(e, upper)
+    or
+    upper = true and initialBoundedUpper(e)
+    or
+    upper = false and initialBoundedLower(e)
+  }
+
   predicate bounded(
     SemExpr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta,
     SemReason reason
   ) {
     initialBounded(e, b, delta, upper, fromBackEdge, origdelta, reason) and
-    (
-      semExprDoesNotOverflow(upper.booleanNot(), e)
-      or
-      not potentiallyOverflowingExpr(upper.booleanNot(), e)
-      or
-      exists(D::Delta otherDelta |
-        initialBounded(e, _, otherDelta, upper.booleanNot(), _, _, _) and
-        (
-          upper = true and D::toFloat(otherDelta) >= 0
-          or
-          upper = false and D::toFloat(otherDelta) <= 0
-        )
-      )
-    )
+    noOverflow(e, upper)
   }
 
   predicate potentiallyOverflowingExpr(boolean positively, SemExpr expr) {
@@ -1022,7 +1046,7 @@ module RangeStage<
       reason = TSemNoReason()
       or
       exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
-        boundedSsa(v, bb, b, delta, upper, fromBackEdge, origdelta, reason) and
+        boundedSsa(v, b, delta, bb, upper, fromBackEdge, origdelta, reason) and
         e = v.getAUse() and
         bb.getBlock() = e.getBasicBlock()
       )

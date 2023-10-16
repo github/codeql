@@ -1,4 +1,4 @@
-| cli |
+| commandargs |
 | database |
 | default |
 | environment |
@@ -7,4 +7,3 @@
 | remote |
 | request |
 | response |
-| uri-path |

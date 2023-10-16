@@ -9,7 +9,18 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.activation.FileDataSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.cxf.common.classloader.ClassLoaderUtils;
+import org.apache.cxf.common.jaxb.JAXBUtils;
+import org.apache.cxf.configuration.jsse.SSLUtils;
+import org.apache.cxf.resource.ExtendedURIResolver;
+import org.apache.cxf.resource.URIResolver;
+import org.apache.cxf.staxutils.StaxUtils;
+import org.apache.cxf.tools.corba.utils.FileOutputStreamFactory;
+import org.apache.cxf.tools.corba.utils.OutputStreamFactory;
+import org.apache.cxf.tools.util.FileWriterUtil;
+import org.apache.cxf.tools.util.OutputStreamCreator;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.DirectoryScanner;
@@ -104,6 +115,74 @@ public class Test {
         FileCopyUtils.copy((File) source(), null);
         // "org.springframework.util;FileCopyUtils;false;copy;(File,File);;Argument[1];create-file;manual"
         FileCopyUtils.copy((File) null, (File) source());
+        // "javax.activation;FileDataSource;true;FileDataSource;(String);;Argument[0];path-injection;manual"
+        new FileDataSource((String) source());
+        // "javax.activation;FileDataSource;true;FileDataSource;(File);;Argument[0];path-injection;manual"
+        new FileDataSource((File) source());
+        // "org.apache.cxf.common.classloader;ClassLoaderUtils;true;getResourceAsStream;(String,Class);;Argument[0];path-injection;manual"
+        ClassLoaderUtils.getResourceAsStream((String) source(), null);
+        // "org.apache.cxf.common.jaxb;JAXBUtils;true;createFileCodeWriter;(File);;Argument[0];path-injection;manual"
+        JAXBUtils.createFileCodeWriter((File) source());
+        // "org.apache.cxf.common.jaxb;JAXBUtils;true;createFileCodeWriter;(File,String);;Argument[0];path-injection;manual"
+        JAXBUtils.createFileCodeWriter((File) source(), null);
+        // "org.apache.cxf.configuration.jsse:SSLUtils;true;loadFile;(String);;Argument[0];path-injection;manual"
+        new SSLUtils() {
+            public void test() {
+                loadFile((String) source());
+            }
+        };
+        // "org.apache.cxf.helpers;FileUtils;true;delete;(File);;Argument[0];path-injection;manual"
+        org.apache.cxf.helpers.FileUtils.delete((File) source());
+        // "org.apache.cxf.helpers;FileUtils;true;delete;(File,boolean);;Argument[0];path-injection;manual"
+        org.apache.cxf.helpers.FileUtils.delete((File) source(), false);
+        // "org.apache.cxf.helpers;FileUtils;true;mkdir;(File);;Argument[0];path-injection;manual"
+        org.apache.cxf.helpers.FileUtils.mkDir((File) source());
+        // "org.apache.cxf.helpers;FileUtils;true;readLines;(File);;Argument[0];path-injection;manual"
+        org.apache.cxf.helpers.FileUtils.readLines((File) source());
+        // "org.apache.cxf.helpers;FileUtils;true;removeDir;(File);;Argument[0];path-injection;manual"
+        org.apache.cxf.helpers.FileUtils.removeDir((File) source());
+        // "org.apache.cxf.resource;ExtendedURIResolver;true;resolve;(String,String);;Argument[1];path-injection;manual"
+        new ExtendedURIResolver().resolve(null, (String) source()); // $ SSRF
+        // "org.apache.cxf.resource;URIResolver;true;URIResolver;(String,String);;Argument[0];path-injection;manual"
+        new URIResolver((String) source(), null); // $ SSRF
+        // "org.apache.cxf.resource;URIResolver;true;URIResolver;(String,String,Class);;Argument[0];path-injection;manual"
+        new URIResolver((String) source(), null, null); // $ SSRF
+        // "org.apache.cxf.resource;URIResolver;true;resolve;(String,String,Class);;Argument[0];path-injection;manual"
+        new URIResolver().resolve((String) source(), null, null); // $ SSRF
+        // "org.apache.cxf.staxutils;StaxUtils;true;read;(File);;Argument[0];path-injection;manual"
+        StaxUtils.read((File) source()); // $ SSRF
+        // "org.apache.cxf.tools.corba.utils;FileOutputStreamFactory;true;FileOutputStreamFactory;(String);;Argument[0];path-injection;manual"
+        new FileOutputStreamFactory((String) source()); // $ SSRF
+        // "org.apache.cxf.tools.corba.utils;FileOutputStreamFactory;true;FileOutputStreamFactory;(String,FileOutputStreamFactory);;Argument[0];path-injection;manual"
+        new FileOutputStreamFactory((String) source(), null); // $ SSRF
+        // "org.apache.cxf.tools.corba.utils;OutputStreamFactory;true;createOutputStream;(String);;Argument[0];path-injection;manual"
+        new FileOutputStreamFactory().createOutputStream((String) source()); // $ SSRF
+        // "org.apache.cxf.tools.corba.utils;OutputStreamFactory;true;createOutputStream;(String,String);;Argument[0];path-injection;manual"
+        new FileOutputStreamFactory().createOutputStream((String) source(), null); // $ SSRF
+        // "org.apache.cxf.tools.corba.utils;OutputStreamFactory;true;createOutputStream;(String,String);;Argument[1];path-injection;manual"
+        new FileOutputStreamFactory().createOutputStream(null, (String) source()); // $ SSRF
+        // @formatter:off
+        // "org.apache.cxf.tools.util;FileWriterUtil;true;FileWriterUtil;(String,OutputStreamCreator);;Argument[0];path-injection;manual"
+        new FileWriterUtil((String) source(), null); // $ SSRF
+        // "org.apache.cxf.tools.util;FileWriterUtil;true;buildDir;(String);;Argument[0];path-injection;manual"
+        new FileWriterUtil().buildDir((String) source()); // $ SSRF
+        // "org.apache.cxf.tools.util;FileWriterUtil;true;getFileToWrite;(String,String);;Argument[0];path-injection;manual"
+        new FileWriterUtil().getFileToWrite((String) source(), (String) null); // $ SSRF
+        // "org.apache.cxf.tools.util;FileWriterUtil;true;getFileToWrite;(String,String);;Argument[1];path-injection;manual"
+        new FileWriterUtil().getFileToWrite((String) null, (String) source()); // $ SSRF
+        // "org.apache.cxf.tools.util;FileWriterUtil;true;getWriter;(File,String);;Argument[0];path-injection;manual"
+        new FileWriterUtil().getWriter((File) source(), (String) null); // $ SSRF
+        // "org.apache.cxf.tools.util;FileWriterUtil;true;getWriter;(String,String);;Argument[0];path-injection;manual"
+        new FileWriterUtil().getWriter((String) source(), null); // $ SSRF
+        // "org.apache.cxf.tools.util;FileWriterUtil;true;getWriter;(String,String);;Argument[1];path-injection;manual"
+        new FileWriterUtil().getWriter((String) null, (String) source()); // $ SSRF
+        // "org.apache.cxf.tools.util;FileWriterUtil;true;getWriter;(String,String,String);;Argument[0];path-injection;manual"
+        new FileWriterUtil().getWriter((String) source(), null, null); // $ SSRF
+        // "org.apache.cxf.tools.util;FileWriterUtil;true;getWriter;(String,String,String);;Argument[1];path-injection;manual"
+        new FileWriterUtil().getWriter((String) null, (String) source(), null); // $ SSRF
+        // "org.apache.cxf.tools.util;OutputStreamCreator;true;createOutputStream;(File);;Argument[0];path-injection;manual"
+        new OutputStreamCreator().createOutputStream((File) source()); // $ SSRF
+        // @formatter:on
     }
 
     void test(AntClassLoader acl) {

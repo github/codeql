@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,70 +13,99 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class NugetPackages
     {
-        /// <summary>
-        /// Create the package manager for a specified source tree.
-        /// </summary>
-        public NugetPackages(string sourceDir, TemporaryDirectory packageDirectory, ProgressMonitor progressMonitor)
-        {
-            SourceDirectory = sourceDir;
-            PackageDirectory = packageDirectory;
-            this.progressMonitor = progressMonitor;
-
-            // Expect nuget.exe to be in a `nuget` directory under the directory containing this exe.
-            var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var directory = Path.GetDirectoryName(currentAssembly)
-                ?? throw new FileNotFoundException($"Directory path '{currentAssembly}' of current assembly is null");
-            nugetExe = Path.Combine(directory, "nuget", "nuget.exe");
-
-            if (!File.Exists(nugetExe))
-                throw new FileNotFoundException(string.Format("NuGet could not be found at {0}", nugetExe));
-
-            packages = new DirectoryInfo(SourceDirectory)
-                .EnumerateFiles("packages.config", SearchOption.AllDirectories)
-                .ToArray();
-        }
-
-        // List of package files to download.
-        private readonly FileInfo[] packages;
+        private readonly string? nugetExe;
+        private readonly ProgressMonitor progressMonitor;
 
         /// <summary>
         /// The list of package files.
         /// </summary>
-        public IEnumerable<FileInfo> PackageFiles => packages;
-
-        /// <summary>
-        /// Download the packages to the temp folder.
-        /// </summary>
-        /// <param name="pm">The progress monitor used for reporting errors etc.</param>
-        public void InstallPackages()
-        {
-            foreach (var package in packages)
-            {
-                RestoreNugetPackage(package.FullName);
-            }
-        }
-
-        /// <summary>
-        /// The source directory used.
-        /// </summary>
-        public string SourceDirectory
-        {
-            get;
-            private set;
-        }
+        private readonly FileInfo[] packageFiles;
 
         /// <summary>
         /// The computed packages directory.
         /// This will be in the Temp location
         /// so as to not trample the source tree.
         /// </summary>
-        public TemporaryDirectory PackageDirectory { get; }
+        private readonly TemporaryDirectory packageDirectory;
+
+        /// <summary>
+        /// Create the package manager for a specified source tree.
+        /// </summary>
+        public NugetPackages(string sourceDir, TemporaryDirectory packageDirectory, ProgressMonitor progressMonitor)
+        {
+            this.packageDirectory = packageDirectory;
+            this.progressMonitor = progressMonitor;
+
+            packageFiles = new DirectoryInfo(sourceDir)
+                .EnumerateFiles("packages.config", SearchOption.AllDirectories)
+                .ToArray();
+
+            if (packageFiles.Length > 0)
+            {
+                nugetExe = ResolveNugetExe(sourceDir);
+            }
+            else
+            {
+                progressMonitor.LogInfo("Found no packages.config file");
+            }
+        }
+
+        /// <summary>
+        /// Tries to find the location of `nuget.exe` in the nuget directory under the directory
+        /// containing the executing assembly. If it can't be found, it is downloaded to the
+        /// `.nuget` directory under the source directory.
+        /// </summary>
+        /// <param name="sourceDir">The source directory.</param>
+        private string ResolveNugetExe(string sourceDir)
+        {
+            var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var directory = Path.GetDirectoryName(currentAssembly)
+                ?? throw new FileNotFoundException($"Directory path '{currentAssembly}' of current assembly is null");
+
+            var nuget = Path.Combine(directory, "nuget", "nuget.exe");
+            if (File.Exists(nuget))
+            {
+                progressMonitor.FoundNuGet(nuget);
+                return nuget;
+            }
+            else
+            {
+                progressMonitor.LogInfo($"Nuget.exe could not be found at {nuget}");
+                return DownloadNugetExe(sourceDir);
+            }
+        }
+
+        private string DownloadNugetExe(string sourceDir)
+        {
+            var directory = Path.Combine(sourceDir, ".nuget");
+            var nuget = Path.Combine(directory, "nuget.exe");
+
+            // Nuget.exe already exists in the .nuget directory.
+            if (File.Exists(nuget))
+            {
+                progressMonitor.FoundNuGet(nuget);
+                return nuget;
+            }
+
+            Directory.CreateDirectory(directory);
+            progressMonitor.LogInfo("Attempting to download nuget.exe");
+            try
+            {
+                FileUtils.DownloadFile(FileUtils.NugetExeUrl, nuget);
+                progressMonitor.LogInfo($"Downloaded nuget.exe to {nuget}");
+                return nuget;
+            }
+            catch
+            {
+                // Download failed.
+                throw new FileNotFoundException("Download of nuget.exe failed.");
+            }
+        }
 
         /// <summary>
         /// Restore all files in a specified package.
         /// </summary>
         /// <param name="package">The package file.</param>
-        /// <param name="pm">Where to log progress/errors.</param>
         private void RestoreNugetPackage(string package)
         {
             progressMonitor.NugetInstall(package);
@@ -91,13 +119,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             string exe, args;
             if (Util.Win32.IsWindows())
             {
-                exe = nugetExe;
-                args = string.Format("install -OutputDirectory {0} {1}", PackageDirectory, package);
+                exe = nugetExe!;
+                args = string.Format("install -OutputDirectory {0} {1}", packageDirectory, package);
             }
             else
             {
                 exe = "mono";
-                args = string.Format("{0} install -OutputDirectory {1} {2}", nugetExe, PackageDirectory, package);
+                args = string.Format("{0} install -OutputDirectory {1} {2}", nugetExe, packageDirectory, package);
             }
 
             var pi = new ProcessStartInfo(exe, args)
@@ -133,7 +161,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private readonly string nugetExe;
-        private readonly ProgressMonitor progressMonitor;
+        /// <summary>
+        /// Download the packages to the temp folder.
+        /// </summary>
+        public void InstallPackages()
+        {
+            foreach (var package in packageFiles)
+            {
+                RestoreNugetPackage(package.FullName);
+            }
+        }
     }
 }

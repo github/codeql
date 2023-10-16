@@ -17,6 +17,11 @@ edges
 | ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) : UploadListener [slowUploads] : Number | UploadListener.java:28:14:28:19 | parameter this : UploadListener [slowUploads] : Number |
 | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) : UploadListener [slowUploads] : Number |
 | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number |
+| ThreadResourceAbuse.java:215:19:215:50 | getHeader(...) : String | ThreadResourceAbuse.java:219:17:219:26 | retryAfter : Number |
+| ThreadResourceAbuse.java:219:17:219:26 | retryAfter : Number | ThreadResourceAbuse.java:219:17:219:33 | ... * ... |
+| ThreadResourceAbuse.java:227:19:227:50 | getHeader(...) : String | ThreadResourceAbuse.java:230:3:230:12 | retryAfter : Number |
+| ThreadResourceAbuse.java:230:3:230:12 | retryAfter : Number | ThreadResourceAbuse.java:230:3:230:20 | ...*=... : Number |
+| ThreadResourceAbuse.java:230:3:230:20 | ...*=... : Number | ThreadResourceAbuse.java:233:17:233:26 | retryAfter |
 | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number | UploadListener.java:16:17:16:33 | sleepMilliseconds : Number |
 | UploadListener.java:16:17:16:33 | sleepMilliseconds : Number | UploadListener.java:16:3:16:13 | this <.field> [post update] : UploadListener [slowUploads] : Number |
 | UploadListener.java:28:14:28:19 | parameter this : UploadListener [slowUploads] : Number | UploadListener.java:29:3:29:11 | this <.field> : UploadListener [slowUploads] : Number |
@@ -46,6 +51,13 @@ nodes
 | ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) : UploadListener [slowUploads] : Number | semmle.label | new UploadListener(...) : UploadListener [slowUploads] : Number |
 | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | semmle.label | uploadDelay : Number |
+| ThreadResourceAbuse.java:215:19:215:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| ThreadResourceAbuse.java:219:17:219:26 | retryAfter : Number | semmle.label | retryAfter : Number |
+| ThreadResourceAbuse.java:219:17:219:33 | ... * ... | semmle.label | ... * ... |
+| ThreadResourceAbuse.java:227:19:227:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| ThreadResourceAbuse.java:230:3:230:12 | retryAfter : Number | semmle.label | retryAfter : Number |
+| ThreadResourceAbuse.java:230:3:230:20 | ...*=... : Number | semmle.label | ...*=... : Number |
+| ThreadResourceAbuse.java:233:17:233:26 | retryAfter | semmle.label | retryAfter |
 | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number | semmle.label | sleepMilliseconds : Number |
 | UploadListener.java:16:3:16:13 | this <.field> [post update] : UploadListener [slowUploads] : Number | semmle.label | this <.field> [post update] : UploadListener [slowUploads] : Number |
 | UploadListener.java:16:17:16:33 | sleepMilliseconds : Number | semmle.label | sleepMilliseconds : Number |
@@ -65,4 +77,6 @@ subpaths
 | ThreadResourceAbuse.java:74:18:74:25 | waitTime | ThreadResourceAbuse.java:29:82:29:114 | getParameter(...) : String | ThreadResourceAbuse.java:74:18:74:25 | waitTime | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:29:82:29:114 | getParameter(...) | user-provided value |
 | ThreadResourceAbuse.java:144:34:144:42 | delayTime | ThreadResourceAbuse.java:141:27:141:43 | getValue(...) : String | ThreadResourceAbuse.java:144:34:144:42 | delayTime | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:141:27:141:43 | getValue(...) | user-provided value |
 | ThreadResourceAbuse.java:176:17:176:26 | retryAfter | ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) : String | ThreadResourceAbuse.java:176:17:176:26 | retryAfter | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) | user-provided value |
+| ThreadResourceAbuse.java:219:17:219:33 | ... * ... | ThreadResourceAbuse.java:215:19:215:50 | getHeader(...) : String | ThreadResourceAbuse.java:219:17:219:33 | ... * ... | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:215:19:215:50 | getHeader(...) | user-provided value |
+| ThreadResourceAbuse.java:233:17:233:26 | retryAfter | ThreadResourceAbuse.java:227:19:227:50 | getHeader(...) : String | ThreadResourceAbuse.java:233:17:233:26 | retryAfter | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:227:19:227:50 | getHeader(...) | user-provided value |
 | UploadListener.java:35:18:35:28 | slowUploads | ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) : String | UploadListener.java:35:18:35:28 | slowUploads | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) | user-provided value |
