@@ -24,6 +24,13 @@ private predicate boundedImplCand(Instruction i, Instruction b, int delta) {
     b = getABoundIn(bound, func) and
     i.getEnclosingIRFunction() = func
   )
+  or
+  exists(SemBound bound, IRFunction func |
+    semBounded(getSemanticExpr(b), bound, -delta, false, _) and
+    not bound instanceof SemZeroBound and
+    i = getABoundIn(bound, func) and
+    b.getEnclosingIRFunction() = func
+  )
 }
 
 /**
