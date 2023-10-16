@@ -25,7 +25,7 @@ updates:
     allow:
       - dependency-name: "golang.org/x/mod"
       - dependency-name: "golang.org/x/tools"
-    group:
+    groups:
       extractor-dependencies:
         patterns:
           - "golang.org/x/*"
