@@ -662,3 +662,28 @@ func testAppendingFormat() {
   var s4 = ""
   sink(arg: s4.appendingFormat("%s %i", "", source())) // $ MISSING: tainted=663
 }
+
+func sourceUInt8() -> UInt8 { return 0 }
+
+func testDecodeCString() {
+  var input : [UInt8] = [1, 2, 3, sourceUInt8()]
+
+  let (str1, repaired1) = String.decodeCString(input, as: UTF8.self)!
+  sink(arg: str1) // $ MISSING: tainted=669
+  sink(arg: repaired1)
+
+  input.withUnsafeBufferPointer({
+    ptr in
+    let (str2, repaired2) = String.decodeCString(ptr.baseAddress, as: UTF8.self)!
+    sink(arg: str2) // $ MISSING: tainted=669
+    sink(arg: repaired2)
+  })
+
+  let (str3, repaired3) = String.decodeCString(source2(), as: UTF8.self)!
+  sink(arg: str3) // $ MISSING: tainted=682
+  sink(arg: repaired3)
+
+  let (str4, repaired4) = String.decodeCString(&input, as: UTF8.self)!
+  sink(arg: str4) // $ MISSING: tainted=669
+  sink(arg: repaired4)
+}
