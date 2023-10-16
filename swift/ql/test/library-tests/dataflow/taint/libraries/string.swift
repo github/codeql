@@ -657,10 +657,10 @@ func testAppendingFormat() {
   sink(arg: s2.appendingFormat(source2(), "", 0)) // $ tainted=657
 
   var s3 = ""
-  sink(arg: s3.appendingFormat("%s %i", source2(), 0)) // $ MISSING: tainted=660
+  sink(arg: s3.appendingFormat("%s %i", source2(), 0)) // $ tainted=660
 
   var s4 = ""
-  sink(arg: s4.appendingFormat("%s %i", "", source())) // $ MISSING: tainted=663
+  sink(arg: s4.appendingFormat("%s %i", "", source())) // $ tainted=663
 }
 
 func sourceUInt8() -> UInt8 { return 0 }
@@ -669,7 +669,7 @@ func testDecodeCString() {
   var input : [UInt8] = [1, 2, 3, sourceUInt8()]
 
   let (str1, repaired1) = String.decodeCString(input, as: UTF8.self)!
-  sink(arg: str1) // $ MISSING: tainted=669
+  sink(arg: str1) // $ tainted=669
   sink(arg: repaired1)
 
   input.withUnsafeBufferPointer({
@@ -680,10 +680,10 @@ func testDecodeCString() {
   })
 
   let (str3, repaired3) = String.decodeCString(source2(), as: UTF8.self)!
-  sink(arg: str3) // $ MISSING: tainted=682
+  sink(arg: str3) // $ tainted=682
   sink(arg: repaired3)
 
   let (str4, repaired4) = String.decodeCString(&input, as: UTF8.self)!
-  sink(arg: str4) // $ MISSING: tainted=669
+  sink(arg: str4) // $ tainted=669
   sink(arg: repaired4)
 }
