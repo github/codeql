@@ -7208,12 +7208,13 @@ statements.swift:
 #  110|   getBody(): [BraceStmt] { ... }
 #  111|     getElement(0): [CallExpr] call to sink(arg:)
 #  111|       getFunction(): [DeclRefExpr] sink(arg:)
-#  111|       getArgument(0): [Argument] arg: call to source()
-#  111|         getExpr(): [CallExpr] call to source()
-#  111|           getFunction(): [MethodLookupExpr] .source()
-#  111|             getBase(): [OpaqueValueExpr] OpaqueValueExpr
-#  111|             getMethodRef(): [DeclRefExpr] source()
-#  111|         getExpr().getFullyConverted(): [OpenExistentialExpr] OpenExistentialExpr
+#  111|       getArgument(0): [Argument] arg: OpenExistentialExpr
+#  111|         getExpr(): [OpenExistentialExpr] OpenExistentialExpr
+#  111|           getSubExpr(): [CallExpr] call to source()
+#  111|             getFunction(): [MethodLookupExpr] .source()
+#  111|               getBase(): [OpaqueValueExpr] OpaqueValueExpr
+#  111|               getMethodRef(): [DeclRefExpr] source()
+#  111|           getExistential(): [DeclRefExpr] x
 #  112|     getElement(1): [CallExpr] call to sink(arg:)
 #  112|       getFunction(): [DeclRefExpr] sink(arg:)
 #  112|       getArgument(0): [Argument] arg: call to source()
@@ -7223,12 +7224,14 @@ statements.swift:
 #  112|             getMethodRef(): [DeclRefExpr] source()
 #  113|     getElement(2): [CallExpr] call to sink(arg:)
 #  113|       getFunction(): [DeclRefExpr] sink(arg:)
-#  113|       getArgument(0): [Argument] arg: call to source()
-#  113|         getExpr(): [CallExpr] call to source()
-#  113|           getFunction(): [MethodLookupExpr] .source()
-#  113|             getBase(): [OpaqueValueExpr] OpaqueValueExpr
-#  113|             getMethodRef(): [DeclRefExpr] source()
-#  113|         getExpr().getFullyConverted(): [OpenExistentialExpr] OpenExistentialExpr
+#  113|       getArgument(0): [Argument] arg: OpenExistentialExpr
+#  113|         getExpr(): [OpenExistentialExpr] OpenExistentialExpr
+#  113|           getSubExpr(): [CallExpr] call to source()
+#  113|             getFunction(): [MethodLookupExpr] .source()
+#  113|               getBase(): [OpaqueValueExpr] OpaqueValueExpr
+#  113|               getMethodRef(): [DeclRefExpr] source()
+#  113|           getExistential(): [CallExpr] call to getMyProtocol()
+#  113|             getFunction(): [DeclRefExpr] getMyProtocol()
 #  114|     getElement(3): [CallExpr] call to sink(arg:)
 #  114|       getFunction(): [DeclRefExpr] sink(arg:)
 #  114|       getArgument(0): [Argument] arg: call to source()
@@ -7237,6 +7240,3 @@ statements.swift:
 #  114|             getBase(): [CallExpr] call to getMyProtocolImpl()
 #  114|               getFunction(): [DeclRefExpr] getMyProtocolImpl()
 #  114|             getMethodRef(): [DeclRefExpr] source()
-#  111| [DeclRefExpr] x
-#  113| [CallExpr] call to getMyProtocol()
-#  113|   getFunction(): [DeclRefExpr] getMyProtocol()

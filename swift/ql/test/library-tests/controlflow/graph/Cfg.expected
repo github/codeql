@@ -6319,13 +6319,16 @@ cfg.swift:
 #-----|  -> sink(arg:)
 
 #  554| sink(arg:)
-#-----|  -> .source()
+#-----|  -> x
 
 #  554| call to sink(arg:)
 #-----|  -> sink(arg:)
 
 #  554| OpaqueValueExpr
 #-----|  -> call to source()
+
+#  554| x
+#-----|  -> .source()
 
 #  554| .source()
 #-----|  -> OpaqueValueExpr
@@ -6352,13 +6355,19 @@ cfg.swift:
 #-----|  -> call to sink(arg:)
 
 #  556| sink(arg:)
-#-----|  -> .source()
+#-----|  -> getMyProtocol()
 
 #  556| call to sink(arg:)
 #-----|  -> sink(arg:)
 
+#  556| getMyProtocol()
+#-----|  -> call to getMyProtocol()
+
 #  556| OpaqueValueExpr
 #-----|  -> call to source()
+
+#  556| call to getMyProtocol()
+#-----|  -> .source()
 
 #  556| .source()
 #-----|  -> OpaqueValueExpr
