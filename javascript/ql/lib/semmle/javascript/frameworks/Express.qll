@@ -5,6 +5,7 @@
 import javascript
 import semmle.javascript.frameworks.HTTP
 import semmle.javascript.frameworks.ExpressModules
+import semmle.javascript.frameworks.Cors
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpressShared
 
@@ -1070,5 +1071,24 @@ module Express {
     override predicate mayResumeDispatch() { none() }
 
     override predicate definitelyResumesDispatch() { none() }
+  }
+
+  class CorsConfiguration extends DataFlow::MethodCallNode {
+    /** Get an `app.use` with a cors object as argument */
+    CorsConfiguration() {
+      this = appCreation().getAMethodCall("use") and this.getArgument(0) instanceof Cors::Cors
+    }
+
+    /** Get Cors */
+    private Cors::Cors cors() { result = this.getArgument(0).(Cors::Cors) }
+
+    /** Get Cors configuration */
+    DataFlow::Node getCorsArgument() { result = cors().getCorsArgument() }
+
+    /** Holds if cors is using default configuration */
+    predicate isDefault() { cors().isDefault() }
+
+    /** Get Cors origin value */
+    DataFlow::Node getOrigin() { result = cors().getOrigin() }
   }
 }
