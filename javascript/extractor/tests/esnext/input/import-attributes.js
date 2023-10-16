@@ -17,7 +17,7 @@ import * as v1 from "module" assert { type: "json" };
 import { v2 } from "module" assert { type: "json" };
 import v3 from "module" assert { type: "json" };
 
-export { v7 } from "module" assert { type: "json" };
+export { v4 } from "module" assert { type: "json" };
 export * from "module" assert { type: "json" };
 export * as v5 from "module" assert { type: "json" };
 
