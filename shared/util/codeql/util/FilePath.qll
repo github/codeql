@@ -66,7 +66,7 @@ abstract class NormalizableFilepath extends string {
   /**
    * Gets the normalized filepath for this string.
    * Normalizes `..` paths, `.` paths, and multiple `/`s as much as possible, but does not normalize case, resolve symlinks, or make relative paths absolute.
-   * Th normalized path will be absolute (begin with `/`) if and only if the original path is.
+   * The normalized path will be absolute (begin with `/`) if and only if the original path is.
    * The normalized path will not have a trailing `/`.
    * Only `/` is treated as a path separator.
    */
