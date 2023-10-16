@@ -2,7 +2,7 @@ import go
 import TestUtilities.InlineExpectationsTest
 
 module FasthttpTest implements TestSig {
-  string getARelevantTag() { result = ["UriSucc","UriPred", "ReqSucc", "ReqPred"] }
+  string getARelevantTag() { result = ["UriSucc", "UriPred", "ReqSucc", "ReqPred"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Fasthttp::Request::RequestAdditionalStep q, DataFlow::Node succ, DataFlow::Node pred |
