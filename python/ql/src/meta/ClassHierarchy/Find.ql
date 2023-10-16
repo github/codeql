@@ -30,6 +30,7 @@ private import semmle.python.frameworks.Urllib3
 private import semmle.python.frameworks.Pydantic
 private import semmle.python.frameworks.Peewee
 private import semmle.python.frameworks.Aioch
+private import semmle.python.frameworks.Lxml
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -455,6 +456,12 @@ class ElementTree extends FindSubclassesSpec {
   ElementTree() { this = "xml.etree.ElementTree~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = StdlibPrivate::elementTreeClassRef() }
+}
+
+class LxmlETreeAlias extends FindSubclassesSpec {
+  LxmlETreeAlias() { this = "lxml.etree~Alias" }
+
+  override API::Node getAlreadyModeledClass() { result = Lxml::etreeRef() }
 }
 
 bindingset[fullyQualified]
