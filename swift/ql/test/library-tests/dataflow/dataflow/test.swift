@@ -914,10 +914,10 @@ func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
 func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
 
 func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
-	sink(arg: x.source()) // $ flow=888
-	sink(arg: y.source()) // $ flow=889
-	sink(arg: getMyProtocol().source()) // $ flow=890
-	sink(arg: getMyProtocolImpl().source()) // $ flow=891
+	sink(arg: x.source()) // $ flow=917
+	sink(arg: y.source()) // $ flow=918
+	sink(arg: getMyProtocol().source()) // $ flow=919
+	sink(arg: getMyProtocolImpl().source()) // $ flow=920
 }
 
 // ---
