@@ -55,10 +55,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             LogInfo($"Restoring {package}...");
 
         public void ResolvedReference(string filename) =>
-            LogInfo($"Resolved {filename}");
+            LogInfo($"Resolved reference {filename}");
 
         public void RemovedReference(string filename) =>
-            LogInfo($"Reference {filename} has been removed");
+            LogInfo($"Removed reference {filename}");
 
         public void Summary(int existingSources, int usedSources, int missingSources,
             int references, int unresolvedReferences,
