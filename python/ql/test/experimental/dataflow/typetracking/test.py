@@ -195,3 +195,42 @@ class MyClass(object):
     def with_global_modifier(self):
         global some_value
         print(some_value) # $ tracked
+
+# ------------------------------------------------------------------------------
+# yield
+# ------------------------------------------------------------------------------
+
+def yielding_function():
+    x = tracked # $ tracked
+    yield x # $ tracked
+
+def test_yield():
+    for x in yielding_function(): # $ MISSING: tracked
+        print(x) # $ MISSING: tracked
+
+    gen = yielding_function()
+    y = next(gen) # $ MISSING: tracked
+    print(y) # $ MISSING: tracked
+
+
+# see https://docs.python.org/3.11/library/contextlib.html#contextlib.contextmanager
+from contextlib import contextmanager
+import contextlib
+
+@contextmanager
+def managed_resource():
+    x = tracked # $ tracked
+    yield x # $ tracked
+
+def test_context_manager():
+    with managed_resource() as x: # $ tracked
+        print(x) # $ tracked
+
+@contextlib.contextmanager
+def managed_resource2():
+    x = tracked # $ tracked
+    yield x # $ tracked
+
+def test_context_manager2():
+    with managed_resource2() as x: # $ tracked
+        print(x) # $ tracked
