@@ -23,6 +23,7 @@ The setup
 Consider the following scenario: We have data coming out of ``user_input()`` and we want to figure out if that data can ever reach an argument of `sink`.
 
 .. code-block:: cpp
+
   void sink(int);
   int user_input();
 
