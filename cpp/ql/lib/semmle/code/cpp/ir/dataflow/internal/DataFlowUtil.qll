@@ -14,6 +14,7 @@ private import DataFlowPrivate
 private import ModelUtil
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
+private import codeql.util.Unit
 
 /**
  * The IR dataflow graph consists of the following nodes:
@@ -1696,16 +1697,7 @@ private module Cached {
     // Reverse flow: data that flows from the definition node back into the indirection returned
     // by a function. This allows data to flow 'in' through references returned by a modeled
     // function such as `operator[]`.
-    exists(Operand address, int indirectionIndex |
-      nodeHasOperand(nodeTo.(IndirectReturnOutNode), address, indirectionIndex)
-    |
-      exists(StoreInstruction store |
-        nodeHasInstruction(nodeFrom, store, indirectionIndex - 1) and
-        store.getDestinationAddressOperand() = address
-      )
-      or
-      Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex)
-    )
+    reverseFlow(nodeFrom, nodeTo)
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
@@ -1733,6 +1725,39 @@ private module Cached {
       exists(int d |
         nodeFrom = callInput(call, modelIn, d) and
         nodeTo = callOutput(call, modelOut, d)
+      )
+    )
+  }
+
+  private predicate reverseFlow(Node nodeFrom, Node nodeTo) {
+    reverseFlowOperand(nodeFrom, nodeTo)
+    or
+    reverseFlowInstruction(nodeFrom, nodeTo)
+  }
+
+  private predicate reverseFlowOperand(Node nodeFrom, IndirectReturnOutNode nodeTo) {
+    exists(Operand address, int indirectionIndex |
+      nodeHasOperand(nodeTo, address, indirectionIndex)
+    |
+      exists(StoreInstruction store |
+        nodeHasInstruction(nodeFrom, store, indirectionIndex - 1) and
+        store.getDestinationAddressOperand() = address
+      )
+      or
+      // We also want a write coming out of an `OutNode` to flow `nodeTo`.
+      // This is different from `reverseFlowInstruction` since `nodeFrom` can never
+      // be an `OutNode` when it's defined by an instruction.
+      Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex)
+    )
+  }
+
+  private predicate reverseFlowInstruction(Node nodeFrom, IndirectReturnOutNode nodeTo) {
+    exists(Instruction address, int indirectionIndex |
+      nodeHasInstruction(nodeTo, address, indirectionIndex)
+    |
+      exists(StoreInstruction store |
+        nodeHasInstruction(nodeFrom, store, indirectionIndex - 1) and
+        store.getDestinationAddress() = address
       )
     )
   }
@@ -2215,33 +2240,41 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
 }
 
 /**
- * DEPRECATED: Use `BarrierGuard` module instead.
+ * A unit class for adding additional call steps.
  *
- * A guard that validates some instruction.
+ * Extend this class to add additional call steps to the data flow graph.
  *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
+ * For example, if the following subclass is added:
+ * ```ql
+ * class MyAdditionalCallTarget extends DataFlow::AdditionalCallTarget {
+ *   override Function viableTarget(Call call) {
+ *     call.getTarget().hasName("f") and
+ *     result.hasName("g")
+ *   }
+ * }
+ * ```
+ * then flow from `source()` to `x` in `sink(x)` is reported in the following example:
+ * ```cpp
+ * void sink(int);
+ * int source();
+ * void f(int);
  *
- * It is important that all extending classes in scope are disjoint.
+ * void g(int x) {
+ *   sink(x);
+ * }
+ *
+ * void test() {
+ *   int x = source();
+ *   f(x);
+ * }
+ * ```
+ *
+ * Note: To prevent reevaluation of cached dataflow-related predicates any
+ * subclass of `AdditionalCallTarget` must be imported in all dataflow queries.
  */
-deprecated class BarrierGuard extends IRGuardCondition {
-  /** Override this predicate to hold if this guard validates `instr` upon evaluating to `b`. */
-  predicate checksInstr(Instruction instr, boolean b) { none() }
-
-  /** Override this predicate to hold if this guard validates `expr` upon evaluating to `b`. */
-  predicate checks(Expr e, boolean b) { none() }
-
-  /** Gets a node guarded by this guard. */
-  final Node getAGuardedNode() {
-    exists(ValueNumber value, boolean edge |
-      (
-        this.checksInstr(value.getAnInstruction(), edge)
-        or
-        this.checks(value.getAnInstruction().getConvertedResultExpression(), edge)
-      ) and
-      result.asInstruction() = value.getAnInstruction() and
-      this.controls(result.asInstruction().getBlock(), edge)
-    )
-  }
+class AdditionalCallTarget extends Unit {
+  /**
+   * Gets a viable target for `call`.
+   */
+  abstract DataFlowCallable viableTarget(Call call);
 }
