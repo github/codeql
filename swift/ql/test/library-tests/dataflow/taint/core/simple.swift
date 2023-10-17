@@ -128,3 +128,26 @@ class MyClass {
 		sink(arg: MyClass.sv)
 	}
 }
+
+func test_instantiate_MyClass() {
+  let mc = MyClass()
+
+  mc.test()
+
+  sink(arg: g1) // $ MISSING: tainted=92
+  sink(arg: mc.m1) // $ MISSING: tainted=98
+  sink(arg: MyClass.s1) // $ MISSING: tainted=103
+}
+
+class MyClass2_NeverInstantiated {
+	let m1 = source()
+	static let s1 = source()
+
+	func test() {
+		sink(arg: g1) // $ MISSING: tainted=92
+		sink(arg: m1) // $ MISSING: tainted=143
+		sink(arg: MyClass2_NeverInstantiated.s1) // $ MISSING: tainted=144
+  }
+}
+
+// ---
