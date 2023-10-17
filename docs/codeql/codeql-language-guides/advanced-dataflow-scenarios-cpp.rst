@@ -428,6 +428,6 @@ The ``allowImplicitRead`` predicate specifies that if we're at a node that satis
   1. User input starts at ``user_input()``.
   2. The data flowing into ``b`` with access path ``[a, x]``.
   3. The data flowing to the indirection of ``&b`` (i.e., the object ``b``).
-  4. An implicit read of the field ``x`` followed by an implicit read of the field ``a``.
+  4. An implicit read of the field ``x`` followed by an implicit read of the field ``a`` at the sink.
 
 Thus, we end up at a node that satisfies ``isSink`` with an empty access path, and hence a dataflow path is successfully found.
