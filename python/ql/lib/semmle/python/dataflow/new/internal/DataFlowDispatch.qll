@@ -1617,7 +1617,15 @@ class ExtractedReturnNode extends ReturnNode, CfgNode {
   override ReturnKind getKind() { any() }
 }
 
-/** A data flow node that represents a value returned by a callable. */
+/**
+ * A data flow node that represents the value yielded by a callable with a
+ * `contextlib.contextmanager` decorator. We treat this as a normal return, which makes
+ * things just work when used in a `with` statement -- technically calling the function
+ * directly will give you a `contextlib._GeneratorContextManager` instance, so it's a
+ * slight workaround solution.
+ *
+ * See https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
+ */
 class YieldNodeInContextManagerFunction extends ReturnNode, CfgNode {
   YieldNodeInContextManagerFunction() {
     hasContextmanagerDecorator(node.getScope()) and
