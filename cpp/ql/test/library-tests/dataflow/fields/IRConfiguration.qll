@@ -1,6 +1,19 @@
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import DataFlow
 
+private class TestAdditionalCallTarget extends AdditionalCallTarget {
+  override Function viableTarget(Call call) {
+    // To test that call targets specified by `AdditionalCallTarget` are
+    // resolved correctly this subclass resolves all calls to
+    // `call_template_argument<f>(x)` as if the user had written `f(x)`.
+    exists(FunctionTemplateInstantiation inst |
+      inst.getTemplate().hasName("call_template_argument") and
+      call.getTarget() = inst and
+      result = inst.getTemplateArgument(0).(FunctionAccess).getTarget()
+    )
+  }
+}
+
 module IRConfig implements ConfigSig {
   predicate isSource(Node src) {
     src.asExpr() instanceof NewExpr
