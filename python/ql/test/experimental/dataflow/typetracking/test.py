@@ -223,8 +223,8 @@ def managed_resource():
     yield x # $ tracked
 
 def test_context_manager():
-    with managed_resource() as x: # $ MISSING: tracked
-        print(x) # $ MISSING: tracked
+    with managed_resource() as x: # $ tracked
+        print(x) # $ tracked
 
 @contextlib.contextmanager
 def managed_resource2():
@@ -232,5 +232,5 @@ def managed_resource2():
     yield x # $ tracked
 
 def test_context_manager2():
-    with managed_resource2() as x: # $ MISSING: tracked
-        print(x) # $ MISSING: tracked
+    with managed_resource2() as x: # $ tracked
+        print(x) # $ tracked

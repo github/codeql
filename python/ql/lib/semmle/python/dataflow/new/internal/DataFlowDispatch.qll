@@ -240,6 +240,19 @@ predicate hasPropertyDecorator(Function func) {
   )
 }
 
+/**
+ * Holds if the function `func` has a `contextlib.contextmanager`.
+ */
+predicate hasContextmanagerDecorator(Function func) {
+  exists(ControlFlowNode contextmanager |
+    contextmanager.(NameNode).getId() = "contextmanager" and contextmanager.(NameNode).isGlobal()
+    or
+    contextmanager.(AttrNode).getObject("contextmanager").(NameNode).getId() = "contextlib"
+  |
+    func.getADecorator() = contextmanager.getNode()
+  )
+}
+
 // =============================================================================
 // Callables
 // =============================================================================
@@ -1600,6 +1613,16 @@ abstract class ReturnNode extends Node {
 class ExtractedReturnNode extends ReturnNode, CfgNode {
   // See `TaintTrackingImplementation::returnFlowStep`
   ExtractedReturnNode() { node = any(Return ret).getValue().getAFlowNode() }
+
+  override ReturnKind getKind() { any() }
+}
+
+/** A data flow node that represents a value returned by a callable. */
+class YieldNodeInContextManagerFunction extends ReturnNode, CfgNode {
+  YieldNodeInContextManagerFunction() {
+    hasContextmanagerDecorator(node.getScope()) and
+    node = any(Yield yield).getValue().getAFlowNode()
+  }
 
   override ReturnKind getKind() { any() }
 }
