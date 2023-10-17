@@ -20,24 +20,11 @@ In the dual situation where a read of a field is not visible to CodeQL, the data
 The setup
 ---------
 
-Consider the following scenario: We have a two structs, each containing two fields, and we have two types of ways of getting user input, and two places that data can end up in:
+Consider the following scenario: We have data coming out of ``user_input()`` and we want to figure out if that data can ever reach an argument of `sink`.
 
 .. code-block:: cpp
-
-  struct A {
-    const int *p;
-    int x;
-  };
-
-  struct B {
-    A *a;
-    int y;
-  };
-
   void sink(int);
   int user_input();
-  void write_user_input_to(void *);
-  void read_data(const void *);
 
 A regular dataflow query such as the following query
 
@@ -69,9 +56,19 @@ A regular dataflow query such as the following query
   where Flow::flowPath(source, sink)
   select sink.getNode(), source, sink, "Flow from user input to sink!"
 
-will catch most things á la
+will catch most things such as
 
 .. code-block:: cpp
+
+  struct A {
+    const int *p;
+    int x;
+  };
+
+  struct B {
+    A *a;
+    int y;
+  };
 
   void fill_structure(B* b, const int* pu) {
     // ...
