@@ -12,7 +12,11 @@ edges
 | rncryptor.swift:63:19:63:28 | call to Data.init(_:) | rncryptor.swift:83:113:83:113 | myConstIV4 |
 | rncryptor.swift:63:24:63:24 | iv | rncryptor.swift:63:19:63:28 | call to Data.init(_:) |
 | test.swift:53:19:53:34 | iv | test.swift:54:17:54:17 | iv |
+| test.swift:85:3:85:3 | this string is constant | test.swift:89:10:89:28 | call to getConstantString() |
 | test.swift:85:3:85:3 | this string is constant | test.swift:101:17:101:35 | call to getConstantString() |
+| test.swift:89:2:89:34 | call to Array<Element>.init(_:) [Collection element] | test.swift:100:12:100:29 | call to getConstantArray() [Collection element] |
+| test.swift:89:10:89:28 | call to getConstantString() | test.swift:89:10:89:30 | .utf8 |
+| test.swift:89:10:89:30 | .utf8 | test.swift:89:2:89:34 | call to Array<Element>.init(_:) [Collection element] |
 | test.swift:99:25:99:120 | [...] | test.swift:128:33:128:33 | iv |
 | test.swift:99:25:99:120 | [...] | test.swift:135:22:135:22 | iv |
 | test.swift:99:25:99:120 | [...] | test.swift:139:22:139:22 | iv |
@@ -27,6 +31,7 @@ edges
 | test.swift:99:25:99:120 | [...] | test.swift:162:22:162:22 | iv |
 | test.swift:99:25:99:120 | [...] | test.swift:167:22:167:22 | iv |
 | test.swift:99:25:99:120 | [...] | test.swift:168:22:168:22 | iv |
+| test.swift:100:12:100:29 | call to getConstantArray() [Collection element] | test.swift:129:33:129:33 | iv2 |
 | test.swift:101:17:101:35 | call to getConstantString() | test.swift:112:36:112:36 | ivString |
 | test.swift:101:17:101:35 | call to getConstantString() | test.swift:113:36:113:36 | ivString |
 | test.swift:101:17:101:35 | call to getConstantString() | test.swift:118:41:118:41 | ivString |
@@ -54,7 +59,11 @@ nodes
 | test.swift:53:19:53:34 | iv | semmle.label | iv |
 | test.swift:54:17:54:17 | iv | semmle.label | iv |
 | test.swift:85:3:85:3 | this string is constant | semmle.label | this string is constant |
+| test.swift:89:2:89:34 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
+| test.swift:89:10:89:28 | call to getConstantString() | semmle.label | call to getConstantString() |
+| test.swift:89:10:89:30 | .utf8 | semmle.label | .utf8 |
 | test.swift:99:25:99:120 | [...] | semmle.label | [...] |
+| test.swift:100:12:100:29 | call to getConstantArray() [Collection element] | semmle.label | call to getConstantArray() [Collection element] |
 | test.swift:101:17:101:35 | call to getConstantString() | semmle.label | call to getConstantString() |
 | test.swift:112:36:112:36 | ivString | semmle.label | ivString |
 | test.swift:113:36:113:36 | ivString | semmle.label | ivString |
@@ -62,6 +71,7 @@ nodes
 | test.swift:122:41:122:41 | ivString | semmle.label | ivString |
 | test.swift:123:41:123:41 | ivString | semmle.label | ivString |
 | test.swift:128:33:128:33 | iv | semmle.label | iv |
+| test.swift:129:33:129:33 | iv2 | semmle.label | iv2 |
 | test.swift:130:39:130:39 | ivString | semmle.label | ivString |
 | test.swift:135:22:135:22 | iv | semmle.label | iv |
 | test.swift:139:22:139:22 | iv | semmle.label | iv |
@@ -93,6 +103,7 @@ subpaths
 | test.swift:122:41:122:41 | ivString | test.swift:85:3:85:3 | this string is constant | test.swift:122:41:122:41 | ivString | The static value 'this string is constant' is used as an initialization vector for encryption. |
 | test.swift:123:41:123:41 | ivString | test.swift:85:3:85:3 | this string is constant | test.swift:123:41:123:41 | ivString | The static value 'this string is constant' is used as an initialization vector for encryption. |
 | test.swift:128:33:128:33 | iv | test.swift:99:25:99:120 | [...] | test.swift:128:33:128:33 | iv | The static value '[...]' is used as an initialization vector for encryption. |
+| test.swift:129:33:129:33 | iv2 | test.swift:85:3:85:3 | this string is constant | test.swift:129:33:129:33 | iv2 | The static value 'this string is constant' is used as an initialization vector for encryption. |
 | test.swift:130:39:130:39 | ivString | test.swift:85:3:85:3 | this string is constant | test.swift:130:39:130:39 | ivString | The static value 'this string is constant' is used as an initialization vector for encryption. |
 | test.swift:135:22:135:22 | iv | test.swift:99:25:99:120 | [...] | test.swift:135:22:135:22 | iv | The static value '[...]' is used as an initialization vector for encryption. |
 | test.swift:139:22:139:22 | iv | test.swift:99:25:99:120 | [...] | test.swift:139:22:139:22 | iv | The static value '[...]' is used as an initialization vector for encryption. |

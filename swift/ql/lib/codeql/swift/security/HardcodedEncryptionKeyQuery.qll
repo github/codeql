@@ -38,14 +38,13 @@ module HardcodedKeyConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof HardcodedEncryptionKeyBarrier }
 
-  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(HardcodedEncryptionKeyAdditionalFlowStep s).step(nodeFrom, nodeTo)
+  predicate isBarrierIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    isSource(node)
   }
 
-  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    // flow out of collections at the sink
-    isSink(node) and
-    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(HardcodedEncryptionKeyAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

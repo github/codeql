@@ -45,11 +45,6 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
     isSink(node) and
     node.asExpr().getType().getUnderlyingType() instanceof DictionaryType and
     c.getAReadContent().(DataFlow::Content::TupleContent).getIndex() = 1
-    or
-    // flow out from array elements (and other collection content) at the sink,
-    // for example in `database.allStatements(sql: "", arguments: [sensitive])`.
-    isSink(node) and
-    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
   }
 }
 
