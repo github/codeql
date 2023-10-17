@@ -1048,28 +1048,184 @@ deprecated module RegExpPatterns {
 }
 
 /**
+ * Holds if `metachar` is a meta-character that is used to escape special characters
+ * into a form described by regular expression `regex`.
+ */
+predicate escapingScheme(string metachar, string regex) {
+  metachar = "&" and regex = "&.+;"
+  or
+  metachar = "%" and regex = "%.+"
+  or
+  metachar = "\\" and regex = "\\\\.+"
+}
+
+/**
+ * Gets a predecessor of `nd` that is not an SSA phi node.
+ */
+DataFlow::Node getASimplePredecessor(DataFlow::Node nd) {
+  result = nd.getAPredecessor() and
+  not exists(SsaDefinition ssa |
+    ssa = nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition()
+  |
+    ssa instanceof SsaPhiNode or
+    ssa instanceof SsaVariableCapture
+  )
+}
+
+/**
+ * A call to `String.prototype.replace` that replaces all instances of a pattern.
+ */
+class Replacement extends StringReplaceCall {
+  Replacement() { this.isGlobal() }
+
+  /**
+   * Gets the input of this replacement.
+   */
+  DataFlow::Node getInput() { result = this.getReceiver() }
+
+  /**
+   * Gets the output of this replacement.
+   */
+  DataFlow::SourceNode getOutput() { result = this }
+
+  /**
+   * Holds if this replacement escapes `char` using `metachar`.
+   *
+   * For example, during HTML entity escaping `<` is escaped (to `&lt;`)
+   * using `&`.
+   */
+  predicate escapes(string char, string metachar) {
+    exists(string regexp, string repl |
+      escapingScheme(metachar, regexp) and
+      this.replaces(char, repl) and
+      repl.regexpMatch(regexp)
+    )
+  }
+
+  /**
+   * Holds if this replacement unescapes `char` using `metachar`.
+   *
+   * For example, during HTML entity unescaping `<` is unescaped (from
+   * `&lt;`) using `<`.
+   */
+  predicate unescapes(string metachar, string char) {
+    exists(string regexp, string orig |
+      escapingScheme(metachar, regexp) and
+      this.replaces(orig, char) and
+      orig.regexpMatch(regexp)
+    )
+  }
+
+  /**
+   * Gets the previous replacement in this chain of replacements.
+   */
+  Replacement getPreviousReplacement() {
+    result.getOutput() = getASimplePredecessor*(this.getInput())
+  }
+
+  /**
+   * Gets an earlier replacement in this chain of replacements that
+   * performs an escaping.
+   */
+  Replacement getAnEarlierEscaping(string metachar) {
+    exists(Replacement pred | pred = this.getPreviousReplacement() |
+      if pred.escapes(_, metachar)
+      then result = pred
+      else (
+        not pred.unescapes(metachar, _) and result = pred.getAnEarlierEscaping(metachar)
+      )
+    )
+  }
+
+  /**
+   * Gets an earlier replacement in this chain of replacements that
+   * performs a unescaping.
+   */
+  Replacement getALaterUnescaping(string metachar) {
+    exists(Replacement succ | this = succ.getPreviousReplacement() |
+      if succ.unescapes(metachar, _)
+      then result = succ
+      else (
+        not succ.escapes(_, metachar) and result = succ.getALaterUnescaping(metachar)
+      )
+    )
+  }
+}
+
+/**
+ * Holds if data flows from `pred` to `succ` through a replacement step that
+ * backslash-escapes `escaped`.
+ */
+private predicate replacementStep(DataFlow::Node pred, DataFlow::Node succ, string escaped) {
+  exists(Replacement repl |
+    repl.getInput() = pred and
+    repl.getOutput() = succ and
+    repl.escapes(escaped, "\\")
+  )
+}
+
+/**
+ * Holds if data flows from `pred` to `succ` through a replacement step that
+ * either backslash-escapes `escaped` or (if `escaped` is empty) does not
+ * backslash-escape any character.
+ */
+private predicate regExpTaintStep(DataFlow::Node pred, DataFlow::Node succ, string escaped) {
+  TaintTracking::sharedTaintStep(pred, succ) and
+  (
+    replacementStep(pred, succ, escaped)
+    or
+    not replacementStep(pred, succ, _) and
+    escaped = ""
+  )
+}
+
+/**
+ * Gets the string that results from appending `newEscape` to `escaped`
+ * if `escaped` does not already contain `newEscape`.
+ *
+ * The parameter `newEscape` must be at most one character long.
+ */
+bindingset[escaped, newEscape]
+private string addEscape(string escaped, string newEscape) {
+  newEscape = "" and result = escaped
+  or
+  escaped.charAt(_) = newEscape and result = escaped
+  or
+  newEscape.length() = 1 and
+  result = escaped + newEscape
+}
+
+/**
  * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
  * as a part of a regular expression.
+ *
+ * The parameter `escaped` is the set of characters that are escaped along the way.
  */
-private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker t) {
+private DataFlow::Node regExpSource(DataFlow::Node re, string escaped, DataFlow::TypeBackTracker t) {
   t.start() and
   re = result and
+  escaped = "" and
   isInterpretedAsRegExp(result)
   or
-  exists(DataFlow::TypeBackTracker t2, DataFlow::Node succ | succ = regExpSource(re, t2) |
-    t2 = t.smallstep(result, succ)
+  exists(DataFlow::TypeBackTracker t2, DataFlow::Node succ, string escaped2 | succ = regExpSource(re, escaped2, t2) |
+    t2 = t.smallstep(result, succ) and
+    escaped = escaped2
     or
-    TaintTracking::sharedTaintStep(result, succ) and
-    t = t2
+    exists(string newEscape | regExpTaintStep(result, succ, newEscape) |
+    t = t2 and
+    escaped = addEscape(escaped2, newEscape)
+    )
   )
 }
 
 /**
  * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
  * as a part of a regular expression.
+ *
+ * The parameter `escaped` is the set of characters that are escaped along the way.
  */
-private DataFlow::Node regExpSource(DataFlow::Node re) {
-  result = regExpSource(re, DataFlow::TypeBackTracker::end())
+private DataFlow::Node regExpSource(DataFlow::Node re, string escaped) {
+  result = regExpSource(re, escaped, DataFlow::TypeBackTracker::end())
 }
 
 /**
@@ -1099,6 +1255,12 @@ abstract class RegExpPatternSource extends DataFlow::Node {
    * Gets the root term of the regular expression parsed from this pattern.
    */
   abstract RegExpTerm getRegExpTerm();
+
+  /**
+   * Holds if `char` may be backslash-escaped before it is interpreted as
+   * a part of a regular expression.
+   */
+  abstract predicate escapes(string char);
 }
 
 /**
@@ -1117,6 +1279,8 @@ private class RegExpLiteralPatternSource extends RegExpPatternSource, DataFlow::
   override DataFlow::SourceNode getARegExpObject() { result = this }
 
   override RegExpTerm getRegExpTerm() { result = astNode.getRoot() }
+
+  override predicate escapes(string char) { none() }
 }
 
 /**
@@ -1125,8 +1289,9 @@ private class RegExpLiteralPatternSource extends RegExpPatternSource, DataFlow::
  */
 private class StringRegExpPatternSource extends RegExpPatternSource {
   DataFlow::Node parse;
+  string escaped;
 
-  StringRegExpPatternSource() { this = regExpSource(parse) }
+  StringRegExpPatternSource() { this = regExpSource(parse, escaped) }
 
   override DataFlow::Node getAParse() { result = parse }
 
@@ -1141,6 +1306,8 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
   override string getPattern() { result = this.getStringValue() }
 
   override RegExpTerm getRegExpTerm() { result = this.asExpr().(StringLiteral).asRegExp() }
+
+  override predicate escapes(string char) { escaped.charAt(_) = char }
 }
 
 /**
@@ -1149,8 +1316,9 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
  */
 private class StringConcatRegExpPatternSource extends RegExpPatternSource {
   DataFlow::Node parse;
+  string escaped;
 
-  StringConcatRegExpPatternSource() { this = regExpSource(parse) }
+  StringConcatRegExpPatternSource() { this = regExpSource(parse, escaped) }
 
   override DataFlow::Node getAParse() { result = parse }
 
@@ -1165,6 +1333,8 @@ private class StringConcatRegExpPatternSource extends RegExpPatternSource {
   override string getPattern() { result = this.getStringValue() }
 
   override RegExpTerm getRegExpTerm() { result = this.asExpr().(AddExpr).asRegExp() }
+
+  override predicate escapes(string char) { escaped.charAt(_) = char }
 }
 
 module RegExp {
