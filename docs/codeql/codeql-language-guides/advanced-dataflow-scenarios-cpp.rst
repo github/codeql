@@ -423,7 +423,7 @@ The dataflow library actually has a specific tool to handle this scenario, and t
   where Flow::flowPath(source, sink)
   select sink.getNode(), source, sink, "Flow from user input to sink!"
 
-The ``allowImplicitRead`` predicate specifies that if we're at a node that satisfies ``isSink`` then we're allowed to assume that there is an implicit read of a field named ``a`` or a field named ``x``. This gets us the flow we are interested in because the dataflow library now will see:
+The ``allowImplicitRead`` predicate specifies that if we're at a node that satisfies ``isSink`` then we're allowed to assume that there is an implicit read of a field named ``a`` or a field named ``x`` (in this case both). This gets us the flow we are interested in because the dataflow library now will see:
 
   1. User input starts at ``user_input()``.
   2. The data flowing into ``b`` with access path ``[a, x]``.
