@@ -1,38 +1,41 @@
 using System.IO.Compression;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
+namespace MultipartFormWebAPITest.Controllers;
 
-namespace MultipartFormWebAPITest.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class ZipFile1Controller : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ZipFile1Controller : ControllerBase
+    [HttpPost]
+    public IActionResult Post(List<IFormFile> files)
     {
-        // POST api/<ImagesController>
-        [HttpPost]
-        public string Post(List<IFormFile> files)
+        foreach (var formFile in files)
         {
-            if (!Request.ContentType!.StartsWith("multipart/form-data"))
-                return "400";
-            if (files.Count == 0)
-                return "400";
-            foreach (var formFile in files)
-            {
-                using var readStream = formFile.OpenReadStream();
-                if (readStream.Length == 0) return "400";
-                ZipHelpers.Bomb3(readStream);
-                ZipHelpers.Bomb2(formFile.FileName);
-                ZipHelpers.BombSafe(formFile.FileName);
-            }
-            var tmp = Request.Form["aa"];
-            var tmp2 = Request.Form.Keys;
-            // when we don't have only one file as body 
-            ZipHelpers.Bomb3(Request.Body);
-            ZipHelpers.Bomb2(Request.Query["param1"].ToString());
-            var headers = Request.Headers;
-            ZipHelpers.BombSafe(headers.ETag);
-            return "200";
+            ZipHelpers.Bomb2(formFile.FileName);
+            ZipHelpers.BombSafe(formFile.FileName);
+            ZipHelpers.Bomb3(formFile.OpenReadStream());
         }
+
+
+        StringValues file1;
+        StringValues header1;
+        Request.Form.TryGetValue("file", out file1);
+        Request.Headers.TryGetValue("Header1", out header1);
+        Request.Query.TryGetValue("queryParam1", out var qParam);
+
+        var a = Request.Headers["a"];
+        var b = Request.Headers.ContentType;
+
+        var d = Array.Empty<KeyValuePair<string, StringValues>>();
+        Request.Headers.CopyTo(d, 0);
+
+        ZipHelpers.Bomb2(file1!);
+        ZipHelpers.Bomb2(header1!);
+        ZipHelpers.Bomb2(qParam!);
+
+        return Accepted();
     }
 }
 
@@ -43,22 +46,28 @@ internal static class ZipHelpers
         using var decompressor = new GZipStream(compressedFileStream, CompressionMode.Decompress);
         using var ms = new MemoryStream();
         decompressor.CopyTo(ms);
+        using var decompressor2 = new BrotliStream(compressedFileStream, CompressionMode.Decompress);
+        using var ms2 = new MemoryStream();
+        decompressor2.CopyTo(ms2);
+        using var decompressor3 = new DeflateStream(compressedFileStream, CompressionMode.Decompress);
+        using var ms3 = new MemoryStream();
+        decompressor3.CopyTo(ms3);
     }
 
     public static void Bomb2(string filename)
     {
         using var zipToOpen = new FileStream(filename, FileMode.Open);
         using var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Read);
+        archive.ExtractToDirectory("./tmp/", true);
+        (archive.GetEntry("aaa") ?? throw new InvalidOperationException()).ExtractToFile("/tmp/tmp");
         foreach (var entry in archive.Entries) entry.ExtractToFile("./output.txt", true); // Sensitive
     }
 
     public static void BombSafe(string filename)
     {
         const long maxLength = 10 * 1024 * 1024; // 10MB
-        using var zipFile = ZipFile.OpenRead(filename);
-        // Quickly check the value from the zip header 
-        // we don't worry about malicious zip headers anymore
-        // because we read stream until the value of header not more
+        using var zipFile = ZipFile.Open(filename, ZipArchiveMode.Read);
+        // Quickly check the value from the zip header
         var declaredSize = zipFile.Entries.Sum(entry => entry.Length);
         if (declaredSize > maxLength)
             throw new Exception("Archive is too big");
@@ -71,6 +80,11 @@ internal static class ZipHelpers
             using var ms = new MemoryStream();
             maxLengthStream.CopyTo(ms);
         }
+
+        const string zipPath = @"c:\users\exampleuser\start.zip";
+        const string extractPath = @"c:\users\exampleuser\extract";
+        using var archive = ZipFile.Open(zipPath, ZipArchiveMode.Update);
+        archive.ExtractToDirectory(extractPath);
     }
 }
 
@@ -108,7 +122,6 @@ internal sealed class MaxLengthStream : Stream
         return result;
     }
 
-    // TODO ReadAsync
 
     public override void Flush()
     {

@@ -1,9 +1,10 @@
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Remote
 
-/** A data flow source of remote user input by Form File (ASP.NET unvalidated request data). */
+/** A data flow source of remote user input by Form File (ASP.NET core request data). */
 class FormFile extends AspNetRemoteFlowSource {
   FormFile() {
+    // openReadStream is already implemented but I'm putting this here because of having a uniform class for FormFile
     exists(MethodCall mc |
       mc.getTarget().hasQualifiedName("Microsoft.AspNetCore.Http", "IFormFile", "OpenReadStream") and
       this.asExpr() = mc
@@ -22,12 +23,10 @@ class FormFile extends AspNetRemoteFlowSource {
     )
   }
 
-  override string getSourceType() {
-    result = "ASP.NET unvalidated request data from multipart request"
-  }
+  override string getSourceType() { result = "ASP.NET core request data from multipart request" }
 }
 
-/** A data flow source of remote user input by Form (ASP.NET unvalidated request data). */
+/** A data flow source of remote user input by Form (ASP.NET core request data). */
 class FormCollection extends AspNetRemoteFlowSource {
   FormCollection() {
     exists(Property fa |
@@ -35,14 +34,22 @@ class FormCollection extends AspNetRemoteFlowSource {
       fa.hasName("Keys") and
       this.asExpr() = fa.getAnAccess()
     )
+    or
+    exists(Call c |
+      c.getTarget()
+          .getDeclaringType()
+          .hasQualifiedName("Microsoft.AspNetCore.Http", "IFormCollection") and
+      c.getTarget().getName() = "TryGetValue" and
+      this.asDefinition().getTargetAccess() = c.getArgument(1)
+    )
   }
 
   override string getSourceType() {
-    result = "ASP.NET unvalidated request data from multipart request Form Keys"
+    result = "ASP.NET core request data from multipart request Form Keys"
   }
 }
 
-/** A data flow source of remote user input by Headers (ASP.NET unvalidated request data). */
+/** A data flow source of remote user input by Headers (ASP.NET core request data). */
 class HeaderDictionary extends AspNetRemoteFlowSource {
   HeaderDictionary() {
     exists(Property fa |
@@ -51,7 +58,5 @@ class HeaderDictionary extends AspNetRemoteFlowSource {
     )
   }
 
-  override string getSourceType() {
-    result = "ASP.NET unvalidated request data from Headers of request"
-  }
+  override string getSourceType() { result = "ASP.NET core request data from Headers of request" }
 }
