@@ -3366,6 +3366,24 @@ cfg.swift:
 #  545|       getElse(): [BraceStmt] { ... }
 #  546|         getElement(0): [ReturnStmt] return ...
 #  546|           getResult(): [IntegerLiteralExpr] 0
+#  550| [NamedFunction] usesAutoclosure(_:)
+#  550|     InterfaceType = (@autoclosure () -> Int) -> Int
+#  550|   getParam(0): [ParamDecl] expr
+#  550|       Type = () -> Int
+#  550|   getBody(): [BraceStmt] { ... }
+#  551|     getElement(0): [ReturnStmt] return ...
+#  551|       getResult(): [CallExpr] call to ...
+#  551|         getFunction(): [DeclRefExpr] expr
+#  554| [NamedFunction] autoclosureTest()
+#  554|     InterfaceType = () -> ()
+#  554|   getBody(): [BraceStmt] { ... }
+#  555|     getElement(0): [CallExpr] call to usesAutoclosure(_:)
+#  555|       getFunction(): [DeclRefExpr] usesAutoclosure(_:)
+#  555|       getArgument(0): [Argument] : { ... }
+#  555|         getExpr(): [AutoClosureExpr] { ... }
+#  555|           getBody(): [BraceStmt] { ... }
+#  555|             getElement(0): [ReturnStmt] return ...
+#  555|               getResult(): [IntegerLiteralExpr] 1
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...

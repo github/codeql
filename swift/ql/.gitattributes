@@ -127,7 +127,6 @@
 /lib/codeql/swift/elements/expr/ErrorExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExistentialMetatypeToObjectExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExistentialMetatypeToObjectExprConstructor.qll linguist-generated
-/lib/codeql/swift/elements/expr/ExplicitClosureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExplicitClosureExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/FloatLiteralExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/ForceTryExprConstructor.qll linguist-generated

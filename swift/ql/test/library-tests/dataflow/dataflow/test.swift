@@ -899,3 +899,11 @@ func testAsyncFor () async {
         sink(arg: i) // $ MISSING: flow=892
     }
 }
+
+func usesAutoclosure(_ expr: @autoclosure () -> Int) {
+  sink(arg: expr()) // $ flow=908
+}
+
+func autoclosureTest() {
+  usesAutoclosure(source())
+}
