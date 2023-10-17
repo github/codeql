@@ -113,6 +113,30 @@ private string getViewSearchTemplate(int i) {
   i = 0 and result = "/Views/{1}/{0}.cshtml"
   or
   i = 1 and result = "/Views/Shared/{0}.cshtml"
+  or
+  i = 2 and result = getAViewSearchTemplateInCode()
+}
+
+/** Gets an additional template used for view discovery defined in code. */
+private string getAViewSearchTemplateInCode() {
+  exists(StringLiteral str, MethodCall addCall |
+    addCall.getTarget().hasQualifiedName("System.Collections.Generic", "IList", "Add") and
+    DataFlow::localExprFlow(str, addCall.getArgument(0)) and
+    addCall.getQualifier() = getAViewLocationList() and
+    result = str.getValue()
+  )
+}
+
+/** Gets a list expression containing view search locations */
+private Expr getAViewLocationList() {
+  result
+      .(PropertyRead)
+      .getProperty()
+      .hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorViewEngineOptions",
+        [
+          "ViewLocationFormats", "PageViewLocationFormats", "AreaViewLocationFormats",
+          "AreaPageViewLocationFormats"
+        ])
 }
 
 /** A filepath that should be searched for a View call. */
