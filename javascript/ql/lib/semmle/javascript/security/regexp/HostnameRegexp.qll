@@ -12,7 +12,19 @@ private import codeql.regex.HostnameRegexp as Shared
 module Impl implements Shared::HostnameRegexpSig<TreeImpl> {
   class DataFlowNode = JS::DataFlow::Node;
 
-  class RegExpPatternSource = RegExp::RegExpPatternSource;
+  class RegExpPatternSource extends JS::DataFlow::Node instanceof RegExp::RegExpPatternSource {
+    RegExpPatternSource() {
+      not super.escapes(_)
+    }
+
+    RegExp::RegExpTerm getRegExpTerm() {
+      result = super.getRegExpTerm()
+    }
+
+    JS::DataFlow::Node getAParse() {
+      result = super.getAParse()
+    }
+  }
 }
 
 import Shared::Make<TreeImpl, Impl>
