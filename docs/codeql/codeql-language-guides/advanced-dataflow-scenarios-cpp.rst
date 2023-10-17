@@ -98,7 +98,17 @@ This is simple to match because we see:
 Flow from a qualifier to a field access
 ---------------------------------------
 
-However, sometimes the writes or reads are not visible to CodeQL (for example, because the implementation of the function isn’t included in the database), and so dataflow won't be able to match up all stores with reads, and thus you don't get the result you want. For example, consider the following example:
+However, sometimes the writes or reads are not visible to CodeQL (for example, because the implementation of the function isn't included in the database), and so dataflow won't be able to match up all stores with reads, and thus you don't get the result you want. For example, consider an alternative setup where our source of data starts as the outgoing argument of a function `write_user_input_to`. We can model this setup in the dataflow library using the following ``isSource``:
+
+.. code-block:: ql
+  predicate isSource(DataFlow::Node source) {
+    exists(Call call |
+      call.getTarget().hasName("write_user_input_to") and
+      source.asDefiningArgument() = call.getArgument(0)
+    )
+  }
+
+This would match the call to ``write_user_input_to`` in the following example:
 
 .. code-block:: cpp
 
@@ -123,7 +133,7 @@ However, sometimes the writes or reads are not visible to CodeQL (for example, b
     free(u);
   }
 
-Here, flow starts at the outgoing argument of ``write_user_input_to(...)`` and proceeds to ``u->p``. However, because CodeQL has not observed a write to p prior to the read ``u->p``, dataflow will stop at ``u``. In order to convince CodeQL to proceed we need to add an additional flow step through field reads like so:
+Flow now starts at the outgoing argument of ``write_user_input_to(...)`` and proceeds to ``u->p``. However, because CodeQL has not observed a write to ``p`` prior to the read ``u->p``, dataflow will stop at ``u``. In order to convince CodeQL to proceed we need to add an additional flow step through field reads like so:
 
 .. code-block:: ql
 
