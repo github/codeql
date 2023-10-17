@@ -139,7 +139,7 @@ open class KotlinUsesExtractor(
     }
 
     fun getJavaEquivalentClass(c: IrClass) =
-        getJavaEquivalentClassId(c)?.let { getClassByFqName(pluginContext, it.asSingleFqName()) }?.owner
+        getJavaEquivalentClassId(c)?.let { getClassByClassId(pluginContext, it) }?.owner
 
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
