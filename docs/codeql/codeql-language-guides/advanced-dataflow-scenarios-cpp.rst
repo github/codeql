@@ -174,7 +174,11 @@ Flow now starts at the outgoing argument of ``write_user_input_to(...)`` and pro
   where Flow::flowPath(source, sink)
   select sink.getNode(), source, sink, "Flow from user input to sink!"
 
-Notice how the ``isSource`` and ``isSink`` are as expected: we're looking for flow that starts at the outgoing parameter of ``write_user_input_to(...)``, and ends up as an argument to ``isSink``. The interesting part is the addition of ``isAdditionalFlow`` which specifies an additional flow step from the qualifier of a ``FieldAccess`` to the result of the access. We have an important choice here: Should the relationship between ``n2`` and ``fa`` be implemented using ``asExpr`` or ``asIndirectExpr``? 
+Notice how the ``isSource`` and ``isSink`` are as expected: we're looking for flow that starts at the outgoing parameter of ``write_user_input_to(...)``, and ends up as an argument to ``isSink``. The interesting part is the addition of ``isAdditionalFlow`` which specifies an additional flow step from the qualifier of a ``FieldAccess`` to the result of the access.
+
+In a real query the ``isAdditionalFlowStep`` step would be restricted in various ways to make sure that it doesn't add too much flow (since flow from a field qualifier to the field access in general will generate a lot of spurious flow). For example, one could restrict ``fa`` to be a field access that targets a particular field, or a field access of a field that's defined in a certain ``struct`` type.
+
+We have an important choice here: Should the relationship between ``n2`` and ``fa`` be implemented using ``asExpr`` or ``asIndirectExpr``? 
 
 .. _using-asIndirectExpr:
 
