@@ -215,6 +215,7 @@ def test_yield():
 
 # see https://docs.python.org/3.11/library/contextlib.html#contextlib.contextmanager
 from contextlib import contextmanager
+import contextlib
 
 @contextmanager
 def managed_resource():
@@ -223,4 +224,13 @@ def managed_resource():
 
 def test_context_manager():
     with managed_resource() as x: # $ MISSING: tracked
+        print(x) # $ MISSING: tracked
+
+@contextlib.contextmanager
+def managed_resource2():
+    x = tracked # $ tracked
+    yield x # $ tracked
+
+def test_context_manager2():
+    with managed_resource2() as x: # $ MISSING: tracked
         print(x) # $ MISSING: tracked
