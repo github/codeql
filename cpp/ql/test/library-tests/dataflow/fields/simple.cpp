@@ -94,4 +94,21 @@ void single_field_test_typedef(A_typedef a)
     sink(a2.i); //$ ast,ir
 }
 
+namespace TestAdditionalCallTargets {
+
+    using TakesIntReturnsVoid = void(*)(int);
+    template<TakesIntReturnsVoid F>
+    void call_template_argument(int);
+
+    void call_sink(int x) {
+        sink(x); // $ ir
+    }
+
+    void test_additional_call_targets() {
+        int x = user_input();
+        call_template_argument<call_sink>(x);
+    }
+
+}
+
 } // namespace Simple
