@@ -99,7 +99,7 @@ private module ArrayUpdateFlow = DataFlow::Global<ArrayUpdateConfig>;
 private class StaticInitializationVectorSource extends DataFlow::Node {
   StaticInitializationVectorSource() {
     exists(StaticByteArrayCreation array | array = this.asExpr() |
-      not ArrayUpdateFlow::flow(DataFlow2::exprNode(array), _) and
+      not ArrayUpdateFlow::flow(DataFlow::exprNode(array), _) and
       // Reduce FPs from utility methods that return an empty array in an exceptional case
       not exists(ReturnStmt ret |
         array.getADimension().(CompileTimeConstantExpr).getIntValue() = 0 and
