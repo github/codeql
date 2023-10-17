@@ -67,9 +67,7 @@ public class Test2Controller : Controller {
         return helper(tainted11);
     }
 
-    private IActionResult helper(UserData x) {
-        return View("Test11", x);
-    }
+    private IActionResult helper(UserData x) { return View("Test11", x); }
 
     public IActionResult Test12(UserData tainted12) {
         // Expected to find nothing.
@@ -79,4 +77,32 @@ public class Test2Controller : Controller {
     private IActionResult helper2(UserData x) {
         return View(x);
     }    
+
+    private IActionResult test13(UserData tainted13) {
+        // Expected to find file /Views/Other/Test13.cshtml
+        return Helper.helper3(this, tainted13);
+    }
+
+    private IActionResult test14(UserData tainted14) {
+        // Expected to find file /Views/Shared/Test14.cshtml and NOT /Views/Test2/Test14.cshtml
+        return Helper.helper4(this, tainted14);
+    }
+
+}
+
+class Helper {
+    public static IActionResult helper3(Controller c, UserData x) { return c.View("/Views/Other/Test13.cshtml", x); }
+
+    public static IActionResult helper4(Controller c, UserData x) { return c.View("Test14", x); }
+}
+
+public class Test3Controller : Controller {
+    public void Setup(RazorViewEngineOptions o) {
+        o.ViewLocationFormats.Add("/Views/Custom/{1}/{0}.cshtml");
+    }
+
+    private IActionResult Test15(UserData tainted14) {
+        // Expected to find file /Views/Custom/Test3/Test15.cshtml
+        return View(x);
+    }
 }
