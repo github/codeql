@@ -58,7 +58,7 @@ A regular dataflow query such as the following query:
   where Flow::flowPath(source, sink)
   select sink.getNode(), source, sink, "Flow from user input to sink!"
 
-will catch most things such as
+will catch most things such as:
 
 .. code-block:: cpp
 
