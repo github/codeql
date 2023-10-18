@@ -118,8 +118,8 @@ For example, consider an alternative setup where our source of data starts as th
 This would match the call to ``write_user_input_to`` in the following example:
 
 .. code-block:: cpp
-   :caption: Example 2
-   :linenos:
+  :caption: Example 2
+  :linenos:
 
   void write_user_input_to(void*);
   void use_value(int);
