@@ -14,6 +14,8 @@
  import experimental.frameworks.JWT
  import DataFlow
 
+
+
 class SafeJwtParserFunc extends Function {
   SafeJwtParserFunc() {
     this.hasQualifiedName(golangJwtPackage(), ["Parse", "ParseWithClaims"])
@@ -24,28 +26,29 @@ class SafeJwtParserMethod extends Method {
     this.hasQualifiedName(golangJwtPackage(), "Parser", ["Parse", "ParseWithClaims"])
   }
 }
- from CallNode c, Function func
- where
-   (
-     c.getTarget() = func and
-     // //Flow from NewParser to Parse (check that this call to Parse does not use a Parser that sets Valid Methods)
-     (
-       func instanceof SafeJwtParserMethod and
-       not exists(CallNode c2, WithValidMethods wvm, NewParser m |
-         c2.getTarget() = m and
-         (
-           c2.getCall().getAnArgument() = wvm.getACall().asExpr() and
-           DataFlow::localFlow(c2.getAResult(), c.getReceiver())
-         )
-       )
-       or
-       //ParserFunc creates a new default Parser on call that accepts all methods
-       func instanceof SafeJwtParserFunc
-     ) and
-     //Check that the Parse(function or method) does not check the Token Method field, which most likely is a check for method type
-     not exists(Field f |
-       f.hasQualifiedName(golangJwtPackage(), "Token", "Method") and
-       f.getARead().getRoot() = c.getCall().getAnArgument()
-     )
-   )
- select c, "This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion"
+
+from CallNode c, Function func
+where
+  (
+    c.getTarget() = func and
+    // //Flow from NewParser to Parse (check that this call to Parse does not use a Parser that sets Valid Methods)
+    (
+      func instanceof SafeJwtParserMethod and
+      not exists(CallNode c2, WithValidMethods wvm, NewParser m |
+        c2.getTarget() = m and
+        (
+          c2.getCall().getAnArgument() = wvm.getACall().asExpr() and
+          DataFlow::localFlow(c2.getAResult(), c.getReceiver())
+        )
+      )
+      or
+      //ParserFunc creates a new default Parser on call that accepts all methods
+      func instanceof SafeJwtParserFunc
+    ) and
+    //Check that the Parse(function or method) does not check the Token Method field, which most likely is a check for method type
+    not exists(Field f |
+      f.hasQualifiedName(golangJwtPackage(), "Token", "Method") and
+      f.getARead().getRoot() = c.getCall().getAnArgument()
+    )
+  )
+select c, "This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion"

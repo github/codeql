@@ -90,51 +90,19 @@ class GolangJwtParse extends JwtParseWithKeyFunction {
 }
 
 /**
- * A class that parses JWT tokens while also extracting claims.
+ * A class that contains the following function and method:
+ *
+ * func (p *Parser) ParseWithClaims(tokenString string, claims Claims, keyFunc Keyfunc)
+ *
+ * func ParseWithClaims(tokenString string, claims Claims, keyFunc Keyfunc)
  */
-abstract class GolangJwtParseWithClaims extends JwtParseWithKeyFunction {
+class GolangJwtParseWithClaims extends JwtParseWithKeyFunction {
   GolangJwtParseWithClaims() {
     exists(Function f | f.hasQualifiedName(golangJwtPackage(), "ParseWithClaims") | this = f)
     or
     exists(Method f | f.hasQualifiedName(golangJwtPackage(), "Parser", "ParseWithClaims") |
       this = f
     )
-  }
-
-  override int getKeyFuncArgNum() { result = 2 }
-
-  override int getTokenArgNum() { result = 0 }
-}
-
-/**
- * A class that contains the following function and method:
- *
- * func (p *Parser) ParseWithClaims(tokenString string, claims Claims, keyFunc Keyfunc)
- */
- class GolangJwtMethodParseWithClaims extends JwtParseWithKeyFunction {
-  GolangJwtMethodParseWithClaims() {
-    exists(Method f | f.hasQualifiedName(golangJwtPackage(), "Parser", "ParseWithClaims") |
-      this = f
-    )
-  }
-
-  override int getKeyFuncArgNum() { result = 2 }
-
-  override int getTokenArgNum() { result = 0 }
-}
-
-/**
- * A class that contains the following function and method:
- *
- * func ParseWithClaims(tokenString string, claims Claims, keyFunc Keyfunc)
- */
-
-class GolangJwtFunctionParseWithClaims extends JwtParseWithKeyFunction {
-  GolangJwtFunctionParseWithClaims() {
-    exists(Function f | f.hasQualifiedName(golangJwtPackage(), "ParseWithClaims") |
-      this = f
-    )
-
   }
 
   override int getKeyFuncArgNum() { result = 2 }

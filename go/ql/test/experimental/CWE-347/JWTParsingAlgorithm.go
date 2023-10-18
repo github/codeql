@@ -1,5 +1,7 @@
 package main
 
+//go:generate depstubber -vendor  github.com/golang-jwt/jwt/v5 Parser,Token ParseWithClaims,NewParser,WithValidMethods
+
 import (
 	"net/http"
 
