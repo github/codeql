@@ -36,7 +36,6 @@ updates:
     directory: "go/ql/test"
     schedule:
       interval: "monthly"
-    allow: []
     ignore:
       - dependency-name: "*"
     reviewers:
