@@ -191,7 +191,7 @@ We have an important choice here: Should the relationship between ``n2`` and ``f
 Using asIndirectExpr
 ~~~~~~~~~~~~~~~~~~~~
 
-If we use ``n2.asIndirectExpr() = fa`` we specify that flow moves to what ``fa`` points to. This allows dataflow to flow through a later dereference, which is exactly what we need to to flow from ``p`` to ``*p`` in ``process_user_data``.
+If we use ``n2.asIndirectExpr() = fa`` we specify that flow moves to what ``fa`` points to. This allows data to flow through a later dereference, which is exactly what we need to track data flow from ``p`` to ``*p`` in ``process_user_data``.
 
 Thus we get the required flow path.
 
