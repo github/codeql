@@ -38,6 +38,6 @@ updates:
       interval: "daily"
     allow: []
     ignore:
-      - dependeny-name: "*"
+      - dependency-name: "*"
     reviewers:
       - "github/codeql-go"
