@@ -1047,6 +1047,11 @@ module RangeStage<
     )
   }
 
+  /**
+   * Holds if `b + delta` is a valid bound for `phi`'s `rix`th input edge.
+   * - `upper = true`  : `phi <= b + delta`
+   * - `upper = false` : `phi >= b + delta`
+   */
   pragma[nomagic]
   private predicate boundedPhiRankStep(
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
@@ -1056,9 +1061,9 @@ module RangeStage<
       rankedPhiInput(phi, inp, edge, rix) and
       boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
     |
-      if rix = 1
-      then any()
-      else boundedPhiRankStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, rix - 1)
+      rix = 1
+      or
+      boundedPhiRankStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, rix - 1)
     )
   }
 
