@@ -207,9 +207,9 @@ class GoJoseUnsafeClaims extends JwtUnverifiedParse {
   override int getTokenArgNum() { result = -1 }
 }
 
- /**
-  * A function in golang-jwt to specify allowed algorithms.
-  */
+/**
+ * A function in golang-jwt to specify allowed algorithms.
+ */
 class WithValidMethods extends Function {
   WithValidMethods() { this.hasQualifiedName(golangJwtRequestPackage(), "WithValidMethods") }
 }

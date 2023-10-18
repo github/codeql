@@ -10,17 +10,20 @@
  *       external/cwe/cwe-347
  */
 
- import go
- import experimental.frameworks.JWT
- import DataFlow
+import go
+import experimental.frameworks.JWT
+import DataFlow
 
-
-
+/**
+ * A parse function that verifies signature and accepts all methods.
+ */
 class SafeJwtParserFunc extends Function {
-  SafeJwtParserFunc() {
-    this.hasQualifiedName(golangJwtPackage(), ["Parse", "ParseWithClaims"])
-  }
+  SafeJwtParserFunc() { this.hasQualifiedName(golangJwtPackage(), ["Parse", "ParseWithClaims"]) }
 }
+
+/**
+ * A parse method that verifies signature.
+ */
 class SafeJwtParserMethod extends Method {
   SafeJwtParserMethod() {
     this.hasQualifiedName(golangJwtPackage(), "Parser", ["Parse", "ParseWithClaims"])
