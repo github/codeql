@@ -187,7 +187,7 @@ Notice how the ``isSource`` and ``isSink`` are as expected: we're looking for fl
 
 In a real query the ``isAdditionalFlowStep`` step would be restricted in various ways to make sure that it doesn't add too much flow (since flow from a field qualifier to the field access in general will generate a lot of spurious flow). For example, one could restrict ``fa`` to be a field access that targets a particular field, or a field access of a field that's defined in a certain ``struct`` type.
 
-We have an important choice here: Should the relationship between ``n2`` and ``fa`` be implemented using ``asExpr`` or ``asIndirectExpr``? 
+We have an important choice here: Should ``n2`` be the node corresponding to the pointer value of ``fa`` or the indirection of ``fa`` (i.e., what ``fa`` points to)?
 
 .. _using-asIndirectExpr:
 
