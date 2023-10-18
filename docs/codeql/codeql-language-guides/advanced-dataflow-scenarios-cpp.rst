@@ -389,7 +389,7 @@ To set the stage, consider the following scenario:
 
 We write a user-controlled value into the object ``b`` at the access path ``[a, x]``. Afterwards, ``b`` is passed to ``read_data`` which we don't have the definition of in the database. We now want to track this user-input flowing into ``read_data``.
 
-The dataflow library actually has a specific tool to handle this scenario, and thus we don't need to add any additional flow steps using ``isAdditionalFlowStep`` to handle this. Instead, we have to tell the dataflow library that ``read_data`` is a sink and may implicitly read the data from fields in the object it has been passed. To do that, we implement ``allowImplicitRead`` in our dataflow module:
+The dataflow library has a specific predicate to handle this scenario, and thus we don't need to add any additional flow steps using ``isAdditionalFlowStep``. Instead, we tell the dataflow library that ``read_data`` is a sink and may implicitly read the data from fields in the object it is passed. To do that, we implement ``allowImplicitRead`` in our dataflow module:
 
 .. code-block:: ql
 
