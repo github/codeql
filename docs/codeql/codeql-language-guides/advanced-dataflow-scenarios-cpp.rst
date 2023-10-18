@@ -61,6 +61,7 @@ A regular dataflow query such as the following query:
 will catch most things such as:
 
 .. code-block:: cpp
+  :caption: Example 1
 
   struct A {
     const int *p;
@@ -116,6 +117,7 @@ For example, consider an alternative setup where our source of data starts as th
 This would match the call to ``write_user_input_to`` in the following example:
 
 .. code-block:: cpp
+   :caption: Example 2
 
   void write_user_input_to(void*);
   void use_value(int);
@@ -194,13 +196,14 @@ We have an important choice here: Should ``n2`` be the node corresponding to the
 Using asIndirectExpr
 ~~~~~~~~~~~~~~~~~~~~
 
-If we use ``n2.asIndirectExpr() = fa`` we specify that flow moves to what ``fa`` points to. This allows data to flow through a later dereference, which is exactly what we need to track data flow from ``p`` to ``*p`` in ``process_user_data``.
+If we use ``n2.asIndirectExpr() = fa`` we specify that flow in example 2 moves to what ``fa`` points to. This allows data to flow through a later dereference, which is exactly what we need to track data flow from ``p`` to ``*p`` in ``process_user_data``.
 
 Thus we get the required flow path.
 
 Consider a slightly different sink:
 
 .. code-block:: cpp
+  :caption: Example 3
 
   void write_user_input_to(void*);
   void use_pointer(int*);
@@ -239,7 +242,7 @@ The only difference between the previous example and this one is that our data e
 Using asExpr
 ~~~~~~~~~~~~
 
-Alternatively, this flow could also be tracked by:
+Alternatively, the flow in example 2 could also be tracked by:
   1. Changing ``isAdditionalFlowStep`` so that it targets the dataflow node that represents the value of the ``FieldAccess`` instead of the value it points to, and
   2. Changing ``isSink`` to specify that we're interested in tracking the value the argument passed to ``use_pointer`` (instead of the value of what the argument points to).
 
@@ -291,6 +294,7 @@ Passing the address of a variable to ``use_pointer``
 Consider an alternative scenario where ``U`` contains a single ``int`` data, and we pass the address of data to ``use_pointer`` as seen below.
 
 .. code-block:: cpp
+  :caption: Example 4
 
   void write_user_input_to(void*);
   void use_pointer(int*);
@@ -368,6 +372,7 @@ The previous section demonstrated how to add flow from qualifiers to field acces
 To set the stage, consider the following scenario:
 
 .. code-block:: cpp
+  :caption: Example 5
 
   struct A {
     const int *p;
