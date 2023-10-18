@@ -322,6 +322,8 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
    * actually references but whose values can be tracked as the type contained in the box.
    */
   Sem::Type getAlternateTypeForSsaVariable(Sem::SsaVariable var);
+
+  default predicate javaCompatibility() { none() }
 }
 
 signature module UtilSig<Semantic Sem, DeltaSig DeltaParam> {
@@ -736,6 +738,16 @@ module RangeStage<
     )
   }
 
+  /** Holds if `e >= 1` as determined by sign analysis. */
+  private predicate strictlyPositiveIntegralExpr(Sem::Expr e) {
+    semStrictlyPositive(e) and getTrackedType(e) instanceof Sem::IntegerType
+  }
+
+  /** Holds if `e <= -1` as determined by sign analysis. */
+  private predicate strictlyNegativeIntegralExpr(Sem::Expr e) {
+    semStrictlyNegative(e) and getTrackedType(e) instanceof Sem::IntegerType
+  }
+
   /**
    * Holds if `e1 + delta` is a valid bound for `e2`.
    * - `upper = true`  : `e2 <= e1 + delta`
@@ -748,6 +760,28 @@ module RangeStage<
     e2.(SafeCastExpr).getOperand() = e1 and
     delta = D::fromInt(0) and
     (upper = true or upper = false)
+    or
+    javaCompatibility() and
+    exists(Sem::Expr x, Sem::SubExpr sub |
+      e2 = sub and
+      sub.getLeftOperand() = e1 and
+      sub.getRightOperand() = x
+    |
+      // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
+      not x instanceof Sem::ConstantIntegerExpr and
+      if strictlyPositiveIntegralExpr(x)
+      then upper = true and delta = D::fromInt(-1)
+      else
+        if semPositive(x)
+        then upper = true and delta = D::fromInt(0)
+        else
+          if strictlyNegativeIntegralExpr(x)
+          then upper = false and delta = D::fromInt(1)
+          else
+            if semNegative(x)
+            then upper = false and delta = D::fromInt(0)
+            else none()
+    )
     or
     e2.(Sem::RemExpr).getRightOperand() = e1 and
     semPositive(e1) and
@@ -1254,6 +1288,7 @@ module RangeStage<
         upper = false and delta = D::fromFloat(D::toFloat(d1).minimum(D::toFloat(d2)))
       )
       or
+      not javaCompatibility() and
       exists(Sem::Expr mid, D::Delta d, float f |
         e.(Sem::NegateExpr).getOperand() = mid and
         b instanceof SemZeroBound and
@@ -1277,6 +1312,7 @@ module RangeStage<
         b = bRight and origdelta = odRight and reason = rRight and bLeft instanceof SemZeroBound
       )
       or
+      not javaCompatibility() and
       exists(D::Delta dLeft, D::Delta dRight, boolean fbeLeft, boolean fbeRight |
         boundedSubOperandLeft(e, upper, b, dLeft, fbeLeft, origdelta, reason) and
         boundedSubOperandRight(e, upper, dRight, fbeRight) and
@@ -1294,6 +1330,7 @@ module RangeStage<
         fromBackEdge = fbeLeft.booleanOr(fbeRight)
       )
       or
+      not javaCompatibility() and
       exists(
         Sem::RemExpr rem, D::Delta d_max, D::Delta d1, D::Delta d2, boolean fbe1, boolean fbe2,
         D::Delta od1, D::Delta od2, SemReason r1, SemReason r2
@@ -1318,6 +1355,7 @@ module RangeStage<
         upper = false and delta = D::fromFloat(-D::toFloat(d_max).abs() + 1)
       )
       or
+      not javaCompatibility() and
       exists(
         D::Delta dLeft, D::Delta dRight, boolean fbeLeft, boolean fbeRight, D::Delta odLeft,
         D::Delta odRight, SemReason rLeft, SemReason rRight
