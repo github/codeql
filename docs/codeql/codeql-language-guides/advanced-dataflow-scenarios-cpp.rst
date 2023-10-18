@@ -102,7 +102,9 @@ This data flow is simple to match because the CodeQL database contains the infor
 Flow from a qualifier to a field access
 ---------------------------------------
 
-However, sometimes the writes or reads are not visible to CodeQL (for example, because the implementation of the function isn't included in the database), and so dataflow won't be able to match up all stores with reads, and thus you don't get the result you want. For example, consider an alternative setup where our source of data starts as the outgoing argument of a function `write_user_input_to`. We can model this setup in the dataflow library using the following ``isSource``:
+Sometimes field accesses are not visible to CodeQL (for example, because the implementation of the function isn't included in the database), and so dataflow cannot match up all stores with reads. This leads to missing (false negative) results. 
+
+For example, consider an alternative setup where our source of data starts as the outgoing argument of a function ``write_user_input_to``. We can model this setup in the dataflow library using the following ``isSource``:
 
 .. code-block:: ql
 
