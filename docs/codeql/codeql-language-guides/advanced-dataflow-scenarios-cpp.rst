@@ -16,7 +16,7 @@ For almost all situations we only need to instantiate a dataflow configuration a
 
 However, when a write to a field is not visible to CodeQL (for example, because it happens in a function whose definition is not in the database) we need to track the qualifier, and tell the dataflow library that it should transfer flow from the qualifier to the field access. This is done by adding an ``isAdditionalFlowStep`` predicate to the dataflow module.
 
-When adding additional flow steps involving pointers one needs to be careful about whether the dataflow step should flow from the pointer or its indirection. Similarly, care must be taken to decide whether the additional step should target a pointer or its indirection.
+When you write additional flow steps to track pointers, you must decide whether the dataflow step should flow from the pointer or its indirection. Similarly, you must decide whether the additional step should target a pointer or its indirection.
 
 In the dual situation where a read of a field is not visible to CodeQL, the dataflow library's "implicit read" mechanism can be used to achieve the right flow.
 
