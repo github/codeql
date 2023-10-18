@@ -240,7 +240,7 @@ Alternatively, this flow could also be tracked by:
   1. Changing ``isAdditionalFlowStep`` so that it targets the dataflow node that represents the value of the ``FieldAccess`` instead of the value it points to, and
   2. Changing ``isSink`` to specify that we're interested in tracking the value the argument passed to ``use_pointer`` (instead of the value of what the argument points to).
 
-With those changes our QL query becomes:
+With those changes our query becomes:
 
 .. code-block:: ql
 
