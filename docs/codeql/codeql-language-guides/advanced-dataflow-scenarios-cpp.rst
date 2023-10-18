@@ -138,7 +138,12 @@ This would match the call to ``write_user_input_to`` in the following example:
     free(u);
   }
 
-Flow now starts at the outgoing argument of ``write_user_input_to(...)`` and proceeds to ``u->p``. However, because CodeQL has not observed a write to ``p`` prior to the read ``u->p``, dataflow will stop at ``u``. In order to convince CodeQL to proceed we need to add an additional flow step through field reads like so:
+With this definition of ``isSource`` the data flow tracks flow along the following path:
+
+  1. The flow now starts at the outgoing argument of ``write_user_input_to(...)``.
+  2. The flow proceeds to ``u->p`` on the next line.
+
+However, because CodeQL has not observed a write to ``p`` before the read ``u->p``, dataflow will stop at ``u``. We can correct this gap in the information available to dataflow by adding an additional flow step through field reads:
 
 .. code-block:: ql
 
