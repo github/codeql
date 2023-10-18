@@ -31,3 +31,13 @@ updates:
           - "golang.org/x/*"
     reviewers:
       - "github/codeql-go"
+
+  - package-ecosystem: "gomod"
+    directory: "go/ql/test"
+    schedule:
+      interval: "daily"
+    allow: []
+    ignore:
+      - dependeny-name: "*"
+    reviewers:
+      - "github/codeql-go"
