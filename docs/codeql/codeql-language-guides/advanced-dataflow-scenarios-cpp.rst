@@ -62,6 +62,7 @@ will catch most things such as:
 
 .. code-block:: cpp
   :caption: Example 1
+  :linenos:
 
   struct A {
     const int *p;
@@ -118,6 +119,7 @@ This would match the call to ``write_user_input_to`` in the following example:
 
 .. code-block:: cpp
    :caption: Example 2
+   :linenos:
 
   void write_user_input_to(void*);
   void use_value(int);
@@ -204,6 +206,7 @@ Consider a slightly different sink:
 
 .. code-block:: cpp
   :caption: Example 3
+  :linenos:
 
   void write_user_input_to(void*);
   void use_pointer(int*);
@@ -295,6 +298,7 @@ Consider an alternative scenario where ``U`` contains a single ``int`` data, and
 
 .. code-block:: cpp
   :caption: Example 4
+  :linenos:
 
   void write_user_input_to(void*);
   void use_pointer(int*);
@@ -318,7 +322,9 @@ Consider an alternative scenario where ``U`` contains a single ``int`` data, and
     free(u);
   }
 
-Since data is no longer a pointer our ``isAdditionalFlowStep`` doesn't make any sense because it specifies flow to the indirection of the field (and an integer does not have any indirections). So there is no choice about whether to taint the value of the field or its indirection: it has to be the value. However, since we pass the address of ``data`` to ``use_pointer`` the tainted data is what is pointed to by the argument of ``use_pointer`` (since the data pointed to by ``&data`` is exactly ``data``). So to handle this case we need a mix of the two situations above:
+Since the ``data`` field is now an ``int`` instead of an ``int*`` the field no longer has any indirections, and so the use of ``asIndirectExpr`` in ``isAdditionalFlowStep`` no longer makes sense (and so the additional step will have no results). So there is no choice about whether to taint the value of the field or its indirection: it has to be the value.
+
+However, since we pass the address of ``data`` to ``use_pointer`` on line 12 the tainted value is what is pointed to by the argument of ``use_pointer`` (since the value pointed to by ``&data`` is exactly ``data``). So to handle this case we need a mix of the two situations above:
   1. We need to taint the value of the field as described the :ref:`Using asExpr <using-asExpr>` section.
   2. We need to select the indirection of the argument as described in the :ref:`Using asIndirectExpr <using-asIndirectExpr>` section.
 
@@ -373,6 +379,7 @@ To set the stage, consider the following scenario:
 
 .. code-block:: cpp
   :caption: Example 5
+  :linenos:
 
   struct A {
     const int *p;
