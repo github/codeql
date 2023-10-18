@@ -1,6 +1,6 @@
-package main
+package jwt
 
-//go:generate depstubber -vendor  github.com/golang-jwt/jwt/v5 Parser,Token ParseWithClaims,NewParser,WithValidMethods
+//go:generate depstubber -vendor  github.com/golang-jwt/jwt/v5 RegisteredClaims,Parser,Token,SigningMethodHMAC Parse,ParseWithClaims,NewParser,WithValidMethods
 
 import (
 	"net/http"

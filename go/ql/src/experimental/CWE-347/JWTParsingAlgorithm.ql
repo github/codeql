@@ -18,7 +18,7 @@ import DataFlow
  * A parse function that verifies signature and accepts all methods.
  */
 class SafeJwtParserFunc extends Function {
-  SafeJwtParserFunc() { this.hasQualifiedName(golangJwtPackage(), ["Parse", "ParseWithClaims"]) }
+  SafeJwtParserFunc() { this.hasQualifiedName(golangJwtModern(), ["Parse", "ParseWithClaims"]) }
 }
 
 /**
@@ -26,7 +26,7 @@ class SafeJwtParserFunc extends Function {
  */
 class SafeJwtParserMethod extends Method {
   SafeJwtParserMethod() {
-    this.hasQualifiedName(golangJwtPackage(), "Parser", ["Parse", "ParseWithClaims"])
+    this.hasQualifiedName(golangJwtModern(), "Parser", ["Parse", "ParseWithClaims"])
   }
 }
 
@@ -50,7 +50,7 @@ where
     ) and
     //Check that the Parse(function or method) does not check the Token Method field, which most likely is a check for method type
     not exists(Field f |
-      f.hasQualifiedName(golangJwtPackage(), "Token", "Method") and
+      f.hasQualifiedName(golangJwtModern(), "Token", "Method") and
       f.getARead().getRoot() = c.getCall().getAnArgument()
     )
   )
