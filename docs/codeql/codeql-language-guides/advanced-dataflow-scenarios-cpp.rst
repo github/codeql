@@ -310,8 +310,8 @@ Consider an alternative scenario where ``U`` contains a single ``int`` data, and
   }
 
 Since data is no longer a pointer our ``isAdditionalFlowStep`` doesn't make any sense because it specifies flow to the indirection of the field (and an integer does not have any indirections). So there is no choice about whether to taint the value of the field or its indirection: it has to be the value. However, since we pass the address of ``data`` to ``use_pointer`` the tainted data is what is pointed to by the argument of ``use_pointer`` (since the data pointed to by ``&data`` is exactly ``data``). So to handle this case we need a mix of the two situations above:
-  1. We need to taint the value of the field just like in the :ref:`Using asExpr <using-asExpr>` section.
-  2. We need to select the indirection of the argument just like in the :ref:`Using asIndirectExpr <using-asIndirectExpr>` section.
+  1. We need to taint the value of the field as described the :ref:`Using asExpr <using-asExpr>` section.
+  2. We need to select the indirection of the argument as described in the :ref:`Using asIndirectExpr <using-asIndirectExpr>` section.
 
 With these changes the query looks like:
 
