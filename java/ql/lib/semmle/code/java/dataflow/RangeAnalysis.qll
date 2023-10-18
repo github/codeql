@@ -75,6 +75,354 @@ private import semmle.code.java.Reflection
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
 import Bound
+private import codeql.rangeanalysis.RangeAnalysis
+
+module Sem implements Semantic {
+  private import java as J
+  private import SSA as SSA
+  private import RangeUtils as RU
+  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SSAReadPos
+  private import semmle.code.java.controlflow.internal.GuardsLogic as GL
+
+  class Expr = J::Expr;
+
+  class ConstantIntegerExpr = RU::ConstantIntegerExpr;
+
+  abstract class BinaryExpr extends Expr {
+    Expr getLeftOperand() {
+      result = this.(J::BinaryExpr).getLeftOperand() or result = this.(J::AssignOp).getDest()
+    }
+
+    Expr getRightOperand() {
+      result = this.(J::BinaryExpr).getRightOperand() or result = this.(J::AssignOp).getRhs()
+    }
+
+    final Expr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
+
+    final predicate hasOperands(Expr e1, Expr e2) {
+      this.getLeftOperand() = e1 and this.getRightOperand() = e2
+      or
+      this.getLeftOperand() = e2 and this.getRightOperand() = e1
+    }
+  }
+
+  class AddExpr extends BinaryExpr {
+    AddExpr() { this instanceof J::AddExpr or this instanceof J::AssignAddExpr }
+  }
+
+  class SubExpr extends BinaryExpr {
+    SubExpr() { this instanceof J::SubExpr or this instanceof J::AssignSubExpr }
+  }
+
+  class MulExpr extends BinaryExpr {
+    MulExpr() { this instanceof J::MulExpr or this instanceof J::AssignMulExpr }
+  }
+
+  class DivExpr extends BinaryExpr {
+    DivExpr() { this instanceof J::DivExpr or this instanceof J::AssignDivExpr }
+  }
+
+  class RemExpr extends BinaryExpr {
+    RemExpr() { this instanceof J::RemExpr or this instanceof J::AssignRemExpr }
+  }
+
+  class BitAndExpr extends BinaryExpr {
+    BitAndExpr() { this instanceof J::AndBitwiseExpr or this instanceof J::AssignAndExpr }
+  }
+
+  class BitOrExpr extends BinaryExpr {
+    BitOrExpr() { this instanceof J::OrBitwiseExpr or this instanceof J::AssignOrExpr }
+  }
+
+  class ShiftLeftExpr extends BinaryExpr {
+    ShiftLeftExpr() { this instanceof J::LeftShiftExpr or this instanceof J::AssignLeftShiftExpr }
+  }
+
+  class ShiftRightExpr extends BinaryExpr {
+    ShiftRightExpr() {
+      this instanceof J::RightShiftExpr or this instanceof J::AssignRightShiftExpr
+    }
+  }
+
+  class ShiftRightUnsignedExpr extends BinaryExpr {
+    ShiftRightUnsignedExpr() {
+      this instanceof J::UnsignedRightShiftExpr or this instanceof J::AssignUnsignedRightShiftExpr
+    }
+  }
+
+  class RelationalExpr = J::ComparisonExpr;
+
+  abstract class UnaryExpr extends Expr {
+    abstract Expr getOperand();
+  }
+
+  class ConvertExpr extends UnaryExpr instanceof CastingExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
+
+  class BoxExpr extends UnaryExpr {
+    BoxExpr() { none() }
+
+    override Expr getOperand() { none() }
+  }
+
+  class UnboxExpr extends UnaryExpr {
+    UnboxExpr() { none() }
+
+    override Expr getOperand() { none() }
+  }
+
+  class NegateExpr extends UnaryExpr instanceof MinusExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
+
+  // TODO: Implement once utils are properly shared
+  class AddOneExpr extends UnaryExpr {
+    AddOneExpr() { none() }
+
+    override Expr getOperand() { none() }
+  }
+
+  // TODO: Implement once utils are properly shared
+  class SubOneExpr extends UnaryExpr {
+    SubOneExpr() { none() }
+
+    override Expr getOperand() { none() }
+  }
+
+  class ConditionalExpr = J::ConditionalExpr;
+
+  class BasicBlock = J::BasicBlock;
+
+  class Guard extends GL::Guard {
+    Expr asExpr() { result = this }
+  }
+
+  predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
+    GL::implies_v2(g1, b1, g2, b2)
+  }
+
+  predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    RU::guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
+  }
+
+  class Type = J::Type;
+
+  class IntegerType extends J::IntegralType {
+    predicate isSigned() { not this instanceof CharacterType }
+  }
+
+  class FloatingPointType extends Type {
+    FloatingPointType() { none() }
+  }
+
+  class AddressType extends Type {
+    AddressType() { none() }
+  }
+
+  final private class FinalSsaVariable = SSA::SsaVariable;
+
+  class SsaVariable extends FinalSsaVariable {
+    Expr getAUse() { result = super.getAUse() }
+  }
+
+  class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiNode { }
+
+  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate { }
+
+  final private class FinalSsaReadPosition = SSAReadPos::SsaReadPosition;
+
+  class SsaReadPosition extends FinalSsaReadPosition {
+    predicate hasReadOfVar(SsaVariable v) { super.hasReadOfVar(v) }
+  }
+
+  class SsaReadPositionPhiInputEdge extends SsaReadPosition instanceof SSAReadPos::SsaReadPositionPhiInputEdge
+  {
+    predicate phiInput(SsaPhiNode phi, SsaVariable inp) { super.phiInput(phi, inp) }
+  }
+
+  class SsaReadPositionBlock extends SsaReadPosition instanceof SSAReadPos::SsaReadPositionBlock {
+    BasicBlock getBlock() { result = super.getBlock() }
+  }
+
+  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
+    RU::backEdge(phi, inp, edge)
+  }
+
+  predicate conversionCannotOverflow = safeCast/2;
+}
+
+module SignInp implements SignAnalysisSig<Sem> {
+  private import SignAnalysis
+  private import internal.rangeanalysis.Sign
+
+  predicate semPositive = positive/1;
+
+  predicate semNegative = negative/1;
+
+  predicate semStrictlyPositive = strictlyPositive/1;
+
+  predicate semStrictlyNegative = strictlyNegative/1;
+
+  predicate semMayBePositive(Sem::Expr e) { exprSign(e) = TPos() }
+
+  predicate semMayBeNegative(Sem::Expr e) { exprSign(e) = TNeg() }
+}
+
+module Modulus implements ModulusAnalysisSig<Sem> {
+  class ModBound = Bound;
+
+  predicate semExprModulus = exprModulus/4;
+}
+
+module IntDelta implements DeltaSig {
+  class Delta = int;
+
+  bindingset[d]
+  bindingset[result]
+  float toFloat(Delta d) { result = d }
+
+  bindingset[d]
+  bindingset[result]
+  int toInt(Delta d) { result = d }
+
+  bindingset[n]
+  bindingset[result]
+  Delta fromInt(int n) { result = n }
+
+  bindingset[f]
+  Delta fromFloat(float f) { result = f }
+}
+
+module JavaLangImpl implements LangSig<Sem, IntDelta> {
+  predicate ignoreSsaReadCopy(Sem::Expr e) { none() }
+
+  /**
+   * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
+   */
+  predicate hasConstantBound(Sem::Expr e, int bound, boolean upper) {
+    (
+      e.(MethodCall).getMethod() instanceof StringLengthMethod or
+      e.(MethodCall).getMethod() instanceof CollectionSizeMethod or
+      e.(MethodCall).getMethod() instanceof MapSizeMethod or
+      e.(FieldRead).getField() instanceof ArrayLengthField
+    ) and
+    bound = 0 and
+    upper = false
+    or
+    exists(Method read |
+      e.(MethodCall).getMethod().overrides*(read) and
+      read.getDeclaringType() instanceof TypeInputStream and
+      read.hasName("read") and
+      read.getNumberOfParameters() = 0
+    |
+      upper = true and bound = 255
+      or
+      upper = false and bound = -1
+    )
+  }
+
+  /**
+   * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
+   */
+  predicate hasBound(Sem::Expr e2, Sem::Expr e1, int delta, boolean upper) {
+    exists(RandomDataSource rds |
+      e2 = rds.getOutput() and
+      (
+        e1 = rds.getUpperBoundExpr() and
+        delta = -1 and
+        upper = true
+        or
+        e1 = rds.getLowerBoundExpr() and
+        delta = 0 and
+        upper = false
+      )
+    )
+    or
+    exists(MethodCall ma, Method m |
+      e2 = ma and
+      ma.getMethod() = m and
+      (
+        m.hasName("max") and upper = false
+        or
+        m.hasName("min") and upper = true
+      ) and
+      m.getDeclaringType().hasQualifiedName("java.lang", "Math") and
+      e1 = ma.getAnArgument() and
+      delta = 0
+    )
+  }
+
+  predicate ignoreExprBound(Sem::Expr e) { none() }
+
+  predicate ignoreZeroLowerBound(Sem::Expr e) { none() }
+
+  predicate ignoreSsaReadArithmeticExpr(Sem::Expr e) { none() }
+
+  predicate ignoreSsaReadAssignment(Sem::SsaVariable v) { none() }
+
+  Sem::Expr specificSsaRead(Sem::SsaVariable v, int delta) { none() }
+
+  predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, int delta) { none() }
+
+  Sem::Type getAlternateType(Sem::Expr e) { none() }
+
+  Sem::Type getAlternateTypeForSsaVariable(Sem::SsaVariable var) { none() }
+
+  predicate javaCompatibility() { any() }
+}
+
+module Utils implements UtilSig<Sem, IntDelta> {
+  private import RangeUtils as RU
+  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SSAReadPos
+
+  Sem::Expr semSsaRead(Sem::SsaVariable v, int delta) { result = RU::ssaRead(v, delta) }
+
+  Sem::Guard semEqFlowCond(
+    Sem::SsaVariable v, Sem::Expr e, int delta, boolean isEq, boolean testIsTrue
+  ) {
+    result = RU::eqFlowCond(v, e, delta, isEq, testIsTrue)
+  }
+
+  predicate semSsaUpdateStep(Sem::SsaExplicitUpdate v, Sem::Expr e, int delta) {
+    RU::ssaUpdateStep(v, e, delta)
+  }
+
+  predicate semValueFlowStep = RU::valueFlowStep/3;
+
+  Sem::Type getTrackedTypeForSsaVariable(Sem::SsaVariable var) {
+    result = var.getSourceVariable().getType()
+  }
+
+  Sem::Type getTrackedType(Sem::Expr e) { result = e.getType() }
+
+  predicate rankedPhiInput(
+    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int r
+  ) {
+    SSAReadPos::rankedPhiInput(phi, inp, edge, r)
+  }
+
+  predicate maxPhiInputRank(Sem::SsaPhiNode phi, int rix) { SSAReadPos::maxPhiInputRank(phi, rix) }
+}
+
+module Bounds implements BoundSig<Location, Sem, IntDelta> {
+  class SemBound = Bound;
+
+  class SemZeroBound = ZeroBound;
+
+  class SemSsaBound extends SsaBound {
+    Sem::SsaVariable getAVariable() { result = super.getSsa() }
+  }
+}
+
+module Overflow implements OverflowSig<Sem, IntDelta> {
+  predicate semExprDoesNotOverflow(boolean positively, Sem::Expr expr) {
+    positively = [true, false] and exists(expr)
+  }
+}
+
+module Range =
+  RangeStage<Location, Sem, IntDelta, Bounds, Overflow, JavaLangImpl, SignInp, Modulus, Utils>;
 
 cached
 private module RangeAnalysisCache {
@@ -138,7 +486,8 @@ private predicate boundCondition(
     sub.getLeftOperand() = ssaRead(v, d) and
     sub.getRightOperand() = e and
     upper = true and
-    delta = d + c.getIntValue()
+    delta = d + c.getIntValue() and
+    okInt(d.(float) + c.getIntValue().(float))
     or
     // (v - d) - e > c
     comp.getGreaterOperand() = sub and
@@ -146,7 +495,8 @@ private predicate boundCondition(
     sub.getLeftOperand() = ssaRead(v, d) and
     sub.getRightOperand() = e and
     upper = false and
-    delta = d + c.getIntValue()
+    delta = d + c.getIntValue() and
+    okInt(d.(float) + c.getIntValue().(float))
     or
     // e - (v - d) < c
     comp.getLesserOperand() = sub and
@@ -154,7 +504,8 @@ private predicate boundCondition(
     sub.getLeftOperand() = e and
     sub.getRightOperand() = ssaRead(v, d) and
     upper = false and
-    delta = d - c.getIntValue()
+    delta = d - c.getIntValue() and
+    okInt(d.(float) - c.getIntValue().(float))
     or
     // e - (v - d) > c
     comp.getGreaterOperand() = sub and
@@ -162,7 +513,8 @@ private predicate boundCondition(
     sub.getLeftOperand() = e and
     sub.getRightOperand() = ssaRead(v, d) and
     upper = true and
-    delta = d - c.getIntValue()
+    delta = d - c.getIntValue() and
+    okInt(d.(float) - c.getIntValue().(float))
   )
 }
 
@@ -245,7 +597,8 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
       or
       resultIsStrict = false and d3 = 0
     ) and
-    delta = d1 + d2 + d3
+    delta = d1 + d2 + d3 and
+    okInt(d1.(float) + d2.(float) + d3.(float))
   )
   or
   exists(boolean testIsTrue0 |
@@ -260,7 +613,8 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
   exists(SsaVariable v2, int d |
     // equality needs to control guard
     result.getBasicBlock() = eqSsaCondDirectlyControls(v, v2, d) and
-    result = boundFlowCond(v2, e, delta - d, upper, testIsTrue)
+    result = boundFlowCond(v2, e, delta - d, upper, testIsTrue) and
+    okInt((delta - d).(float) + d.(float))
   )
 }
 
@@ -272,7 +626,8 @@ private BasicBlock eqSsaCondDirectlyControls(SsaVariable v1, SsaVariable v2, int
   exists(Guard guardEq, int d1, int d2, boolean eqIsTrue |
     guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
     delta = d2 - d1 and
-    guardEq.directlyControls(result, eqIsTrue)
+    guardEq.directlyControls(result, eqIsTrue) and
+    okInt(d2.(float) - d1.(float))
   )
 }
 
@@ -530,6 +885,7 @@ private predicate boundFlowStepMul(Expr e2, Expr e1, int factor) {
  * therefore only valid for non-negative numbers.
  */
 private predicate boundFlowStepDiv(Expr e2, Expr e1, int factor) {
+  e2.getType() instanceof IntegralType and
   exists(ConstantIntegerExpr c, int k | k = c.getIntValue() and k > 0 |
     exists(DivExpr e |
       e = e2 and e.getLeftOperand() = e1 and e.getRightOperand() = c and factor = k
@@ -570,7 +926,8 @@ private predicate boundedSsa(
     // upper = true:  v <= mid + d1 <= b + d1 + d2 = b + delta
     // upper = false: v >= mid + d1 >= b + d1 + d2 = b + delta
     delta = d1 + d2 and
-    (if r1 instanceof NoReason then reason = r2 else reason = r1)
+    (if r1 instanceof NoReason then reason = r2 else reason = r1) and
+    okInt(d1.(float) + d2.(float))
   )
   or
   exists(int d, Reason r1, Reason r2 |
@@ -800,6 +1157,9 @@ private predicate boundedCastExpr(
   bounded(cast.getExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
 }
 
+bindingset[f]
+private predicate okInt(float f) { -2.pow(31) <= f and f <= 2.pow(31) - 1 }
+
 /**
  * Holds if `b + delta` is a valid bound for `e`.
  * - `upper = true`  : `e <= b + delta`
@@ -833,7 +1193,8 @@ private predicate bounded(
     bounded(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
     // upper = true:  e <= mid + d1 <= b + d1 + d2 = b + delta
     // upper = false: e >= mid + d1 >= b + d1 + d2 = b + delta
-    delta = d1 + d2
+    delta = d1 + d2 and
+    okInt(d1.(float) + d2.(float))
   )
   or
   exists(SsaPhiNode phi |
@@ -846,7 +1207,8 @@ private predicate bounded(
     not e instanceof ConstantIntegerExpr and
     bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
     b instanceof ZeroBound and
-    delta = d * factor
+    delta = d * factor and
+    okInt(d.(float) * factor.(float))
   )
   or
   exists(Expr mid, int factor, int d |
@@ -889,7 +1251,8 @@ private predicate bounded(
     boundedAddition(e, upper, b1, true, d1, fbe1, od1, r1) and
     boundedAddition(e, upper, b2, false, d2, fbe2, od2, r2) and
     delta = d1 + d2 and
-    fromBackEdge = fbe1.booleanOr(fbe2)
+    fromBackEdge = fbe1.booleanOr(fbe2) and
+    okInt(d1.(float) + d2.(float))
   |
     b = b1 and origdelta = od1 and reason = r1 and b2 instanceof ZeroBound
     or

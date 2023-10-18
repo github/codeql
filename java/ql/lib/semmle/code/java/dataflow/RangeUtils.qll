@@ -145,6 +145,9 @@ class ConstantStringExpr extends Expr {
   string getStringValue() { constantStringExpr(this, result) }
 }
 
+bindingset[f]
+private predicate okInt(float f) { -2.pow(31) <= f and f <= 2.pow(31) - 1 }
+
 /**
  * Gets an expression that equals `v - d`.
  */
@@ -153,14 +156,16 @@ Expr ssaRead(SsaVariable v, int delta) {
   or
   exists(int d1, ConstantIntegerExpr c |
     result.(AddExpr).hasOperands(ssaRead(v, d1), c) and
-    delta = d1 - c.getIntValue()
+    delta = d1 - c.getIntValue() and
+    okInt(d1.(float) - c.getIntValue().(float))
   )
   or
   exists(SubExpr sub, int d1, ConstantIntegerExpr c |
     result = sub and
     sub.getLeftOperand() = ssaRead(v, d1) and
     sub.getRightOperand() = c and
-    delta = d1 + c.getIntValue()
+    delta = d1 + c.getIntValue() and
+    okInt(d1.(float) + c.getIntValue().(float))
   )
   or
   v.(SsaExplicitUpdate).getDefiningExpr().(PreIncExpr) = result and delta = 0
