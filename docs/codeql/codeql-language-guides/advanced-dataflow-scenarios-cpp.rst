@@ -20,8 +20,8 @@ When you write additional flow steps to track pointers, you must decide whether 
 
 In contrast, if the read of a field is not visible to CodeQL, you can add an ``allowImplicitRead`` predicate to model the data flow.
 
-The setup
----------
+Regular dataflow analysis
+-------------------------
 
 Consider the following scenario: We have data coming out of ``user_input()`` and we want to figure out if that data can ever reach an argument of `sink`.
 
