@@ -18,7 +18,7 @@ However, when a write to a field is not visible to CodeQL (for example, because 
 
 When you write additional flow steps to track pointers, you must decide whether the dataflow step should flow from the pointer or its indirection. Similarly, you must decide whether the additional step should target a pointer or its indirection.
 
-In the dual situation where a read of a field is not visible to CodeQL, the dataflow library's "implicit read" mechanism can be used to achieve the right flow.
+In contrast, if the read of a field is not visible to CodeQL, you can add an ``allowImplicitRead`` predicate to model the data flow.
 
 The setup
 ---------
