@@ -93,7 +93,7 @@ will catch most things such as
     free(b);
   }
 
-This is simple to match because we see:
+This data flow is simple to match because the CodeQL database contains the information to see:
   1. User input starts at ``user_input()`` and flows into ``fill_structure``.
   2. The data is written to the object ``b`` with access path ``[a, p]``.
   3. The object ``b`` flows out of ``fill_structure`` and into ``process_structure``.
