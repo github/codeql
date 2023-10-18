@@ -311,7 +311,7 @@ class ImplicitThisFieldAccess extends FieldAccess {
   override string getAPrimaryQlClass() { result = "ImplicitThisFieldAccess" }
 
   ImplicitThisFieldAccess() {
-    this.getQualifier().isCompilerGenerated() or not exists(this.getQualifier())
+    this.getQualifier().(ThisExpr).isCompilerGenerated() or not exists(this.getQualifier())
   }
 }
 
@@ -330,7 +330,7 @@ class PointerToFieldLiteral extends ImplicitThisFieldAccess {
     // access without a qualifier. The only other unqualified field accesses it
     // emits are for compiler-generated constructors and destructors. When we
     // filter those out, there are only pointer-to-field literals left.
-    not this.isCompilerGenerated()
+    not this.isCompilerGenerated() and not exists(this.getQualifier())
   }
 
   override predicate isConstant() { any() }
