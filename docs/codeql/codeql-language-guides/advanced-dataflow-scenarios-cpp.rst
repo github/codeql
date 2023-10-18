@@ -138,7 +138,7 @@ This would match the call to ``write_user_input_to`` in the following example:
     free(u);
   }
 
-With this definition of ``isSource`` the data flow tracks flow along the following path:
+With this definition of ``isSource`` the dataflow library tracks flow along the following path:
 
   1. The flow now starts at the outgoing argument of ``write_user_input_to(...)``.
   2. The flow proceeds to ``u->p`` on the next line.
