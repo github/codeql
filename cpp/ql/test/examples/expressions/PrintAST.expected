@@ -1298,7 +1298,7 @@ union_etc.cpp:
 #    6|       getExpr(): [AssignExpr] ... = ...
 #    6|           Type = [IntType] int
 #    6|           ValueCategory = lvalue
-#    6|         getLValue(): [PointerFieldAccess] x
+#    6|         getLValue(): [ImplicitThisFieldAccess,PointerFieldAccess] x
 #    6|             Type = [IntType] int
 #    6|             ValueCategory = lvalue
 #    6|           getQualifier(): [ThisExpr] this
@@ -1488,7 +1488,7 @@ union_etc.cpp:
 #   33|       getExpr(): [AssignExpr] ... = ...
 #   33|           Type = [IntType] int
 #   33|           ValueCategory = lvalue
-#   33|         getLValue(): [PointerFieldAccess] q
+#   33|         getLValue(): [ImplicitThisFieldAccess,PointerFieldAccess] q
 #   33|             Type = [IntType] int
 #   33|             ValueCategory = lvalue
 #   33|           getQualifier(): [ThisExpr] this
