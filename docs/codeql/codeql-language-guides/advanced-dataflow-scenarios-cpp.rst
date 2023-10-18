@@ -9,7 +9,7 @@ Advanced dataflow scenarios for C/C++
 
 Data flow for C and C++ distinguishes between the value of a pointer and the value of what the pointer points to. We call this the "indirection" of the pointer. Tracking the pointer and its indirection as separate entities is important for precise dataflow. However, it also means that you need to specify which data flow node to model. If you select the wrong data flow node, then analysis will be flawed. This article discusses several scenarios where it is important to consider whether data flow should be computed on the value of the pointer or its indirection.
 
-For almost all situations we only need to instantiate a dataflow configuration and specify our sources and sinks, and dataflow will handle everything for us.
+For almost all situations we only need to instantiate a dataflow configuration and specify our sources and sinks, and the dataflow library will handle everything for us.
 
 However, when a write to a field is not visible to CodeQL (for example because it happens in a function whose definition is not in the database) we need to track the qualifier, and tell the dataflow library that it is okay to transfer flow from the qualifier to the field access. This is done by adding an ``isAdditionalFlowStep`` predicate to the dataflow module.
 
