@@ -435,6 +435,15 @@ private module ControlFlowGraphImpl {
   }
 
   /**
+   * Gets a SwitchCase's successor SwitchCase, if any.
+   */
+  private predicate nextSwitchCase(SwitchCase pred, SwitchCase succ) {
+    exists(SwitchExpr se, int idx | se.getCase(idx) = pred and se.getCase(idx + 1) = succ)
+    or
+    exists(SwitchStmt ss, int idx | ss.getCase(idx) = pred and ss.getCase(idx + 1) = succ)
+  }
+
+  /**
    * Expressions and statements with CFG edges in post-order AST traversal.
    *
    * This includes most expressions, except those that initiate or propagate branching control
@@ -467,7 +476,8 @@ private module ControlFlowGraphImpl {
       this instanceof NotInstanceOfExpr
       or
       this instanceof LocalVariableDeclExpr and
-      not this = any(InstanceOfExpr ioe).getLocalVariableDeclExpr()
+      not this = any(InstanceOfExpr ioe).getLocalVariableDeclExpr() and
+      not this = any(PatternCase pc).getDecl()
       or
       this instanceof StringTemplateExpr
       or
@@ -493,7 +503,9 @@ private module ControlFlowGraphImpl {
       or
       this.(BlockStmt).getNumStmt() = 0
       or
-      this instanceof SwitchCase and not this.(SwitchCase).isRule()
+      this instanceof SwitchCase and
+      not this.(SwitchCase).isRule() and
+      not this instanceof PatternCase
       or
       this instanceof EmptyStmt
       or
@@ -887,6 +899,14 @@ private module ControlFlowGraphImpl {
       else completion = caseCompletion
     )
     or
+    // The last node in a case could always be a failing pattern check.
+    last = n.(PatternCase) and
+    completion = basicBooleanCompletion(false)
+    or
+    // The last node in a non-rule case is its variable declaration.
+    last = n.(PatternCase).getDecl() and
+    completion = NormalCompletion()
+    or
     // the last statement of a synchronized statement is the last statement of its body
     last(n.(SynchronizedStmt).getBlock(), last, completion)
     or
@@ -1201,8 +1221,14 @@ private module ControlFlowGraphImpl {
       // From the entry point control is transferred first to the expression...
       n = switch and result = first(switch.getExpr())
       or
-      // ...and then to one of the cases.
-      last(switch.getExpr(), n, completion) and result = first(switch.getACase())
+      // ...and then for a vanilla switch to any case, or for a pattern switch to the first one.
+      exists(SwitchCase firstExecutedCase |
+        if switch.getACase() instanceof PatternCase
+        then firstExecutedCase = switch.getCase(0)
+        else firstExecutedCase = switch.getACase()
+      |
+        last(switch.getExpr(), n, completion) and result = first(firstExecutedCase)
+      )
       or
       // Statements within a switch body execute sequentially.
       exists(int i |
@@ -1216,7 +1242,13 @@ private module ControlFlowGraphImpl {
       n = switch and result = first(switch.getExpr())
       or
       // ...and then to one of the cases.
-      last(switch.getExpr(), n, completion) and result = first(switch.getACase())
+      exists(SwitchCase firstExecutedCase |
+        if switch.getACase() instanceof PatternCase
+        then firstExecutedCase = switch.getCase(0)
+        else firstExecutedCase = switch.getACase()
+      |
+        last(switch.getExpr(), n, completion) and result = first(firstExecutedCase)
+      )
       or
       // Statements within a switch body execute sequentially.
       exists(int i |
@@ -1224,11 +1256,29 @@ private module ControlFlowGraphImpl {
       )
     )
     or
+    // Edge from rule SwitchCases to their body, after any variable assignment if applicable.
     // No edges in a non-rule SwitchCase - the constant expression in a ConstCase isn't included in the CFG.
-    exists(SwitchCase case | completion = NormalCompletion() |
-      n = case and result = first(case.getRuleExpression())
+    exists(SwitchCase case, ControlFlowNode preBodyNode |
+      completion = NormalCompletion() and
+      if case instanceof PatternCase
+      then preBodyNode = case.(PatternCase).getDecl()
+      else preBodyNode = case
+    |
+      n = preBodyNode and result = first(case.getRuleExpression())
       or
-      n = case and result = first(case.getRuleStatement())
+      n = preBodyNode and result = first(case.getRuleStatement())
+    )
+    or
+    // A pattern case conducts a type test, then branches to either the next case or the assignment.
+    exists(PatternCase case |
+      n = case and
+      (
+        completion = basicBooleanCompletion(false) and
+        nextSwitchCase(case, result)
+        or
+        completion = basicBooleanCompletion(true) and
+        result = case.getDecl()
+      )
     )
     or
     // Yield

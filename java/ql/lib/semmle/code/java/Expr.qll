@@ -1510,16 +1510,27 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
   Stmt getStmt(int index) { result = this.getAStmt() and result.getIndex() = index }
 
   /**
+   * Gets the `i`th case of this `switch` expression,
+   * which may be either a normal `case` or a `default`.
+   */
+  SwitchCase getCase(int i) {
+    result = rank[i](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
+  }
+
+  /**
    * Gets a case of this `switch` expression,
    * which may be either a normal `case` or a `default`.
    */
-  SwitchCase getACase() { result = this.getAConstCase() or result = this.getDefaultCase() }
+  SwitchCase getACase() { result.getParent() = this }
 
   /** Gets a (non-default) `case` of this `switch` expression. */
-  ConstCase getAConstCase() { result.getParent() = this }
+  ConstCase getAConstCase() { result = this.getACase() }
+
+  /** Gets a (non-default) pattern `case` of this `switch` expression. */
+  PatternCase getAPatternCase() { result = this.getACase() }
 
   /** Gets the `default` case of this switch expression, if any. */
-  DefaultCase getDefaultCase() { result.getParent() = this }
+  DefaultCase getDefaultCase() { result = this.getACase() }
 
   /** Gets the expression of this `switch` expression. */
   Expr getExpr() { result.getParent() = this }
@@ -1592,7 +1603,9 @@ class NotInstanceOfExpr extends Expr, @notinstanceofexpr {
  * A local variable declaration expression.
  *
  * Contexts in which such expressions may occur include
- * local variable declaration statements and `for` loops.
+ * local variable declaration statements, `for` loops,
+ * and binding patterns such as `if (x instanceof T t)` and
+ * `case String s:`.
  */
 class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   /** Gets an access to the variable declared by this local variable declaration expression. */
@@ -1612,18 +1625,33 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     exists(EnhancedForStmt efs | efs.getVariable() = this | result.isNthChildOf(efs, -1))
     or
     exists(InstanceOfExpr ioe | this.getParent() = ioe | result.isNthChildOf(ioe, 1))
+    or
+    exists(PatternCase pc | this.getParent() = pc | result.isNthChildOf(pc, -2))
   }
 
   /** Gets the name of the variable declared by this local variable declaration expression. */
   string getName() { result = this.getVariable().getName() }
 
+  /** Gets the switch statement or expression whose pattern declares this identifier, if any. */
+  StmtParent getAssociatedSwitch() {
+    result = this.getParent().(PatternCase).getParent()
+  }
+
+  /** Holds if this is a declaration stemming from a pattern switch case. */
+  predicate hasAssociatedSwitch() {
+    exists(this.getAssociatedSwitch())
+  }
+
   /** Gets the initializer expression of this local variable declaration expression, if any. */
-  Expr getInit() { result.isNthChildOf(this, 0) }
+  Expr getInit() {
+    result.isNthChildOf(this, 0)
+  }
 
   /** Holds if this variable declaration implicitly initializes the variable. */
   predicate hasImplicitInit() {
     exists(CatchClause cc | cc.getVariable() = this) or
-    exists(EnhancedForStmt efs | efs.getVariable() = this)
+    exists(EnhancedForStmt efs | efs.getVariable() = this) or
+    this.hasAssociatedSwitch()
   }
 
   /** Gets a printable representation of this expression. */

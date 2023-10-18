@@ -46,7 +46,9 @@ predicate gapInChildren(Element e, int i) {
   // value should be, because kotlinc doesn't load annotation defaults and we
   // want to leave a space for another extractor to fill in the default if it
   // is able.
-  not e instanceof Annotation
+  not e instanceof Annotation and
+  // Pattern case statements legitimately have a TypeAccess (-2) and a pattern (0) but not a rule (-1)
+  not (i = -1 and e instanceof PatternCase and not e.(PatternCase).isRule())
 }
 
 predicate lateFirstChild(Element e, int i) {

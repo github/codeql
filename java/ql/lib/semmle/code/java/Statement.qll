@@ -383,16 +383,27 @@ class SwitchStmt extends Stmt, @switchstmt {
   Stmt getStmt(int index) { result = this.getAStmt() and result.getIndex() = index }
 
   /**
+   * Gets the `i`th case of this `switch` statement,
+   * which may be either a normal `case` or a `default`.
+   */
+  SwitchCase getCase(int i) {
+    result = rank[i](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
+  }
+
+  /**
    * Gets a case of this `switch` statement,
    * which may be either a normal `case` or a `default`.
    */
-  SwitchCase getACase() { result = this.getAConstCase() or result = this.getDefaultCase() }
+  SwitchCase getACase() { result.getParent() = this }
 
-  /** Gets a (non-default) `case` of this `switch` statement. */
-  ConstCase getAConstCase() { result.getParent() = this }
+  /** Gets a (non-default) constant `case` of this `switch` statement. */
+  ConstCase getAConstCase() { result = this.getACase() }
+
+  /** Gets a (non-default) pattern `case` of this `switch` statement. */
+  PatternCase getAPatternCase() { result = this.getACase() }
 
   /** Gets the `default` case of this switch statement, if any. */
-  DefaultCase getDefaultCase() { result.getParent() = this }
+  DefaultCase getDefaultCase() { result = this.getACase() }
 
   /** Gets the expression of this `switch` statement. */
   Expr getExpr() { result.getParent() = this }
@@ -464,15 +475,15 @@ class SwitchCase extends Stmt, @case {
 
 /** A constant `case` of a switch statement. */
 class ConstCase extends SwitchCase {
-  ConstCase() { exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
+  ConstCase() { exists(Literal e | e.getParent() = this and e.getIndex() >= 0) }
 
   /** Gets the `case` constant at index 0. */
-  Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
+  Expr getValue() { result.isNthChildOf(this, 0) }
 
   /**
    * Gets the `case` constant at the specified index.
    */
-  Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
+  Expr getValue(int i) { result.isNthChildOf(this, i) and i >= 0 }
 
   override string pp() { result = "case ..." }
 
@@ -481,6 +492,24 @@ class ConstCase extends SwitchCase {
   override string getHalsteadID() { result = "ConstCase" }
 
   override string getAPrimaryQlClass() { result = "ConstCase" }
+}
+
+/** A pattern case of a `switch` statement */
+class PatternCase extends SwitchCase {
+  LocalVariableDeclExpr patternVar;
+
+  PatternCase() { patternVar.isNthChildOf(this, 0) }
+
+  /** Gets the variable declared by this pattern case. */
+  LocalVariableDeclExpr getDecl() { result.isNthChildOf(this, 0) }
+
+  override string pp() { result = "case T t ..." }
+
+  override string toString() { result = "case T t ..." }
+
+  override string getHalsteadID() { result = "PatternCase" }
+
+  override string getAPrimaryQlClass() { result = "PatternCase" }
 }
 
 /** A `default` case of a `switch` statement */

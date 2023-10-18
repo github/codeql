@@ -119,36 +119,117 @@ A.java:
 #   51|                       0: [ClassInstanceExpr] new RuntimeException(...)
 #   51|                         -3: [TypeAccess] RuntimeException
 #   51|                         0: [VarAccess] s
-#   55|           0: [CatchClause] catch (...)
+#   53|                 2: [SwitchStmt] switch (...)
+#   53|                   -1: [VarAccess] thing
+#   54|                   0: [PatternCase] case T t ...
+#   54|                     -2: [TypeAccess] String
+#   54|                     -1: [ExprStmt] <Expr>;
+#   54|                       0: [MethodAccess] println(...)
+#   54|                         -1: [VarAccess] System.out
+#   54|                           -1: [TypeAccess] System
+#   54|                         0: [VarAccess] s
+#   54|                     0: [LocalVariableDeclExpr] s
+#   55|                   1: [PatternCase] case T t ...
+#   55|                     -2: [TypeAccess] Integer
+#   55|                     -1: [ExprStmt] <Expr>;
+#   55|                       0: [MethodAccess] println(...)
+#   55|                         -1: [VarAccess] System.out
+#   55|                           -1: [TypeAccess] System
+#   55|                         0: [AddExpr] ... + ...
+#   55|                           0: [StringLiteral] "An integer: "
+#   55|                           1: [VarAccess] i
+#   55|                     0: [LocalVariableDeclExpr] i
+#   56|                   2: [DefaultCase] default
+#   56|                     -1: [BlockStmt] { ... }
+#   58|                 3: [SwitchStmt] switch (...)
+#   58|                   -1: [VarAccess] thing
+#   59|                   0: [PatternCase] case T t ...
+#   59|                     -2: [TypeAccess] String
+#   59|                     0: [LocalVariableDeclExpr] s
+#   60|                   1: [ExprStmt] <Expr>;
+#   60|                     0: [MethodAccess] println(...)
+#   60|                       -1: [VarAccess] System.out
+#   60|                         -1: [TypeAccess] System
+#   60|                       0: [VarAccess] s
+#   61|                   2: [BreakStmt] break
+#   62|                   3: [PatternCase] case T t ...
+#   62|                     -2: [TypeAccess] Integer
+#   62|                     0: [LocalVariableDeclExpr] i
+#   63|                   4: [ExprStmt] <Expr>;
+#   63|                     0: [MethodAccess] println(...)
+#   63|                       -1: [VarAccess] System.out
+#   63|                         -1: [TypeAccess] System
+#   63|                       0: [AddExpr] ... + ...
+#   63|                         0: [StringLiteral] "An integer:"
+#   63|                         1: [VarAccess] i
+#   64|                   5: [BreakStmt] break
+#   65|                   6: [DefaultCase] default
+#   66|                   7: [BreakStmt] break
+#   68|                 4: [LocalVariableDeclStmt] var ...;
+#   68|                   1: [LocalVariableDeclExpr] thingAsString
+#   68|                     0: [SwitchExpr] switch (...)
+#   68|                       -1: [VarAccess] thing
+#   69|                       0: [PatternCase] case T t ...
+#   69|                         -2: [TypeAccess] String
+#   69|                         -1: [VarAccess] s
+#   69|                         0: [LocalVariableDeclExpr] s
+#   70|                       1: [PatternCase] case T t ...
+#   70|                         -2: [TypeAccess] Integer
+#   70|                         -1: [AddExpr] ... + ...
+#   70|                           0: [StringLiteral] "An integer: "
+#   70|                           1: [VarAccess] i
+#   70|                         0: [LocalVariableDeclExpr] i
+#   71|                       2: [DefaultCase] default
+#   71|                         -1: [StringLiteral] "Something else"
+#   73|                 5: [LocalVariableDeclStmt] var ...;
+#   73|                   1: [LocalVariableDeclExpr] thingAsString2
+#   73|                     0: [SwitchExpr] switch (...)
+#   73|                       -1: [VarAccess] thing
+#   74|                       0: [PatternCase] case T t ...
+#   74|                         -2: [TypeAccess] String
+#   74|                         0: [LocalVariableDeclExpr] s
+#   75|                       1: [YieldStmt] yield ...
+#   75|                         0: [VarAccess] s
+#   76|                       2: [PatternCase] case T t ...
+#   76|                         -2: [TypeAccess] Integer
+#   76|                         0: [LocalVariableDeclExpr] i
+#   77|                       3: [YieldStmt] yield ...
+#   77|                         0: [AddExpr] ... + ...
+#   77|                           0: [StringLiteral] "An integer: "
+#   77|                           1: [VarAccess] i
+#   78|                       4: [DefaultCase] default
+#   79|                       5: [YieldStmt] yield ...
+#   79|                         0: [StringLiteral] "Something else"
+#   83|           0: [CatchClause] catch (...)
 #-----|             0: (Single Local Variable Declaration)
-#   55|               0: [TypeAccess] RuntimeException
-#   55|               1: [LocalVariableDeclExpr] rte
-#   55|             1: [BlockStmt] { ... }
-#   56|               0: [ReturnStmt] return ...
-#   60|     10: [Class] E
-#   64|       3: [FieldDeclaration] E A;
+#   83|               0: [TypeAccess] RuntimeException
+#   83|               1: [LocalVariableDeclExpr] rte
+#   83|             1: [BlockStmt] { ... }
+#   84|               0: [ReturnStmt] return ...
+#   88|     10: [Class] E
+#   92|       3: [FieldDeclaration] E A;
 #-----|         -3: (Javadoc)
-#   61|           1: [Javadoc] /** Javadoc for enum constant */
-#   62|             0: [JavadocText] Javadoc for enum constant
-#   64|         -1: [TypeAccess] E
-#   64|         0: [ClassInstanceExpr] new E(...)
-#   64|           -3: [TypeAccess] E
-#   65|       4: [FieldDeclaration] E B;
+#   89|           1: [Javadoc] /** Javadoc for enum constant */
+#   90|             0: [JavadocText] Javadoc for enum constant
+#   92|         -1: [TypeAccess] E
+#   92|         0: [ClassInstanceExpr] new E(...)
+#   92|           -3: [TypeAccess] E
+#   93|       4: [FieldDeclaration] E B;
 #-----|         -3: (Javadoc)
-#   61|           1: [Javadoc] /** Javadoc for enum constant */
-#   62|             0: [JavadocText] Javadoc for enum constant
-#   65|         -1: [TypeAccess] E
-#   65|         0: [ClassInstanceExpr] new E(...)
-#   65|           -3: [TypeAccess] E
-#   66|       5: [FieldDeclaration] E C;
+#   89|           1: [Javadoc] /** Javadoc for enum constant */
+#   90|             0: [JavadocText] Javadoc for enum constant
+#   93|         -1: [TypeAccess] E
+#   93|         0: [ClassInstanceExpr] new E(...)
+#   93|           -3: [TypeAccess] E
+#   94|       5: [FieldDeclaration] E C;
 #-----|         -3: (Javadoc)
-#   61|           1: [Javadoc] /** Javadoc for enum constant */
-#   62|             0: [JavadocText] Javadoc for enum constant
-#   66|         -1: [TypeAccess] E
-#   66|         0: [ClassInstanceExpr] new E(...)
-#   66|           -3: [TypeAccess] E
-#   72|     11: [FieldDeclaration] int i, ...;
+#   89|           1: [Javadoc] /** Javadoc for enum constant */
+#   90|             0: [JavadocText] Javadoc for enum constant
+#   94|         -1: [TypeAccess] E
+#   94|         0: [ClassInstanceExpr] new E(...)
+#   94|           -3: [TypeAccess] E
+#  100|     11: [FieldDeclaration] int i, ...;
 #-----|       -3: (Javadoc)
-#   69|         1: [Javadoc] /** Javadoc for fields */
-#   70|           0: [JavadocText] Javadoc for fields
-#   72|       -1: [TypeAccess] int
+#   97|         1: [Javadoc] /** Javadoc for fields */
+#   98|           0: [JavadocText] Javadoc for fields
+#  100|       -1: [TypeAccess] int

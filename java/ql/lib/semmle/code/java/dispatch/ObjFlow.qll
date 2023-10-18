@@ -80,6 +80,15 @@ private predicate step(Node n1, Node n2) {
       for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
       for.getExpr() = n1.asExpr()
     )
+    or
+    exists(PatternCase pc |
+      pc.getDecl() = def.(BaseSsaUpdate).getDefiningExpr() and
+      (
+        pc.getSwitch().getExpr() = n1.asExpr()
+        or
+        pc.getSwitchExpr().getExpr() = n1.asExpr()
+      )
+    )
   |
     v.getAnUltimateDefinition() = def and
     v.getAUse() = n2.asExpr()
