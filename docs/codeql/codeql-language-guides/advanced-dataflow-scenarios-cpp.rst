@@ -30,7 +30,7 @@ Consider the following scenario: We have data coming out of ``user_input()`` and
   void sink(int);
   int user_input();
 
-A regular dataflow query such as the following query
+A regular dataflow query such as the following query:
 
 .. code-block:: ql
 
