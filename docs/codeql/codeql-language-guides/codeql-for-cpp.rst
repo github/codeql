@@ -45,4 +45,4 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Hash consing and value numbering <hash-consing-and-value-numbering>`: You can use specialized CodeQL libraries to recognize expressions that are syntactically identical or compute the same value at runtime in C and C++ codebases.
 
--  :doc:`Advanced C/C++ dataflow scenarios <advanced-dataflow-scenarios-cpp>`: You can do precise data flow analysis of C and C++ codebases by distinguishing between a pointer and its indirection(s).
+-  :doc:`Advanced C/C++ dataflow scenarios <advanced-dataflow-scenarios-cpp>`: You can track precise data flow in C and C++ codebases by distinguishing between a pointer and its indirection(s).
