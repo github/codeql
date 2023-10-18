@@ -217,13 +217,6 @@ unspecified_element_indices(
   int index: int ref
 );
 
-#keyset[id, index]
-unspecified_element_children(
-  int id: @unspecified_element ref,
-  int index: int ref,
-  int child: @ast_node_or_none ref
-);
-
 other_availability_specs(
   unique int id: @other_availability_spec
 );

@@ -244,15 +244,19 @@ private module Impl {
   private Element getImmediateChildOfUnspecifiedElement(
     UnspecifiedElement e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bErrorElement, int n |
+    exists(int b, int bErrorElement, int n, int nChild |
       b = 0 and
       bErrorElement =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfErrorElement(e, i, _)) | i) and
       n = bErrorElement and
+      nChild = n + 1 + max(int i | i = -1 or exists(e.getImmediateChild(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfErrorElement(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateChild(index - n) and
+        partialPredicateCall = "Child(" + (index - n).toString() + ")"
       )
     )
   }

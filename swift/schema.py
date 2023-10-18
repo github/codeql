@@ -47,6 +47,7 @@ class UnspecifiedElement(ErrorElement):
     property: string
     index: optional[int]
     error: string
+    children: list["AstNode"] | child | desc("These will be present only in certain downgraded databases.")
 
 class Comment(Locatable):
     text: string
