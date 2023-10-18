@@ -7,7 +7,7 @@
 Advanced dataflow scenarios for C/C++
 ======================================
 
-Data flow for C and C++ distinguish between the value of a pointer and the value of what the pointer points to. We call this the "indirection" of the pointer. Tracking the pointer and its indirection as separate entities is important for precise dataflow, but it may mean that you do not get the right flow if you select the wrong data flow node. This article demonstrates various scenarios where it is important to consider whether data flow should be computed on the value of the pointer or its indirection.
+Data flow for C and C++ distinguishes between the value of a pointer and the value of what the pointer points to. We call this the "indirection" of the pointer. Tracking the pointer and its indirection as separate entities is important for precise dataflow. However, it also means that you need to specify which data flow node to model. If you select the wrong data flow node, then analysis will be flawed. This article discusses several scenarios where it is important to consider whether data flow should be computed on the value of the pointer or its indirection.
 
 For almost all situations we only need to instantiate a dataflow configuration and specify our sources and sinks, and dataflow will handle everything for us.
 
