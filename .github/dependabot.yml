@@ -35,7 +35,7 @@ updates:
   - package-ecosystem: "gomod"
     directory: "go/ql/test"
     schedule:
-      interval: "daily"
+      interval: "monthly"
     allow: []
     ignore:
       - dependency-name: "*"
