@@ -7,7 +7,7 @@
  * @id javascript/jwt-hardcoded-key
  * @tags security
  *       experimental
- *       external/cwe/CWE-321
+ *       external/cwe/CWE-347
  */
 
 import javascript

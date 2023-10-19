@@ -1,5 +1,0 @@
-| NoVerification.js:20:28:20:36 | UserToken | This Token is Decoded in without signature validatoin |
-| NoVerification.js:25:28:25:37 | UserToken2 | This Token is Decoded in without signature validatoin |
-| NoVerification.js:29:16:29:24 | UserToken | This Token is Decoded in without signature validatoin |
-| NoVerification.js:32:20:32:28 | UserToken | This Token is Decoded in without signature validatoin |
-| NoVerification.js:37:23:37:31 | UserToken | This Token is Decoded in without signature validatoin |
