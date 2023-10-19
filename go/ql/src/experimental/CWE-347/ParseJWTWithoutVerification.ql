@@ -6,7 +6,7 @@
  * @id go/parse-jwt-without-verification
  * @tags security
  *       experimental
- *       external/cwe/cwe-321
+ *       external/cwe/cwe-347
  */
 
 import go
