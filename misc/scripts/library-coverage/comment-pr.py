@@ -156,7 +156,7 @@ def get_previous_run_id(repo, run_id, pr_number):
     pr_repo = this_run["head_repository"]
 
     # Get all previous runs that match branch, repo and workflow name:
-    output = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", f"branch='{pr_branch}'", "--paginate",
+    output = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", f"branch={pr_branch}", "--paginate",
                                             "--jq", f'[.workflow_runs.[] | select(.head_repository.full_name=="{pr_repo}" and .name=="{artifacts_workflow_name}")] | sort_by(.id) | reverse | [.[].id]'])
 
     ids = []
