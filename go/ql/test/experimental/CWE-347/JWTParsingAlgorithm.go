@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func verifyJWT(endpointHandler func(writer http.ResponseWriter, request *http.Request)) http.HandlerFunc {
+func verify(endpointHandler func(writer http.ResponseWriter, request *http.Request)) http.HandlerFunc {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		if request.Header["Token"] != nil {
 			//Good, this specifiies an algorithim in the parser, and therefore does not need to check the algorithim in the key function
@@ -19,10 +19,7 @@ func verifyJWT(endpointHandler func(writer http.ResponseWriter, request *http.Re
 			})
 			//Bad, this parses with a custom parser that does not specify the algorithim/method and does not check the token's algorithm
 			p_bad := jwt.NewParser()
-			p_bad.Parse("test", func(token *jwt.Token) (interface{}, error) {
-				return "", nil
-
-			})
+			p_bad.Parse("test", key)
 			//Good, this checks the token Method
 			token, err := jwt.Parse(request.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
 				_, ok := token.Method.(*jwt.SigningMethodHMAC)
@@ -68,4 +65,8 @@ func verifyJWT(endpointHandler func(writer http.ResponseWriter, request *http.Re
 			}
 		}
 	})
+}
+
+func key(token *jwt.Token) (interface{}, error) {
+	return "", nil
 }

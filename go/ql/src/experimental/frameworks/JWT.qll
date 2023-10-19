@@ -74,7 +74,7 @@ string golangJwtPackage() {
  * Gets `github.com/golang-jwt/jwt/(v4 and v5)` whose APIs have changed from previous versions.
  */
 string golangJwtModern() {
-  result = package(["github.com/golang-jwt/jwt/v5", "github.com/golang-jwt/jwt/v4"], "")
+  result = ["github.com/golang-jwt/jwt/v5", "github.com/golang-jwt/jwt/v4"]
 }
 
 /**
