@@ -165,9 +165,9 @@ void test_map()
 	// array-like access
 	std::map<char *, char *> m10, m11, m12, m13;
 	sink(m10["abc"] = "def");
-	sink(m11["abc"] = source()); // $ ast ir=168:7 ir=168:20
+	sink(m11["abc"] = source()); // $ ast,ir
 	sink(m12.at("abc") = "def");
-	sink(m13.at("abc") = source()); // $ ast ir=170:7 ir=170:23
+	sink(m13.at("abc") = source()); // $ ast,ir
 	sink(m10["abc"]);
 	sink(m11["abc"]); // $ ast,ir
 	sink(m12["abc"]);
@@ -317,9 +317,9 @@ void test_unordered_map()
 	// array-like access
 	std::unordered_map<char *, char *> m10, m11, m12, m13;
 	sink(m10["abc"] = "def");
-	sink(m11["abc"] = source()); // $ ast ir=320:7 ir=320:20
+	sink(m11["abc"] = source()); // $ ast,ir
 	sink(m12.at("abc") = "def");
-	sink(m13.at("abc") = source()); // $ ast ir=322:7 ir=322:23
+	sink(m13.at("abc") = source()); // $ ast,ir
 	sink(m10["abc"]);
 	sink(m11["abc"]); // $ ast,ir
 	sink(m12["abc"]);

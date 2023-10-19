@@ -40,7 +40,8 @@ private class StringSummaries extends SummaryModelCsv {
         ";StringProtocol;true;addingPercentEncoding(withAllowedCharacter:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;addingPercentEscapes(using:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;appending(_:);;;Argument[-1..0];ReturnValue;taint",
-        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[-1..0];ReturnValue;taint", //-1..
+        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[-1..0];ReturnValue;taint",
+        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
         ";StringProtocol;true;applyingTransform(_:reverse:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;cString(using:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;capitalized(with:);;;Argument[-1];ReturnValue;taint",
@@ -123,6 +124,8 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;randomElement(using:);;;Argument[-1];ReturnValue;taint",
         ";String;true;enumerated();;;Argument[-1];ReturnValue;taint",
         ";String;true;encode(to:);;;Argument[-1];Argument[0];taint",
+        ";String;true;decodeCString(_:as:repairingInvalidCodeUnits:);;;Argument[0];ReturnValue.TupleElement[0];taint",
+        ";String;true;decodeCString(_:as:repairingInvalidCodeUnits:);;;Argument[0].CollectionElement;ReturnValue.TupleElement[0];taint",
         ";LosslessStringConvertible;true;init(_:);;;Argument[0];ReturnValue;taint",
       ]
   }
