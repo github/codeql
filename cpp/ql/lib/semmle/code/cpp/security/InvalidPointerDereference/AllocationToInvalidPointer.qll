@@ -61,16 +61,30 @@ private import semmle.code.cpp.rangeanalysis.new.RangeAnalysisUtil
 private VariableAccess getAVariableAccess(Expr e) { e.getAChild*() = result }
 
 /**
+ * Gets a (sub)expression that may be the result of evaluating `size`.
+ *
+ * For example, `getASizeCandidate(a ? b : c)` gives `a ? b : c`, `b` and `c`.
+ */
+bindingset[size]
+pragma[inline_late]
+private Expr getASizeCandidate(Expr size) {
+  result = size
+  or
+  result = [size.(ConditionalExpr).getThen(), size.(ConditionalExpr).getElse()]
+}
+
+/**
  * Holds if the `(n, state)` pair represents the source of flow for the size
  * expression associated with `alloc`.
  */
 predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
-  exists(VariableAccess va, Expr size, int delta |
+  exists(VariableAccess va, Expr size, int delta, Expr s |
     size = alloc.getSizeExpr() and
+    s = getASizeCandidate(size) and
     // Get the unique variable in a size expression like `x` in `malloc(x + 1)`.
-    va = unique( | | getAVariableAccess(size)) and
+    va = unique( | | getAVariableAccess(s)) and
     // Compute `delta` as the constant difference between `x` and `x + 1`.
-    bounded1(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
+    bounded1(any(Instruction instr | instr.getUnconvertedResultExpression() = s),
       any(LoadInstruction load | load.getUnconvertedResultExpression() = va), delta) and
     n.asExpr() = va and
     state = delta
@@ -284,8 +298,31 @@ private module Config implements ProductFlow::StateConfigSig {
     pointerAddInstructionHasBounds0(_, allocSink, sizeSink, sizeAddend)
   }
 
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+
   predicate isBarrier2(DataFlow::Node node, FlowState2 state) {
     node = SizeBarrier::getABarrierNode(state)
+  }
+
+  predicate isBarrier2(DataFlow::Node node) {
+    // Block flow from `*p` to `*(p + n)` when `n` is not `0`. This removes
+    // false positives
+    // when tracking the size of the allocation as an element of an array such
+    // as:
+    // ```
+    // size_t* p = new size_t[n];
+    // ...
+    // p[0] = n;
+    // int i = p[1];
+    // p[i] = ...
+    // ```
+    // In the above case, this barrier blocks flow from the indirect node
+    // for `p` to `p[1]`.
+    exists(Operand operand, PointerAddInstruction add |
+      node.(IndirectOperand).hasOperandAndIndirectionIndex(operand, _) and
+      add.getLeftOperand() = operand and
+      add.getRight().(ConstantInstruction).getValue() != "0"
+    )
   }
 
   predicate isBarrierIn1(DataFlow::Node node) { isSourcePair(node, _, _, _) }

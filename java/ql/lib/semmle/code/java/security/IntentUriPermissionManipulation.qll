@@ -24,16 +24,6 @@ abstract class IntentUriPermissionManipulationSink extends DataFlow::Node { }
 abstract class IntentUriPermissionManipulationSanitizer extends DataFlow::Node { }
 
 /**
- * DEPRECATED: Use `IntentUriPermissionManipulationSanitizer` instead.
- *
- * A guard that makes sure that an Intent is safe to be returned to another Activity.
- *
- * Usually, this is done by checking that the Intent's data URI and/or its flags contain
- * expected values.
- */
-abstract deprecated class IntentUriPermissionManipulationGuard extends DataFlow::BarrierGuard { }
-
-/**
  * An additional taint step for flows related to Intent URI permission manipulation
  * vulnerabilities.
  */

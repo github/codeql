@@ -374,6 +374,8 @@ module ProductFlow {
 
       predicate isBarrier(DataFlow::Node node, FlowState state) { Config::isBarrier1(node, state) }
 
+      predicate isBarrier(DataFlow::Node node) { Config::isBarrier1(node) }
+
       predicate isBarrierOut(DataFlow::Node node) { Config::isBarrierOut1(node) }
 
       predicate isAdditionalFlowStep(
@@ -407,6 +409,8 @@ module ProductFlow {
       }
 
       predicate isBarrier(DataFlow::Node node, FlowState state) { Config::isBarrier2(node, state) }
+
+      predicate isBarrier(DataFlow::Node node) { Config::isBarrier2(node) }
 
       predicate isBarrierOut(DataFlow::Node node) { Config::isBarrierOut2(node) }
 

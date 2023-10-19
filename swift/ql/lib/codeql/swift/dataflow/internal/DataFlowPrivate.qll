@@ -992,6 +992,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
   )
   or
+  // read of an optional into the loop variable via foreach
+  exists(ForEachStmt for |
+    node1.asExpr() = for.getNextCall() and
+    node2.asPattern() = for.getPattern() and
+    c instanceof OptionalSomeContentSet
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
 }

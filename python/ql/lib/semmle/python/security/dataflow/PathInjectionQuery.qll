@@ -53,10 +53,6 @@ deprecated class Configuration extends TaintTracking::Configuration {
     state instanceof NormalizedUnchecked
   }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
-
   override predicate isAdditionalTaintStep(
     DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
     DataFlow::FlowState stateTo

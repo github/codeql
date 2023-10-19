@@ -26,6 +26,7 @@ predicate localTaintStep = localTaintStepCached/2;
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
+pragma[inline_late]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs) {
   // If a `PostUpdateNode` is specified as a sink, there's (almost) always a store step preceding it.
   // So when the node is a `PostUpdateNode` we allow any sequence of implicit read steps of an appropriate

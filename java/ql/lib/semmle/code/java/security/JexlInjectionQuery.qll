@@ -63,7 +63,7 @@ deprecated class JexlInjectionConfig extends TaintTracking::Configuration {
  * It supports both JEXL 2 and 3.
  */
 module JexlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
 

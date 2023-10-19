@@ -25,10 +25,6 @@ module AllocationSizeOverflow {
 
     override predicate isSink(DataFlow::Node nd) { nd = Builtin::len().getACall().getArgument(0) }
 
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
-
     override predicate isSanitizer(DataFlow::Node nd) { nd instanceof Sanitizer }
   }
 
@@ -79,10 +75,6 @@ module AllocationSizeOverflow {
         pred = c.getArgument(0) and
         succ = c
       )
-    }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
     }
 
     override predicate isSanitizer(DataFlow::Node nd) { nd instanceof Sanitizer }

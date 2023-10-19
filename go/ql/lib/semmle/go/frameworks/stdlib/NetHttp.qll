@@ -288,4 +288,18 @@ module NetHttp {
 
     override predicate guardedBy(DataFlow::Node check) { check = handlerReg.getArgument(0) }
   }
+
+  /**
+   * The File system access sinks
+   */
+  class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
+    HttpServeFile() {
+      exists(Function f |
+        f.hasQualifiedName("net/http", "ServeFile") and
+        this = f.getACall()
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(2) }
+  }
 }

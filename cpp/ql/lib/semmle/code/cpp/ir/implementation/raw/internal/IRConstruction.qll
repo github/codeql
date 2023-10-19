@@ -423,7 +423,12 @@ private module CachedForDebugging {
   cached
   predicate instructionHasSortKeys(Instruction instruction, int key1, int key2) {
     key1 = getInstructionTranslatedElement(instruction).getId() and
-    getInstructionTag(instruction) =
+    getInstructionTag(instruction) = tagByRank(key2)
+  }
+
+  pragma[nomagic]
+  private InstructionTag tagByRank(int key2) {
+    result =
       rank[key2](InstructionTag tag, string tagId |
         tagId = getInstructionTagId(tag)
       |

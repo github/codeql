@@ -8,7 +8,7 @@ import semmle.code.java.dataflow.TaintTracking
  * that is used to construct and evaluate an expression.
  */
 module JakartaExpressionInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionEvaluationSink }
 

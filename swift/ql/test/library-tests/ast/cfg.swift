@@ -534,3 +534,15 @@ func testAsyncFor () async {
         print(i)
     }
 }
+
+func testNilCoalescing(x: Int?) -> Int {
+  return x ?? 0
+}
+
+func testNilCoalescing2(x: Bool?) -> Int {
+  if x ?? false {
+    return 1
+  } else {
+    return 0
+  }
+}

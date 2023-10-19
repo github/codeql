@@ -48,7 +48,7 @@ class NormalizedPathNode extends DataFlow::Node {
 }
 
 module InjectFilePathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     sinkNode(sink, "path-injection") and

@@ -60,10 +60,6 @@ module OpenUrlRedirect {
       or
       hostnameSanitizingPrefixEdge(node, _)
     }
-
-    deprecated override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof BarrierGuard
-    }
   }
 
   private module Config implements DataFlow::ConfigSig {

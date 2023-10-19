@@ -12,17 +12,3 @@
     "telemetry": true
   }
 }
-{
-  "markdownMessage": "The detected version of Go is lower than the version specified in `go.mod`. [Install a newer version](https://github.com/actions/setup-go#basic).",
-  "severity": "error",
-  "source": {
-    "extractorName": "go",
-    "id": "go/autobuilder/newer-go-version-needed",
-    "name": "Newer Go version needed"
-  },
-  "visibility": {
-    "cliSummaryTable": true,
-    "statusPage": true,
-    "telemetry": true
-  }
-}

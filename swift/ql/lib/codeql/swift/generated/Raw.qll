@@ -2771,12 +2771,7 @@ module Raw {
     /**
      * Gets the pattern of this for each statement.
      */
-    Pattern getPattern() { for_each_stmts(this, result, _, _) }
-
-    /**
-     * Gets the sequence of this for each statement.
-     */
-    Expr getSequence() { for_each_stmts(this, _, result, _) }
+    Pattern getPattern() { for_each_stmts(this, result, _) }
 
     /**
      * Gets the where of this for each statement, if it exists.
@@ -2784,9 +2779,19 @@ module Raw {
     Expr getWhere() { for_each_stmt_wheres(this, result) }
 
     /**
+     * Gets the iteratorvar of this for each statement, if it exists.
+     */
+    PatternBindingDecl getIteratorVar() { for_each_stmt_iterator_vars(this, result) }
+
+    /**
+     * Gets the nextcall of this for each statement, if it exists.
+     */
+    Expr getNextCall() { for_each_stmt_next_calls(this, result) }
+
+    /**
      * Gets the body of this for each statement.
      */
-    BraceStmt getBody() { for_each_stmts(this, _, _, result) }
+    BraceStmt getBody() { for_each_stmts(this, _, result) }
   }
 
   /**

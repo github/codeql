@@ -3,7 +3,7 @@ import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineExpectationsTest
 
 module TestConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess call |

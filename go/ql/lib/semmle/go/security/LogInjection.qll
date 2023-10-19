@@ -27,10 +27,6 @@ module LogInjection {
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof Sanitizer }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
   }
 
   /** Config for reasoning about log injection vulnerabilities. */
