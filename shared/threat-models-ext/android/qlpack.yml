@@ -8,3 +8,4 @@ dataExtensions:
   - "*.model.yml"
 extensionTargets:
   codeql/threat-models: ${workspace}
+warnOnImplicitThis: true

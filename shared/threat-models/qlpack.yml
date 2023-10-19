@@ -4,3 +4,4 @@ library: true
 groups: shared
 dataExtensions:
   - ext/*.model.yml
+warnOnImplicitThis: true
