@@ -268,7 +268,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 "runtime.win-x64.microsoft.netcore.app",
 
                 // Internal implementation packages not meant for direct consumption:
-                "runtime."
+                "runtime.",
+                "netstandard.library.ref"
             };
             RemoveNugetPackageReference(runtimePackagePrefixes);
         }
