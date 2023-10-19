@@ -404,7 +404,7 @@ To set the stage, consider the following scenario:
     free(b.a);
   }
 
-What happens here is the following:
+In this example, the data flows as follows:
 
   1. We write a user-controlled value into the object ``b`` at the access path ``[a, x]``.
   2. Afterwards, ``b`` is passed to ``read_data`` which we don't have the definition of in the database.
