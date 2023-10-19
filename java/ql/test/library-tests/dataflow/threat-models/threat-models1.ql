@@ -1,5 +1,5 @@
-import semmle.code.java.dataflow.ExternalFlowConfiguration as ExternalFlowConfiguration
+import codeql.threatmodels.ThreatModels as ThreatModels
 
 query predicate supportedThreatModels(string kind) {
-  ExternalFlowConfiguration::currentThreatModel(kind)
+  ThreatModels::currentThreatModel(kind)
 }

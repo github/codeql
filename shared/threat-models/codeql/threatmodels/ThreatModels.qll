@@ -5,12 +5,10 @@
  * are applicable to generic queries.
  */
 
-private import ExternalFlowExtensions
-
 /**
  * Holds if the specified kind of source model is supported for the current query.
  */
-extensible private predicate supportedThreatModels(string kind);
+extensible predicate supportedThreatModels(string kind);
 
 /**
  * Holds if the specified kind of source model is containted within the specified group.

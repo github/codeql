@@ -29,7 +29,7 @@ import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.dataflow.ExternalFlowConfiguration
+private import codeql.threatmodels.ThreatModels
 
 /**
  * A data flow source.

@@ -1,0 +1,10 @@
+name: codeql/threat-local
+version: 0.0.0-dev
+groups:
+  - shared
+  - threat-models
+library: true
+dataExtensions:
+  - "*.model.yml"
+extensionTargets:
+  codeql/threat-models: ${workspace}
