@@ -37,7 +37,7 @@ where
     // //Flow from NewParser to Parse (check that this call to Parse does not use a Parser that sets Valid Methods)
     (
       func instanceof SafeJwtParserMethod and
-      not exists(CallNode c2, WithValidMethods wvm, NewParser m|
+      not exists(CallNode c2, WithValidMethods wvm, NewParser m |
         c2.getTarget() = m and
         (
           c2.getCall().getAnArgument() = wvm.getACall().asExpr() and
@@ -50,20 +50,13 @@ where
     ) and
     //Check that the Parse(function or method) does not check the Token Method field, which most likely is a check for method type
     not exists(Field f, FunctionName fn |
-       f.hasQualifiedName(golangJwtModern(), "Token", "Method") and
-       (f.getARead().getRoot() = c.getCall().getArgument(1) or
-       (c.getCall().getArgument(1) = fn and
-       fn.toString() = f.getARead().asExpr().getEnclosingFunction().getName())
-     )
+      f.hasQualifiedName(golangJwtModern(), "Token", "Method") and
+      (
+        f.getARead().getRoot() = c.getCall().getArgument(1)
+        or
+        c.getCall().getArgument(1) = fn and
+        fn.toString() = f.getARead().asExpr().getEnclosingFunction().getName()
+      )
+    )
   )
-  )
-  select c, "This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion"
-
-
-// from FunctionName fn, CallNode c, Function func, Field f
-// where
-// c.getTarget() = func and
-// func instanceof SafeJwtParserMethod and
-// c.getCall().getArgument(1) = fn and
-// fn.toString() = f.getARead().asExpr().getEnclosingFunction().getName()
-// select c, "here we go"
+select c, "This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion"
