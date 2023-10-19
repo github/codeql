@@ -612,14 +612,6 @@ case @builtintype.kind of
 | 51 = @char8_t
 | 52 = @float16               // _Float16
 | 53 = @complex_float16       // _Complex _Float16
-| 54 = @fp16                  // __fp16
-| 55 = @std_bfloat16          // __bf16
-| 56 = @std_float16           // std::float16_t
-| 57 = @complex_std_float32   // _Complex _Float32
-| 58 = @complex_float32x      // _Complex _Float32x
-| 59 = @complex_std_float64   // _Complex _Float64
-| 60 = @complex_float64x      // _Complex _Float64x
-| 61 = @complex_std_float128  // _Complex _Float128
 ;
 
 builtintypes(
