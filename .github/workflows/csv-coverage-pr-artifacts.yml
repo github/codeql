@@ -89,9 +89,25 @@ jobs:
       - name: Save PR number
         run: |
           mkdir -p pr
-          echo ${{ github.event.pull_request.number }} > pr/NR
+          echo ${PR_NUMBER} > pr/NR
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
       - name: Upload PR number
         uses: actions/upload-artifact@v3
         with:
           name: pr
           path: pr/
+      - name: Save comment ID (if it exists)
+        run: |
+          mkdir -p comment
+          # Find the latest comment starting with COMMENT_PREFIX
+          COMMENT_PREFIX=":warning: The head of this PR and the base branch were compared for differences in the framework coverage reports."
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate | jq --arg prefix "${COMMENT_PREFIX}" '[.[] | select(.body|startswith($prefix)) | .id] | max' > comment/ID
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+      - name: Upload comment ID (if it exists)
+        uses: actions/upload-artifact@v3
+        with:
+          name: comment
+          path: comment/
