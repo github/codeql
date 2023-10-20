@@ -26,8 +26,6 @@ module Lxml {
   API::Node etreeRef() {
     result = API::moduleImport("lxml").getMember("etree")
     or
-    result = API::moduleImport("owslib").getMember("etree").getMember("etree")
-    or
     result = ModelOutput::getATypeNode("lxml.etree~Alias")
   }
 
