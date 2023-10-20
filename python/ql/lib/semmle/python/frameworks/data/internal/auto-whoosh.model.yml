@@ -19,3 +19,30 @@ extensions:
   - - io.StringIO~Subclass
     - whoosh
     - Member[filedb].Member[structfile].Member[BytesIO]
+  - - pickle.loads~Alias
+    - whoosh
+    - Member[columns].Member[loads]
+  - - pickle.loads~Alias
+    - whoosh
+    - Member[compat].Member[loads]
+  - - pickle.loads~Alias
+    - whoosh
+    - Member[formats].Member[loads]
+  - - pickle.load~Alias
+    - whoosh
+    - Member[compat].Member[load]
+  - - pickle.load~Alias
+    - whoosh
+    - Member[externalsort].Member[load]
+  - - pickle.load~Alias
+    - whoosh
+    - Member[filedb].Member[structfile].Member[load_pickle]
+  - - pickle~Alias
+    - whoosh
+    - Member[compat].Member[pickle]
+  - - pickle~Alias
+    - whoosh
+    - Member[index].Member[pickle]
+  - - pickle~Alias
+    - whoosh
+    - Member[util].Member[loading].Member[pickle]

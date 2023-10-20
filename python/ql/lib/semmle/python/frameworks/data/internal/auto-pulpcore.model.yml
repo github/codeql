@@ -699,6 +699,9 @@ extensions:
     - Member[app].Member[models].Member[access_policy].Member[AccessPolicy]
   - - Django.db.models.Model~Subclass
     - pulpcore
+    - Member[app].Member[models].Member[access_policy].Member[BaseGroup]
+  - - Django.db.models.Model~Subclass
+    - pulpcore
     - Member[app].Member[models].Member[access_policy].Member[BaseModel]
   - - Django.db.models.Model~Subclass
     - pulpcore

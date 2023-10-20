@@ -54,4 +54,7 @@ extensions:
     - Member[utils].Member[Markup]
   - - pickle~Alias
     - jinja2
+    - Member[_compat].Member[pickle]
+  - - pickle~Alias
+    - jinja2
     - Member[bccache].Member[pickle]

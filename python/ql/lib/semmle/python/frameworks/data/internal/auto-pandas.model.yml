@@ -49,3 +49,12 @@ extensions:
   - - lxml.etree~Alias
     - pandas
     - Member[io].Member[xml].Member[etree]
+  - - pickle~Alias
+    - pandas
+    - Member[compat].Member[pickle_compat].Member[pkl]
+  - - pickle~Alias
+    - pandas
+    - Member[core].Member[generic].Member[pickle]
+  - - pickle~Alias
+    - pandas
+    - Member[io].Member[pickle].Member[pickle]

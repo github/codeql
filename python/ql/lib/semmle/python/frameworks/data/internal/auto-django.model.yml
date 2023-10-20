@@ -732,6 +732,9 @@ extensions:
     - Member[core].Member[cache].Member[backends].Member[filebased].Member[pickle]
   - - pickle~Alias
     - django
+    - Member[core].Member[cache].Member[backends].Member[locmem].Member[pickle]
+  - - pickle~Alias
+    - django
     - Member[core].Member[serializers].Member[base].Member[pickle]
   - - pickle~Alias
     - django

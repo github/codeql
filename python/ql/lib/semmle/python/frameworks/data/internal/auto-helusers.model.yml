@@ -15,6 +15,9 @@ extensions:
     - Member[models].Member[AbstractUser]
   - - Django.db.models.Model~Subclass
     - helusers
+    - Member[models].Member[DjangoAbstractUser]
+  - - Django.db.models.Model~Subclass
+    - helusers
     - Member[models].Member[Group]
   - - Django.db.models.Model~Subclass
     - helusers

@@ -9,6 +9,9 @@ extensions:
     - Member[ElementInclude].Member[etree]
   - - lxml.etree~Alias
     - lxml
+    - Member[builder].Member[ET]
+  - - lxml.etree~Alias
+    - lxml
     - Member[html].Member[html5parser].Member[etree]
   - - lxml.etree~Alias
     - lxml

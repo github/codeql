@@ -5,8 +5,8 @@ extensions:
     pack: codeql/python-all
   data:
   - - pickle~Alias
-    - pydantic
-    - Member[deprecated].Member[parse].Member[pickle]
+    - pebble
+    - Member[common].Member[pickle]
   - - pickle~Alias
-    - pydantic
-    - Member[parse].Member[pickle]
+    - pebble
+    - Member[pool].Member[process].Member[pickle]

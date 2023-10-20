@@ -16,3 +16,6 @@ extensions:
   - - xml.etree.ElementTree~Subclass
     - markdown
     - Member[treeprocessors].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - markdown
+    - Member[util].Member[etree]

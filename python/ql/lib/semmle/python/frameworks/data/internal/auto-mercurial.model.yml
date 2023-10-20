@@ -39,7 +39,19 @@ extensions:
     - Member[url].Member[stringio]
   - - io.StringIO~Subclass
     - mercurial
+    - Member[util].Member[bytesio]
+  - - io.StringIO~Subclass
+    - mercurial
     - Member[util].Member[stringio]
   - - io.StringIO~Subclass
     - mercurial
     - Member[wireprotoserver].Member[stringio]
+  - - pickle~Alias
+    - mercurial
+    - Member[formatter].Member[pickle]
+  - - pickle~Alias
+    - mercurial
+    - Member[util].Member[pickle]
+  - - pickle~Alias
+    - mercurial
+    - Member[worker].Member[pickle]

@@ -7,3 +7,6 @@ extensions:
   - - io.StringIO~Subclass
     - xgboost
     - Member[plotting].Member[BytesIO]
+  - - pickle~Alias
+    - xgboost
+    - Member[rabit].Member[pickle]

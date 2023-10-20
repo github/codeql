@@ -15,6 +15,9 @@ extensions:
     - Member[connection].Member[VerifiedHTTPSConnection]
   - - http.client.HTTPConnection~Subclass
     - urllib3
+    - Member[connection].Member[_HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
     - Member[connectionpool].Member[HTTPConnection]
   - - http.client.HTTPConnection~Subclass
     - urllib3

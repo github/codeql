@@ -7,3 +7,6 @@ extensions:
   - - io.StringIO~Subclass
     - memcache
     - Member[BytesIO]
+  - - pickle~Alias
+    - memcache
+    - Member[pickle]

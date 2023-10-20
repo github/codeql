@@ -16,3 +16,9 @@ extensions:
   - - markupsafe.Markup~Subclass
     - flask_caching
     - Member[Markup]
+  - - pickle~Alias
+    - flask_caching
+    - Member[backends].Member[memcache].Member[pickle]
+  - - pickle~Alias
+    - flask_caching
+    - Member[backends].Member[rediscache].Member[pickle]

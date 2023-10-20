@@ -31,3 +31,6 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - formtools
     - Member[wizard].Member[views].Member[ManagementForm]
+  - - pickle~Alias
+    - formtools
+    - Member[utils].Member[pickle]

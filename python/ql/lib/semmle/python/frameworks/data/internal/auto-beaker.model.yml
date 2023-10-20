@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - beaker
+    - Member[_compat].Member[pickle]
+  - - pickle~Alias
+    - beaker
+    - Member[ext].Member[database].Member[pickle]
+  - - pickle~Alias
+    - beaker
+    - Member[ext].Member[google].Member[pickle]
+  - - pickle~Alias
+    - beaker
+    - Member[ext].Member[mongodb].Member[pickle]
+  - - pickle~Alias
+    - beaker
+    - Member[ext].Member[redisnm].Member[pickle]
+  - - pickle~Alias
+    - beaker
+    - Member[ext].Member[sqla].Member[pickle]

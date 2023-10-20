@@ -9,6 +9,9 @@ extensions:
     - Member[cockroachdb].Member[PooledCockroachDatabase]
   - - peewee.Database~Subclass
     - playhouse
+    - Member[cockroachdb].Member[PostgresqlDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
     - Member[cockroachdb].Member[_PooledPostgresqlDatabase]
   - - peewee.Database~Subclass
     - playhouse
@@ -49,3 +52,9 @@ extensions:
   - - peewee.Database~Subclass
     - playhouse
     - Member[pool].Member[SqliteExtDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[postgres_ext].Member[PostgresqlDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[sqlite_ext].Member[SqliteDatabase]

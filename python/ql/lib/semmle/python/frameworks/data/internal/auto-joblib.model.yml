@@ -10,3 +10,57 @@ extensions:
   - - io.StringIO~Subclass
     - joblib
     - Member[pool].Member[BytesIO]
+  - - pickle.loads~Alias
+    - joblib
+    - Member[_memmapping_reducer].Member[loads]
+  - - pickle.loads~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[cloudpickle].Member[loads]
+  - - pickle.loads~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[cloudpickle_fast].Member[loads]
+  - - pickle.loads~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[loads]
+  - - pickle.loads~Alias
+    - joblib
+    - Member[externals].Member[loky].Member[backend].Member[reduction].Member[loads]
+  - - pickle.loads~Alias
+    - joblib
+    - Member[externals].Member[loky].Member[cloudpickle_wrapper].Member[loads]
+  - - pickle.loads~Alias
+    - joblib
+    - Member[parallel].Member[loads]
+  - - pickle.load~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[cloudpickle].Member[load]
+  - - pickle.load~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[cloudpickle_fast].Member[load]
+  - - pickle.load~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[load]
+  - - pickle~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[cloudpickle].Member[pickle]
+  - - pickle~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[cloudpickle_fast].Member[pickle]
+  - - pickle~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[compat].Member[pickle]
+  - - pickle~Alias
+    - joblib
+    - Member[externals].Member[cloudpickle].Member[pickle]
+  - - pickle~Alias
+    - joblib
+    - Member[hashing].Member[pickle]
+  - - pickle~Alias
+    - joblib
+    - Member[numpy_pickle].Member[pickle]
+  - - pickle~Alias
+    - joblib
+    - Member[numpy_pickle_compat].Member[pickle]
+  - - pickle~Alias
+    - joblib
+    - Member[numpy_pickle_utils].Member[pickle]

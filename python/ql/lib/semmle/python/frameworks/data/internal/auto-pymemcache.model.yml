@@ -7,3 +7,6 @@ extensions:
   - - io.StringIO~Subclass
     - pymemcache
     - Member[serde].Member[BytesIO]
+  - - pickle~Alias
+    - pymemcache
+    - Member[serde].Member[pickle]

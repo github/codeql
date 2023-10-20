@@ -13,3 +13,30 @@ extensions:
   - - io.StringIO~Subclass
     - paddle
     - Member[framework].Member[io_utils].Member[BytesIO]
+  - - pickle~Alias
+    - paddle
+    - Member[distributed].Member[auto_parallel].Member[static].Member[dist_saver].Member[pickle]
+  - - pickle~Alias
+    - paddle
+    - Member[distributed].Member[auto_parallel].Member[static].Member[planner_v2].Member[pickle]
+  - - pickle~Alias
+    - paddle
+    - Member[distributed].Member[auto_parallel].Member[static].Member[tuner].Member[profiler].Member[pickle]
+  - - pickle~Alias
+    - paddle
+    - Member[distributed].Member[auto_parallel].Member[static].Member[tuner].Member[rule_based_tuner].Member[pickle]
+  - - pickle~Alias
+    - paddle
+    - Member[distributed].Member[communication].Member[serialization_utils].Member[pickle]
+  - - pickle~Alias
+    - paddle
+    - Member[distributed].Member[rpc].Member[internal].Member[pickle]
+  - - pickle~Alias
+    - paddle
+    - Member[distributed].Member[rpc].Member[rpc].Member[pickle]
+  - - pickle~Alias
+    - paddle
+    - Member[framework].Member[io_utils].Member[pickle]
+  - - pickle~Alias
+    - paddle
+    - Member[jit].Member[api].Member[pickle]

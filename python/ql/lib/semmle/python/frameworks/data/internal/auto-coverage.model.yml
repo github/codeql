@@ -10,3 +10,6 @@ extensions:
   - - io.StringIO~Subclass
     - coverage
     - Member[debug].Member[StringIO]
+  - - pickle~Alias
+    - coverage
+    - Member[backward].Member[pickle]

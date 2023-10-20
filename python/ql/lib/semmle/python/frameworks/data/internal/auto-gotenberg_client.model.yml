@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - gotenberg_client
+    - Member[_base].Member[Client]
+  - - httpx.Client~Subclass
+    - gotenberg_client
+    - Member[_client].Member[Client]
+  - - httpx.Client~Subclass
+    - gotenberg_client
+    - Member[_merge].Member[Client]

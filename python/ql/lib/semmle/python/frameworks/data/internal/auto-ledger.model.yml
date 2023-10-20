@@ -12,6 +12,9 @@ extensions:
     - Member[payment].Member[forms].Member[BankcardExpiryMonthField]
   - - Django.Forms.Field~Subclass
     - ledger
+    - Member[payment].Member[forms].Member[BankcardMonthField]
+  - - Django.Forms.Field~Subclass
+    - ledger
     - Member[payment].Member[forms].Member[BankcardNumberField]
   - - Django.Forms.Field~Subclass
     - ledger
@@ -123,6 +126,9 @@ extensions:
     - Member[accounts].Member[models].Member[Version]
   - - Django.db.models.Model~Subclass
     - ledger
+    - Member[address].Member[models].Member[AbstractCountry]
+  - - Django.db.models.Model~Subclass
+    - ledger
     - Member[address].Member[models].Member[AbstractUserAddress]
   - - Django.db.models.Model~Subclass
     - ledger
@@ -144,10 +150,19 @@ extensions:
     - Member[basket].Member[models].Member[AbstractBasket]
   - - Django.db.models.Model~Subclass
     - ledger
+    - Member[basket].Member[models].Member[AbstractLineAttribute]
+  - - Django.db.models.Model~Subclass
+    - ledger
     - Member[basket].Member[models].Member[AbstractLine]
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[basket].Member[models].Member[Basket]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[basket].Member[models].Member[CoreAbstractBasket]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[basket].Member[models].Member[CoreAbstractLine]
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[basket].Member[models].Member[LineAttribute]
@@ -202,6 +217,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[catalogue].Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[catalogue].Member[models].Member[CoreAbstractProduct]
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[catalogue].Member[models].Member[Option]
@@ -294,6 +312,9 @@ extensions:
     - Member[licence].Member[models].Member[RevisionedMixin]
   - - Django.db.models.Model~Subclass
     - ledger
+    - Member[order].Member[models].Member[AbstractBillingAddress]
+  - - Django.db.models.Model~Subclass
+    - ledger
     - Member[order].Member[models].Member[AbstractCommunicationEvent]
   - - Django.db.models.Model~Subclass
     - ledger
@@ -321,6 +342,9 @@ extensions:
     - Member[order].Member[models].Member[AbstractPaymentEvent]
   - - Django.db.models.Model~Subclass
     - ledger
+    - Member[order].Member[models].Member[AbstractShippingAddress]
+  - - Django.db.models.Model~Subclass
+    - ledger
     - Member[order].Member[models].Member[AbstractShippingEventType]
   - - Django.db.models.Model~Subclass
     - ledger
@@ -331,6 +355,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[order].Member[models].Member[CommunicationEvent]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[CoreAbstractLine]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[CoreAbstractOrder]
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[order].Member[models].Member[LineAttribute]
@@ -400,6 +430,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[payments].Member[bpay].Member[facade].Member[BpayCollection]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[payments].Member[bpay].Member[facade].Member[BpayFileTrailer]
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[payments].Member[bpay].Member[facade].Member[BpayFile]
@@ -664,6 +697,9 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - ledger
     - Member[accounts].Member[forms].Member[ProfileForm]
+  - - django.forms.BaseForm~Subclass
+    - ledger
+    - Member[payment].Member[forms].Member[AbstractAddressForm]
   - - django.forms.BaseForm~Subclass
     - ledger
     - Member[payment].Member[forms].Member[BankcardForm]

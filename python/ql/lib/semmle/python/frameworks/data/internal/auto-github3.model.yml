@@ -10,6 +10,9 @@ extensions:
   - - io.StringIO~Subclass
     - github3
     - Member[decorators].Member[RequestsStringIO]
+  - - io.StringIO~Subclass
+    - github3
+    - Member[decorators].Member[StringIO]
   - - requests.models.Response~Subclass
     - github3
     - Member[decorators].Member[Response]

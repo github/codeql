@@ -6,4 +6,7 @@ extensions:
   data:
   - - logging.Logger~Subclass
     - red_commons
+    - Member[logging].Member[RedTraceLogger]
+  - - logging.Logger~Subclass
+    - red_commons
     - Member[logging]Member[RedTraceLogger]

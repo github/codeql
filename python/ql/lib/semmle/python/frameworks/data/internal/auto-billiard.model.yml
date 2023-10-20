@@ -21,4 +21,10 @@ extensions:
     - Member[common].Member[pickle_load]
   - - pickle~Alias
     - billiard
+    - Member[common].Member[cpickle]
+  - - pickle~Alias
+    - billiard
     - Member[common].Member[pickle]
+  - - pickle~Alias
+    - billiard
+    - Member[common].Member[pypickle]

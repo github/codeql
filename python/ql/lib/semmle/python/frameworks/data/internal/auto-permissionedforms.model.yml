@@ -6,6 +6,9 @@ extensions:
   data:
   - - django.forms.BaseForm~Subclass
     - permissionedforms
+    - Member[PermissionedForm]
+  - - django.forms.BaseForm~Subclass
+    - permissionedforms
     - Member[PermissionedModelForm]
   - - django.forms.BaseForm~Subclass
     - permissionedforms

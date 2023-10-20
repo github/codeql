@@ -49,3 +49,9 @@ extensions:
   - - logging.Logger~Subclass
     - pip
     - Member[_internal].Member[utils].Member[_log].Member[VerboseLogger]
+  - - pickle~Alias
+    - pip
+    - Member[_vendor].Member[cachecontrol].Member[compat].Member[pickle]
+  - - pickle~Alias
+    - pip
+    - Member[_vendor].Member[cachecontrol].Member[serialize].Member[pickle]

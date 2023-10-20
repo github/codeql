@@ -22,3 +22,6 @@ extensions:
   - - io.StringIO~Subclass
     - pdfminer
     - Member[pdfparser].Member[BytesIO]
+  - - pickle~Alias
+    - pdfminer
+    - Member[cmapdb].Member[pickle]

@@ -13,6 +13,12 @@ extensions:
   - - http.client.HTTPResponse~Subclass
     - cachecontrol
     - Member[serialize].Member[HTTPResponse]
+  - - pickle~Alias
+    - cachecontrol
+    - Member[compat].Member[pickle]
+  - - pickle~Alias
+    - cachecontrol
+    - Member[serialize].Member[pickle]
   - - requests.models.Response~Subclass
     - cachecontrol
     - Member[adapter].Member[Response]

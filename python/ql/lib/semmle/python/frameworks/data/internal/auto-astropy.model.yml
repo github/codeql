@@ -19,3 +19,6 @@ extensions:
   - - io.StringIO~Subclass
     - astropy
     - Member[io].Member[ascii].Member[ui].Member[StringIO]
+  - - pickle~Alias
+    - astropy
+    - Member[io].Member[votable].Member[validator].Member[result].Member[pickle]

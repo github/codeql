@@ -10,3 +10,6 @@ extensions:
   - - io.StringIO~Subclass
     - nilearn
     - Member[plotting].Member[html_stat_map].Member[BytesIO]
+  - - pickle~Alias
+    - nilearn
+    - Member[datasets].Member[utils].Member[pickle]

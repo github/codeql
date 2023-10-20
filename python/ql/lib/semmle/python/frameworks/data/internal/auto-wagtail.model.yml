@@ -27,6 +27,9 @@ extensions:
     - Member[admin].Member[forms].Member[tags].Member[TagField]
   - - Django.Forms.Field~Subclass
     - wagtail
+    - Member[admin].Member[forms].Member[tags].Member[TaggitTagField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
     - Member[admin].Member[panels].Member[BlockField]
   - - Django.Forms.Field~Subclass
     - wagtail
@@ -258,6 +261,9 @@ extensions:
     - Member[admin].Member[views].Member[generic].Member[models].Member[DeleteView]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[DjangoBaseDeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[generic].Member[models].Member[EditView]
   - - Django.Views.View~Subclass
     - wagtail
@@ -391,6 +397,9 @@ extensions:
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[lock].Member[UnlockView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[preview].Member[GenericPreviewOnEdit]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[preview].Member[PreviewOnCreate]
@@ -1548,6 +1557,9 @@ extensions:
     - Member[images].Member[models].Member[UploadedImage]
   - - Django.db.models.Model~Subclass
     - wagtail
+    - Member[models].Member[AbstractPage]
+  - - Django.db.models.Model~Subclass
+    - wagtail
     - Member[models].Member[BaseLogEntry]
   - - Django.db.models.Model~Subclass
     - wagtail
@@ -1578,6 +1590,9 @@ extensions:
     - Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - wagtail
+    - Member[models].Member[DraftStateMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail
     - Member[models].Member[GroupApprovalTask]
   - - Django.db.models.Model~Subclass
     - wagtail
@@ -1593,10 +1608,16 @@ extensions:
     - Member[models].Member[Locale]
   - - Django.db.models.Model~Subclass
     - wagtail
+    - Member[models].Member[LockableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail
     - Member[models].Member[MP_Node]
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[models].Member[ModelLogEntry]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[models].Member[Orderable]
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[models].Member[PageLogEntry]
@@ -1614,6 +1635,9 @@ extensions:
     - Member[models].Member[ReferenceIndex]
   - - Django.db.models.Model~Subclass
     - wagtail
+    - Member[models].Member[RevisionMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail
     - Member[models].Member[Revision]
   - - Django.db.models.Model~Subclass
     - wagtail
@@ -1621,6 +1645,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[models].Member[TaskState]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[models].Member[Task]
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[models].Member[TranslatableMixin]
@@ -1830,6 +1857,9 @@ extensions:
     - Member[search].Member[backends].Member[database].Member[sqlite].Member[sqlite].Member[SQLiteFTSIndexEntry]
   - - Django.db.models.Model~Subclass
     - wagtail
+    - Member[search].Member[models].Member[AbstractIndexEntry]
+  - - Django.db.models.Model~Subclass
+    - wagtail
     - Member[search].Member[models].Member[AbstractMySQLIndexEntry]
   - - Django.db.models.Model~Subclass
     - wagtail
@@ -1984,6 +2014,12 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[forms].Member[auth].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[auth].Member[DjangoPasswordChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[auth].Member[DjangoPasswordResetForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[forms].Member[auth].Member[LoginForm]

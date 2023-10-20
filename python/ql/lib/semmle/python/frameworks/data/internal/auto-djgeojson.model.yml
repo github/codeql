@@ -10,3 +10,6 @@ extensions:
   - - Django.Forms.Field~Subclass
     - djgeojson
     - Member[fields].Member[JSONField]
+  - - Django.Forms.Field~Subclass
+    - djgeojson
+    - Member[fields].Member[JSONFormField]

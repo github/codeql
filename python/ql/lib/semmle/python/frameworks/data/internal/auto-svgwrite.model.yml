@@ -7,3 +7,6 @@ extensions:
   - - xml.etree.ElementTree~Subclass
     - svgwrite
     - Member[base].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - svgwrite
+    - Member[etree].Member[etree]

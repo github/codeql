@@ -40,3 +40,6 @@ extensions:
   - - io.StringIO~Subclass
     - reportlab
     - Member[pdfbase].Member[ttfonts].Member[BytesIO]
+  - - pickle~Alias
+    - reportlab
+    - Member[lib].Member[utils].Member[pickle]

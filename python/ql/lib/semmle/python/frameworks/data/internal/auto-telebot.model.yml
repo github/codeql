@@ -7,3 +7,9 @@ extensions:
   - - io.StringIO~Subclass
     - telebot
     - Member[service_utils].Member[BytesIO]
+  - - pickle~Alias
+    - telebot
+    - Member[handler_backends].Member[pickle]
+  - - pickle~Alias
+    - telebot
+    - Member[storage].Member[pickle_storage].Member[pickle]
