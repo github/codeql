@@ -81,6 +81,9 @@ extensions:
     - Member[contrib].Member[gis].Member[forms].Member[fields].Member[PolygonField]
   - - Django.Forms.Field~Subclass
     - django
+    - Member[contrib].Member[postgres].Member[forms].Member[BaseRangeField]
+  - - Django.Forms.Field~Subclass
+    - django
     - Member[contrib].Member[postgres].Member[forms].Member[DateRangeField]
   - - Django.Forms.Field~Subclass
     - django
@@ -724,6 +727,15 @@ extensions:
   - - io.StringIO~Subclass
     - django
     - Member[utils].Member[translation].Member[template].Member[StringIO]
+  - - pickle~Alias
+    - django
+    - Member[core].Member[cache].Member[backends].Member[filebased].Member[pickle]
+  - - pickle~Alias
+    - django
+    - Member[core].Member[serializers].Member[base].Member[pickle]
+  - - pickle~Alias
+    - django
+    - Member[test].Member[runner].Member[pickle]
   - - urllib.parse.SplitResult~Subclass
     - django
     - Member[utils].Member[http].Member[SplitResult]

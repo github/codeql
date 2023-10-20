@@ -19,3 +19,12 @@ extensions:
   - - Django.Views.View~Subclass
     - dal_queryset_sequence
     - Member[views].Member[BaseQuerySetView]
+  - - Django.db.models.Model~Subclass
+    - dal_queryset_sequence
+    - Member[fields].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - dal_queryset_sequence
+    - Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - dal_queryset_sequence
+    - Member[widgets].Member[ContentType]

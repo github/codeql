@@ -5,17 +5,17 @@ extensions:
     pack: codeql/python-all
   data:
   - - Django.db.models.Model~Subclass
-    - actstream
-    - Member[actions].Member[ContentType]
+    - user_messages
+    - Member[models].Member[GroupMemberThread]
   - - Django.db.models.Model~Subclass
-    - actstream
-    - Member[managers].Member[ContentType]
+    - user_messages
+    - Member[models].Member[Group]
   - - Django.db.models.Model~Subclass
-    - actstream
-    - Member[models].Member[Action]
+    - user_messages
+    - Member[models].Member[Message]
   - - Django.db.models.Model~Subclass
-    - actstream
-    - Member[models].Member[ContentType]
+    - user_messages
+    - Member[models].Member[Thread]
   - - Django.db.models.Model~Subclass
-    - actstream
-    - Member[models].Member[Follow]
+    - user_messages
+    - Member[models].Member[UserThread]

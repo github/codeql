@@ -10,3 +10,6 @@ extensions:
   - - xml.etree.ElementTree~Subclass
     - rdflib
     - Member[compat].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - rdflib
+    - Member[compat].Member[etreenative]

@@ -10,6 +10,9 @@ extensions:
   - - io.StringIO~Subclass
     - google
     - Member[protobuf].Member[internal].Member[python_message].Member[BytesIO]
+  - - pickle~Alias
+    - google
+    - Member[protobuf].Member[internal].Member[containers].Member[pickle]
   - - requests.models.Response~Subclass
     - google
     - Member[cloud].Member[storage].Member[batch].Member[_FutureResponse]

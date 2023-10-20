@@ -6,4 +6,7 @@ extensions:
   data:
   - - lxml.etree~Alias
     - defusedxml
+    - Member[lxml].Member[_etree]
+  - - lxml.etree~Alias
+    - defusedxml
     - Member[lxml].Member[etree]

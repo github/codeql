@@ -22,3 +22,6 @@ extensions:
   - - io.StringIO~Subclass
     - twisted
     - Member[web].Member[_flatten].Member[BytesIO]
+  - - pickle~Alias
+    - twisted
+    - Member[persisted].Member[styles].Member[pickle]

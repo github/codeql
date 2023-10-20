@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - raven
+    - Member[contrib].Member[django].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - raven
+    - Member[contrib].Member[django].Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponse~Subclass
+    - raven
+    - Member[contrib].Member[django].Member[views].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - raven
+    - Member[transport].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - raven
+    - Member[transport].Member[twisted].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - raven
+    - Member[utils].Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - raven
+    - Member[utils].Member[compat].Member[StringIO]

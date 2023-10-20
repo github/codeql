@@ -9,4 +9,7 @@ extensions:
     - Member[compat].Member[FieldStorage]
   - - cgi.FieldStorage~Subclass
     - webob
+    - Member[compat].Member[_cgi_FieldStorage]
+  - - cgi.FieldStorage~Subclass
+    - webob
     - Member[compat].Member[cgi_FieldStorage]

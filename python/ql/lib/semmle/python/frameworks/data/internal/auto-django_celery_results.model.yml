@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[models].Member[ChordCounter]
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[models].Member[GroupResult]
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[models].Member[TaskResult]

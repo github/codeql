@@ -16,3 +16,9 @@ extensions:
   - - io.StringIO~Subclass
     - billiard
     - Member[five].Member[WhateverIO]
+  - - pickle.load~Alias
+    - billiard
+    - Member[common].Member[pickle_load]
+  - - pickle~Alias
+    - billiard
+    - Member[common].Member[pickle]

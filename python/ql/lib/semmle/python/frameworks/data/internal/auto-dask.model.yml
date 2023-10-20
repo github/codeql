@@ -7,3 +7,18 @@ extensions:
   - - io.StringIO~Subclass
     - dask
     - Member[dataframe].Member[io].Member[csv].Member[BytesIO]
+  - - pickle.loads~Alias
+    - dask
+    - Member[multiprocessing].Member[_loads]
+  - - pickle~Alias
+    - dask
+    - Member[array].Member[core].Member[pickle]
+  - - pickle~Alias
+    - dask
+    - Member[dataframe].Member[io].Member[parquet].Member[fastparquet].Member[pickle]
+  - - pickle~Alias
+    - dask
+    - Member[dataframe].Member[multi].Member[pickle]
+  - - pickle~Alias
+    - dask
+    - Member[multiprocessing].Member[pickle]

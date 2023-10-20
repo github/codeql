@@ -28,3 +28,6 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - invitations
     - Member[forms].Member[InviteForm]
+  - - django.http.response.HttpResponse~Subclass
+    - invitations
+    - Member[views].Member[HttpResponse]

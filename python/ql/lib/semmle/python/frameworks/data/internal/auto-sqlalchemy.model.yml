@@ -19,3 +19,12 @@ extensions:
   - - io.StringIO~Subclass
     - sqlalchemy
     - Member[util].Member[compat].Member[byte_buffer]
+  - - pickle~Alias
+    - sqlalchemy
+    - Member[sql].Member[sqltypes].Member[pickle]
+  - - pickle~Alias
+    - sqlalchemy
+    - Member[util].Member[compat].Member[pickle]
+  - - pickle~Alias
+    - sqlalchemy
+    - Member[util].Member[pickle]

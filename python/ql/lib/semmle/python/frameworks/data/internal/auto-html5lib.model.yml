@@ -12,6 +12,9 @@ extensions:
     - Member[_inputstream].Member[StringIO]
   - - lxml.etree~Alias
     - html5lib
+    - Member[treebuilders].Member[etree_lxml].Member[etree]
+  - - lxml.etree~Alias
+    - html5lib
     - Member[treewalkers].Member[etree_lxml].Member[etree]
   - - xml.etree.ElementTree~Subclass
     - html5lib

@@ -42,6 +42,9 @@ extensions:
     - Member[httpsession].Member[PoolManager]
   - - xml.etree.ElementTree~Subclass
     - botocore
+    - Member[compat].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - botocore
     - Member[handlers].Member[ETree]
   - - xml.etree.ElementTree~Subclass
     - botocore

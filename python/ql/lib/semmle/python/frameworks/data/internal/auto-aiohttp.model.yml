@@ -12,4 +12,7 @@ extensions:
     - Member[typedefs].Member[MultiDictProxy]
   - - multidict.MultiDictProxy~Subclass
     - aiohttp
+    - Member[typedefs].Member[_CIMultiDictProxy]
+  - - multidict.MultiDictProxy~Subclass
+    - aiohttp
     - Member[typedefs].Member[_MultiDictProxy]

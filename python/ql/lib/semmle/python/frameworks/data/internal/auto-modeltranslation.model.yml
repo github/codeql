@@ -10,6 +10,9 @@ extensions:
   - - Django.Forms.Field~Subclass
     - modeltranslation
     - Member[forms].Member[NullableField]
+  - - Django.db.models.Model~Subclass
+    - modeltranslation
+    - Member[manager].Member[Model]
   - - django.forms.BaseForm~Subclass
     - modeltranslation
     - Member[forms].Member[TranslationModelForm]

@@ -7,3 +7,51 @@ extensions:
   - - Django.Views.View~Subclass
     - dynamic_rest
     - Member[viewsets].Member[DynamicModelViewSet]
+  - - Django.db.models.Model~Subclass
+    - dynamic_rest
+    - Member[utils].Member[ContentType]
+  - - django.http.response.HttpResponse~Subclass
+    - dynamic_rest
+    - Member[pagination].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - dynamic_rest
+    - Member[routers].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - dynamic_rest
+    - Member[viewsets].Member[Response]
+  - - pickle~Alias
+    - dynamic_rest
+    - Member[fields].Member[fields].Member[pickle]
+  - - pickle~Alias
+    - dynamic_rest
+    - Member[fields].Member[pickle]
+  - - rest_framework.exceptions.APIException~Subclass
+    - dynamic_rest
+    - Member[fields].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - dynamic_rest
+    - Member[fields].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - dynamic_rest
+    - Member[fields].Member[fields].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - dynamic_rest
+    - Member[fields].Member[fields].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - dynamic_rest
+    - Member[fields].Member[generic].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - dynamic_rest
+    - Member[filters].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - dynamic_rest
+    - Member[viewsets].Member[ValidationError]
+  - - rest_framework.response.Response~Subclass
+    - dynamic_rest
+    - Member[pagination].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - dynamic_rest
+    - Member[routers].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - dynamic_rest
+    - Member[viewsets].Member[Response]

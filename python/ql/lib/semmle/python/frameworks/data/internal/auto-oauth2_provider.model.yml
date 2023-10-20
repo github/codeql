@@ -157,9 +157,87 @@ extensions:
   - - Django.Views.View~Subclass
     - oauth2_provider
     - Member[views].Member[token].Member[ListView]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[AbstractAccessToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[AbstractApplication]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[AbstractGrant]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[AbstractIDToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[AbstractRefreshToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[AccessToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[Application]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[Grant]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[IDToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[RefreshToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[oauth2_validators].Member[AbstractApplication]
   - - django.forms.BaseForm~Subclass
     - oauth2_provider
     - Member[forms].Member[AllowForm]
   - - django.forms.BaseForm~Subclass
     - oauth2_provider
     - Member[views].Member[base].Member[AllowForm]
+  - - django.http.request.HttpRequest~Subclass
+    - oauth2_provider
+    - Member[oauth2_validators].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - oauth2_provider
+    - Member[settings].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - oauth2_provider
+    - Member[settings].Member[_PhonyHttpRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - oauth2_provider
+    - Member[views].Member[mixins].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - oauth2_provider
+    - Member[views].Member[mixins].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponse~Subclass
+    - oauth2_provider
+    - Member[http].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - oauth2_provider
+    - Member[http].Member[OAuth2ResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[OAuth2ResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - oauth2_provider
+    - Member[views].Member[introspect].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - oauth2_provider
+    - Member[views].Member[oidc].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - oauth2_provider
+    - Member[views].Member[oidc].Member[JsonResponse]
+  - - rest_framework.exceptions.APIException~Subclass
+    - oauth2_provider
+    - Member[contrib].Member[rest_framework].Member[permissions].Member[PermissionDenied]
+  - - urllib.parse.SplitResult~Subclass
+    - oauth2_provider
+    - Member[oauth2_backends].Member[SplitResult]

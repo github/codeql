@@ -9,6 +9,9 @@ extensions:
     - Member[webdriver].Member[firefox].Member[firefox_profile].Member[BytesIO]
   - - io.StringIO~Subclass
     - selenium
+    - Member[webdriver].Member[firefox].Member[webdriver].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - selenium
     - Member[webdriver].Member[remote].Member[webelement].Member[BytesIO]
   - - io.StringIO~Subclass
     - selenium

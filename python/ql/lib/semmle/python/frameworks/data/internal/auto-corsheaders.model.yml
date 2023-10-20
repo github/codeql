@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - corsheaders
+    - Member[middleware].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - corsheaders
+    - Member[middleware].Member[HttpResponse]

@@ -6,6 +6,24 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - django_downloadview
+    - Member[BaseDownloadView]
+  - - Django.Views.View~Subclass
+    - django_downloadview
+    - Member[HTTPDownloadView]
+  - - Django.Views.View~Subclass
+    - django_downloadview
+    - Member[ObjectDownloadView]
+  - - Django.Views.View~Subclass
+    - django_downloadview
+    - Member[PathDownloadView]
+  - - Django.Views.View~Subclass
+    - django_downloadview
+    - Member[StorageDownloadView]
+  - - Django.Views.View~Subclass
+    - django_downloadview
+    - Member[VirtualDownloadView]
+  - - Django.Views.View~Subclass
+    - django_downloadview
     - Member[api].Member[BaseDownloadView]
   - - Django.Views.View~Subclass
     - django_downloadview
@@ -79,3 +97,51 @@ extensions:
   - - Django.Views.View~Subclass
     - django_downloadview
     - Member[views].Member[virtual].Member[VirtualDownloadView]
+  - - django.http.response.HttpResponseNotModified~Subclass
+    - django_downloadview
+    - Member[views].Member[base].Member[HttpResponseNotModified]
+  - - django.http.response.HttpResponse~Subclass
+    - django_downloadview
+    - Member[ProxiedDownloadResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_downloadview
+    - Member[api].Member[ProxiedDownloadResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_downloadview
+    - Member[response].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_downloadview
+    - Member[response].Member[ProxiedDownloadResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - django_downloadview
+    - Member[DownloadResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - django_downloadview
+    - Member[api].Member[DownloadResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - django_downloadview
+    - Member[middlewares].Member[DownloadResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - django_downloadview
+    - Member[response].Member[DownloadResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - django_downloadview
+    - Member[response].Member[StreamingHttpResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - django_downloadview
+    - Member[views].Member[base].Member[DownloadResponse]
+  - - io.StringIO~Subclass
+    - django_downloadview
+    - Member[BytesIteratorIO]
+  - - io.StringIO~Subclass
+    - django_downloadview
+    - Member[api].Member[BytesIteratorIO]
+  - - io.StringIO~Subclass
+    - django_downloadview
+    - Member[files].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django_downloadview
+    - Member[files].Member[BytesIteratorIO]
+  - - io.StringIO~Subclass
+    - django_downloadview
+    - Member[io].Member[BytesIteratorIO]

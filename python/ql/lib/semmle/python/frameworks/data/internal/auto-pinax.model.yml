@@ -10,3 +10,57 @@ extensions:
   - - Django.Views.View~Subclass
     - pinax
     - Member[ratings].Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[backends].Member[base].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[engine].Member[NoticeQueueBatch]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[engine].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[hooks].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[models].Member[NoticeQueueBatch]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[models].Member[NoticeSetting]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[models].Member[NoticeType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[ratings].Member[managers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[ratings].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[ratings].Member[models].Member[OverallRating]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[ratings].Member[models].Member[Rating]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[ratings].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[ratings].Member[views].Member[Rating]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - pinax
+    - Member[ratings].Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.JsonResponse~Subclass
+    - pinax
+    - Member[ratings].Member[views].Member[JsonResponse]
+  - - pickle~Alias
+    - pinax
+    - Member[notifications].Member[engine].Member[pickle]
+  - - pickle~Alias
+    - pinax
+    - Member[notifications].Member[models].Member[pickle]

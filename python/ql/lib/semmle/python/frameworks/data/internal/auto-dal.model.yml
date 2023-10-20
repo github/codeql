@@ -55,3 +55,9 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - dal
     - Member[forms].Member[FutureModelForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - dal
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - dal
+    - Member[views].Member[HttpResponseNotAllowed]

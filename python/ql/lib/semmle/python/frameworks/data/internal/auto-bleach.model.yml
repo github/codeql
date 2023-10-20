@@ -12,6 +12,9 @@ extensions:
     - Member[_vendor].Member[html5lib].Member[_inputstream].Member[StringIO]
   - - lxml.etree~Alias
     - bleach
+    - Member[_vendor].Member[html5lib].Member[treebuilders].Member[etree_lxml].Member[etree]
+  - - lxml.etree~Alias
+    - bleach
     - Member[_vendor].Member[html5lib].Member[treewalkers].Member[etree_lxml].Member[etree]
   - - xml.etree.ElementTree~Subclass
     - bleach

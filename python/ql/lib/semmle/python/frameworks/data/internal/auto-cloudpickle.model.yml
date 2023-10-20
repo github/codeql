@@ -22,3 +22,15 @@ extensions:
   - - pickle.load~Alias
     - cloudpickle
     - Member[load]
+  - - pickle~Alias
+    - cloudpickle
+    - Member[cloudpickle].Member[pickle]
+  - - pickle~Alias
+    - cloudpickle
+    - Member[cloudpickle_fast].Member[pickle]
+  - - pickle~Alias
+    - cloudpickle
+    - Member[compat].Member[pickle]
+  - - pickle~Alias
+    - cloudpickle
+    - Member[pickle]

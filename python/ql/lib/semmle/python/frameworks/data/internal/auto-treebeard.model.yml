@@ -6,6 +6,24 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - treebeard
+    - Member[admin].Member[AL_Node]
+  - - Django.db.models.Model~Subclass
+    - treebeard
+    - Member[al_tree].Member[AL_Node]
+  - - Django.db.models.Model~Subclass
+    - treebeard
+    - Member[al_tree].Member[Node]
+  - - Django.db.models.Model~Subclass
+    - treebeard
+    - Member[forms].Member[AL_Node]
+  - - Django.db.models.Model~Subclass
+    - treebeard
+    - Member[forms].Member[MP_Node]
+  - - Django.db.models.Model~Subclass
+    - treebeard
+    - Member[forms].Member[NS_Node]
+  - - Django.db.models.Model~Subclass
+    - treebeard
     - Member[models].Member[Node]
   - - Django.db.models.Model~Subclass
     - treebeard
@@ -13,6 +31,18 @@ extensions:
   - - Django.db.models.Model~Subclass
     - treebeard
     - Member[mp_tree].Member[Node]
+  - - Django.db.models.Model~Subclass
+    - treebeard
+    - Member[ns_tree].Member[NS_Node]
+  - - Django.db.models.Model~Subclass
+    - treebeard
+    - Member[ns_tree].Member[Node]
   - - django.forms.BaseForm~Subclass
     - treebeard
     - Member[forms].Member[MoveNodeForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - treebeard
+    - Member[admin].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - treebeard
+    - Member[admin].Member[HttpResponse]

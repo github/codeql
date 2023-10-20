@@ -5,8 +5,8 @@ extensions:
     pack: codeql/python-all
   data:
   - - io.StringIO~Subclass
-    - blib2to3
-    - Member[pytree].Member[StringIO]
-  - - pickle~Alias
-    - blib2to3
-    - Member[pgen2].Member[grammar].Member[pickle]
+    - requests_file
+    - Member[BytesIO]
+  - - requests.models.Response~Subclass
+    - requests_file
+    - Member[Response]

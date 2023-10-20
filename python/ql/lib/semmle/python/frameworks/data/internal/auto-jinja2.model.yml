@@ -52,3 +52,6 @@ extensions:
   - - markupsafe.Markup~Subclass
     - jinja2
     - Member[utils].Member[Markup]
+  - - pickle~Alias
+    - jinja2
+    - Member[bccache].Member[pickle]
