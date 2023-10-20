@@ -7,15 +7,16 @@
  * @id java/ml/extract-automodel-framework-positive-examples
  * @tags internal extract automodel framework-mode positive examples
  */
+
 private import AutomodelFrameworkModeCharacteristics
 private import AutomodelEndpointTypes
 private import AutomodelJavaUtil
 
 from
-  Endpoint endpoint, EndpointType endpointType, FrameworkModeMetadataExtractor meta, DollarAtString package,
-  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString output, DollarAtString parameterName,
-  DollarAtString extensibleType
+  Endpoint endpoint, EndpointType endpointType, FrameworkModeMetadataExtractor meta,
+  DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
+  DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString parameterName, DollarAtString extensibleType
 where
   endpoint.getExtensibleType() = extensibleType and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
