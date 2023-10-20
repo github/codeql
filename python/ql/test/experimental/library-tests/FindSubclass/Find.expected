@@ -1,3 +1,4 @@
+| flask.MethodView~Subclass | find_subclass_test | Member[C] |
 | flask.MethodView~Subclass | find_subclass_test | Member[MethodView] |
 | flask.MethodView~Subclass | find_subclass_test | Member[clash] |
 | flask.View~Subclass | find_subclass_test | Member[A] |

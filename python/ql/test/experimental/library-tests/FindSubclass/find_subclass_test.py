@@ -1,4 +1,5 @@
 from flask.views import View
+import flask.views
 
 class A(View):
     pass
@@ -6,6 +7,8 @@ class A(View):
 class B(A):
     pass
 
+class C(flask.views.MethodView):
+    pass
 
 ViewAlias = View
 
