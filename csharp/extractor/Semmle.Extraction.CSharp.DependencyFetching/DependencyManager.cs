@@ -180,30 +180,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 RemoveNugetPackageReference("microsoft.aspnetcore.app.ref");
             }
 
-            // Multiple packages are available, we keep only one:
-            if (existsNetCoreRefNugetPackage)
+            // Multiple dotnet framework packages could be present. We keep only one.
+            // The order of the packages is important, we're keeping the first one that is present in the nuget cache.
+            var packagesInPrioOrder = new (bool isPresent, string prefix)[]
             {
-                if (existsNetFrameworkRefNugetPackage)
-                    RemoveNugetPackageReference("microsoft.netframework.referenceassemblies.");
+                // net7.0, ... net5.0, netcoreapp3.1, netcoreapp3.0
+                (existsNetCoreRefNugetPackage, "microsoft.netcore.app.ref"),
+                // net48, ..., net20
+                (existsNetFrameworkRefNugetPackage, "microsoft.netframework.referenceassemblies."),
+                // netstandard2.1
+                (existsNetstandardLibRefNugetPackage, "netstandard.library.ref"),
+                // netstandard2.0
+                (existsNetstandardLibNugetPackage, "netstandard.library")
+            };
 
-                if (existsNetstandardLibRefNugetPackage)
-                    RemoveNugetPackageReference("netstandard.library.ref");
-
-                if (existsNetstandardLibNugetPackage)
-                    RemoveNugetPackageReference("netstandard.library");
-            }
-            else if (existsNetFrameworkRefNugetPackage)
+            for (var i = 0; i < packagesInPrioOrder.Length; i++)
             {
-                if (existsNetstandardLibRefNugetPackage)
-                    RemoveNugetPackageReference("netstandard.library.ref");
+                var (isPresent, _) = packagesInPrioOrder[i];
+                if (!isPresent)
+                {
+                    continue;
+                }
 
-                if (existsNetstandardLibNugetPackage)
-                    RemoveNugetPackageReference("netstandard.library");
-            }
-            else if (existsNetstandardLibRefNugetPackage)
-            {
-                if (existsNetstandardLibNugetPackage)
-                    RemoveNugetPackageReference("netstandard.library");
+                // Package is present, remove all the lower priority packages:
+                for (var j = i + 1; j < packagesInPrioOrder.Length; j++)
+                {
+                    var (otherIsPresent, otherPrefix) = packagesInPrioOrder[j];
+                    if (otherIsPresent)
+                    {
+                        RemoveNugetPackageReference(otherPrefix);
+                    }
+                }
+                break;
             }
 
             // TODO: There could be multiple `microsoft.netframework.referenceassemblies` packages,
