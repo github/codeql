@@ -464,6 +464,24 @@ class LxmlETreeAlias extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() { result = Lxml::etreeRef() }
 }
 
+class PickleAlias extends FindSubclassesSpec {
+  PickleAlias() { this = "pickle~Alias" }
+
+  override API::Node getAlreadyModeledClass() { result = StdlibPrivate::pickle() }
+}
+
+class PickleLoadAlias extends FindSubclassesSpec {
+  PickleLoadAlias() { this = "pickle.load~Alias" }
+
+  override API::Node getAlreadyModeledClass() { result = StdlibPrivate::pickle_load() }
+}
+
+class PickleLoadsAlias extends FindSubclassesSpec {
+  PickleLoadsAlias() { this = "pickle.loads~Alias" }
+
+  override API::Node getAlreadyModeledClass() { result = StdlibPrivate::pickle_loads() }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
