@@ -163,12 +163,13 @@ module NotExposed {
       newOrExistingModeling(spec).getASubclass*().getAValueReachableFromSource().asExpr() and
     importMember.getScope() = mod and
     loc = importMember.getLocation() and
-    (
-      mod.isPackageInit() and
-      newAliasFullyQualified = mod.getPackageName() + "." + importMember.getName()
+    exists(Alias alias, string base |
+      mod.isPackageInit() and base = mod.getPackageName()
       or
-      not mod.isPackageInit() and
-      newAliasFullyQualified = mod.getName() + "." + importMember.getName()
+      not mod.isPackageInit() and base = mod.getName()
+    |
+      alias.getValue() = importMember and
+      newAliasFullyQualified = base + "." + alias.getAsname()
     ) and
     (
       not hasAllStatement(mod)
