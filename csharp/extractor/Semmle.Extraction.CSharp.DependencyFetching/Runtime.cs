@@ -19,7 +19,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDotNet dotNet;
         private readonly Lazy<Dictionary<string, DotNetVersion>> newestRuntimes;
         private Dictionary<string, DotNetVersion> NewestRuntimes => newestRuntimes.Value;
-        private static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 
         public Runtime(IDotNet dotNet)
         {
@@ -70,16 +69,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             get
             {
-                var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
-                var monoDirs = monoPath is not null
-                    ? new[] { monoPath }
-                    : new[] { "/usr/lib/mono", @"C:\Program Files\Mono\lib\mono" };
-
                 if (Directory.Exists(@"C:\Windows\Microsoft.NET\Framework64"))
                 {
                     return Directory.EnumerateDirectories(@"C:\Windows\Microsoft.NET\Framework64", "v*")
                         .OrderByDescending(Path.GetFileName);
                 }
+
+                var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
+                var monoDirs = monoPath is not null
+                    ? new[] { Path.GetFullPath(Path.Combine(monoPath, "..", "lib", "mono")), monoPath }
+                    : new[] { "/usr/lib/mono", "/usr/local/mono", "/usr/local/bin/mono", @"C:\Program Files\Mono\lib\mono" };
 
                 var dir = monoDirs.FirstOrDefault(Directory.Exists);
 
@@ -107,33 +106,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Gets the .NET runtime location to use for extraction.
+        /// Gets the Dotnet Core location.
         /// </summary>
-        public string GetRuntime(bool useSelfContained)
-        {
-            if (useSelfContained)
-            {
-                return ExecutingRuntime;
-            }
-
-            // Location of the newest .NET Core Runtime.
-            if (GetVersion(netCoreApp) is string path)
-            {
-                return path;
-            }
-
-            if (DesktopRuntimes.Any())
-            {
-                return DesktopRuntimes.First();
-            }
-
-            // A bad choice if it's the self-contained runtime distributed in codeql dist.
-            return ExecutingRuntime;
-        }
+        public string? NetCoreRuntime => GetVersion(netCoreApp);
 
         /// <summary>
-        /// Gets the ASP.NET runtime location to use for extraction, if one exists.
+        /// Gets the .NET Framework location. Either the installation folder on Windows or Mono
         /// </summary>
-        public string? GetAspRuntime() => GetVersion(aspNetCoreApp);
+        public string? DesktopRuntime => DesktopRuntimes?.FirstOrDefault();
+
+        /// <summary>
+        /// Gets the executing runtime location, this is the self contained runtime shipped in the CodeQL CLI bundle.
+        /// </summary>
+        public string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
+
+        /// <summary>
+        /// Gets the ASP.NET Core location.
+        /// </summary>
+        public string? AspNetCoreRuntime => GetVersion(aspNetCoreApp);
     }
 }

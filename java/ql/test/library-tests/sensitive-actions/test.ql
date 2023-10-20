@@ -9,4 +9,4 @@ query predicate sensitiveVariable(Variable v) {
   v.getName().regexpMatch(getCommonSensitiveInfoRegex())
 }
 
-query predicate sensitiveDataMethod(SensitiveDataMethod m) { any() }
+query predicate sensitiveDataMethod(SensitiveDataMethod m) { m.fromSource() }

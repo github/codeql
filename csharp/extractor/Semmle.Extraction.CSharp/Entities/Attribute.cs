@@ -63,10 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (attributeSyntax is not null)
             {
-                if (!Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
-                {
-                    trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Context));
-                }
+                trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Context));
 
                 TypeMention.Create(Context, attributeSyntax.Name, this, type);
             }

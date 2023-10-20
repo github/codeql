@@ -148,7 +148,7 @@ private predicate updateMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::N
  * such as cipher, MAC or signature.
  */
 private module UserInputInCryptoOperationConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(ProduceCryptoCall call | call.getQualifier() = sink.asExpr())
@@ -214,7 +214,7 @@ private class NonConstantTimeComparisonCall extends StaticMethodAccess {
  * that compare inputs using a non-constant-time algorithm.
  */
 private module UserInputInComparisonConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(NonConstantTimeEqualsCall call |

@@ -29,10 +29,6 @@ deprecated class Configuration extends TaintTracking::Configuration {
     node instanceof StringConstCompareBarrier or
     node instanceof StringConstArrayInclusionCallBarrier
   }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
 }
 
 private module ServerSideRequestForgeryConfig implements DataFlow::ConfigSig {

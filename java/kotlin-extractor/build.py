@@ -87,7 +87,7 @@ def write_arg_file(arg_file, args):
                 raise Exception('Single quote in argument: ' + arg)
             f.write("'" + arg.replace('\\', '/') + "'\n")
 
-def compile_to_dir(build_dir, srcs, classpath, java_classpath, output):
+def compile_to_dir(build_dir, srcs, language_version, classpath, java_classpath, output):
     # Use kotlinc to compile .kt files:
     kotlin_arg_file = build_dir + '/kotlin.args'
     kotlin_args = ['-Werror',
@@ -95,6 +95,8 @@ def compile_to_dir(build_dir, srcs, classpath, java_classpath, output):
                    '-opt-in=org.jetbrains.kotlin.ir.symbols.IrSymbolInternals',
                    '-d', output,
                    '-module-name', 'codeql-kotlin-extractor',
+                   '-Xsuppress-version-warnings',
+                   '-language-version', language_version,
                    '-no-reflect', '-no-stdlib',
                    '-jvm-target', '1.8',
                    '-classpath', classpath] + srcs
@@ -114,14 +116,14 @@ def compile_to_dir(build_dir, srcs, classpath, java_classpath, output):
     run_process([javac, '@' + java_arg_file])
 
 
-def compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output):
+def compile_to_jar(build_dir, tmp_src_dir, srcs, language_version, classpath, java_classpath, output):
     class_dir = build_dir + '/classes'
 
     if os.path.exists(class_dir):
         shutil.rmtree(class_dir)
     os.makedirs(class_dir)
 
-    compile_to_dir(build_dir, srcs, classpath, java_classpath, class_dir)
+    compile_to_dir(build_dir, srcs, language_version, classpath, java_classpath, class_dir)
 
     run_process(['jar', 'cf', output,
                  '-C', class_dir, '.',
@@ -192,6 +194,8 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
                 # copy and overwrite files from the version folder to the include folder
                 shutil.copytree(d, include_version_folder, dirs_exist_ok=True)
 
+    language_version = str(parsed_current_version[0]) + '.' + str(parsed_current_version[1])
+
     # remove all version folders:
     shutil.rmtree(tmp_src_dir + '/main/kotlin/utils/versions')
 
@@ -199,7 +203,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
 
     transform_to_embeddable(srcs)
 
-    compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output)
+    compile_to_jar(build_dir, tmp_src_dir, srcs, language_version, classpath, java_classpath, output)
 
     shutil.rmtree(tmp_src_dir)
 

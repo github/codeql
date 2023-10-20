@@ -12,7 +12,8 @@ private import semmle.code.java.frameworks.owasp.Esapi
  */
 abstract class TrustBoundaryViolationSource extends DataFlow::Node { }
 
-private class RemoteSource extends TrustBoundaryViolationSource instanceof RemoteFlowSource { }
+private class ThreatModelSource extends TrustBoundaryViolationSource instanceof ThreatModelFlowSource
+{ }
 
 /**
  * A sink for data that crosses a trust boundary.

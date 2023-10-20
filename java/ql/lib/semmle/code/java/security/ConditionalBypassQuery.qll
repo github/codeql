@@ -57,7 +57,7 @@ deprecated class ConditionalBypassFlowConfig extends TaintTracking::Configuratio
  * A taint tracking configuration for untrusted data flowing to sensitive conditions.
  */
 module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
 

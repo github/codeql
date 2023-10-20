@@ -6,6 +6,7 @@
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import DataFlowUtil
+private import DataFlowPrivate
 private import SsaInternals as Ssa
 
 /**
@@ -35,7 +36,7 @@ DataFlow::Node callInput(CallInstruction call, FunctionInput input) {
  */
 Node callOutput(CallInstruction call, FunctionOutput output) {
   // The return value
-  result.asInstruction() = call and
+  simpleOutNode(result, call) and
   output.isReturnValue()
   or
   // The side effect of a call on the value pointed to by an argument or qualifier
@@ -82,7 +83,7 @@ Node callOutput(CallInstruction call, FunctionOutput output, int d) {
     // If there isn't an indirect out node for the call with indirection `d` then
     // we conflate this with the underlying `CallInstruction`.
     not exists(getIndirectReturnOutNode(call, d)) and
-    n.asInstruction() = result.asInstruction()
+    n = result
     or
     // The side effect of a call on the value pointed to by an argument or qualifier
     exists(Operand operand, int indirectionIndex |

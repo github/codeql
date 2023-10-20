@@ -67,5 +67,3 @@ sensitiveDataMethod
 | Test.java:37:18:37:31 | aaCryptAccntaa |
 | Test.java:39:18:39:33 | aaCryptTrustedaa |
 | Test.java:41:18:41:40 | aaCryptRefreshaaTokenaa |
-| file:///modules/java.base/java/lang/invoke/MemberName.class:0:0:0:0 | isTrustedFinalField |
-| file:///modules/java.base/java/lang/reflect/Field.class:0:0:0:0 | isTrustedFinal |

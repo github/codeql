@@ -44,10 +44,6 @@ module RequestForgery {
       super.isSanitizerOut(node) or
       node instanceof SanitizerEdge
     }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      super.isSanitizerGuard(guard) or guard instanceof SanitizerGuard
-    }
   }
 
   private module Config implements DataFlow::ConfigSig {

@@ -26,7 +26,7 @@ private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
 }
 
 module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SpringUrlRedirectSink }
 

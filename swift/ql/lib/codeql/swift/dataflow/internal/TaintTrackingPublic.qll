@@ -26,6 +26,7 @@ predicate localTaintStep = localTaintStepCached/2;
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
+pragma[inline_late]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs) {
   // If a `PostUpdateNode` is specified as a sink, there's (almost) always a store step preceding it.
   // So when the node is a `PostUpdateNode` we allow any sequence of implicit read steps of an appropriate
@@ -36,4 +37,9 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs)
     cx.asNominalTypeDecl() = d and
     cs.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
   )
+  or
+  // We often expect taint to reach a sink inside `CollectionContent`, for example an array element
+  // or pointer contents. It is convenient to have a default implicit read step for these cases rather
+  // than implementing this step in a lot of separate `allowImplicitRead`s.
+  cs.getAReadContent() instanceof DataFlow::Content::CollectionContent
 }

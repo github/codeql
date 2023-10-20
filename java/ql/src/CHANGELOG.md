@@ -1,3 +1,27 @@
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Most data flow queries that track flow from *remote* flow sources now use the current *threat model* configuration instead. This doesn't lead to any changes in the produced alerts (as the default configuration is *remote* flow sources) unless the threat model configuration is changed.
+
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Queries
+
+* Added the `java/trust-boundary-violation` query to detect trust boundary violations between HTTP requests and the HTTP session. Also added the `trust-boundary-violation` sink kind for sinks which may cross a trust boundary, such as calls to the `HttpSession#setAttribute` method.
+
+### Minor Analysis Improvements
+
+* The queries "Resolving XML external entity in user-controlled data" (`java/xxe`) and "Resolving XML external entity in user-controlled data from local source" (`java/xxe-local`) now recognize sinks in the MDHT library.
+
 ## 0.7.3
 
 No user-facing changes.

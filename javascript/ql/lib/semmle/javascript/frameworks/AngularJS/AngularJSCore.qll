@@ -619,27 +619,6 @@ private class JQLiteObject extends JQuery::ObjectSource::Range {
 }
 
 /**
- * DEPRECATED: Use `AngularJSCallNode` instead.
- * A call to an AngularJS function.
- *
- * Used for exposing behavior that is similar to the behavior of other libraries.
- */
-deprecated class AngularJSCall extends CallExpr {
-  AngularJSCallNode node;
-
-  AngularJSCall() { this.flow() = node }
-
-  /** Holds if `e` is an argument that this call interprets as HTML. */
-  deprecated predicate interpretsArgumentAsHtml(Expr e) { node.interpretsArgumentAsHtml(e.flow()) }
-
-  /** Holds if `e` is an argument that this call stores globally, e.g. in a cookie. */
-  deprecated predicate storesArgumentGlobally(Expr e) { node.storesArgumentGlobally(e.flow()) }
-
-  /** Holds if `e` is an argument that this call interprets as code. */
-  deprecated predicate interpretsArgumentAsCode(Expr e) { node.interpretsArgumentAsCode(e.flow()) }
-}
-
-/**
  * A call to an AngularJS function.
  *
  * Used for exposing behavior that is similar to the behavior of other libraries.

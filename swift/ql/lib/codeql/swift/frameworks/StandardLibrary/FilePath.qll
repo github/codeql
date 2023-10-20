@@ -61,11 +61,7 @@ private class FilePathFieldsInheritTaint extends TaintInheritingContent,
   FilePathFieldsInheritTaint() {
     exists(FieldDecl f | this.getField() = f |
       f.getEnclosingDecl().asNominalTypeDecl() instanceof FilePath and
-      f.getName() =
-        [
-          "description", "debugDescription", "components", "extension", "lastComponent", "root",
-          "stem", "string"
-        ]
+      f.getName() = ["components", "extension", "lastComponent", "root", "stem", "string"]
     )
   }
 }

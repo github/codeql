@@ -22,7 +22,7 @@ import RequestResponseFlow::PathGraph
 /** Taint-tracking configuration tracing flow from get method request sources to output jsonp data. */
 module RequestResponseFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource and
+    source instanceof ThreatModelFlowSource and
     any(RequestGetMethod m).polyCalls*(source.getEnclosingCallable())
   }
 

@@ -74,7 +74,7 @@ class ExternalApkSource extends DataFlow::Node {
     sourceNode(this, "android-external-storage-dir") or
     this.asExpr().(MethodAccess).getMethod() instanceof UriConstructorMethod or
     this.asExpr().(StringLiteral).getValue().matches("file://%") or
-    this instanceof RemoteFlowSource
+    this instanceof ThreatModelFlowSource
   }
 }
 

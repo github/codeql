@@ -66,7 +66,7 @@ deprecated predicate hasPolynomialReDoSResult(
 
 /** A configuration for Polynomial ReDoS queries. */
 module PolynomialRedosConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(SuperlinearBackTracking::PolynomialBackTrackingTerm regexp |

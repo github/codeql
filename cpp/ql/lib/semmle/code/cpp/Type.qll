@@ -819,6 +819,30 @@ private predicate floatingPointTypeMapping(
   or
   // _Complex _Float16
   kind = 53 and base = 2 and domain = TComplexDomain() and realKind = 52 and extended = false
+  or
+  // __fp16
+  kind = 54 and base = 2 and domain = TRealDomain() and realKind = 54 and extended = false
+  or
+  // __bf16
+  kind = 55 and base = 2 and domain = TRealDomain() and realKind = 55 and extended = false
+  or
+  // std::float16_t
+  kind = 56 and base = 2 and domain = TRealDomain() and realKind = 56 and extended = false
+  or
+  // _Complex _Float32
+  kind = 57 and base = 2 and domain = TComplexDomain() and realKind = 45 and extended = false
+  or
+  // _Complex _Float32x
+  kind = 58 and base = 2 and domain = TComplexDomain() and realKind = 46 and extended = true
+  or
+  // _Complex _Float64
+  kind = 59 and base = 2 and domain = TComplexDomain() and realKind = 47 and extended = false
+  or
+  // _Complex _Float64x
+  kind = 60 and base = 2 and domain = TComplexDomain() and realKind = 48 and extended = true
+  or
+  // _Complex _Float128
+  kind = 61 and base = 2 and domain = TComplexDomain() and realKind = 49 and extended = false
 }
 
 /**

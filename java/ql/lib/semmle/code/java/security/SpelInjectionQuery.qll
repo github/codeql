@@ -29,7 +29,7 @@ deprecated class SpelInjectionConfig extends TaintTracking::Configuration {
  * that is used to construct and evaluate a SpEL expression.
  */
 module SpelInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SpelExpressionEvaluationSink }
 

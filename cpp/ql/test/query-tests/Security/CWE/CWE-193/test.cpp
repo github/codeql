@@ -251,7 +251,7 @@ void test17(unsigned *p, unsigned x, unsigned k) {
         // The following access is okay because:
         // n = 3*p[0] + k >= p[0] + k >= p[1] + k > p[1] = i
         // (where p[0] denotes the original value for p[0])
-        p[i] = x; // $ alloc=L248 deref=L254 // GOOD [FALSE POSITIVE]
+        p[i] = x; // GOOD
     }
 }
 
@@ -847,5 +847,16 @@ void test16_with_malloc(size_t index) {
   if(size >= index) {
     int* newname = (int*)malloc(size);
     newname[index] = 0; // $ SPURIOUS: alloc=L848 deref=L849 // GOOD [FALSE POSITIVE]
+  }
+}
+
+# define MyMalloc(size) malloc(((size) == 0 ? 1 : (size)))
+
+void test_regression(size_t size) {
+  int* p = (int*)MyMalloc(size + 1);
+  int* chend = p + (size + 1); // $ alloc=L856+1
+
+  if(p <= chend) {
+    *p = 42; // $ deref=L860 // BAD
   }
 }

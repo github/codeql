@@ -815,7 +815,7 @@ private module Cached {
   ) {
     indirectionIndex = [1 .. countIndirectionsForCppType(getResultLanguageType(instr))] and
     exists(Instruction load, Operand address |
-      address.getDef() = instr and
+      address = unique( | | getAUse(instr)) and
       isDereference(load, address, false) and
       instrRepr = load and
       indirectionIndexRepr = indirectionIndex - 1

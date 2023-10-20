@@ -262,3 +262,9 @@ void test_ref_delete(int *&p) {
 	use(p);  // GOOD
     delete p;  // GOOD
 }
+
+void test_free_assign() {
+	void *a = malloc(10); 
+	void *b;
+	free(b = a); // GOOD 
+}

@@ -31,10 +31,6 @@ deprecated module PolynomialReDoS {
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard node) {
-      node instanceof SanitizerGuard
-    }
   }
 }
 

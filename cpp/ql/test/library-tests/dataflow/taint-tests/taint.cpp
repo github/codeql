@@ -13,8 +13,8 @@ void arithAssignments(int source1, int clean1) {
   source1++;
   ++source1;
   source1 += 1;
-  sink(source1); // $ ast ir=12:13 ir=12:22
-  sink(++source1); // $ ast ir=12:13 ir=12:22
+  sink(source1); // $ ast,ir
+  sink(++source1); // $ ast,ir
 }
 
 // --- globals ---

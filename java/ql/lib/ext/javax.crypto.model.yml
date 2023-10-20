@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.crypto", "Cipher", True, "init", "(int,Key,AlgorithmParameterSpec)", "", "Argument[2]", "encryption-iv", "manual"]
+      - ["javax.crypto", "Cipher", True, "init", "(int,Key,AlgorithmParameterSpec,SecureRandom)", "", "Argument[2]", "encryption-iv", "manual"]

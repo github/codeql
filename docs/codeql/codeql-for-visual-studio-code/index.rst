@@ -37,7 +37,10 @@ The CodeQL extension for Visual Studio Code adds rich language support for CodeQ
   CodeQL queries using the Visual Studio Code extension.
 
 - :doc:`Working with CodeQL packs in Visual Studio Code
-  <working-with-codeql-packs-in-visual-studio-code>`: You can view and edit CodeQL packs in Visual Studio Code.
+  <working-with-codeql-packs-in-visual-studio-code>`: You can view, create, and edit all types of CodeQL pack in Visual Studio Code.
+
+- :doc:`Using the CodeQL model editor
+  <using-the-codeql-model-editor>`: You can view, create, and edit CodeQL model packs using a dedicated editor.
 
 - :doc:`Customizing settings
   <customizing-settings>`: You can edit the settings for the 
@@ -67,6 +70,7 @@ The CodeQL extension for Visual Studio Code adds rich language support for CodeQ
    running-codeql-queries-at-scale-with-mrva
    testing-codeql-queries-in-visual-studio-code
    working-with-codeql-packs-in-visual-studio-code
+   using-the-codeql-model-editor
    customizing-settings
    troubleshooting-codeql-for-visual-studio-code
    troubleshooting-variant-analysis

@@ -7,7 +7,7 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
     n.asExpr().(MethodAccess).getMethod().hasName("taint")
     or
-    n instanceof RemoteFlowSource
+    n instanceof ThreatModelFlowSource
   }
 
   predicate isSink(DataFlow::Node n) {

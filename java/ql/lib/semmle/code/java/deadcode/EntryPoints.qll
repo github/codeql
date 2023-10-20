@@ -94,7 +94,7 @@ abstract class ReflectivelyConstructedClass extends EntryPoint, Class {
 /**
  * Classes that are deserialized by Jackson are reflectively constructed.
  */
-library class JacksonReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof JacksonDeserializableType
+class JacksonReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof JacksonDeserializableType
 {
   override Callable getALiveCallable() {
     // Constructors may be called by Jackson, if they are a no-arg, they have a suitable annotation,

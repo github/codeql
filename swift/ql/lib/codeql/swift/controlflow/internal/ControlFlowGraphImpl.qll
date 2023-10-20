@@ -67,10 +67,13 @@ module CfgScope {
     final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
   }
 
-  private class ClosureExprScope extends Range_ instanceof ExplicitClosureExpr {
+  private class ClosureExprScope extends Range_ instanceof ClosureExpr {
     Exprs::ClosureExprTree tree;
 
-    ClosureExprScope() { tree.getAst() = this }
+    ClosureExprScope() {
+      isNormalAutoClosureOrExplicitClosure(this) and
+      tree.getAst() = this
+    }
 
     final override predicate entry(ControlFlowElement first) { first(tree, first) }
 
@@ -488,7 +491,9 @@ module Stmts {
       override ForEachStmt ast;
 
       final override predicate propagatesAbnormal(ControlFlowElement child) {
-        child.asAstNode() = ast.getSequence().getFullyConverted()
+        child.asAstNode() = ast.getIteratorVar()
+        or
+        child.asAstNode() = ast.getNextCall()
         or
         child.asAstNode() = ast.getPattern().getFullyUnresolved()
       }
@@ -497,7 +502,7 @@ module Stmts {
         // Unlike most other statements, `foreach` statements are not modeled in
         // pre-order, because we use the `foreach` node itself to represent the
         // emptiness test that determines whether to execute the loop body
-        astFirst(ast.getSequence().getFullyConverted(), first)
+        astFirst(ast.getIteratorVar(), first)
       }
 
       final override predicate last(ControlFlowElement last, Completion c) {
@@ -520,8 +525,13 @@ module Stmts {
       }
 
       override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-        // Flow from last element of iterator expression to emptiness test
-        astLast(ast.getSequence().getFullyConverted(), pred, c) and
+        // Flow from last element of iterator expression to first element of iterator call
+        astLast(ast.getIteratorVar(), pred, c) and
+        c instanceof NormalCompletion and
+        astFirst(ast.getNextCall().getFullyConverted(), succ)
+        or
+        // Flow from iterator call to emptiness test
+        astLast(ast.getNextCall().getFullyConverted(), pred, c) and
         c instanceof NormalCompletion and
         succ.asAstNode() = ast
         or
@@ -549,15 +559,15 @@ module Stmts {
           c instanceof TrueCompletion and
           astFirst(ast.getBody(), succ)
           or
-          // or to the emptiness test if the condition is false.
+          // or to the getNextCall if the condition is false.
           c instanceof FalseCompletion and
-          succ.asAstNode() = ast
+          astFirst(ast.getNextCall().getFullyConverted(), succ)
         )
         or
-        // Flow from last element of loop body back to emptiness test.
+        // Flow from last element of loop body back to getNextCall
         astLast(ast.getBody(), pred, c) and
         c.continuesLoop(ast) and
-        succ.asAstNode() = ast
+        astFirst(ast.getNextCall().getFullyConverted(), succ)
       }
     }
   }
@@ -1138,12 +1148,16 @@ module Exprs {
     }
   }
 
+  /**
+   * The control flow for an explicit closure or a normal autoclosure in its
+   * role as a control flow scope.
+   */
   class ClosureExprTree extends StandardPreOrderTree, TClosureElement {
-    ExplicitClosureExpr expr;
+    ClosureExpr expr;
 
     ClosureExprTree() { this = TClosureElement(expr) }
 
-    ExplicitClosureExpr getAst() { result = expr }
+    ClosureExpr getAst() { result = expr }
 
     final override ControlFlowElement getChildElement(int i) {
       result.asAstNode() = expr.getParam(i)
@@ -1181,7 +1195,7 @@ module Exprs {
     }
 
     /**
-     * An autoclosure expression that is generated as part of a logical operation.
+     * An autoclosure expression that is generated as part of a logical operation or nil coalescing expression.
      *
      * This is needed because the Swift AST for `b1 && b2` is really syntactic sugar a function call:
      * ```swift
@@ -1190,10 +1204,13 @@ module Exprs {
      * So the `true` edge from `b1` cannot just go to `b2` since this is an implicit autoclosure.
      * To handle this dig into the autoclosure when it's an operand of a logical operator.
      */
-    private class LogicalAutoClosureTree extends AstPreOrderTree {
+    private class ShortCircuitingAutoClosureTree extends AstPreOrderTree {
       override AutoClosureExpr ast;
 
-      LogicalAutoClosureTree() { ast = any(LogicalOperation op).getAnOperand() }
+      ShortCircuitingAutoClosureTree() {
+        ast = any(LogicalOperation op).getAnOperand() or
+        ast = any(NilCoalescingExpr expr).getAnOperand()
+      }
 
       override predicate last(ControlFlowElement last, Completion c) {
         exists(Completion completion | astLast(ast.getReturn(), last, completion) |
@@ -1219,7 +1236,7 @@ module Exprs {
     private class AutoClosureTree extends AstLeafTree {
       override AutoClosureExpr ast;
 
-      AutoClosureTree() { not this instanceof LogicalAutoClosureTree }
+      AutoClosureTree() { not this instanceof ShortCircuitingAutoClosureTree }
     }
   }
 
@@ -1559,7 +1576,9 @@ module Exprs {
       // This one is handled in `LogicalNotTree`.
       not ast instanceof UnaryLogicalOperation and
       // These are handled in `LogicalOrTree` and `LogicalAndTree`.
-      not ast instanceof BinaryLogicalOperation
+      not ast instanceof BinaryLogicalOperation and
+      // This one is handled in `NilCoalescingTree`
+      not ast instanceof NilCoalescingExpr
     }
 
     final override ControlFlowElement getChildElement(int i) {
@@ -1580,6 +1599,38 @@ module Exprs {
     override ControlFlowElement getChildElement(int i) {
       i = 0 and
       result.asAstNode() = ast.getSubExpr().getFullyConverted()
+    }
+  }
+
+  private class NilCoalescingTestTree extends LeafTree, NilCoalescingElement { }
+
+  private class NilCoalescingTree extends AstPostOrderTree {
+    override NilCoalescingExpr ast;
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child.asAstNode() = ast.getAnOperand().getFullyConverted()
+    }
+
+    final override predicate first(ControlFlowElement first) {
+      astFirst(ast.getLeftOperand().getFullyConverted(), first)
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      astLast(ast.getLeftOperand().getFullyConverted(), pred, c) and
+      c instanceof NormalCompletion and
+      succ.(NilCoalescingTestTree).getAst() = ast
+      or
+      pred.(NilCoalescingTestTree).getAst() = ast and
+      exists(EmptinessCompletion ec | c = ec | ec.isEmpty()) and
+      astFirst(ast.getRightOperand().getFullyConverted(), succ)
+      or
+      pred.(NilCoalescingTestTree).getAst() = ast and
+      exists(EmptinessCompletion ec | c = ec | not ec.isEmpty()) and
+      succ.asAstNode() = ast
+      or
+      astLast(ast.getRightOperand().getFullyConverted(), pred, c) and
+      c instanceof NormalCompletion and
+      succ.asAstNode() = ast
     }
   }
 

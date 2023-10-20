@@ -747,7 +747,7 @@ ir.c:
 #    9|     r9_5(glval<(unnamed class/struct/union)>)  = VariableAddress[coords]      : 
 #    9|     r9_6(glval<int>)                           = FieldAddress[y]              : r9_5
 #    9|     mu9_7(int)                                 = Store[?]                     : &:r9_6, r9_4
-#    9|     r9_8(int)                                  = CopyValue                    : r9_4
+#    9|     r9_8(int)                                  = Load[?]                      : &:r9_6, ~m?
 #    9|     r9_9(glval<(unnamed class/struct/union)>)  = VariableAddress[coords]      : 
 #    9|     r9_10(glval<int>)                          = FieldAddress[x]              : r9_9
 #    9|     mu9_11(int)                                = Store[?]                     : &:r9_10, r9_8
@@ -1159,15 +1159,17 @@ ir.cpp:
 #  101|     r101_3(int)        = Constant[1]            : 
 #  101|     r101_4(int)        = Add                    : r101_2, r101_3
 #  101|     mu101_5(int)       = Store[x]               : &:r101_1, r101_4
-#  101|     r101_6(glval<int>) = VariableAddress[y]     : 
-#  101|     mu101_7(int)       = Store[y]               : &:r101_6, r101_4
+#  101|     r101_6(int)        = Load[x]                : &:r101_1, ~m?
+#  101|     r101_7(glval<int>) = VariableAddress[y]     : 
+#  101|     mu101_8(int)       = Store[y]               : &:r101_7, r101_6
 #  102|     r102_1(glval<int>) = VariableAddress[x]     : 
 #  102|     r102_2(int)        = Load[x]                : &:r102_1, ~m?
 #  102|     r102_3(int)        = Constant[1]            : 
 #  102|     r102_4(int)        = Sub                    : r102_2, r102_3
 #  102|     mu102_5(int)       = Store[x]               : &:r102_1, r102_4
-#  102|     r102_6(glval<int>) = VariableAddress[y]     : 
-#  102|     mu102_7(int)       = Store[y]               : &:r102_6, r102_4
+#  102|     r102_6(int)        = Load[x]                : &:r102_1, ~m?
+#  102|     r102_7(glval<int>) = VariableAddress[y]     : 
+#  102|     mu102_8(int)       = Store[y]               : &:r102_7, r102_6
 #  103|     r103_1(glval<int>) = VariableAddress[x]     : 
 #  103|     r103_2(int)        = Load[x]                : &:r103_1, ~m?
 #  103|     r103_3(int)        = Constant[1]            : 
@@ -1375,15 +1377,17 @@ ir.cpp:
 #  147|     r147_3(float)        = Constant[1.0]          : 
 #  147|     r147_4(float)        = Add                    : r147_2, r147_3
 #  147|     mu147_5(float)       = Store[x]               : &:r147_1, r147_4
-#  147|     r147_6(glval<float>) = VariableAddress[y]     : 
-#  147|     mu147_7(float)       = Store[y]               : &:r147_6, r147_4
+#  147|     r147_6(float)        = Load[x]                : &:r147_1, ~m?
+#  147|     r147_7(glval<float>) = VariableAddress[y]     : 
+#  147|     mu147_8(float)       = Store[y]               : &:r147_7, r147_6
 #  148|     r148_1(glval<float>) = VariableAddress[x]     : 
 #  148|     r148_2(float)        = Load[x]                : &:r148_1, ~m?
 #  148|     r148_3(float)        = Constant[1.0]          : 
 #  148|     r148_4(float)        = Sub                    : r148_2, r148_3
 #  148|     mu148_5(float)       = Store[x]               : &:r148_1, r148_4
-#  148|     r148_6(glval<float>) = VariableAddress[y]     : 
-#  148|     mu148_7(float)       = Store[y]               : &:r148_6, r148_4
+#  148|     r148_6(float)        = Load[x]                : &:r148_1, ~m?
+#  148|     r148_7(glval<float>) = VariableAddress[y]     : 
+#  148|     mu148_8(float)       = Store[y]               : &:r148_7, r148_6
 #  149|     r149_1(glval<float>) = VariableAddress[x]     : 
 #  149|     r149_2(float)        = Load[x]                : &:r149_1, ~m?
 #  149|     r149_3(float)        = Constant[1.0]          : 
@@ -1682,15 +1686,17 @@ ir.cpp:
 #  207|     r207_3(int)          = Constant[1]              : 
 #  207|     r207_4(int *)        = PointerAdd[4]            : r207_2, r207_3
 #  207|     mu207_5(int *)       = Store[p]                 : &:r207_1, r207_4
-#  207|     r207_6(glval<int *>) = VariableAddress[q]       : 
-#  207|     mu207_7(int *)       = Store[q]                 : &:r207_6, r207_4
+#  207|     r207_6(int *)        = Load[p]                  : &:r207_1, ~m?
+#  207|     r207_7(glval<int *>) = VariableAddress[q]       : 
+#  207|     mu207_8(int *)       = Store[q]                 : &:r207_7, r207_6
 #  208|     r208_1(glval<int *>) = VariableAddress[p]       : 
 #  208|     r208_2(int *)        = Load[p]                  : &:r208_1, ~m?
 #  208|     r208_3(int)          = Constant[1]              : 
 #  208|     r208_4(int *)        = PointerSub[4]            : r208_2, r208_3
 #  208|     mu208_5(int *)       = Store[p]                 : &:r208_1, r208_4
-#  208|     r208_6(glval<int *>) = VariableAddress[q]       : 
-#  208|     mu208_7(int *)       = Store[q]                 : &:r208_6, r208_4
+#  208|     r208_6(int *)        = Load[p]                  : &:r208_1, ~m?
+#  208|     r208_7(glval<int *>) = VariableAddress[q]       : 
+#  208|     mu208_8(int *)       = Store[q]                 : &:r208_7, r208_6
 #  209|     r209_1(glval<int *>) = VariableAddress[p]       : 
 #  209|     r209_2(int *)        = Load[p]                  : &:r209_1, ~m?
 #  209|     r209_3(int)          = Constant[1]              : 
@@ -5746,6 +5752,26 @@ ir.cpp:
 # 1038|     v1038_9(void)                             = AliasedUse                    : ~m?
 # 1038|     v1038_10(void)                            = ExitFunction                  : 
 
+# 1038| void (lambda [] type at line 1038, col. 12)::(unnamed constructor)((lambda [] type at line 1038, col. 12)&&)
+# 1038|   Block 0
+# 1038|     v1038_1(void)                                        = EnterFunction                                : 
+# 1038|     mu1038_2(unknown)                                    = AliasedDefinition                            : 
+# 1038|     mu1038_3(unknown)                                    = InitializeNonLocal                           : 
+# 1038|     r1038_4(glval<unknown>)                              = VariableAddress[#this]                       : 
+# 1038|     mu1038_5(glval<decltype([...](...){...})>)           = InitializeParameter[#this]                   : &:r1038_4
+# 1038|     r1038_6(glval<decltype([...](...){...})>)            = Load[#this]                                  : &:r1038_4, ~m?
+# 1038|     mu1038_7(decltype([...](...){...}))                  = InitializeIndirection[#this]                 : &:r1038_6
+#-----|     r0_1(glval<lambda [] type at line 1038, col. 12 &&>) = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     mu0_2(lambda [] type at line 1038, col. 12 &&)       = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
+#-----|     r0_3(lambda [] type at line 1038, col. 12 &&)        = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                                       = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
+# 1038|     v1038_8(void)                                        = NoOp                                         : 
+# 1038|     v1038_9(void)                                        = ReturnIndirection[#this]                     : &:r1038_6, ~m?
+#-----|     v0_5(void)                                           = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
+# 1038|     v1038_10(void)                                       = ReturnVoid                                   : 
+# 1038|     v1038_11(void)                                       = AliasedUse                                   : ~m?
+# 1038|     v1038_12(void)                                       = ExitFunction                                 : 
+
 # 1038| void (lambda [] type at line 1038, col. 12)::operator()() const
 # 1038|   Block 0
 # 1038|     v1038_1(void)                              = EnterFunction                : 
@@ -5939,6 +5965,26 @@ ir.cpp:
 # 1040|     v1040_11(void)                            = ReturnVoid                             : 
 # 1040|     v1040_12(void)                            = AliasedUse                             : ~m?
 # 1040|     v1040_13(void)                            = ExitFunction                           : 
+
+# 1041| void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(unnamed constructor)((void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)&&)
+# 1041|   Block 0
+# 1041|     v1041_1(void)                                        = EnterFunction                                : 
+# 1041|     mu1041_2(unknown)                                    = AliasedDefinition                            : 
+# 1041|     mu1041_3(unknown)                                    = InitializeNonLocal                           : 
+# 1041|     r1041_4(glval<unknown>)                              = VariableAddress[#this]                       : 
+# 1041|     mu1041_5(glval<decltype([...](...){...})>)           = InitializeParameter[#this]                   : &:r1041_4
+# 1041|     r1041_6(glval<decltype([...](...){...})>)            = Load[#this]                                  : &:r1041_4, ~m?
+# 1041|     mu1041_7(decltype([...](...){...}))                  = InitializeIndirection[#this]                 : &:r1041_6
+#-----|     r0_1(glval<lambda [] type at line 1041, col. 23 &&>) = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     mu0_2(lambda [] type at line 1041, col. 23 &&)       = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
+#-----|     r0_3(lambda [] type at line 1041, col. 23 &&)        = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                                       = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
+# 1041|     v1041_8(void)                                        = NoOp                                         : 
+# 1041|     v1041_9(void)                                        = ReturnIndirection[#this]                     : &:r1041_6, ~m?
+#-----|     v0_5(void)                                           = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
+# 1041|     v1041_10(void)                                       = ReturnVoid                                   : 
+# 1041|     v1041_11(void)                                       = AliasedUse                                   : ~m?
+# 1041|     v1041_12(void)                                       = ExitFunction                                 : 
 
 # 1041| char (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::operator()(float) const
 # 1041|   Block 0
@@ -7697,7 +7743,6 @@ ir.cpp:
 # 1376|     r1376_3(String)          = Call[defaultConstruct]            : func:r1376_2
 # 1376|     mu1376_4(unknown)        = ^CallSideEffect                   : ~m?
 # 1376|     mu1376_5(String)         = Store[#temp1376:5]                : &:r1376_1, r1376_3
-# 1376|     r1376_6(String)          = Load[#temp1376:5]                 : &:r1376_1, ~m?
 # 1377|     v1377_1(void)            = NoOp                              : 
 # 1365|     v1365_4(void)            = ReturnVoid                        : 
 # 1365|     v1365_5(void)            = AliasedUse                        : ~m?
@@ -7762,7 +7807,6 @@ ir.cpp:
 # 1388|     r1388_3(destructor_only)          = Call[defaultConstruct]            : func:r1388_2
 # 1388|     mu1388_4(unknown)                 = ^CallSideEffect                   : ~m?
 # 1388|     mu1388_5(destructor_only)         = Store[#temp1388:5]                : &:r1388_1, r1388_3
-# 1388|     r1388_6(destructor_only)          = Load[#temp1388:5]                 : &:r1388_1, ~m?
 # 1389|     v1389_1(void)                     = NoOp                              : 
 # 1379|     v1379_4(void)                     = ReturnVoid                        : 
 # 1379|     v1379_5(void)                     = AliasedUse                        : ~m?
@@ -7840,7 +7884,6 @@ ir.cpp:
 # 1399|     r1399_3(copy_constructor)          = Call[defaultConstruct]            : func:r1399_2
 # 1399|     mu1399_4(unknown)                  = ^CallSideEffect                   : ~m?
 # 1399|     mu1399_5(copy_constructor)         = Store[#temp1399:5]                : &:r1399_1, r1399_3
-# 1399|     r1399_6(copy_constructor)          = Load[#temp1399:5]                 : &:r1399_1, ~m?
 # 1401|     r1401_1(glval<int>)                = VariableAddress[y]                : 
 # 1401|     r1401_2(glval<copy_constructor>)   = VariableAddress[#temp1401:13]     : 
 # 1401|     r1401_3(glval<unknown>)            = FunctionAddress[returnValue]      : 
@@ -9241,14 +9284,11 @@ ir.cpp:
 # 1713|     mu1713_2(TrivialLambdaClass)              = Uninitialized[l1]             : &:r1713_1
 # 1714|     r1714_1(glval<TrivialLambdaClass &>)      = VariableAddress[l2]           : 
 # 1714|     r1714_2(glval<TrivialLambdaClass>)        = VariableAddress[#temp1714:36] : 
-# 1714|     r1714_3(glval<TrivialLambdaClass>)        = VariableAddress[#temp1714:36] : 
-# 1714|     r1714_4(TrivialLambdaClass)               = Constant[0]                   : 
-# 1714|     mu1714_5(TrivialLambdaClass)              = Store[#temp1714:36]           : &:r1714_3, r1714_4
-# 1714|     r1714_6(TrivialLambdaClass)               = Load[#temp1714:36]            : &:r1714_3, ~m?
-# 1714|     mu1714_7(TrivialLambdaClass)              = Store[#temp1714:36]           : &:r1714_2, r1714_6
-# 1714|     r1714_8(glval<TrivialLambdaClass>)        = Convert                       : r1714_2
-# 1714|     r1714_9(TrivialLambdaClass &)             = CopyValue                     : r1714_8
-# 1714|     mu1714_10(TrivialLambdaClass &)           = Store[l2]                     : &:r1714_1, r1714_9
+# 1714|     r1714_3(TrivialLambdaClass)               = Constant[0]                   : 
+# 1714|     mu1714_4(TrivialLambdaClass)              = Store[#temp1714:36]           : &:r1714_2, r1714_3
+# 1714|     r1714_5(glval<TrivialLambdaClass>)        = Convert                       : r1714_2
+# 1714|     r1714_6(TrivialLambdaClass &)             = CopyValue                     : r1714_5
+# 1714|     mu1714_7(TrivialLambdaClass &)            = Store[l2]                     : &:r1714_1, r1714_6
 # 1716|     r1716_1(glval<decltype([...](...){...})>) = VariableAddress[l_outer1]     : 
 # 1716|     r1716_2(glval<decltype([...](...){...})>) = VariableAddress[#temp1716:20] : 
 # 1716|     mu1716_3(decltype([...](...){...}))       = Uninitialized[#temp1716:20]   : &:r1716_2
@@ -10330,7 +10370,7 @@ ir.cpp:
 # 1930|     r1930_1(int)        = Constant[40]       : 
 # 1930|     r1930_2(glval<int>) = VariableAddress[j] : 
 # 1930|     mu1930_3(int)       = Store[j]           : &:r1930_2, r1930_1
-# 1930|     r1930_4(int)        = CopyValue          : r1930_1
+# 1930|     r1930_4(int)        = Load[j]            : &:r1930_2, ~m?
 # 1930|     r1930_5(glval<int>) = VariableAddress[i] : 
 # 1930|     mu1930_6(int)       = Store[i]           : &:r1930_5, r1930_4
 # 1931|     v1931_1(void)       = NoOp               : 
@@ -10353,8 +10393,9 @@ ir.cpp:
 # 1935|     r1935_3(int)        = Load[j]            : &:r1935_2, ~m?
 # 1935|     r1935_4(int)        = Add                : r1935_3, r1935_1
 # 1935|     mu1935_5(int)       = Store[j]           : &:r1935_2, r1935_4
-# 1935|     r1935_6(glval<int>) = VariableAddress[i] : 
-# 1935|     mu1935_7(int)       = Store[i]           : &:r1935_6, r1935_4
+# 1935|     r1935_6(int)        = Load[j]            : &:r1935_2, ~m?
+# 1935|     r1935_7(glval<int>) = VariableAddress[i] : 
+# 1935|     mu1935_8(int)       = Store[i]           : &:r1935_7, r1935_6
 # 1936|     v1936_1(void)       = NoOp               : 
 # 1933|     v1933_4(void)       = ReturnVoid         : 
 # 1933|     v1933_5(void)       = AliasedUse         : ~m?

@@ -1374,6 +1374,7 @@ module MakeImplCommon<InputSig Lang> {
      * Holds if the edge `call`-to-`c` is valid in the in-going direction in the
      * call context `cc`.
      */
+    pragma[nomagic]
     predicate typeFlowValidEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc) {
       Input::relevantCallEdgeIn(call, c) and
       cc = [true, false] and
@@ -1416,6 +1417,7 @@ module MakeImplCommon<InputSig Lang> {
     /**
      * Holds if the edge `call`-to-`c` is valid in the out-going direction.
      */
+    pragma[nomagic]
     predicate typeFlowValidEdgeOut(DataFlowCall call, DataFlowCallable c) {
       Input::relevantCallEdgeOut(call, c) and
       (
@@ -1779,15 +1781,32 @@ module MakeImplCommon<InputSig Lang> {
     call = prunedViableImplInCallContextReverse(callable, cc)
   }
 
-  /**
-   * Resolves a call from `call` in `cc` to `result`.
-   */
-  bindingset[call, cc]
-  DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
-    result = prunedViableImplInCallContext(call, cc)
-    or
-    noPrunedViableImplInCallContext(call, cc) and
-    result = viableCallableExt(call)
+  signature predicate relevantResolveTargetSig(DataFlowCallable c);
+
+  module ResolveCall<relevantResolveTargetSig/1 relevantResolveTarget> {
+    pragma[nomagic]
+    private DataFlowCallable prunedRelevantViableImplInCallContext(DataFlowCall call, CallContext cc) {
+      result = prunedViableImplInCallContext(call, cc) and
+      relevantResolveTarget(result)
+    }
+
+    pragma[nomagic]
+    private DataFlowCallable viableRelevantCallableExt(DataFlowCall call) {
+      result = viableCallableExt(call) and
+      relevantResolveTarget(result)
+    }
+
+    /**
+     * Resolves a call from `call` in `cc` to `result`, where `result` is
+     * restricted by `relevantResolveTarget`.
+     */
+    bindingset[call, cc]
+    DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
+      result = prunedRelevantViableImplInCallContext(call, cc)
+      or
+      noPrunedViableImplInCallContext(call, cc) and
+      result = viableRelevantCallableExt(call)
+    }
   }
 
   /** An optional Boolean value. */

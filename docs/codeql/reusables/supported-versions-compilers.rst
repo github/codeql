@@ -16,7 +16,7 @@
    .NET Core up to 3.1
 
    .NET 5, .NET 6, .NET 7","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
-   Go (aka Golang), "Go up to 1.20", "Go 1.11 or more recent", ``.go``
+   Go (aka Golang), "Go up to 1.21", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 20 [4]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [5]_",``.java``

@@ -9,7 +9,7 @@ enum CInterop {
   typealias PlatformChar = CInterop.Char
 }
 
-struct FilePath {
+struct FilePath : CustomStringConvertible, CustomDebugStringConvertible {
 	struct Component {
 		init?(_ string: String) { }
 
