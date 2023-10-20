@@ -21,18 +21,18 @@ except:
 if cond:
     from flask.views import View as clash
 else:
-    from django.views.generic import View as clash # $ SPURIOUS: View=Django.Views.View~Subclass
+    from django.views.generic import View as clash
 
 if cond:
-    from flask.views import View as clash2 # $ MISSING
+    from flask.views import View as clash2
 else:
-    from django.views.generic import View as clash2 # $ MISSING
+    from django.views.generic import View as clash2
 print(clash2)
 
 if cond:
     from flask.views import View as clash3
 else:
-    from django.views.generic import View as clash3 # $ MISSING
+    from django.views.generic import View as clash3
     print(clash3)
 
 import flask.views as containing_module_alias # $ MISSING
