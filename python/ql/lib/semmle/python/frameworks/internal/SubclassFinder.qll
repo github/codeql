@@ -159,29 +159,28 @@ module NotExposed {
    * ```
    */
   predicate newDirectAlias(
-    FindSubclassesSpec spec, string newAliasFullyQualified, ImportMember importMember, Module mod,
-    Location loc
+    FindSubclassesSpec spec, string newAliasFullyQualified, Expr value, Module mod, Location loc
   ) {
-    importMember =
-      newOrExistingModeling(spec).getASubclass*().getAValueReachableFromSource().asExpr() and
-    importMember.getScope() = mod and
-    loc = importMember.getLocation() and
-    exists(Alias alias, string base |
-      mod.isPackageInit() and base = mod.getPackageName()
-      or
-      not mod.isPackageInit() and base = mod.getName()
-    |
-      alias.getValue() = importMember and
-      newAliasFullyQualified = base + "." + alias.getAsname()
-    ) and
-    (
-      not hasAllStatement(mod)
-      or
-      mod.declaredInAll(importMember.getName())
-    ) and
-    not alreadyExplicitlyModeled(spec, newAliasFullyQualified) and
-    not isTestCode(importMember) and
-    isAllowedModule(mod)
+    exists(Alias alias | value = alias.getValue() |
+      value = newOrExistingModeling(spec).getASubclass*().getAValueReachableFromSource().asExpr() and
+      value.getScope() = mod and
+      loc = value.getLocation() and
+      exists(string base |
+        mod.isPackageInit() and base = mod.getPackageName()
+        or
+        not mod.isPackageInit() and base = mod.getName()
+      |
+        newAliasFullyQualified = base + "." + alias.getAsname().(Name).getId()
+      ) and
+      (
+        not hasAllStatement(mod)
+        or
+        mod.declaredInAll(alias.getAsname().(Name).getId())
+      ) and
+      not alreadyExplicitlyModeled(spec, newAliasFullyQualified) and
+      not isTestCode(value) and
+      isAllowedModule(mod)
+    )
   }
 
   /**
@@ -194,11 +193,15 @@ module NotExposed {
     string relevantName, Location loc
   ) {
     loc = mod.getLocation() and
-    exists(API::Node relevantClass, Expr value |
+    exists(API::Node relevantClass, ControlFlowNode value |
       relevantClass = newOrExistingModeling(spec).getASubclass*() and
       ImportResolution::module_export(mod, relevantName, def) and
-      value = relevantClass.getAValueReachableFromSource().asExpr() and
-      value = def.asVar().getDefinition().(AssignmentDefinition).getValue().getNode()
+      value = relevantClass.getAValueReachableFromSource().asCfgNode() and
+      (
+        value = def.asVar().getDefinition().(AssignmentDefinition).getValue()
+        or
+        value = def.asCfgNode()
+      )
       // value could be a ClassExpr if a new class is defined, or a Name if defining an alias
     ) and
     (
