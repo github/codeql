@@ -1,6 +1,6 @@
+| Django.Views.View~Subclass | find_subclass_test | Member[View] |
+| Django.Views.View~Subclass | find_subclass_test | Member[clash] |
 | flask.MethodView~Subclass | find_subclass_test | Member[C] |
-| flask.MethodView~Subclass | find_subclass_test | Member[MethodView] |
-| flask.MethodView~Subclass | find_subclass_test | Member[clash] |
 | flask.View~Subclass | find_subclass_test | Member[A] |
 | flask.View~Subclass | find_subclass_test | Member[B] |
 | flask.View~Subclass | find_subclass_test | Member[ViewAliasInExcept] |
@@ -8,4 +8,5 @@
 | flask.View~Subclass | find_subclass_test | Member[ViewAlias] |
 | flask.View~Subclass | find_subclass_test | Member[View] |
 | flask.View~Subclass | find_subclass_test | Member[clash3] |
+| flask.View~Subclass | find_subclass_test | Member[clash] |
 | flask.View~Subclass | find_subclass_test | Member[complete_module_alias] |
