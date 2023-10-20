@@ -99,6 +99,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var existsNetCoreRefNugetPackage = false;
             var existsNetFrameworkRefNugetPackage = false;
+            var existsNetstandardLibRefNugetPackage = false;
+            var existsNetstandardLibNugetPackage = false;
 
             // Find DLLs in the .Net / Asp.Net Framework
             // This block needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
@@ -106,8 +108,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 existsNetCoreRefNugetPackage = IsNugetPackageAvailable("microsoft.netcore.app.ref");
                 existsNetFrameworkRefNugetPackage = IsNugetPackageAvailable("microsoft.netframework.referenceassemblies");
+                existsNetstandardLibRefNugetPackage = IsNugetPackageAvailable("netstandard.library.ref");
+                existsNetstandardLibNugetPackage = IsNugetPackageAvailable("netstandard.library");
 
-                if (existsNetCoreRefNugetPackage || existsNetFrameworkRefNugetPackage)
+                if (existsNetCoreRefNugetPackage
+                    || existsNetFrameworkRefNugetPackage
+                    || existsNetstandardLibRefNugetPackage
+                    || existsNetstandardLibNugetPackage)
                 {
                     progressMonitor.LogInfo("Found .NET Core/Framework DLLs in NuGet packages. Not adding installation directory.");
                 }
@@ -125,7 +132,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseReference(filename);
             }
 
-            RemoveUnnecessaryNugetPackages(existsNetCoreRefNugetPackage, existsNetFrameworkRefNugetPackage);
+            RemoveUnnecessaryNugetPackages(existsNetCoreRefNugetPackage, existsNetFrameworkRefNugetPackage, existsNetstandardLibRefNugetPackage, existsNetstandardLibNugetPackage);
             ResolveConflicts();
 
             // Output the findings
@@ -160,7 +167,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 DateTime.Now - startTime);
         }
 
-        private void RemoveUnnecessaryNugetPackages(bool existsNetCoreRefNugetPackage, bool existsNetFrameworkRefNugetPackage)
+        private void RemoveUnnecessaryNugetPackages(bool existsNetCoreRefNugetPackage, bool existsNetFrameworkRefNugetPackage,
+            bool existsNetstandardLibRefNugetPackage, bool existsNetstandardLibNugetPackage)
         {
             RemoveNugetAnalyzerReferences();
             RemoveRuntimeNugetPackageReferences();
@@ -172,10 +180,30 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 RemoveNugetPackageReference("microsoft.aspnetcore.app.ref");
             }
 
-            if (existsNetCoreRefNugetPackage && existsNetFrameworkRefNugetPackage)
+            // Multiple packages are available, we keep only one:
+            if (existsNetCoreRefNugetPackage)
             {
-                // Multiple packages are available, we keep only one:
-                RemoveNugetPackageReference("microsoft.netframework.referenceassemblies.");
+                if (existsNetFrameworkRefNugetPackage)
+                    RemoveNugetPackageReference("microsoft.netframework.referenceassemblies.");
+
+                if (existsNetstandardLibRefNugetPackage)
+                    RemoveNugetPackageReference("netstandard.library.ref");
+
+                if (existsNetstandardLibNugetPackage)
+                    RemoveNugetPackageReference("netstandard.library");
+            }
+            else if (existsNetFrameworkRefNugetPackage)
+            {
+                if (existsNetstandardLibRefNugetPackage)
+                    RemoveNugetPackageReference("netstandard.library.ref");
+
+                if (existsNetstandardLibNugetPackage)
+                    RemoveNugetPackageReference("netstandard.library");
+            }
+            else if (existsNetstandardLibRefNugetPackage)
+            {
+                if (existsNetstandardLibNugetPackage)
+                    RemoveNugetPackageReference("netstandard.library");
             }
 
             // TODO: There could be multiple `microsoft.netframework.referenceassemblies` packages,
@@ -268,8 +296,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 "runtime.win-x64.microsoft.netcore.app",
 
                 // Internal implementation packages not meant for direct consumption:
-                "runtime.",
-                "netstandard.library.ref"
+                "runtime."
             };
             RemoveNugetPackageReference(runtimePackagePrefixes);
         }
