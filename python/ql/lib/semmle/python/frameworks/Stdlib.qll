@@ -1299,20 +1299,35 @@ module StdlibPrivate {
   // ---------------------------------------------------------------------------
   /** Gets a reference to any of the `pickle` modules. */
   API::Node pickle() {
-    result = API::moduleImport(["pickle", "cPickle", "_pickle", "cloudpickle"]) or
-    result = API::moduleImport("kombu").getMember("serialization").getMember("pickle")
+    result = API::moduleImport(["pickle", "cPickle", "_pickle"])
+    or
+    result = ModelOutput::getATypeNode("pickle~Alias")
+  }
+
+  /**
+   * A reference to `pickle.load`
+   */
+  API::Node pickle_load() {
+    result = pickle().getMember("load")
+    or
+    result = ModelOutput::getATypeNode("pickle.load~Alias")
+  }
+
+  /**
+   * A reference to `pickle.loads`
+   */
+  API::Node pickle_loads() {
+    result = pickle().getMember("loads")
+    or
+    result = ModelOutput::getATypeNode("pickle.loads~Alias")
   }
 
   /**
    * A call to `pickle.load`
    * See https://docs.python.org/3/library/pickle.html#pickle.load
    */
-  private class PickleLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
-    PickleLoadCall() {
-      this = pickle().getMember("load").getACall() or
-      this =
-        API::moduleImport("kombu").getMember("serialization").getMember("pickle_load").getACall()
-    }
+  private class PickleLoadCall extends Decoding::Range, API::CallNode {
+    PickleLoadCall() { this = pickle_load().getACall() }
 
     override predicate mayExecuteInput() { any() }
 
@@ -1327,8 +1342,8 @@ module StdlibPrivate {
    * A call to `pickle.loads`
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
-  private class PickleLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
-    PickleLoadsCall() { this = pickle().getMember("loads").getACall() }
+  private class PickleLoadsCall extends Decoding::Range, API::CallNode {
+    PickleLoadsCall() { this = pickle_loads().getACall() }
 
     override predicate mayExecuteInput() { any() }
 
