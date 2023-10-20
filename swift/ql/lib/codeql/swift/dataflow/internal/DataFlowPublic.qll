@@ -185,6 +185,8 @@ class Content extends TContent {
 
   /** Gets the location of this content. */
   Location getLocation() { none() }
+
+  DataFlowType getType() { none() }
 }
 
 module Content {
@@ -198,6 +200,8 @@ module Content {
     FieldDecl getField() { result = f }
 
     override string toString() { result = f.toString() }
+
+    override DataFlowType getType() { result = f.getType().getCanonicalType() }
   }
 
   /** An element of a tuple at a specific index. */
@@ -210,6 +214,8 @@ module Content {
     int getIndex() { result = index }
 
     override string toString() { result = "Tuple element at index " + index.toString() }
+  
+    override DataFlowType getType() { result instanceof AnyType }
   }
 
   /** A parameter of an enum element. */
@@ -237,6 +243,8 @@ module Content {
     }
 
     override string toString() { result = this.getSignature() }
+
+    override DataFlowType getType() { result = p.getType().getCanonicalType() }
   }
 
   /**
@@ -247,6 +255,8 @@ module Content {
    */
   class CollectionContent extends Content, TCollectionContent {
     override string toString() { result = "Collection element" }
+
+    override DataFlowType getType() { result instanceof AnyType }
   }
 
   /**

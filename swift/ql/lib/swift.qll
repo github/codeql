@@ -12,5 +12,6 @@ import codeql.swift.elements.expr.SelfRefExpr
 import codeql.swift.elements.expr.EnumElementExpr
 import codeql.swift.elements.decl.Method
 import codeql.swift.elements.decl.ClassOrStructDecl
+import codeql.swift.elements.type.AnyType
 import codeql.swift.elements.type.NumericType
 import codeql.swift.Unit

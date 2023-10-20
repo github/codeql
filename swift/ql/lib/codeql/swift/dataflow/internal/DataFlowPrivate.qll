@@ -1270,13 +1270,11 @@ private class OptionalSomeContentSet extends ContentSet {
 }
 
 class DataFlowType extends Type {
-  DataFlowType() {
-    this.getCanonicalType() = this
-  }
+  DataFlowType() { this.getCanonicalType() = this }
 }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
-  t1.getABaseType*().getCanonicalType() = stripMaybe(t2)
+  t1.getABaseType*().getCanonicalType() = stripType(t2)
 }
 
 predicate localMustFlowStep(Node node1, Node node2) { none() }
@@ -1288,7 +1286,9 @@ DataFlowType getNodeType(Node n) {
   result = n.asPattern().(NamedPattern).getVarDecl().getType().getCanonicalType() or
   result = n.asDefinition().getSourceVariable().asVarDecl().getType().getCanonicalType() or
   result = n.(ParameterNode).getParameter().getType().getCanonicalType() or
-
+  result =
+    FlowSummaryImpl::Private::summaryNodeType(n.(FlowSummaryNode).getSummaryNode())
+        .getCanonicalType() or
   result = getNodeType(n.(PostUpdateNode).getPreUpdateNode())
 }
 
@@ -1302,19 +1302,43 @@ string ppReprType(DataFlowType t) { none() }
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   exists(DataFlowType commonSub |
-    commonSub.getABaseType*().getCanonicalType() = stripMaybe(t1) and
-    commonSub.getABaseType*().getCanonicalType() = stripMaybe(t2)
+    commonSub.getABaseType*().getCanonicalType() = stripType(t1) and
+    commonSub.getABaseType*().getCanonicalType() = stripType(t2)
   )
+  or
+  // TODO: do we need subtyping relationships here?
+  exists(FunctionType f1, FunctionType f2 |
+    f1.getResult() = f2.getResult() and
+    not exists(int i | i in [0 .. f1.getNumberOfParamTypes()] |
+      f1.getParamType(i) != f2.getParamType(i)
+    ) and
+    (f1.isThrowing() implies f2.isThrowing()) and
+    (f1.isAsync() implies f2.isAsync())
+  )
+  or
+  t1 instanceof AnyType
+  or
+  t2 instanceof AnyType
 }
 
-DataFlowType stripMaybe(DataFlowType t) {
+DataFlowType stripType(Type t) {
   exists(BoundGenericEnumType optional |
     optional = t and
-    optional.getArgType(0) = result and
+    result = stripType(optional.getArgType(0).getCanonicalType()) and
     optional.getDeclaration().getFullName() = "Optional"
   )
   or
-  result = t
+  exists(InOutType iot |
+    iot = t and
+    result = stripType(iot.getObjectType().getCanonicalType())
+  )
+  or
+  not exists(BoundGenericEnumType optional |
+    optional = t and
+    optional.getDeclaration().getFullName() = "Optional"
+  ) and
+  not t instanceof InOutType and
+  result = t.getCanonicalType()
 }
 
 abstract class PostUpdateNodeImpl extends Node {
@@ -1364,7 +1388,21 @@ private import PostUpdateNodes
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
-  CastNode() { none() }
+  CastNode() {
+    this.asExpr() instanceof ExplicitCastExpr
+    or
+    this.asExpr() instanceof ImplicitConversionExpr
+    or
+    this.asExpr() instanceof OptionalEvaluationExpr
+    or
+    this.asExpr() instanceof OptionalTryExpr
+    or
+    this.asExpr() instanceof BindOptionalExpr
+    or
+    this.asExpr() instanceof InOutExpr
+    or
+    this.asExpr() instanceof InOutToPointerExpr
+  }
 }
 
 class DataFlowExpr = Expr;
