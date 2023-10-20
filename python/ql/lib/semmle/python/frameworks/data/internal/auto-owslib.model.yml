@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - owslib
+    - Member[etree].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - owslib
+    - Member[etree].Member[etree]
