@@ -478,6 +478,19 @@ predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string
 from FindSubclassesSpec spec, string newModelFullyQualified, string type2, string path, Module mod
 where
   newModel(spec, newModelFullyQualified, _, mod, _) and
+  // Since a class C which is a subclass for flask.MethodView is always a subclass of
+  // flask.View, and we chose to care about this distinction, in a naive approach we
+  // would always record rows for _both_ specs... that's just wasteful, so instead we
+  // only record the row for the more specific spec -- this is captured by the
+  // .getSuperClass() method on a spec, which can links specs together in this way.
+  // However, if the definition actually depends on some logic, like below, we should
+  // still record both rows
+  // ```
+  // if <cond>:
+  //     class C(flask.View): ...
+  // else:
+  //     class C(flask.MethodView): ...
+  // ```
   not exists(FindSubclassesSpec subclass | subclass.getSuperClass() = spec |
     newModel(subclass, newModelFullyQualified, _, mod, _)
   ) and
