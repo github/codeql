@@ -11,6 +11,10 @@ class C(flask.views.MethodView):
     pass
 
 ViewAlias = View
+print(ViewAlias)
+
+ViewAlias_no_use = View
+
 
 try:
     from flask.views import View as ViewAliasInTry
@@ -40,6 +44,10 @@ import flask.views as containing_module_alias # $ MISSING
 
 # NOTE: this is not valid code, since View is not a module... but it could be in some cases, like for xml.etree.ElementTree, which is actually not a class but a module 😕
 import flask.views.View as complete_module_alias
+print(complete_module_alias)
+
+import flask.views.View as complete_module_alias_no_use
+
 
 def wrapper():
     return View # $ MISSING
