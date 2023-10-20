@@ -356,7 +356,7 @@ public class JSONParser {
     char c;
     next();
     next();
-    while ((c = peek()) != '\r' && c != '\n' && c != -1) next();
+    while ((c = peek()) != '\r' && c != '\n') next();
   }
 
   /** Skips the block comment starting at the current position. */
@@ -367,7 +367,6 @@ public class JSONParser {
     next();
     do {
       c = peek();
-      if (c < 0) raise("Unterminated comment.");
       next();
       if (c == '*' && peek() == '/') {
         next();
