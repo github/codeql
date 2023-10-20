@@ -19,20 +19,20 @@ except:
 
 
 if cond:
-    from flask.views import View as clash # $ MISSING
+    from flask.views import View as clash
 else:
-    from flask.views import MethodView as clash # $ SPURIOUS: MethodView
+    from django.views.generic import View as clash # $ SPURIOUS: View=Django.Views.View~Subclass
 
 if cond:
     from flask.views import View as clash2 # $ MISSING
 else:
-    from flask.views import MethodView as clash2 # $ MISSING
+    from django.views.generic import View as clash2 # $ MISSING
 print(clash2)
 
 if cond:
     from flask.views import View as clash3
 else:
-    from flask.views import MethodView as clash3 # $ MISSING
+    from django.views.generic import View as clash3 # $ MISSING
     print(clash3)
 
 import flask.views as containing_module_alias # $ MISSING
