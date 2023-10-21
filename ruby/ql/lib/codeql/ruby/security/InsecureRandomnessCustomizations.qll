@@ -6,7 +6,6 @@
 private import codeql.ruby.CFG
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.security.SensitiveActions
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
