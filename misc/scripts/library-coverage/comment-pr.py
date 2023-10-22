@@ -56,14 +56,13 @@ def comment_pr(repo, run_id):
         if os.path.isdir("pr"):
             shutil.rmtree("pr")
 
-    utils.download_artifact(repo, "comment", "comment", run_id)
-
     try:
+        utils.download_artifact(repo, "comment", "comment", run_id)
         with open("comment/ID") as file:
             raw_comment_id = int(file.read())
     except Exception as e:
-        # If there is no existing comment, comment/ID will contain just a
-        # newline (due to jq & gh behaviour). This will cause `int(file.read())`
+        # If there is no existing comment, the `comment/ID` artifact
+        # will not exist. This will cause `utils.download_artifact`
         # to fail, so we catch that and set `raw_comment_id` to `None`.
         print("Could not retrieve an existing comment ID. \n", e)
         raw_comment_id = None

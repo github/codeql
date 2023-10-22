@@ -99,10 +99,16 @@ jobs:
           path: pr/
       - name: Save comment ID (if it exists)
         run: |
-          mkdir -p comment
           # Find the latest comment starting with COMMENT_PREFIX
           COMMENT_PREFIX=":warning: The head of this PR and the base branch were compared for differences in the framework coverage reports."
-          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate | jq --arg prefix "${COMMENT_PREFIX}" '[.[] | select(.body|startswith($prefix)) | .id] | max' > comment/ID
+          COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate | jq --arg prefix "${COMMENT_PREFIX}" 'map(select(.body|startswith($prefix)) | .id) | max // empty')
+          if [[ -z ${COMMENT_ID} ]]
+          then
+            echo "Comment not found. Not uploading 'comment/ID' artifact."
+          else
+            mkdir -p comment
+            echo ${COMMENT_ID} > comment/ID
+          fi
         env:
           GITHUB_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -111,3 +117,4 @@ jobs:
         with:
           name: comment
           path: comment/
+          if-no-files-found: ignore
