@@ -1,43 +1,40 @@
-| test.ts:70:17:70:27 | "user.name" |
-| test.ts:71:16:71:46 | "user.r ... stered" |
-| test.ts:80:29:80:46 | "Vulnerable \\")--" |
-| test.ts:85:13:85:57 | ["first ... --\\" "] |
-| test.ts:86:13:86:37 | ["exter ... ")-- "] |
-| test.ts:93:33:93:50 | "Vulnerable \\")--" |
-| test.ts:94:16:94:49 | "user2. ... OR 1=1" |
-| test.ts:100:15:100:19 | User2 |
-| test.ts:101:16:101:30 | "id = 1 OR 1=1" |
-| test.ts:107:53:107:73 | "select ...  USER2" |
-| test.ts:112:17:112:19 | "*" |
-| test.ts:113:16:113:28 | "user.id >=3" |
-| test.ts:121:47:121:68 | "User.i ... OR 1=1" |
-| test.ts:127:66:127:87 | "User.i ... OR 1=1" |
-| test.ts:134:16:142:9 | (qb) => ...       } |
-| test.ts:137:25:137:41 | "User2.firstName" |
-| test.ts:138:23:138:27 | User2 |
-| test.ts:139:24:139:47 | "user2. ... stered" |
-| test.ts:150:93:150:109 | "User2.id =:kind" |
-| test.ts:152:92:152:120 | "User2. ... OR 1=1" |
-| test.ts:159:17:159:23 | "User2" |
-| test.ts:160:15:160:19 | User2 |
-| test.ts:161:16:161:31 | "User2.id = :id" |
-| test.ts:167:51:167:79 | "User2. ... OR 1=1" |
-| test.ts:171:53:171:62 | "User2.id" |
-| test.ts:171:72:171:101 | "User2. ... stName" |
-| test.ts:176:52:176:81 | "photo. ... emoved" |
-| test.ts:182:53:182:62 | "User2.id" |
-| test.ts:182:72:182:101 | "User2. ... stName" |
-| test.ts:188:51:188:80 | "User2. ... stName" |
-| test.ts:192:13:196:14 | new Bra ...      }) |
-| test.ts:193:26:193:55 | "User2. ... stName" |
-| test.ts:195:28:195:73 | "User2. ... R (1=1" |
-| test.ts:198:18:198:27 | "User2.id" |
-| test.ts:198:38:198:43 | "id=1" |
-| test.ts:204:25:204:29 | "1=1" |
-| test.ts:210:16:210:32 | "User2.id =:kind" |
-| test.ts:212:13:216:14 | new Bra ...      }) |
-| test.ts:213:26:213:55 | "User2. ... stName" |
-| test.ts:215:28:215:73 | "User2. ... R (1=1" |
-| test.ts:218:13:222:14 | new Not ...      }) |
-| test.ts:219:26:219:55 | "User2. ... stName" |
-| test.ts:221:28:221:55 | "User2. ... stName" |
+| test.ts:19:20:19:50 | "user.f ... rstName |
+| test.ts:20:23:20:51 | "user.l ... astName |
+| test.ts:83:30:83:37 | BadInput |
+| test.ts:89:31:89:38 | BadInput |
+| test.ts:98:29:98:36 | BadInput |
+| test.ts:112:29:112:36 | BadInput |
+| test.ts:116:13:116:32 | [BadInput, BadInput] |
+| test.ts:117:13:117:22 | [BadInput] |
+| test.ts:123:32:123:39 | BadInput |
+| test.ts:124:16:124:23 | BadInput |
+| test.ts:130:16:130:23 | BadInput |
+| test.ts:135:29:135:36 | BadInput |
+| test.ts:139:17:139:24 | BadInput |
+| test.ts:140:16:140:23 | BadInput |
+| test.ts:144:47:144:54 | BadInput |
+| test.ts:150:66:150:73 | BadInput |
+| test.ts:157:16:165:9 | (qb) => ...       } |
+| test.ts:160:25:160:32 | BadInput |
+| test.ts:162:24:162:31 | BadInput |
+| test.ts:171:92:171:119 | "User2. ... adInput |
+| test.ts:176:17:176:23 | "User2" |
+| test.ts:178:16:178:23 | BadInput |
+| test.ts:183:51:183:78 | "User2. ... adInput |
+| test.ts:186:52:186:59 | BadInput |
+| test.ts:188:53:188:62 | "User2.id" |
+| test.ts:188:72:188:79 | BadInput |
+| test.ts:192:51:192:58 | BadInput |
+| test.ts:196:13:198:14 | new Bra ...      }) |
+| test.ts:197:26:197:33 | BadInput |
+| test.ts:197:44:197:51 | BadInput |
+| test.ts:200:18:200:25 | BadInput |
+| test.ts:200:36:200:43 | BadInput |
+| test.ts:205:25:205:32 | BadInput |
+| test.ts:211:16:211:23 | BadInput |
+| test.ts:213:13:215:14 | new Bra ...      }) |
+| test.ts:214:26:214:33 | BadInput |
+| test.ts:214:44:214:51 | BadInput |
+| test.ts:217:13:219:14 | new Not ...      }) |
+| test.ts:218:26:218:33 | BadInput |
+| test.ts:218:44:218:51 | BadInput |

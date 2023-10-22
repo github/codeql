@@ -5,26 +5,31 @@ import javascript
  */
 module TypeOrm {
   /**
-   * Gets an expression that constructs or returns a TypeORM database instance.
+   * Gets a `DataSource` instance
    */
   API::Node dataSource() {
     result = API::moduleImport("typeorm").getMember("DataSource").getInstance()
   }
 
   /**
-   * Gets an `QueryRunner`
+   * Gets a `QueryRunner` nodes
    */
   API::Node queryRunner() { result = dataSource().getMember("createQueryRunner").getReturn() }
 
   /**
-   *  Gets `createQueryBuilder` return value from a Active record based Entity
+   *  Gets a `*QueryBuilder` node of an Active record based Entity
    */
   API::Node activeRecordQueryBuilder() {
-    result = queryRunner().getMember("manager").getMember("createQueryBuilder").getReceiver()
+    result =
+      API::moduleImport("typeorm")
+          .getMember("Entity")
+          .getReturn()
+          .getADecoratedClass()
+          .getMember("createQueryBuilder")
   }
 
   /**
-   *   Gets `createQueryBuilder` return value from a Data Mapper based Entity
+   *   Gets a `*QueryBuilder` node of a Data Mapper based Entity
    */
   API::Node dataMapperQueryBuilder() {
     result =
@@ -36,10 +41,19 @@ module TypeOrm {
         // Using entity manager
         dataSource().getMember("manager"), queryRunner().getMember("manager")
       ].getMember("createQueryBuilder").getReturn()
+    or
+    // in case of custom query builders
+    result =
+      API::moduleImport("typeorm")
+          .getMember([
+              "SelectQueryBuilder", "InsertQueryBuilder", "RelationQueryBuilder",
+              "UpdateQueryBuilder"
+            ])
+          .getInstance()
   }
 
   /**
-   * Gets return value of a `createQueryBuilder`
+   * Gets a `*QueryBuilder` node
    */
   API::Node queryBuilderInstance() {
     result = dataMapperQueryBuilder() or
@@ -91,8 +105,8 @@ module TypeOrm {
   string selectExpression() {
     result =
       [
-        "select", "addSelect", "from", "where", "andWhere", "orWhere", "having", "orHaving",
-        "andHaving", "orderBy", "addOrderBy", "distinctOn", "groupBy", "addCommonTableExpression",
+        "select", "addSelect", "where", "andWhere", "orWhere", "having", "orHaving", "andHaving",
+        "orderBy", "addOrderBy", "distinctOn", "groupBy", "addCommonTableExpression",
         "leftJoinAndSelect", "innerJoinAndSelect", "leftJoin", "innerJoin", "leftJoinAndMapOne",
         "innerJoinAndMapOne", "leftJoinAndMapMany", "innerJoinAndMapMany", "orUpdate", "orIgnore",
         "values", "set"
@@ -116,8 +130,8 @@ module TypeOrm {
       typeOrmNode = getASuccessorOfBuilderInstance() and
       this = typeOrmNode.asSource()
       or
-      // I'm doing following because this = TypeORMNode.asSource()s
-      // won't let me to get a member in getAQueryArgument
+      // I'm doing following because `this = TypeORMNode.asSource()`
+      // don't let me to get a member in getAQueryArgument
       typeOrmNode = getASuccessorOfBrackets() and
       typeOrmNode.getMember(selectExpression()).getACall() = this
     }
@@ -137,7 +151,7 @@ module TypeOrm {
         or
         memberName =
           [
-            "select", "addSelect", "from", "where", "andWhere", "orWhere", "having", "orHaving",
+            "select", "addSelect", "where", "andWhere", "orWhere", "having", "orHaving",
             "andHaving", "orderBy", "addOrderBy", "distinctOn", "groupBy",
             "addCommonTableExpression"
           ] and
@@ -167,8 +181,8 @@ module TypeOrm {
   /** An expression that is passed to the `query` function and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
     QueryString() {
-      this = any(QueryRunner qc).getAQueryArgument() or
-      this = any(QueryBuilderCall qc).getAQueryArgument()
+      this = any(QueryRunner qr).getAQueryArgument() or
+      this = any(QueryBuilderCall qb).getAQueryArgument()
     }
   }
 }
