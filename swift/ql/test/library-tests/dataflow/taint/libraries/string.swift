@@ -79,7 +79,7 @@ extension String : CVarArg {
   init(platformString: UnsafePointer<CInterop.PlatformChar>) { self.init() }
 
   func withPlatformString<Result>(_ body: (UnsafePointer<CInterop.PlatformChar>) throws -> Result) rethrows -> Result { return 0 as! Result }
-
+  mutating func withMutableCharacters<R>(_ body: (inout String) -> R) -> R { return 0 as! R }
 
 
   mutating func replaceSubrange<C>(_ subrange: Range<String.Index>, with newElements: C)
@@ -686,4 +686,19 @@ func testDecodeCString() {
   let (str4, repaired4) = String.decodeCString(&input, as: UTF8.self)!
   sink(arg: str4) // $ tainted=669
   sink(arg: repaired4)
+}
+
+func taintMutableCharacters() {
+  var str = ""
+
+  sink(arg: str)
+  let rtn = str.withMutableCharacters({
+    chars in
+    sink(arg: chars)
+    chars.append(source2())
+    sink(arg: chars) // $ tainted=698
+    return source()
+  })
+  sink(arg: rtn) // $ MISSING: tainted=700
+  sink(arg: str) // $ MISSING: tainted=698
 }
