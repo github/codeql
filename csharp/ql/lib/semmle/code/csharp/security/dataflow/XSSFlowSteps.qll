@@ -2,6 +2,7 @@
 
 import csharp
 private import codeql.util.Unit
+private import codeql.util.FilePath
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
 /**
@@ -178,46 +179,4 @@ private class RelativeViewCallFilepath extends NormalizableFilepath {
 
   /** Holds if this string is the `idx`th path that will be searched for the `vc` call. */
   predicate hasViewCallWithIndex(ViewCall vc, int idx) { vc = vc_ and idx = idx_ }
-}
-
-// TODO: this could be a shared library
-/**
- * A filepath that should be normalized.
- * Extend to provide additional strings that should be normalized as filepaths.
- */
-abstract private class NormalizableFilepath extends string {
-  bindingset[this]
-  NormalizableFilepath() { any() }
-
-  /** Gets the normalized filepath for this string; traversing `/../` paths. */
-  string getNormalizedPath() {
-    exists(string norm |
-      norm = this.getNormalizedUpTo(0).regexpReplaceAll("/+$", "") and
-      (if this.matches("/%") then result = "/" + norm else result = norm)
-    )
-  }
-
-  private string getComponent(int i) { result = this.splitAt("/", i) }
-
-  private int getNumComponents() { result = strictcount(int i | exists(this.getComponent(i))) }
-
-  private string getNormalizedUpTo(int i) {
-    i in [0 .. this.getNumComponents()] and
-    (
-      i = this.getNumComponents() and
-      result = ""
-      or
-      i < this.getNumComponents() and
-      exists(string comp, string sofar |
-        comp = this.getComponent(i) and sofar = this.getNormalizedUpTo(i + 1)
-      |
-        if comp = [".", ""]
-        then result = sofar
-        else
-          if comp = ".." or not sofar.matches("../%")
-          then result = comp + "/" + sofar
-          else exists(string base | sofar = "../" + base | result = base)
-      )
-    )
-  }
 }
