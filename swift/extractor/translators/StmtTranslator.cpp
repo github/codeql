@@ -73,7 +73,7 @@ codeql::ForEachStmt StmtTranslator::translateForEachStmt(const swift::ForEachStm
   auto entry = dispatcher.createEntry(stmt);
   fillLabeledStmt(stmt, entry);
   entry.body = dispatcher.fetchLabel(stmt.getBody());
- // entry.sequence = dispatcher.fetchLabel(stmt.getTypeCheckedSequence());
+  // entry.sequence = dispatcher.fetchLabel(stmt.getTypeCheckedSequence());
   entry.pattern = dispatcher.fetchLabel(stmt.getPattern());
   entry.iteratorVar = dispatcher.fetchLabel(stmt.getIteratorVar());
   entry.where = dispatcher.fetchOptionalLabel(stmt.getWhere());
@@ -133,12 +133,17 @@ codeql::DoCatchStmt StmtTranslator::translateDoCatchStmt(const swift::DoCatchStm
 
 codeql::CaseStmt StmtTranslator::translateCaseStmt(const swift::CaseStmt& stmt) {
   auto entry = dispatcher.createEntry(stmt);
+  auto labels = stmt.getCaseLabelItems();
   entry.body = dispatcher.fetchLabel(stmt.getBody());
-  entry.labels = dispatcher.fetchRepeatedLabels(stmt.getCaseLabelItems());
-  if (stmt.hasCaseBodyVariables()) {
-    for (auto var : stmt.getCaseBodyVariables()) {
-      entry.variables.push_back(dispatcher.fetchLabel(var));
-    }
+  entry.labels = dispatcher.fetchRepeatedLabels(labels);
+  // we don't use stmt.getCaseBodyVariables() because it's actually filled with copies of the
+  // variable declarations, which would lead to duplicate `DeclVar` entities.
+  // Instead we follow the same logic that's used to fill getCaseBodyVariables, looking at the first
+  // pattern and collecting variables from it. See
+  // https://github.com/apple/swift/blob/71fff6649b3ce57cc22954f141cf8b567be6de88/lib/Parse/ParseStmt.cpp#L2210
+  if (!labels.empty() && labels.front().getPattern()) {
+    labels.front().getPattern()->forEachVariable(
+        [&](const swift::VarDecl* var) { entry.variables.push_back(dispatcher.fetchLabel(var)); });
   }
   return entry;
 }

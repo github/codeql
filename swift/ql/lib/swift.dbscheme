@@ -1671,7 +1671,7 @@ is_pattern_sub_patterns(  //dir=pattern
 
 named_patterns(  //dir=pattern
   unique int id: @named_pattern,
-  string name: string ref
+  int var_decl: @var_decl_or_none ref
 );
 
 optional_some_patterns(  //dir=pattern

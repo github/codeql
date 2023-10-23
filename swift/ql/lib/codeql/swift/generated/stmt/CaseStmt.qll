@@ -10,14 +10,6 @@ module Generated {
     override string getAPrimaryQlClass() { result = "CaseStmt" }
 
     /**
-     * Gets the body of this case statement.
-     */
-    Stmt getBody() {
-      result =
-        Synth::convertStmtFromRaw(Synth::convertCaseStmtToRaw(this).(Raw::CaseStmt).getBody())
-    }
-
-    /**
      * Gets the `index`th label of this case statement (0-based).
      */
     CaseLabelItem getLabel(int index) {
@@ -56,5 +48,13 @@ module Generated {
      * Gets the number of variables of this case statement.
      */
     final int getNumberOfVariables() { result = count(int i | exists(this.getVariable(i))) }
+
+    /**
+     * Gets the body of this case statement.
+     */
+    Stmt getBody() {
+      result =
+        Synth::convertStmtFromRaw(Synth::convertCaseStmtToRaw(this).(Raw::CaseStmt).getBody())
+    }
   }
 }
