@@ -134,5 +134,5 @@ func realWorld(input: String) throws {
 
 func replaceTest(x: String) -> String {
 	// OK - possibly replacing too much, but not obviously a problem
-	return x.replacingOccurrences(of: #"^a|b/"#, with: "", options: .regularExpression) // [FALSE POSITIVE]
+	return x.replacingOccurrences(of: #"^a|b/"#, with: "", options: .regularExpression)
 }

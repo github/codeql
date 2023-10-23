@@ -22,35 +22,10 @@ private module Impl implements
   MissingRegExpAnchor::MissingRegExpAnchorSig<TreeImpl, HostnameRegex::Impl>
 {
   predicate isUsedAsReplace(RegexPatternSource pattern) {
-    none()
-/* java   // is used for capture or replace
-    exists(DataFlow::MethodCallNode mcn, string name | name = mcn.getMethodName() |
-      name = "exec" and
-      mcn = pattern.getARegExpObject().getAMethodCall() and
-      exists(mcn.getAPropertyRead())
-      or
-      exists(DataFlow::Node arg |
-        arg = mcn.getArgument(0) and
-        (
-          pattern.getARegExpObject().flowsTo(arg) or
-          pattern.getAParse() = arg
-        )
-      |
-        name = "replace"
-        or
-        name = "match" and exists(mcn.getAPropertyRead())
-      )
-    )*/
-/* rb   exists(DataFlow::CallNode mcn, DataFlow::Node arg, string name |
-      name = mcn.getMethodName() and
-      arg = mcn.getArgument(0)
-    |
-      (
-        pattern.getAParse().(DataFlow::LocalSourceNode).flowsTo(arg) or
-        pattern.getAParse() = arg
-      ) and
-      name = ["sub", "sub!", "gsub", "gsub!"]
-    )*/
+    exists(RegexEval eval |
+      eval.getARegex() = pattern.asExpr() and
+      eval.isUsedAsReplace()
+    )
   }
 
   string getEndAnchorText() { result = "$" }

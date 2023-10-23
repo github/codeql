@@ -331,6 +331,13 @@ abstract class RegexEval extends CallExpr {
   DataFlow::Node getAnOptionsInput() { none() }
 
   /**
+   * Holds if this regular expression evaluation is a 'replacement' operation,
+   * such as replacing all matches of the regular expression in the input
+   * string with another string.
+   */
+  abstract predicate isUsedAsReplace();
+
+  /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
   RegExp getARegex() {
@@ -416,6 +423,10 @@ private class AlwaysRegexEval extends RegexEval {
   override DataFlow::Node getRegexInputNode() { result = regexInput }
 
   override DataFlow::Node getStringInputNode() { result = stringInput }
+
+  override predicate isUsedAsReplace() {
+    this.getStaticTarget().getName().matches(["replac%", "stringByReplac%", "trim%"])
+  }
 }
 
 /**
@@ -508,4 +519,6 @@ private class NSStringCompareOptionsRegexEval extends RegexEval instanceof NSStr
   override DataFlow::Node getAnOptionsInput() {
     result = this.(NSStringCompareOptionsPotentialRegexEval).getAnOptionsInput()
   }
+
+  override predicate isUsedAsReplace() { this.getStaticTarget().getName().matches(["replac%"]) }
 }

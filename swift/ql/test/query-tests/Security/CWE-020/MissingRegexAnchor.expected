@@ -35,7 +35,6 @@
 | SemiAnchoredRegex.swift:104:16:104:16 | ^mouse\|touch\|click\|contextmenu\|drop\|dragover\|dragend | Misleading operator precedence. The subexpression '^mouse' is anchored at the beginning, but the other parts of this regular expression are not |
 | SemiAnchoredRegex.swift:105:16:105:16 | ^xxx:\|yyy: | Misleading operator precedence. The subexpression '^xxx:' is anchored at the beginning, but the other parts of this regular expression are not |
 | SemiAnchoredRegex.swift:106:16:106:16 | _xxx\|_yyy\|_zzz$ | Misleading operator precedence. The subexpression '_zzz$' is anchored at the end, but the other parts of this regular expression are not |
-| SemiAnchoredRegex.swift:137:36:137:36 | ^a\|b/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
 | UnanchoredUrlRegex.swift:62:39:62:39 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | UnanchoredUrlRegex.swift:63:39:63:39 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | UnanchoredUrlRegex.swift:64:39:64:39 | ^https?://good.com | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
