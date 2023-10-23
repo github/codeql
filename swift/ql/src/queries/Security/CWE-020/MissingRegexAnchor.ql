@@ -40,5 +40,6 @@ where
   isSemiAnchoredHostnameRegExp(node, msg)
   or
   hasMisleadingAnchorPrecedence(node, msg)
-// isLineAnchoredHostnameRegExp is not used here, as it is not relevant to JS.
+  or
+  isLineAnchoredHostnameRegExp(node, msg)
 select node, msg
