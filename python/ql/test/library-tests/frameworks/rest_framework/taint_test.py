@@ -112,18 +112,19 @@ class MyClass(APIView):
 # see https://www.django-rest-framework.org/api-guide/viewsets/
 
 class MyModelViewSet(ModelViewSet):
-    def retrieve(self, request, *args, **kwargs): # $ requestHandler
+    def retrieve(self, request, routed_param): # $ requestHandler routedParameter=routed_param
         ensure_tainted(
             request, # $ tainted
             request.GET, # $ tainted
             request.GET.get("pk"), # $ tainted
+            request.data # $ tainted
         )
 
-        ensure_tainted(
-            kwargs, # $ tainted
-            kwargs["pk"], # $ tainted
-            kwargs.get("pk"), # $ tainted
-        )
+        ensure_tainted(routed_param) # $ tainted
+
+        # same as for standard Django view
+        ensure_tainted(self.args, self.kwargs) # $ tainted
+
         return Response("retrieve") # $ HttpResponse
 
 
