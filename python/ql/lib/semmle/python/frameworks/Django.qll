@@ -2416,7 +2416,10 @@ module PrivateDjango {
       // Since we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      result in [this.getArg(_), this.getArgByName(_)] and
+      result in [
+          this.getArg(_), this.getArgByName(_), //
+          this.getVararg().(Parameter), this.getKwarg().(Parameter), // TODO: These sources should be modeled as storing content!
+        ] and
       not result = any(int i | i < this.getFirstPossibleRoutedParamIndex() | this.getArg(i))
     }
 
@@ -2452,13 +2455,20 @@ module PrivateDjango {
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       exists(DjangoRouteHandler routeHandler | routeHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
-        result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
+        result in [
+            routeHandler.getArg(_), routeHandler.getArgByName(_), //
+            routeHandler.getVararg().(Parameter), routeHandler.getKwarg().(Parameter), // TODO: These sources should be modeled as storing content!
+          ] and
         not result =
           any(int i | i < routeHandler.getFirstPossibleRoutedParamIndex() | routeHandler.getArg(i))
       )
       or
       exists(string name |
-        result = this.getARequestHandler().getArgByName(name) and
+        (
+          result = this.getARequestHandler().getKwarg() // TODO: These sources should be modeled as storing content!
+          or
+          result = this.getARequestHandler().getArgByName(name)
+        ) and
         exists(string match |
           match = this.getUrlPattern().regexpFind(pathRoutedParameterRegex(), _, _) and
           name = match.regexpCapture(pathRoutedParameterRegex(), 2)
@@ -2475,7 +2485,10 @@ module PrivateDjango {
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       exists(DjangoRouteHandler routeHandler | routeHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
-        result in [routeHandler.getArg(_), routeHandler.getArgByName(_)] and
+        result in [
+            routeHandler.getArg(_), routeHandler.getArgByName(_), //
+            routeHandler.getVararg().(Parameter), routeHandler.getKwarg().(Parameter), // TODO: These sources should be modeled as storing content!
+          ] and
         not result =
           any(int i | i < routeHandler.getFirstPossibleRoutedParamIndex() | routeHandler.getArg(i))
       )

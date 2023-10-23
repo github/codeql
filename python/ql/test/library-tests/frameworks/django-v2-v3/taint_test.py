@@ -174,11 +174,11 @@ class ClassView(View):
         )
 
 
-def kwargs_param(request, **kwargs): # $ requestHandler
+def kwargs_param(request, **kwargs): # $ requestHandler routedParameter=kwargs
     ensure_tainted(
-        kwargs, # $ MISSING: tainted
-        kwargs["foo"], # $ MISSING: tainted
-        kwargs["bar"]  # $ MISSING: tainted
+        kwargs, # $ tainted
+        kwargs["foo"], # $ tainted
+        kwargs["bar"]  # $ tainted
     )
 
     ensure_tainted(request) # $ tainted
