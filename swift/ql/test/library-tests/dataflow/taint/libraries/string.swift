@@ -372,7 +372,7 @@ func taintThroughEncodings() {
   })
   tainted.withUTF8({
     buffer in
-    sink(arg: buffer[0]) // $ MISSING: tainted=366
+    sink(arg: buffer[0]) // $ tainted=366
     sink(arg: buffer.baseAddress!) // $ MISSING: tainted=366
   })
 
@@ -382,7 +382,7 @@ func taintThroughEncodings() {
   })
   tainted.withCString({
     ptr in
-    sink(arg: ptr[0]) // $ MISSING: tainted=366
+    sink(arg: ptr[0]) // $ tainted=366
   })
   clean.withCString(encodedAs: UTF8.self, {
     ptr in
@@ -390,7 +390,7 @@ func taintThroughEncodings() {
   })
   tainted.withCString(encodedAs: UTF8.self, {
     ptr in
-    sink(arg: ptr[0]) // $ MISSING: tainted=366
+    sink(arg: ptr[0]) // $ tainted=366
   })
 
   let arrayString1 = clean.cString(using: String.Encoding.utf8)!
@@ -421,8 +421,8 @@ func taintThroughEncodings() {
   })
   tainted.withPlatformString({
     ptr in
-    sink(arg: ptr[0]) // $ MISSING: tainted=366
-    sink(arg: String(platformString: ptr)) // $ MISSING: tainted=366
+    sink(arg: ptr[0]) // $ tainted=366
+    sink(arg: String(platformString: ptr)) // $ tainted=366
 
     let buffer = UnsafeBufferPointer(start: ptr, count: 10)
     let arrayString = Array(buffer)
@@ -699,6 +699,6 @@ func taintMutableCharacters() {
     sink(arg: chars) // $ tainted=698
     return source()
   })
-  sink(arg: rtn) // $ MISSING: tainted=700
-  sink(arg: str) // $ MISSING: tainted=698
+  sink(arg: rtn) // $ tainted=700
+  sink(arg: str) // $ tainted=698
 }
