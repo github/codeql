@@ -14,6 +14,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.ExternalFlow
 
 class ExecMethod extends Method {
   ExecMethod() {
@@ -22,21 +23,31 @@ class ExecMethod extends Method {
   }
 }
 
-module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+module ProcessBuilderEnvironmentFlow implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.getType().(RefType).hasQualifiedName("java.lang", "ProcessBuilder")
+  }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof ExecMethod and sink.asExpr() = ma.getArgument(1)
+    exists(MethodAccess ma | ma.getQualifier() = sink.asExpr() |
+      ma.getMethod().hasName("environment")
     )
   }
 }
 
+module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "environment-injection") }
+}
+
 module ExecTaintedEnvironmentFlow = TaintTracking::Global<ExecTaintedEnvironmentConfig>;
 
-import ExecTaintedEnvironmentFlow::PathGraph
-
-from ExecTaintedEnvironmentFlow::PathNode source, ExecTaintedEnvironmentFlow::PathNode sink
-where ExecTaintedEnvironmentFlow::flowPath(source, sink)
-select sink.getNode(), sink, source, "This command will be executed in a $@.", sink.getNode(),
-  "tainted environment"
+from Flow::PathNode source, Flow::PathNode sink, string label
+where
+  ExecTaintedCommandFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and label = "argument"
+  or
+  ExecTaintedEnvironmentFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
+  label = "environment"
+select sink.getNode(), sink, source, "This command will be execute with a tainted $@.",
+  sink.getNode(), label
