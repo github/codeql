@@ -56,6 +56,11 @@ class Node extends TNode {
    * Gets the parameter that corresponds to this node, if any.
    */
   ParamDecl asParameter() { none() }
+
+  /**
+   * Gets the type of this node.
+   */
+  DataFlowType getType() { result = this.(NodeImpl).getTypeImpl() }
 }
 
 /**
@@ -214,7 +219,7 @@ module Content {
     int getIndex() { result = index }
 
     override string toString() { result = "Tuple element at index " + index.toString() }
-  
+
     override DataFlowType getType() { result instanceof AnyType }
   }
 
