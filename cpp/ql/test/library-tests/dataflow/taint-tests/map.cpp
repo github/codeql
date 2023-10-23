@@ -447,5 +447,5 @@ void test_indirect_taint() {
   int* p = indirect_source();
   m[1] = p;
   int* q = m[1];
-  sink(q); // $ MISSING: ast ir
+  sink(q); // $ ir MISSING: ast
 }
