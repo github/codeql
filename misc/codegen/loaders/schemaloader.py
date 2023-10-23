@@ -19,7 +19,7 @@ class _PropertyNamer(schema.PropertyModifier):
         prop.name = self.name.rstrip("_")
 
 
-def _get_name(x: str | type | None):
+def _get_name(x: typing.Optional[typing.Union[str, type]]):
     if x is None:
         return None
     if isinstance(x, str):
