@@ -3,6 +3,7 @@ name: "Swift"
 on:
   pull_request:
     paths:
+      - "**"
       - "swift/**"
       - "misc/bazel/**"
       - "misc/codegen/**"
