@@ -58,6 +58,15 @@ private class ViewCall extends MethodCall {
 
   /** Gets the name of the MVC controller that this call is made from, if any. */
   string getControllerName() { result + "Controller" = this.getController().getName() }
+
+  /** Gets the name of the Area that the controller of this call belongs to, if any. */
+  string getAreaName() {
+    exists(Attribute attr |
+      attr = this.getController().getAnAttribute() and
+      attr.getType().hasQualifiedName("Microsoft.AspNetCore.Mvc", "AreaAttribute") and
+      result = attr.getArgument(0).(StringLiteral).getValue()
+    )
+  }
 }
 
 /** A compiler-generated Razor page. */
@@ -110,17 +119,21 @@ private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPage rp) {
 
 /** Gets the `i`th template for view discovery. */
 private string getViewSearchTemplate(int i) {
-  i = 0 and result = "/Views/{1}/{0}.cshtml"
+  i = 0 and result = "/Areas/{2}/Views/{1}/{0}.cshtml"
   or
-  i = 1 and result = "/Views/Shared/{0}.cshtml"
+  i = 1 and result = "/Areas/{2}/Views/Shared/{0}.cshtml"
   or
-  i = 2 and result = getAViewSearchTemplateInCode()
+  i = 2 and result = "/Views/{1}/{0}.cshtml"
+  or
+  i = 3 and result = "/Views/Shared/{0}.cshtml"
+  or
+  i = 4 and result = getAViewSearchTemplateInCode()
 }
 
 /** Gets an additional template used for view discovery defined in code. */
 private string getAViewSearchTemplateInCode() {
   exists(StringLiteral str, MethodCall addCall |
-    addCall.getTarget().hasQualifiedName("System.Collections.Generic", "IList", "Add") and
+    addCall.getTarget().hasName("Add") and
     DataFlow::localExprFlow(str, addCall.getArgument(0)) and
     addCall.getQualifier() = getAViewLocationList() and
     result = str.getValue()
@@ -134,8 +147,8 @@ private Expr getAViewLocationList() {
       .getProperty()
       .hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorViewEngineOptions",
         [
-          "ViewLocationFormats", "PageViewLocationFormats", "AreaViewLocationFormats",
-          "AreaPageViewLocationFormats"
+          "ViewLocationFormats", "AreaViewLocationFormats",
+          //"PageViewLocationFormats","AreaPageViewLocationFormats"
         ])
 }
 
@@ -145,13 +158,21 @@ private class RelativeViewCallFilepath extends NormalizableFilepath {
   int idx_;
 
   RelativeViewCallFilepath() {
-    exists(string template | template = getViewSearchTemplate(idx_) |
-      this =
-        template.replaceAll("{0}", vc_.getActionName()).replaceAll("{1}", vc_.getControllerName())
-      or
-      not exists(vc_.getControllerName()) and
-      not template.matches("%{1}%") and
-      this = template.replaceAll("{0}", vc_.getActionName())
+    exists(string template, string sub2, string sub1, string sub0 |
+      template = getViewSearchTemplate(idx_)
+    |
+      (
+        if template.matches("%{2}%")
+        then sub2 = template.replaceAll("{2}", vc_.getAreaName())
+        else sub2 = template
+      ) and
+      (
+        if template.matches("%{1}%")
+        then sub1 = sub2.replaceAll("{1}", vc_.getControllerName())
+        else sub1 = sub2
+      ) and
+      sub0 = sub1.replaceAll("{0}", vc_.getActionName()) and
+      this = sub0
     )
   }
 
