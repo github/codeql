@@ -131,8 +131,8 @@ class MyModelViewSet(ModelViewSet):
 # fake setup, you can't actually run this
 urlpatterns = [
     path("test-taint/<routed_param>", test_taint),  # $ routeSetup="test-taint/<routed_param>"
-    path("ClassView/<routed_param>", MyClass.as_view()), # $ routeSetup="ClassView/<routed_param>",
-    path("MyModelViewSet/<routed_param>", MyModelViewSet.as_view()) # $ routeSetup="MyModelViewSet/<routed_param>",
+    path("ClassView/<routed_param>", MyClass.as_view()), # $ routeSetup="ClassView/<routed_param>"
+    path("MyModelViewSet/<routed_param>", MyModelViewSet.as_view()) # $ routeSetup="MyModelViewSet/<routed_param>"
 ]
 
 # tests with no route-setup, but we can still tell that these are using Django REST
