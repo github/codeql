@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -110,7 +111,7 @@ class MyClass(APIView):
 # Viewsets
 # see https://www.django-rest-framework.org/api-guide/viewsets/
 
-class MyModelViewSet(viewsets.ModelViewSet):
+class MyModelViewSet(ModelViewSet):
     def retrieve(self, request, *args, **kwargs): # $ requestHandler
         ensure_tainted(
             request, # $ tainted
