@@ -22,7 +22,7 @@ namespace Semmle.Extraction.Tests
         {
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
             Assert.True(options.Cache);
-            Assert.True(options.CIL);
+            Assert.False(options.CIL);
             Assert.Null(options.Framework);
             Assert.Null(options.CompilerName);
             Assert.Empty(options.CompilerArguments);
@@ -52,7 +52,7 @@ namespace Semmle.Extraction.Tests
         public void CIL()
         {
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.True(options.CIL);
+            Assert.False(options.CIL);
 
             Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_CIL", "false");
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
@@ -64,7 +64,7 @@ namespace Semmle.Extraction.Tests
 
             Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_CIL", null);
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.True(options.CIL);
+            Assert.False(options.CIL);
         }
 
         [Fact]
