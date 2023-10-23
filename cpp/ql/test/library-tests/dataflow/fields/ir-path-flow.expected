@@ -770,6 +770,9 @@ edges
 | simple.cpp:92:7:92:7 | a indirection [post update] [i] | simple.cpp:94:10:94:11 | a2 indirection [i] |
 | simple.cpp:92:11:92:20 | call to user_input | simple.cpp:92:5:92:22 | ... = ... |
 | simple.cpp:94:10:94:11 | a2 indirection [i] | simple.cpp:94:13:94:13 | i |
+| simple.cpp:103:24:103:24 | x | simple.cpp:104:14:104:14 | x |
+| simple.cpp:108:17:108:26 | call to user_input | simple.cpp:109:43:109:43 | x |
+| simple.cpp:109:43:109:43 | x | simple.cpp:103:24:103:24 | x |
 | struct_init.c:14:24:14:25 | ab indirection [a] | struct_init.c:15:8:15:9 | ab indirection [a] |
 | struct_init.c:15:8:15:9 | ab indirection [a] | struct_init.c:15:12:15:12 | a |
 | struct_init.c:20:13:20:14 | definition of ab indirection [a] | struct_init.c:22:8:22:9 | ab indirection [a] |
@@ -1576,6 +1579,10 @@ nodes
 | simple.cpp:92:11:92:20 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:94:10:94:11 | a2 indirection [i] | semmle.label | a2 indirection [i] |
 | simple.cpp:94:13:94:13 | i | semmle.label | i |
+| simple.cpp:103:24:103:24 | x | semmle.label | x |
+| simple.cpp:104:14:104:14 | x | semmle.label | x |
+| simple.cpp:108:17:108:26 | call to user_input | semmle.label | call to user_input |
+| simple.cpp:109:43:109:43 | x | semmle.label | x |
 | struct_init.c:14:24:14:25 | ab indirection [a] | semmle.label | ab indirection [a] |
 | struct_init.c:15:8:15:9 | ab indirection [a] | semmle.label | ab indirection [a] |
 | struct_init.c:15:12:15:12 | a | semmle.label | a |
@@ -1782,6 +1789,7 @@ subpaths
 | simple.cpp:67:13:67:13 | i | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:67:13:67:13 | i | i flows from $@ | simple.cpp:65:11:65:20 | call to user_input | call to user_input |
 | simple.cpp:84:14:84:20 | call to getf2f1 | simple.cpp:83:17:83:26 | call to user_input | simple.cpp:84:14:84:20 | call to getf2f1 | call to getf2f1 flows from $@ | simple.cpp:83:17:83:26 | call to user_input | call to user_input |
 | simple.cpp:94:13:94:13 | i | simple.cpp:92:11:92:20 | call to user_input | simple.cpp:94:13:94:13 | i | i flows from $@ | simple.cpp:92:11:92:20 | call to user_input | call to user_input |
+| simple.cpp:104:14:104:14 | x | simple.cpp:108:17:108:26 | call to user_input | simple.cpp:104:14:104:14 | x | x flows from $@ | simple.cpp:108:17:108:26 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:40:20:40:29 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:40:20:40:29 | call to user_input | call to user_input |
