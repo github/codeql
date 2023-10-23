@@ -49,13 +49,13 @@ where
       func instanceof SafeJwtParserFunc
     ) and
     //Check that the Parse(function or method) does not check the Token Method field, which most likely is a check for method type
-    not exists(Field f, FunctionName fn |
+    not exists(Field f |
       f.hasQualifiedName(golangJwtModern(), "Token", "Method") and
       (
         f.getARead().getRoot() = c.getCall().getArgument(1)
         or
-        c.getCall().getArgument(1) = fn and
-        fn.toString() = f.getARead().asExpr().getEnclosingFunction().getName()
+        exists(FunctionName fn | c.getCall().getArgument(1) = fn and 
+        fn.toString() = f.getARead().asExpr().getEnclosingFunction().getName())
       )
     )
   )
