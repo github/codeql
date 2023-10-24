@@ -28,11 +28,40 @@ extensible predicate threatModelConfiguration(string kind, boolean enable, int p
  */
 extensible private predicate threatModelGrouping(string kind, string group);
 
+/** Holds if the specified threat model kind is mentioned in either the configuration or grouping table. */
+private predicate knownThreatModel(string kind) {
+  threatModelConfiguration(kind, _, _) or
+  threatModelGrouping(kind, _) or
+  threatModelGrouping(_, kind) or
+  kind = "all"
+}
+
 /**
  * Gets the threat model group that directly contains the specified threat model.
  */
 private string getParentThreatModel(string child) {
   threatModelGrouping(child, result)
+  or
+  knownThreatModel(child) and child != "all" and result = "all"
+}
+
+/**
+ * Gets the `enabled` column of the highest-priority configuration row whose `kind` column includes
+ * the specified threat model kind.
+ */
+private boolean threatModelExplicitState(string kind) {
+  // Find the highest-oriority configuration row whose `kind` column includes the specified threat
+  // model kind. If such a row exists and its `enabled` column is `true`, then the threat model is
+  // enabled.
+  (knownThreatModel(kind) or kind = "<other>") and
+  result =
+    max(boolean enabled, int priority |
+      exists(string configuredKind | configuredKind = getParentThreatModel*(kind) |
+        threatModelConfiguration(configuredKind, enabled, priority)
+      )
+    |
+      enabled order by priority
+    )
 }
 
 /**
@@ -41,16 +70,9 @@ private string getParentThreatModel(string child) {
  */
 bindingset[kind]
 predicate currentThreatModel(string kind) {
-  // Find the highest-oriority configuration row whose `kind` column includes the specified threat
-  // model kind. If such a row exists and its `enabled` column is `true`, then the threat model is
-  // enabled.
-  max(boolean enabled, int priority |
-    exists(string configuredKind |
-      configuredKind = getParentThreatModel*(kind) or configuredKind = "all"
-    |
-      threatModelConfiguration(configuredKind, enabled, priority)
-    )
-  |
-    enabled order by priority
-  ) = true
+  knownThreatModel(kind) and threatModelExplicitState(kind) = true
+  or
+  // For any threat model kind not mentioned in the configuration or grouping tables, its state of
+  // enablement is controlled only by the entries that specifiy the "all" kind.
+  not knownThreatModel(kind) and threatModelExplicitState("all") = true
 }
