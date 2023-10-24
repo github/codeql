@@ -75,7 +75,7 @@ func foo() -> Int {
   let r = { x }
   sink(r()) // $ MISSING: hasValueFlow=foo
   f(1)
-  return r() // $ MISSING: hasTaintFlow=foo
+  return r()
 }
 
 func bar() -> () -> Int {
@@ -151,35 +151,3 @@ func simplestTest() {
   let x = source("simplestTest", 0)
   sink(x) // $ hasValueFlow=simplestTest
 }
-
-func main() {
-  print("captureList():")
-  captureList() // Hello world! 123
-
-  print("callEscape():")
-  callEscape() // 1
-
-  print("logical():", logical()) // true
-
-  print("asyncTest():")
-  asyncTest() // 42
-
-  print("foo():", foo()) // 42
-
-  let a = bar()
-  let b = baz()
-
-  print("bar():", a(), a()) // $ MISSING: hasTaintFlow=bar
-
-  print("baz():", b(), b()) // $ MISSING: hasTaintFlow=baz
-
-  g!(1)
-  print("g!(1):", b(), b()) // $ MISSING: hasTaintFlow=baz
-
-  print("sharedCapture():", sharedCapture()) // 4
-
-  print("sharedCaptureMultipleWriters():")
-  sharedCaptureMultipleWriters() // 42, -1
-}
-
-main()
