@@ -69,7 +69,7 @@ private class ViewCall extends MethodCall {
     )
   }
 
-  /** `result` is `true` if this cal is from a controller that is an an Area, `false` otherwise. */
+  /** `result` is `true` if this call is from a controller that is an Area, and `false` otherwise. */
   boolean hasArea() { if exists(this.getAreaName()) then result = true else result = false }
 }
 
