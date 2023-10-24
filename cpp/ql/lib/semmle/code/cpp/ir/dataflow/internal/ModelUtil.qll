@@ -91,7 +91,6 @@ Node callOutput(CallInstruction call, FunctionOutput output, int d) {
     // The return value
     result = callOutputWithIndirectionIndex(call, output, indirectionIndex + d)
     or
-    n = callOutputWithIndirectionIndex(call, output, indirectionIndex) and
     // If there isn't an indirect out node for the call with indirection `d` then
     // we conflate this with the underlying `CallInstruction`.
     not exists(getIndirectReturnOutNode(call, indirectionIndex + d)) and
