@@ -78,7 +78,7 @@ where
     ssa.getCfgNode().(Expr).getParent*() = loop.(ForStmt).getAnInit()
   ) and
   // And `cond` does not use method calls, field reads, or array reads.
-  not exists(MethodAccess ma | ma.getParent*() = cond) and
+  not exists(MethodCall ma | ma.getParent*() = cond) and
   not exists(FieldRead fa |
     // Ignore if field is final
     not fa.getField().isFinal() and

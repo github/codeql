@@ -13,6 +13,6 @@ query predicate arrayCreationInit(ArrayCreationExpr ace, ArrayInit init, Expr e,
   init.getInit(idx) = e
 }
 
-query predicate cloneCalls(MethodAccess ma, Type resultType) {
+query predicate cloneCalls(MethodCall ma, Type resultType) {
   ma.getMethod().getName() = "clone" and resultType = ma.getType()
 }

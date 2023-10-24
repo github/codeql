@@ -15,10 +15,10 @@ private Expr exprWithIntValue(int i) {
 
 /**
  * An expression for which the predicate `integerGuard` is relevant.
- * This includes `RValue` and `MethodAccess`.
+ * This includes `RValue` and `MethodCall`.
  */
 class IntComparableExpr extends Expr {
-  IntComparableExpr() { this instanceof RValue or this instanceof MethodAccess }
+  IntComparableExpr() { this instanceof RValue or this instanceof MethodCall }
 
   /** Gets an integer that is directly assigned to the expression in case of a variable; or zero. */
   int relevantInt() {

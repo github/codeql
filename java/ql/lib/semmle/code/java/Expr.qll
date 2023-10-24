@@ -1380,7 +1380,7 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
    */
   RefType getReceiverType() {
     exists(Expr resultExpr | resultExpr = this.getResultExpr() |
-      result = resultExpr.(MethodAccess).getReceiverType() or
+      result = resultExpr.(MethodCall).getReceiverType() or
       result = resultExpr.(ClassInstanceExpr).getConstructedType() or
       result = resultExpr.(ArrayCreationExpr).getType()
     )
@@ -1931,16 +1931,16 @@ class MethodCall extends Expr, Call, @methodaccess {
    * Holds if this is a method access to an instance method of `this`. That is,
    * the qualifier is either an explicit or implicit unqualified `this` or `super`.
    */
-  predicate isOwnMethodAccess() { Qualifier::ownMemberAccess(this) }
+  predicate isOwnMethodCall() { Qualifier::ownMemberAccess(this) }
 
   /**
    * Holds if this is a method access to an instance method of the enclosing
    * class `t`. That is, the qualifier is either an explicit or implicit
    * `t`-qualified `this` or `super`.
    */
-  predicate isEnclosingMethodAccess(RefType t) { Qualifier::enclosingMemberAccess(this, t) }
+  predicate isEnclosingMethodCall(RefType t) { Qualifier::enclosingMemberAccess(this, t) }
 
-  override string getAPrimaryQlClass() { result = "MethodAccess" }
+  override string getAPrimaryQlClass() { result = "MethodCall" }
 }
 
 /** DEPRECATED: Alias for `MethodCall`. */
@@ -2107,22 +2107,31 @@ class Call extends ExprParent, @caller {
 }
 
 /** A polymorphic call to an instance method. */
-class VirtualMethodAccess extends MethodAccess {
-  VirtualMethodAccess() {
+class VirtualMethodCall extends MethodCall {
+  VirtualMethodCall() {
     this.getMethod().isVirtual() and
     not this.getQualifier() instanceof SuperAccess
   }
 }
 
+/** DEPRECATED: Alias for `VirtualMethodCall`. */
+deprecated class VirtualMethodAccess = VirtualMethodCall;
+
 /** A static method call. */
-class StaticMethodAccess extends MethodAccess {
-  StaticMethodAccess() { this.getMethod().isStatic() }
+class StaticMethodCall extends MethodCall {
+  StaticMethodCall() { this.getMethod().isStatic() }
 }
 
+/** DEPRECATED: Alias for `StaticMethodCall`. */
+deprecated class StaticMethodAccess = StaticMethodCall;
+
 /** A call to a method in the superclass. */
-class SuperMethodAccess extends MethodAccess {
-  SuperMethodAccess() { this.getQualifier() instanceof SuperAccess }
+class SuperMethodCall extends MethodCall {
+  SuperMethodCall() { this.getQualifier() instanceof SuperAccess }
 }
+
+/** DEPRECATED: Alias for `SuperMethodCall`. */
+deprecated class SuperMethodAccess = SuperMethodCall;
 
 /**
  * A constructor call, which occurs either as a constructor invocation inside a
@@ -2172,23 +2181,23 @@ private module Qualifier {
     TThis() or
     TEnclosing(RefType t)
 
-  /** An expression that accesses a member. That is, either a `FieldAccess` or a `MethodAccess`. */
+  /** An expression that accesses a member. That is, either a `FieldAccess` or a `MethodCall`. */
   class MemberAccess extends Expr {
     MemberAccess() {
       this instanceof FieldAccess or
-      this instanceof MethodAccess
+      this instanceof MethodCall
     }
 
     /** Gets the member accessed by this member access. */
     Member getMember() {
       result = this.(FieldAccess).getField() or
-      result = this.(MethodAccess).getMethod()
+      result = this.(MethodCall).getMethod()
     }
 
     /** Gets the qualifier of this member access, if any. */
     Expr getQualifier() {
       result = this.(FieldAccess).getQualifier() or
-      result = this.(MethodAccess).getQualifier()
+      result = this.(MethodCall).getQualifier()
     }
   }
 

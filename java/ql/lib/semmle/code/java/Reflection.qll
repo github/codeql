@@ -62,8 +62,8 @@ private class ReflectiveClassIdentifierLiteral extends ReflectiveClassIdentifier
 /**
  * A call to a Java standard library method which constructs or returns a `Class<T>` from a `String`.
  */
-class ReflectiveClassIdentifierMethodAccess extends ReflectiveClassIdentifier, MethodAccess {
-  ReflectiveClassIdentifierMethodAccess() {
+class ReflectiveClassIdentifierMethodCall extends ReflectiveClassIdentifier, MethodCall {
+  ReflectiveClassIdentifierMethodCall() {
     // A call to `Class.forName(...)`, from which we can infer `T` in the returned type `Class<T>`.
     this.getCallee().getDeclaringType() instanceof TypeClass and this.getCallee().hasName("forName")
     or
@@ -211,7 +211,7 @@ private predicate expectsEnclosingInstance(RefType r) {
 /**
  * A call to `Class.newInstance()` or `Constructor.newInstance()`.
  */
-class NewInstance extends MethodAccess {
+class NewInstance extends MethodCall {
   NewInstance() {
     (
       this.getCallee().getDeclaringType() instanceof TypeClass or
@@ -301,10 +301,10 @@ class NewInstance extends MethodAccess {
 }
 
 /**
- * A `MethodAccess` on a `Class` element.
+ * A `MethodCall` on a `Class` element.
  */
-class ClassMethodAccess extends MethodAccess {
-  ClassMethodAccess() { this.getCallee().getDeclaringType() instanceof TypeClass }
+class ClassMethodCall extends MethodCall {
+  ClassMethodCall() { this.getCallee().getDeclaringType() instanceof TypeClass }
 
   /**
    * Gets an inferred type for the `Class` represented by this expression.
@@ -320,7 +320,7 @@ class ClassMethodAccess extends MethodAccess {
 /**
  * A call to `Class.getConstructors(..)` or `Class.getDeclaredConstructors(..)`.
  */
-class ReflectiveConstructorsAccess extends ClassMethodAccess {
+class ReflectiveConstructorsAccess extends ClassMethodCall {
   ReflectiveConstructorsAccess() {
     this.getCallee().hasName("getConstructors") or
     this.getCallee().hasName("getDeclaredConstructors")
@@ -330,7 +330,7 @@ class ReflectiveConstructorsAccess extends ClassMethodAccess {
 /**
  * A call to `Class.getMethods(..)` or `Class.getDeclaredMethods(..)`.
  */
-class ReflectiveMethodsAccess extends ClassMethodAccess {
+class ReflectiveMethodsAccess extends ClassMethodCall {
   ReflectiveMethodsAccess() {
     this.getCallee().hasName("getMethods") or
     this.getCallee().hasName("getDeclaredMethods")
@@ -340,8 +340,8 @@ class ReflectiveMethodsAccess extends ClassMethodAccess {
 /**
  * A call to `Class.getMethod(..)` or `Class.getDeclaredMethod(..)`.
  */
-class ReflectiveMethodAccess extends ClassMethodAccess {
-  ReflectiveMethodAccess() {
+class ReflectiveMethodCall extends ClassMethodCall {
+  ReflectiveMethodCall() {
     this.getCallee().hasName("getMethod") or
     this.getCallee().hasName("getDeclaredMethod")
   }
@@ -369,7 +369,7 @@ class ReflectiveMethodAccess extends ClassMethodAccess {
 /**
  * A call to `Class.getAnnotation(..)`.
  */
-class ReflectiveAnnotationAccess extends ClassMethodAccess {
+class ReflectiveAnnotationAccess extends ClassMethodCall {
   ReflectiveAnnotationAccess() { this.getCallee().hasName("getAnnotation") }
 
   /**
@@ -383,7 +383,7 @@ class ReflectiveAnnotationAccess extends ClassMethodAccess {
 /**
  * A call to `Class.getField(..)` that accesses a field.
  */
-class ReflectiveFieldAccess extends ClassMethodAccess {
+class ReflectiveFieldAccess extends ClassMethodCall {
   ReflectiveFieldAccess() {
     this.getCallee().hasName("getField") or
     this.getCallee().hasName("getDeclaredField")

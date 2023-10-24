@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.security.SensitiveActions
 
-query predicate sensitiveMethodAccess(SensitiveMethodAccess ma) { any() }
+query predicate sensitiveMethodCall(SensitiveMethodCall ma) { any() }
 
 query predicate sensitiveVarAccess(SensitiveVarAccess va) { any() }
 

@@ -290,7 +290,7 @@ private int argToParam(Call call, int argIdx) {
 
 /** Access to a method that passes taint from qualifier to argument. */
 private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
-  exists(MethodAccess ma, int arg |
+  exists(MethodCall ma, int arg |
     ma.getMethod().(TaintPreservingCallable).transfersTaint(-1, argToParam(ma, arg)) and
     tracked = ma.getQualifier() and
     sink = ma.getArgument(arg)
@@ -298,7 +298,7 @@ private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
 }
 
 /** Access to a method that passes taint from the qualifier. */
-private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
+private predicate qualifierToMethodStep(Expr tracked, MethodCall sink) {
   taintPreservingQualifierToMethod(sink.getMethod()) and
   tracked = sink.getQualifier()
 }
@@ -331,7 +331,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
 }
 
 /** Access to a method that passes taint from an argument. */
-private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
+private predicate argToMethodStep(Expr tracked, MethodCall sink) {
   exists(Method m, int i |
     m = sink.getMethod() and
     taintPreservingArgumentToMethod(m, argToParam(sink, i)) and
@@ -375,7 +375,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
  * between arguments.
  */
 private predicate argToArgStep(Expr tracked, Expr sink) {
-  exists(MethodAccess ma, Method method, int input, int output |
+  exists(MethodCall ma, Method method, int input, int output |
     method.(TaintPreservingCallable).transfersTaint(argToParam(ma, input), argToParam(ma, output)) and
     ma.getMethod() = method and
     ma.getArgument(input) = tracked and
@@ -388,7 +388,7 @@ private predicate argToArgStep(Expr tracked, Expr sink) {
  * from the argument to the qualifier and `sink` is the qualifier.
  */
 private predicate argToQualifierStep(Expr tracked, Expr sink) {
-  exists(Method m, int i, MethodAccess ma |
+  exists(Method m, int i, MethodCall ma |
     taintPreservingArgumentToQualifier(m, argToParam(ma, i)) and
     ma.getMethod() = m and
     tracked = ma.getArgument(i) and
@@ -412,7 +412,7 @@ private predicate comparisonStep(Expr tracked, Expr sink) {
       e.hasOperands(tracked, other)
     )
     or
-    exists(MethodAccess m | m.getMethod() instanceof EqualsMethod |
+    exists(MethodCall m | m.getMethod() instanceof EqualsMethod |
       m = sink and
       (
         m.getQualifier() = tracked and m.getArgument(0) = other
@@ -429,9 +429,9 @@ private predicate comparisonStep(Expr tracked, Expr sink) {
 private predicate serializationStep(Expr tracked, Expr sink) {
   exists(ObjectOutputStreamVar v, VariableAssign def |
     def = v.getADef() and
-    exists(MethodAccess ma, RValue use |
+    exists(MethodCall ma, RValue use |
       ma.getArgument(0) = tracked and
-      ma = v.getAWriteObjectMethodAccess() and
+      ma = v.getAWriteObjectMethodCall() and
       use = ma.getQualifier() and
       defUsePair(def, use)
     ) and
@@ -460,7 +460,7 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getDestVar() = this
   }
 
-  MethodAccess getAWriteObjectMethodAccess() {
+  MethodCall getAWriteObjectMethodCall() {
     result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("writeObject")
   }
@@ -470,9 +470,9 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
 private predicate formatStep(Expr tracked, Expr sink) {
   exists(FormatterVar v, VariableAssign def |
     def = v.getADef() and
-    exists(MethodAccess ma, RValue use |
+    exists(MethodCall ma, RValue use |
       ma.getAnArgument() = tracked and
-      ma = v.getAFormatMethodAccess() and
+      ma = v.getAFormatMethodCall() and
       use = ma.getQualifier() and
       defUsePair(def, use)
     ) and
@@ -505,7 +505,7 @@ private class FormatterVar extends LocalVariableDecl {
     result.getDestVar() = this
   }
 
-  MethodAccess getAFormatMethodAccess() {
+  MethodCall getAFormatMethodCall() {
     result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("format")
   }
@@ -555,7 +555,7 @@ module StringBuilderVarModule {
     /**
      * Gets a call that adds something to this string builder, from the argument at the given index.
      */
-    MethodAccess getAnInput(int arg) {
+    MethodCall getAnInput(int arg) {
       result.getQualifier() = this.getAChainedReference() and
       (
         result.getMethod().getName() = "append" and arg = 0
@@ -569,18 +569,18 @@ module StringBuilderVarModule {
     /**
      * Gets a call that appends something to this string builder.
      */
-    MethodAccess getAnAppend() {
+    MethodCall getAnAppend() {
       result.getQualifier() = this.getAChainedReference() and
       result.getMethod().getName() = "append"
     }
 
-    MethodAccess getNextAppend(MethodAccess append) {
+    MethodCall getNextAppend(MethodCall append) {
       result = this.getAnAppend() and
       append = this.getAnAppend() and
       (
         result.getQualifier() = append
         or
-        not exists(MethodAccess chainAccess | chainAccess.getQualifier() = append) and
+        not exists(MethodCall chainAccess | chainAccess.getQualifier() = append) and
         exists(RValue sbva1, RValue sbva2 |
           adjacentUseUse(sbva1, sbva2) and
           append.getQualifier() = this.getAChainedReference(sbva1) and
@@ -592,7 +592,7 @@ module StringBuilderVarModule {
     /**
      * Gets a call that converts this string builder to a string.
      */
-    MethodAccess getToStringCall() {
+    MethodCall getToStringCall() {
       result.getQualifier() = this.getAChainedReference() and
       result.getMethod().getName() = "toString"
     }
@@ -612,7 +612,7 @@ module StringBuilderVarModule {
   }
 }
 
-private MethodAccess callReturningSameType(Expr ref) {
+private MethodCall callReturningSameType(Expr ref) {
   ref = result.getQualifier() and
   result.getMethod().getReturnType() = ref.getType()
 }

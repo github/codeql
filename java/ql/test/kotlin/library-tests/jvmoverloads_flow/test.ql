@@ -3,7 +3,7 @@ import semmle.code.java.dataflow.DataFlow
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getCallee().getName() = "source"
+    n.asExpr().(MethodCall).getCallee().getName() = "source"
   }
 
   predicate isSink(DataFlow::Node n) {

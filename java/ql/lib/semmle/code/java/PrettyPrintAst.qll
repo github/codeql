@@ -300,7 +300,7 @@ private class PpCall extends PpAst, Call {
     or
     i = 2 and
     (
-      result = this.(MethodAccess).getMethod().getName()
+      result = this.(MethodCall).getMethod().getName()
       or
       result = "this" and this instanceof ThisConstructorInvocationStmt
       or

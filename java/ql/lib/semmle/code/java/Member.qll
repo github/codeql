@@ -129,7 +129,7 @@ class Callable extends StmtParent, Member, @callable {
    * Holds if this callable calls `target`
    * using a `super` method call.
    */
-  predicate callsSuper(Method target) { this.getACallSite(target) instanceof SuperMethodAccess }
+  predicate callsSuper(Method target) { this.getACallSite(target) instanceof SuperMethodCall }
 
   /**
    * Holds if this callable calls `c` using
@@ -526,7 +526,7 @@ class Method extends Callable, @method {
     this.getSourceDeclaration().getAPossibleImplementationOfSrcMethod() = result
   }
 
-  override MethodAccess getAReference() { result = Callable.super.getAReference() }
+  override MethodCall getAReference() { result = Callable.super.getAReference() }
 
   override predicate isPublic() {
     Callable.super.isPublic()

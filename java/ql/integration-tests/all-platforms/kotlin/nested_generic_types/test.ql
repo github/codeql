@@ -31,7 +31,7 @@ query predicate nestedTypes(NestedType nt, RefType parent) {
 }
 
 query predicate javaKotlinCalleeAgreement(
-  MethodAccess javaMa, MethodAccess kotlinMa, Callable callee
+  MethodCall javaMa, MethodCall kotlinMa, Callable callee
 ) {
   javaMa.getCallee() = callee and
   kotlinMa.getCallee() = callee and

@@ -18,8 +18,8 @@ private class MethodFileGetCanonicalPath extends Method {
   }
 }
 
-private class MethodAccessFileGetCanonicalPath extends MethodAccess {
-  MethodAccessFileGetCanonicalPath() { this.getMethod() instanceof MethodFileGetCanonicalPath }
+private class MethodCallFileGetCanonicalPath extends MethodCall {
+  MethodCallFileGetCanonicalPath() { this.getMethod() instanceof MethodFileGetCanonicalPath }
 }
 
 abstract private class FileSeparatorExpr extends Expr { }
@@ -51,10 +51,10 @@ private predicate isSafe(Expr expr) {
 /**
  * A method access that returns a boolean that incorrectly guards against Partial Path Traversal.
  */
-class PartialPathTraversalMethodAccess extends MethodAccess {
-  PartialPathTraversalMethodAccess() {
+class PartialPathTraversalMethodCall extends MethodCall {
+  PartialPathTraversalMethodCall() {
     this.getMethod() instanceof MethodStringStartsWith and
-    DataFlow::localExprFlow(any(MethodAccessFileGetCanonicalPath gcpma), this.getQualifier()) and
+    DataFlow::localExprFlow(any(MethodCallFileGetCanonicalPath gcpma), this.getQualifier()) and
     not isSafe(this.getArgument(0))
   }
 }

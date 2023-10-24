@@ -39,8 +39,8 @@ string getCommonSensitiveInfoRegex() {
 abstract class SensitiveExpr extends Expr { }
 
 /** A method access that might produce sensitive data. */
-class SensitiveMethodAccess extends SensitiveExpr, MethodAccess {
-  SensitiveMethodAccess() {
+class SensitiveMethodCall extends SensitiveExpr, MethodCall {
+  SensitiveMethodCall() {
     this.getMethod() instanceof SensitiveDataMethod
     or
     // This is particularly to pick up methods with an argument like "password", which

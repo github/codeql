@@ -74,7 +74,7 @@ private class CommandArgumentList extends SsaExplicitUpdate {
     exists(RValue mid |
       mid = this.getAUseBeforeFirstAdd() and
       adjacentUseUse(mid, result) and
-      not exists(MethodAccess ma |
+      not exists(MethodCall ma |
         mid = ma.getQualifier() and
         ma.getMethod().hasName("add")
       )
@@ -84,26 +84,26 @@ private class CommandArgumentList extends SsaExplicitUpdate {
   /**
    * Gets an addition to this list, i.e. a call to an `add` or `addAll` method.
    */
-  MethodAccess getAnAdd() {
+  MethodCall getAnAdd() {
     result.getQualifier() = this.getAUse() and
     result.getMethod().getName().matches("add%")
   }
 
   /** Gets an addition to this list which could be its first element. */
-  MethodAccess getAFirstAdd() {
+  MethodCall getAFirstAdd() {
     result = this.getAnAdd() and
     result.getQualifier() = this.getAUseBeforeFirstAdd()
   }
 
   /** Gets an addition to this list which is not the first element. */
-  MethodAccess getASubsequentAdd() {
+  MethodCall getASubsequentAdd() {
     result = this.getAnAdd() and
     not result = this.getAFirstAdd()
   }
 
   /** Holds if the first element of this list is a shell command. */
   predicate isShell() {
-    exists(MethodAccess ma | ma = this.getAFirstAdd() and isShell(ma.getArgument(0)))
+    exists(MethodCall ma | ma = this.getAFirstAdd() and isShell(ma.getArgument(0)))
   }
 }
 
@@ -173,7 +173,7 @@ private Expr firstElementOf(Expr arr) {
     or
     exists(CommandArgArrayImmutableFirst caa | arr = caa.getAUse() | result = caa.getFirstElement())
     or
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       arr = ma and
       ma.getMethod() = m and
       m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and

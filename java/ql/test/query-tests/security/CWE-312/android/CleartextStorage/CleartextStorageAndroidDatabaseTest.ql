@@ -7,7 +7,7 @@ module CleartextStorageAndroidDatabaseTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasCleartextStorageAndroidDatabase" and
-    exists(SensitiveSource data, LocalDatabaseOpenMethodAccess s, Expr input, Expr store |
+    exists(SensitiveSource data, LocalDatabaseOpenMethodCall s, Expr input, Expr store |
       input = s.getAnInput() and
       store = s.getAStore() and
       data.flowsTo(input)

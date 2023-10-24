@@ -20,7 +20,7 @@ private module VerifiedIntentConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasQualifiedName("android.content", "Intent", "getAction") and
       sink.asExpr() = ma.getQualifier()
     )

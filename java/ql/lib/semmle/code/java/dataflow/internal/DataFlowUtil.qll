@@ -225,7 +225,7 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   or
   simpleAstFlowStep(node1.asExpr(), node2.asExpr())
   or
-  exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
+  exists(MethodCall ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
   |
     node2.asExpr() = ma and

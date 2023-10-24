@@ -246,7 +246,7 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
     fr = node2.asExpr()
   )
   or
-  exists(Record r, Method getter, Field recf, MethodAccess get |
+  exists(Record r, Method getter, Field recf, MethodCall get |
     getter.getDeclaringType() = r and
     recf.getDeclaringType() = r and
     getter.getNumberOfParameters() = 0 and

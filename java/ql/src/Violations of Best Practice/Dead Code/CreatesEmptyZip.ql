@@ -42,7 +42,7 @@ class ZipOutputStream extends Class {
 }
 
 from
-  ZipOutputStream jos, MethodAccess putNextEntry, MethodAccess closeEntry, RValue putNextQualifier,
+  ZipOutputStream jos, MethodCall putNextEntry, MethodCall closeEntry, RValue putNextQualifier,
   RValue closeQualifier
 where
   putNextEntry.getMethod() = jos.putNextEntry() and

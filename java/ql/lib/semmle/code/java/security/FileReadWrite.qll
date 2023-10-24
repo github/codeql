@@ -13,7 +13,7 @@ private predicate directFileRead(Expr fileAccess, Expr fileReadingExpr) {
         .hasQualifiedName("java.io", ["RandomAccessFile", "FileReader", "FileInputStream"])
   )
   or
-  exists(MethodAccess ma, Method filesMethod |
+  exists(MethodCall ma, Method filesMethod |
     ma = fileReadingExpr and filesMethod = ma.getMethod()
   |
     (
