@@ -112,7 +112,7 @@ private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPage rp) {
   ["", "~"] + rp.getSourceFilepath() =
     min(int i, RelativeViewCallFilepath fp |
       fp.hasViewCallWithIndex(vc, i) and
-      exists(RazorPage rp2 | rp2.getSourceFilepath() = fp.getNormalizedPath())
+      exists(RazorPage rp2 | ["", "~"] + rp2.getSourceFilepath() = fp.getNormalizedPath())
     |
       fp.getNormalizedPath() order by i
     )
