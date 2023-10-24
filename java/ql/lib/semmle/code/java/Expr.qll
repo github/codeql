@@ -2140,7 +2140,7 @@ class SuperMethodCall extends MethodCall {
 }
 
 /** DEPRECATED: Alias for `SuperMethodCall`. */
-deprecated class SuperMethodAccess = SuperMethodCall;
+class SuperMethodAccess = SuperMethodCall;
 
 /**
  * A constructor call, which occurs either as a constructor invocation inside a
