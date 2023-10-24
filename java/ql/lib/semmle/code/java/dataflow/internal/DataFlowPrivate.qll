@@ -114,7 +114,7 @@ private module CaptureInput implements VariableCapture::InputSig {
     CapturedVariable getVariable() { result = v }
   }
 
-  class VariableRead extends Expr instanceof RValue {
+  class VariableRead extends Expr instanceof VarRead {
     CapturedVariable v;
 
     VariableRead() { super.getVariable() = v }

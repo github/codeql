@@ -429,13 +429,13 @@ private predicate comparisonStep(Expr tracked, Expr sink) {
 private predicate serializationStep(Expr tracked, Expr sink) {
   exists(ObjectOutputStreamVar v, VariableAssign def |
     def = v.getADef() and
-    exists(MethodCall ma, RValue use |
+    exists(MethodCall ma, VarRead use |
       ma.getArgument(0) = tracked and
       ma = v.getAWriteObjectMethodCall() and
       use = ma.getQualifier() and
       defUsePair(def, use)
     ) and
-    exists(RValue outputstream, ClassInstanceExpr cie |
+    exists(VarRead outputstream, ClassInstanceExpr cie |
       cie = def.getSource() and
       outputstream = cie.getArgument(0) and
       adjacentUseUse(outputstream, sink)
@@ -475,13 +475,13 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
 private predicate formatStep(Expr tracked, Expr sink) {
   exists(FormatterVar v, VariableAssign def |
     def = v.getADef() and
-    exists(MethodCall ma, RValue use |
+    exists(MethodCall ma, VarRead use |
       ma.getAnArgument() = tracked and
       ma = v.getAFormatMethodCall() and
       use = ma.getQualifier() and
       defUsePair(def, use)
     ) and
-    exists(RValue output, ClassInstanceExpr cie |
+    exists(VarRead output, ClassInstanceExpr cie |
       cie = def.getSource() and
       output = cie.getArgument(0) and
       adjacentUseUse(output, sink) and
@@ -586,7 +586,7 @@ module StringBuilderVarModule {
         result.getQualifier() = append
         or
         not exists(MethodCall chainAccess | chainAccess.getQualifier() = append) and
-        exists(RValue sbva1, RValue sbva2 |
+        exists(VarRead sbva1, VarRead sbva2 |
           adjacentUseUse(sbva1, sbva2) and
           append.getQualifier() = this.getAChainedReference(sbva1) and
           result.getQualifier() = sbva2

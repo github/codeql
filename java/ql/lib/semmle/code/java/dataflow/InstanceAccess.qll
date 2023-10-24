@@ -234,7 +234,7 @@ class InstanceAccessExt extends TInstanceAccessExt {
       e instanceof InstanceAccess and result = e
       or
       exists(FieldAccess fa | fa = e |
-        if fa instanceof RValue then fa = result else result.(AssignExpr).getDest() = fa
+        if fa instanceof VarRead then fa = result else result.(AssignExpr).getDest() = fa
       )
     )
   }

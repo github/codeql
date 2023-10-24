@@ -16,7 +16,7 @@ abstract class PathInjectionSanitizer extends DataFlow::Node { }
 private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
   /** Gets a node that is safely guarded by a method that uses the given guard check. */
   DataFlow::Node getAValidatedNode() {
-    exists(MethodCall ma, int pos, RValue rv |
+    exists(MethodCall ma, int pos, VarRead rv |
       validationMethod(ma.getMethod(), pos) and
       ma.getArgument(pos) = rv and
       adjacentUseUseSameVar(rv, result.asExpr()) and

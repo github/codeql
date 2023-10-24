@@ -95,7 +95,7 @@ private ReflectiveClassIdentifier pointsToReflectiveClassIdentifier(Expr expr) {
   or
   // Or if this is an access of a variable which was defined as an expression creating a `Class<T>`,
   // return the inferred `T` from the definition expression.
-  exists(RValue use, VariableAssign assign |
+  exists(VarRead use, VariableAssign assign |
     use = expr and
     defUsePair(assign, use) and
     // The source of the assignment must be a `ReflectiveClassIdentifier`.

@@ -73,7 +73,7 @@ where
     loopWhileTrue(loop) and loopExitGuard(loop, cond)
   ) and
   // None of the ssa variables in `cond` are updated inside the loop.
-  forex(SsaVariable ssa, RValue use | ssa.getAUse() = use and use.getParent*() = cond |
+  forex(SsaVariable ssa, VarRead use | ssa.getAUse() = use and use.getParent*() = cond |
     not ssa.getCfgNode().getEnclosingStmt().getEnclosingStmt*() = loop or
     ssa.getCfgNode().(Expr).getParent*() = loop.(ForStmt).getAnInit()
   ) and

@@ -169,7 +169,7 @@ predicate localMustFlowStep(Node node1, Node node2) {
 import Cached
 
 private predicate capturedVariableRead(Node n) {
-  n.asExpr().(RValue).getVariable() instanceof CapturedVariable
+  n.asExpr().(VarRead).getVariable() instanceof CapturedVariable
 }
 
 /**
@@ -379,7 +379,7 @@ signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(Guard g, SsaVariable v, boolean branch, RValue use |
+    exists(Guard g, SsaVariable v, boolean branch, VarRead use |
       guardChecks(g, v.getAUse(), branch) and
       use = v.getAUse() and
       g.controls(use.getBasicBlock(), branch) and

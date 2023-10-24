@@ -118,7 +118,7 @@ private predicate step(Node n1, Node n2) {
   exists(AssignExpr a, Field v |
     a.getSource() = n1.asExpr() and
     a.getDest().(ArrayAccess).getArray() = v.getAnAccess() and
-    n2.asExpr() = v.getAnAccess().(RValue)
+    n2.asExpr() = v.getAnAccess().(VarRead)
   )
   or
   exists(AssignExpr a |

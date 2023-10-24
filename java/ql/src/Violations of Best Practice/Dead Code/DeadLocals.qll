@@ -58,7 +58,7 @@ predicate overwritten(SsaExplicitUpdate ssa) {
  * A local variable with a read access.
  */
 predicate read(LocalScopeVariable v) {
-  exists(VarAccess va | va = v.getAnAccess() | va.isRValue())
+  exists(VarAccess va | va = v.getAnAccess() | va.isVarRead())
   or
   readImplicitly(_, v)
 }
@@ -72,7 +72,7 @@ private predicate readImplicitly(SsaExplicitUpdate ssa, LocalScopeVariable v) {
  * A local variable with a write access.
  */
 predicate assigned(LocalScopeVariable v) {
-  exists(VarAccess va | va = v.getAnAccess() | va.isLValue())
+  exists(VarAccess va | va = v.getAnAccess() | va.isVarWrite())
 }
 
 /**

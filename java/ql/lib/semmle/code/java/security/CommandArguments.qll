@@ -68,10 +68,10 @@ private class CommandArgumentList extends SsaExplicitUpdate {
   }
 
   /** Gets a use of the variable for which the list could be empty. */
-  private RValue getAUseBeforeFirstAdd() {
+  private VarRead getAUseBeforeFirstAdd() {
     result = this.getAFirstUse()
     or
-    exists(RValue mid |
+    exists(VarRead mid |
       mid = this.getAUseBeforeFirstAdd() and
       adjacentUseUse(mid, result) and
       not exists(MethodCall ma |
@@ -114,7 +114,7 @@ private class ArrayOfStringType extends Array {
   ArrayOfStringType() { this.getElementType() instanceof TypeString }
 }
 
-private predicate arrayLValue(ArrayAccess acc) { exists(Assignment a | a.getDest() = acc) }
+private predicate arrayVarWrite(ArrayAccess acc) { exists(Assignment a | a.getDest() = acc) }
 
 /**
  * A variable that could be an array of arguments to a command.
@@ -122,13 +122,13 @@ private predicate arrayLValue(ArrayAccess acc) { exists(Assignment a | a.getDest
 private class CommandArgumentArray extends SsaExplicitUpdate {
   CommandArgumentArray() {
     this.getSourceVariable().getType() instanceof ArrayOfStringType and
-    forall(ArrayAccess a | a.getArray() = this.getAUse() and arrayLValue(a) |
+    forall(ArrayAccess a | a.getArray() = this.getAUse() and arrayVarWrite(a) |
       a.getIndexExpr() instanceof CompileTimeConstantExpr
     )
   }
 
   /** Gets an expression that is written to the given index of this array at the given use. */
-  Expr getAWrite(int index, RValue use) {
+  Expr getAWrite(int index, VarRead use) {
     exists(Assignment a, ArrayAccess acc |
       acc.getArray() = use and
       use = this.getAUse() and
@@ -148,7 +148,7 @@ private class CommandArgumentArray extends SsaExplicitUpdate {
 private class CommandArgArrayImmutableFirst extends CommandArgumentArray {
   CommandArgArrayImmutableFirst() {
     (exists(this.getAWrite(0)) or exists(firstElementOf(this.getDefiningExpr()))) and
-    forall(RValue use | exists(this.getAWrite(0, use)) | use = this.getAFirstUse())
+    forall(VarRead use | exists(this.getAWrite(0, use)) | use = this.getAFirstUse())
   }
 
   /** Gets the first element of this array. */

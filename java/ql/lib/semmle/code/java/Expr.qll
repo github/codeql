@@ -2273,10 +2273,10 @@ private module Qualifier {
 }
 
 /** An expression that assigns a value to a field. */
-class FieldWrite extends FieldAccess, LValue { }
+class FieldWrite extends FieldAccess, VarWrite { }
 
 /** An expression that reads a field. */
-class FieldRead extends FieldAccess, RValue { }
+class FieldRead extends FieldAccess, VarRead { }
 
 private predicate hasInstantiation(RefType t) {
   t instanceof TypeVariable or

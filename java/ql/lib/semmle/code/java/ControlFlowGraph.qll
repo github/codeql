@@ -473,7 +473,7 @@ private module ControlFlowGraphImpl {
       or
       this instanceof ClassExpr
       or
-      this instanceof RValue
+      this instanceof VarRead
       or
       this instanceof Call // includes both expressions and statements
       or
@@ -554,7 +554,7 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(LocalVariableDeclExpr).getInit()
       or
-      index = 0 and result = this.(RValue).getQualifier() and not result instanceof TypeAccess
+      index = 0 and result = this.(VarRead).getQualifier() and not result instanceof TypeAccess
       or
       exists(Call e | e = this |
         index = -1 and result = e.getQualifier() and not result instanceof TypeAccess

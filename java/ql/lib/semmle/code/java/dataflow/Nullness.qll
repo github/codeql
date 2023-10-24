@@ -485,7 +485,7 @@ private predicate correlatedConditions(
       inverted = branch1.booleanXor(branch2)
     )
     or
-    exists(SsaVariable v, RValue rv1, RValue rv2, int k, boolean branch1, boolean branch2 |
+    exists(SsaVariable v, VarRead rv1, VarRead rv2, int k, boolean branch1, boolean branch2 |
       rv1 = v.getAUse() and
       rv2 = v.getAUse() and
       cond1.getCondition() = integerGuard(rv1, branch1, k, true) and

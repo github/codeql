@@ -79,7 +79,7 @@ Expr clearlyNotNullExpr(Expr reason) {
     (reason = r1 or reason = r2)
   )
   or
-  exists(SsaVariable v, boolean branch, RValue rval, Guard guard |
+  exists(SsaVariable v, boolean branch, VarRead rval, Guard guard |
     guard = directNullGuard(v, branch, false) and
     guard.controls(rval.getBasicBlock(), branch) and
     reason = guard and

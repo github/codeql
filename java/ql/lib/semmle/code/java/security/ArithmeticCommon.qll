@@ -47,7 +47,7 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
     )
     or
     // overflow test
-    exists(AddExpr add, RValue use, Expr pos |
+    exists(AddExpr add, VarRead use, Expr pos |
       use = ssaRead(v, 0) and
       add.hasOperands(use, pos) and
       positive(use) and

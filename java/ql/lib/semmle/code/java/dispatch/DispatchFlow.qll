@@ -133,7 +133,7 @@ private module TypeTrackingSteps {
   class LocalSourceNode extends RelevantNode {
     LocalSourceNode() {
       this.asExpr() instanceof Call or
-      this.asExpr() instanceof RValue or
+      this.asExpr() instanceof VarRead or
       this instanceof DataFlow::ParameterNode or
       this instanceof DataFlow::ImplicitVarargsArray or
       this.asExpr() instanceof ArrayInit or
@@ -253,7 +253,7 @@ private module TypeTrackingSteps {
     exists(AssignExpr a, Variable v |
       a.getSource() = n1.asExpr() and
       a.getDest().(ArrayAccess).getArray() = v.getAnAccess() and
-      n2.asExpr() = v.getAnAccess().(RValue) and
+      n2.asExpr() = v.getAnAccess().(VarRead) and
       f = ContentArray()
     )
   }

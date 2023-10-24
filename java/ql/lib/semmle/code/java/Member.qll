@@ -161,13 +161,13 @@ class Callable extends StmtParent, Member, @callable {
    * Holds if field `f` may be assigned a value
    * within the body of this callable.
    */
-  predicate writes(Field f) { f.getAnAccess().(LValue).getEnclosingCallable() = this }
+  predicate writes(Field f) { f.getAnAccess().(VarWrite).getEnclosingCallable() = this }
 
   /**
    * Holds if field `f` may be read
    * within the body of this callable.
    */
-  predicate reads(Field f) { f.getAnAccess().(RValue).getEnclosingCallable() = this }
+  predicate reads(Field f) { f.getAnAccess().(VarRead).getEnclosingCallable() = this }
 
   /**
    * Holds if field `f` may be either read or written
