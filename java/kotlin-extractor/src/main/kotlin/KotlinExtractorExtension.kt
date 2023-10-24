@@ -334,7 +334,7 @@ private fun doFile(
                 // Now elevate to a SourceFileTrapWriter, and populate the
                 // file information
                 val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
-                val externalDeclExtractor = ExternalDeclExtractor(logger, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, globalExtensionState, fileTrapWriter.getDiagnosticTrapWriter())
+                val externalDeclExtractor = ExternalDeclExtractor(logger, compression, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, globalExtensionState, fileTrapWriter.getDiagnosticTrapWriter())
                 val linesOfCode = LinesOfCode(logger, sftw, srcFile)
                 val fileExtractor = KotlinFileExtractor(logger, sftw, linesOfCode, srcFilePath, null, externalDeclExtractor, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
 
@@ -362,7 +362,19 @@ private fun doFile(
     }
 }
 
-enum class Compression { NONE, GZIP }
+enum class Compression(val extension: String) {
+    NONE("") {
+        override fun bufferedWriter(file: File): BufferedWriter {
+            return file.bufferedWriter()
+        }
+    },
+    GZIP(".gz") {
+        override fun bufferedWriter(file: File): BufferedWriter {
+            return GZIPOutputStream(file.outputStream()).bufferedWriter()
+        }
+    };
+    abstract fun bufferedWriter(file: File): BufferedWriter
+}
 
 private fun getTrapFileWriter(compression: Compression, logger: FileLogger, trapFileName: String): TrapFileWriter {
     return when (compression) {

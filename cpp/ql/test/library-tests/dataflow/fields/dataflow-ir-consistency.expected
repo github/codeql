@@ -44,8 +44,6 @@ reverseRead
 argHasPostUpdate
 postWithInFlow
 | realistic.cpp:54:16:54:47 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
-| realistic.cpp:54:16:54:47 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
-| realistic.cpp:60:16:60:18 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
 | realistic.cpp:60:16:60:18 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition

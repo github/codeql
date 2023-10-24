@@ -1145,3 +1145,5 @@
 | test.swift:898:24:898:24 | $i$generator | test.swift:898:24:898:24 | SSA def($i$generator) |
 | test.swift:898:24:898:24 | SSA def($i$generator) | test.swift:898:5:898:5 | $i$generator |
 | test.swift:898:24:898:24 | call to makeAsyncIterator() | test.swift:898:24:898:24 | $i$generator |
+| test.swift:903:22:903:49 | SSA def(expr) | test.swift:904:13:904:13 | expr |
+| test.swift:903:22:903:49 | expr | test.swift:903:22:903:49 | SSA def(expr) |

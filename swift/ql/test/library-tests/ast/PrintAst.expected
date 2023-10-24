@@ -2503,7 +2503,12 @@ cfg.swift:
 #  379|           getArgument(0): [Argument] n: 0
 #  379|             getExpr(): [IntegerLiteralExpr] 0
 #  380|       getElement(1): [ReturnStmt] return
-#  377|   getMember(1): [Initializer] Derived.init(n:)
+#  377|   getMember(1): [Deinitializer] Derived.deinit()
+#  377|       InterfaceType = (Derived) -> () -> ()
+#  377|     getSelfParam(): [ParamDecl] self
+#  377|         Type = Derived
+#  377|     getBody(): [BraceStmt] { ... }
+#  377|   getMember(2): [Initializer] Derived.init(n:)
 #  377|       InterfaceType = (Derived.Type) -> (Int) -> Derived
 #  377|     getSelfParam(): [ParamDecl] self
 #  377|         Type = Derived
@@ -2523,11 +2528,6 @@ cfg.swift:
 #  377|         getArgument(4): [Argument] : #...
 #  377|           getExpr(): [MagicIdentifierLiteralExpr] #...
 #-----|       getElement(1): [ReturnStmt] return
-#  377|   getMember(2): [Deinitializer] Derived.deinit()
-#  377|       InterfaceType = (Derived) -> () -> ()
-#  377|     getSelfParam(): [ParamDecl] self
-#  377|         Type = Derived
-#  377|     getBody(): [BraceStmt] { ... }
 #  383| [NamedFunction] doWithoutCatch(x:)
 #  383|     InterfaceType = (Int) throws -> Int
 #  383|   getParam(0): [ParamDecl] x
@@ -2799,10 +2799,22 @@ cfg.swift:
 #-----|                 getExpr(): [DeclRefExpr] index_a
 #-----|               getArgument(1): [Argument] : index_b
 #-----|                 getExpr(): [DeclRefExpr] index_b
-#-----|       getMember(5): [PatternBindingDecl] var ... = ...
+#-----|       getMember(5): [ConcreteVarDecl] hashValue
+#-----|           Type = Int
+#-----|         getAccessor(0): [Accessor] get
+#-----|             InterfaceType = (MyLocalEnum) -> () -> Int
+#-----|           getSelfParam(): [ParamDecl] self
+#-----|               Type = MyLocalEnum
+#-----|           getBody(): [BraceStmt] { ... }
+#-----|             getElement(0): [ReturnStmt] return ...
+#-----|               getResult(): [CallExpr] call to _hashValue(for:)
+#-----|                 getFunction(): [DeclRefExpr] _hashValue(for:)
+#-----|                 getArgument(0): [Argument] for: self
+#-----|                   getExpr(): [DeclRefExpr] self
+#-----|       getMember(6): [PatternBindingDecl] var ... = ...
 #-----|         getPattern(0): [TypedPattern] ... as ...
 #-----|           getSubPattern(): [NamedPattern] hashValue
-#-----|       getMember(6): [NamedFunction] hash(into:)
+#-----|       getMember(7): [NamedFunction] hash(into:)
 #-----|           InterfaceType = (MyLocalEnum) -> (inout Hasher) -> ()
 #-----|         getSelfParam(): [ParamDecl] self
 #-----|             Type = MyLocalEnum
@@ -2836,18 +2848,6 @@ cfg.swift:
 #-----|             getArgument(0): [Argument] : discriminator
 #-----|               getExpr(): [DeclRefExpr] discriminator
 #-----|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
-#-----|       getMember(7): [ConcreteVarDecl] hashValue
-#-----|           Type = Int
-#-----|         getAccessor(0): [Accessor] get
-#-----|             InterfaceType = (MyLocalEnum) -> () -> Int
-#-----|           getSelfParam(): [ParamDecl] self
-#-----|               Type = MyLocalEnum
-#-----|           getBody(): [BraceStmt] { ... }
-#-----|             getElement(0): [ReturnStmt] return ...
-#-----|               getResult(): [CallExpr] call to _hashValue(for:)
-#-----|                 getFunction(): [DeclRefExpr] _hashValue(for:)
-#-----|                 getArgument(0): [Argument] for: self
-#-----|                   getExpr(): [DeclRefExpr] self
 #  428|     getElement(3): [PatternBindingDecl] var ... = ...
 #  428|       getPattern(0): [TypedPattern] ... as ...
 #  428|         getSubPattern(): [NamedPattern] myLocalVar
@@ -3366,6 +3366,24 @@ cfg.swift:
 #  545|       getElse(): [BraceStmt] { ... }
 #  546|         getElement(0): [ReturnStmt] return ...
 #  546|           getResult(): [IntegerLiteralExpr] 0
+#  550| [NamedFunction] usesAutoclosure(_:)
+#  550|     InterfaceType = (@autoclosure () -> Int) -> Int
+#  550|   getParam(0): [ParamDecl] expr
+#  550|       Type = () -> Int
+#  550|   getBody(): [BraceStmt] { ... }
+#  551|     getElement(0): [ReturnStmt] return ...
+#  551|       getResult(): [CallExpr] call to ...
+#  551|         getFunction(): [DeclRefExpr] expr
+#  554| [NamedFunction] autoclosureTest()
+#  554|     InterfaceType = () -> ()
+#  554|   getBody(): [BraceStmt] { ... }
+#  555|     getElement(0): [CallExpr] call to usesAutoclosure(_:)
+#  555|       getFunction(): [DeclRefExpr] usesAutoclosure(_:)
+#  555|       getArgument(0): [Argument] : { ... }
+#  555|         getExpr(): [AutoClosureExpr] { ... }
+#  555|           getBody(): [BraceStmt] { ... }
+#  555|             getElement(0): [ReturnStmt] return ...
+#  555|               getResult(): [IntegerLiteralExpr] 1
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...
@@ -3451,18 +3469,18 @@ declarations.swift:
 #-----|           getResult(0): [MemberRefExpr] .next
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
-#    1|   getMember(4): [Initializer] Foo.init()
-#    1|       InterfaceType = (Foo.Type) -> () -> Foo
-#    1|     getSelfParam(): [ParamDecl] self
-#    1|         Type = Foo
-#    1|     getBody(): [BraceStmt] { ... }
-#    1|       getElement(0): [ReturnStmt] return
-#    1|   getMember(5): [Initializer] Foo.init(x:)
+#    1|   getMember(4): [Initializer] Foo.init(x:)
 #    1|       InterfaceType = (Foo.Type) -> (Int) -> Foo
 #    1|     getSelfParam(): [ParamDecl] self
 #    1|         Type = Foo
 #    1|     getParam(0): [ParamDecl] x
 #    1|         Type = Int
+#    1|   getMember(5): [Initializer] Foo.init()
+#    1|       InterfaceType = (Foo.Type) -> () -> Foo
+#    1|     getSelfParam(): [ParamDecl] self
+#    1|         Type = Foo
+#    1|     getBody(): [BraceStmt] { ... }
+#    1|       getElement(0): [ReturnStmt] return
 #    9| [ClassDecl] Bar
 #    9|   getMember(0): [PatternBindingDecl] var ... = ...
 #    9|     getInit(0): [FloatLiteralExpr] 1.3
@@ -3616,10 +3634,22 @@ declarations.swift:
 #-----|             getExpr(): [DeclRefExpr] index_a
 #-----|           getArgument(1): [Argument] : index_b
 #-----|             getExpr(): [DeclRefExpr] index_b
-#-----|   getMember(8): [PatternBindingDecl] var ... = ...
+#-----|   getMember(8): [ConcreteVarDecl] hashValue
+#-----|       Type = Int
+#-----|     getAccessor(0): [Accessor] get
+#-----|         InterfaceType = (EnumValues) -> () -> Int
+#-----|       getSelfParam(): [ParamDecl] self
+#-----|           Type = EnumValues
+#-----|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [CallExpr] call to _hashValue(for:)
+#-----|             getFunction(): [DeclRefExpr] _hashValue(for:)
+#-----|             getArgument(0): [Argument] for: self
+#-----|               getExpr(): [DeclRefExpr] self
+#-----|   getMember(9): [PatternBindingDecl] var ... = ...
 #-----|     getPattern(0): [TypedPattern] ... as ...
 #-----|       getSubPattern(): [NamedPattern] hashValue
-#-----|   getMember(9): [NamedFunction] hash(into:)
+#-----|   getMember(10): [NamedFunction] hash(into:)
 #-----|       InterfaceType = (EnumValues) -> (inout Hasher) -> ()
 #-----|     getSelfParam(): [ParamDecl] self
 #-----|         Type = EnumValues
@@ -3674,18 +3704,6 @@ declarations.swift:
 #-----|         getArgument(0): [Argument] : discriminator
 #-----|           getExpr(): [DeclRefExpr] discriminator
 #-----|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
-#-----|   getMember(10): [ConcreteVarDecl] hashValue
-#-----|       Type = Int
-#-----|     getAccessor(0): [Accessor] get
-#-----|         InterfaceType = (EnumValues) -> () -> Int
-#-----|       getSelfParam(): [ParamDecl] self
-#-----|           Type = EnumValues
-#-----|       getBody(): [BraceStmt] { ... }
-#-----|         getElement(0): [ReturnStmt] return ...
-#-----|           getResult(): [CallExpr] call to _hashValue(for:)
-#-----|             getFunction(): [DeclRefExpr] _hashValue(for:)
-#-----|             getArgument(0): [Argument] for: self
-#-----|               getExpr(): [DeclRefExpr] self
 #   16| [EnumDecl] EnumWithParams
 #   17|   getMember(0): [EnumCaseDecl] case ...
 #   17|   getMember(1): [EnumElementDecl] nodata1
@@ -4370,7 +4388,12 @@ declarations.swift:
 #  150|       Type = C
 #  150|   getBody(): [BraceStmt] { ... }
 #  152| [ClassDecl] Derived
-#  152|   getMember(0): [Initializer] Derived.init()
+#  152|   getMember(0): [Deinitializer] Derived.deinit()
+#  152|       InterfaceType = (Derived) -> () -> ()
+#  152|     getSelfParam(): [ParamDecl] self
+#  152|         Type = Derived
+#  152|     getBody(): [BraceStmt] { ... }
+#  152|   getMember(1): [Initializer] Derived.init()
 #  152|       InterfaceType = (Derived.Type) -> () -> Derived
 #  152|     getSelfParam(): [ParamDecl] self
 #  152|         Type = Derived
@@ -4381,11 +4404,6 @@ declarations.swift:
 #-----|             getBase(): [SuperRefExpr] super
 #-----|             getMethodRef(): [OtherInitializerRefExpr] Baz.init()
 #-----|       getElement(1): [ReturnStmt] return
-#  152|   getMember(1): [Deinitializer] Derived.deinit()
-#  152|       InterfaceType = (Derived) -> () -> ()
-#  152|     getSelfParam(): [ParamDecl] self
-#  152|         Type = Derived
-#  152|     getBody(): [BraceStmt] { ... }
 #  154| [Comment] // multiple conversions
 #  154| 
 #  155| [TopLevelCodeDecl] { ... }
@@ -4559,10 +4577,22 @@ expressions.swift:
 #-----|             getExpr(): [DeclRefExpr] index_a
 #-----|           getArgument(1): [Argument] : index_b
 #-----|             getExpr(): [DeclRefExpr] index_b
-#-----|   getMember(3): [PatternBindingDecl] var ... = ...
+#-----|   getMember(3): [ConcreteVarDecl] hashValue
+#-----|       Type = Int
+#-----|     getAccessor(0): [Accessor] get
+#-----|         InterfaceType = (AnError) -> () -> Int
+#-----|       getSelfParam(): [ParamDecl] self
+#-----|           Type = AnError
+#-----|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [CallExpr] call to _hashValue(for:)
+#-----|             getFunction(): [DeclRefExpr] _hashValue(for:)
+#-----|             getArgument(0): [Argument] for: self
+#-----|               getExpr(): [DeclRefExpr] self
+#-----|   getMember(4): [PatternBindingDecl] var ... = ...
 #-----|     getPattern(0): [TypedPattern] ... as ...
 #-----|       getSubPattern(): [NamedPattern] hashValue
-#-----|   getMember(4): [NamedFunction] hash(into:)
+#-----|   getMember(5): [NamedFunction] hash(into:)
 #-----|       InterfaceType = (AnError) -> (inout Hasher) -> ()
 #-----|     getSelfParam(): [ParamDecl] self
 #-----|         Type = AnError
@@ -4589,18 +4619,6 @@ expressions.swift:
 #-----|         getArgument(0): [Argument] : discriminator
 #-----|           getExpr(): [DeclRefExpr] discriminator
 #-----|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
-#-----|   getMember(5): [ConcreteVarDecl] hashValue
-#-----|       Type = Int
-#-----|     getAccessor(0): [Accessor] get
-#-----|         InterfaceType = (AnError) -> () -> Int
-#-----|       getSelfParam(): [ParamDecl] self
-#-----|           Type = AnError
-#-----|       getBody(): [BraceStmt] { ... }
-#-----|         getElement(0): [ReturnStmt] return ...
-#-----|           getResult(): [CallExpr] call to _hashValue(for:)
-#-----|             getFunction(): [DeclRefExpr] _hashValue(for:)
-#-----|             getArgument(0): [Argument] for: self
-#-----|               getExpr(): [DeclRefExpr] self
 #   14| [NamedFunction] failure(_:)
 #   14|     InterfaceType = (Int) throws -> ()
 #   14|   getParam(0): [ParamDecl] x
@@ -4953,7 +4971,12 @@ expressions.swift:
 #   79|           getArgument(0): [Argument] x: 22
 #   79|             getExpr(): [IntegerLiteralExpr] 22
 #   80|       getElement(1): [ReturnStmt] return
-#   77|   getMember(1): [Initializer] Derived.init(x:)
+#   77|   getMember(1): [Deinitializer] Derived.deinit()
+#   77|       InterfaceType = (Derived) -> () -> ()
+#   77|     getSelfParam(): [ParamDecl] self
+#   77|         Type = Derived
+#   77|     getBody(): [BraceStmt] { ... }
+#   77|   getMember(2): [Initializer] Derived.init(x:)
 #   77|       InterfaceType = (Derived.Type) -> (Int) -> Derived
 #   77|     getSelfParam(): [ParamDecl] self
 #   77|         Type = Derived
@@ -4973,11 +4996,6 @@ expressions.swift:
 #   77|         getArgument(4): [Argument] : #...
 #   77|           getExpr(): [MagicIdentifierLiteralExpr] #...
 #-----|       getElement(1): [ReturnStmt] return
-#   77|   getMember(2): [Deinitializer] Derived.deinit()
-#   77|       InterfaceType = (Derived) -> () -> ()
-#   77|     getSelfParam(): [ParamDecl] self
-#   77|         Type = Derived
-#   77|     getBody(): [BraceStmt] { ... }
 #   83| [TopLevelCodeDecl] { ... }
 #   83|   getBody(): [BraceStmt] { ... }
 #   83|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -6862,10 +6880,22 @@ statements.swift:
 #-----|             getExpr(): [DeclRefExpr] index_a
 #-----|           getArgument(1): [Argument] : index_b
 #-----|             getExpr(): [DeclRefExpr] index_b
-#-----|   getMember(3): [PatternBindingDecl] var ... = ...
+#-----|   getMember(3): [ConcreteVarDecl] hashValue
+#-----|       Type = Int
+#-----|     getAccessor(0): [Accessor] get
+#-----|         InterfaceType = (AnError) -> () -> Int
+#-----|       getSelfParam(): [ParamDecl] self
+#-----|           Type = AnError
+#-----|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [CallExpr] call to _hashValue(for:)
+#-----|             getFunction(): [DeclRefExpr] _hashValue(for:)
+#-----|             getArgument(0): [Argument] for: self
+#-----|               getExpr(): [DeclRefExpr] self
+#-----|   getMember(4): [PatternBindingDecl] var ... = ...
 #-----|     getPattern(0): [TypedPattern] ... as ...
 #-----|       getSubPattern(): [NamedPattern] hashValue
-#-----|   getMember(4): [NamedFunction] hash(into:)
+#-----|   getMember(5): [NamedFunction] hash(into:)
 #-----|       InterfaceType = (AnError) -> (inout Hasher) -> ()
 #-----|     getSelfParam(): [ParamDecl] self
 #-----|         Type = AnError
@@ -6892,18 +6922,6 @@ statements.swift:
 #-----|         getArgument(0): [Argument] : discriminator
 #-----|           getExpr(): [DeclRefExpr] discriminator
 #-----|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
-#-----|   getMember(5): [ConcreteVarDecl] hashValue
-#-----|       Type = Int
-#-----|     getAccessor(0): [Accessor] get
-#-----|         InterfaceType = (AnError) -> () -> Int
-#-----|       getSelfParam(): [ParamDecl] self
-#-----|           Type = AnError
-#-----|       getBody(): [BraceStmt] { ... }
-#-----|         getElement(0): [ReturnStmt] return ...
-#-----|           getResult(): [CallExpr] call to _hashValue(for:)
-#-----|             getFunction(): [DeclRefExpr] _hashValue(for:)
-#-----|             getArgument(0): [Argument] for: self
-#-----|               getExpr(): [DeclRefExpr] self
 #   38| [NamedFunction] failure(_:)
 #   38|     InterfaceType = (Int) throws -> ()
 #   38|   getParam(0): [ParamDecl] x

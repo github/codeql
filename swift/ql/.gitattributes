@@ -127,7 +127,6 @@
 /lib/codeql/swift/elements/expr/ErrorExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExistentialMetatypeToObjectExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExistentialMetatypeToObjectExprConstructor.qll linguist-generated
-/lib/codeql/swift/elements/expr/ExplicitClosureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExplicitClosureExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/FloatLiteralExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/ForceTryExprConstructor.qll linguist-generated
@@ -693,12 +692,16 @@
 /test/extractor-tests/generated/decl/ConcreteVarDecl/ConcreteVarDecl_getPropertyWrapperProjectionVar.ql linguist-generated
 /test/extractor-tests/generated/decl/ConcreteVarDecl/ConcreteVarDecl_getPropertyWrapperProjectionVarBinding.ql linguist-generated
 /test/extractor-tests/generated/decl/Deinitializer/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/decl/EnumCaseDecl/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumCaseDecl.ql linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumCaseDecl_getElement.ql linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumCaseDecl_getMember.ql linguist-generated
 /test/extractor-tests/generated/decl/EnumDecl/EnumDecl.ql linguist-generated
 /test/extractor-tests/generated/decl/EnumDecl/EnumDecl_getGenericTypeParam.ql linguist-generated
 /test/extractor-tests/generated/decl/EnumDecl/EnumDecl_getInheritedType.ql linguist-generated
 /test/extractor-tests/generated/decl/EnumDecl/EnumDecl_getMember.ql linguist-generated
-/test/extractor-tests/generated/decl/EnumElementDecl/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumElementDecl.ql linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumElementDecl_getMember.ql linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumElementDecl_getParam.ql linguist-generated
 /test/extractor-tests/generated/decl/ExtensionDecl/ExtensionDecl.ql linguist-generated
 /test/extractor-tests/generated/decl/ExtensionDecl/ExtensionDecl_getGenericTypeParam.ql linguist-generated
 /test/extractor-tests/generated/decl/ExtensionDecl/ExtensionDecl_getMember.ql linguist-generated

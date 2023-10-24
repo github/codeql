@@ -47,6 +47,7 @@ class UnspecifiedElement(ErrorElement):
     property: string
     index: optional[int]
     error: string
+    children: list["AstNode"] | child | desc("These will be present only in certain downgraded databases.")
 
 class Comment(Locatable):
     text: string
@@ -106,6 +107,7 @@ class Stmt(AstNode):
 class GenericContext(Element):
     generic_type_params: list["GenericTypeParamDecl"] | child
 
+@qltest.test_with("EnumDecl")
 class EnumCaseDecl(Decl):
     elements: list["EnumElementDecl"]
 
@@ -246,6 +248,7 @@ class Callable(Element):
 class Function(GenericContext, ValueDecl, Callable):
     pass
 
+@qltest.test_with("EnumDecl")
 class EnumElementDecl(ValueDecl):
     name: string
     params: list[ParamDecl] | child

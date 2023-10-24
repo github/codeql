@@ -181,6 +181,12 @@ edges
 | test.cpp:833:37:833:39 | end | test.cpp:815:52:815:54 | end |
 | test.cpp:841:18:841:35 | call to malloc | test.cpp:842:3:842:20 | ... = ... |
 | test.cpp:848:20:848:37 | call to malloc | test.cpp:849:5:849:22 | ... = ... |
+| test.cpp:856:12:856:35 | call to malloc | test.cpp:857:16:857:29 | ... + ... |
+| test.cpp:856:12:856:35 | call to malloc | test.cpp:857:16:857:29 | ... + ... |
+| test.cpp:856:12:856:35 | call to malloc | test.cpp:860:5:860:11 | ... = ... |
+| test.cpp:857:16:857:29 | ... + ... | test.cpp:857:16:857:29 | ... + ... |
+| test.cpp:857:16:857:29 | ... + ... | test.cpp:860:5:860:11 | ... = ... |
+| test.cpp:857:16:857:29 | ... + ... | test.cpp:860:5:860:11 | ... = ... |
 nodes
 | test.cpp:4:15:4:33 | call to malloc | semmle.label | call to malloc |
 | test.cpp:5:15:5:22 | ... + ... | semmle.label | ... + ... |
@@ -307,6 +313,10 @@ nodes
 | test.cpp:842:3:842:20 | ... = ... | semmle.label | ... = ... |
 | test.cpp:848:20:848:37 | call to malloc | semmle.label | call to malloc |
 | test.cpp:849:5:849:22 | ... = ... | semmle.label | ... = ... |
+| test.cpp:856:12:856:35 | call to malloc | semmle.label | call to malloc |
+| test.cpp:857:16:857:29 | ... + ... | semmle.label | ... + ... |
+| test.cpp:857:16:857:29 | ... + ... | semmle.label | ... + ... |
+| test.cpp:860:5:860:11 | ... = ... | semmle.label | ... = ... |
 subpaths
 #select
 | test.cpp:6:14:6:15 | * ... | test.cpp:4:15:4:33 | call to malloc | test.cpp:6:14:6:15 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:33 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -344,3 +354,4 @@ subpaths
 | test.cpp:821:7:821:12 | ... = ... | test.cpp:793:14:793:32 | call to malloc | test.cpp:821:7:821:12 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:793:14:793:32 | call to malloc | call to malloc | test.cpp:794:21:794:24 | size | size |
 | test.cpp:842:3:842:20 | ... = ... | test.cpp:841:18:841:35 | call to malloc | test.cpp:842:3:842:20 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:841:18:841:35 | call to malloc | call to malloc | test.cpp:842:11:842:15 | index | index |
 | test.cpp:849:5:849:22 | ... = ... | test.cpp:848:20:848:37 | call to malloc | test.cpp:849:5:849:22 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:848:20:848:37 | call to malloc | call to malloc | test.cpp:849:13:849:17 | index | index |
+| test.cpp:860:5:860:11 | ... = ... | test.cpp:856:12:856:35 | call to malloc | test.cpp:860:5:860:11 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:856:12:856:35 | call to malloc | call to malloc | test.cpp:857:21:857:28 | ... + ... | ... + ... |

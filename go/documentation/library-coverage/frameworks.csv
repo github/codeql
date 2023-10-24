@@ -1,0 +1,19 @@
+Framework name,URL,Package prefixes
+Standard library,https://pkg.go.dev/std, archive/* bufio bytes cmp compress/* container/* context crypto crypto/* database/* debug/* embed encoding encoding/* errors expvar flag fmt go/* hash hash/* html html/* image image/* index/* io io/* log log/* maps math math/* mime mime/* net net/* os os/* path path/* plugin reflect reflect/* regexp regexp/* slices sort strconv strings sync sync/* syscall syscall/* testing testing/* text/* time time/* unicode unicode/* unsafe
+beego,https://beego.me/,github.com/astaxie/beego* github.com/beego/beego*
+Couchbase official client(gocb),https://github.com/couchbase/gocb,github.com/couchbase/gocb* gopkg.in/couchbase/gocb*
+Couchbase unofficial client,http://www.github.com/couchbase/go-couchbase,github.com/couchbaselabs/gocb*
+Echo,https://echo.labstack.com/,github.com/labstack/echo*
+Gin,https://github.com/gin-gonic/gin,github.com/gin-gonic/gin*
+go-pg,https://pg.uptrace.dev/,github.com/go-pg/pg*
+golang.org/x/net,https://pkg.go.dev/golang.org/x/net,golang.org/x/net*
+goproxy,https://github.com/elazarl/goproxy,github.com/elazarl/goproxy*
+json-iterator,https://github.com/json-iterator/go,github.com/json-iterator/go*
+jsonpatch,https://github.com/evanphx/json-patch,github.com/evanphx/json-patch*
+Kubernetes,https://kubernetes.io/,k8s.io/api* k8s.io/apimachinery*
+Macaron,https://gopkg.in/macaron.v1,gopkg.in/macaron*
+protobuf,https://pkg.go.dev/google.golang.org/protobuf,github.com/golang/protobuf* google.golang.org/protobuf*
+Revel,http://revel.github.io/,github.com/revel/revel* github.com/robfig/revel*
+SendGrid,https://github.com/sendgrid/sendgrid-go,github.com/sendgrid/sendgrid-go*
+yaml,https://gopkg.in/yaml.v3,gopkg.in/yaml*
+zap,https://go.uber.org/zap,go.uber.org/zap*

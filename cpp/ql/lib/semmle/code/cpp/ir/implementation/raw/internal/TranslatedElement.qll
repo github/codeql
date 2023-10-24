@@ -361,6 +361,12 @@ predicate ignoreLoad(Expr expr) {
     or
     expr instanceof FunctionAccess
     or
+    // The load is duplicated from the operand.
+    expr instanceof ParenthesisExpr
+    or
+    // The load is duplicated from the right operand.
+    expr instanceof CommaExpr
+    or
     expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
       instanceof FunctionPointerType
     or

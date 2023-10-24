@@ -301,7 +301,7 @@ private int mockableParameterCount(Constructor constructor) {
 /**
  * A class which is referenced by an `@InjectMocks` field.
  */
-library class MockitoMockInjectedClass extends Class {
+class MockitoMockInjectedClass extends Class {
   MockitoMockInjectedClass() {
     // There must be an `@InjectMock` field that has `this` as the type.
     exists(MockitoInjectedField injectedField | this = injectedField.getType())

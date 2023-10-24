@@ -688,6 +688,18 @@ def test_test_class_hierarchy_uncollapse_at_final(opts, generate_tests):
     }
 
 
+def test_test_with(opts, generate_tests):
+    write(opts.ql_test_output / "B" / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"A", "B"}),
+        schema.Class("A", bases=["Base"], test_with="B"),
+        schema.Class("B", bases=["Base"]),
+    ]) == {
+        "B/A.ql": a_ql_class_tester(class_name="A"),
+        "B/B.ql": a_ql_class_tester(class_name="B"),
+    }
+
+
 def test_property_description(generate_classes):
     description = ["Lorem", "Ipsum"]
     assert generate_classes([

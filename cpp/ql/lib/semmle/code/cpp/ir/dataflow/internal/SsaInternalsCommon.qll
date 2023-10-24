@@ -228,7 +228,7 @@ private class PointerWrapperTypeIndirection extends Indirection instanceof Point
   override predicate isAdditionalDereference(Instruction deref, Operand address) {
     exists(CallInstruction call |
       operandForFullyConvertedCall(getAUse(deref), call) and
-      this = call.getStaticCallTarget().getClassAndName("operator*") and
+      this = call.getStaticCallTarget().getClassAndName(["operator*", "operator->", "get"]) and
       address = call.getThisArgumentOperand()
     )
   }

@@ -25,7 +25,6 @@ struct Locale {
 
 
 
-
 enum CInterop {
   typealias Char = CChar
   typealias PlatformChar = CInterop.Char
@@ -104,6 +103,7 @@ extension StringProtocol {
   func substring(from index: Self.Index) -> String { return "" }
   func trimmingCharacters(in set: CharacterSet) -> String { return "" }
   func appending<T>(_ aString: T) -> String where T : StringProtocol { return "" }
+  func appendingFormat<T>(_ format: T, _ arguments: CVarArg...) -> String where T : StringProtocol { return "" }
   func padding<T>(toLength newLength: Int, withPad padString: T, startingAt padIndex: Int) -> String where T: StringProtocol { return "" }
   func components(separatedBy separator: CharacterSet) -> [String] { return [] }
   func folding(options: String.CompareOptions = [], locale: Locale?) -> String { return "" }
@@ -649,31 +649,70 @@ func furtherTaintThroughCallbacks() {
   sink(arg: result6!) // $ tainted=612
 }
 
+func testAppendingFormat() {
+  var s1 = source2()
+  sink(arg: s1.appendingFormat("%s %i", "", 0)) // $ tainted=653
+
+  var s2 = ""
+  sink(arg: s2.appendingFormat(source2(), "", 0)) // $ tainted=657
+
+  var s3 = ""
+  sink(arg: s3.appendingFormat("%s %i", source2(), 0)) // $ tainted=660
+
+  var s4 = ""
+  sink(arg: s4.appendingFormat("%s %i", "", source())) // $ tainted=663
+}
+
+func sourceUInt8() -> UInt8 { return 0 }
+
+func testDecodeCString() {
+  var input : [UInt8] = [1, 2, 3, sourceUInt8()]
+
+  let (str1, repaired1) = String.decodeCString(input, as: UTF8.self)!
+  sink(arg: str1) // $ tainted=669
+  sink(arg: repaired1)
+
+  input.withUnsafeBufferPointer({
+    ptr in
+    let (str2, repaired2) = String.decodeCString(ptr.baseAddress, as: UTF8.self)!
+    sink(arg: str2) // $ MISSING: tainted=669
+    sink(arg: repaired2)
+  })
+
+  let (str3, repaired3) = String.decodeCString(source2(), as: UTF8.self)!
+  sink(arg: str3) // $ tainted=682
+  sink(arg: repaired3)
+
+  let (str4, repaired4) = String.decodeCString(&input, as: UTF8.self)!
+  sink(arg: str4) // $ tainted=669
+  sink(arg: repaired4)
+}
+
 func testSubstringMembers() {
   let clean = ""
   let tainted = source2()
 
   let sub1 = tainted[..<tainted.index(tainted.endIndex, offsetBy: -5)]
-  sink(arg: sub1) // $ tainted=654
-  sink(arg: sub1.base) // $ tainted=654
-  sink(arg: sub1.utf8) // $ tainted=654
-  sink(arg: sub1.capitalized) // $ tainted=654
-  sink(arg: sub1.description) // $ tainted=654
+  sink(arg: sub1) // $ tainted=693
+  sink(arg: sub1.base) // $ tainted=693
+  sink(arg: sub1.utf8) // $ tainted=693
+  sink(arg: sub1.capitalized) // $ tainted=693
+  sink(arg: sub1.description) // $ tainted=693
 
   var sub2 = tainted[tainted.index(tainted.startIndex, offsetBy: 5)...]
-  sink(arg: sub2) // $ tainted=654
+  sink(arg: sub2) // $ tainted=693
   let result1 = sub2.withUTF8({
     buffer in
-    sink(arg: buffer[0]) // $ tainted=654
+    sink(arg: buffer[0]) // $ tainted=693
     return source()
   })
-  sink(arg: result1) // $ tainted=668
+  sink(arg: result1) // $ tainted=707
 
   let sub3 = Substring(sub2.utf8)
-  sink(arg: sub3) // $ tainted=654
+  sink(arg: sub3) // $ tainted=693
 
   var sub4 = clean.prefix(10)
   sink(arg: sub4)
   sub4.replaceSubrange(..<clean.endIndex, with: sub1)
-  sink(arg: sub4) // $ tainted=654
+  sink(arg: sub4) // $ tainted=693
 }

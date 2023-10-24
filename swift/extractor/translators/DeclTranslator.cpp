@@ -279,7 +279,12 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
 
 void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& decl,
                                              codeql::Decl& entry) {
-  entry.members = dispatcher.fetchRepeatedLabels(decl.getAllMembers());
+  for (auto member : decl.getMembers()) {
+    if (swift::AvailableAttr::isUnavailable(member)) {
+      continue;
+    }
+    entry.members.emplace_back(dispatcher.fetchLabel(member));
+  }
 }
 
 void DeclTranslator::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry) {
