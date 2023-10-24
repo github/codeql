@@ -10,7 +10,7 @@ string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else 
 
 module RegexTest implements TestSig {
   string getARelevantTag() {
-    result = ["regex", "input", "redos-vulnerable", "hasParseFailure", "modes"]
+    result = ["regex", "unevaluated-regex", "input", "redos-vulnerable", "hasParseFailure", "modes"]
   }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -45,6 +45,15 @@ module RegexTest implements TestSig {
       location = eval.getLocation() and
       element = eval.toString() and
       tag = "regex" and
+      value = quote(regex.toString().replaceAll("\n", "NEWLINE"))
+    )
+    or
+    exists(RegExp regex |
+      // unevaluated regex
+      not exists(RegexEval eval | eval.getARegex() = regex) and
+      location = regex.getLocation() and
+      element = regex.toString() and
+      tag = "unevaluated-regex" and
       value = quote(regex.toString().replaceAll("\n", "NEWLINE"))
     )
   }

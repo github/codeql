@@ -6663,3 +6663,8 @@ regex.swift:
 
 #  254| [RegExpStar] .*
 #-----| 0 -> [RegExpDot] .
+
+#  257| [RegExpDot] .
+
+#  257| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
