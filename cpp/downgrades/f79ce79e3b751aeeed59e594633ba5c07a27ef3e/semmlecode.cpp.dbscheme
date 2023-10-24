@@ -197,11 +197,6 @@ svnchurn(
  * C++ dbscheme
  */
 
-extractor_version(
-    string codeql_version: string ref,
-    string frontend_version: string ref
-)
-
 @location = @location_stmt | @location_expr | @location_default ;
 
 /**
