@@ -1944,7 +1944,7 @@ class MethodCall extends Expr, Call, @methodaccess {
   predicate isEnclosingMethodCall(RefType t) { Qualifier::enclosingMemberAccess(this, t) }
 
   /** DEPRECATED: Alias for `isEnclosingMethodCall`. */
-  deprecated predicate isEnclosingMethodAccess() { this.isEnclosingMethodCall() }
+  deprecated predicate isEnclosingMethodAccess(RefType t) { this.isEnclosingMethodCall(t) }
 
   override string getAPrimaryQlClass() { result = "MethodCall" }
 }
