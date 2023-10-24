@@ -151,7 +151,8 @@ private module Cached {
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
           any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr(),
-          any(SubscriptExpr se).getBase()
+          any(SubscriptExpr se).getBase(),
+          any(ApplyExpr apply | not exists(apply.getStaticTarget())).getFunction()
         ])
     } or
     TDictionarySubscriptNode(SubscriptExpr e) {
@@ -838,13 +839,15 @@ private predicate simpleAstFlowStep(Expr e1, Expr e2) {
   e2.(ArrayExpr).getAnElement() = e1
 }
 
-private predicate closureFlowStep(Expr e1, Expr e2) {
+private predicate closureFlowStep(CaptureInput::Expr e1, CaptureInput::Expr e2) {
   simpleAstFlowStep(e1, e2)
   or
   exists(Ssa::WriteDefinition def |
     def.getARead().getNode().asAstNode() = e2 and
     def.assigns(any(CfgNode cfg | cfg.getNode().asAstNode() = e1))
   )
+  or
+  e2.(Pattern).getImmediateMatchingExpr() = e1
 }
 
 private module CaptureInput implements VariableCapture::InputSig {
