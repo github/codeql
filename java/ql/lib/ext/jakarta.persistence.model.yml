@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["jakarta.persistence", "EntityManager", True, "createNativeQuery", "(String,Class)", "", "Argument[0]", "sql-injection", "ai-manual"]
+      - ["jakarta.persistence", "EntityManager", True, "createQuery", "(CriteriaDelete)", "", "Argument[0]", "sql-injection", "ai-manual"]
+      - ["jakarta.persistence", "Query", True, "setParameter", "(Parameter,Object)", "", "Argument[this]", "sql-injection", "ai-manual"]
