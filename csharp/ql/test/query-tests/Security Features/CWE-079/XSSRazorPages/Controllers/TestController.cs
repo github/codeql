@@ -101,6 +101,7 @@ public class Test3Controller : Controller {
     public void Setup(RazorViewEngineOptions o) {
         o.ViewLocationFormats.Add("/Views/Custom/{1}/{0}.cshtml");
         o.ViewLocationFormats.Add("~/Views/Custom2/{0}.cshtml");
+        o.AreaViewLocationFormats.Add("/MyAreas/{2}/{1}/{0}.cshtml");
     }
 
     public IActionResult Test15(UserData tainted15) {
@@ -132,7 +133,17 @@ public class Test4Controller : Controller {
     }
 
     public IActionResult test20(UserData tainted20) {
-        // SPURIOUS: Expected to find nothing (and NOT /Views/Test4/Test20.cshtml).
+        // Expected to find nothing (and NOT /Views/Test4/Test20.cshtml).
         return View("Test20", tainted20);
+    }
+
+    public IActionResult test21(UserData tainted21) {
+        // Expected to find file /Pages/Shared/Test21.cshtml
+        return View("Test21", tainted21);
+    }
+
+    public IActionResult test22(UserData tainted22) {
+        // Expected to find file /MyAreas/TestArea/Test4/Test22.cshtml
+        return View("Test22", tainted22);
     }
 }

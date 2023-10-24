@@ -68,6 +68,9 @@ private class ViewCall extends MethodCall {
       result = attr.getArgument(0).(StringLiteral).getValue()
     )
   }
+
+  /** `result` is `true` if this cal is from a controller that is an an Area, `false` otherwise. */
+  boolean hasArea() { if exists(this.getAreaName()) then result = true else result = false }
 }
 
 /** A compiler-generated Razor page. */
@@ -119,38 +122,43 @@ private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPage rp) {
 }
 
 /** Gets the `i`th template for view discovery. */
-private string getViewSearchTemplate(int i) {
-  i = 0 and result = "/Areas/{2}/Views/{1}/{0}.cshtml"
+private string getViewSearchTemplate(int i, boolean isArea) {
+  i = 0 and result = "/Areas/{2}/Views/{1}/{0}.cshtml" and isArea = true
   or
-  i = 1 and result = "/Areas/{2}/Views/Shared/{0}.cshtml"
+  i = 1 and result = "/Areas/{2}/Views/Shared/{0}.cshtml" and isArea = true
   or
-  i = 2 and result = "/Views/{1}/{0}.cshtml"
+  i = 2 and result = "/Views/{1}/{0}.cshtml" and isArea = false
   or
-  i = 3 and result = "/Views/Shared/{0}.cshtml"
+  i = 3 and result = "/Views/Shared/{0}.cshtml" and isArea = [true, false]
   or
-  i = 4 and result = getAViewSearchTemplateInCode()
+  i = 4 and result = "/Pages/Shared/{0}.cshtml" and isArea = true
+  or
+  i = 5 and result = getAViewSearchTemplateInCode(isArea)
 }
 
 /** Gets an additional template used for view discovery defined in code. */
-private string getAViewSearchTemplateInCode() {
+private string getAViewSearchTemplateInCode(boolean isArea) {
   exists(StringLiteral str, MethodCall addCall |
     addCall.getTarget().hasName("Add") and
     DataFlow::localExprFlow(str, addCall.getArgument(0)) and
-    addCall.getQualifier() = getAViewLocationList() and
+    addCall.getQualifier() = getAViewLocationList(isArea) and
     result = str.getValue()
   )
 }
 
 /** Gets a list expression containing view search locations */
-private Expr getAViewLocationList() {
-  result
-      .(PropertyRead)
-      .getProperty()
-      .hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorViewEngineOptions",
-        [
-          "ViewLocationFormats", "AreaViewLocationFormats",
-          //"PageViewLocationFormats","AreaPageViewLocationFormats"
-        ])
+private Expr getAViewLocationList(boolean isArea) {
+  exists(string name |
+    result
+        .(PropertyRead)
+        .getProperty()
+        .hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorViewEngineOptions", name)
+  |
+    name = "ViewLocationFormats" and isArea = false
+    or
+    name = "AreaViewLocationFormats" and isArea = true
+    // PageViewLocationFormats and AreaPageViewLocationFormats are used for calls within a page rather than a controller
+  )
 }
 
 /** A filepath that should be searched for a View call. */
@@ -160,7 +168,7 @@ private class RelativeViewCallFilepath extends NormalizableFilepath {
 
   RelativeViewCallFilepath() {
     exists(string template, string sub2, string sub1, string sub0 |
-      template = getViewSearchTemplate(idx_)
+      template = getViewSearchTemplate(idx_, vc_.hasArea())
     |
       (
         if template.matches("%{2}%")
