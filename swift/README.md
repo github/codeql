@@ -1,7 +1,7 @@
 # Swift on CodeQL
 
-> [!WARNING]
-> The Swift CodeQL package is an experimental and unsupported work in progress.
+> [!NOTE]
+> CodeQL analysis for Swift is currently in beta. During the beta, analysis of Swift code, and the accompanying documentation, will not be as comprehensive as for other languages.
 
 ## Development
 
