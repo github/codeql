@@ -1953,7 +1953,7 @@ class MethodCall extends Expr, Call, @methodaccess {
 }
 
 /** DEPRECATED: Alias for `MethodCall`. */
-deprecated class MethodAccess = MethodCall;
+class MethodAccess = MethodCall;
 
 /** A type access is a (possibly qualified) reference to a type. */
 class TypeAccess extends Expr, Annotatable, @typeaccess {
