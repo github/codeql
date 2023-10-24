@@ -382,6 +382,12 @@ private class DictionarySubscriptNode extends NodeImpl, TDictionarySubscriptNode
   SubscriptExpr getExpr() { result = expr }
 }
 
+private class ClosureSelfReferenceNode extends ExprNodeImpl {
+  override ClosureExpr expr;
+
+  ClosureExpr getClosure() { result = expr }
+}
+
 private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
     predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { none() }
@@ -410,6 +416,13 @@ private module ParameterNodes {
     override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
     override ParamDecl getParameter() { result = param }
+  }
+
+  class ClosureSelfParameterNode extends ParameterNodeImpl, ClosureSelfReferenceNode {
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c.asSourceCallable() = this.getClosure() and
+      pos instanceof ClosureSelfParameter
+    }
   }
 
   class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
@@ -624,6 +637,18 @@ private module ArgumentNodes {
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       call.asKeyPath() = keyPath and
       pos = TPositionalArgument(0)
+    }
+  }
+
+  class SelfClosureArgumentNode extends ExprNode, ArgumentNode {
+    ApplyExprCfgNode apply;
+
+    SelfClosureArgumentNode() { n = apply.getFunction() }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      apply = call.asCall() and
+      not exists(apply.getStaticTarget()) and
+      pos instanceof ClosureSelfArgument
     }
   }
 }
@@ -878,8 +903,8 @@ private module CaptureInput implements VariableCapture::InputSig {
         source = a.getSource()
       )
       or
-      exists(S::PatternBindingDecl pbd, S::NamedPattern np | this = pbd and pbd.getAPattern() = np |
-        np.getVarDecl() = variable and
+      exists(S::NamedPattern np | this = np |
+        variable = np.getVarDecl() and
         source = np.getMatchingExpr()
       )
       // TODO: support multiple variables in LHS of =, in both of above cases.
@@ -918,13 +943,23 @@ class CapturedParameter = CaptureInput::CapturedParameter;
 module CaptureFlow = VariableCapture::Flow<CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
-  result = n.(CaptureNode).getSynthesizedCaptureNode() or
-  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr() or
+  result = n.(CaptureNode).getSynthesizedCaptureNode()
+  or
+  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr()
+  or
   result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
-    n.(PostUpdateNode).getPreUpdateNode().asExpr() or
-  result.(CaptureFlow::ParameterNode).getParameter() = n.getParameter() or
-  result.(CaptureFlow::ThisParameterNode).getCallable().getSelfParam() = n.getParameter() or
+    n.(PostUpdateNode).getPreUpdateNode().asExpr()
+  or
+  result.(CaptureFlow::ParameterNode).getParameter() = n.getParameter()
+  or
+  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(ClosureSelfParameterNode).getClosure()
+  or
   result.(CaptureFlow::MallocNode).getClosureExpr() = n.getCfgNode().getNode().asAstNode() // TODO: figure out why the java version had PostUpdateNode logic here
+  or
+  exists(CaptureInput::VariableWrite write |
+    result.(CaptureFlow::VariableWriteSourceNode).getVariableWrite() = write and
+    n.asExpr() = write.getSource()
+  )
 }
 
 private predicate captureStoreStep(Node node1, Content::CapturedVariableContent c, Node node2) {

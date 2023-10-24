@@ -129,7 +129,7 @@ func forwarder() {
         (i: Int) -> Int in
         return 0
     })
-    sink(arg: clean)
+    sink(arg: clean) // $ SPURIOUS: flow=128
 }
 
 func lambdaFlows() {

@@ -11,7 +11,7 @@ func captureList() {
   let y: Int = source("captureList", 123);
   { [x = hello()] () in
      sink(x) // $ MISSING: hasValueFlow=hello
-     sink(y) // $ MISSING: hasValueFlow=captureList
+     sink(y) // $ hasValueFlow=captureList
   }()
 }
 
@@ -19,11 +19,11 @@ func setAndCallEscape() {
   let x = source("setAndCallEscape", 0)
 
   let escape = {
-    sink(x) // $ MISSING: hasValueFlow=setAndCallEscape
+    sink(x) // $ hasValueFlow=setAndCallEscape
     return x + 1
   }
 
-  sink(escape()) // $ MISSING: hasTaintFlow=setAndCallEscape
+  sink(escape()) // $ hasTaintFlow=setAndCallEscape
 }
 
 var escape: (() -> Int)? = nil
@@ -31,7 +31,7 @@ var escape: (() -> Int)? = nil
 func setEscape() {
   let x = source("setEscape", 0)
   escape = {
-    sink(x) // $ MISSING: hasValueFlow=setEscape
+    sink(x) // $ hasValueFlow=setEscape
     return x + 1
   }
 }
@@ -73,7 +73,7 @@ func foo() -> Int {
   let f = { y in x += y }
   x = source("foo", 41)
   let r = { x }
-  sink(r()) // $ MISSING: hasValueFlow=foo
+  sink(r()) // $ hasValueFlow=foo
   f(1)
   return r()
 }
@@ -138,12 +138,12 @@ func sharedCaptureMultipleWriters() {
 
 func taintCollections(array: inout Array<Int>) {
   array[0] = source("array", 0)
-  sink(array)
+  sink(array) // $ hasTaintFlow=array
   sink(array[0]) // $ hasValueFlow=array
   array.withContiguousStorageIfAvailable({
     buffer in
-    sink(array)
-    sink(array[0]) // $ MISSING: hasValueFlow=array
+    sink(array) // $ hasTaintFlow=array
+    sink(array[0]) // $ hasValueFlow=array
   })
 }
 

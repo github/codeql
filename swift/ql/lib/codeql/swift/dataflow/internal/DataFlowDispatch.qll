@@ -293,12 +293,14 @@ private module Cached {
   newtype TArgumentPosition =
     TThisArgument() or
     // we rely on default exprs generated in the caller for ordering
-    TPositionalArgument(int n) { n = any(Argument arg).getIndex() }
+    TPositionalArgument(int n) { n = any(Argument arg).getIndex() } or
+    TClosureSelfArgument()
 
   cached
   newtype TParameterPosition =
     TThisParameter() or
-    TPositionalParameter(int n) { n = any(Argument arg).getIndex() }
+    TPositionalParameter(int n) { n = any(Argument arg).getIndex() } or
+    TClosureSelfParameter()
 }
 
 import Cached
@@ -331,6 +333,10 @@ class ThisParameterPosition extends ParameterPosition, TThisParameter {
   override string toString() { result = "this" }
 }
 
+class ClosureSelfParameter extends ParameterPosition, TClosureSelfParameter {
+  override string toString() { result = "{ ... }" }
+}
+
 /** An argument position. */
 class ArgumentPosition extends TArgumentPosition {
   /** Gets a textual representation of this position. */
@@ -347,6 +353,10 @@ class ThisArgumentPosition extends ArgumentPosition, TThisArgument {
   override string toString() { result = "this" }
 }
 
+class ClosureSelfArgument extends ArgumentPosition, TClosureSelfArgument {
+  override string toString() { result = "{ ... }" }
+}
+
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
@@ -354,4 +364,7 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   apos instanceof TThisArgument
   or
   ppos.(PositionalParameterPosition).getIndex() = apos.(PositionalArgumentPosition).getIndex()
+  or
+  ppos instanceof TClosureSelfParameter and
+  apos instanceof TClosureSelfArgument
 }
