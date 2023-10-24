@@ -477,7 +477,7 @@ func taintFromUInt8Array() {
       return 256
     }
   )
-  sink(arg: r3) // $ MISSING: tainted=475
+  sink(arg: r3) // $ tainted=475
 
   sink(arg: String(bytes: cleanUInt8Values, encoding: String.Encoding.utf8)!)
   sink(arg: String(bytes: taintedUInt8Values, encoding: String.Encoding.utf8)!) // $ tainted=450
