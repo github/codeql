@@ -59,7 +59,7 @@ def comment_pr(repo, run_id):
     try:
         utils.download_artifact(repo, "comment", "comment", run_id)
         with open("comment/ID") as file:
-            raw_comment_id = int(file.read())
+            raw_comment_id = int(file.read().strip())
     except Exception as e:
         # If there is no existing comment, the `comment/ID` artifact
         # will not exist. This will cause `utils.download_artifact`
