@@ -25,6 +25,9 @@ class MockitoVerifiedMethodCall extends MethodCall {
   }
 }
 
+/** DEPRECATED: Alias for `MockitoVerifiedMethodCall`. */
+deprecated class MockitoVerifiedMethodAccess = MockitoVerifiedMethodCall;
+
 /**
  * A type that can be mocked by Mockito.
  */

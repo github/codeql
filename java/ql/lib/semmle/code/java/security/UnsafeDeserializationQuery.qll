@@ -233,6 +233,9 @@ class UnsafeDeserializationSink extends DataFlow::ExprNode {
 
   /** Gets a call that triggers unsafe deserialization. */
   MethodCall getMethodCall() { unsafeDeserialization(result, this.getExpr()) }
+
+  /** DEPRECATED: Alias for `getMethodCall`. */
+  deprecated MethodCall getMethodAccess() { result = this.getMethodCall() }
 }
 
 /** Holds if `node` is a sanitizer for unsafe deserialization */

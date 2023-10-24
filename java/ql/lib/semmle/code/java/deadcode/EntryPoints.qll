@@ -172,6 +172,9 @@ class ReflectiveMethodCallEntryPoint extends EntryPoint, ReflectiveMethodCall {
   }
 }
 
+/** DEPRECATED: Alias for `ReflectiveMethodCallEntryPoint`. */
+deprecated class ReflectiveMethodAccessEntryPoint = ReflectiveMethodCallEntryPoint;
+
 /**
  * Classes that are entry points recognised by annotations.
  */

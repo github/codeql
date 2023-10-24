@@ -43,6 +43,9 @@ class JwtParserWithInsecureParseSink extends DataFlow::Node {
 
   /** Gets the method access that does the insecure parsing. */
   MethodCall getParseMethodCall() { result = insecureParseMa }
+
+  /** DEPRECATED: Alias for `getParseMethodCall`. */
+  deprecated MethodCall getParseMethodAccess() { result = this.getParseMethodCall() }
 }
 
 /**

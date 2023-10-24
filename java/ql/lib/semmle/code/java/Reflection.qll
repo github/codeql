@@ -83,6 +83,9 @@ class ReflectiveClassIdentifierMethodCall extends ReflectiveClassIdentifier, Met
   }
 }
 
+/** DEPRECATED: Alias for `ReflectiveClassIdentifierMethodCall`. */
+deprecated class ReflectiveClassIdentifierMethodAccess = ReflectiveClassIdentifierMethodCall;
+
 /**
  * Gets a `ReflectiveClassIdentifier` that we believe may represent the value of `expr`.
  */
@@ -317,25 +320,34 @@ class ClassMethodCall extends MethodCall {
   }
 }
 
+/** DEPRECATED: Alias for `ClassMethodCall`. */
+deprecated class ClassMethodAccess = ClassMethodCall;
+
 /**
  * A call to `Class.getConstructors(..)` or `Class.getDeclaredConstructors(..)`.
  */
-class ReflectiveConstructorsAccess extends ClassMethodCall {
-  ReflectiveConstructorsAccess() {
+class ReflectiveConstructorsCall extends ClassMethodCall {
+  ReflectiveConstructorsCall() {
     this.getCallee().hasName("getConstructors") or
     this.getCallee().hasName("getDeclaredConstructors")
   }
 }
 
+/** DEPRECATED: Alias for `ReflectiveConstructorsCall`. */
+deprecated class ReflectiveConstructorsAccess = ReflectiveConstructorsCall;
+
 /**
  * A call to `Class.getMethods(..)` or `Class.getDeclaredMethods(..)`.
  */
-class ReflectiveMethodsAccess extends ClassMethodCall {
-  ReflectiveMethodsAccess() {
+class ReflectiveMethodsCall extends ClassMethodCall {
+  ReflectiveMethodsCall() {
     this.getCallee().hasName("getMethods") or
     this.getCallee().hasName("getDeclaredMethods")
   }
 }
+
+/** DEPRECATED: Alias for `ReflectiveMethodsCall`. */
+deprecated class ReflectiveMethodsAccess = ReflectiveMethodsCall;
 
 /**
  * A call to `Class.getMethod(..)` or `Class.getDeclaredMethod(..)`.
@@ -366,11 +378,14 @@ class ReflectiveMethodCall extends ClassMethodCall {
   }
 }
 
+/** DEPRECATED: Alias for `ReflectiveMethodCall`. */
+deprecated class ReflectiveMethodAccess = ReflectiveMethodCall;
+
 /**
  * A call to `Class.getAnnotation(..)`.
  */
-class ReflectiveAnnotationAccess extends ClassMethodCall {
-  ReflectiveAnnotationAccess() { this.getCallee().hasName("getAnnotation") }
+class ReflectiveAnnotationCall extends ClassMethodCall {
+  ReflectiveAnnotationCall() { this.getCallee().hasName("getAnnotation") }
 
   /**
    * Gets a possible annotation type for this reflective annotation access.
@@ -380,11 +395,14 @@ class ReflectiveAnnotationAccess extends ClassMethodCall {
   }
 }
 
+/** DEPRECATED: Alias for `ReflectiveAnnotationCall`. */
+deprecated class ReflectiveAnnotationAccess = ReflectiveAnnotationCall;
+
 /**
  * A call to `Class.getField(..)` that accesses a field.
  */
-class ReflectiveFieldAccess extends ClassMethodCall {
-  ReflectiveFieldAccess() {
+class ReflectiveFieldCall extends ClassMethodCall {
+  ReflectiveFieldCall() {
     this.getCallee().hasName("getField") or
     this.getCallee().hasName("getDeclaredField")
   }
@@ -405,3 +423,6 @@ class ReflectiveFieldAccess extends ClassMethodCall {
     result.hasName(this.getArgument(0).(StringLiteral).getValue())
   }
 }
+
+/** DEPRECATED: Alias for `ReflectiveFieldCall`. */
+deprecated class ReflectiveFieldAccess = ReflectiveFieldCall;

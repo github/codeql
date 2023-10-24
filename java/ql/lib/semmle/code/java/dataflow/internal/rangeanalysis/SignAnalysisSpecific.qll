@@ -267,7 +267,7 @@ private module Impl {
 
   /** Holds if `f` can have any sign. */
   predicate fieldWithUnknownSign(Field f) {
-    exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
+    exists(ReflectiveFieldCall rfa | rfa.inferAccessedField() = f)
   }
 
   /** Holds if `f` is accessed in an increment operation. */

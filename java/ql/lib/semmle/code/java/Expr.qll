@@ -1933,12 +1933,18 @@ class MethodCall extends Expr, Call, @methodaccess {
    */
   predicate isOwnMethodCall() { Qualifier::ownMemberAccess(this) }
 
+  /** DEPRECATED: Alias for `isOwnMethodCall`. */
+  deprecated predicate isOwnMethodAccess() { this.isOwnMethodCall() }
+
   /**
    * Holds if this is a method access to an instance method of the enclosing
    * class `t`. That is, the qualifier is either an explicit or implicit
    * `t`-qualified `this` or `super`.
    */
   predicate isEnclosingMethodCall(RefType t) { Qualifier::enclosingMemberAccess(this, t) }
+
+  /** DEPRECATED: Alias for `isEnclosingMethodCall`. */
+  deprecated predicate isEnclosingMethodAccess() { this.isEnclosingMethodCall() }
 
   override string getAPrimaryQlClass() { result = "MethodCall" }
 }

@@ -276,6 +276,9 @@ class MethodCallSystemGetProperty extends MethodCall {
   }
 }
 
+/** DEPRECATED: Alias for `MethodCallSystemGetProperty`. */
+deprecated class MethodAccessSystemGetProperty = MethodCallSystemGetProperty;
+
 /**
  * Any method named `exit` on class `java.lang.Runtime` or `java.lang.System`.
  */

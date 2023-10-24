@@ -214,6 +214,9 @@ abstract class MethodCallInsecureFileCreation extends MethodCall {
   DataFlow::Node getNode() { result.asExpr() = this }
 }
 
+/** DEPRECATED: Alias for `MethodCallInsecureFileCreation`. */
+deprecated class MethodAccessInsecureFileCreation = MethodCallInsecureFileCreation;
+
 /**
  * An insecure call to `java.io.File.createTempFile`.
  */
@@ -231,6 +234,9 @@ class MethodCallInsecureFileCreateTempFile extends MethodCallInsecureFileCreatio
 
   override string getFileSystemEntityType() { result = "file" }
 }
+
+/** DEPRECATED: Alias for `MethodCallInsecureFileCreateTempFile`. */
+deprecated class MethodAccessInsecureFileCreateTempFile = MethodCallInsecureFileCreateTempFile;
 
 /**
  * The `com.google.common.io.Files.createTempDir` method.
@@ -252,3 +258,6 @@ class MethodCallInsecureGuavaFilesCreateTempFile extends MethodCallInsecureFileC
 
   override string getFileSystemEntityType() { result = "directory" }
 }
+
+/** DEPRECATED: Alias for `MethodCallInsecureGuavaFilesCreateTempFile`. */
+deprecated class MethodAccessInsecureGuavaFilesCreateTempFile = MethodCallInsecureGuavaFilesCreateTempFile;
