@@ -323,10 +323,10 @@ func (_ *SigningMethodHMAC) Alg() string {
 	return ""
 }
 
-func (_ *SigningMethodHMAC) Sign(_ string, _ interface{}) (string, error) {
-	return "", nil
+func (_ *SigningMethodHMAC) Sign(_ string, _ interface{}) ([]byte, error) {
+	return []byte{}, nil
 }
 
-func (_ *SigningMethodHMAC) Verify(_ string, _ string, _ interface{}) error {
+func (_ *SigningMethodHMAC) Verify(_ string, _ []byte, _ interface{}) error {
 	return nil
 }
