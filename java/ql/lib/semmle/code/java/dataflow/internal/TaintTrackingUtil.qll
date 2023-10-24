@@ -460,6 +460,7 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getDestVar() = this
   }
 
+  /** Gets a call to `writeObject` called against this variable. */
   MethodCall getAWriteObjectMethodCall() {
     result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("writeObject")
