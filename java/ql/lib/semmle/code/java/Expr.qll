@@ -1251,7 +1251,7 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   override string getAPrimaryQlClass() { result = "ClassInstanceExpr" }
 }
 
-/** 
+/**
  * An explicit `new ClassName(...)` expression.
  *
  * Note this does not include implicit instance creation such as lambda expressions

@@ -91,9 +91,7 @@ predicate exprHasNoEffect(Expr e) {
       constructorHasEffect(c)
     )
     or
-    exists(MethodCall ma, Method m |
-      bad = ma and m = ma.getMethod().getAPossibleImplementation()
-    |
+    exists(MethodCall ma, Method m | bad = ma and m = ma.getMethod().getAPossibleImplementation() |
       methodHasEffect(m) or not m.fromSource()
     )
   )

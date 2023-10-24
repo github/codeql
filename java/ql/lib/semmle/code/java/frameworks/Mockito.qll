@@ -78,9 +78,7 @@ class MockitoInitedTest extends Class {
         m.calls*(initMocks)
       )
       or
-      exists(MethodCall call | call.getCallee() = initMocks |
-        call.getArgument(0).getType() = this
-      )
+      exists(MethodCall call | call.getCallee() = initMocks | call.getArgument(0).getType() = this)
     )
   }
 }

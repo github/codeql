@@ -56,9 +56,7 @@ private module BindingUnsafeRemoteObjectConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall ma | ma.getArgument(1) = sink.asExpr() |
-      ma.getMethod() instanceof BindMethod
-    )
+    exists(MethodCall ma | ma.getArgument(1) = sink.asExpr() | ma.getMethod() instanceof BindMethod)
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {

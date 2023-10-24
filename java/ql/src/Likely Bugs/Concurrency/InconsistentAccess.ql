@@ -30,9 +30,7 @@ predicate locallySynchronized(MethodCall ma) {
 predicate hasUnsynchronizedCall(Method m) {
   m.isPublic() and not m.isSynchronized()
   or
-  exists(MethodCall ma, Method caller |
-    ma.getMethod() = m and caller = ma.getEnclosingCallable()
-  |
+  exists(MethodCall ma, Method caller | ma.getMethod() = m and caller = ma.getEnclosingCallable() |
     hasUnsynchronizedCall(caller) and
     not caller.isSynchronized() and
     not locallySynchronized(ma)

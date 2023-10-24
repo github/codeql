@@ -58,9 +58,7 @@ private predicate implicitEnclosingThisCopy(ConstructorCall cc, RefType t1, RefT
 private predicate enclosingInstanceAccess(ExprParent e, RefType t) {
   e.(InstanceAccess).isEnclosingInstanceAccess(t)
   or
-  exists(MethodCall ma |
-    ma.isEnclosingMethodCall(t) and ma = e and not exists(ma.getQualifier())
-  )
+  exists(MethodCall ma | ma.isEnclosingMethodCall(t) and ma = e and not exists(ma.getQualifier()))
   or
   exists(FieldAccess fa | fa.isEnclosingFieldAccess(t) and fa = e and not exists(fa.getQualifier()))
   or

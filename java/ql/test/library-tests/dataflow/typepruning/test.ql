@@ -6,9 +6,7 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(Node n) { n.asExpr().(MethodCall).getMethod().hasName("source") }
 
   predicate isSink(Node n) {
-    exists(MethodCall sink |
-      sink.getAnArgument() = n.asExpr() and sink.getMethod().hasName("sink")
-    )
+    exists(MethodCall sink | sink.getAnArgument() = n.asExpr() and sink.getMethod().hasName("sink"))
   }
 
   predicate isAdditionalFlowStep(Node n1, Node n2) {

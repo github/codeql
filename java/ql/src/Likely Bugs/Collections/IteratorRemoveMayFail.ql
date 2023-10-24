@@ -15,9 +15,7 @@ import java
 
 class SpecialCollectionCreation extends MethodCall {
   SpecialCollectionCreation() {
-    exists(Method m, RefType rt |
-      m = this.(MethodCall).getCallee() and rt = m.getDeclaringType()
-    |
+    exists(Method m, RefType rt | m = this.(MethodCall).getCallee() and rt = m.getDeclaringType() |
       rt.hasQualifiedName("java.util", "Arrays") and m.hasName("asList")
       or
       rt.hasQualifiedName("java.util", "Collections") and

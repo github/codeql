@@ -466,9 +466,7 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
   }
 
   /** DEPRECATED: Alias for `getAWriteObjectMethodCall`. */
-  deprecated MethodCall getAWriteObjectMethodAccess() { 
-    result = this.getAWriteObjectMethodCall()
-  }
+  deprecated MethodCall getAWriteObjectMethodAccess() { result = this.getAWriteObjectMethodCall() }
 }
 
 /** Flow through string formatting. */

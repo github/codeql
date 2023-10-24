@@ -155,9 +155,7 @@ predicate inDifferentRunnables(MethodCall ma1, MethodCall ma2) {
  * in statement `inner` that is qualified by one of the parameters of `outer`, and there is
  * another access to `outer` that may cause locking to be performed in a different order.
  */
-predicate badMethodCallLockOrder(
-  MethodCall outerAccess, MethodCall innerAccess, MethodCall other
-) {
+predicate badMethodCallLockOrder(MethodCall outerAccess, MethodCall innerAccess, MethodCall other) {
   exists(Synched outer, Synched inner |
     inner = innerAccess and
     inner = outer.getInnerSynch() and

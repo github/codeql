@@ -117,9 +117,7 @@ predicate hasHashAncestor(MethodCall ma) {
 }
 
 /** Holds if `MethodCall` ma is a hashing call without a sibling node making another hashing call. */
-predicate isSingleHashMethodCall(MethodCall ma) {
-  isHashAccess(ma) and not hasAnotherHashCall(ma)
-}
+predicate isSingleHashMethodCall(MethodCall ma) { isHashAccess(ma) and not hasAnotherHashCall(ma) }
 
 /** Holds if `MethodCall` ma is a single hashing call that is not invoked by a wrapper method. */
 predicate isSink(MethodCall ma) { isSingleHashMethodCall(ma) and not hasHashAncestor(ma) }

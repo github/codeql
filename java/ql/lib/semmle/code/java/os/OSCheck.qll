@@ -158,9 +158,8 @@ private class IsUnixFromPosixFromFileSystem extends IsUnixGuard instanceof Metho
       supportedFileAttributeViewsMethod.hasName("supportedFileAttributeViews") and
       supportedFileAttributeViewsMethod.getDeclaringType() instanceof TypeFileSystem
     |
-      DataFlow::localExprFlow(any(MethodCall ma |
-          ma.getMethod() = supportedFileAttributeViewsMethod
-        ), super.getQualifier())
+      DataFlow::localExprFlow(any(MethodCall ma | ma.getMethod() = supportedFileAttributeViewsMethod),
+        super.getQualifier())
     )
   }
 }

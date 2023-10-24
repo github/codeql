@@ -260,4 +260,5 @@ class MethodCallInsecureGuavaFilesCreateTempFile extends MethodCallInsecureFileC
 }
 
 /** DEPRECATED: Alias for `MethodCallInsecureGuavaFilesCreateTempFile`. */
-deprecated class MethodAccessInsecureGuavaFilesCreateTempFile = MethodCallInsecureGuavaFilesCreateTempFile;
+deprecated class MethodAccessInsecureGuavaFilesCreateTempFile =
+  MethodCallInsecureGuavaFilesCreateTempFile;
