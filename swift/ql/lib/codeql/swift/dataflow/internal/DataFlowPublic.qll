@@ -141,6 +141,10 @@ class CaptureNode extends Node, TCaptureNode {
 
   CaptureNode() { this = TCaptureNode(cn) }
 
+  /**
+   * Gets the underlying synthesized capture node that is created by the
+   * variable capture library.
+   */
   CaptureFlow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
 }
 
@@ -256,6 +260,7 @@ module Content {
 
     CapturedVariableContent() { this = TCapturedVariableContent(v) }
 
+    /** Gets the underlying captured variable. */
     CapturedVariable getVariable() { result = v }
 
     override string toString() { result = v.toString() }
