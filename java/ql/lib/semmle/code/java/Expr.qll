@@ -1252,7 +1252,7 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
 }
 
 /**
- * An explicit `new ClassName(...)` expression.
+ * An explicit `new TypeName(...)` expression.
  *
  * Note this does not include implicit instance creation such as lambda expressions
  * or `instanceVar::methodName` references. To include those too, use `ClassInstanceExpr`.
