@@ -16,7 +16,7 @@ class SeleniumPageFactory extends Class {
 /**
  * A call to the Selenium `PageFactory.initElements` method, to construct a page object.
  */
-class SeleniumInitElementsAccess extends MethodAccess {
+class SeleniumInitElementsAccess extends MethodCall {
   SeleniumInitElementsAccess() {
     this.getMethod().getDeclaringType() instanceof SeleniumPageFactory and
     this.getMethod().hasName("initElements")

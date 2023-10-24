@@ -25,7 +25,7 @@ private class ActivateModels extends ActiveExperimentalModels {
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
-class PathNormalizeSanitizer extends MethodAccess {
+class PathNormalizeSanitizer extends MethodCall {
   PathNormalizeSanitizer() {
     exists(RefType t |
       t instanceof TypePath or

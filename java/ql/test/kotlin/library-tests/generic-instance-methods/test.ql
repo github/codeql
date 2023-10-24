@@ -7,7 +7,7 @@ string paramTypeIfPresent(Callable m) {
 }
 
 query predicate calls(
-  MethodAccess ma, Callable caller, RefType callerType, Callable called, RefType calledType
+  MethodCall ma, Callable caller, RefType callerType, Callable called, RefType calledType
 ) {
   ma.getEnclosingCallable() = caller and
   ma.getCallee() = called and

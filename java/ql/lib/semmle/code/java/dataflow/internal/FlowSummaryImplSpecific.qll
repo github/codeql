@@ -333,7 +333,7 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
   exists(FieldWrite fw |
     c = "" and
     fw.getField() = mid.asElement() and
-    n.asNode().asExpr() = fw.getRhs()
+    n.asNode().asExpr() = fw.getASource()
   )
 }
 

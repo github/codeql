@@ -242,7 +242,7 @@ predicate implicitToStringCall(Expr e) {
     or
     exists(AddExpr add | add.getType() instanceof TypeString and add.getAnOperand() = e)
     or
-    exists(MethodAccess ma, Method m, int i |
+    exists(MethodCall ma, Method m, int i |
       ma.getMethod() = m and
       ma.getArgument(i) = e and
       printMethod(m, i)
@@ -253,7 +253,7 @@ predicate implicitToStringCall(Expr e) {
 /**
  * A call to a `format` or `printf` method.
  */
-class StringFormat extends MethodAccess, FormattingCall {
+class StringFormat extends MethodCall, FormattingCall {
   StringFormat() { this.getCallee() instanceof StringFormatMethod }
 }
 
