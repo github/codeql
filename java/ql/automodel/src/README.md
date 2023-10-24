@@ -63,6 +63,17 @@ Do not to "fix" shortcomings that could be fixed by a better prompt or better ex
 
 A significant part of the behavior of extraction queries is implemented in shared modules. When we add support for new languages, we expect to move the shared code to a separate QL pack. In the mean time, shared code modules must not import any java libraries.
 
+## Packaging
+
+Automodel extraction queries come as a dedicated package. See [qlpack.yml](https://github.com/github/codeql/blob/main/java/ql/automodel/src/qlpack.yml). The [publish.sh](https://github.com/github/codeql/blob/main/java/ql/automodel/publish.sh) script is responsible for publishing a new version to the [package registry](https://github.com/orgs/codeql/packages/container/package/java-automodel-queries).
+
+### Backwards Compatibility
+
+We try to keep changes to extraction queries backwards-compatible whenever feasible. There's several reasons:
+
+ - That automodel can always decide which version of the package to run is a flawed assumption. We don't have direct control over the version of the extraction queries running on the user's local machine.
+ - An automodel deployment will sometimes require the extraction queries to be published. If the new version of the extraction queries works with the old version of automodel, then it is much easier to roll back deployments of automodel.
+
 ## Candidate Examples
 
 This section contains a few examples of the kinds of candidates that our queries might select, and why.
