@@ -1850,7 +1850,7 @@ class VarWrite extends VarAccess {
   VarWrite() { this.isVarWrite() }
 
   /**
-   * Gets the right-hand side of the assignment that executes this variable write.
+   * Gets a source of the assignment that executes this variable write.
    *
    * For assignments using the `=` operator, the source expression
    * is simply the RHS of the assignment.
@@ -1859,7 +1859,10 @@ class VarWrite extends VarAccess {
    * (such as (`+=`), both the RHS and the LHS of the compound assignment
    * are source expressions of the assignment.
    */
-  Expr getRhs() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
+  Expr getASource() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
+
+  /** DEPRECATED: (Inaccurately-named) alias for `getASource` */
+  deprecated Expr getRhs() { result = this.getASource() }
 }
 
 /** DEPRECATED: Alias for `VarWrite`. */
