@@ -23,11 +23,24 @@ edges
 | Controllers/TestController.cs:68:23:68:31 | access to parameter tainted11 : UserData | Controllers/TestController.cs:71:43:71:43 | x : UserData |
 | Controllers/TestController.cs:71:43:71:43 | x : UserData | Controllers/TestController.cs:71:70:71:70 | access to parameter x : UserData |
 | Controllers/TestController.cs:71:70:71:70 | access to parameter x : UserData | Views/Test2/Test11.cshtml:8:16:8:20 | access to property Model : UserData |
+| Controllers/TestController.cs:82:42:82:50 | tainted13 : UserData | Controllers/TestController.cs:84:37:84:45 | access to parameter tainted13 : UserData |
+| Controllers/TestController.cs:84:37:84:45 | access to parameter tainted13 : UserData | Controllers/TestController.cs:95:64:95:64 | x : UserData |
+| Controllers/TestController.cs:87:42:87:50 | tainted14 : UserData | Controllers/TestController.cs:89:37:89:45 | access to parameter tainted14 : UserData |
+| Controllers/TestController.cs:89:37:89:45 | access to parameter tainted14 : UserData | Controllers/TestController.cs:97:64:97:64 | x : UserData |
+| Controllers/TestController.cs:95:64:95:64 | x : UserData | Controllers/TestController.cs:95:113:95:113 | access to parameter x : UserData |
+| Controllers/TestController.cs:95:113:95:113 | access to parameter x : UserData | Views/Other/Test13.cshtml:8:16:8:20 | access to property Model : UserData |
+| Controllers/TestController.cs:97:64:97:64 | x : UserData | Controllers/TestController.cs:97:93:97:93 | access to parameter x : UserData |
+| Controllers/TestController.cs:97:93:97:93 | access to parameter x : UserData | Views/Shared/Test14.cshtml:8:16:8:20 | access to property Model : UserData |
+| Controllers/TestController.cs:105:42:105:50 | tainted15 : UserData | Controllers/TestController.cs:107:21:107:29 | access to parameter tainted15 : UserData |
+| Controllers/TestController.cs:107:21:107:29 | access to parameter tainted15 : UserData | Views/Custom/Test3/Test15.cshtml:8:16:8:20 | access to property Model : UserData |
+| Views/Custom/Test3/Test15.cshtml:8:16:8:20 | access to property Model : UserData | Views/Custom/Test3/Test15.cshtml:8:16:8:25 | access to property Name |
 | Views/Other/Test5.cshtml:8:16:8:20 | access to property Model : UserData | Views/Other/Test5.cshtml:8:16:8:25 | access to property Name |
 | Views/Other/Test6.cshtml:8:16:8:20 | access to property Model : UserData | Views/Other/Test6.cshtml:8:16:8:25 | access to property Name |
 | Views/Other/Test8.cshtml:8:16:8:20 | access to property Model : UserData | Views/Other/Test8.cshtml:8:16:8:25 | access to property Name |
 | Views/Other/Test9.cshtml:8:16:8:20 | access to property Model : UserData | Views/Other/Test9.cshtml:8:16:8:25 | access to property Name |
+| Views/Other/Test13.cshtml:8:16:8:20 | access to property Model : UserData | Views/Other/Test13.cshtml:8:16:8:25 | access to property Name |
 | Views/Shared/Test2.cshtml:8:16:8:20 | access to property Model : UserData | Views/Shared/Test2.cshtml:8:16:8:25 | access to property Name |
+| Views/Shared/Test14.cshtml:8:16:8:20 | access to property Model : UserData | Views/Shared/Test14.cshtml:8:16:8:25 | access to property Name |
 | Views/Test2/Test10.cshtml:8:16:8:20 | access to property Model : UserData | Views/Test2/Test10.cshtml:8:16:8:25 | access to property Name |
 | Views/Test2/Test11.cshtml:8:16:8:20 | access to property Model : UserData | Views/Test2/Test11.cshtml:8:16:8:25 | access to property Name |
 | Views/Test/Test1.cshtml:8:16:8:20 | access to property Model : UserData | Views/Test/Test1.cshtml:8:16:8:25 | access to property Name |
@@ -59,6 +72,18 @@ nodes
 | Controllers/TestController.cs:68:23:68:31 | access to parameter tainted11 : UserData | semmle.label | access to parameter tainted11 : UserData |
 | Controllers/TestController.cs:71:43:71:43 | x : UserData | semmle.label | x : UserData |
 | Controllers/TestController.cs:71:70:71:70 | access to parameter x : UserData | semmle.label | access to parameter x : UserData |
+| Controllers/TestController.cs:82:42:82:50 | tainted13 : UserData | semmle.label | tainted13 : UserData |
+| Controllers/TestController.cs:84:37:84:45 | access to parameter tainted13 : UserData | semmle.label | access to parameter tainted13 : UserData |
+| Controllers/TestController.cs:87:42:87:50 | tainted14 : UserData | semmle.label | tainted14 : UserData |
+| Controllers/TestController.cs:89:37:89:45 | access to parameter tainted14 : UserData | semmle.label | access to parameter tainted14 : UserData |
+| Controllers/TestController.cs:95:64:95:64 | x : UserData | semmle.label | x : UserData |
+| Controllers/TestController.cs:95:113:95:113 | access to parameter x : UserData | semmle.label | access to parameter x : UserData |
+| Controllers/TestController.cs:97:64:97:64 | x : UserData | semmle.label | x : UserData |
+| Controllers/TestController.cs:97:93:97:93 | access to parameter x : UserData | semmle.label | access to parameter x : UserData |
+| Controllers/TestController.cs:105:42:105:50 | tainted15 : UserData | semmle.label | tainted15 : UserData |
+| Controllers/TestController.cs:107:21:107:29 | access to parameter tainted15 : UserData | semmle.label | access to parameter tainted15 : UserData |
+| Views/Custom/Test3/Test15.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
+| Views/Custom/Test3/Test15.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Other/Test5.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
 | Views/Other/Test5.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Other/Test6.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
@@ -67,8 +92,12 @@ nodes
 | Views/Other/Test8.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Other/Test9.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
 | Views/Other/Test9.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
+| Views/Other/Test13.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
+| Views/Other/Test13.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Shared/Test2.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
 | Views/Shared/Test2.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
+| Views/Shared/Test14.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
+| Views/Shared/Test14.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Test2/Test10.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
 | Views/Test2/Test10.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Test2/Test11.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
@@ -83,11 +112,14 @@ nodes
 | Views/Test/Test7.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 subpaths
 #select
+| Views/Custom/Test3/Test15.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:105:42:105:50 | tainted15 : UserData | Views/Custom/Test3/Test15.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:105:42:105:50 | tainted15 : UserData | User-provided value |
 | Views/Other/Test5.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:34:41:34:48 | tainted5 : UserData | Views/Other/Test5.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:34:41:34:48 | tainted5 : UserData | User-provided value |
 | Views/Other/Test6.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:39:41:39:48 | tainted6 : UserData | Views/Other/Test6.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:39:41:39:48 | tainted6 : UserData | User-provided value |
 | Views/Other/Test8.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:49:41:49:48 | tainted8 : UserData | Views/Other/Test8.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:49:41:49:48 | tainted8 : UserData | User-provided value |
 | Views/Other/Test9.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:54:41:54:48 | tainted9 : UserData | Views/Other/Test9.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:54:41:54:48 | tainted9 : UserData | User-provided value |
+| Views/Other/Test13.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:82:42:82:50 | tainted13 : UserData | Views/Other/Test13.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:82:42:82:50 | tainted13 : UserData | User-provided value |
 | Views/Shared/Test2.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:19:41:19:48 | tainted2 : UserData | Views/Shared/Test2.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:19:41:19:48 | tainted2 : UserData | User-provided value |
+| Views/Shared/Test14.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:87:42:87:50 | tainted14 : UserData | Views/Shared/Test14.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:87:42:87:50 | tainted14 : UserData | User-provided value |
 | Views/Test2/Test10.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:61:42:61:50 | tainted10 : UserData | Views/Test2/Test10.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:61:42:61:50 | tainted10 : UserData | User-provided value |
 | Views/Test2/Test11.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:66:42:66:50 | tainted11 : UserData | Views/Test2/Test11.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:66:42:66:50 | tainted11 : UserData | User-provided value |
 | Views/Test/Test1.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:14:41:14:48 | tainted1 : UserData | Views/Test/Test1.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:14:41:14:48 | tainted1 : UserData | User-provided value |

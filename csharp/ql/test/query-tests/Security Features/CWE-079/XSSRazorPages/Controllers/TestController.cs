@@ -79,13 +79,13 @@ public class Test2Controller : Controller {
         return View(x);
     }    
 
-    private IActionResult test13(UserData tainted13) {
-        // MISSING: Expected to find file /Views/Other/Test13.cshtml. 
+    public IActionResult test13(UserData tainted13) {
+        // Expected to find file /Views/Other/Test13.cshtml. 
         return Helper.helper3(this, tainted13);
     }
 
-    private IActionResult test14(UserData tainted14) {
-        // MISSING: Expected to find file /Views/Shared/Test14.cshtml and NOT /Views/Test2/Test14.cshtml
+    public IActionResult test14(UserData tainted14) {
+        // Expected to find file /Views/Shared/Test14.cshtml and NOT /Views/Test2/Test14.cshtml
         return Helper.helper4(this, tainted14);
     }
 
@@ -102,8 +102,8 @@ public class Test3Controller : Controller {
         o.ViewLocationFormats.Add("/Views/Custom/{1}/{0}.cshtml");
     }
 
-    private IActionResult Test15(UserData tainted15) {
-        // MISSING: Expected to find file /Views/Custom/Test3/Test15.cshtml
+    public IActionResult Test15(UserData tainted15) {
+        // Expected to find file /Views/Custom/Test3/Test15.cshtml
         return View(tainted15);
     }
 }
