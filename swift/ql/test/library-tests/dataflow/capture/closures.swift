@@ -151,3 +151,10 @@ func simplestTest() {
   let x = source("simplestTest", 0)
   sink(x) // $ hasValueFlow=simplestTest
 }
+
+func sideEffects() {
+  var x = 0
+  var f = { () in x = source("sideEffects", 1) }
+  f()
+  sink(x) // $ MISSING: hasValueFlow=sideEffects
+}
