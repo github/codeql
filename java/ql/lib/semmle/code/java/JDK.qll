@@ -259,7 +259,7 @@ class MethodSystemGetProperty extends ValuePreservingMethod {
 }
 
 /**
- * An access to a method named `getProperty` on class `java.lang.System`.
+ * A call to a method named `getProperty` on class `java.lang.System`.
  */
 class MethodCallSystemGetProperty extends MethodCall {
   MethodCallSystemGetProperty() { this.getMethod() instanceof MethodSystemGetProperty }

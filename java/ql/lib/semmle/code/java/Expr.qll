@@ -1879,7 +1879,7 @@ class VarRead extends VarAccess {
 /** DEPRECATED: Alias for `VarRead`. */
 deprecated class RValue = VarRead;
 
-/** A method access is an invocation of a method with a list of arguments. */
+/** A method call is an invocation of a method with a list of arguments. */
 class MethodCall extends Expr, Call, @methodaccess {
   /** Gets the qualifying expression of this method access, if any. */
   override Expr getQualifier() { result.isNthChildOf(this, -1) }
@@ -1928,7 +1928,7 @@ class MethodCall extends Expr, Call, @methodaccess {
   }
 
   /**
-   * Holds if this is a method access to an instance method of `this`. That is,
+   * Holds if this is a method call to an instance method of `this`. That is,
    * the qualifier is either an explicit or implicit unqualified `this` or `super`.
    */
   predicate isOwnMethodCall() { Qualifier::ownMemberAccess(this) }
@@ -1937,7 +1937,7 @@ class MethodCall extends Expr, Call, @methodaccess {
   deprecated predicate isOwnMethodAccess() { this.isOwnMethodCall() }
 
   /**
-   * Holds if this is a method access to an instance method of the enclosing
+   * Holds if this is a method call to an instance method of the enclosing
    * class `t`. That is, the qualifier is either an explicit or implicit
    * `t`-qualified `this` or `super`.
    */
