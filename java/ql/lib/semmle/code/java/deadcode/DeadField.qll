@@ -130,7 +130,7 @@ class JUnitAnnotatedField extends ReflectivelyReadField {
  */
 class ClassReflectivelyReadField extends ReflectivelyReadField {
   ClassReflectivelyReadField() {
-    exists(ReflectiveFieldCall fieldAccess | this = fieldAccess.inferAccessedField())
+    exists(ReflectiveGetFieldCall fieldAccess | this = fieldAccess.inferAccessedField())
   }
 }
 

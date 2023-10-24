@@ -164,7 +164,7 @@ class NewInstanceCall extends EntryPoint, NewInstance {
 /**
  * A call to either `Class.getMethod(...)` or `Class.getDeclaredMethod(...)`.
  */
-class ReflectiveMethodCallEntryPoint extends EntryPoint, ReflectiveMethodCall {
+class ReflectiveGetMethodCallEntryPoint extends EntryPoint, ReflectiveGetMethodCall {
   override Method getALiveCallable() {
     result = this.inferAccessedMethod() and
     // The `getMethod(...)` call must be used in a live context.
@@ -172,8 +172,8 @@ class ReflectiveMethodCallEntryPoint extends EntryPoint, ReflectiveMethodCall {
   }
 }
 
-/** DEPRECATED: Alias for `ReflectiveMethodCallEntryPoint`. */
-deprecated class ReflectiveMethodAccessEntryPoint = ReflectiveMethodCallEntryPoint;
+/** DEPRECATED: Alias for `ReflectiveGetMethodCallEntryPoint`. */
+deprecated class ReflectiveMethodAccessEntryPoint = ReflectiveGetMethodCallEntryPoint;
 
 /**
  * Classes that are entry points recognised by annotations.

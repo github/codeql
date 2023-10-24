@@ -45,8 +45,8 @@ module UnsafeReflectionConfig implements DataFlow::ConfigSig {
     // Qualifier -> return of Class.getDeclaredConstructors/Methods and similar
     exists(MethodCall ma |
       (
-        ma instanceof ReflectiveConstructorsCall or
-        ma instanceof ReflectiveMethodsCall
+        ma instanceof ReflectiveGetConstructorsCall or
+        ma instanceof ReflectiveGetMethodsCall
       ) and
       ma.getQualifier() = pred.asExpr() and
       ma = succ.asExpr()

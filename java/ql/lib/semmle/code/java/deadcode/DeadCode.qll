@@ -173,7 +173,7 @@ class LiveClass extends SourceClassOrInterface {
     exists(NestedType r | r.getEnclosingType() = this | r instanceof LiveClass)
     or
     // An annotation on the class is reflectively accessed.
-    exists(ReflectiveAnnotationCall reflectiveAnnotationCall |
+    exists(ReflectiveGetAnnotationCall reflectiveAnnotationCall |
       this = reflectiveAnnotationCall.getInferredClassType() and
       isLive(reflectiveAnnotationCall.getEnclosingCallable())
     )
