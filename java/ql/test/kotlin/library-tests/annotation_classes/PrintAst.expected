@@ -37,9 +37,9 @@ def.kt:
 #   46|           0: [TypeAccess] Annot0k
 #   46|       5: [BlockStmt] { ... }
 #   47|         0: [ExprStmt] <Expr>;
-#   47|           0: [MethodAccess] println(...)
+#   47|           0: [MethodCall] println(...)
 #   47|             -1: [TypeAccess] ConsoleKt
-#   47|             0: [MethodAccess] a(...)
+#   47|             0: [MethodCall] a(...)
 #   47|               -1: [VarAccess] a
 #   50|         1: [LocalVariableDeclStmt] var ...;
 #   50|           1: [LocalVariableDeclExpr] x
