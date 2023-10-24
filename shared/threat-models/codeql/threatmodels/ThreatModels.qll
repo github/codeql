@@ -6,9 +6,22 @@
  */
 
 /**
- * Holds if the specified kind of source model is supported for the current query.
+ * Holds configuration entries to specify which threat models are enabled.
+ *
+ * - `kind` - Specifies the threat model to configure. This can be the name of a specific threat
+ *   model (for example, `environment`), a group (`local`), or `all`.
+ * - `enable` - `true` to enable the specified threat model (and its children), or `false` to disable it.
+ * - `priority` - The order in which the configuration should be applied. Lower values are applied first.
+ *
+ * The final configuration is the result of processing each row in ascending order of its `priority` column.
+ * For example:
+ * - `{ kind: "all", enable: true, priority: 0 }`
+ * - `{ kind: "remote", enable: false, priority: 1 }`
+ * - `{ kind: "environment", enable: true, priority: 2 }`
+ * This configuration first enables all threat models, then disables the `remote` group, and finally re-enables
+ * the `environment` threat model.
  */
-extensible predicate supportedThreatModels(string kind);
+extensible predicate threatModelConfiguration(string kind, boolean enable, int priority);
 
 /**
  * Holds if the specified kind of source model is containted within the specified group.
@@ -16,14 +29,28 @@ extensible predicate supportedThreatModels(string kind);
 extensible private predicate threatModelGrouping(string kind, string group);
 
 /**
- * Gets the threat models that are direct descendants of the specified kind/group.
+ * Gets the threat model group that directly contains the specified threat model.
  */
-private string getChildThreatModel(string group) { threatModelGrouping(result, group) }
+private string getParentThreatModel(string child) {
+  threatModelGrouping(child, result)
+}
 
 /**
  * Holds if the source model kind `kind` is relevant for generic queries
  * under the current threat model configuration.
  */
+bindingset[kind]
 predicate currentThreatModel(string kind) {
-  exists(string group | supportedThreatModels(group) and kind = getChildThreatModel*(group))
+  // Find the highest-oriority configuration row whose `kind` column includes the specified threat
+  // model kind. If such a row exists and its `enabled` column is `true`, then the threat model is
+  // enabled.
+  max(boolean enabled, int priority |
+    exists(string configuredKind |
+      configuredKind = getParentThreatModel*(kind) or configuredKind = "all"
+    |
+      threatModelConfiguration(configuredKind, enabled, priority)
+    )
+  |
+    enabled order by priority
+  ) = true
 }

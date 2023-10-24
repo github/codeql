@@ -47,10 +47,6 @@ abstract class SourceNode extends DataFlow::Node {
  */
 class ThreatModelFlowSource extends DataFlow::Node {
   ThreatModelFlowSource() {
-    // Expansive threat model.
-    currentThreatModel("all") and
-    (this instanceof SourceNode or sourceNode(this, _))
-    or
     exists(string kind |
       // Specific threat model.
       currentThreatModel(kind) and
