@@ -57,8 +57,116 @@ The +/- and candidate extraction queries largely<sup>[1](#largely-use-characteri
 
 #### :warning: Warning
 
-Do not to "fix" shortcomings that could be fixed by a better prompt or better example selection by adding language- or mode-specific characteristics . Those "fixes" tend to be confusing downstream when questions like "why wasn't this location selected as a candidate?" is harder and harder to answer. It's best to rely on characteristics in the code that is shared across all languages and modes (see [Shared Code](#shared-code)).
+Do not to "fix" shortcomings that could be fixed by a better prompt or better example selection by adding language- or mode-specific characteristics . Those "fixes" tend to be confusing downstream when questions like "why wasn't this location selected as a candidate?" becomes progressively harder and harder to answer. It's best to rely on characteristics in the code that is shared across all languages and modes (see [Shared Code](#shared-code)).
 
 ## Shared Code
 
 A significant part of the behavior of extraction queries is implemented in shared modules. When we add support for new languages, we expect to move the shared code to a separate QL pack. In the mean time, shared code modules must not import any java libraries.
+
+## Candidate Examples
+
+This section contains a few examples of the kinds of candidates that our queries might select, and why.
+
+:warning: For clarity, this section presents "candidates" that are **actual** sinks. Therefore, the candidates presented here would actually be selected as positive examples in practice - rather than as candidates.
+
+### Framework Mode Candidates
+
+Framework mode is special because in framework mode, we extract candidates (as well as examples) from the implementation of a framework or library while the resulting models are applied in code bases that are _using_ the framework or library.
+
+In framework mode, endpoints currently can have a number of shapes (see: `newtype TFrameworkModeEndpoint` in [AutomodelApplicationModeExtractCandidates.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeCharacteristics.qll)). Depending on what kind of endpoint it is, the candidate is a candidate for one or several extensible types (eg., `sinkModel`, `sourceModel`).
+
+#### Framework Mode Sink Candidates
+
+Sink candidates in framework mode are inputs to calls. As, in framework mode, we work on the implementation of a callable, these inputs are represented by a method's parameter definition.
+
+For example, customer code could call the `Files.copy` method:
+
+```java
+// customer code using a library
+...
+Files.copy(userInputPath, outStream);
+...
+```
+
+In order for `userInputPath` to be modeled as a sink, the corresponding parameter must be selected as a candidate. In the following example, assuming they're not modeled yet, the parameters `source` and `out` would be candidates:
+
+```java
+// Files.java
+// library code that's analyzed in framework mode
+public class Files {
+  public static void copy(Path source, OutputStream out) throws IOException {
+    // ...
+  }
+}
+```
+
+#### Framework Mode Source Candidates
+
+Source candidates are a bit more varied than sink candidates:
+
+##### Parameters as Source Candidates
+
+A parameter could be a source, eg. when a framework passes user-controlled data to a handler defined in customer code.
+```java
+// customer code using a library:
+import java.net.http.WebSocket;
+
+final class MyListener extends WebSocket.Listener {
+  @override
+  public CompletionStage<?> onText(WebSocket ws, CharSequence cs, boolean last) {
+    ... process data that was received from websocket
+  }
+}
+```
+
+In this case, data passed to the program via a web socket connection is a source of remote data. Therefore, when we look at the implementation of `WebSocket.Listener` in framework mode, we need to produce a candidate for each parameter:
+
+```java
+// WebSocket.java
+// library code that's analyzed in framework mode
+interface Listener {
+  ...
+  default CompletionStage<?> onText(WebSocket webSocket CharSequence data, boolean last) {
+      // <omitting default implementation>
+  }
+  ...
+}
+```
+
+For framework mode, all parameters of the `onText` method should be candidates. If the candidates result in a model, the parameters of classes implementing this interface will be recognized as sources of remote data.
+
+:warning: a consequence of this is that we can have endpoints in framework mode that are both sink candidates, as well as source candidates.
+
+##### Return Values as Source Candidates
+
+The other kind of source candidate we model is the return value of a method. For example:
+
+```java
+public class Socket {
+  ...
+  public InputStream getInputStream() throws IOException {
+    ...
+  }
+  ...
+}
+```
+
+This method returns a source of remote data that should be modeled as a sink. We therefore want to select the _method_ as a candidate.
+
+### Application Mode Candidates
+
+In application mode, we extract candidates from an application that is using various libraries.
+
+#### Application Mode Source Candidates
+
+##### Overridden Parameters as Source Candidates
+
+In application mode, a parameter of a method that is overriding another method is taken as a source parameter to account for cases like the `WebSocket.Listener` example above where an application is implementing a "handler" that receives remote data.
+
+##### Return Values as Source Candidates
+
+Just like in framework mode, application mode also has to consider the return value of a call as a source candidate. The difference is that in application mode, we extract from the application sources, not the library sources. Therefore, we use the invocation expression as a candidate (unlike in framework mode, where we use the method definition).
+
+#### Application Mode Sink Candidates
+
+In application mode, arguments to calls are sink candidates.
