@@ -127,9 +127,9 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 	// --- StringProtocol ---
 
 	_ = input.range(of: ".*", options: .regularExpression, range: nil, locale: nil) // $ regex=.* input=input
-	_ = input.range(of: ".*", options: .literal, range: nil, locale: nil) // $ SPURIOUS: unevaluated-regex=.* (not a regular expression)
+	_ = input.range(of: ".*", options: .literal, range: nil, locale: nil) // (not a regular expression)
 	_ = input.replacingOccurrences(of: ".*", with: "", options: .regularExpression) // $ regex=.* input=input
-	_ = input.replacingOccurrences(of: ".*", with: "", options: .literal) // $ SPURIOUS: unevaluated-regex=.* (not a regular expression)
+	_ = input.replacingOccurrences(of: ".*", with: "", options: .literal) // (not a regular expression)
 
 	// --- NSRegularExpression ---
 
@@ -151,9 +151,9 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 	_ = inputNS.range(of: ".*", options: [.regularExpression]) // $ regex=.* input=inputNS
 	_ = inputNS.range(of: ".*", options: regexOptions) // $ regex=.* input=inputNS
 	_ = inputNS.range(of: ".*", options: regexOptions2) // $ regex=.* input=inputNS modes=IGNORECASE
-	_ = inputNS.range(of: ".*", options: .literal) // $ SPURIOUS: unevaluated-regex=.* (not a regular expression)
+	_ = inputNS.range(of: ".*", options: .literal) // (not a regular expression)
 	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .regularExpression, range: NSMakeRange(0, inputNS.length)) // $ regex=.* input=inputNS
-	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .literal, range: NSMakeRange(0, inputNS.length)) // $ SPURIOUS: unevaluated-regex=.* (not a regular expression)
+	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .literal, range: NSMakeRange(0, inputNS.length)) // (not a regular expression)
 
 	// --- flow ---
 

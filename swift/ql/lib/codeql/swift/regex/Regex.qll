@@ -317,6 +317,12 @@ class RegexEval extends CallExpr instanceof PotentialRegexEval {
   Expr getStringInput() { result = this.(PotentialRegexEval).getStringInput().asExpr() }
 
   /**
+   * Gets a dataflow node for an options input that might contain parse mode
+   * flags (if any).
+   */
+  DataFlow::Node getAnOptionsInput() { result = this.(PotentialRegexEval).getAnOptionsInput() }
+
+  /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
   RegExp getARegex() {
@@ -365,7 +371,7 @@ abstract class PotentialRegexEval extends CallExpr {
   abstract DataFlow::Node getStringInput();
 
   /**
-   * Gets a dataflow node for the options input that might contain parse mode
+   * Gets a dataflow node for an options input that might contain parse mode
    * flags (if any).
    */
   DataFlow::Node getAnOptionsInput() { none() }
