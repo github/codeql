@@ -1514,7 +1514,7 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
    * which may be either a normal `case` or a `default`.
    */
   SwitchCase getCase(int i) {
-    result = rank[i](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
+    result = rank[i + 1](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
   }
 
   /**

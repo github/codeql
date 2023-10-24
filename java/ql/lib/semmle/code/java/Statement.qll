@@ -387,7 +387,8 @@ class SwitchStmt extends Stmt, @switchstmt {
    * which may be either a normal `case` or a `default`.
    */
   SwitchCase getCase(int i) {
-    result = rank[i](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
+    result =
+      rank[i + 1](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
   }
 
   /**
@@ -469,7 +470,17 @@ class SwitchCase extends Stmt, @case {
    * This predicate is mutually exclusive with `getRuleExpression`.
    */
   Stmt getRuleStatement() {
-    result.getParent() = this and result.getIndex() = -1 and not result instanceof ExprStmt
+    result = this.getRuleStatementOrExpressionStatement() and not result instanceof ExprStmt
+  }
+
+  /**
+   * Gets the statement, including an expression statement, on the RHS of the arrow, if any.
+   *
+   * This means this could be an explicit `case e1 -> { s1; ... }` or an implicit
+   * `case e1 -> stmt;` rule.
+   */
+  Stmt getRuleStatementOrExpressionStatement() {
+    result.getParent() = this and result.getIndex() = -1
   }
 }
 

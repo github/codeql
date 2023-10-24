@@ -435,7 +435,7 @@ private module ControlFlowGraphImpl {
   }
 
   /**
-   * Gets a SwitchCase's successor SwitchCase, if any.
+   * Holds if `succ` is `pred`'s successor `SwitchCase`.
    */
   private predicate nextSwitchCase(SwitchCase pred, SwitchCase succ) {
     exists(SwitchExpr se, int idx | se.getCase(idx) = pred and se.getCase(idx + 1) = succ)
@@ -723,7 +723,7 @@ private module ControlFlowGraphImpl {
    */
   private predicate last(ControlFlowNode n, ControlFlowNode last, Completion completion) {
     // Exceptions are propagated from any sub-expression.
-    // As are any break, continue, or return completions.
+    // As are any break, yield, continue, or return completions.
     exists(Expr e | e.getParent() = n |
       last(e, last, completion) and not completion instanceof NormalOrBooleanCompletion
     )
@@ -859,7 +859,7 @@ private module ControlFlowGraphImpl {
       // any other abnormal completion is propagated
       last(switch.getAStmt(), last, completion) and
       completion != anonymousBreakCompletion() and
-      completion != NormalCompletion()
+      not completion instanceof NormalOrBooleanCompletion
       or
       // if the last case completes normally, then so does the switch
       last(switch.getStmt(strictcount(switch.getAStmt()) - 1), last, NormalCompletion()) and
@@ -879,32 +879,43 @@ private module ControlFlowGraphImpl {
       // any other abnormal completion is propagated
       last(switch.getAStmt(), last, completion) and
       not completion instanceof YieldCompletion and
-      completion != NormalCompletion()
+      not completion instanceof NormalOrBooleanCompletion
     )
     or
-    // the last node in a case rule is the last node in the right-hand side
-    // if the rhs is a statement we wrap the completion as a break
-    exists(Completion caseCompletion |
-      last(n.(SwitchCase).getRuleStatement(), last, caseCompletion) and
+    // the last node in a case rule in statement context is the last node in the right-hand side.
+    // If the rhs is a statement, we wrap the completion as a break.
+    exists(Completion caseCompletion, SwitchStmt parent, SwitchCase case |
+      case = n and
+      case = parent.getACase() and
+      last(case.getRuleStatementOrExpressionStatement(), last, caseCompletion) and
       if caseCompletion instanceof NormalOrBooleanCompletion
       then completion = anonymousBreakCompletion()
       else completion = caseCompletion
     )
     or
-    // ...and if the rhs is an expression we wrap the completion as a yield
-    exists(Completion caseCompletion |
-      last(n.(SwitchCase).getRuleExpression(), last, caseCompletion) and
-      if caseCompletion instanceof NormalOrBooleanCompletion
-      then completion = YieldCompletion(caseCompletion)
-      else completion = caseCompletion
+    // ...and when a switch occurs in expression context, we wrap the RHS in a yield statement.
+    // Note the wrapping can only occur in the expression case, because a statement would need
+    // to have explicit `yield` statements.
+    exists(SwitchExpr parent, SwitchCase case |
+      case = n and
+      case = parent.getACase() and
+      (
+        exists(Completion caseCompletion |
+          last(case.getRuleExpression(), last, caseCompletion) and
+          if caseCompletion instanceof NormalOrBooleanCompletion
+          then completion = YieldCompletion(caseCompletion)
+          else completion = caseCompletion
+        )
+        or
+        last(case.getRuleStatement(), last, completion)
+      )
     )
     or
-    // The last node in a case could always be a failing pattern check.
-    last = n.(PatternCase) and
-    completion = basicBooleanCompletion(false)
-    or
-    // The last node in a non-rule case is its variable declaration.
+    // The normal last node in a non-rule pattern case is its variable declaration.
+    // Note that either rule or non-rule pattern cases can end with pattern match failure, whereupon
+    // they branch to the next candidate pattern. This is accounted for in the `succ` relation.
     last = n.(PatternCase).getDecl() and
+    not n.(PatternCase).isRule() and
     completion = NormalCompletion()
     or
     // the last statement of a synchronized statement is the last statement of its body
@@ -1231,6 +1242,10 @@ private module ControlFlowGraphImpl {
       )
       or
       // Statements within a switch body execute sequentially.
+      // Note this includes non-rule case statements and the successful pattern match successor
+      // of a non-rule pattern case statement. Rule case statements do not complete normally
+      // (they always break or yield), and the case of pattern matching failure branching to the
+      // next case is specially handled in the `PatternCase` logic below.
       exists(int i |
         last(switch.getStmt(i), n, completion) and result = first(switch.getStmt(i + 1))
       )
@@ -1251,6 +1266,10 @@ private module ControlFlowGraphImpl {
       )
       or
       // Statements within a switch body execute sequentially.
+      // Note this includes non-rule case statements and the successful pattern match successor
+      // of a non-rule pattern case statement. Rule case statements do not complete normally
+      // (they always break or yield), and the case of pattern matching failure branching to the
+      // next case is specially handled in the `PatternCase` logic below.
       exists(int i |
         last(switch.getStmt(i), n, completion) and result = first(switch.getStmt(i + 1))
       )
