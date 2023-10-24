@@ -42,11 +42,34 @@ private class FileSeparatorAppend extends AddExpr {
   FileSeparatorAppend() { this.getRightOperand() instanceof FileSeparatorExpr }
 }
 
+private class FileSeperatorAssignAddExpr extends AssignAddExpr {
+  FileSeperatorAssignAddExpr() { this.getRhs() instanceof FileSeparatorExpr }
+}
+
 private predicate isSafe(Expr expr) {
   DataFlow::localExprFlow(any(Expr e |
-      e instanceof FileSeparatorAppend or e instanceof FileSeparatorExpr
+      e instanceof FileSeparatorAppend or
+      e instanceof FileSeparatorExpr or
+      e instanceof FileSeperatorAssignAddExpr
     ), expr)
 }
+
+/**
+ * Global data flow from File.getCanonicalPath() to any method call.
+ */
+private module FromGetCanonicalPath implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    node.asExpr() instanceof MethodAccessFileGetCanonicalPath
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof MethodStringStartsWith and ma.getArgument(0) = node.asExpr()
+    )
+  }
+}
+
+private module FromGetCanonicalPathFlow = DataFlow::Global<FromGetCanonicalPath>;
 
 /**
  * A method access that returns a boolean that incorrectly guards against Partial Path Traversal.
@@ -54,7 +77,11 @@ private predicate isSafe(Expr expr) {
 class PartialPathTraversalMethodAccess extends MethodAccess {
   PartialPathTraversalMethodAccess() {
     this.getMethod() instanceof MethodStringStartsWith and
-    DataFlow::localExprFlow(any(MethodAccessFileGetCanonicalPath gcpma), this.getQualifier()) and
+    (
+      DataFlow::localExprFlow(any(MethodAccessFileGetCanonicalPath gcpma), this.getQualifier())
+      or
+      FromGetCanonicalPathFlow::flowToExpr(this.getArgument(0))
+    ) and
     not isSafe(this.getArgument(0))
   }
 }
