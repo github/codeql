@@ -8,6 +8,7 @@
 package jwt
 
 import (
+	crypto "crypto"
 	time "time"
 )
 
@@ -310,5 +311,22 @@ func (_ *Token) SigningString() (string, error) {
 }
 
 func WithValidMethods(_ []string) ParserOption {
+	return nil
+}
+
+type SigningMethodHMAC struct {
+	Name string
+	Hash crypto.Hash
+}
+
+func (_ *SigningMethodHMAC) Alg() string {
+	return ""
+}
+
+func (_ *SigningMethodHMAC) Sign(_ string, _ interface{}) (string, error) {
+	return "", nil
+}
+
+func (_ *SigningMethodHMAC) Verify(_ string, _ string, _ interface{}) error {
 	return nil
 }

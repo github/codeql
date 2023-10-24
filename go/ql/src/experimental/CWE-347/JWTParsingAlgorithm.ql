@@ -37,10 +37,10 @@ where
     // //Flow from NewParser to Parse (check that this call to Parse does not use a Parser that sets Valid Methods)
     (
       func instanceof SafeJwtParserMethod and
-      not exists(CallNode c2, WithValidMethods wvm, NewParser m |
+      not exists(CallNode c2, WithValidMethods wvm, NewParser m, int i |
         c2.getTarget() = m and
         (
-          c2.getCall().getAnArgument() = wvm.getACall().asExpr() and
+          c2.getSyntacticArgument(i) = wvm.getACall() and
           DataFlow::localFlow(c2.getResult(0), c.getReceiver())
         )
       )
@@ -54,8 +54,10 @@ where
       (
         f.getARead().getRoot() = c.getCall().getArgument(1)
         or
-        exists(FunctionName fn | c.getCall().getArgument(1) = fn and 
-        fn.toString() = f.getARead().asExpr().getEnclosingFunction().getName())
+        exists(FunctionName fn |
+          c.getCall().getArgument(1) = fn and
+          fn.toString() = f.getARead().asExpr().getEnclosingFunction().getName()
+        )
       )
     )
   )
