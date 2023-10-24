@@ -1251,6 +1251,14 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   override string getAPrimaryQlClass() { result = "ClassInstanceExpr" }
 }
 
+/** 
+ * An explicit `new ClassName(...)` expression.
+ *
+ * Note this does not include implicit instance creation such as lambda expressions
+ * or `instanceVar::methodName` references. To include those too, use `ClassInstanceExpr`.
+ */
+class NewClassExpr extends @newexpr, ClassInstanceExpr { }
+
 /** A functional expression is either a lambda expression or a member reference expression. */
 abstract class FunctionalExpr extends ClassInstanceExpr {
   /** Gets the implicit method corresponding to this functional expression. */
@@ -1768,24 +1776,29 @@ class VarAccess extends Expr, @varaccess {
   Variable getVariable() { variableBinding(this, result) }
 
   /**
-   * Holds if this variable access is an l-value.
+   * Holds if this variable access is a write access.
    *
-   * An l-value is a write access to a variable, which occurs as the destination of an assignment.
+   * That means the access is the destination of an assignment.
    */
-  predicate isLValue() {
+  predicate isVarWrite() {
     exists(Assignment a | a.getDest() = this) or
     exists(UnaryAssignExpr e | e.getExpr() = this)
   }
 
+  /** DEPRECATED: Alias for `isVarWrite`. */
+  deprecated predicate isLValue() { this.isVarWrite() }
+
   /**
-   * Holds if this variable access is an r-value.
+   * Holds if this variable access is a read access.
    *
-   * An r-value is a read access to a variable.
    * In other words, it is a variable access that does _not_ occur as the destination of
    * a simple assignment, but it may occur as the destination of a compound assignment
    * or a unary assignment.
    */
-  predicate isRValue() { not exists(AssignExpr a | a.getDest() = this) }
+  predicate isVarRead() { not exists(AssignExpr a | a.getDest() = this) }
+
+  /** DEPRECATED: Alias for `isVarRead`. */
+  deprecated predicate isRValue() { this.isVarRead() }
 
   /** Gets a printable representation of this expression. */
   override string toString() {
@@ -1831,37 +1844,43 @@ class ExtensionReceiverAccess extends VarAccess {
 }
 
 /**
- * An l-value is a write access to a variable, which occurs as the destination of an assignment.
+ * A write access to a variable, which occurs as the destination of an assignment.
  */
-class LValue extends VarAccess {
-  LValue() { this.isLValue() }
+class VarWrite extends VarAccess {
+  VarWrite() { this.isVarWrite() }
 
   /**
-   * Gets a source expression used in an assignment to this l-value.
+   * Gets the right-hand side of the assignment that executes this variable write.
    *
    * For assignments using the `=` operator, the source expression
    * is simply the RHS of the assignment.
    *
-   * Note that for l-values occurring on the LHS of compound assignment operators
+   * Note that for writes occurring on the LHS of compound assignment operators
    * (such as (`+=`), both the RHS and the LHS of the compound assignment
    * are source expressions of the assignment.
    */
   Expr getRhs() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
 }
 
+/** DEPRECATED: Alias for `VarWrite`. */
+deprecated class LValue = VarWrite;
+
 /**
- * An r-value is a read access to a variable.
+ * A read access to a variable.
  *
  * In other words, it is a variable access that does _not_ occur as the destination of
  * a simple assignment, but it may occur as the destination of a compound assignment
  * or a unary assignment.
  */
-class RValue extends VarAccess {
-  RValue() { this.isRValue() }
+class VarRead extends VarAccess {
+  VarRead() { this.isVarRead() }
 }
 
+/** DEPRECATED: Alias for `VarRead`. */
+deprecated class RValue = VarRead;
+
 /** A method access is an invocation of a method with a list of arguments. */
-class MethodAccess extends Expr, Call, @methodaccess {
+class MethodCall extends Expr, Call, @methodaccess {
   /** Gets the qualifying expression of this method access, if any. */
   override Expr getQualifier() { result.isNthChildOf(this, -1) }
 
@@ -1923,6 +1942,9 @@ class MethodAccess extends Expr, Call, @methodaccess {
 
   override string getAPrimaryQlClass() { result = "MethodAccess" }
 }
+
+/** DEPRECATED: Alias for `MethodCall`. */
+deprecated class MethodAccess = MethodCall;
 
 /** A type access is a (possibly qualified) reference to a type. */
 class TypeAccess extends Expr, Annotatable, @typeaccess {
