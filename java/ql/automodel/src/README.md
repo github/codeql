@@ -4,7 +4,7 @@ This pack contains the automodel extraction queries for Java.
 
 ## Extraction Queries in `java/ql/automodel/src`
 
-This pack contains extraction queries for application mode and framework mode.
+Included in this pack are queries for both application mode and framework mode.
 
 | Kind | Mode | Query File |
 |------|------|------------|
@@ -17,7 +17,7 @@ This pack contains extraction queries for application mode and framework mode.
 
 ## Running the Queries
 
-The extraction queries are part of a separate query pack, `java-automodel-queries`. Use this pack to run them. The queries are tagged appropriately, you can use the tags (example here: https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeExtractNegativeExamples.ql#L8) to construct query suites.
+The extraction queries are part of a separate query pack, `codeql/java-automodel-queries`. Use this pack to run them. The queries are tagged appropriately, you can use the tags (example here: https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeExtractNegativeExamples.ql#L8) to construct query suites.
 
 For example, a query suite selecting all example extraction queries (positive and negative) for application mode looks like this:
 
@@ -41,7 +41,7 @@ For example, a query suite selecting all example extraction queries (positive an
 
 ### Concept: `Endpoint`
 
-Endpoints are source code locations of interest. All +/- examples and all candidates are endpoints, but not all endpoints are examples or candidates. Each mode decides what endpoints are relevant. For instance, if the Java application mode wants to support candidates for sinks that are arguments passed to unknown method calls, then the Java application mode implementation needs to make sure that method arguments are endpoints. If you look at the `TApplicationModeEndpoint` implementation in [AutomodelApplicationModeCharacteristics.qll](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeCharacteristics.qll), you can see that this is the case: the `TExplicitArgument` implements this behavior.
+Endpoints are source code locations of interest. All +/- examples and all candidates are endpoints, but not all endpoints are examples or candidates. Each mode decides which endpoints are relevant. For instance, if the Java application mode wants to support candidates for sinks that are arguments passed to unknown method calls, then the Java application mode implementation needs to make sure that method arguments are endpoints. If you look at the `TApplicationModeEndpoint` implementation in [AutomodelApplicationModeCharacteristics.qll](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeCharacteristics.qll), you can see that this is the case: the `TExplicitArgument` implements this behavior.
 
 Whether or not an endpoint is a +/- example, or a candidate depends on the individual extraction queries.
 
@@ -57,7 +57,7 @@ The +/- and candidate extraction queries largely<sup>[1](#largely-use-characteri
 
 #### :warning: Warning
 
-Do not to "fix" shortcomings that could be fixed by a better prompt or better example selection by adding language- or mode-specific characteristics . Those "fixes" tend to be confusing downstream when questions like "why wasn't this location selected as a candidate?" becomes progressively harder and harder to answer. It's best to rely on characteristics in the code that is shared across all languages and modes (see [Shared Code](#shared-code)).
+Do not try to "fix" shortcomings that could be fixed by a better prompt or better example selection by adding language- or mode-specific characteristics . Those "fixes" tend to be confusing downstream when questions like "why wasn't this location selected as a candidate?" becomes progressively harder and harder to answer. It's best to rely on characteristics in the code that is shared across all languages and modes (see [Shared Code](#shared-code)).
 
 ## Shared Code
 
@@ -117,7 +117,7 @@ Source candidates are a bit more varied than sink candidates:
 
 ##### Parameters as Source Candidates
 
-A parameter could be a source, eg. when a framework passes user-controlled data to a handler defined in customer code.
+A parameter could be a source, e.g. when a framework passes user-controlled data to a handler defined in customer code.
 ```java
 // customer code using a library:
 import java.net.http.WebSocket;
