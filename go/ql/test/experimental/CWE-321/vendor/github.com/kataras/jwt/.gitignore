@@ -1,0 +1,5 @@
+.vscode
+/_examples/test-*
+/_examples/issue-*
+/_examples/feature-*
+cov.out
