@@ -83,7 +83,7 @@ def parse_from_file(path: Path) -> set:
 
 def gather_from_bqrs_results():
     with CodeQL() as codeql:
-        for f in glob.glob(f"{sys.argv[1]}/**/results.bqrs", recursive=True):
+        for f in glob.glob(f"{sys.argv[1]}/**.bqrs", recursive=True):
             print(f"Processing {f}")
 
             json_data = codeql.command(["bqrs", "decode", "--format=json", f])
