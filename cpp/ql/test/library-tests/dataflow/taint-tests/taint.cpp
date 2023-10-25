@@ -718,6 +718,6 @@ void test_strtok_indirect() {
 	char *source = indirect_source();
 	const char* delim = ",.-;:_";
 	char* tokenized = strtok(source, delim);
-	sink(*tokenized); // $ MISSING: ast,ir
+	sink(*tokenized); // $ ir MISSING: ast
 	sink(*delim);
 }
