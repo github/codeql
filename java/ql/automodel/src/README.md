@@ -1,6 +1,6 @@
 # Automodel Java Extraction Queries
 
-This pack contains the automodel extraction queries for Java.
+This pack contains the automodel extraction queries for Java. Automodel uses extraction queries to extract the information it needs in order to create a prompt for a large language model. There's extraction queries for positive examples (things that are known to be, e.g., a sink), for negative examples (things that are known not to be, e.g., a sink), and for candidates (things where we should ask the large language model to classify).
 
 ## Extraction Queries in `java/ql/automodel/src`
 
