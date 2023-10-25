@@ -51,9 +51,9 @@ In the file [AutomodelSharedCharacteristics.ql](https://github.com/github/codeql
 
 An endpoint characteristic is a QL class that "tags" all endpoints for which the characteristic's `appliesToEndpoint` predicate holds. The characteristic defines a `hasImplications` predicate that declares whether all the endpoints should be considered as sinks/sources/negatives, and with which confidence.
 
-The positive, negative, and candidate extraction queries largely<sup>[1](#largely-use-characteristics)</sup> use characteristics to decide which endpoint to select. For instance, if a characteristic exists that applies to an endpoint, and the characteristic implies (cf. `hasImplications`) that the endpoint is a sink with a high confidence &ndash; then that endpoint will be selected as a positive example. See the use of `isKnownAs` in [AutomodelFrameworkModeExtractPositiveExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractPositiveExamples.ql).
+The positive, negative, and candidate extraction queries largely[^1] use characteristics to decide which endpoint to select. For instance, if a characteristic exists that applies to an endpoint, and the characteristic implies (cf. `hasImplications`) that the endpoint is a sink with a high confidence &ndash; then that endpoint will be selected as a positive example. See the use of `isKnownAs` in [AutomodelFrameworkModeExtractPositiveExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractPositiveExamples.ql).
 
-<a name="largely-use-characteristics">1</a>: Candidate extraction queries are an exception, they treat `UninterestingToModelCharacteristic` differently.
+[^1]: Candidate extraction queries are an exception, they treat `UninterestingToModelCharacteristic` differently.
 
 #### :warning: Warning
 
