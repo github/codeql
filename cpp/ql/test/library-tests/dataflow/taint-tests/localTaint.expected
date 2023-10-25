@@ -6622,6 +6622,13 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:711:13:711:13 | s | taint.cpp:711:2:711:8 | call to strncpy | TAINT |
 | taint.cpp:711:13:711:13 | s | taint.cpp:711:10:711:10 | ref arg d | TAINT |
 | taint.cpp:712:7:712:7 | ref arg d | taint.cpp:709:25:709:25 | d |  |
+| taint.cpp:718:17:718:31 | call to indirect_source | taint.cpp:720:27:720:32 | source |  |
+| taint.cpp:719:22:719:29 | ,.-;:_ | taint.cpp:720:35:720:39 | delim |  |
+| taint.cpp:719:22:719:29 | ,.-;:_ | taint.cpp:722:8:722:12 | delim |  |
+| taint.cpp:720:20:720:25 | call to strtok | taint.cpp:721:8:721:16 | tokenized |  |
+| taint.cpp:720:27:720:32 | source | taint.cpp:720:20:720:25 | call to strtok | TAINT |
+| taint.cpp:721:8:721:16 | tokenized | taint.cpp:721:7:721:16 | * ... | TAINT |
+| taint.cpp:722:8:722:12 | delim | taint.cpp:722:7:722:12 | * ... | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |
