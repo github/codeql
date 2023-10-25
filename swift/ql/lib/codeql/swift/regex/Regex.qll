@@ -299,9 +299,7 @@ private class NSStringRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
  * Regex("(a|b).*").firstMatch(in: myString)
  * ```
  */
-class RegexEval extends CallExpr instanceof PotentialRegexEval {
-  RegexEval() { this.doesEvaluate() }
-
+abstract class RegexEval extends CallExpr {
   /**
    * Gets the input to this call that is the regular expression being evaluated.
    * This may be a regular expression object or a string literal.
@@ -309,30 +307,31 @@ class RegexEval extends CallExpr instanceof PotentialRegexEval {
    * Consider using `getARegex()` instead (which tracks the regular expression
    * input back to its source).
    */
-  Expr getRegexInput() { result = super.getRegexInput().asExpr() }
+  abstract Expr getRegexInput();
 
   /**
    * Gets the input to this call that is the string the regular expression is evaluated on.
    */
-  Expr getStringInput() { result = super.getStringInput().asExpr() }
+  abstract Expr getStringInput();
 
   /**
    * Gets a dataflow node for an options input that might contain parse mode
    * flags (if any).
    */
-  DataFlow::Node getAnOptionsInput() { result = super.getAnOptionsInput() }
+  DataFlow::Node getAnOptionsInput() { none() }
 
   /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
   RegExp getARegex() {
     // string literal used directly as a regex
-    DataFlow::exprNode(result).(ParsedStringRegex).getAParse() = super.getRegexInput()
+    DataFlow::exprNode(result).(ParsedStringRegex).getAParse() =
+      DataFlow::exprNode(this.getRegexInput())
     or
     // string literal -> regex object -> use
     exists(RegexCreation regexCreation |
       DataFlow::exprNode(result).(ParsedStringRegex).getAParse() = regexCreation.getStringInput() and
-      RegexUseFlow::flow(regexCreation, super.getRegexInput())
+      RegexUseFlow::flow(regexCreation, DataFlow::exprNode(this.getRegexInput()))
     )
   }
 
@@ -346,50 +345,17 @@ class RegexEval extends CallExpr instanceof PotentialRegexEval {
       any(RegexAdditionalFlowStep s).setsParseMode(setNode, result, true) and
       // reaches this eval
       (
-        RegexParseModeFlow::flow(setNode, super.getRegexInput()) or
-        RegexParseModeFlow::flow(setNode, super.getAnOptionsInput())
+        RegexParseModeFlow::flow(setNode, DataFlow::exprNode(this.getRegexInput())) or
+        RegexParseModeFlow::flow(setNode, this.getAnOptionsInput())
       )
     )
   }
 }
 
 /**
- * A call that may evaluate a regular expression. Extend this abstract class to
- * add new regular expression evaluation models.
- */
-abstract class PotentialRegexEval extends CallExpr {
-  /**
-   * Gets the input to this call that is the regular expression being evaluated.
-   * This may be a regular expression object or a string literal.
-   */
-  abstract DataFlow::Node getRegexInput();
-
-  /**
-   * Gets the input to this call that is the string the regular expression is evaluated on.
-   */
-  abstract DataFlow::Node getStringInput();
-
-  /**
-   * Gets a dataflow node for an options input that might contain parse mode
-   * flags (if any).
-   */
-  DataFlow::Node getAnOptionsInput() { none() }
-
-  /**
-   * Holds if this instance actually evaluates a regular expression. If this
-   * does not hold, a `RegexEval` is not created for this `PotentialRegexEval`.
-   *
-   * This mechanism exists so that we have something to track flow of options
-   * into (for example an `NSString.CompareOptions.regularExpression` option)
-   * before deciding whether a regular expression is actually evaluated.
-   */
-  predicate doesEvaluate() { any() }
-}
-
-/**
  * A call to a function that always evaluates a regular expression.
  */
-private class AlwaysRegexEval extends PotentialRegexEval {
+private class AlwaysRegexEval extends RegexEval {
   DataFlow::Node regexInput;
   DataFlow::Node stringInput;
 
@@ -438,16 +404,18 @@ private class AlwaysRegexEval extends PotentialRegexEval {
     stringInput.asExpr() = this.getQualifier()
   }
 
-  override DataFlow::Node getRegexInput() { result = regexInput }
+  override Expr getRegexInput() { result = regexInput.asExpr() }
 
-  override DataFlow::Node getStringInput() { result = stringInput }
+  override Expr getStringInput() { result = stringInput.asExpr() }
 }
 
 /**
  * A call to a function that sometimes evaluates a regular expression, if
  * `NSString.CompareOptions.regularExpression` is set as an `options` argument.
+ *
+ * This is a helper class for `NSStringCompareOptionsRegexEval`.
  */
-private class NSStringCompareOptionsPotentialRegexEval extends PotentialRegexEval {
+private class NSStringCompareOptionsPotentialRegexEval extends CallExpr {
   DataFlow::Node regexInput;
   DataFlow::Node stringInput;
   DataFlow::Node optionsInput;
@@ -472,15 +440,58 @@ private class NSStringCompareOptionsPotentialRegexEval extends PotentialRegexEva
     optionsInput.asExpr() = this.getArgumentWithLabel("options").getExpr()
   }
 
-  override DataFlow::Node getRegexInput() { result = regexInput }
+  DataFlow::Node getRegexInput() { result = regexInput }
 
-  override DataFlow::Node getStringInput() { result = stringInput }
+  DataFlow::Node getStringInput() { result = stringInput }
 
-  override DataFlow::Node getAnOptionsInput() { result = optionsInput }
+  DataFlow::Node getAnOptionsInput() { result = optionsInput }
+}
 
-  override predicate doesEvaluate() {
+/**
+ * A data flow configuration for tracking `NSString.CompareOptions.regularExpression`
+ * values from where they are created to the point of use.
+ */
+private module NSStringCompareOptionsFlagConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    // creation of a `NSString.CompareOptions.regularExpression` value
+    node.asExpr()
+        .(MemberRefExpr)
+        .getMember()
+        .(FieldDecl)
+        .hasQualifiedName("NSString.CompareOptions", "regularExpression")
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    // use in a regex eval `options` argument
+    any(NSStringCompareOptionsPotentialRegexEval potentialEval).getAnOptionsInput() = node
+  }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    // flow out from collection content at the sink.
+    isSink(node) and
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
+  }
+}
+
+module NSStringCompareOptionsFlagFlow = DataFlow::Global<NSStringCompareOptionsFlagConfig>;
+
+/**
+ * A call to a function that evaluates a regular expression because
+ * `NSString.CompareOptions.regularExpression` is set as an `options` argument.
+ */
+private class NSStringCompareOptionsRegexEval extends RegexEval {
+  NSStringCompareOptionsPotentialRegexEval potentialEval;
+
+  NSStringCompareOptionsRegexEval() {
+    this = potentialEval and
     // check there is flow from a `NSString.CompareOptions.regularExpression` value to an `options` argument;
     // if there isn't, the input won't be interpretted as a regular expression.
-    RegexEnableFlagFlow::flow(_, optionsInput)
+    NSStringCompareOptionsFlagFlow::flow(_, potentialEval.getAnOptionsInput())
   }
+
+  override Expr getRegexInput() { result = potentialEval.getRegexInput().asExpr() }
+
+  override Expr getStringInput() { result = potentialEval.getStringInput().asExpr() }
+
+  override DataFlow::Node getAnOptionsInput() { result = potentialEval.getAnOptionsInput() }
 }
