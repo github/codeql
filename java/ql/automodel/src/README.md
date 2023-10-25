@@ -88,7 +88,7 @@ In framework mode, endpoints currently can have a number of shapes (see: `newtyp
 
 #### Framework Mode Sink Candidates
 
-Sink candidates in framework mode are inputs to calls. As, in framework mode, we work on the implementation of a callable, these inputs are represented by a method's parameter definition.
+Sink candidates in framework mode are modelled as formal parameters of functions defined within the framework. We use these to represent the corresponding inputs of function calls in a client codebase, which would be passed into those parameters.
 
 For example, customer code could call the `Files.copy` method:
 
