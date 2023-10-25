@@ -21,9 +21,14 @@ module Private {
   DataFlowCallable nodeGetEnclosingCallable(Node n) {
     result.asCallable() = n.getEnclosingCallable()
     or
-    (n = MkInstructionNode(_) or n = MkSsaNode(_) or n = MkGlobalFunctionNode(_)) and
+    not n instanceof FlowSummaryNode and
     not exists(n.getEnclosingCallable()) and
-    result.asFileScope() = n.getFile()
+    (
+      result.asFileScope() = n.getFile()
+      or
+      not exists(n.getFile()) and
+      result.isExternalFileScope()
+    )
     or
     result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable()
   }
