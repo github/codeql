@@ -227,7 +227,7 @@ module ImportResolution {
    */
   pragma[inline]
   private Module getModuleFromName(string name) {
-    isPreferredModuleForName(result.getFile(), name + ["", ".__init__"])
+    isPreferredModuleForName(result.getFile(), [name, name + ".__init__"])
   }
 
   /** Gets the module from which attributes are imported by `i`. */
