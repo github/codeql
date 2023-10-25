@@ -60,7 +60,7 @@ module RegexTest implements TestSig {
 
   predicate hasOptionalResult(Location location, string element, string tag, string value) {
     exists(RegexEval eval, Expr input |
-      eval.getStringInput() = input and
+      eval.getStringInputNode().asExpr() = input and
       location = input.getLocation() and
       element = input.toString() and
       tag = "input" and

@@ -20,7 +20,7 @@ private module StringLiteralUseConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     // evaluated directly as a regular expression
-    node.asExpr() = any(RegexEval eval).getRegexInput()
+    node = any(RegexEval eval).getRegexInputNode()
     or
     // used to create a regular expression object
     node = any(RegexCreation regexCreation).getStringInput()
@@ -41,7 +41,7 @@ private module RegexUseConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     // evaluation of the regex
-    node.asExpr() = any(RegexEval eval).getRegexInput()
+    node = any(RegexEval eval).getRegexInputNode()
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -67,7 +67,7 @@ private module RegexParseModeConfig implements DataFlow::StateConfigSig {
   predicate isSink(DataFlow::Node node, FlowState flowstate) {
     // evaluation of a regex
     (
-      node.asExpr() = any(RegexEval eval).getRegexInput() or
+      node = any(RegexEval eval).getRegexInputNode() or
       node = any(RegexEval eval).getAnOptionsInput()
     ) and
     exists(flowstate)
