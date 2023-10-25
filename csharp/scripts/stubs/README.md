@@ -5,10 +5,10 @@ Stubs can be generated from Nuget packages with the `make_stubs_nuget.py` script
 The following calls generate stubs for `Newtonsoft.Json`:
 
 ```
-python make_stubs_nuget.py Newtonsoft.Json
-python make_stubs_nuget.py Newtonsoft.Json latest
-python make_stubs_nuget.py Newtonsoft.Json 13.0.1
-python make_stubs_nuget.py Newtonsoft.Json 13.0.1 /Users/tmp/working-dir
+python3 make_stubs_nuget.py classlib Newtonsoft.Json
+python3 make_stubs_nuget.py classlib Newtonsoft.Json latest
+python3 make_stubs_nuget.py classlib Newtonsoft.Json 13.0.1
+python3 make_stubs_nuget.py classlib Newtonsoft.Json 13.0.1 /Users/tmp/working-dir
 ```
 
 The output stubs are found in the `[DIR]/output/stubs` folder and can be copied over to `csharp/ql/test/resources/stubs`.

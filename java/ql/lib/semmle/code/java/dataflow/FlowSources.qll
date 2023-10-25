@@ -126,9 +126,9 @@ private predicate variableStep(Expr tracked, VarAccess sink) {
 private class ReverseDnsSource extends RemoteFlowSource {
   ReverseDnsSource() {
     // Try not to trigger on `localhost`.
-    exists(MethodAccess m | m = this.asExpr() |
+    exists(MethodCall m | m = this.asExpr() |
       m.getMethod() instanceof ReverseDnsMethod and
-      not exists(MethodAccess l |
+      not exists(MethodCall l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
         l.getMethod().getName() = "getLocalHost"
       )
@@ -325,7 +325,7 @@ class AndroidIntentInput extends DataFlow::Node {
   Type receiverType;
 
   AndroidIntentInput() {
-    exists(MethodAccess ma, AndroidGetIntentMethod m |
+    exists(MethodCall ma, AndroidGetIntentMethod m |
       ma.getMethod().overrides*(m) and
       this.asExpr() = ma and
       receiverType = ma.getReceiverType()

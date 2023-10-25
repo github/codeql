@@ -381,7 +381,8 @@ def generate(opts, renderer):
             for c in data.classes.values():
                 if _should_skip_qltest(c, data.classes):
                     continue
-                test_dir = test_out / c.group / c.name
+                test_with = data.classes[c.test_with] if c.test_with else c
+                test_dir = test_out / test_with.group / test_with.name
                 test_dir.mkdir(parents=True, exist_ok=True)
                 if all(f.suffix in (".txt", ".ql", ".actual", ".expected") for f in test_dir.glob("*.*")):
                     log.warning(f"no test source in {test_dir.relative_to(test_out)}")

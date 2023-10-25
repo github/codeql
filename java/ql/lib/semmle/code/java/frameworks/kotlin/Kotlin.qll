@@ -3,7 +3,7 @@
 import java
 
 /** A call to Kotlin's `apply` method. */
-class KotlinApply extends MethodAccess {
+class KotlinApply extends MethodCall {
   ExtensionMethod m;
 
   KotlinApply() {

@@ -28,7 +28,7 @@ class Cookie extends Storable, ClassInstanceExpr {
 }
 
 private predicate cookieStore(DataFlow::Node cookie, Expr store) {
-  exists(MethodAccess m, Method def |
+  exists(MethodCall m, Method def |
     m.getMethod() = def and
     def.getName() = "addCookie" and
     def.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletResponse") and

@@ -1,5 +1,5 @@
 import java
 
-from MethodAccess ma
+from MethodCall ma
 where ma.getEnclosingCallable().fromSource()
 select ma

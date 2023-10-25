@@ -47,7 +47,7 @@ deprecated class PolynomialRedosConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or
     node.getType() instanceof BoxedType or
-    node.asExpr().(MethodAccess).getMethod() instanceof LengthRestrictedMethod
+    node.asExpr().(MethodCall).getMethod() instanceof LengthRestrictedMethod
   }
 }
 
@@ -77,7 +77,7 @@ module PolynomialRedosConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or
     node.getType() instanceof BoxedType or
-    node.asExpr().(MethodAccess).getMethod() instanceof LengthRestrictedMethod
+    node.asExpr().(MethodCall).getMethod() instanceof LengthRestrictedMethod
   }
 }
 

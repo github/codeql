@@ -490,7 +490,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
     )
   )
   or
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     e2 = ma and
     ma.getMethod() = m and
     (
@@ -752,9 +752,9 @@ private predicate boundedPhi(
  * Holds if `e` has a lower bound of zero.
  */
 private predicate lowerBoundZero(Expr e) {
-  e.(MethodAccess).getMethod() instanceof StringLengthMethod or
-  e.(MethodAccess).getMethod() instanceof CollectionSizeMethod or
-  e.(MethodAccess).getMethod() instanceof MapSizeMethod or
+  e.(MethodCall).getMethod() instanceof StringLengthMethod or
+  e.(MethodCall).getMethod() instanceof CollectionSizeMethod or
+  e.(MethodCall).getMethod() instanceof MapSizeMethod or
   e.(FieldRead).getField() instanceof ArrayLengthField or
   positive(e.(AndBitwiseExpr).getAnOperand())
 }
@@ -767,7 +767,7 @@ private predicate baseBound(Expr e, int b, boolean upper) {
   lowerBoundZero(e) and b = 0 and upper = false
   or
   exists(Method read |
-    e.(MethodAccess).getMethod().overrides*(read) and
+    e.(MethodCall).getMethod().overrides*(read) and
     read.getDeclaringType() instanceof TypeInputStream and
     read.hasName("read") and
     read.getNumberOfParameters() = 0

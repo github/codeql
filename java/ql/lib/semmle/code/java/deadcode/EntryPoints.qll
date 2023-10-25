@@ -142,7 +142,7 @@ deprecated class JAXAnnotationReflectivelyConstructedClass =
 class DeserializedClass extends ReflectivelyConstructedClass {
   DeserializedClass() {
     exists(CastingExpr cast, ReadObjectMethod readObject |
-      cast.getExpr().(MethodAccess).getMethod() = readObject
+      cast.getExpr().(MethodCall).getMethod() = readObject
     |
       hasDescendant(cast.getType(), this)
     )
@@ -164,13 +164,16 @@ class NewInstanceCall extends EntryPoint, NewInstance {
 /**
  * A call to either `Class.getMethod(...)` or `Class.getDeclaredMethod(...)`.
  */
-class ReflectiveMethodAccessEntryPoint extends EntryPoint, ReflectiveMethodAccess {
+class ReflectiveGetMethodCallEntryPoint extends EntryPoint, ReflectiveGetMethodCall {
   override Method getALiveCallable() {
     result = this.inferAccessedMethod() and
     // The `getMethod(...)` call must be used in a live context.
     isLive(this.getEnclosingCallable())
   }
 }
+
+/** DEPRECATED: Alias for `ReflectiveGetMethodCallEntryPoint`. */
+deprecated class ReflectiveMethodAccessEntryPoint = ReflectiveGetMethodCallEntryPoint;
 
 /**
  * Classes that are entry points recognised by annotations.

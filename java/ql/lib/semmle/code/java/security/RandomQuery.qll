@@ -20,10 +20,10 @@ class GetRandomData extends StdlibRandomSource {
   GetRandomData() { this.getQualifier().getType() instanceof SecureRandomNumberGenerator }
 }
 
-private predicate isSeeded(RValue use) {
+private predicate isSeeded(VarRead use) {
   isSeeding(_, use)
   or
-  exists(GetRandomData da, RValue seeduse |
+  exists(GetRandomData da, VarRead seeduse |
     da.getQualifier() = seeduse and
     useUsePair(seeduse, use)
   )
@@ -51,7 +51,7 @@ private predicate predictableCalcStep(Expr e1, Expr e2) {
     t.hasSubtype*(cc.getConstructedType())
   )
   or
-  exists(Method m, MethodAccess ma |
+  exists(Method m, MethodCall ma |
     ma = e2 and
     e1 = ma.getQualifier() and
     m = ma.getMethod() and
@@ -63,7 +63,7 @@ private predicate predictableCalcStep(Expr e1, Expr e2) {
     )
   )
   or
-  exists(Method m, MethodAccess ma |
+  exists(Method m, MethodCall ma |
     ma = e2 and
     e1 = ma.getArgument(0) and
     m = ma.getMethod() and
@@ -76,16 +76,16 @@ private predicate predictableCalcStep(Expr e1, Expr e2) {
   )
 }
 
-private predicate safelySeeded(RValue use) {
+private predicate safelySeeded(VarRead use) {
   exists(Expr arg |
     isSeeding(arg, use) and
     not PredictableSeedFlow::flowToExpr(arg)
   )
   or
-  exists(GetRandomData da, RValue seeduse |
+  exists(GetRandomData da, VarRead seeduse |
     da.getQualifier() = seeduse and useUsePair(seeduse, use)
   |
-    not exists(RValue prior | useUsePair(prior, seeduse) | isSeeded(prior))
+    not exists(VarRead prior | useUsePair(prior, seeduse) | isSeeded(prior))
   )
 }
 
@@ -93,12 +93,12 @@ private predicate safelySeeded(RValue use) {
  * Holds if predictable seed `source` is used to initialise a random-number generator
  * used at `use`.
  */
-predicate unsafelySeeded(RValue use, PredictableSeedExpr source) {
+predicate unsafelySeeded(VarRead use, PredictableSeedExpr source) {
   isSeedingSource(_, use, source) and
   not safelySeeded(use)
 }
 
-private predicate isSeeding(Expr arg, RValue use) {
+private predicate isSeeding(Expr arg, VarRead use) {
   exists(Expr e, VariableAssign def |
     def.getSource() = e and
     isSeedingConstruction(e, arg)
@@ -107,19 +107,19 @@ private predicate isSeeding(Expr arg, RValue use) {
     def.getDestVar().(Field).getAnAccess() = use
   )
   or
-  exists(Expr e, RValue seeduse |
-    e.(MethodAccess).getQualifier() = seeduse and
+  exists(Expr e, VarRead seeduse |
+    e.(MethodCall).getQualifier() = seeduse and
     isRandomSeeding(e, arg) and
     useUsePair(seeduse, use)
   )
 }
 
-private predicate isSeedingSource(Expr arg, RValue use, Expr source) {
+private predicate isSeedingSource(Expr arg, VarRead use, Expr source) {
   isSeeding(arg, use) and
   PredictableSeedFlow::flow(DataFlow::exprNode(source), DataFlow::exprNode(arg))
 }
 
-private predicate isRandomSeeding(MethodAccess m, Expr arg) {
+private predicate isRandomSeeding(MethodCall m, Expr arg) {
   exists(Method def | m.getMethod() = def |
     def.getDeclaringType() instanceof SecureRandomNumberGenerator and
     def.getName() = "setSeed" and
@@ -139,7 +139,7 @@ private predicate isSeedingConstruction(ClassInstanceExpr c, Expr arg) {
  */
 class PredictableSeedExpr extends Expr {
   PredictableSeedExpr() {
-    this.(MethodAccess).getCallee() instanceof ReturnsPredictableExpr
+    this.(MethodCall).getCallee() instanceof ReturnsPredictableExpr
     or
     this instanceof CompileTimeConstantExpr
     or

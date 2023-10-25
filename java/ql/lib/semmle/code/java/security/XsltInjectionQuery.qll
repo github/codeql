@@ -65,7 +65,7 @@ private class DataFlowXsltInjectionAdditionalTaintStep extends XsltInjectionAddi
  * `TransformerFactory.newTemplates(tainted)`.
  */
 private predicate newTransformerOrTemplatesStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+  exists(MethodCall ma, Method m | ma.getMethod() = m |
     n1.asExpr() = ma.getAnArgument() and
     n2.asExpr() = ma and
     m.getDeclaringType() instanceof TransformerFactory and
@@ -89,7 +89,7 @@ private module TransformerFactoryWithSecureProcessingFeatureFlowConfig implement
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getQualifier() and
       ma.getMethod().getDeclaringType() instanceof TransformerFactory
     )

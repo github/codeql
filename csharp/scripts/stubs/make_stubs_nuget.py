@@ -82,7 +82,7 @@ print("\n* Creating new global.json file and setting SDK to " + sdk_version)
 run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', workDir])
 
 print("\n* Running stub generator")
-helpers.run_cmd_cwd(['dotnet', 'run', '--project', thisDir + '/../../../extractor/Semmle.Extraction.CSharp.DependencyStubGenerator/Semmle.Extraction.CSharp.DependencyStubGenerator.csproj'], projectDirIn)
+helpers.run_cmd_cwd(['dotnet', 'run', '--project', thisDir + '/../../extractor/Semmle.Extraction.CSharp.DependencyStubGenerator/Semmle.Extraction.CSharp.DependencyStubGenerator.csproj'], projectDirIn)
 
 print("\n* Creating new raw output project")
 rawSrcOutputDirName = 'src'

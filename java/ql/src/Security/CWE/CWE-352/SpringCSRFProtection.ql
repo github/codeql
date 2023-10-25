@@ -14,6 +14,6 @@
 import java
 import semmle.code.java.security.SpringCsrfProtection
 
-from MethodAccess call
+from MethodCall call
 where disablesSpringCsrfProtection(call)
 select call, "CSRF vulnerability due to protection being disabled."
