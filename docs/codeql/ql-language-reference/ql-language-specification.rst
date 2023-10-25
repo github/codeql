@@ -122,11 +122,18 @@ Global environments
 
 The global module environment has a single entry ``QlBuiltins``.
 
-The global type environment has entries for the primitive types ``int``, ``float``, ``string``, ``boolean``, and ``date``, as well as any types defined in the database schema.
+The global type environment has entries for the primitive types ``int``, ``float``, ``string``, ``boolean``, and ``date``.
 
-The global predicate environment includes all the built-in classless predicates, as well as any extensional predicates declared in the database schema.
+The global predicate environment includes all the built-in classless predicates.
 
 The three global signature environments are empty.
+
+Database schema environments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The database schema type environment has entries for types declared in the database schema.
+
+The database schema predicate environment has entries for extensional predicates declared in the database schema.
 
 The program is invalid if any of these environments is not definite.
 
@@ -146,7 +153,7 @@ These are defined as follows (with X denoting the type of entity we are currentl
 
     2.  for each module which the current module directly imports (excluding ``private`` imports - see "`Import directives <#import-directives>`__"): all entries from the *exported X environment* that have a key not present in the *publically declared X environment* of the current module, and
 
-    3.  if X is ``predicates``, then for each module signature ``S`` that is implemented by the current module: an entry for each module signature default predicate in ``S`` that does not have the same name and arity as any of the entries in the **publically declared predicate environment** of the current module.
+    3.  if X is ``predicate``, then for each module signature ``S`` that is implemented by the current module: an entry for each module signature default predicate in ``S`` that does not have the same name and arity as any of the entries in the **publically declared predicate environment** of the current module.
 
 -  The *visible X environment* of a module is the union of
 
@@ -160,7 +167,9 @@ These are defined as follows (with X denoting the type of entity we are currentl
 
     5. if there is an enclosing module: all entries from the *visible X environment* of the enclosing module that have a key not present in the *publically declared X environment* of the current module, and
 
-    6. all parameters of the current module that are of type X.
+    6. if there is no enclosing module and X is either ``type`` or ``predicate``: all entries from the *database schema X environment* that have a key not present in the *publically declared X environment* of the current module, and
+
+    7. all parameters of the current module that are of type X.
 
 The program is invalid if any of these environments is not definite.
 
@@ -2042,6 +2051,10 @@ The following built-in predicates are members of type ``string``:
 | ``toUpperCase``      | string      |                  | The result is the receiver with all letters converted to upper case.                                                                                                                                                                                                                                                                                                                   |
 +----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | ``trim``             | string      |                  | The result is the receiver with all whitespace removed from the beginning and end of the string.                                                                                                                                                                                                                                                                                       |
++----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``codePointAt``      | int         | int              | The result is the unicode code point at the index given by the argument.                                                                                                                                                                                                                                                                                                               |
++----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``codePointCount``   | int         | int, int         | The result is the number of unicode code points in the receiver between the given indices.                                                                                                                                                                                                                                                                                             |
 +----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Regular expressions are as defined by ``java.util.regex.Pattern`` in Java.

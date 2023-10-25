@@ -244,15 +244,19 @@ private module Impl {
   private Element getImmediateChildOfUnspecifiedElement(
     UnspecifiedElement e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bErrorElement, int n |
+    exists(int b, int bErrorElement, int n, int nChild |
       b = 0 and
       bErrorElement =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfErrorElement(e, i, _)) | i) and
       n = bErrorElement and
+      nChild = n + 1 + max(int i | i = -1 or exists(e.getImmediateChild(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfErrorElement(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateChild(index - n) and
+        partialPredicateCall = "Child(" + (index - n).toString() + ")"
       )
     )
   }
@@ -3668,15 +3672,19 @@ private module Impl {
   private Element getImmediateChildOfForEachStmt(
     ForEachStmt e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bLabeledStmt, int n, int nPattern, int nSequence, int nWhere, int nBody |
+    exists(
+      int b, int bLabeledStmt, int n, int nPattern, int nWhere, int nIteratorVar, int nNextCall,
+      int nBody
+    |
       b = 0 and
       bLabeledStmt =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
       n = bLabeledStmt and
       nPattern = n + 1 and
-      nSequence = nPattern + 1 and
-      nWhere = nSequence + 1 and
-      nBody = nWhere + 1 and
+      nWhere = nPattern + 1 and
+      nIteratorVar = nWhere + 1 and
+      nNextCall = nIteratorVar + 1 and
+      nBody = nNextCall + 1 and
       (
         none()
         or
@@ -3684,13 +3692,15 @@ private module Impl {
         or
         index = n and result = e.getImmediatePattern() and partialPredicateCall = "Pattern()"
         or
-        index = nPattern and
-        result = e.getImmediateSequence() and
-        partialPredicateCall = "Sequence()"
+        index = nPattern and result = e.getImmediateWhere() and partialPredicateCall = "Where()"
         or
-        index = nSequence and result = e.getImmediateWhere() and partialPredicateCall = "Where()"
+        index = nWhere and result = e.getIteratorVar() and partialPredicateCall = "IteratorVar()"
         or
-        index = nWhere and result = e.getBody() and partialPredicateCall = "Body()"
+        index = nIteratorVar and
+        result = e.getImmediateNextCall() and
+        partialPredicateCall = "NextCall()"
+        or
+        index = nNextCall and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }

@@ -10,7 +10,6 @@
  */
 
 import go
-import DataFlow::PathGraph
 import semmle.go.security.SensitiveActions
 
 private predicate isBadResult(DataFlow::Node e) {
@@ -97,17 +96,19 @@ private class SensitiveStringSink extends Sink {
   }
 }
 
-class SecretTracking extends TaintTracking::Configuration {
-  SecretTracking() { this = "SecretTracking" }
-
-  override predicate isSource(DataFlow::Node source) {
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source instanceof UntrustedFlowSource and not isBadResult(source)
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink and not isBadResult(sink) }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink and not isBadResult(sink) }
 }
 
-from SecretTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+module Flow = TaintTracking::Global<Config>;
+
+import Flow::PathGraph
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "$@ may be vulnerable to timing attacks.", source.getNode(),
   "Hardcoded String"

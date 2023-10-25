@@ -25,7 +25,7 @@ private class ActivateModels extends ActiveExperimentalModels {
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
-class PathNormalizeSanitizer extends MethodAccess {
+class PathNormalizeSanitizer extends MethodCall {
   PathNormalizeSanitizer() {
     exists(RefType t |
       t instanceof TypePath or
@@ -48,7 +48,7 @@ class NormalizedPathNode extends DataFlow::Node {
 }
 
 module InjectFilePathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     sinkNode(sink, "path-injection") and

@@ -98,8 +98,11 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
  * is being freed by a deallocation expression `dealloc`.
  */
 predicate isFree(DataFlow::Node n, Expr e, DeallocationExpr dealloc) {
-  e = dealloc.getFreedExpr() and
-  e = n.asExpr() and
+  exists(Expr conv |
+    e = conv.getUnconverted() and
+    conv = dealloc.getFreedExpr().getFullyConverted() and
+    conv = n.asConvertedExpr()
+  ) and
   // Ignore realloc functions
   not exists(dealloc.(FunctionCall).getTarget().(AllocationFunction).getReallocPtrArg())
 }

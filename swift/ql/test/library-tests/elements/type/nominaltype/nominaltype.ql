@@ -1,9 +1,15 @@
 import swift
 
 string describe(Type t) {
-  result = "getAliasedType:" + t.(TypeAliasType).getAliasedType()
+  result = "getName:" + t.getName()
   or
-  result = "getABaseType:" + t.getABaseType()
+  result = "getFullName:" + t.getFullName()
+  or
+  result = "getUnderlyingType:" + t.getUnderlyingType().toString()
+  or
+  result = "getAliasedType:" + t.(TypeAliasType).getAliasedType().toString()
+  or
+  result = "getABaseType:" + t.getABaseType().toString()
 }
 
 from VarDecl v, Type t
@@ -11,4 +17,4 @@ where
   v.getLocation().getFile().getBaseName() != "" and
   not v.getName() = "self" and
   t = v.getType()
-select v, t.toString(), t.getUnderlyingType(), concat(describe(t), ", ")
+select v, t.toString(), concat(describe(t), ", ")

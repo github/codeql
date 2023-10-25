@@ -90,6 +90,8 @@ test_NamedImportSpecifier
 | reExportNamespaceClient.js:1:10:1:11 | ns |
 test_OtherImports
 | es2015_require.js:1:11:1:24 | require('./d') | d.js:1:1:5:0 | <toplevel> |
+| import-indirect-path.js:1:1:1:25 | require ... + '/a') | a.js:1:1:5:32 | <toplevel> |
+| import-indirect-path.js:5:1:5:14 | require(x + y) | a.js:1:1:5:32 | <toplevel> |
 test_ReExportDeclarations
 | b.js:7:1:7:21 | export  ...  './a'; | b.js:7:16:7:20 | './a' |
 | d.js:4:1:4:20 | export * from 'm/c'; | d.js:4:15:4:19 | 'm/c' |
@@ -103,6 +105,7 @@ test_getAnImportedModule
 | library-tests/Modules/es2015_require.js | library-tests/Modules/d.js |
 | library-tests/Modules/f.ts | library-tests/Modules/e.js |
 | library-tests/Modules/g.ts | library-tests/Modules/f.ts |
+| library-tests/Modules/import-indirect-path.js | library-tests/Modules/a.js |
 | library-tests/Modules/import-ts-with-js-extension.ts | library-tests/Modules/f.ts |
 | library-tests/Modules/m/c.js | library-tests/Modules/b.js |
 | library-tests/Modules/reExportNamespaceClient.js | library-tests/Modules/reExportNamespace.js |

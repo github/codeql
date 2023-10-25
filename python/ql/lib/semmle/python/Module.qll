@@ -195,7 +195,22 @@ private predicate isPotentialPackage(Folder f) {
 }
 
 private string moduleNameFromBase(Container file) {
-  isPotentialPackage(file) and result = file.getBaseName()
+  // We used to also require `isPotentialPackage(f)` to hold in this case,
+  // but we saw modules not getting resolved because their folder did not
+  // contain an `__init__.py` file.
+  //
+  // This makes the folder not be a package but a namespace package instead.
+  // In most cases this is a mistake :| See following links for more details
+  // - https://dev.to/methane/don-t-omit-init-py-3hga
+  // - https://packaging.python.org/en/latest/guides/packaging-namespace-packages/
+  // - https://discuss.python.org/t/init-py-pep-420-and-iter-modules-confusion/9642
+  //
+  // It is possible that we can keep the original requirement on
+  // `isPotentialPackage(f)` here, but relax `isPotentialPackage` itself to allow
+  // for this behavior of missing `__init__.py` files. However, doing so involves
+  // cascading changes (for example to `moduleNameFromFile`), and was a more involved
+  // task than we wanted to take on.
+  result = file.getBaseName()
   or
   file instanceof File and result = file.getStem()
 }

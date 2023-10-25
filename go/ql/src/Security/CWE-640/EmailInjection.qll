@@ -17,13 +17,24 @@ module EmailInjection {
   import EmailInjectionCustomizations::EmailInjection
 
   /**
+   * DEPRECATED: Use `Flow` instead.
+   *
    * A taint-tracking configuration for reasoning about email-injection vulnerabilities.
    */
-  class Configuration extends TaintTracking::Configuration {
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "Email Injection" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
   }
+
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  }
+
+  /** Tracks taint flow for reasoning about email-injection vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
 }

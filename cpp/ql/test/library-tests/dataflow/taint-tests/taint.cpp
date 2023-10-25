@@ -134,7 +134,7 @@ void pointer_test() {
 	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast,ir
+	sink(*p3); // $ SPURIOUS: ast
 }
 
 // --- return values ---
@@ -710,4 +710,14 @@ void test_strncpy(char* d, char* s) {
 	argument_source(s);
 	strncpy(d, s, 16);
 	sink(d); // $ ast ir
+}
+
+char* indirect_source();
+
+void test_strtok_indirect() {
+	char *source = indirect_source();
+	const char* delim = ",.-;:_";
+	char* tokenized = strtok(source, delim);
+	sink(*tokenized); // $ ir MISSING: ast
+	sink(*delim);
 }

@@ -8,7 +8,6 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
-missingToString
 parameterCallable
 localFlowIsLocal
 readStepIsLocal
@@ -30,3 +29,5 @@ uniqueContentApprox
 identityLocalStep
 | test_captured.py:7:22:7:22 | ControlFlowNode for p | Node steps to itself |
 | test_captured.py:14:26:14:27 | ControlFlowNode for pp | Node steps to itself |
+missingArgumentCall
+multipleArgumentCall

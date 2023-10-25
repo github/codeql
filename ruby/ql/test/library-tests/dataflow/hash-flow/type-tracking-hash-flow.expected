@@ -1,4 +1,3 @@
-failures
 testFailures
 | hash_flow.rb:65:21:65:40 | # $ hasValueFlow=3.3 | Missing result:hasValueFlow=3.3 |
 | hash_flow.rb:66:21:66:49 | # $ SPURIOUS hasValueFlow=3.3 | Missing result:hasValueFlow=3.3 |
@@ -39,3 +38,4 @@ testFailures
 | hash_flow.rb:935:22:935:42 | # $ hasValueFlow=51.4 | Missing result:hasValueFlow=51.4 |
 | hash_flow.rb:963:22:963:42 | # $ hasValueFlow=52.3 | Missing result:hasValueFlow=52.3 |
 | hash_flow.rb:965:22:965:42 | # $ hasValueFlow=52.4 | Missing result:hasValueFlow=52.4 |
+failures

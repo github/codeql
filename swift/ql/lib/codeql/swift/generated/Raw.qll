@@ -271,6 +271,13 @@ module Raw {
      * Gets the error of this unspecified element.
      */
     string getError() { unspecified_elements(this, _, result) }
+
+    /**
+     * Gets the `index`th child of this unspecified element (0-based).
+     *
+     * These will be present only in certain downgraded databases.
+     */
+    AstNode getChild(int index) { unspecified_element_children(this, index, result) }
   }
 
   /**
@@ -574,9 +581,12 @@ module Raw {
     string getName() { type_decls(this, result) }
 
     /**
-     * Gets the `index`th base type of this type declaration (0-based).
+     * Gets the `index`th inherited type of this type declaration (0-based).
+     *
+     * This only returns the types effectively appearing in the declaration. In particular it
+     * will not resolve `TypeAliasDecl`s or consider base types added by extensions.
      */
-    Type getBaseType(int index) { type_decl_base_types(this, index, result) }
+    Type getInheritedType(int index) { type_decl_inherited_types(this, index, result) }
   }
 
   /**
@@ -2768,12 +2778,7 @@ module Raw {
     /**
      * Gets the pattern of this for each statement.
      */
-    Pattern getPattern() { for_each_stmts(this, result, _, _) }
-
-    /**
-     * Gets the sequence of this for each statement.
-     */
-    Expr getSequence() { for_each_stmts(this, _, result, _) }
+    Pattern getPattern() { for_each_stmts(this, result, _) }
 
     /**
      * Gets the where of this for each statement, if it exists.
@@ -2781,9 +2786,19 @@ module Raw {
     Expr getWhere() { for_each_stmt_wheres(this, result) }
 
     /**
+     * Gets the iteratorvar of this for each statement, if it exists.
+     */
+    PatternBindingDecl getIteratorVar() { for_each_stmt_iterator_vars(this, result) }
+
+    /**
+     * Gets the nextcall of this for each statement, if it exists.
+     */
+    Expr getNextCall() { for_each_stmt_next_calls(this, result) }
+
+    /**
      * Gets the body of this for each statement.
      */
-    BraceStmt getBody() { for_each_stmts(this, _, _, result) }
+    BraceStmt getBody() { for_each_stmts(this, _, result) }
   }
 
   /**

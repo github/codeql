@@ -52,7 +52,7 @@ class NSString : NSObject, NSCopying, NSMutableCopying {
   func copy(with zone: NSZone? = nil) -> Any { return 0 }
   func mutableCopy(with zone: NSZone? = nil) -> Any { return 0 }
 
-  class func localizedStringWithFormat(_ format: NSString, _ args: CVarArg) -> Self { return (nil as Self?)! }
+  class func localizedStringWithFormat(_ format: NSString, _ args: CVarArg...) -> Self { return (nil as Self?)! }
   class func path(withComponents components: [String]) -> String { return "" }
   class func string(withCString bytes: UnsafePointer<CChar>) -> Any? { return nil }
   class func string(withCString bytes: UnsafePointer<CChar>, length: Int) -> Any? { return nil }
@@ -185,7 +185,7 @@ func sourceUnsafeMutableRawPointer() -> UnsafeMutableRawPointer { return (nil as
 func sourceCString() -> UnsafePointer<CChar> { return (nil as UnsafePointer<CChar>?)! }
 func sourceData() -> Data { return Data(0) }
 func sourceStringArray() -> [String] { return [] }
-
+func sourceInt() -> Int { return 0 }
 func sink(arg: Any) {}
 
 func taintThroughInterpolatedStrings() {
@@ -244,8 +244,8 @@ func taintThroughInterpolatedStrings() {
 
   let harmless = NSString(string: "harmless")
   let myRange = NSRange(location:0, length: 128)
-
-  sink(arg: NSString.localizedStringWithFormat(sourceNSString(), (nil as CVarArg?)!)) // $ tainted=248
+  sink(arg: NSString.localizedStringWithFormat(NSString(string: "%i %i %i"), 1, sourceInt(), 3)) // $ tainted=247
+  sink(arg: NSString.localizedStringWithFormat(sourceNSString(), 1, 2, 3)) // $ tainted=248
   sink(arg: sourceNSString().character(at: 0)) // $ tainted=249
   sink(arg: sourceNSString().cString(using: 0)!) // $ tainted=250
   sink(arg: sourceNSString().cString()) // $ tainted=251

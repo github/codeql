@@ -6,8 +6,10 @@ func validateCommand(_ command: String) -> String? {
     return nil
 }
 
-var task = Process()
-task.launchPath = "/bin/bash"
-task.arguments = ["-c", validateCommand(userControlledString)] // GOOD
+if let validatedString = validateCommand(userControlledString) {
+    var task = Process()
+    task.launchPath = "/bin/bash"
+    task.arguments = ["-c", validatedString] // GOOD
 
-task.launch()
+    task.launch()
+}

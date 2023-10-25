@@ -15,7 +15,7 @@ private import semmle.code.java.dispatch.internal.Unification
  * A conservative analysis that returns a single method - if we can establish
  * one - that will be the target of the virtual dispatch.
  */
-Method exactVirtualMethod(MethodAccess c) {
+Method exactVirtualMethod(MethodCall c) {
   // If there are multiple potential implementations, return nothing.
   implCount(c, 1) and
   result = viableImpl(c)
@@ -31,7 +31,7 @@ Callable exactCallable(Call c) {
   c instanceof ConstructorCall and result = c.getCallee()
 }
 
-private predicate implCount(MethodAccess m, int c) { strictcount(viableImpl(m)) = c }
+private predicate implCount(MethodCall m, int c) { strictcount(viableImpl(m)) = c }
 
 /** Gets a viable implementation of the target of the given `Call`. */
 Callable viableCallable(Call c) {
@@ -44,7 +44,7 @@ Callable viableCallable(Call c) {
 class VirtCalledSrcMethod extends SrcMethod {
   pragma[nomagic]
   VirtCalledSrcMethod() {
-    exists(VirtualMethodAccess ma | ma.getMethod().getSourceDeclaration() = this)
+    exists(VirtualMethodCall ma | ma.getMethod().getSourceDeclaration() = this)
   }
 }
 
@@ -52,7 +52,7 @@ cached
 private module Dispatch {
   /** Gets a viable implementation of the method called in the given method access. */
   cached
-  Method viableImpl(MethodAccess ma) { result = ObjFlow::viableImpl_out(ma) }
+  Method viableImpl(MethodCall ma) { result = ObjFlow::viableImpl_out(ma) }
 
   /**
    * Holds if `m` is a viable implementation of the method called in `ma` for
@@ -60,7 +60,7 @@ private module Dispatch {
    * the dispatch type is likely to yield implausible dispatch targets.
    */
   cached
-  predicate lowConfidenceDispatchTarget(MethodAccess ma, Method m) {
+  predicate lowConfidenceDispatchTarget(MethodCall ma, Method m) {
     m = viableImpl(ma) and lowConfidenceDispatch(ma)
   }
 
@@ -70,13 +70,13 @@ private module Dispatch {
    * Gets a viable implementation of the method called in the given method access.
    */
   cached
-  Method viableImpl_v3(MethodAccess ma) { result = DispatchFlow::viableImpl_out(ma) }
+  Method viableImpl_v3(MethodCall ma) { result = DispatchFlow::viableImpl_out(ma) }
 
   /**
    * Holds if the best type bounds for the qualifier of `ma` are likely to
    * contain implausible dispatch targets.
    */
-  private predicate lowConfidenceDispatch(VirtualMethodAccess ma) {
+  private predicate lowConfidenceDispatch(VirtualMethodCall ma) {
     exists(RefType t | hasQualifierType(ma, t, false) |
       lowConfidenceDispatchType(t.getSourceDeclaration())
     ) and
@@ -121,7 +121,7 @@ private module Dispatch {
    * Gets a viable implementation of the method called in the given method access.
    */
   cached
-  Method viableImpl_v2(MethodAccess ma) {
+  Method viableImpl_v2(MethodCall ma) {
     result = viableImpl_v2_cand(pragma[only_bind_into](ma)) and
     exists(Method def, RefType t, boolean exact |
       qualUnionType(pragma[only_bind_into](ma), pragma[only_bind_into](t),
@@ -141,7 +141,7 @@ private module Dispatch {
     not qualUnionType(ma, _, _)
   }
 
-  private predicate qualUnionType(VirtualMethodAccess ma, RefType t, boolean exact) {
+  private predicate qualUnionType(VirtualMethodCall ma, RefType t, boolean exact) {
     exprUnionTypeFlow(ma.getQualifier(), t, exact)
   }
 
@@ -150,7 +150,7 @@ private module Dispatch {
   private module Unification_v2 =
     MkUnification<unificationTargetLeft_v2/1, unificationTargetRight/1>;
 
-  private Method viableImpl_v2_cand(MethodAccess ma) {
+  private Method viableImpl_v2_cand(MethodCall ma) {
     result = viableImpl_v1(ma) and
     (
       exists(Method def, RefType t, boolean exact |
@@ -170,7 +170,7 @@ private module Dispatch {
     )
   }
 
-  private predicate qualType(VirtualMethodAccess ma, RefType t, boolean exact) {
+  private predicate qualType(VirtualMethodCall ma, RefType t, boolean exact) {
     exprTypeFlow(ma.getQualifier(), t, exact)
   }
 
@@ -185,7 +185,7 @@ private module Dispatch {
    * Gets a viable implementation of the method called in the given method access.
    */
   cached
-  Method viableImpl_v1(MethodAccess source) {
+  Method viableImpl_v1(MethodCall source) {
     result = viableImpl_v1_cand(source) and
     not impossibleDispatchTarget(source, result)
   }
@@ -193,7 +193,7 @@ private module Dispatch {
   /**
    * Holds if `source` cannot dispatch to `tgt` due to a negative `instanceof` guard.
    */
-  private predicate impossibleDispatchTarget(MethodAccess source, Method tgt) {
+  private predicate impossibleDispatchTarget(MethodCall source, Method tgt) {
     tgt = viableImpl_v1_cand(source) and
     exists(InstanceOfExpr ioe, BaseSsaVariable v, Expr q, RefType t |
       source.getQualifier() = q and
@@ -208,9 +208,9 @@ private module Dispatch {
   /**
    * Gets a viable implementation of the method called in the given method access.
    */
-  private Method viableImpl_v1_cand(MethodAccess source) {
+  private Method viableImpl_v1_cand(MethodCall source) {
     not result.isAbstract() and
-    if source instanceof VirtualMethodAccess
+    if source instanceof VirtualMethodCall
     then
       exists(VirtCalledSrcMethod def, RefType t, boolean exact |
         source.getMethod().getSourceDeclaration() = def and
@@ -242,7 +242,7 @@ private module Dispatch {
     not e instanceof FunctionalExpr and result = e.getType()
   }
 
-  private predicate hasQualifierType(VirtualMethodAccess ma, RefType t, boolean exact) {
+  private predicate hasQualifierType(VirtualMethodCall ma, RefType t, boolean exact) {
     exists(Expr src | src = ma.getQualifier() |
       // If we have a qualifier, then we take its type.
       exists(RefType srctype | srctype = getPreciseType(src) |
@@ -264,9 +264,9 @@ private module Dispatch {
     not exists(ma.getQualifier()) and
     exact = false and
     (
-      ma.isOwnMethodAccess() and t = ma.getEnclosingCallable().getDeclaringType()
+      ma.isOwnMethodCall() and t = ma.getEnclosingCallable().getDeclaringType()
       or
-      ma.isEnclosingMethodAccess(t)
+      ma.isEnclosingMethodCall(t)
     )
   }
 

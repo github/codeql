@@ -418,6 +418,20 @@ Element interpretElement(
   )
 }
 
+/**
+ * A callable where there exists a MaD sink model that applies to it.
+ */
+class SinkCallable extends Callable {
+  SinkCallable() { sinkElement(this, _, _, _) }
+}
+
+/**
+ * A callable where there exists a MaD source model that applies to it.
+ */
+class SourceCallable extends Callable {
+  SourceCallable() { sourceElement(this, _, _, _) }
+}
+
 cached
 private module Cached {
   /**

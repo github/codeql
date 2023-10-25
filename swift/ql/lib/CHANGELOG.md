@@ -1,3 +1,76 @@
+## 0.3.1
+
+### Minor Analysis Improvements
+
+* Improved taint models for `Numeric` types and `RangeReplaceableCollection`s.
+* The nil-coalescing operator `??` is now supported by the CFG construction and dataflow libraries.
+* The data flow library now supports flow to the loop variable of for-in loops.
+* The methods `getIteratorVar` and `getNextCall` have been added to the `ForEachStmt` class.
+
+## 0.3.0
+
+### Deprecated APIs
+
+* The `ArrayContent` type in the data flow library has been deprecated and made an alias for the `CollectionContent` type, to better reflect the hierarchy of the Swift standard library. Uses of `ArrayElement` in model files will be interpreted as referring to `CollectionContent`.
+
+### Major Analysis Improvements
+
+* The predicates `getABaseType`, `getABaseTypeDecl`, `getADerivedType` and `getADerivedTypeDecl` on `Type` and `TypeDecl` now behave more usefully and consistently. They now explore through type aliases used in base class declarations, and include protocols added in extensions.
+
+To examine base class declarations at a low level without these enhancements, use `TypeDecl.getInheritedType`.
+
+`Type.getABaseType` (only) previously resolved a type alias it was called directly on. This behaviour no longer exists. To find any base type of a type that could be an alias, the construct `Type.getUnderlyingType().getABaseType*()` is recommended.
+
+### Minor Analysis Improvements
+
+* Modelled varargs function in `NSString` more accurately.
+* Modelled `CustomStringConvertible.description` and `CustomDebugStringConvertible.debugDescription`, replacing ad-hoc models of these properties on derived classes.
+* The regular expressions library now accepts a wider range of mode flags in a regular expression mode flag group (such as `(?u)`). The `(?w`) flag has been renamed from "UNICODE" to "UNICODEBOUNDARY", and the `(?u)` flag is called "UNICODE" in the libraries.
+* Renamed `TypeDecl.getBaseType/1` to `getInheritedType`.
+* Flow through writes via keypaths is now supported by the data flow library.
+* Added flow through variadic arguments, and the `getVaList` function.
+* Added flow steps through `Dictionary` keys and values.
+* Added taint models for `Numeric` conversions.
+
+### Bug Fixes
+
+* The regular expressions library no longer incorrectly matches mode flag characters against the input.
+
+## 0.2.5
+
+No user-facing changes.
+
+## 0.2.4
+
+### Minor Analysis Improvements
+
+* Flow through optional chaining and forced unwrapping in keypaths is now supported by the data flow library.
+* Added flow models of collection `.withContiguous[Mutable]StorageIfAvailable`, `.withUnsafe[Mutable]BufferPointer` and `.withUnsafe[Mutable]Bytes` methods.
+
+## 0.2.3
+
+### Major Analysis Improvements
+
+* Added `DataFlow::CollectionContent`, which will enable more accurate flow through collections.
+
+### Minor Analysis Improvements
+
+* Added local flow sources for `UITextInput` and related classes.
+* Flow through forced optional unwrapping (`!`) on the left side of assignment now works in most cases.
+* `Type.getName` now gets the name of the type alone without any enclosing types. Use `Type.getFullName` for the old behaviour.
+
+## 0.2.2
+
+### Major Analysis Improvements
+
+* Added `DataFlow::ArrayContent`, which will provide more accurate flow through arrays.
+
+### Minor Analysis Improvements
+
+* Flow through forced optional unwrapping (`!`) is modelled more accurately.
+* Added flow models for `Sequence.withContiguousStorageIfAvailable`.
+* Added taint flow for `NSUserActivity.referrerURL`.
+
 ## 0.2.1
 
 ### New Features

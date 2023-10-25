@@ -357,6 +357,9 @@ module EssaFlow {
     // If expressions
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
     or
+    // Assignment expressions
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(AssignmentExprNode).getValue()
+    or
     // boolean inline expressions such as `x or y` or `x and y`
     nodeFrom.asCfgNode() = nodeTo.asCfgNode().(BoolExprNode).getAnOperand()
     or
@@ -513,15 +516,21 @@ class CastNode extends Node {
  * explanations.
  */
 predicate neverSkipInPathGraph(Node n) {
-  // We include read- and store steps here to force them to be
-  // shown in path explanations.
-  // This hack is necessary, because we have included some of these
-  // steps as default taint steps, making them be suppressed in path
-  // explanations.
-  // We should revert this once, we can remove this steps from the
-  // default taint steps; this should be possible once we have
-  // implemented flow summaries and recursive content.
-  readStep(_, _, n) or storeStep(_, _, n)
+  // NOTE: We could use RHS of a definition, but since we have use-use flow, in an
+  // example like
+  // ```py
+  // x = SOURCE()
+  // if <cond>:
+  //     y = x
+  // SINK(x)
+  // ```
+  // we would end up saying that the path MUST not skip the x in `y = x`, which is just
+  // annoying and doesn't help the path explanation become clearer.
+  n.asVar() instanceof EssaDefinition and
+  // For a parameter we have flow from ControlFlowNode to SSA node, and then onwards
+  // with use-use flow, and since the CFN is already part of the path graph, we don't
+  // want to force showing the SSA node as well.
+  not n.asVar() instanceof ParameterDefinition
 }
 
 /**
@@ -532,6 +541,8 @@ pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /**
  * Gets the type of `node`.
@@ -994,12 +1005,3 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

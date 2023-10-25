@@ -33,7 +33,7 @@ private module Cached {
     exists(ApplyExpr apply, ExprCfgNode e |
       nodeFrom.asExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
       apply.getStaticTarget().getName() = ["appendLiteral(_:)", "appendInterpolation(_:)"] and
-      e.getExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
+      e.getExpr() = apply.getQualifier() and
       nodeTo.(PostUpdateNodeImpl).getPreUpdateNode().getCfgNode() = e
     )
     or

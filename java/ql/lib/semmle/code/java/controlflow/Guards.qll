@@ -187,14 +187,14 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
 }
 
 private predicate preconditionBranchEdge(
-  MethodAccess ma, BasicBlock bb1, BasicBlock bb2, boolean branch
+  MethodCall ma, BasicBlock bb1, BasicBlock bb2, boolean branch
 ) {
   conditionCheckArgument(ma, _, branch) and
   bb1.getLastNode() = ma.getControlFlowNode() and
   bb2 = bb1.getLastNode().getANormalSuccessor()
 }
 
-private predicate preconditionControls(MethodAccess ma, BasicBlock controlled, boolean branch) {
+private predicate preconditionControls(MethodCall ma, BasicBlock controlled, boolean branch) {
   exists(BasicBlock check, BasicBlock succ |
     preconditionBranchEdge(ma, check, succ, branch) and
     dominatingEdge(check, succ) and
@@ -249,7 +249,7 @@ private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
     eqtest.hasOperands(e1, e2)
   )
   or
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma = g and
     ma.getMethod() instanceof EqualsMethod and
     polarity = true and
@@ -257,7 +257,7 @@ private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
     ma.getQualifier() = e2
   )
   or
-  exists(MethodAccess ma, Method equals |
+  exists(MethodCall ma, Method equals |
     ma = g and
     ma.getMethod() = equals and
     polarity = true and

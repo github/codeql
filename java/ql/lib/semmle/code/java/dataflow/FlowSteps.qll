@@ -23,6 +23,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.InputStream
   private import semmle.code.java.frameworks.Properties
   private import semmle.code.java.frameworks.Protobuf
+  private import semmle.code.java.frameworks.ThreadLocal
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.stapler.Stapler
 }
@@ -58,6 +59,22 @@ abstract class FluentMethod extends ValuePreservingMethod {
 }
 
 /**
+ * A unit class for adding additional data flow nodes.
+ *
+ * Extend this class to add additional data flow nodes for use in globally
+ * applicable additional steps.
+ */
+class AdditionalDataFlowNode extends Unit {
+  /**
+   * Holds if an additional node is needed in relation to `e`. The pair `(e,id)`
+   * must uniquely identify the node.
+   * The added node can be selected for use in a predicate by the corresponding
+   * `DataFlow::AdditionalNode.nodeAt(Expr e, string id)` predicate.
+   */
+  abstract predicate nodeAt(Expr e, string id);
+}
+
+/**
  * A unit class for adding additional taint steps.
  *
  * Extend this class to add additional taint steps that should apply to all
@@ -83,6 +100,36 @@ class AdditionalValueStep extends Unit {
    * should apply to all data flow configurations.
    */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
+/**
+ * A unit class for adding additional store steps.
+ *
+ * Extend this class to add additional store steps that should apply to all
+ * data flow configurations. A store step must be local, so non-local steps are
+ * ignored.
+ */
+class AdditionalStoreStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` is a store step of `c` and should
+   * apply to all data flow configurations.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Content c, DataFlow::Node node2);
+}
+
+/**
+ * A unit class for adding additional read steps.
+ *
+ * Extend this class to add additional read steps that should apply to all
+ * data flow configurations. A read step must be local, so non-local steps are
+ * ignored.
+ */
+class AdditionalReadStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` is a read step of `c` and should
+   * apply to all data flow configurations.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Content c, DataFlow::Node node2);
 }
 
 /**

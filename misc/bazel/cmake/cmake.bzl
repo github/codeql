@@ -51,6 +51,12 @@ def _get_includes(includes):
 def _cmake_aspect_impl(target, ctx):
     if not ctx.rule.kind.startswith("cc_"):
         return [CmakeInfo(name = None, transitive_deps = depset())]
+    if ctx.rule.kind == "cc_binary_add_features":
+        dep = ctx.rule.attr.dep[0][CmakeInfo]
+        return [CmakeInfo(
+            name = None,
+            transitive_deps = depset([dep], transitive = [dep.transitive_deps]),
+        )]
 
     name = _cmake_name(ctx.label)
 
@@ -146,7 +152,7 @@ def _cmake_aspect_impl(target, ctx):
 
 cmake_aspect = aspect(
     implementation = _cmake_aspect_impl,
-    attr_aspects = ["deps"],
+    attr_aspects = ["deps", "dep"],
     fragments = ["cpp"],
 )
 
@@ -156,10 +162,10 @@ def _map_cmake_info(info, is_windows):
         "add_%s(%s)" % (info.kind, args),
     ]
     if info.imported_libs:
-        commands += [
+        commands.append(
             "target_link_libraries(%s %s %s)" %
             (info.name, info.modifier or "PUBLIC", " ".join(info.imported_libs)),
-        ]
+        )
     if info.deps:
         libs = {}
         if info.modifier == "INTERFACE":
@@ -168,46 +174,46 @@ def _map_cmake_info(info, is_windows):
             for lib in info.deps:
                 libs.setdefault(lib.modifier, []).append(lib.name)
         for modifier, names in libs.items():
-            commands += [
+            commands.append(
                 "target_link_libraries(%s %s %s)" % (info.name, modifier or "PUBLIC", " ".join(names)),
-            ]
+            )
     if info.includes:
-        commands += [
+        commands.append(
             "target_include_directories(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.includes)),
-        ]
+        )
     if info.system_includes:
-        commands += [
+        commands.append(
             "target_include_directories(%s SYSTEM %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.system_includes)),
-        ]
+        )
     if info.quote_includes:
         if is_windows:
-            commands += [
+            commands.append(
                 "target_include_directories(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.quote_includes)),
-            ]
+            )
         else:
-            commands += [
+            commands.append(
                 "target_compile_options(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(["-iquote%s" % i for i in info.quote_includes])),
-            ]
+            )
     if info.copts and info.modifier != "INTERFACE":
-        commands += [
+        commands.append(
             "target_compile_options(%s PRIVATE %s)" % (info.name, " ".join(info.copts)),
-        ]
+        )
     if info.linkopts:
-        commands += [
+        commands.append(
             "target_link_options(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.linkopts)),
-        ]
+        )
     if info.force_cxx_compilation and any([f.endswith(".c") for f in info.srcs]):
-        commands += [
+        commands.append(
             "set_source_files_properties(%s PROPERTIES LANGUAGE CXX)" % " ".join([f for f in info.srcs if f.endswith(".c")]),
-        ]
+        )
     if info.defines:
-        commands += [
+        commands.append(
             "target_compile_definitions(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.defines)),
-        ]
+        )
     if info.local_defines:
-        commands += [
+        commands.append(
             "target_compile_definitions(%s %s %s)" % (info.name, info.modifier or "PRIVATE", " ".join(info.local_defines)),
-        ]
+        )
     return commands
 
 GeneratedCmakeFiles = provider(

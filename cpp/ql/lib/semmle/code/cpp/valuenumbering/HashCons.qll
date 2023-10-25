@@ -372,7 +372,8 @@ private predicate analyzablePointerFieldAccess(PointerFieldAccess access) {
 private predicate mk_PointerFieldAccess(HashCons qualifier, Field target, PointerFieldAccess access) {
   analyzablePointerFieldAccess(access) and
   target = access.getTarget() and
-  qualifier = hashCons(access.getQualifier().getFullyConverted())
+  qualifier = hashCons(access.getQualifier().getFullyConverted()) and
+  not access instanceof ImplicitThisFieldAccess
 }
 
 private predicate analyzableImplicitThisFieldAccess(ImplicitThisFieldAccess access) {

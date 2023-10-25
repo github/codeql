@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.commons.lang", "StringEscapeUtils", true, "escapeHtml", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang", "StringEscapeUtils", true, "escapeHtml", "(Writer,String)", "", "Argument[1]", "Argument[0]", "taint", "manual"]

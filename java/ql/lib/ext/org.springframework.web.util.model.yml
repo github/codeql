@@ -76,7 +76,7 @@ extensions:
       - ["org.springframework.web.util", "UriComponents", False, "encode", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "expand", "(Map)", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "expand", "(Object[])", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.web.util", "UriComponents", False, "expand", "(UriTemplateVariables)", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.util", "UriComponents", False, "expand", "(UriComponents$UriTemplateVariables)", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "getFragment", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "getHost", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.web.util", "UriComponents", False, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

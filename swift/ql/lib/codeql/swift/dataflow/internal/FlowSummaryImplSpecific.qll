@@ -13,7 +13,15 @@ private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.controlflow.CfgNodes
 
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
 class SummarizedCallableBase = Function;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = Function;
 
 DataFlowCallable inject(SummarizedCallable c) { result.getUnderlyingCallable() = c }
 
@@ -62,10 +70,11 @@ predicate summaryElement(Function c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenance`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
+ * Note. Neutral models have not been implemented for Swift.
  */
-predicate neutralSummaryElement(Function c, string provenance) { none() }
+predicate neutralElement(NeutralCallableBase c, string kind, string provenance) { none() }
 
 /**
  * Holds if an external source specification exists for `e` with output specification
@@ -110,14 +119,14 @@ private string getContentSpecific(ContentSet cs) {
     result = "Field[" + c.getField().getName() + "]"
   )
   or
+  exists(Content::TupleContent c |
+    cs.isSingleton(c) and
+    result = "TupleElement[" + c.getIndex().toString() + "]"
+  )
+  or
   exists(Content::EnumContent c |
     cs.isSingleton(c) and
     result = "EnumElement[" + c.getSignature() + "]"
-  )
-  or
-  exists(Content::ArrayContent c |
-    cs.isSingleton(c) and
-    result = "ArrayElement"
   )
   or
   exists(Content::CollectionContent c |

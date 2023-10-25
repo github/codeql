@@ -16,10 +16,10 @@ func main() {
 	var a [4]string
 	a[0] = source()
 	alias := sliceToArray(a[:])
-	sink(alias[0]) // $ taintflow
+	sink(alias[0]) // $ hasTaintFlow="index expression"
 
 	// Compare with the standard dataflow support for arrays
 	var b [4]string
 	b[0] = source()
-	sink(b[0]) // $ taintflow
+	sink(b[0]) // $ hasTaintFlow="index expression"
 }

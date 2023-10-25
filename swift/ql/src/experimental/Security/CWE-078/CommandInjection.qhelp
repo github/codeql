@@ -24,14 +24,14 @@ using it.
 
 <example>
 <p>
-The following examples execute code from user input without
+The following example executes code from user input without
 sanitizing it first:
 </p>
 <sample src="CommandInjectionBad.swift" />
 <p>
 If user input is used to construct a command it should be checked
 first. This ensures that the user cannot insert characters that have special
-meanings.
+meanings:
 </p>
 <sample src="CommandInjectionGood.swift" />
 </example>

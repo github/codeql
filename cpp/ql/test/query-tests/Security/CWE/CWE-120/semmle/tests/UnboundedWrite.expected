@@ -3,14 +3,10 @@ edges
 | tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array |
 | tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array |
 | tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array |
-| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array |
-| tests.c:28:22:28:25 | argv | tests.c:28:22:28:28 | access to array |
 | tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array |
 | tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array |
 | tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array |
 | tests.c:29:28:29:31 | argv | tests.c:29:28:29:34 | access to array |
-| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
-| tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
 | tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
 | tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
 | tests.c:34:10:34:13 | argv | tests.c:34:10:34:16 | access to array |
@@ -21,20 +17,16 @@ nodes
 | tests.c:28:22:28:25 | argv | semmle.label | argv |
 | tests.c:28:22:28:28 | access to array | semmle.label | access to array |
 | tests.c:28:22:28:28 | access to array | semmle.label | access to array |
-| tests.c:28:22:28:28 | access to array | semmle.label | access to array |
 | tests.c:29:28:29:31 | argv | semmle.label | argv |
 | tests.c:29:28:29:31 | argv | semmle.label | argv |
 | tests.c:29:28:29:34 | access to array | semmle.label | access to array |
 | tests.c:29:28:29:34 | access to array | semmle.label | access to array |
 | tests.c:31:15:31:23 | buffer100 | semmle.label | buffer100 |
 | tests.c:31:15:31:23 | buffer100 | semmle.label | buffer100 |
-| tests.c:31:15:31:23 | buffer100 | semmle.label | buffer100 |
-| tests.c:33:21:33:29 | buffer100 | semmle.label | buffer100 |
 | tests.c:33:21:33:29 | buffer100 | semmle.label | buffer100 |
 | tests.c:33:21:33:29 | buffer100 | semmle.label | buffer100 |
 | tests.c:34:10:34:13 | argv | semmle.label | argv |
 | tests.c:34:10:34:13 | argv | semmle.label | argv |
-| tests.c:34:10:34:16 | access to array | semmle.label | access to array |
 | tests.c:34:10:34:16 | access to array | semmle.label | access to array |
 | tests.c:34:10:34:16 | access to array | semmle.label | access to array |
 #select

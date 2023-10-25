@@ -39,6 +39,7 @@ predicate semImplies_v2(SemGuard g1, boolean b1, SemGuard g2, boolean b2) {
  * Holds if `guard` directly controls the position `controlled` with the
  * value `testIsTrue`.
  */
+pragma[nomagic]
 predicate semGuardDirectlyControlsSsaRead(
   SemGuard guard, SemSsaReadPosition controlled, boolean testIsTrue
 ) {

@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Immutable;
-using System.Reflection.Metadata;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
-using System.IO;
+using System.Reflection.Metadata;
 using Semmle.Util;
 
 namespace Semmle.Extraction.CIL.Entities

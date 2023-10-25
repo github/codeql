@@ -1,8 +1,8 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.CSharp.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -79,108 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return true;
         }
 
-        /// <summary>
-        /// Convert an operator method name in to a symbolic name.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="methodName">The method name.</param>
-        /// <param name="operatorName">The converted operator name.</param>
-        public static bool TryGetOperatorSymbol(string methodName, out string operatorName)
-        {
-            var success = true;
-            switch (methodName)
-            {
-                case "op_LogicalNot":
-                    operatorName = "!";
-                    break;
-                case "op_BitwiseAnd":
-                    operatorName = "&";
-                    break;
-                case "op_Equality":
-                    operatorName = "==";
-                    break;
-                case "op_Inequality":
-                    operatorName = "!=";
-                    break;
-                case "op_UnaryPlus":
-                case "op_Addition":
-                    operatorName = "+";
-                    break;
-                case "op_UnaryNegation":
-                case "op_Subtraction":
-                    operatorName = "-";
-                    break;
-                case "op_Multiply":
-                    operatorName = "*";
-                    break;
-                case "op_Division":
-                    operatorName = "/";
-                    break;
-                case "op_Modulus":
-                    operatorName = "%";
-                    break;
-                case "op_GreaterThan":
-                    operatorName = ">";
-                    break;
-                case "op_GreaterThanOrEqual":
-                    operatorName = ">=";
-                    break;
-                case "op_LessThan":
-                    operatorName = "<";
-                    break;
-                case "op_LessThanOrEqual":
-                    operatorName = "<=";
-                    break;
-                case "op_Decrement":
-                    operatorName = "--";
-                    break;
-                case "op_Increment":
-                    operatorName = "++";
-                    break;
-                case "op_Implicit":
-                    operatorName = "implicit conversion";
-                    break;
-                case "op_Explicit":
-                    operatorName = "explicit conversion";
-                    break;
-                case "op_OnesComplement":
-                    operatorName = "~";
-                    break;
-                case "op_RightShift":
-                    operatorName = ">>";
-                    break;
-                case "op_UnsignedRightShift":
-                    operatorName = ">>>";
-                    break;
-                case "op_LeftShift":
-                    operatorName = "<<";
-                    break;
-                case "op_BitwiseOr":
-                    operatorName = "|";
-                    break;
-                case "op_ExclusiveOr":
-                    operatorName = "^";
-                    break;
-                case "op_True":
-                    operatorName = "true";
-                    break;
-                case "op_False":
-                    operatorName = "false";
-                    break;
-                default:
-                    var match = Regex.Match(methodName, "^op_Checked(.*)$");
-                    if (match.Success)
-                    {
-                        TryGetOperatorSymbol("op_" + match.Groups[1], out var uncheckedName);
-                        operatorName = "checked " + uncheckedName;
-                        break;
-                    }
-                    operatorName = methodName;
-                    success = false;
-                    break;
-            }
-            return success;
-        }
+
 
         /// <summary>
         /// Converts a method name into a symbolic name.
@@ -191,12 +90,8 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The converted name.</returns>
         private static string OperatorSymbol(Context cx, IMethodSymbol method)
         {
-            if (method.ExplicitInterfaceImplementations.Any())
-                return OperatorSymbol(cx, method.ExplicitInterfaceImplementations.First());
-
-            var methodName = method.Name;
-            if (!TryGetOperatorSymbol(methodName, out var result))
-                cx.ModelError(method, $"Unhandled operator name in OperatorSymbol(): '{methodName}'");
+            if (!method.TryGetOperatorSymbol(out var result))
+                cx.ModelError(method, $"Unhandled operator name in OperatorSymbol(): '{method.Name}'");
             return result;
         }
 

@@ -2,7 +2,6 @@ private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch
 private import FlowVar
-private import DataFlowImplConsistency
 private import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
@@ -209,6 +208,8 @@ predicate expectsContent(Node n, ContentSet c) { none() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
+predicate localMustFlowStep(Node node1, Node node2) { none() }
+
 /** Gets the type of `n` used for type pruning. */
 Type getNodeType(Node n) {
   suppressUnusedNode(n) and
@@ -296,28 +297,3 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
-
-private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    // Is the null pointer (or something that's not really a pointer)
-    exists(n.asExpr().getValue())
-    or
-    // Isn't a pointer or is a pointer to const
-    forall(DerivedType dt | dt = n.asExpr().getActualType() |
-      dt.getBaseType().isConst()
-      or
-      dt.getBaseType() instanceof RoutineType
-    )
-    // The above list of cases isn't exhaustive, but it narrows down the
-    // consistency alerts enough that most of them are interesting.
-  }
-}
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

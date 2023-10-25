@@ -154,7 +154,7 @@ struct URLResource {
 	let subdirectory: String?
 }
 
-struct URLRequest {
+struct URLRequest : CustomStringConvertible, CustomDebugStringConvertible {
 	enum CachePolicy { case none }
 	enum NetworkServiceType { case none }
 	enum Attribution { case none }
@@ -463,9 +463,9 @@ func taintThroughUrlRequest() {
 	sink(any: clean.attribution)
 	sink(any: tainted.attribution)
 	sink(any: clean.description)
-	sink(any: tainted.description)
+	sink(any: tainted.description) // $ tainted=431
 	sink(any: clean.debugDescription)
-	sink(any: tainted.debugDescription)
+	sink(any: tainted.debugDescription) // $ tainted=431
 	sink(any: clean.customMirror)
 	sink(any: tainted.customMirror)
 	sink(any: clean.hashValue)

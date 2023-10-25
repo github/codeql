@@ -27,8 +27,9 @@ namespace codeql {
     using type = TAG;                          \
   };
 
-#define CODEQL_SWIFT_VERSION_GE(MAJOR, MINOR) \
-  CODEQL_SWIFT_VERSION_MAJOR >= (MAJOR) && CODEQL_SWIFT_VERSION_MINOR >= (MINOR)
+#define CODEQL_SWIFT_VERSION_GE(MAJOR, MINOR)                                         \
+  (CODEQL_SWIFT_VERSION_MAJOR == (MAJOR) && CODEQL_SWIFT_VERSION_MINOR >= (MINOR)) || \
+      CODEQL_SWIFT_VERSION_MAJOR > (MAJOR)
 
 // clang-format off
 // use indentation to recreate all involved type hierarchies

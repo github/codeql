@@ -478,16 +478,14 @@ module TypeTracking<TypeTrackingInput I> {
   }
 
   pragma[nomagic]
-  private predicate smallStepProj(LocalSourceNode nodeFrom, StepSummary summary) {
+  private predicate smallStepProj(Node nodeFrom, StepSummary summary) {
     smallStep(nodeFrom, _, summary)
   }
 
   bindingset[t, nodeFrom]
   pragma[inline_late]
   pragma[noopt]
-  private TypeTracker smallStepInlineLate(
-    TypeTracker t, LocalSourceNode nodeFrom, LocalSourceNode nodeTo
-  ) {
+  private TypeTracker smallStepInlineLate(TypeTracker t, Node nodeFrom, LocalSourceNode nodeTo) {
     exists(StepSummary summary |
       smallStepProj(nodeFrom, summary) and
       result = append(t, summary) and
@@ -657,7 +655,7 @@ module TypeTracking<TypeTrackingInput I> {
   pragma[inline_late]
   pragma[noopt]
   private TypeBackTracker backSmallStepInlineLate(
-    TypeBackTracker t, LocalSourceNode nodeFrom, LocalSourceNode nodeTo
+    TypeBackTracker t, Node nodeFrom, LocalSourceNode nodeTo
   ) {
     exists(StepSummary summary |
       backSmallStepProj(nodeTo, summary) and
@@ -803,16 +801,40 @@ module TypeTracking<TypeTrackingInput I> {
    * those sources.
    */
   module TypeTrack<endpoint/1 source> {
+    pragma[nomagic]
+    private predicate sourceSimpleLocalSmallSteps(Node src, Node n) {
+      source(src) and
+      not src instanceof LocalSourceNode and
+      src = n
+      or
+      exists(Node mid |
+        sourceSimpleLocalSmallSteps(src, mid) and
+        simpleLocalSmallStep(mid, n)
+      )
+    }
+
+    private predicate firstStep(TypeTracker tt, Node src, LocalSourceNode n2) {
+      exists(Node n1, TypeTracker tt0 |
+        sourceSimpleLocalSmallSteps(src, n1) and
+        tt0.start() and
+        tt = smallStepInlineLate(tt0, n1, n2)
+      )
+    }
+
     private Node flow(TypeTracker tt) {
       tt.start() and source(result)
+      or
+      firstStep(tt, _, result)
       or
       exists(TypeTracker ttMid | tt = ttMid.step(flow(ttMid), result))
     }
 
     /**
-     * Holds if the given source flows to `n`.
+     * Holds if a source flows to `n`.
      */
-    predicate flowsTo(Node n) { flowsTo(flow(TypeTracker::end()), n) }
+    predicate flowsTo(Node n) {
+      flowsTo(flow(TypeTracker::end()), n) or sourceSimpleLocalSmallSteps(_, n)
+    }
 
     /**
      * Given a sink definition, constructs the relation of edges that can be used
@@ -849,7 +871,10 @@ module TypeTracking<TypeTrackingInput I> {
         string toString() { result = this.getNode().toString() + this.ppContent() }
 
         /** Holds if this is a source. */
-        predicate isSource() { source(this.getNode()) and this.getTypeTracker().start() }
+        predicate isSource() {
+          source(this.getNode()) and
+          (this.getTypeTracker().start() or this instanceof TPathNodeSink)
+        }
 
         /** Holds if this is a sink. */
         predicate isSink() { this instanceof TPathNodeSink }
@@ -857,7 +882,11 @@ module TypeTracking<TypeTrackingInput I> {
 
       private predicate edgeCand(Node n1, TypeTracker tt1, Node n2, TypeTracker tt2) {
         n1 = flow(tt1) and
-        tt2 = tt1.step(n1, n2)
+        (
+          tt2 = tt1.step(n1, n2)
+          or
+          tt1.start() and firstStep(tt2, n1, n2)
+        )
       }
 
       private predicate edgeCand(PathNodeFwd n1, PathNodeFwd n2) {
@@ -871,7 +900,13 @@ module TypeTracking<TypeTrackingInput I> {
         or
         n1.getTypeTracker().end() and
         flowsTo(n1.getNode(), n2.getNode()) and
+        n1.getNode() != n2.getNode() and
         n2 instanceof TPathNodeSink
+        or
+        sourceSimpleLocalSmallSteps(n1.getNode(), n2.getNode()) and
+        n1.getNode() != n2.getNode() and
+        n1.isSource() and
+        n2.isSink()
       }
 
       private predicate reachRev(PathNodeFwd n) {
@@ -896,8 +931,15 @@ module TypeTracking<TypeTrackingInput I> {
 
       private predicate stepPlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
 
+      /**
+       * DEPRECATED: Use `flowPath` instead.
+       *
+       * Holds if there is a path between `source` and `sink`.
+       */
+      deprecated predicate hasFlow(PathNode source, PathNode sink) { flowPath(source, sink) }
+
       /** Holds if there is a path between `source` and `sink`. */
-      predicate hasFlow(PathNode source, PathNode sink) {
+      predicate flowPath(PathNode source, PathNode sink) {
         source.isSource() and
         sink.isSink() and
         (source = sink or stepPlus(source, sink))

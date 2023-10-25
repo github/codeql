@@ -10,13 +10,13 @@
  */
 
 import go
-import DataFlow::PathGraph
 import DsnInjectionCustomizations
+import DsnInjectionFlow::PathGraph
 
 /** An untrusted flow source taken as a source for the `DsnInjection` taint-flow configuration. */
 private class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
 
-from DsnInjection cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from DsnInjectionFlow::PathNode source, DsnInjectionFlow::PathNode sink
+where DsnInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Data-Source Name is built using $@.", source.getNode(),
   "untrusted user input"

@@ -26,6 +26,8 @@ private class TestSummaries extends SummaryModelCsv {
       [
         // model to allow data flow through `signum()` as though it were an identity function, for the benefit of testing flow through optional chaining (`x?.`).
         ";Int;true;signum();;;Argument[-1];ReturnValue;value",
+        // test Tuple content in MAD
+        ";;false;tupleShiftLeft2(_:);;;Argument[0].TupleElement[1];ReturnValue.TupleElement[0];value",
         // test Enum content in MAD
         ";;false;mkMyEnum2(_:);;;Argument[0];ReturnValue.EnumElement[mySingle:0];value",
         ";;false;mkOptional2(_:);;;Argument[0];ReturnValue.OptionalSome;value"

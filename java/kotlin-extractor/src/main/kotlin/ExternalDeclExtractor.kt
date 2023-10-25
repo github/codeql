@@ -14,7 +14,7 @@ import java.util.ArrayList
 import java.util.HashSet
 import java.util.zip.GZIPOutputStream
 
-class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: String, val sourceFilePath: String, val primitiveTypeMapping: PrimitiveTypeMapping, val pluginContext: IrPluginContext, val globalExtensionState: KotlinExtractorGlobalState, val diagnosticTrapWriter: DiagnosticTrapWriter) {
+class ExternalDeclExtractor(val logger: FileLogger, val compression: Compression, val invocationTrapFile: String, val sourceFilePath: String, val primitiveTypeMapping: PrimitiveTypeMapping, val pluginContext: IrPluginContext, val globalExtensionState: KotlinExtractorGlobalState, val diagnosticTrapWriter: DiagnosticTrapWriter) {
 
     val declBinaryNames = HashMap<IrDeclaration, String>()
     val externalDeclsDone = HashSet<Pair<String, String>>()
@@ -23,7 +23,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
     val propertySignature = ";property"
     val fieldSignature = ";field"
 
-    val output = OdasaOutput(false, logger).also {
+    val output = OdasaOutput(false, compression, logger).also {
         it.setCurrentSourceFile(File(sourceFilePath))
     }
 
@@ -65,7 +65,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
                     val trapFile = manager.file
                     val trapTmpFile = File.createTempFile("${trapFile.nameWithoutExtension}.", ".${trapFile.extension}.tmp", trapFile.parentFile)
                     try {
-                        GZIPOutputStream(trapTmpFile.outputStream()).bufferedWriter().use {
+                        compression.bufferedWriter(trapTmpFile).use {
                             extractorFn(it, signature, manager)
                         }
 
@@ -88,12 +88,10 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
             nextBatch.forEach { workPair ->
                 val (irDecl, possiblyLongSignature) = workPair
                 extractElement(irDecl, possiblyLongSignature, false) { trapFileBW, signature, manager ->
-                    val containingClass = getContainingClassOrSelf(irDecl)
-                    if (containingClass == null) {
-                        logger.errorElement("Unable to get containing class", irDecl)
+                    val binaryPath = getIrDeclarationBinaryPath(irDecl)
+                    if (binaryPath == null) {
+                        logger.errorElement("Unable to get binary path", irDecl)
                     } else {
-                        val binaryPath = getIrClassBinaryPath(containingClass)
-
                         // We want our comments to be the first thing in the file,
                         // so start off with a PlainTrapWriter
                         val tw = PlainTrapWriter(logger.loggerBase, TrapLabelManager(), trapFileBW, diagnosticTrapWriter)

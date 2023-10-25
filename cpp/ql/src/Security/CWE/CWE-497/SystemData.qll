@@ -34,7 +34,7 @@ class EnvData extends SystemData {
         .regexpMatch(".*(user|host|admin|root|home|path|http|ssl|snmp|sock|port|proxy|pass|token|crypt|key).*")
   }
 
-  override DataFlow::Node getAnExpr() { result.asIndirectConvertedExpr() = this }
+  override DataFlow::Node getAnExpr() { result.asIndirectExpr() = this }
 
   override predicate isSensitive() {
     this.(EnvironmentRead)
@@ -50,7 +50,7 @@ class EnvData extends SystemData {
 class SqlClientInfo extends SystemData {
   SqlClientInfo() { this.(FunctionCall).getTarget().hasName("mysql_get_client_info") }
 
-  override DataFlow::Node getAnExpr() { result.asIndirectConvertedExpr() = this }
+  override DataFlow::Node getAnExpr() { result.asIndirectExpr() = this }
 
   override predicate isSensitive() { any() }
 }

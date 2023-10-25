@@ -1,14 +1,17 @@
 /** Provides a taint-tracking model to reason about Data-Source name injection vulnerabilities. */
 
 import go
-import DataFlow::PathGraph
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
 
 /** A source for `DsnInjection` taint-flow configuration. */
 abstract class Source extends DataFlow::Node { }
 
-/** A taint-tracking configuration to reason about Data Source Name injection vulnerabilities. */
-class DsnInjection extends TaintTracking::Configuration {
+/**
+ * DEPRECATED: Use `DsnInjectionFlow` instead.
+ *
+ *  A taint-tracking configuration to reason about Data Source Name injection vulnerabilities.
+ */
+deprecated class DsnInjection extends TaintTracking::Configuration {
   DsnInjection() { this = "DsnInjection" }
 
   override predicate isSource(DataFlow::Node node) { node instanceof Source }
@@ -24,6 +27,27 @@ class DsnInjection extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof RegexpCheckBarrier }
 }
+
+private module DsnInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(DataFlow::CallNode c |
+      c.getTarget().hasQualifiedName("database/sql", "Open") and
+      c.getArgument(0).getStringValue() = "mysql"
+    |
+      sink = c.getArgument(1)
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof RegexpCheckBarrier }
+}
+
+/**
+ * Tracks taint flow for reasoning about Data Source Name injection
+ * vulnerabilities.
+ */
+module DsnInjectionFlow = TaintTracking::Global<DsnInjectionConfig>;
 
 /** A model of a function which decodes or unmarshals a tainted input, propagating taint from any argument to either the method receiver or return value. */
 private class DecodeFunctionModel extends TaintTracking::FunctionModel {

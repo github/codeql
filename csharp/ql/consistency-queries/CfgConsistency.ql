@@ -2,15 +2,14 @@ import csharp
 import semmle.code.csharp.controlflow.internal.Completion
 import semmle.code.csharp.controlflow.internal.PreBasicBlocks
 import ControlFlow
-import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl::Consistency
 import semmle.code.csharp.controlflow.internal.Splitting
-import Consistency
 
 private predicate splitBB(ControlFlow::BasicBlock bb) {
   exists(ControlFlow::Node first |
     first = bb.getFirstNode() and
     first.isJoin() and
-    strictcount(first.getAPredecessor().getElement()) = 1
+    strictcount(first.getAPredecessor().getAstNode()) = 1
   )
 }
 

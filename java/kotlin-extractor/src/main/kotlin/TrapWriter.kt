@@ -48,6 +48,15 @@ class TrapLabelManager {
      * duplication.
      */
     val genericSpecialisationsExtracted = HashSet<String>()
+
+    /**
+     * Sometimes, when we extract a file class we don't have the IrFile
+     * for it, so we are not able to give it a location. This means that
+     * the location is written outside of the label creation.
+     * This allows us to keep track of whether we've written the location
+     * already in this TRAP file, to avoid duplication.
+     */
+    val fileClassLocationsExtracted = HashSet<IrFile>()
 }
 
 /**

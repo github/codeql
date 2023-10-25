@@ -1,4 +1,3 @@
-failures
 testFailures
 edges
 | json.rb:1:17:1:26 | call to source | json.rb:1:6:1:27 | call to parse |

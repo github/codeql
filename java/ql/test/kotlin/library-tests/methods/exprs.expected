@@ -49,12 +49,12 @@
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | boolean | TypeAccess |
-| dataClass.kt:0:0:0:0 | copy(...) | MethodAccess |
+| dataClass.kt:0:0:0:0 | copy(...) | MethodCall |
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
-| dataClass.kt:0:0:0:0 | hashCode(...) | MethodAccess |
-| dataClass.kt:0:0:0:0 | hashCode(...) | MethodAccess |
+| dataClass.kt:0:0:0:0 | hashCode(...) | MethodCall |
+| dataClass.kt:0:0:0:0 | hashCode(...) | MethodCall |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
@@ -146,9 +146,9 @@
 | delegates.kt:4:18:6:5 | MyClass | TypeAccess |
 | delegates.kt:4:18:6:5 | a0 | VarAccess |
 | delegates.kt:4:18:6:5 | a0 | VarAccess |
-| delegates.kt:4:18:6:5 | get(...) | MethodAccess |
-| delegates.kt:4:18:6:5 | getLazyProp(...) | MethodAccess |
-| delegates.kt:4:18:6:5 | getValue(...) | MethodAccess |
+| delegates.kt:4:18:6:5 | get(...) | MethodCall |
+| delegates.kt:4:18:6:5 | getLazyProp(...) | MethodCall |
+| delegates.kt:4:18:6:5 | getValue(...) | MethodCall |
 | delegates.kt:4:18:6:5 | int | TypeAccess |
 | delegates.kt:4:18:6:5 | lazyProp$delegate | VarAccess |
 | delegates.kt:4:18:6:5 | this | ThisAccess |
@@ -156,7 +156,7 @@
 | delegates.kt:4:18:6:5 | this.lazyProp$delegate | VarAccess |
 | delegates.kt:4:21:6:5 | Integer | TypeAccess |
 | delegates.kt:4:21:6:5 | LazyKt | TypeAccess |
-| delegates.kt:4:21:6:5 | lazy(...) | MethodAccess |
+| delegates.kt:4:21:6:5 | lazy(...) | MethodCall |
 | delegates.kt:4:26:6:5 | ...->... | LambdaExpr |
 | delegates.kt:4:26:6:5 | Function0<Integer> | TypeAccess |
 | delegates.kt:4:26:6:5 | Integer | TypeAccess |
@@ -185,15 +185,15 @@
 | delegates.kt:8:32:11:5 | a0 | VarAccess |
 | delegates.kt:8:32:11:5 | a1 | VarAccess |
 | delegates.kt:8:32:11:5 | a1 | VarAccess |
-| delegates.kt:8:32:11:5 | get(...) | MethodAccess |
-| delegates.kt:8:32:11:5 | get(...) | MethodAccess |
-| delegates.kt:8:32:11:5 | getObservableProp(...) | MethodAccess |
-| delegates.kt:8:32:11:5 | getObservableProp(...) | MethodAccess |
-| delegates.kt:8:32:11:5 | getValue(...) | MethodAccess |
+| delegates.kt:8:32:11:5 | get(...) | MethodCall |
+| delegates.kt:8:32:11:5 | get(...) | MethodCall |
+| delegates.kt:8:32:11:5 | getObservableProp(...) | MethodCall |
+| delegates.kt:8:32:11:5 | getObservableProp(...) | MethodCall |
+| delegates.kt:8:32:11:5 | getValue(...) | MethodCall |
 | delegates.kt:8:32:11:5 | observableProp$delegate | VarAccess |
-| delegates.kt:8:32:11:5 | setObservableProp(...) | MethodAccess |
-| delegates.kt:8:32:11:5 | setObservableProp(...) | MethodAccess |
-| delegates.kt:8:32:11:5 | setValue(...) | MethodAccess |
+| delegates.kt:8:32:11:5 | setObservableProp(...) | MethodCall |
+| delegates.kt:8:32:11:5 | setObservableProp(...) | MethodCall |
+| delegates.kt:8:32:11:5 | setValue(...) | MethodCall |
 | delegates.kt:8:32:11:5 | this | ThisAccess |
 | delegates.kt:8:32:11:5 | this | ThisAccess |
 | delegates.kt:8:32:11:5 | this | ThisAccess |
@@ -203,7 +203,7 @@
 | delegates.kt:8:35:8:43 | INSTANCE | VarAccess |
 | delegates.kt:8:35:11:5 | <set-?> | VarAccess |
 | delegates.kt:8:35:11:5 | String | TypeAccess |
-| delegates.kt:8:35:11:5 | observable(...) | MethodAccess |
+| delegates.kt:8:35:11:5 | observable(...) | MethodCall |
 | delegates.kt:8:57:8:62 | "<none>" | StringLiteral |
 | delegates.kt:8:66:11:5 | ...->... | LambdaExpr |
 | delegates.kt:8:66:11:5 | Function3<KProperty<?>,String,String,Unit> | TypeAccess |
@@ -217,7 +217,7 @@
 | delegates.kt:9:15:9:17 | String | TypeAccess |
 | delegates.kt:9:20:9:22 | String | TypeAccess |
 | delegates.kt:10:9:10:37 | ConsoleKt | TypeAccess |
-| delegates.kt:10:9:10:37 | println(...) | MethodAccess |
+| delegates.kt:10:9:10:37 | println(...) | MethodCall |
 | delegates.kt:10:17:10:36 | "..." | StringTemplateExpr |
 | delegates.kt:10:18:10:21 | "Was " | StringLiteral |
 | delegates.kt:10:23:10:25 | old | VarAccess |
@@ -283,7 +283,7 @@
 | enumClass.kt:10:14:10:42 | int | TypeAccess |
 | enumClass.kt:10:20:10:25 | int | TypeAccess |
 | enumClass.kt:10:30:10:33 | this | ThisAccess |
-| enumClass.kt:10:30:10:38 | f(...) | MethodAccess |
+| enumClass.kt:10:30:10:38 | f(...) | MethodCall |
 | enumClass.kt:10:30:10:42 | ... + ... | AddExpr |
 | enumClass.kt:10:37:10:37 | i | VarAccess |
 | enumClass.kt:10:42:10:42 | i | VarAccess |
@@ -307,7 +307,7 @@
 | methods3.kt:3:1:3:49 | String | TypeAccess |
 | methods3.kt:3:1:3:49 | Unit | TypeAccess |
 | methods3.kt:3:1:3:49 | Unit | TypeAccess |
-| methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt(...) | MethodAccess |
+| methods3.kt:3:1:3:49 | fooBarTopLevelMethodExt(...) | MethodCall |
 | methods3.kt:3:1:3:49 | int | TypeAccess |
 | methods3.kt:3:1:3:49 | int | TypeAccess |
 | methods3.kt:3:1:3:49 | p1 | VarAccess |
@@ -327,7 +327,7 @@
 | methods3.kt:6:5:6:45 | String | TypeAccess |
 | methods3.kt:6:5:6:45 | Unit | TypeAccess |
 | methods3.kt:6:5:6:45 | Unit | TypeAccess |
-| methods3.kt:6:5:6:45 | fooBarMethodExt(...) | MethodAccess |
+| methods3.kt:6:5:6:45 | fooBarMethodExt(...) | MethodCall |
 | methods3.kt:6:5:6:45 | int | TypeAccess |
 | methods3.kt:6:5:6:45 | int | TypeAccess |
 | methods3.kt:6:5:6:45 | p0 | VarAccess |
@@ -355,7 +355,7 @@
 | methods5.kt:7:3:7:15 | Object | TypeAccess |
 | methods5.kt:7:3:7:15 | String | TypeAccess |
 | methods5.kt:7:3:7:15 | Unit | TypeAccess |
-| methods5.kt:7:3:7:15 | a(...) | MethodAccess |
+| methods5.kt:7:3:7:15 | a(...) | MethodCall |
 | methods5.kt:7:3:7:15 | new (...) | ClassInstanceExpr |
 | methods5.kt:7:13:7:14 | 42 | IntegerLiteral |
 | methods5.kt:8:3:8:3 | x | VarAccess |
@@ -371,7 +371,7 @@
 | methods5.kt:10:3:10:11 | new C1<Integer>(...) | ClassInstanceExpr |
 | methods5.kt:10:3:10:18 | Integer | TypeAccess |
 | methods5.kt:10:3:10:18 | Object | TypeAccess |
-| methods5.kt:10:3:10:18 | f1(...) | MethodAccess |
+| methods5.kt:10:3:10:18 | f1(...) | MethodCall |
 | methods5.kt:10:3:10:18 | new (...) | ClassInstanceExpr |
 | methods5.kt:10:13:10:18 | <implicit coercion to unit> | ImplicitCoercionToUnitExpr |
 | methods5.kt:10:13:10:18 | Unit | TypeAccess |
@@ -386,12 +386,12 @@
 | methods.kt:9:5:12:5 | Unit | TypeAccess |
 | methods.kt:9:28:9:33 | int | TypeAccess |
 | methods.kt:9:36:9:41 | int | TypeAccess |
-| methods.kt:10:9:10:25 | classMethod(...) | MethodAccess |
+| methods.kt:10:9:10:25 | classMethod(...) | MethodCall |
 | methods.kt:10:9:10:25 | this | ThisAccess |
 | methods.kt:10:21:10:21 | a | VarAccess |
 | methods.kt:10:24:10:24 | 3 | IntegerLiteral |
 | methods.kt:11:9:11:28 | MethodsKt | TypeAccess |
-| methods.kt:11:9:11:28 | topLevelMethod(...) | MethodAccess |
+| methods.kt:11:9:11:28 | topLevelMethod(...) | MethodCall |
 | methods.kt:11:24:11:24 | b | VarAccess |
 | methods.kt:11:27:11:27 | 4 | IntegerLiteral |
 | methods.kt:14:12:14:29 | Unit | TypeAccess |

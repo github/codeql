@@ -1815,51 +1815,95 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // BaseHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `BaseHttpServer` module. */
-  API::Node baseHttpServer() { result = API::moduleImport("BaseHTTPServer") }
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Gets a reference to the `BaseHttpServer` module.
+   */
+  deprecated API::Node baseHttpServer() { result = API::moduleImport("BaseHTTPServer") }
 
-  /** Provides models for the `BaseHttpServer` module. */
-  module BaseHttpServer {
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Provides models for the `BaseHttpServer` module.
+   */
+  deprecated module BaseHttpServer {
     /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
      * Provides models for the `BaseHTTPServer.BaseHTTPRequestHandler` class (Python 2 only).
      */
-    module BaseHttpRequestHandler {
-      /** Gets a reference to the `BaseHttpServer.BaseHttpRequestHandler` class. */
-      API::Node classRef() { result = baseHttpServer().getMember("BaseHTTPRequestHandler") }
+    deprecated module BaseHttpRequestHandler {
+      /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
+       *  Gets a reference to the `BaseHttpServer.BaseHttpRequestHandler` class.
+       */
+      deprecated API::Node classRef() {
+        result = baseHttpServer().getMember("BaseHTTPRequestHandler")
+      }
     }
   }
 
   // ---------------------------------------------------------------------------
   // SimpleHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `SimpleHttpServer` module. */
-  API::Node simpleHttpServer() { result = API::moduleImport("SimpleHTTPServer") }
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Gets a reference to the `SimpleHttpServer` module.
+   */
+  deprecated API::Node simpleHttpServer() { result = API::moduleImport("SimpleHTTPServer") }
 
-  /** Provides models for the `SimpleHttpServer` module. */
-  module SimpleHttpServer {
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Provides models for the `SimpleHttpServer` module.
+   */
+  deprecated module SimpleHttpServer {
     /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
      * Provides models for the `SimpleHTTPServer.SimpleHTTPRequestHandler` class (Python 2 only).
      */
-    module SimpleHttpRequestHandler {
-      /** Gets a reference to the `SimpleHttpServer.SimpleHttpRequestHandler` class. */
-      API::Node classRef() { result = simpleHttpServer().getMember("SimpleHTTPRequestHandler") }
+    deprecated module SimpleHttpRequestHandler {
+      /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
+       *  Gets a reference to the `SimpleHttpServer.SimpleHttpRequestHandler` class.
+       */
+      deprecated API::Node classRef() {
+        result = simpleHttpServer().getMember("SimpleHTTPRequestHandler")
+      }
     }
   }
 
   // ---------------------------------------------------------------------------
   // CGIHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `CGIHTTPServer` module. */
-  API::Node cgiHttpServer() { result = API::moduleImport("CGIHTTPServer") }
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Gets a reference to the `CGIHTTPServer` module.
+   */
+  deprecated API::Node cgiHttpServer() { result = API::moduleImport("CGIHTTPServer") }
 
   /** Provides models for the `CGIHTTPServer` module. */
-  module CgiHttpServer {
+  deprecated module CgiHttpServer {
     /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
      * Provides models for the `CGIHTTPServer.CGIHTTPRequestHandler` class (Python 2 only).
      */
-    module CgiHttpRequestHandler {
-      /** Gets a reference to the `CGIHTTPServer.CgiHttpRequestHandler` class. */
-      API::Node classRef() { result = cgiHttpServer().getMember("CGIHTTPRequestHandler") }
+    deprecated module CgiHttpRequestHandler {
+      /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
+       *  Gets a reference to the `CGIHTTPServer.CgiHttpRequestHandler` class.
+       */
+      deprecated API::Node classRef() {
+        result = cgiHttpServer().getMember("CGIHTTPRequestHandler")
+      }
     }
 
     /** DEPRECATED: Alias for CgiHttpRequestHandler */
@@ -1872,47 +1916,69 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // http (Python 3 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `http` module. */
-  API::Node http() { result = API::moduleImport("http") }
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   * Gets a reference to the `http` module.
+   */
+  deprecated API::Node http() { result = API::moduleImport("http") }
 
   /** Provides models for the `http` module. */
-  module StdlibHttp {
+  deprecated module StdlibHttp {
     // -------------------------------------------------------------------------
     // http.server
     // -------------------------------------------------------------------------
-    /** Gets a reference to the `http.server` module. */
-    API::Node server() { result = http().getMember("server") }
+    /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
+     * Gets a reference to the `http.server` module.
+     */
+    deprecated API::Node server() { result = http().getMember("server") }
 
-    /** Provides models for the `http.server` module */
-    module Server {
+    /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
+     * Provides models for the `http.server` module
+     */
+    deprecated module Server {
       /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
        * Provides models for the `http.server.BaseHTTPRequestHandler` class (Python 3 only).
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler.
        */
-      module BaseHttpRequestHandler {
+      deprecated module BaseHttpRequestHandler {
         /** Gets a reference to the `http.server.BaseHttpRequestHandler` class. */
-        API::Node classRef() { result = server().getMember("BaseHTTPRequestHandler") }
+        deprecated API::Node classRef() { result = server().getMember("BaseHTTPRequestHandler") }
       }
 
       /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
        * Provides models for the `http.server.SimpleHTTPRequestHandler` class (Python 3 only).
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.SimpleHTTPRequestHandler.
        */
-      module SimpleHttpRequestHandler {
+      deprecated module SimpleHttpRequestHandler {
         /** Gets a reference to the `http.server.SimpleHttpRequestHandler` class. */
-        API::Node classRef() { result = server().getMember("SimpleHTTPRequestHandler") }
+        deprecated API::Node classRef() { result = server().getMember("SimpleHTTPRequestHandler") }
       }
 
       /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
        * Provides models for the `http.server.CGIHTTPRequestHandler` class (Python 3 only).
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.CGIHTTPRequestHandler.
        */
-      module CgiHttpRequestHandler {
-        /** Gets a reference to the `http.server.CGIHTTPRequestHandler` class. */
-        API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
+      deprecated module CgiHttpRequestHandler {
+        /**
+         * DEPRECATED: Use API-graphs directly instead.
+         *
+         * Gets a reference to the `http.server.CGIHTTPRequestHandler` class.
+         */
+        deprecated API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
       }
 
       /** DEPRECATED: Alias for CgiHttpRequestHandler */
@@ -1933,13 +1999,13 @@ private module StdlibPrivate {
       result =
         [
           // Python 2
-          BaseHttpServer::BaseHttpRequestHandler::classRef(),
-          SimpleHttpServer::SimpleHttpRequestHandler::classRef(),
-          CgiHttpServer::CgiHttpRequestHandler::classRef(),
+          API::moduleImport("BaseHTTPServer").getMember("BaseHTTPRequestHandler"),
+          API::moduleImport("SimpleHTTPServer").getMember("SimpleHTTPRequestHandler"),
+          API::moduleImport("CGIHTTPServer").getMember("CGIHTTPRequestHandler"),
           // Python 3
-          StdlibHttp::Server::BaseHttpRequestHandler::classRef(),
-          StdlibHttp::Server::SimpleHttpRequestHandler::classRef(),
-          StdlibHttp::Server::CgiHttpRequestHandler::classRef()
+          API::moduleImport("http").getMember("server").getMember("BaseHTTPRequestHandler"),
+          API::moduleImport("http").getMember("server").getMember("SimpleHTTPRequestHandler"),
+          API::moduleImport("http").getMember("server").getMember("CGIHTTPRequestHandler"),
         ].getASubclass*()
     }
 
@@ -4370,6 +4436,141 @@ private module StdlibPrivate {
       input = "Argument[0]" and
       output = "Argument[self]" and
       preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `os.getenv` / `os.getenvb`
+   *
+   * See https://devdocs.io/python~3.11/library/os#os.getenv
+   */
+  class OsGetEnv extends SummarizedCallable {
+    OsGetEnv() { this = "os.getenv" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("os").getMember(["getenv", "getenvb"]).getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("os").getMember(["getenv", "getenvb"]).getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input in ["Argument[1]", "Argument[default:]"] and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // asyncio
+  // ---------------------------------------------------------------------------
+  /** Provides models for the `asyncio` module. */
+  module AsyncIO {
+    /**
+     * A call to the `asyncio.create_subprocess_exec` function (also accessible via the `subprocess` module of `asyncio`)
+     *
+     * See https://docs.python.org/3/library/asyncio-subprocess.html#creating-subprocesses
+     */
+    private class CreateSubprocessExec extends SystemCommandExecution::Range,
+      FileSystemAccess::Range, API::CallNode
+    {
+      CreateSubprocessExec() {
+        this = API::moduleImport("asyncio").getMember("create_subprocess_exec").getACall()
+        or
+        this =
+          API::moduleImport("asyncio")
+              .getMember("subprocess")
+              .getMember("create_subprocess_exec")
+              .getACall()
+      }
+
+      override DataFlow::Node getCommand() { result = this.getParameter(0, "program").asSink() }
+
+      override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) {
+        none() // this is a safe API.
+      }
+    }
+
+    /**
+     * A call to the `asyncio.create_subprocess_shell` function (also accessible via the `subprocess` module of `asyncio`)
+     *
+     * See https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.create_subprocess_shell
+     */
+    private class CreateSubprocessShell extends SystemCommandExecution::Range,
+      FileSystemAccess::Range, API::CallNode
+    {
+      CreateSubprocessShell() {
+        this = API::moduleImport("asyncio").getMember("create_subprocess_shell").getACall()
+        or
+        this =
+          API::moduleImport("asyncio")
+              .getMember("subprocess")
+              .getMember("create_subprocess_shell")
+              .getACall()
+      }
+
+      override DataFlow::Node getCommand() { result = this.getParameter(0, "cmd").asSink() }
+
+      override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
+    }
+
+    /**
+     * Get an asyncio event loop (an object with basetype `AbstractEventLoop`).
+     *
+     * See https://docs.python.org/3/library/asyncio-eventloop.html
+     */
+    private API::Node getAsyncioEventLoop() {
+      result = API::moduleImport("asyncio").getMember("get_running_loop").getReturn()
+      or
+      result = API::moduleImport("asyncio").getMember("get_event_loop").getReturn() // deprecated in Python 3.10.0 and later
+      or
+      result = API::moduleImport("asyncio").getMember("new_event_loop").getReturn()
+    }
+
+    /**
+     * A call to `subprocess_exec` on an event loop instance.
+     *
+     * See https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.subprocess_exec
+     */
+    private class EventLoopSubprocessExec extends API::CallNode, SystemCommandExecution::Range,
+      FileSystemAccess::Range
+    {
+      EventLoopSubprocessExec() {
+        this = getAsyncioEventLoop().getMember("subprocess_exec").getACall()
+      }
+
+      override DataFlow::Node getCommand() { result = this.getArg(1) }
+
+      override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) {
+        none() // this is a safe API.
+      }
+    }
+
+    /**
+     * A call to `subprocess_shell` on an event loop instance.
+     *
+     * See https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.subprocess_shell
+     */
+    private class EventLoopSubprocessShell extends API::CallNode, SystemCommandExecution::Range,
+      FileSystemAccess::Range
+    {
+      EventLoopSubprocessShell() {
+        this = getAsyncioEventLoop().getMember("subprocess_shell").getACall()
+      }
+
+      override DataFlow::Node getCommand() { result = this.getParameter(1, "cmd").asSink() }
+
+      override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
     }
   }
 }

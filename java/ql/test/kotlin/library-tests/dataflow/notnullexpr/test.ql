@@ -2,7 +2,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodAccess).getMethod().hasName("taint") }
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("taint") }
 
   predicate isSink(DataFlow::Node n) { n.asExpr().(Argument).getCall().getCallee().hasName("sink") }
 }

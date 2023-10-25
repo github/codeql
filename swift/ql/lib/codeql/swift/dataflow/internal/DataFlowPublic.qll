@@ -220,15 +220,20 @@ module Content {
     override string toString() { result = this.getSignature() }
   }
 
-  /** An element of an array at an unknown index */
-  class ArrayContent extends Content, TArrayContent {
-    override string toString() { result = "Array element" }
-  }
-
-  /** An element of a collection. */
+  /**
+   * An element of a collection. This is a broad class including:
+   *  - elements of collections, such as `Set<Element>`.
+   *  - elements of buffers, such as `UnsafeBufferPointer<Element>`.
+   *  - the pointee of a pointer, such as `UnsafePointer<Pointee>`.
+   */
   class CollectionContent extends Content, TCollectionContent {
     override string toString() { result = "Collection element" }
   }
+
+  /**
+   * DEPRECATED: An element of a collection. This is an alias for the general CollectionContent.
+   */
+  deprecated class ArrayContent = CollectionContent;
 }
 
 /**
@@ -254,13 +259,4 @@ class ContentSet extends TContentSet {
 
   /** Gets a content that may be read from when reading from this set. */
   Content getAReadContent() { this.isSingleton(result) }
-}
-
-/**
- * DEPRECATED: Do not use.
- */
-abstract deprecated class BarrierGuard extends DataFlowExpr {
-  BarrierGuard() { none() }
-
-  final Node getAGuardedNode() { none() }
 }

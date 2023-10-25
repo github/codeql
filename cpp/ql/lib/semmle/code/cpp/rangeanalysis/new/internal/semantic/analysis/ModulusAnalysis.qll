@@ -17,17 +17,25 @@ private import RangeUtils
 private import RangeAnalysisStage
 
 module ModulusAnalysis<DeltaSig D, BoundSig<D> Bounds, UtilSig<D> U> {
-  /**
-   * Holds if `e + delta` equals `v` at `pos`.
-   */
-  private predicate valueFlowStepSsa(SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, int delta) {
-    U::semSsaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
-    or
+  pragma[nomagic]
+  private predicate valueFlowStepSsaEqFlowCond(
+    SemSsaReadPosition pos, SemSsaVariable v, SemExpr e, int delta
+  ) {
     exists(SemGuard guard, boolean testIsTrue |
-      pos.hasReadOfVar(v) and
       guard = U::semEqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
       semGuardDirectlyControlsSsaRead(guard, pos, testIsTrue)
     )
+  }
+
+  /**
+   * Holds if `e + delta` equals `v` at `pos`.
+   */
+  pragma[nomagic]
+  private predicate valueFlowStepSsa(SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, int delta) {
+    U::semSsaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
+    or
+    pos.hasReadOfVar(v) and
+    valueFlowStepSsaEqFlowCond(pos, v, e, delta)
   }
 
   /**

@@ -257,11 +257,22 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
   or
   // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
   // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
-  exists(SsaVariable v2, Guard guardEq, boolean eqIsTrue, int d1, int d2 |
-    guardEq = eqFlowCond(v, ssaRead(v2, d1), d2, true, eqIsTrue) and
-    result = boundFlowCond(v2, e, delta + d1 - d2, upper, testIsTrue) and
-    // guardEq needs to control guard
-    guardEq.directlyControls(result.getBasicBlock(), eqIsTrue)
+  exists(SsaVariable v2, int d |
+    // equality needs to control guard
+    result.getBasicBlock() = eqSsaCondDirectlyControls(v, v2, d) and
+    result = boundFlowCond(v2, e, delta - d, upper, testIsTrue)
+  )
+}
+
+/**
+ * Gets a basic block in which `v1` equals `v2 + delta`.
+ */
+pragma[nomagic]
+private BasicBlock eqSsaCondDirectlyControls(SsaVariable v1, SsaVariable v2, int delta) {
+  exists(Guard guardEq, int d1, int d2, boolean eqIsTrue |
+    guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
+    delta = d2 - d1 and
+    guardEq.directlyControls(result, eqIsTrue)
   )
 }
 
@@ -479,7 +490,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
     )
   )
   or
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     e2 = ma and
     ma.getMethod() = m and
     (
@@ -741,9 +752,9 @@ private predicate boundedPhi(
  * Holds if `e` has a lower bound of zero.
  */
 private predicate lowerBoundZero(Expr e) {
-  e.(MethodAccess).getMethod() instanceof StringLengthMethod or
-  e.(MethodAccess).getMethod() instanceof CollectionSizeMethod or
-  e.(MethodAccess).getMethod() instanceof MapSizeMethod or
+  e.(MethodCall).getMethod() instanceof StringLengthMethod or
+  e.(MethodCall).getMethod() instanceof CollectionSizeMethod or
+  e.(MethodCall).getMethod() instanceof MapSizeMethod or
   e.(FieldRead).getField() instanceof ArrayLengthField or
   positive(e.(AndBitwiseExpr).getAnOperand())
 }
@@ -756,7 +767,7 @@ private predicate baseBound(Expr e, int b, boolean upper) {
   lowerBoundZero(e) and b = 0 and upper = false
   or
   exists(Method read |
-    e.(MethodAccess).getMethod().overrides*(read) and
+    e.(MethodCall).getMethod().overrides*(read) and
     read.getDeclaringType() instanceof TypeInputStream and
     read.hasName("read") and
     read.getNumberOfParameters() = 0

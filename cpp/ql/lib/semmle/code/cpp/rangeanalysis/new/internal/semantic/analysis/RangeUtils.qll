@@ -49,6 +49,7 @@ module RangeUtil<Range::DeltaSig D, Range::LangSig<D> Lang> implements Range::Ut
    * - `isEq = true`  : `v == e + delta`
    * - `isEq = false` : `v != e + delta`
    */
+  pragma[nomagic]
   SemGuard semEqFlowCond(
     SemSsaVariable v, SemExpr e, D::Delta delta, boolean isEq, boolean testIsTrue
   ) {

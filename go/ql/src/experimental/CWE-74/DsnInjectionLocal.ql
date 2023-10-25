@@ -10,15 +10,15 @@
  */
 
 import go
-import DataFlow::PathGraph
 import DsnInjectionCustomizations
+import DsnInjectionFlow::PathGraph
 
-/** An argument passed via the command line taken as a source for the `DsnInjection` taint-flow configuration. */
+/** An argument passed via the command line taken as a source for the `DsnInjectionFlow` taint-flow. */
 private class OsArgsSource extends Source {
   OsArgsSource() { this = any(Variable c | c.hasQualifiedName("os", "Args")).getARead() }
 }
 
-from DsnInjection cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from DsnInjectionFlow::PathNode source, DsnInjectionFlow::PathNode sink
+where DsnInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This query depends on a $@.", source.getNode(),
   "user-provided value"

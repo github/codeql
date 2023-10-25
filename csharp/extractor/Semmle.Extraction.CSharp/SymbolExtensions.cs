@@ -1,10 +1,10 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -53,19 +53,6 @@ namespace Semmle.Extraction.CSharp
             return type is IErrorTypeSymbol errorType && errorType.CandidateSymbols.Any()
                 ? errorType.CandidateSymbols.First() as ITypeSymbol
                 : type;
-        }
-
-        /// <summary>
-        /// Gets the name of this symbol.
-        ///
-        /// If the symbol implements an explicit interface, only the
-        /// name of the member being implemented is included, not the
-        /// explicit prefix.
-        /// </summary>
-        public static string GetName(this ISymbol symbol, bool useMetadataName = false)
-        {
-            var name = useMetadataName ? symbol.MetadataName : symbol.Name;
-            return symbol.CanBeReferencedByName ? name : name.Substring(symbol.Name.LastIndexOf('.') + 1);
         }
 
         private static IEnumerable<SyntaxToken> GetModifiers<T>(this ISymbol symbol, Func<T, IEnumerable<SyntaxToken>> getModifierTokens) =>

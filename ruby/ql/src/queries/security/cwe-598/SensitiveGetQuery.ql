@@ -13,9 +13,10 @@
 
 import ruby
 import codeql.ruby.security.SensitiveGetQueryQuery
+import codeql.ruby.security.SensitiveGetQueryCustomizations::SensitiveGetQuery
 import codeql.ruby.security.SensitiveActions
 
-from DataFlow::Node source, DataFlow::Node sink, SensitiveGetQuery::Configuration config
-where config.hasFlow(source, sink)
-select source, "$@ for GET requests uses query parameter as sensitive data.",
-  source.(SensitiveGetQuery::Source).getHandler(), "Route handler"
+from Source source, DataFlow::Node sink
+where SensitiveGetQueryFlow::flow(source, sink)
+select source, "$@ for GET requests uses query parameter as sensitive data.", source.getHandler(),
+  "Route handler"

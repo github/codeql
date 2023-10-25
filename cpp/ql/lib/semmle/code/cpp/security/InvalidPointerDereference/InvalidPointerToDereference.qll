@@ -66,11 +66,14 @@
  * module. Since the node we are tracking is not necessarily _equal_ to the pointer-arithmetic instruction, but rather satisfies
  * `node.asInstruction() <= pai + deltaDerefSourceAndPai`, we need to account for the delta when checking if a guard is sufficiently
  * strong to infer that a future dereference is safe. To do this, we check that the guard guarantees that a node `n` satisfies
- * `n < node + k` where `node` is a node we know is equal to the value of the dereference source (i.e., it satisfies
- * `node.asInstruction() <= pai + deltaDerefSourceAndPai`) and `k <= deltaDerefSourceAndPai`. Combining this we have
- * `n < node + k <= node + deltaDerefSourceAndPai <= pai + 2*deltaDerefSourceAndPai` (TODO: Oops. This math doesn't quite work out.
- * I think this is because we need to redefine the `BarrierConfig` to start flow at the pointer-arithmetic instruction instead of
- * at the dereference source. When combined with TODO above it's easy to show that this guard ensures that the dereference is safe).
+ * `n < node + k` where `node` is a node such that `node <= pai`. Thus, we know that any node `m` such that `m <= n + delta` where
+ * `delta + k <= 0` will be safe because:
+ * ```
+ * m <= n + delta
+ *   <  node + k + delta
+ *   <= pai + k + delta
+ *   <= pai
+ * ```
  */
 
 private import cpp
@@ -78,80 +81,120 @@ private import semmle.code.cpp.dataflow.new.DataFlow
 private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.controlflow.IRGuards
 private import AllocationToInvalidPointer as AllocToInvalidPointer
-private import RangeAnalysisUtil
+private import semmle.code.cpp.rangeanalysis.new.RangeAnalysisUtil
+
+/**
+ * Gets the virtual dispatch branching limit when calculating field flow while
+ * searching for flow from an out-of-bounds pointer to a dereference of the
+ * pointer.
+ *
+ * This can be overridden to a smaller value to improve performance (a
+ * value of 0 disables field flow), or a larger value to get more results.
+ */
+int invalidPointerToDereferenceFieldFlowBranchLimit() { result = 0 }
 
 private module InvalidPointerToDerefBarrier {
   private module BarrierConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) {
-      // The sources is the same as in the sources for `InvalidPointerToDerefConfig`.
-      invalidPointerToDerefSource(_, _, source, _)
+    additional predicate isSource(DataFlow::Node source, PointerArithmeticInstruction pai) {
+      invalidPointerToDerefSource(_, pai, _, _) and
+      // source <= pai
+      bounded2(source.asInstruction(), pai, any(int d | d <= 0))
     }
 
+    predicate isSource(DataFlow::Node source) { isSource(source, _) }
+
     additional predicate isSink(
-      DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int k, boolean testIsTrue
+      DataFlow::Node small, DataFlow::Node large, IRGuardCondition g, int k, boolean testIsTrue
     ) {
       // The sink is any "large" side of a relational comparison.
-      g.comparesLt(left.asOperand(), right.asOperand(), k, true, testIsTrue)
+      g.comparesLt(small.asOperand(), large.asOperand(), k, true, testIsTrue)
     }
 
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
+
+    int fieldFlowBranchLimit() { result = invalidPointerToDereferenceFieldFlowBranchLimit() }
   }
 
   private module BarrierFlow = DataFlow::Global<BarrierConfig>;
 
-  private int getInvalidPointerToDerefSourceDelta(DataFlow::Node node) {
-    exists(DataFlow::Node source |
-      BarrierFlow::flow(source, node) and
-      invalidPointerToDerefSource(_, _, source, result)
-    )
-  }
-
+  /**
+   * Holds if `g` ensures that `small < large + k` if `g` evaluates to `edge`.
+   *
+   * Additionally, it also holds that `large <= pai`. Thus, when `g` evaluates to `edge`
+   * it holds that `small < pai + k`.
+   */
   private predicate operandGuardChecks(
-    IRGuardCondition g, Operand left, Operand right, int state, boolean edge
+    PointerArithmeticInstruction pai, IRGuardCondition g, Operand small, int k, boolean edge
   ) {
-    exists(DataFlow::Node nLeft, DataFlow::Node nRight, int k |
-      nRight.asOperand() = right and
-      nLeft.asOperand() = left and
-      BarrierConfig::isSink(nLeft, nRight, g, k, edge) and
-      state = getInvalidPointerToDerefSourceDelta(nRight) and
-      k <= state
+    exists(DataFlow::Node source, DataFlow::Node nSmall, DataFlow::Node nLarge |
+      nSmall.asOperand() = small and
+      BarrierConfig::isSource(source, pai) and
+      BarrierFlow::flow(source, nLarge) and
+      BarrierConfig::isSink(nSmall, nLarge, g, k, edge)
     )
   }
 
-  Instruction getABarrierInstruction(int state) {
-    exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge |
+  /**
+   * Gets an instruction `instr` such that `instr < pai`.
+   */
+  Instruction getABarrierInstruction(PointerArithmeticInstruction pai) {
+    exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge, int delta, int k |
       use = value.getAUse() and
-      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](use), _, state,
-        pragma[only_bind_into](edge)) and
-      result = value.getAnInstruction() and
-      g.controls(result.getBlock(), edge)
+      // value < pai + k
+      operandGuardChecks(pai, pragma[only_bind_into](g), pragma[only_bind_into](use),
+        pragma[only_bind_into](k), pragma[only_bind_into](edge)) and
+      // result <= value + delta
+      bounded(result, value.getAnInstruction(), delta) and
+      g.controls(result.getBlock(), edge) and
+      delta + k <= 0
+      // combining the above we have: result < pai + k + delta <= pai
     )
   }
 
-  DataFlow::Node getABarrierNode() { result.asOperand() = getABarrierInstruction(_).getAUse() }
+  DataFlow::Node getABarrierNode(PointerArithmeticInstruction pai) {
+    result.asOperand() = getABarrierInstruction(pai).getAUse()
+  }
 
-  pragma[nomagic]
-  IRBlock getABarrierBlock(int state) { result.getAnInstruction() = getABarrierInstruction(state) }
+  /**
+   * Gets an address operand whose definition `instr` satisfies `instr < pai`.
+   */
+  AddressOperand getABarrierAddressOperand(PointerArithmeticInstruction pai) {
+    result.getDef() = getABarrierInstruction(pai)
+  }
 }
 
 /**
  * A configuration to track flow from a pointer-arithmetic operation found
  * by `AllocToInvalidPointerConfig` to a dereference of the pointer.
  */
-private module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { invalidPointerToDerefSource(_, _, source, _) }
+private module InvalidPointerToDerefConfig implements DataFlow::StateConfigSig {
+  class FlowState extends PointerArithmeticInstruction {
+    FlowState() { invalidPointerToDerefSource(_, this, _, _) }
+  }
+
+  predicate isSource(DataFlow::Node source, FlowState pai) {
+    invalidPointerToDerefSource(_, pai, source, _)
+  }
 
   pragma[inline]
-  predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _, _) }
+  predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _, _, _) }
+
+  predicate isSink(DataFlow::Node sink, FlowState pai) { none() }
 
   predicate isBarrier(DataFlow::Node node) {
     node = any(DataFlow::SsaPhiNode phi | not phi.isPhiRead()).getAnInput(true)
-    or
-    node = InvalidPointerToDerefBarrier::getABarrierNode()
   }
+
+  predicate isBarrier(DataFlow::Node node, FlowState pai) {
+    // `node = getABarrierNode(pai)` ensures that node < pai, so this node is safe to dereference.
+    // Note that this is the only place where the `FlowState` is used in this configuration.
+    node = InvalidPointerToDerefBarrier::getABarrierNode(pai)
+  }
+
+  int fieldFlowBranchLimit() { result = invalidPointerToDereferenceFieldFlowBranchLimit() }
 }
 
-private import DataFlow::Global<InvalidPointerToDerefConfig>
+private import DataFlow::GlobalWithState<InvalidPointerToDerefConfig>
 
 /**
  * Holds if `allocSource` is dataflow node that represents an allocation that flows to the
@@ -165,19 +208,14 @@ private predicate invalidPointerToDerefSource(
   DataFlow::Node allocSource, PointerArithmeticInstruction pai, DataFlow::Node derefSource,
   int deltaDerefSourceAndPai
 ) {
-  exists(int rhsSizeDelta |
-    // Note that `deltaDerefSourceAndPai` is not necessarily equal to `rhsSizeDelta`:
-    // `rhsSizeDelta` is the constant offset added to the size of the allocation, and
-    // `deltaDerefSourceAndPai` is the constant difference between the pointer-arithmetic instruction
-    // and the instruction computing the address for which we will search for a dereference.
-    AllocToInvalidPointer::pointerAddInstructionHasBounds(allocSource, pai, _, rhsSizeDelta) and
-    bounded2(derefSource.asInstruction(), pai, deltaDerefSourceAndPai) and
-    deltaDerefSourceAndPai >= 0 and
-    // TODO: This condition will go away once #13725 is merged, and then we can make `SizeBarrier`
-    // private to `AllocationToInvalidPointer.qll`.
-    not derefSource.getBasicBlock() =
-      AllocToInvalidPointer::SizeBarrier::getABarrierBlock(rhsSizeDelta)
-  )
+  // Note that `deltaDerefSourceAndPai` is not necessarily equal to `rhsSizeDelta`:
+  // `rhsSizeDelta` is the constant offset added to the size of the allocation, and
+  // `deltaDerefSourceAndPai` is the constant difference between the pointer-arithmetic instruction
+  // and the instruction computing the address for which we will search for a dereference.
+  AllocToInvalidPointer::pointerAddInstructionHasBounds(allocSource, pai, _, _) and
+  // derefSource <= pai + deltaDerefSourceAndPai
+  bounded2(derefSource.asInstruction(), pai, deltaDerefSourceAndPai) and
+  deltaDerefSourceAndPai >= 0
 }
 
 /**
@@ -187,15 +225,14 @@ private predicate invalidPointerToDerefSource(
  */
 pragma[inline]
 private predicate isInvalidPointerDerefSink(
-  DataFlow::Node sink, Instruction i, string operation, int deltaDerefSinkAndDerefAddress
+  DataFlow::Node sink, AddressOperand addr, Instruction i, string operation,
+  int deltaDerefSinkAndDerefAddress
 ) {
-  exists(AddressOperand addr, Instruction s, IRBlock b |
+  exists(Instruction s |
     s = sink.asInstruction() and
     bounded(addr.getDef(), s, deltaDerefSinkAndDerefAddress) and
     deltaDerefSinkAndDerefAddress >= 0 and
-    i.getAnOperand() = addr and
-    b = i.getBlock() and
-    not b = InvalidPointerToDerefBarrier::getABarrierBlock(deltaDerefSinkAndDerefAddress)
+    i.getAnOperand() = addr
   |
     i instanceof StoreInstruction and
     operation = "write"
@@ -221,9 +258,11 @@ private Instruction getASuccessor(Instruction instr) {
   instr.getBlock().getASuccessor+() = result.getBlock()
 }
 
-private predicate paiForDereferenceSink(PointerArithmeticInstruction pai, DataFlow::Node derefSink) {
+private predicate paiForDereferenceSink(
+  PointerArithmeticInstruction pai, DataFlow::Node derefSink, int deltaDerefSourceAndPai
+) {
   exists(DataFlow::Node derefSource |
-    invalidPointerToDerefSource(_, pai, derefSource, _) and
+    invalidPointerToDerefSource(_, pai, derefSource, deltaDerefSourceAndPai) and
     flow(derefSource, derefSink)
   )
 }
@@ -235,13 +274,15 @@ private predicate paiForDereferenceSink(PointerArithmeticInstruction pai, DataFl
  */
 private predicate derefSinkToOperation(
   DataFlow::Node derefSink, PointerArithmeticInstruction pai, DataFlow::Node operation,
-  string description, int deltaDerefSinkAndDerefAddress
+  string description, int deltaDerefSourceAndPai, int deltaDerefSinkAndDerefAddress
 ) {
-  exists(Instruction operationInstr |
-    paiForDereferenceSink(pai, pragma[only_bind_into](derefSink)) and
-    isInvalidPointerDerefSink(derefSink, operationInstr, description, deltaDerefSinkAndDerefAddress) and
+  exists(Instruction operationInstr, AddressOperand addr |
+    paiForDereferenceSink(pai, pragma[only_bind_into](derefSink), deltaDerefSourceAndPai) and
+    isInvalidPointerDerefSink(derefSink, addr, operationInstr, description,
+      deltaDerefSinkAndDerefAddress) and
     operationInstr = getASuccessor(derefSink.asInstruction()) and
-    operation.asInstruction() = operationInstr
+    operation.asInstruction() = operationInstr and
+    not addr = InvalidPointerToDerefBarrier::getABarrierAddressOperand(pai)
   )
 }
 
@@ -260,7 +301,8 @@ predicate operationIsOffBy(
   exists(int deltaDerefSourceAndPai, int deltaDerefSinkAndDerefAddress |
     invalidPointerToDerefSource(allocation, pai, derefSource, deltaDerefSourceAndPai) and
     flow(derefSource, derefSink) and
-    derefSinkToOperation(derefSink, pai, operation, description, deltaDerefSinkAndDerefAddress) and
+    derefSinkToOperation(derefSink, pai, operation, description, deltaDerefSourceAndPai,
+      deltaDerefSinkAndDerefAddress) and
     delta = deltaDerefSourceAndPai + deltaDerefSinkAndDerefAddress
   )
 }

@@ -47,6 +47,7 @@ class UnspecifiedElement(ErrorElement):
     property: string
     index: optional[int]
     error: string
+    children: list["AstNode"] | child | desc("These will be present only in certain downgraded databases.")
 
 class Comment(Locatable):
     text: string
@@ -106,6 +107,7 @@ class Stmt(AstNode):
 class GenericContext(Element):
     generic_type_params: list["GenericTypeParamDecl"] | child
 
+@qltest.test_with("EnumDecl")
 class EnumCaseDecl(Decl):
     elements: list["EnumElementDecl"]
 
@@ -246,6 +248,7 @@ class Callable(Element):
 class Function(GenericContext, ValueDecl, Callable):
     pass
 
+@qltest.test_with("EnumDecl")
 class EnumElementDecl(ValueDecl):
     name: string
     params: list[ParamDecl] | child
@@ -261,7 +264,10 @@ class PrefixOperatorDecl(OperatorDecl):
 
 class TypeDecl(ValueDecl):
     name: string
-    base_types: list[Type]
+    inherited_types: list[Type] | desc("""
+        This only returns the types effectively appearing in the declaration. In particular it
+        will not resolve `TypeAliasDecl`s or consider base types added by extensions.
+    """)
 
 class AbstractTypeParamDecl(TypeDecl):
     pass
@@ -986,8 +992,9 @@ class DoStmt(LabeledStmt):
 
 class ForEachStmt(LabeledStmt):
     pattern: Pattern | child
-    sequence: Expr | child
     where: optional[Expr] | child
+    iteratorVar: optional[PatternBindingDecl] | child
+    nextCall: optional[Expr] | child
     body: BraceStmt | child
 
 class LabeledConditionalStmt(LabeledStmt):

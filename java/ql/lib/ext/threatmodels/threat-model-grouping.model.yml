@@ -6,11 +6,6 @@ extensions:
     data:
       # Default threat model
       - ["remote", "default"]
-      - ["uri-path", "default"]
-
-      # Android threat models
-      - ["android-external-storage-dir", "android"]
-      - ["contentprovider", "android"]
 
       # Remote threat models
       - ["request", "remote"]
@@ -18,6 +13,10 @@ extensions:
 
       # Local threat models
       - ["database", "local"]
-      - ["cli", "local"]
+      - ["commandargs", "local"]
       - ["environment", "local"]
       - ["file", "local"]
+
+      # Android threat models
+      - ["android-external-storage-dir", "android"]
+      - ["contentprovider", "android"]

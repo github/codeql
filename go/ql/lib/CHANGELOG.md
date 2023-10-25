@@ -1,3 +1,37 @@
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Support has been added for file system access sinks in the following libraries: [net/http](https://pkg.go.dev/net/http), [Afero](https://github.com/spf13/afero), [beego](https://pkg.go.dev/github.com/astaxie/beego), [Echo](https://pkg.go.dev/github.com/labstack/echo), [Fiber](https://github.com/kataras/iris), [Gin](https://pkg.go.dev/github.com/gin-gonic/gin), [Iris](https://github.com/kataras/iris).
+* Added `GoKit.qll` to `go.qll` enabling the GoKit framework by default
+
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* Added Numeric and Boolean types to SQL injection sanitzers.
+
+## 0.6.5
+
+No user-facing changes.
+
+## 0.6.4
+
+### Minor Analysis Improvements
+
+* Added [http.Error](https://pkg.go.dev/net/http#Error) to XSS sanitzers.
+
+## 0.6.3
+
+No user-facing changes.
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Logrus' `WithContext` methods are no longer treated as if they output the values stored in that context to a log message.
+
 ## 0.6.1
 
 ### New Features

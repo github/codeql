@@ -1,13 +1,11 @@
-﻿using Semmle.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Xml;
-using System.Net.Http;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Xml;
+using Semmle.Util;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -189,12 +187,12 @@ namespace Semmle.Autobuild.Shared
 
         bool IBuildActions.FileExists(string file) => File.Exists(file);
 
-        private static ProcessStartInfo GetProcessStartInfo(string exe, string arguments, string? workingDirectory, IDictionary<string, string>? environment, bool redirectStandardOutput)
+        private static ProcessStartInfo GetProcessStartInfo(string exe, string arguments, string? workingDirectory, IDictionary<string, string>? environment)
         {
             var pi = new ProcessStartInfo(exe, arguments)
             {
                 UseShellExecute = false,
-                RedirectStandardOutput = redirectStandardOutput
+                RedirectStandardOutput = true
             };
             if (workingDirectory is not null)
                 pi.WorkingDirectory = workingDirectory;
@@ -206,40 +204,22 @@ namespace Semmle.Autobuild.Shared
 
         int IBuildActions.RunProcess(string exe, string args, string? workingDirectory, System.Collections.Generic.IDictionary<string, string>? env, BuildOutputHandler onOutput, BuildOutputHandler onError)
         {
-            var pi = GetProcessStartInfo(exe, args, workingDirectory, env, true);
-            using var p = new Process
-            {
-                StartInfo = pi
-            };
-            p.StartInfo.RedirectStandardError = true;
-            p.OutputDataReceived += new DataReceivedEventHandler((sender, e) => onOutput(e.Data));
-            p.ErrorDataReceived += new DataReceivedEventHandler((sender, e) => onError(e.Data));
+            var pi = GetProcessStartInfo(exe, args, workingDirectory, env);
+            pi.RedirectStandardError = true;
 
-            p.Start();
-
-            p.BeginErrorReadLine();
-            p.BeginOutputReadLine();
-
-            p.WaitForExit();
-            return p.ExitCode;
+            return pi.ReadOutput(out _, onOut: s => onOutput(s), onError: s => onError(s));
         }
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment)
         {
-            var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment, false);
-            using var p = Process.Start(pi);
-            if (p is null)
-            {
-                return -1;
-            }
-            p.WaitForExit();
-            return p.ExitCode;
+            var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment);
+            return pi.ReadOutput(out _, onOut: Console.WriteLine, onError: null);
         }
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment, out IList<string> stdOut)
         {
-            var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment, true);
-            return pi.ReadOutput(out stdOut);
+            var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment);
+            return pi.ReadOutput(out stdOut, onOut: null, onError: null);
         }
 
         void IBuildActions.DirectoryDelete(string dir, bool recursive) => Directory.Delete(dir, recursive);
@@ -283,17 +263,8 @@ namespace Semmle.Autobuild.Shared
 
         public string EnvironmentExpandEnvironmentVariables(string s) => Environment.ExpandEnvironmentVariables(s);
 
-        private static async Task DownloadFileAsync(string address, string filename)
-        {
-            using var httpClient = new HttpClient();
-            using var request = new HttpRequestMessage(HttpMethod.Get, address);
-            using var contentStream = await (await httpClient.SendAsync(request)).Content.ReadAsStreamAsync();
-            using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
-            await contentStream.CopyToAsync(stream);
-        }
-
         public void DownloadFile(string address, string fileName) =>
-            DownloadFileAsync(address, fileName).Wait();
+            FileUtils.DownloadFile(address, fileName);
 
         public IDiagnosticsWriter CreateDiagnosticsWriter(string filename) => new DiagnosticsStream(filename);
 

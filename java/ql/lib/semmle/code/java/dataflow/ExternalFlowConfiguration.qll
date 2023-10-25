@@ -26,6 +26,6 @@ private string getChildThreatModel(string group) { threatModelGrouping(result, g
  * Holds if the source model kind `kind` is relevant for generic queries
  * under the current threat model configuration.
  */
-predicate sourceModelKindConfig(string kind) {
+predicate currentThreatModel(string kind) {
   exists(string group | supportedThreatModels(group) and kind = getChildThreatModel*(group))
 }

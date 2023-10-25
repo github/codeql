@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Semmle.BuildAnalyser;
 using Semmle.Util.Logging;
+using Semmle.Extraction.CSharp.DependencyFetching;
 
 namespace Semmle.Extraction.CSharp.Standalone
 {
@@ -27,11 +26,10 @@ namespace Semmle.Extraction.CSharp.Standalone
     {
         public Analysis(ILogger logger, Options options)
         {
-            var progressMonitor = new ProgressMonitor(logger);
-            buildAnalysis = new BuildAnalysis(options, progressMonitor);
-            References = buildAnalysis.ReferenceFiles;
+            dependencyManager = new DependencyManager(options.SrcDir, options.Dependencies, logger);
+            References = dependencyManager.ReferenceFiles;
             Extraction = new Extraction(options.SrcDir);
-            Extraction.Sources.AddRange(options.SolutionFile is null ? buildAnalysis.AllSourceFiles : buildAnalysis.ProjectSourceFiles);
+            Extraction.Sources.AddRange(options.Dependencies.SolutionFile is null ? dependencyManager.AllSourceFiles : dependencyManager.ProjectSourceFiles);
         }
 
         public IEnumerable<string> References { get; }
@@ -41,11 +39,11 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// </summary>
         public Extraction Extraction { get; }
 
-        private readonly BuildAnalysis buildAnalysis;
+        private readonly DependencyManager dependencyManager;
 
         public void Dispose()
         {
-            buildAnalysis.Dispose();
+            dependencyManager.Dispose();
         }
     };
 

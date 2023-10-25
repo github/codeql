@@ -1,5 +1,6 @@
 | java.io.File#File(String) | 2 |
 | java.net.URL#URL(String) | 2 |
+| java.io.File#compareTo(File) | 1 |
 | java.io.FileWriter#FileWriter(File) | 1 |
 | java.lang.StringBuilder#append(String) | 1 |
 | java.lang.StringBuilder#toString() | 1 |

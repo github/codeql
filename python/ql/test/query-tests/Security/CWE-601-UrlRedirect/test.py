@@ -81,3 +81,17 @@ def not_ok4():
     untrusted = request.args.get('target', '')
     unsafe = "%s?login=success" % untrusted
     return redirect(unsafe, code=302)
+
+from django.utils.http import url_has_allowed_host_and_scheme
+import math 
+
+@app.route('/ok6')
+def ok6():
+    untrusted = request.args.get('target', '')
+    # random chance. 
+    if math.random() > 0.5:
+        redirect(untrusted, code=302) # NOT OK
+    if url_has_allowed_host_and_scheme(untrusted, allowed_hosts=None):
+        return redirect(untrusted, code=302) # OK
+    
+    return redirect("https://example.com", code=302) # OK

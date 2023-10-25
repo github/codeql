@@ -5,7 +5,6 @@
 		<AssemblyName>Semmle.Extraction.CSharp.Standalone</AssemblyName>
 		<RootNamespace>Semmle.Extraction.CSharp.Standalone</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 		<WarningsAsErrors/>
 		<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
@@ -13,6 +12,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
+		<ProjectReference Include="..\Semmle.Extraction.CSharp.DependencyFetching\Semmle.Extraction.CSharp.DependencyFetching.csproj" />
 		<ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
 	</ItemGroup>
 	<ItemGroup>

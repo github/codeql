@@ -9,3 +9,10 @@ void MyCoordsTest(int pos) {
   coords.x = coords.y = pos + 1;
   coords.x = getX(&coords);
 }
+
+void CStyleCast(void *src)
+{
+    char *dst = (char*)src;
+}
+
+// semmle-extractor-options: --microsoft

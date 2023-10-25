@@ -8,6 +8,34 @@ private import semmle.javascript.internal.CachedStages
 private import Expressions.ExprHasNoEffect
 
 /**
+ * Companion module to the `AmdModuleDefinition` class.
+ */
+module AmdModuleDefinition {
+  /**
+   * A class that can be extended to treat calls as instances of `AmdModuleDefinition`.
+   *
+   * Subclasses should not depend on imports or `DataFlow::Node`.
+   */
+  abstract class Range extends CallExpr { }
+
+  private class DefaultRange extends Range {
+    DefaultRange() {
+      inVoidContext(this) and
+      this.getCallee().(GlobalVarAccess).getName() = "define" and
+      exists(int n | n = this.getNumArgument() |
+        n = 1
+        or
+        n = 2 and this.getArgument(0) instanceof ArrayExpr
+        or
+        n = 3 and
+        this.getArgument(0) instanceof ConstantString and
+        this.getArgument(1) instanceof ArrayExpr
+      )
+    }
+  }
+}
+
+/**
  * An AMD `define` call.
  *
  * Example:
@@ -25,21 +53,7 @@ private import Expressions.ExprHasNoEffect
  * where the first argument is the module name, the second argument an
  * array of dependencies, and the third argument a factory method or object.
  */
-class AmdModuleDefinition extends CallExpr {
-  AmdModuleDefinition() {
-    inVoidContext(this) and
-    this.getCallee().(GlobalVarAccess).getName() = "define" and
-    exists(int n | n = this.getNumArgument() |
-      n = 1
-      or
-      n = 2 and this.getArgument(0) instanceof ArrayExpr
-      or
-      n = 3 and
-      this.getArgument(0) instanceof ConstantString and
-      this.getArgument(1) instanceof ArrayExpr
-    )
-  }
-
+class AmdModuleDefinition extends CallExpr instanceof AmdModuleDefinition::Range {
   /** Gets the array of module dependencies, if any. */
   ArrayExpr getDependencies() {
     result = this.getArgument(0) or

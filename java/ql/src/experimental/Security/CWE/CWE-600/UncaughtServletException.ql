@@ -53,7 +53,7 @@ private predicate hasErrorPage() {
 /** Sink of uncaught exceptions, which shall be IO exceptions or runtime exceptions since other exception types must be explicitly caught. */
 class UncaughtServletExceptionSink extends DataFlow::ExprNode {
   UncaughtServletExceptionSink() {
-    exists(Method m, MethodAccess ma | ma.getMethod() = m |
+    exists(Method m, MethodCall ma | ma.getMethod() = m |
       isServletMethod(ma.getEnclosingCallable()) and
       exists(m.getAThrownExceptionType()) and // The called method might plausibly throw an exception.
       ma.getAnArgument() = this.getExpr() and
@@ -65,9 +65,9 @@ class UncaughtServletExceptionSink extends DataFlow::ExprNode {
   }
 }
 
-/** Taint configuration of uncaught exceptions caused by user provided data from `RemoteFlowSource` */
+/** Taint configuration of uncaught exceptions caused by user provided data from `ThreatModelFlowSource` */
 module UncaughtServletExceptionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UncaughtServletExceptionSink }
 }

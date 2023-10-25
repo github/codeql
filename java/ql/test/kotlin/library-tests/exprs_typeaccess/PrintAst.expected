@@ -25,7 +25,7 @@ A.kt:
 #   13|             0: [KtInitializerAssignExpr] ...=...
 #   13|               0: [VarAccess] prop
 #   10|         2: [ExprStmt] <Expr>;
-#   10|           0: [MethodAccess] println(...)
+#   10|           0: [MethodCall] println(...)
 #   10|             -1: [TypeAccess] ConsoleKt
 #   10|             0: [StringLiteral] ""
 #   13|     6: [Method] getProp
@@ -36,7 +36,7 @@ A.kt:
 #   13|             -1: [ThisAccess] this
 #   13|     7: [FieldDeclaration] int prop;
 #   13|       -1: [TypeAccess] int
-#   13|       0: [MethodAccess] fn(...)
+#   13|       0: [MethodCall] fn(...)
 #   13|         -1: [ThisAccess] A.this
 #   13|           0: [TypeAccess] A
 #   13|         0: [IntegerLiteral] 1
@@ -63,7 +63,7 @@ A.kt:
 #   17|       5: [BlockStmt] { ... }
 #   18|         0: [LocalVariableDeclStmt] var ...;
 #   18|           1: [LocalVariableDeclExpr] x
-#   18|             0: [MethodAccess] fn(...)
+#   18|             0: [MethodCall] fn(...)
 #   18|               -1: [ThisAccess] this
 #   18|               0: [IntegerLiteral] 1
 #   19|         1: [LocalVariableDeclStmt] var ...;
@@ -136,7 +136,7 @@ B.java:
 #    9|         0: [LocalVariableDeclStmt] var ...;
 #    9|           0: [TypeAccess] int
 #    9|           1: [LocalVariableDeclExpr] x
-#    9|             0: [MethodAccess] fn(...)
+#    9|             0: [MethodCall] fn(...)
 #    9|               -1: [ThisAccess] this
 #    9|               0: [IntegerLiteral] 1
 #   10|         1: [LocalVariableDeclStmt] var ...;

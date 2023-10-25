@@ -405,9 +405,6 @@ predicate hasUnreachedInstruction(IRFunction func) {
   exists(Call c |
     c.getEnclosingFunction() = func.getFunction() and
     any(Options opt).exits(c.getTarget())
-  ) and
-  not exists(TranslatedUnreachableReturnStmt return |
-    return.getEnclosingFunction().getFunction() = func.getFunction()
   )
 }
 
@@ -426,7 +423,12 @@ private module CachedForDebugging {
   cached
   predicate instructionHasSortKeys(Instruction instruction, int key1, int key2) {
     key1 = getInstructionTranslatedElement(instruction).getId() and
-    getInstructionTag(instruction) =
+    getInstructionTag(instruction) = tagByRank(key2)
+  }
+
+  pragma[nomagic]
+  private InstructionTag tagByRank(int key2) {
+    result =
       rank[key2](InstructionTag tag, string tagId |
         tagId = getInstructionTagId(tag)
       |

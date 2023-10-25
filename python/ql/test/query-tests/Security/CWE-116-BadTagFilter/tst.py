@@ -7,6 +7,8 @@ filters = [
     re.compile(r"""<!--.*-->""", re.IGNORECASE | re.DOTALL), # OK - we don't care regexps that only match comments
     re.compile(r"""<!--.*--!?>""", re.IGNORECASE | re.DOTALL), # OK
     re.compile(r"""<!--.*--!?>""", re.IGNORECASE), # NOT OK, does not match newlines
+    re.compile(r"""(?is)<!--.*--!?>"""), # OK
+    re.compile(r"""(?i)<!--.*--!?>"""), # NOT OK, does not match newlines [NOT DETECTED]
     re.compile(r"""<script.*?>(.|\s)*?<\/script[^>]*>""", re.IGNORECASE), # NOT OK - doesn't match inside the script tag
     re.compile(r"""<script[^>]*?>.*?<\/script[^>]*>""", re.IGNORECASE), # NOT OK - doesn't match newlines inside the content
     re.compile(r"""<script(\s|\w|=|")*?>.*?<\/script[^>]*>""", re.IGNORECASE | re.DOTALL), # NOT OK - does not match single quotes for attribute values

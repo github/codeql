@@ -74,7 +74,7 @@ predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
     type = getLanguageType(op) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectOperand(op, indirectionIndex))
+    not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
   )
 }
 
@@ -88,7 +88,7 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
     type = getResultLanguageType(instr) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectInstruction(instr, indirectionIndex))
+    not hasIRRepresentationOfIndirectInstruction(instr, indirectionIndex, _, _)
   )
 }
 
@@ -108,7 +108,7 @@ private newtype TDefOrUseImpl =
   } or
   TUseImpl(BaseSourceVariableInstruction base, Operand operand, int indirectionIndex) {
     isUse(_, operand, base, _, indirectionIndex) and
-    not isDef(_, _, operand, _, _, _)
+    not isDef(true, _, operand, _, _, _)
   } or
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
@@ -447,9 +447,16 @@ class GlobalUse extends UseImpl, TGlobalUse {
   IRFunction getIRFunction() { result = f }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    exists(ExitFunctionInstruction exit |
-      exit = f.getExitFunctionInstruction() and
-      block.getInstruction(index) = exit
+    // Similar to the `FinalParameterUse` case, we want to generate flow out of
+    // globals at any exit so that we can flow out of non-returning functions.
+    // Obviously this isn't correct as we can't actually flow but the global flow
+    // requires this if we want to flow into children.
+    exists(Instruction return |
+      return instanceof ReturnInstruction or
+      return instanceof UnreachedInstruction
+    |
+      block.getInstruction(index) = return and
+      return.getEnclosingIRFunction() = f
     )
   }
 
@@ -610,7 +617,7 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
       hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
       hasOperandAndIndex(nTo, op2, indirectionIndex - 1) and
       instr = op2.getDef() and
-      isDereference(instr, op1)
+      isDereference(instr, op1, _)
     )
   )
 }
@@ -638,12 +645,24 @@ private predicate adjustForPointerArith(PostUpdateNode pun, UseOrPhi use) {
   )
 }
 
+/**
+ * Holds if `nodeFrom` flows to `nodeTo` because there is `def-use` or
+ * `use-use` flow from `defOrUse` to `use`.
+ *
+ * `uncertain` is `true` if the `defOrUse` is an uncertain definition.
+ */
+private predicate localSsaFlow(
+  SsaDefOrUse defOrUse, Node nodeFrom, UseOrPhi use, Node nodeTo, boolean uncertain
+) {
+  nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
+  adjacentDefRead(defOrUse, use) and
+  useToNode(use, nodeTo) and
+  nodeFrom != nodeTo
+}
+
 private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, boolean uncertain) {
   exists(UseOrPhi use |
-    nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
-    adjacentDefRead(defOrUse, use) and
-    useToNode(use, nodeTo) and
-    nodeFrom != nodeTo
+    localSsaFlow(defOrUse, nodeFrom, use, nodeTo, uncertain)
     or
     // Initial global variable value to a first use
     nodeFrom.(InitialGlobalValue).getGlobalDef() = defOrUse and
@@ -684,19 +703,99 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
-private predicate isArgumentOfCallable(DataFlowCall call, ArgumentNode arg) {
-  arg.argumentOf(call, _)
+private predicate isArgumentOfCallableInstruction(DataFlowCall call, Instruction instr) {
+  isArgumentOfCallableOperand(call, unique( | | getAUse(instr)))
 }
 
-/** Holds if there is def-use or use-use flow from `pun` to `nodeTo`. */
-predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
-  exists(UseOrPhi use, Node preUpdate |
+private predicate isArgumentOfCallableOperand(DataFlowCall call, Operand operand) {
+  operand.(ArgumentOperand).getCall() = call
+  or
+  exists(FieldAddressInstruction fai |
+    fai.getObjectAddressOperand() = operand and
+    isArgumentOfCallableInstruction(call, fai)
+  )
+  or
+  exists(Instruction deref |
+    isArgumentOfCallableInstruction(call, deref) and
+    isDereference(deref, operand, _)
+  )
+  or
+  exists(Instruction instr |
+    isArgumentOfCallableInstruction(call, instr) and
+    conversionFlow(operand, instr, _, _)
+  )
+}
+
+private predicate isArgumentOfCallable(DataFlowCall call, Node n) {
+  isArgumentOfCallableOperand(call, n.asOperand())
+  or
+  exists(Operand op |
+    n.(IndirectOperand).hasOperandAndIndirectionIndex(op, _) and
+    isArgumentOfCallableOperand(call, op)
+  )
+  or
+  exists(Instruction instr |
+    n.(IndirectInstruction).hasInstructionAndIndirectionIndex(instr, _) and
+    isArgumentOfCallableInstruction(call, instr)
+  )
+}
+
+/**
+ * Holds if there is use-use flow from `pun`'s pre-update node to `n`.
+ */
+private predicate postUpdateNodeToFirstUse(PostUpdateNode pun, Node n) {
+  exists(UseOrPhi use |
     adjustForPointerArith(pun, use) and
-    useToNode(use, nodeTo) and
+    useToNode(use, n)
+  )
+}
+
+private predicate stepUntilNotInCall(DataFlowCall call, Node n1, Node n2) {
+  isArgumentOfCallable(call, n1) and
+  exists(Node mid | localSsaFlow(_, n1, _, mid, _) |
+    isArgumentOfCallable(call, mid) and
+    stepUntilNotInCall(call, mid, n2)
+    or
+    not isArgumentOfCallable(call, mid) and
+    mid = n2
+  )
+}
+
+bindingset[n1, n2]
+pragma[inline_late]
+private predicate isArgumentOfSameCall(DataFlowCall call, Node n1, Node n2) {
+  isArgumentOfCallable(call, n1) and isArgumentOfCallable(call, n2)
+}
+
+/**
+ * Holds if there is def-use or use-use flow from `pun` to `nodeTo`.
+ *
+ * Note: This is more complex than it sounds. Consider a call such as:
+ * ```cpp
+ * write_first_argument(x, x);
+ * sink(x);
+ * ```
+ * Assume flow comes out of the first argument to `write_first_argument`. We
+ * don't want flow to go to the `x` that's also an argument to
+ * `write_first_argument` (because we just flowed out of that function, and we
+ * don't want to flow back into it again).
+ *
+ * We do, however, want flow from the output argument to `x` on the next line, and
+ * similarly we want flow from the second argument of `write_first_argument` to `x`
+ * on the next line.
+ */
+predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
+  exists(Node preUpdate, Node mid |
     preUpdate = pun.getPreUpdateNode() and
-    not exists(DataFlowCall call |
-      isArgumentOfCallable(call, preUpdate) and isArgumentOfCallable(call, nodeTo)
+    postUpdateNodeToFirstUse(pun, mid)
+  |
+    exists(DataFlowCall call |
+      isArgumentOfSameCall(call, preUpdate, mid) and
+      stepUntilNotInCall(call, mid, nodeTo)
     )
+    or
+    not isArgumentOfSameCall(_, preUpdate, mid) and
+    nodeTo = mid
   )
 }
 
@@ -726,7 +825,7 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     or
     exists(PhiNode phiTo |
       phi != phiTo and
-      lastRefRedefExt(phi, _, _, phiTo) and
+      lastRefRedefExt(phi, bb1, i1, phiTo) and
       nodeTo.(SsaPhiNode).getPhiNode() = phiTo
     )
   )

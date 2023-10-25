@@ -8,7 +8,7 @@ extensions:
       - ["hudson", "FilePath", True, "copyFrom", "(URL)", "", "Argument[0]", "path-injection", "manual"]
       - ["hudson", "FilePath", True, "copyFrom", "(FileItem)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyRecursiveTo", "", "", "Argument[this]", "path-injection", "ai-manual"]
-      - ["hudson", "FilePath", True, "copyRecursiveTo", "(DirScanner,FilePath,String,TarCompression)", "", "Argument[1]", "path-injection", "ai-manual"]
+      - ["hudson", "FilePath", True, "copyRecursiveTo", "(DirScanner,FilePath,String,FilePath$TarCompression)", "", "Argument[1]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyRecursiveTo", "(DirScanner,FilePath,String)", "", "Argument[1]", "file-content-store", "ai-manual"]
       - ["hudson", "FilePath", True, "copyRecursiveTo", "(String,FilePath)", "", "Argument[1]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyRecursiveTo", "(String,String,FilePath)", "", "Argument[0]", "path-injection", "ai-manual"]
@@ -36,6 +36,11 @@ extensions:
       pack: codeql/java-all
       extensible: sourceModel
     data:
+      - ["hudson", "FilePath", False, "newInputStreamDenyingSymlinkAsNeeded", "", "", "ReturnValue", "file", "manual"]
+      - ["hudson", "FilePath", False, "openInputStream", "", "", "ReturnValue", "file", "manual"]
+      - ["hudson", "FilePath", False, "read", "", "", "ReturnValue", "file", "manual"]
+      - ["hudson", "FilePath", False, "readFromOffset", "", "", "ReturnValue", "file", "manual"]
+      - ["hudson", "FilePath", False, "readToString", "", "", "ReturnValue", "file", "manual"]
       - ["hudson", "Plugin", True, "configure", "", "", "Parameter", "remote", "manual"]
       - ["hudson", "Plugin", True, "newInstance", "", "", "Parameter", "remote", "manual"]
   - addsTo:

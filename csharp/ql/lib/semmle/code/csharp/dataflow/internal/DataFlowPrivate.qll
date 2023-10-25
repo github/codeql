@@ -45,9 +45,9 @@ abstract class NodeImpl extends Node {
   abstract DotNet::Type getTypeImpl();
 
   /** Gets the type of this node used for type pruning. */
-  Gvn::GvnType getDataFlowType() {
+  DataFlowType getDataFlowType() {
     forceCachingInSameStage() and
-    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
+    exists(Type t0 | result.asGvnType() = Gvn::getGlobalValueNumber(t0) |
       t0 = getCSharpType(this.getType())
       or
       not exists(getCSharpType(this.getType())) and
@@ -533,7 +533,41 @@ module LocalFlow {
     ) and
     not exists(getALastEvalNode(result))
   }
+
+  /**
+   * Holds if the value of `node2` is given by `node1`.
+   */
+  predicate localMustFlowStep(Node node1, Node node2) {
+    exists(Callable c, Expr e |
+      node1.(InstanceParameterNode).getCallable() = c and
+      node2.asExpr() = e and
+      (e instanceof ThisAccess or e instanceof BaseAccess) and
+      c = e.getEnclosingCallable()
+    )
+    or
+    hasNodePath(any(LocalExprStepConfiguration x), node1, node2) and
+    (
+      node2 instanceof SsaDefinitionExtNode or
+      node2.asExpr() instanceof Cast or
+      node2.asExpr() instanceof AssignExpr
+    )
+    or
+    exists(SsaImpl::Definition def |
+      def = getSsaDefinitionExt(node1) and
+      exists(SsaImpl::getAReadAtNode(def, node2.(ExprNode).getControlFlowNode()))
+    )
+    or
+    delegateCreationStep(node1, node2)
+    or
+    node1 =
+      unique(FlowSummaryNode n1 |
+        FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
+          node2.(FlowSummaryNode).getSummaryNode(), true)
+      )
+  }
 }
+
+predicate localMustFlowStep = LocalFlow::localMustFlowStep/2;
 
 /**
  * This is the local flow predicate that is used as a building block in global
@@ -761,16 +795,16 @@ private Type getCSharpType(DotNet::Type t) {
   result.matchesHandle(t)
 }
 
-private class RelevantDataFlowType extends DataFlowType {
-  RelevantDataFlowType() { this = any(NodeImpl n).getDataFlowType() }
+private class RelevantGvnType extends Gvn::GvnType {
+  RelevantGvnType() { this = any(NodeImpl n).getDataFlowType().asGvnType() }
 }
 
 /** A GVN type that is either a `DataFlowType` or unifiable with a `DataFlowType`. */
 private class DataFlowTypeOrUnifiable extends Gvn::GvnType {
   pragma[nomagic]
   DataFlowTypeOrUnifiable() {
-    this instanceof RelevantDataFlowType or
-    Gvn::unifiable(any(RelevantDataFlowType t), this)
+    this instanceof RelevantGvnType or
+    Gvn::unifiable(any(RelevantGvnType t), this)
   }
 }
 
@@ -781,7 +815,7 @@ private TypeParameter getATypeParameterSubType(DataFlowTypeOrUnifiable t) {
 }
 
 pragma[noinline]
-private TypeParameter getATypeParameterSubTypeRestricted(RelevantDataFlowType t) {
+private TypeParameter getATypeParameterSubTypeRestricted(RelevantGvnType t) {
   result = getATypeParameterSubType(t)
 }
 
@@ -797,7 +831,7 @@ private Gvn::GvnType getANonTypeParameterSubType(DataFlowTypeOrUnifiable t) {
 }
 
 pragma[noinline]
-private Gvn::GvnType getANonTypeParameterSubTypeRestricted(RelevantDataFlowType t) {
+private Gvn::GvnType getANonTypeParameterSubTypeRestricted(RelevantGvnType t) {
   result = getANonTypeParameterSubType(t)
 }
 
@@ -819,7 +853,7 @@ private module Cached {
 
   cached
   newtype TNode =
-    TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof Expr } or
+    TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getAstNode() instanceof Expr } or
     TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
     TCilSsaDefinitionExtNode(CilSsaImpl::DefinitionExt def) or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) {
@@ -834,20 +868,21 @@ private module Cached {
       c = any(DataFlowCallable dfc).asCallable() and
       not c.(Modifiable).isStatic()
     } or
+    TDelegateSelfReferenceNode(Callable c) { lambdaCreationExpr(_, c) } or
     TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
-      any(Callable c).canYieldReturn(cfn.getElement())
+      any(Callable c).canYieldReturn(cfn.getAstNode())
     } or
     TAsyncReturnNode(ControlFlow::Nodes::ElementNode cfn) {
-      any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.getElement())
+      any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.getAstNode())
     } or
     TImplicitCapturedArgumentNode(ControlFlow::Nodes::ElementNode cfn, LocalScopeVariable v) {
       exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowIn(_, cfn, _) |
         v = def.getSourceVariable().getAssignable()
       )
     } or
-    TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation } or
+    TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getAstNode() instanceof ObjectCreation } or
     TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
-      cfn.getElement().(ObjectCreation).hasInitializer()
+      cfn.getAstNode().(ObjectCreation).hasInitializer()
     } or
     TExprPostUpdateNode(ControlFlow::Nodes::ExprNode cfn) {
       cfn = LocalFlow::getAPostUpdateNodeForArg(_)
@@ -917,7 +952,7 @@ private module Cached {
     TSyntheticFieldApproxContent()
 
   pragma[nomagic]
-  private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantDataFlowType t2) {
+  private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantGvnType t2) {
     not t1 instanceof Gvn::TypeParameterGvnType and
     t1 = t2
     or
@@ -931,17 +966,20 @@ private module Cached {
    * `t2` are allowed to be type parameters.
    */
   cached
-  predicate commonSubType(RelevantDataFlowType t1, RelevantDataFlowType t2) {
-    commonSubTypeGeneral(t1, t2)
-  }
+  predicate commonSubType(RelevantGvnType t1, RelevantGvnType t2) { commonSubTypeGeneral(t1, t2) }
 
   cached
-  predicate commonSubTypeUnifiableLeft(RelevantDataFlowType t1, RelevantDataFlowType t2) {
+  predicate commonSubTypeUnifiableLeft(RelevantGvnType t1, RelevantGvnType t2) {
     exists(Gvn::GvnType t |
       Gvn::unifiable(t1, t) and
       commonSubTypeGeneral(t, t2)
     )
   }
+
+  cached
+  newtype TDataFlowType =
+    TGvnDataFlowType(Gvn::GvnType t) or
+    TDelegateDataFlowType(Callable lambda) { lambdaCreationExpr(_, lambda) }
 }
 
 import Cached
@@ -1087,6 +1125,37 @@ private module ParameterNodes {
     override string toStringImpl() { result = "this" }
   }
 
+  /**
+   * The value of a delegate itself at function entry, viewed as a node in a data
+   * flow graph.
+   *
+   * This is used for improving lambda dispatch, and will eventually also be
+   * used for tracking flow through captured variables.
+   */
+  private class DelegateSelfReferenceNode extends ParameterNodeImpl, TDelegateSelfReferenceNode {
+    private Callable callable;
+
+    DelegateSelfReferenceNode() { this = TDelegateSelfReferenceNode(callable) }
+
+    final Callable getCallable() { result = callable }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      callable = c.asCallable() and pos.isDelegateSelf()
+    }
+
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
+
+    override DataFlowCallable getEnclosingCallableImpl() { result.asCallable() = callable }
+
+    override Location getLocationImpl() { result = callable.getLocation() }
+
+    override DotNet::Type getTypeImpl() { none() }
+
+    override DataFlowType getDataFlowType() { callable = result.asDelegate() }
+
+    override string toStringImpl() { result = "delegate self in " + callable }
+  }
+
   /** An implicit entry definition for a captured variable. */
   class SsaCapturedEntryDefinition extends Ssa::ImplicitEntryDefinition {
     private LocalScopeVariable v;
@@ -1165,8 +1234,14 @@ private module ArgumentNodes {
     ) {
       e1.(Argument).isArgumentOf(e2, _) and
       exactScope = false and
-      scope = e2 and
-      isSuccessor = true
+      isSuccessor = true and
+      if e2 instanceof PropertyWrite
+      then
+        exists(AssignableDefinition def |
+          def.getTargetAccess() = e2 and
+          scope = def.getExpr()
+        )
+      else scope = e2
     }
   }
 
@@ -1175,7 +1250,7 @@ private module ArgumentNodes {
     ExplicitArgumentNode() {
       this.asExpr() instanceof Argument
       or
-      this.asExpr() = any(CIL::Call call).getAnArgument()
+      this.asExpr() = any(CilDataFlowCall cc).getCilCall().getAnArgument()
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -1191,6 +1266,18 @@ private module ArgumentNodes {
         c = call.getExpr() and
         arg = c.getArgument(pos.getPosition())
       )
+    }
+  }
+
+  /** A data-flow node that represents a delegate passed into itself. */
+  class DelegateSelfArgumentNode extends ArgumentNodeImpl {
+    private DataFlowCall call_;
+
+    DelegateSelfArgumentNode() { lambdaCallExpr(call_, this) }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call = call_ and
+      pos.isDelegateSelf()
     }
   }
 
@@ -1256,7 +1343,7 @@ private module ArgumentNodes {
       result.asCallable() = cfn.getEnclosingCallable()
     }
 
-    override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
 
     override Location getLocationImpl() { result = cfn.getLocation() }
 
@@ -1397,7 +1484,7 @@ private module ReturnNodes {
     private ControlFlow::Nodes::ElementNode cfn;
     private Expr expr;
 
-    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.getElement() }
+    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.getAstNode() }
 
     Expr getExpr() { result = expr }
 
@@ -1564,7 +1651,7 @@ private module OutNodes {
         additionalCalls = false and call = csharpCall(_, cfn)
         or
         additionalCalls = true and
-        call = TTransitiveCapturedCall(cfn, n.getEnclosingCallable())
+        call = TTransitiveCapturedCall(cfn)
       )
     }
 
@@ -1947,41 +2034,92 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
  * For example, `Func<T, int>` and `Func<S, int>` are mapped to the same
  * `DataFlowType`, while `Func<T, int>` and `Func<string, int>` are not, because
  * `string` is not a type parameter.
+ *
+ * For delegates, we use the delegate itself instead of its type, in order to
+ * improve dispatch.
  */
-class DataFlowType = Gvn::GvnType;
+class DataFlowType extends TDataFlowType {
+  Gvn::GvnType asGvnType() { this = TGvnDataFlowType(result) }
+
+  Callable asDelegate() { this = TDelegateDataFlowType(result) }
+
+  /**
+   * Gets an expression that creates a delegate of this type.
+   *
+   * For methods used as method groups in calls there can be multiple
+   * creations associated with the same type.
+   */
+  Expr getADelegateCreation() {
+    exists(Callable callable |
+      lambdaCreationExpr(result, callable) and
+      this = TDelegateDataFlowType(callable)
+    )
+  }
+
+  final string toString() {
+    result = this.asGvnType().toString()
+    or
+    result = this.asDelegate().toString()
+  }
+}
 
 /** Gets the type of `n` used for type pruning. */
-Gvn::GvnType getNodeType(Node n) { result = n.(NodeImpl).getDataFlowType() }
+DataFlowType getNodeType(Node n) {
+  result = n.(NodeImpl).getDataFlowType() and
+  not lambdaCreation(n, _, _) and
+  not delegateCreationStep(_, n)
+  or
+  exists(Node arg |
+    delegateCreationStep(arg, n) and
+    result = getNodeType(arg)
+  )
+  or
+  n.asExpr() = result.getADelegateCreation()
+}
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
 
-private class DataFlowNullType extends DataFlowType {
+private class DataFlowNullType extends Gvn::GvnType {
   DataFlowNullType() { this = Gvn::getGlobalValueNumber(any(NullType nt)) }
 
   pragma[noinline]
-  predicate isConvertibleTo(DataFlowType t) {
+  predicate isConvertibleTo(Gvn::GvnType t) {
     defaultNullConversion(_, any(Type t0 | t = Gvn::getGlobalValueNumber(t0)))
   }
 }
 
-private class DataFlowUnknownType extends DataFlowType {
-  DataFlowUnknownType() { this = Gvn::getGlobalValueNumber(any(UnknownType ut)) }
-}
-
-private predicate uselessTypebound(DataFlowType t) {
-  t instanceof DataFlowUnknownType or
-  t instanceof Gvn::TypeParameterGvnType
+private class GvnUnknownType extends Gvn::GvnType {
+  GvnUnknownType() { this = Gvn::getGlobalValueNumber(any(UnknownType ut)) }
 }
 
 pragma[nomagic]
-predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
-  t1 != t2 and
-  t1 = getANonTypeParameterSubTypeRestricted(t2)
-  or
-  t1 instanceof RelevantDataFlowType and
-  not uselessTypebound(t1) and
-  uselessTypebound(t2)
+private predicate uselessTypebound(DataFlowType dt) {
+  dt.asGvnType() =
+    any(Gvn::GvnType t |
+      t instanceof GvnUnknownType or
+      t instanceof Gvn::TypeParameterGvnType
+    )
+}
+
+pragma[inline]
+private predicate compatibleTypesDelegateLeft(DataFlowType dt1, DataFlowType dt2) {
+  exists(Gvn::GvnType t1, Gvn::GvnType t2 |
+    t1 = exprNode(dt1.getADelegateCreation()).(NodeImpl).getDataFlowType().asGvnType() and
+    t2 = dt2.asGvnType()
+  |
+    commonSubType(t1, t2)
+    or
+    commonSubTypeUnifiableLeft(t1, t2)
+    or
+    commonSubTypeUnifiableLeft(t2, t1)
+    or
+    t2.(DataFlowNullType).isConvertibleTo(t1)
+    or
+    t2 instanceof Gvn::TypeParameterGvnType
+    or
+    t2 instanceof GvnUnknownType
+  )
 }
 
 /**
@@ -1989,24 +2127,47 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  commonSubType(t1, t2)
+predicate compatibleTypes(DataFlowType dt1, DataFlowType dt2) {
+  exists(Gvn::GvnType t1, Gvn::GvnType t2 |
+    t1 = dt1.asGvnType() and
+    t2 = dt2.asGvnType()
+  |
+    commonSubType(t1, t2)
+    or
+    commonSubTypeUnifiableLeft(t1, t2)
+    or
+    commonSubTypeUnifiableLeft(t2, t1)
+    or
+    t1.(DataFlowNullType).isConvertibleTo(t2)
+    or
+    t2.(DataFlowNullType).isConvertibleTo(t1)
+    or
+    t1 instanceof Gvn::TypeParameterGvnType
+    or
+    t2 instanceof Gvn::TypeParameterGvnType
+    or
+    t1 instanceof GvnUnknownType
+    or
+    t2 instanceof GvnUnknownType
+  )
   or
-  commonSubTypeUnifiableLeft(t1, t2)
+  compatibleTypesDelegateLeft(dt1, dt2)
   or
-  commonSubTypeUnifiableLeft(t2, t1)
+  compatibleTypesDelegateLeft(dt2, dt1)
   or
-  t1.(DataFlowNullType).isConvertibleTo(t2)
+  dt1.asDelegate() = dt2.asDelegate()
+}
+
+pragma[nomagic]
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
+  t1 != t2 and
+  t1.asGvnType() = getANonTypeParameterSubTypeRestricted(t2.asGvnType())
   or
-  t2.(DataFlowNullType).isConvertibleTo(t1)
+  t1.asGvnType() instanceof RelevantGvnType and
+  not uselessTypebound(t1) and
+  uselessTypebound(t2)
   or
-  t1 instanceof Gvn::TypeParameterGvnType
-  or
-  t2 instanceof Gvn::TypeParameterGvnType
-  or
-  t1 instanceof DataFlowUnknownType
-  or
-  t2 instanceof DataFlowUnknownType
+  compatibleTypesDelegateLeft(t1, t2)
 }
 
 /**
@@ -2026,7 +2187,7 @@ abstract class PostUpdateNode extends Node {
   abstract Node getPreUpdateNode();
 }
 
-private module PostUpdateNodes {
+module PostUpdateNodes {
   class ObjectCreationNode extends PostUpdateNode, ExprNode, TExprNode {
     private ObjectCreation oc;
 
@@ -2106,7 +2267,7 @@ private module PostUpdateNodes {
       result.asCallable() = cfn.getEnclosingCallable()
     }
 
-    override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
 
     override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
@@ -2178,17 +2339,20 @@ int accessPathLimit() { result = 5 }
  */
 predicate forceHighPrecision(Content c) { c instanceof ElementContent }
 
+private predicate lambdaCreationExpr(Expr creation, Callable c) {
+  c =
+    [
+      creation.(AnonymousFunctionExpr),
+      creation.(CallableAccess).getTarget().getUnboundDeclaration(),
+      creation.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
+    ]
+}
+
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a delegate for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  exists(Expr e | e = creation.asExpr() |
-    c.asCallable() =
-      [
-        e.(AnonymousFunctionExpr), e.(CallableAccess).getTarget().getUnboundDeclaration(),
-        e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
-      ]
-  ) and
+  lambdaCreationExpr(creation.asExpr(), c.asCallable()) and
   exists(kind)
 }
 
@@ -2210,17 +2374,27 @@ private class LambdaConfiguration extends ControlFlowReachabilityConfiguration {
   }
 }
 
+private predicate lambdaCallExpr(DataFlowCall call, ExprNode receiver) {
+  exists(LambdaConfiguration x, DelegateLikeCall dc |
+    x.hasExprPath(dc.getExpr(), receiver.getControlFlowNode(), dc, call.getControlFlowNode())
+  )
+}
+
 /** Holds if `call` is a lambda call where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   (
-    exists(LambdaConfiguration x, DelegateLikeCall dc |
-      x.hasExprPath(dc.getExpr(), receiver.(ExprNode).getControlFlowNode(), dc,
-        call.getControlFlowNode())
-    )
+    lambdaCallExpr(call, receiver)
     or
     receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver()
   ) and
   exists(kind)
+}
+
+private predicate delegateCreationStep(Node nodeFrom, Node nodeTo) {
+  exists(LambdaConfiguration x, DelegateCreation dc |
+    x.hasExprPath(dc.getArgument(), nodeFrom.(ExprNode).getControlFlowNode(), dc,
+      nodeTo.(ExprNode).getControlFlowNode())
+  )
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
@@ -2231,11 +2405,8 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     preservesValue = true
   )
   or
-  exists(LambdaConfiguration x, DelegateCreation dc |
-    x.hasExprPath(dc.getArgument(), nodeFrom.(ExprNode).getControlFlowNode(), dc,
-      nodeTo.(ExprNode).getControlFlowNode()) and
-    preservesValue = false
-  )
+  delegateCreationStep(nodeFrom, nodeTo) and
+  preservesValue = true
   or
   exists(AddEventExpr aee |
     nodeFrom.asExpr() = aee.getRValue() and
@@ -2382,12 +2553,3 @@ module Csv {
     )
   }
 }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

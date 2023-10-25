@@ -345,7 +345,7 @@ predicate isServletRequestMethod(Method m) {
 }
 
 /** Holds if `ma` is a call that gets a request parameter. */
-predicate isRequestGetParamMethod(MethodAccess ma) {
+predicate isRequestGetParamMethod(MethodCall ma) {
   ma.getMethod() instanceof ServletRequestGetParameterMethod or
   ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
   ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
@@ -396,4 +396,9 @@ class GetServletResourceAsStreamMethod extends Method {
     this.getDeclaringType() instanceof ServletContext and
     this.hasName("getResourceAsStream")
   }
+}
+
+/** The interface `javax.servlet.http.HttpSession` */
+class HttpServletSession extends RefType {
+  HttpServletSession() { this.hasQualifiedName("javax.servlet.http", "HttpSession") }
 }

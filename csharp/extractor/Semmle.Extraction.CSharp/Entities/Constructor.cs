@@ -1,11 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util;
-using System.Linq;
-using Microsoft.CodeAnalysis.CSharp;
-using Semmle.Extraction.Entities;
-using System.IO;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {

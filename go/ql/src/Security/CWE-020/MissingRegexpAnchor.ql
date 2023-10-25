@@ -60,10 +60,8 @@ predicate isInterestingUnanchoredRegexpString(string re, string msg) {
       "hosts may come before or after it."
 }
 
-class Config extends DataFlow::Configuration {
-  Config() { this = "MissingRegexpAnchor::Config" }
-
-  predicate isSourceString(DataFlow::Node source, string msg) {
+module Config implements DataFlow::ConfigSig {
+  additional predicate isSourceString(DataFlow::Node source, string msg) {
     exists(Expr e | e = source.asExpr() |
       isInterestingUnanchoredRegexpString(e.getStringValue(), msg)
       or
@@ -71,11 +69,13 @@ class Config extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { this.isSourceString(source, _) }
+  predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
+  predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 }
 
-from Config c, DataFlow::PathNode source, string msg
-where c.hasFlowPath(source, _) and c.isSourceString(source.getNode(), msg)
-select source.getNode(), msg
+module Flow = DataFlow::Global<Config>;
+
+from DataFlow::Node source, string msg
+where Flow::flow(source, _) and Config::isSourceString(source, msg)
+select source, msg
