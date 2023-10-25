@@ -462,7 +462,7 @@ private module NSStringCompareOptionsFlagConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node node) {
-    // use in a regex eval `options` argument
+    // use in a [potential] regex eval `options` argument
     any(NSStringCompareOptionsPotentialRegexEval potentialEval).getAnOptionsInput() = node
   }
 
