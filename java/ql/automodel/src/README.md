@@ -9,11 +9,11 @@ Included in this pack are queries for both application mode and framework mode.
 | Kind | Mode | Query File |
 |------|------|------------|
 | Candidates | Application Mode | [AutomodelApplicationModeExtractCandidates.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeExtractCandidates.ql) |
-| + Examples | Application Mode | [AutomodelApplicationModeExtractPositiveExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeExtractPositiveExamples.ql) |
-| - Examples | Application Mode | [AutomodelApplicationModeExtractNegativeExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeExtractNegativeExamples.ql) |
+| Positive Examples | Application Mode | [AutomodelApplicationModeExtractPositiveExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeExtractPositiveExamples.ql) |
+| Negative Examples | Application Mode | [AutomodelApplicationModeExtractNegativeExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeExtractNegativeExamples.ql) |
 | Candidates | Framework Mode | [AutomodelFrameworkModeExtractCandidates.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractCandidates.ql) |
-| + Examples | Framework Mode | [AutomodelFrameworkModeExtractPositiveExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractPositiveExamples.ql) |
-| - Examples | Framework Mode | [AutomodelFrameworkModeExtractNegativeExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractNegativeExamples.ql) |
+| Positive Examples | Framework Mode | [AutomodelFrameworkModeExtractPositiveExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractPositiveExamples.ql) |
+| Negative Examples | Framework Mode | [AutomodelFrameworkModeExtractNegativeExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractNegativeExamples.ql) |
 
 ## Running the Queries
 
@@ -41,9 +41,9 @@ For example, a query suite selecting all example extraction queries (positive an
 
 ### Concept: `Endpoint`
 
-Endpoints are source code locations of interest. All +/- examples and all candidates are endpoints, but not all endpoints are examples or candidates. Each mode decides which endpoints are relevant. For instance, if the Java application mode wants to support candidates for sinks that are arguments passed to unknown method calls, then the Java application mode implementation needs to make sure that method arguments are endpoints. If you look at the `TApplicationModeEndpoint` implementation in [AutomodelApplicationModeCharacteristics.qll](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeCharacteristics.qll), you can see that this is the case: the `TExplicitArgument` implements this behavior.
+Endpoints are source code locations of interest. All positive examples, negative examples, and all candidates are endpoints, but not all endpoints are examples or candidates. Each mode decides which endpoints are relevant. For instance, if the Java application mode wants to support candidates for sinks that are arguments passed to unknown method calls, then the Java application mode implementation needs to make sure that method arguments are endpoints. If you look at the `TApplicationModeEndpoint` implementation in [AutomodelApplicationModeCharacteristics.qll](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelApplicationModeCharacteristics.qll), you can see that this is the case: the `TExplicitArgument` implements this behavior.
 
-Whether or not an endpoint is a +/- example, or a candidate depends on the individual extraction queries.
+Whether or not an endpoint is a positive/negative example, or a candidate depends on the individual extraction queries.
 
 ### Concept: `EndpointCharacteristics`
 
@@ -51,7 +51,7 @@ In the file [AutomodelSharedCharacteristics.ql](https://github.com/github/codeql
 
 An endpoint characteristic is a QL class that "tags" all endpoints for which the characteristic's `appliesToEndpoint` predicate holds. The characteristic defines a `hasImplications` predicate that declares whether all the endpoints should be considered as sinks/sources/negatives, and with which confidence.
 
-The +/- and candidate extraction queries largely<sup>[1](#largely-use-characteristics)</sup> use characteristics to decide which endpoint to select. For instance, if a characteristic exists that applies to an endpoint, and the characteristic implies (cf. `hasImplications`) that the endpoint is a sink with a high confidence &ndash; then that endpoint will be selected as a positive example. See the use of `isKnownAs` in [AutomodelFrameworkModeExtractPositiveExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractPositiveExamples.ql).
+The positive, negative, and candidate extraction queries largely<sup>[1](#largely-use-characteristics)</sup> use characteristics to decide which endpoint to select. For instance, if a characteristic exists that applies to an endpoint, and the characteristic implies (cf. `hasImplications`) that the endpoint is a sink with a high confidence &ndash; then that endpoint will be selected as a positive example. See the use of `isKnownAs` in [AutomodelFrameworkModeExtractPositiveExamples.ql](https://github.com/github/codeql/blob/main/java/ql/automodel/src/AutomodelFrameworkModeExtractPositiveExamples.ql).
 
 <a name="largely-use-characteristics">1</a>: Candidate extraction queries are an exception, they treat `UninterestingToModelCharacteristic` differently.
 
