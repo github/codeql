@@ -37,8 +37,8 @@ class CryptoKeySink extends CredentialsSinkNode {
  * Holds if callable `c` from a standard Java API expects a password parameter at index `i`.
  */
 deprecated predicate javaApiCallablePasswordParam(Callable c, int i) {
-  exists(PasswordSink sink, MethodAccess ma |
-    sink.asExpr() = ma.getArgument(i) and c = ma.getCallee()
+  exists(PasswordSink sink, MethodCall mc |
+    sink.asExpr() = mc.getArgument(i) and c = mc.getCallee()
   )
 }
 
@@ -47,8 +47,8 @@ deprecated predicate javaApiCallablePasswordParam(Callable c, int i) {
  * Holds if callable `c` from a standard Java API expects a username parameter at index `i`.
  */
 deprecated predicate javaApiCallableUsernameParam(Callable c, int i) {
-  exists(UsernameSink sink, MethodAccess ma |
-    sink.asExpr() = ma.getArgument(i) and c = ma.getCallee()
+  exists(UsernameSink sink, MethodCall mc |
+    sink.asExpr() = mc.getArgument(i) and c = mc.getCallee()
   )
 }
 
@@ -57,8 +57,8 @@ deprecated predicate javaApiCallableUsernameParam(Callable c, int i) {
  * Holds if callable `c` from a standard Java API expects a cryptographic key parameter at index `i`.
  */
 deprecated predicate javaApiCallableCryptoKeyParam(Callable c, int i) {
-  exists(CryptoKeySink sink, MethodAccess ma |
-    sink.asExpr() = ma.getArgument(i) and c = ma.getCallee()
+  exists(CryptoKeySink sink, MethodCall mc |
+    sink.asExpr() = mc.getArgument(i) and c = mc.getCallee()
   )
 }
 
