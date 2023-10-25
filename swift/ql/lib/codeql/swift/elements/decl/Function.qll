@@ -1,7 +1,7 @@
 private import codeql.swift.generated.decl.Function
 private import codeql.swift.elements.decl.Method
 private import codeql.swift.elements.type.Type
-private import codeql.swift.elements.type.FunctionType
+private import codeql.swift.elements.type.AnyFunctionType
 private import codeql.swift.elements.decl.TypeDecl
 
 /**
@@ -25,8 +25,8 @@ class Function extends Generated::Function, Callable {
    */
   Type getResultType() {
     if this.hasSelfParam()
-    then result = this.getInterfaceType().(FunctionType).getResult().(FunctionType).getResult()
-    else result = this.getInterfaceType().(FunctionType).getResult()
+    then result = this.getInterfaceType().(AnyFunctionType).getResult().(AnyFunctionType).getResult()
+    else result = this.getInterfaceType().(AnyFunctionType).getResult()
   }
 }
 
