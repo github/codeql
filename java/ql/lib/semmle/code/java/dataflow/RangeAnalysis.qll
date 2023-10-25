@@ -81,7 +81,7 @@ module Sem implements Semantic {
   private import java as J
   private import SSA as SSA
   private import RangeUtils as RU
-  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SSAReadPos
+  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SsaReadPos
   private import semmle.code.java.controlflow.internal.GuardsLogic as GL
 
   class Expr = J::Expr;
@@ -230,18 +230,18 @@ module Sem implements Semantic {
 
   class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate { }
 
-  final private class FinalSsaReadPosition = SSAReadPos::SsaReadPosition;
+  final private class FinalSsaReadPosition = SsaReadPos::SsaReadPosition;
 
   class SsaReadPosition extends FinalSsaReadPosition {
     predicate hasReadOfVar(SsaVariable v) { super.hasReadOfVar(v) }
   }
 
-  class SsaReadPositionPhiInputEdge extends SsaReadPosition instanceof SSAReadPos::SsaReadPositionPhiInputEdge
+  class SsaReadPositionPhiInputEdge extends SsaReadPosition instanceof SsaReadPos::SsaReadPositionPhiInputEdge
   {
     predicate phiInput(SsaPhiNode phi, SsaVariable inp) { super.phiInput(phi, inp) }
   }
 
-  class SsaReadPositionBlock extends SsaReadPosition instanceof SSAReadPos::SsaReadPositionBlock {
+  class SsaReadPositionBlock extends SsaReadPosition instanceof SsaReadPos::SsaReadPositionBlock {
     BasicBlock getBlock() { result = super.getBlock() }
   }
 
@@ -374,7 +374,7 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 
 module Utils implements UtilSig<Sem, IntDelta> {
   private import RangeUtils as RU
-  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SSAReadPos
+  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SsaReadPos
 
   Sem::Expr semSsaRead(Sem::SsaVariable v, int delta) { result = RU::ssaRead(v, delta) }
 
@@ -399,10 +399,10 @@ module Utils implements UtilSig<Sem, IntDelta> {
   predicate rankedPhiInput(
     Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int r
   ) {
-    SSAReadPos::rankedPhiInput(phi, inp, edge, r)
+    SsaReadPos::rankedPhiInput(phi, inp, edge, r)
   }
 
-  predicate maxPhiInputRank(Sem::SsaPhiNode phi, int rix) { SSAReadPos::maxPhiInputRank(phi, rix) }
+  predicate maxPhiInputRank(Sem::SsaPhiNode phi, int rix) { SsaReadPos::maxPhiInputRank(phi, rix) }
 }
 
 module Bounds implements BoundSig<Location, Sem, IntDelta> {

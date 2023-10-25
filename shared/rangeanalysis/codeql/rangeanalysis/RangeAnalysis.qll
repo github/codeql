@@ -202,13 +202,13 @@ signature module SignAnalysisSig<Semantic Sem> {
 
   /**
    * Holds if `e` may have positive values. This does not rule out the
-   * possibilty for negative values.
+   * possibility for negative values.
    */
   predicate semMayBePositive(Sem::Expr e);
 
   /**
    * Holds if `e` may have negative values. This does not rule out the
-   * possibilty for positive values.
+   * possibility for positive values.
    */
   predicate semMayBeNegative(Sem::Expr e);
 }
