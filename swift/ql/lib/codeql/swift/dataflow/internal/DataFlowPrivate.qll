@@ -422,7 +422,7 @@ private module ParameterNodes {
   class ClosureSelfParameterNode extends ParameterNodeImpl, ClosureSelfReferenceNode {
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       c.asSourceCallable() = this.getClosure() and
-      pos instanceof ClosureSelfParameter
+      pos instanceof TThisParameter
     }
   }
 
@@ -649,7 +649,7 @@ private module ArgumentNodes {
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       apply = call.asCall() and
       not exists(apply.getStaticTarget()) and
-      pos instanceof ClosureSelfArgument
+      pos instanceof ThisArgumentPosition
     }
   }
 }
