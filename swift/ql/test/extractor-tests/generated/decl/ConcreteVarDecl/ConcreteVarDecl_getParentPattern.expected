@@ -23,5 +23,4 @@
 | var_decls.swift:57:36:57:36 | _w4 | var_decls.swift:57:36:57:36 | ... as ... |
 | var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:36:57:36 | w4 |
 | var_decls.swift:65:19:65:19 | case_variable | var_decls.swift:65:8:65:35 | .value(...) |
-| var_decls.swift:65:19:65:19 | case_variable | var_decls.swift:65:8:65:35 | .value(...) |
 | var_decls.swift:67:22:67:22 | unused_case_variable | var_decls.swift:67:8:67:42 | .value(...) |
