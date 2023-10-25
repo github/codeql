@@ -448,7 +448,7 @@ private module ParameterNodes {
 
     override ParamDecl getParameter() { result = param }
 
-    override DataFlowType getTypeImpl() { result = param.getType() }
+    override DataFlowType getTypeImpl() { result = param.getType().getCanonicalType() }
   }
 
   class ClosureSelfParameterNode extends ParameterNodeImpl, TClosureSelfParameterNode {
