@@ -197,7 +197,9 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
-    upd.getDefiningExpr().(AssignOp) = node1.asExpr()
+    upd.getDefiningExpr().(AssignOp) = node1.asExpr() or
+    upd.getDefiningExpr().(LocalVariableDeclExpr).getAssociatedSwitch().(SwitchStmt).getExpr() = node1.asExpr() or
+    upd.getDefiningExpr().(LocalVariableDeclExpr).getAssociatedSwitch().(SwitchExpr).getExpr() = node1.asExpr()
   |
     node2.asExpr() = upd.getAFirstUse() and
     not capturedVariableRead(node2)
