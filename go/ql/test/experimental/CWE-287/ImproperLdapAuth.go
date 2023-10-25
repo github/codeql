@@ -20,15 +20,16 @@ func bad(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	// Connect to the LDAP server
 	l, err := ldap.Dial("tcp", fmt.Sprintf("%s:%d", ldapServer, ldapPort))
 	if err != nil {
-		log.Fatalf("Failed to connect to LDAP server: %v", err)
+		return fmt.Errorf("Failed to connect to LDAP server: %v", err), err
 	}
 	defer l.Close()
 
 	// BAD: user input is not sanetized
 	err = l.Bind(bindDN, bindPassword)
 	if err != nil {
-		log.Fatalf("LDAP bind failed: %v", err)
+		return fmt.Errorf("LDAP bind failed: %v", err), err
 	}
+	return nil, nil
 }
 
 func good1(w http.ResponseWriter, req *http.Request) (interface{}, error) {
@@ -40,7 +41,7 @@ func good1(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	// Connect to the LDAP server
 	l, err := ldap.Dial("tcp", fmt.Sprintf("%s:%d", ldapServer, ldapPort))
 	if err != nil {
-		log.Fatalf("Failed to connect to LDAP server: %v", err)
+		return fmt.Errorf("Failed to connect to LDAP server: %v", err), err
 	}
 	defer l.Close()
 
@@ -50,6 +51,10 @@ func good1(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	if !hasEmptyInput {
 		l.Bind(bindDN, bindPassword)
 	}
+	if err != nil {
+		return fmt.Errorf("LDAP bind failed: %v", err), err
+	}
+	return nil, nil
 }
 
 func good2(w http.ResponseWriter, req *http.Request) (interface{}, error) {
@@ -61,14 +66,16 @@ func good2(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	// Connect to the LDAP server
 	l, err := ldap.Dial("tcp", fmt.Sprintf("%s:%d", ldapServer, ldapPort))
 	if err != nil {
-		log.Fatalf("Failed to connect to LDAP server: %v", err)
+		return fmt.Errorf("Failed to connect to LDAP server: %v", err), err
 	}
 	defer l.Close()
 
 	// GOOD : bindPassword is not empty
 	if bindPassword != "" {
 		l.Bind(bindDN, bindPassword)
+		return nil, err
 	}
+	return nil, nil
 }
 
 func bad2(req *http.Request) {
