@@ -103,7 +103,7 @@ private string getTypeArgumentsNames(ConstructedGeneric cg) {
 
 /**
  * An unbound generic type. This is a generic type with type parameters
- * (for example `List<T>`) or elided type parameters (for example `List<>`).
+ * (for example `List<T>`) or elided type parameters (for example ``List`1``).
  *
  * Either an unbound generic `struct` (`UnboundGenericStruct`), an unbound generic `class`
  * (`UnboundGenericClass`), an unbound generic `interface` (`UnboundGenericInterface`), or

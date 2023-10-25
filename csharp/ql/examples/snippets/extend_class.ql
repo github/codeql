@@ -13,5 +13,5 @@
 import csharp
 
 from RefType type
-where type.getABaseType+().hasQualifiedName("System.Collections", "IEnumerator")
+where type.getABaseType+().hasFullyQualifiedName("System.Collections", "IEnumerator")
 select type

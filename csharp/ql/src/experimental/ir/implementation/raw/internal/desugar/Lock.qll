@@ -132,7 +132,7 @@ private class TranslatedMonitorExit extends TranslatedCompilerGeneratedCall,
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
     exists(Callable exit |
-      exit.hasQualifiedName("System.Threading.Monitor", "Exit") and
+      exit.hasFullyQualifiedName("System.Threading.Monitor", "Exit") and
       result = exit
     )
   }
@@ -165,7 +165,7 @@ private class TranslatedMonitorEnter extends TranslatedCompilerGeneratedCall,
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
     exists(Callable dispose |
-      dispose.hasQualifiedName("System.Threading.Monitor", "Enter") and
+      dispose.hasFullyQualifiedName("System.Threading.Monitor", "Enter") and
       result = dispose
     )
   }

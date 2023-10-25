@@ -36,12 +36,12 @@ class Declaration extends NamedElement, @dotnet_declaration {
    *
    * | Declaration             | Unbound declaration |
    * |-------------------------|---------------------|
-   * | `C<int>`                | `C<>`               |
-   * | `C<>.Nested`            | `C<>.Nested`        |
-   * | `C<int>.Nested`         | `C<>.Nested`        |
-   * | `C<>.Method<>`          | `C<>.Method<>`      |
-   * | `C<int>.Method<>`       | `C<>.Method<>`      |
-   * | `C<int>.Method<string>` | `C<>.Method<>`      |
+   * | `C<int>`                | ``C`1``             |
+   * | ``C`1.Nested``          | ``C`1.Nested``      |
+   * | `C<int>.Nested`         | ``C`1.Nested``      |
+   * | ``C`1.Method`1``        | ``C`1.Method`1``    |
+   * | ``C<int>.Method`1``     | ``C`1.Method`1``    |
+   * | `C<int>.Method<string>` | ``C`1.Method`1``    |
    */
   Declaration getUnboundDeclaration() { result = this }
 

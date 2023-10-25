@@ -42,7 +42,7 @@ class ExternalApi extends Callable {
    * Gets the namespace of this API.
    */
   bindingset[this]
-  string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
+  string getNamespace() { this.getDeclaringType().hasFullyQualifiedName(result, _) }
 
   /**
    * Gets the namespace and signature of this API.
