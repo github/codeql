@@ -55,7 +55,7 @@ class Node extends TNode {
   /**
    * Gets the parameter that corresponds to this node, if any.
    */
-  ParamDecl getParameter() { none() }
+  ParamDecl asParameter() { none() }
 }
 
 /**
@@ -101,7 +101,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
     result = this.(ParameterNodeImpl).getEnclosingCallable()
   }
 
-  override ParamDecl getParameter() { result = this.(ParameterNodeImpl).getParameter() }
+  override ParamDecl asParameter() { result = this.(ParameterNodeImpl).getParameter() }
 }
 
 /**
@@ -156,7 +156,7 @@ ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
-ParameterNode parameterNode(ParamDecl p) { result.getParameter() = p }
+ParameterNode parameterNode(ParamDecl p) { result.asParameter() = p }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local

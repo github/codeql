@@ -163,9 +163,9 @@ private module Cached {
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
     (
-      nodeTo instanceof InoutReturnNode
+      nodeTo instanceof InoutReturnNodeImpl
       implies
-      nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable().asVarDecl()
+      nodeTo.(InoutReturnNodeImpl).getParameter() = def.getSourceVariable().asVarDecl()
     )
   }
 
@@ -180,7 +180,7 @@ private module Cached {
    * Holds if `nodeFrom` is a parameter node, and `nodeTo` is a corresponding SSA node.
    */
   private predicate localFlowSsaParamInput(Node nodeFrom, Node nodeTo) {
-    nodeTo = getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    nodeTo = getParameterDefNode(nodeFrom.asParameter())
   }
 
   private predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
@@ -193,9 +193,9 @@ private module Cached {
       nodeFrom.asDefinition() = def and
       nodeTo.getCfgNode() = def.getAFirstRead() and
       (
-        nodeTo instanceof InoutReturnNode
+        nodeTo instanceof InoutReturnNodeImpl
         implies
-        nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable().asVarDecl()
+        nodeTo.(InoutReturnNodeImpl).getParameter() = def.getSourceVariable().asVarDecl()
       )
       or
       // use-use flow
@@ -394,7 +394,7 @@ private module ParameterNodes {
     predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { none() }
 
     /** Gets the parameter associated with this node, if any. */
-    override ParamDecl getParameter() { none() }
+    ParamDecl getParameter() { none() }
   }
 
   class SourceParameterNode extends ParameterNodeImpl, TSourceParameterNode {
@@ -700,7 +700,7 @@ private module ReturnNodes {
       result = TDataFlowFunc(param.getDeclaringFunction())
     }
 
-    override ParamDecl getParameter() { result = param }
+    ParamDecl getParameter() { result = param }
 
     override Location getLocationImpl() { result = exit.getLocation() }
 
@@ -952,7 +952,7 @@ private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
     n.(PostUpdateNode).getPreUpdateNode().asExpr()
   or
-  result.(CaptureFlow::ParameterNode).getParameter() = n.getParameter()
+  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter()
   or
   result.(CaptureFlow::ThisParameterNode).getCallable() = n.(ClosureSelfParameterNode).getClosure()
   or

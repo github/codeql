@@ -66,7 +66,7 @@ private class WKNavigationDelegateSource extends RemoteFlowSource {
         ] and
       p.getDeclaringFunction() = f and
       p.getIndex() = 1 and
-      this.(DataFlow::ParameterNode).getParameter() = p
+      this.asParameter() = p
     )
   }
 
@@ -173,7 +173,7 @@ private class JsExportedSource extends RemoteFlowSource {
       base.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedProto and
       adopter.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedType
     |
-      this.(DataFlow::ParameterNode).getParameter().getDeclaringFunction() = adopter and
+      this.asParameter().getDeclaringFunction() = adopter and
       pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
     )
     or
