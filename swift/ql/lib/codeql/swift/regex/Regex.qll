@@ -300,7 +300,7 @@ private class NSStringRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
  * ```
  */
 class RegexEval extends CallExpr instanceof PotentialRegexEval {
-  RegexEval() { this.(PotentialRegexEval).doesEvaluate() }
+  RegexEval() { this.doesEvaluate() }
 
   /**
    * Gets the input to this call that is the regular expression being evaluated.
@@ -309,31 +309,30 @@ class RegexEval extends CallExpr instanceof PotentialRegexEval {
    * Consider using `getARegex()` instead (which tracks the regular expression
    * input back to its source).
    */
-  Expr getRegexInput() { result = this.(PotentialRegexEval).getRegexInput().asExpr() }
+  Expr getRegexInput() { result = super.getRegexInput().asExpr() }
 
   /**
    * Gets the input to this call that is the string the regular expression is evaluated on.
    */
-  Expr getStringInput() { result = this.(PotentialRegexEval).getStringInput().asExpr() }
+  Expr getStringInput() { result = super.getStringInput().asExpr() }
 
   /**
    * Gets a dataflow node for an options input that might contain parse mode
    * flags (if any).
    */
-  DataFlow::Node getAnOptionsInput() { result = this.(PotentialRegexEval).getAnOptionsInput() }
+  DataFlow::Node getAnOptionsInput() { result = super.getAnOptionsInput() }
 
   /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
   RegExp getARegex() {
     // string literal used directly as a regex
-    DataFlow::exprNode(result).(ParsedStringRegex).getAParse() =
-      this.(PotentialRegexEval).getRegexInput()
+    DataFlow::exprNode(result).(ParsedStringRegex).getAParse() = super.getRegexInput()
     or
     // string literal -> regex object -> use
     exists(RegexCreation regexCreation |
       DataFlow::exprNode(result).(ParsedStringRegex).getAParse() = regexCreation.getStringInput() and
-      RegexUseFlow::flow(regexCreation, this.(PotentialRegexEval).getRegexInput())
+      RegexUseFlow::flow(regexCreation, super.getRegexInput())
     )
   }
 
@@ -347,8 +346,8 @@ class RegexEval extends CallExpr instanceof PotentialRegexEval {
       any(RegexAdditionalFlowStep s).setsParseMode(setNode, result, true) and
       // reaches this eval
       (
-        RegexParseModeFlow::flow(setNode, this.(PotentialRegexEval).getRegexInput()) or
-        RegexParseModeFlow::flow(setNode, this.(PotentialRegexEval).getAnOptionsInput())
+        RegexParseModeFlow::flow(setNode, super.getRegexInput()) or
+        RegexParseModeFlow::flow(setNode, super.getAnOptionsInput())
       )
     )
   }
