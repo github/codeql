@@ -1,5 +1,7 @@
 package main
 
+//go:generate depstubber -vendor gopkg.in/ldap.v2 Conn Dial
+
 import (
 	"fmt"
 	"log"
