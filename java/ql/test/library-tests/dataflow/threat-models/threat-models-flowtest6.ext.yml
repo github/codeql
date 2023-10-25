@@ -4,7 +4,8 @@ extensions:
       pack: codeql/threat-models
       extensible: threatModelConfiguration
     data:
-      - ["all", true, 0]
+      - ["local", true, 0]
+      - ["environment", false, 1]
 
   - addsTo:
       pack: codeql/java-all
