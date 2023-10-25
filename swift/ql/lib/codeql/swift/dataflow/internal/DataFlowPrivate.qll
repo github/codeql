@@ -870,7 +870,6 @@ private module CaptureInput implements VariableCapture::InputSig {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.(B::BasicBlock).getASuccessor() }
 
-  //TODO: support capture of `this` in lambdas
   class CapturedVariable instanceof S::VarDecl {
     CapturedVariable() {
       any(S::CapturedDecl capturedDecl).getDecl() = this and
