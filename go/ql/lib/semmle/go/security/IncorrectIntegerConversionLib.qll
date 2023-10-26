@@ -5,7 +5,7 @@ import go
  * is true, unsigned otherwise) with `bitSize` bits.
  */
 float getMaxIntValue(int bitSize, boolean isSigned) {
-  bitSize in [8, 16, 32] and
+  bitSize in [8, 16, 32, 64] and
   (
     isSigned = true and result = 2.pow(bitSize - 1) - 1
     or
