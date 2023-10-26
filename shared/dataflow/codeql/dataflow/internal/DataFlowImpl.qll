@@ -4364,13 +4364,15 @@ module MakeImpl<InputSig Lang> {
     private predicate flagDisable() { none() }
 
     module FlowExplorationFwd<explorationLimitSig/0 explorationLimit> {
-      import FlowExploration<explorationLimit/0, flagEnable/0, flagDisable/0>
+      private import FlowExploration<explorationLimit/0, flagEnable/0, flagDisable/0>
+      import Public
 
       predicate partialFlow = partialFlowFwd/3;
     }
 
     module FlowExplorationRev<explorationLimitSig/0 explorationLimit> {
-      import FlowExploration<explorationLimit/0, flagDisable/0, flagEnable/0>
+      private import FlowExploration<explorationLimit/0, flagDisable/0, flagEnable/0>
+      import Public
 
       predicate partialFlow = partialFlowRev/3;
     }
@@ -4617,95 +4619,99 @@ module MakeImpl<InputSig Lang> {
         partialPathStep1(_, _, _, _, _, _, _, _, t0, t, ap) and t0 != t
       }
 
-      /**
-       * A `Node` augmented with a call context, an access path, and a configuration.
-       */
-      class PartialPathNode extends TPartialPathNode {
-        /** Gets a textual representation of this element. */
-        string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
+      module Public {
+        /**
+         * A `Node` augmented with a call context, an access path, and a configuration.
+         */
+        class PartialPathNode extends TPartialPathNode {
+          /** Gets a textual representation of this element. */
+          string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
+
+          /**
+           * Gets a textual representation of this element, including a textual
+           * representation of the call context.
+           */
+          string toStringWithContext() {
+            result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
+          }
+
+          /**
+           * Holds if this element is at the specified location.
+           * The location spans column `startcolumn` of line `startline` to
+           * column `endcolumn` of line `endline` in file `filepath`.
+           * For more information, see
+           * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+           */
+          predicate hasLocationInfo(
+            string filepath, int startline, int startcolumn, int endline, int endcolumn
+          ) {
+            this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+          }
+
+          /** Gets the underlying `Node`. */
+          final Node getNode() { this.getNodeEx().projectToNode() = result }
+
+          FlowState getState() { none() }
+
+          private NodeEx getNodeEx() {
+            result = this.(PartialPathNodeFwd).getNodeEx() or
+            result = this.(PartialPathNodeRev).getNodeEx()
+          }
+
+          /** Gets a successor of this node, if any. */
+          PartialPathNode getASuccessor() { none() }
+
+          /**
+           * Gets the approximate distance to the nearest source measured in number
+           * of interprocedural steps.
+           */
+          int getSourceDistance() { result = distSrc(this.getNodeEx().getEnclosingCallable()) }
+
+          /**
+           * Gets the approximate distance to the nearest sink measured in number
+           * of interprocedural steps.
+           */
+          int getSinkDistance() { result = distSink(this.getNodeEx().getEnclosingCallable()) }
+
+          private string ppType() {
+            this instanceof PartialPathNodeRev and result = ""
+            or
+            exists(DataFlowType t | t = this.(PartialPathNodeFwd).getType() |
+              // The `concat` becomes "" if `ppReprType` has no result.
+              result = concat(" : " + ppReprType(t))
+            )
+          }
+
+          private string ppAp() {
+            exists(string s |
+              s = this.(PartialPathNodeFwd).getAp().toString() or
+              s = this.(PartialPathNodeRev).getAp().toString()
+            |
+              if s = "" then result = "" else result = " " + s
+            )
+          }
+
+          private string ppCtx() {
+            result = " <" + this.(PartialPathNodeFwd).getCallContext().toString() + ">"
+          }
+
+          /** Holds if this is a source in a forward-flow path. */
+          predicate isFwdSource() { this.(PartialPathNodeFwd).isSource() }
+
+          /** Holds if this is a sink in a reverse-flow path. */
+          predicate isRevSink() { this.(PartialPathNodeRev).isSink() }
+        }
 
         /**
-         * Gets a textual representation of this element, including a textual
-         * representation of the call context.
+         * Provides the query predicates needed to include a graph in a path-problem query.
          */
-        string toStringWithContext() {
-          result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
+        module PartialPathGraph {
+          /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
+          query predicate edges(PartialPathNode a, PartialPathNode b) { a.getASuccessor() = b }
         }
-
-        /**
-         * Holds if this element is at the specified location.
-         * The location spans column `startcolumn` of line `startline` to
-         * column `endcolumn` of line `endline` in file `filepath`.
-         * For more information, see
-         * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-         */
-        predicate hasLocationInfo(
-          string filepath, int startline, int startcolumn, int endline, int endcolumn
-        ) {
-          this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-        }
-
-        /** Gets the underlying `Node`. */
-        final Node getNode() { this.getNodeEx().projectToNode() = result }
-
-        FlowState getState() { none() }
-
-        private NodeEx getNodeEx() {
-          result = this.(PartialPathNodeFwd).getNodeEx() or
-          result = this.(PartialPathNodeRev).getNodeEx()
-        }
-
-        /** Gets a successor of this node, if any. */
-        PartialPathNode getASuccessor() { none() }
-
-        /**
-         * Gets the approximate distance to the nearest source measured in number
-         * of interprocedural steps.
-         */
-        int getSourceDistance() { result = distSrc(this.getNodeEx().getEnclosingCallable()) }
-
-        /**
-         * Gets the approximate distance to the nearest sink measured in number
-         * of interprocedural steps.
-         */
-        int getSinkDistance() { result = distSink(this.getNodeEx().getEnclosingCallable()) }
-
-        private string ppType() {
-          this instanceof PartialPathNodeRev and result = ""
-          or
-          exists(DataFlowType t | t = this.(PartialPathNodeFwd).getType() |
-            // The `concat` becomes "" if `ppReprType` has no result.
-            result = concat(" : " + ppReprType(t))
-          )
-        }
-
-        private string ppAp() {
-          exists(string s |
-            s = this.(PartialPathNodeFwd).getAp().toString() or
-            s = this.(PartialPathNodeRev).getAp().toString()
-          |
-            if s = "" then result = "" else result = " " + s
-          )
-        }
-
-        private string ppCtx() {
-          result = " <" + this.(PartialPathNodeFwd).getCallContext().toString() + ">"
-        }
-
-        /** Holds if this is a source in a forward-flow path. */
-        predicate isFwdSource() { this.(PartialPathNodeFwd).isSource() }
-
-        /** Holds if this is a sink in a reverse-flow path. */
-        predicate isRevSink() { this.(PartialPathNodeRev).isSink() }
       }
 
-      /**
-       * Provides the query predicates needed to include a graph in a path-problem query.
-       */
-      module PartialPathGraph {
-        /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-        query predicate edges(PartialPathNode a, PartialPathNode b) { a.getASuccessor() = b }
-      }
+      import Public
 
       private class PartialPathNodeFwd extends PartialPathNode, TPartialPathNodeFwd {
         NodeEx node;
