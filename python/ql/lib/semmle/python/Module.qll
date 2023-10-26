@@ -231,17 +231,25 @@ private predicate isRegularPackage(Folder f, string name) {
   exists(f.getFile("__init__.py"))
 }
 
+/** Gets the name of a module imported in package `c`. */
+private string moduleImportedInPackage(Container c) {
+  legalShortName(result) and
+  // it has to be imported in this folder
+  result =
+    any(ImportExpr i | i.getLocation().getFile().getParent() = c)
+        .getName()
+        // strip everything after the first `.`
+        .regexpReplaceAll("\\..*", "") and
+  result != ""
+}
+
 /** Holds if the file `f` could be resolved to a module named `name`. */
 private predicate isPotentialModuleFile(File file, string name) {
   legalShortName(name) and
   name = file.getStem() and
   file.getExtension() = ["py", "pyc", "so", "pyd"] and
   // it has to be imported in this folder
-  name =
-    any(ImportExpr i | i.getLocation().getFile().getParent() = file.getParent())
-        .getName()
-        .regexpReplaceAll("\\..*", "") and
-  name != ""
+  name = moduleImportedInPackage(file.getParent())
 }
 
 /**
@@ -256,11 +264,7 @@ private predicate isNameSpacePackage(Folder f, string name) {
   not isRegularPackage(f, name) and
   // it has to be imported in a file
   // either in this folder or next to this folder
-  name =
-    any(ImportExpr i | i.getLocation().getFile().getParent() in [f, f.getParent()])
-        .getName()
-        .regexpReplaceAll("\\..*", "") and
-  name != "" and
+  name = moduleImportedInPackage([f, f.getParent()]) and
   // no sibling regular package
   // and no sibling module
   not exists(Folder sibling | sibling.getParent() = f.getParent() |
