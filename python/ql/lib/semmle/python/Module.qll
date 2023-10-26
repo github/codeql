@@ -261,8 +261,8 @@ private predicate isNameSpacePackage(Folder f, string name) {
         .getName()
         .regexpReplaceAll("\\..*", "") and
   name != "" and
-  // no siblibling regular package
-  // no sibling module
+  // no sibling regular package
+  // and no sibling module
   not exists(Folder sibling | sibling.getParent() = f.getParent() |
     isRegularPackage(sibling.getFolder(name), name)
     or
