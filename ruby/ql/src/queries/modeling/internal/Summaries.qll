@@ -14,19 +14,11 @@ module Summaries {
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
       exists(DataFlow::MethodNode methodNode | methodNode.isPublic() |
-        getAnyParameterNode(methodNode).asSource() = source
+        Util::getAnyParameter(methodNode) = source
       )
     }
 
     predicate isSink(DataFlow::Node sink) { sink = any(DataFlow::MethodNode m).getAReturnNode() }
-  }
-
-  private API::Node getAnyParameterNode(DataFlow::MethodNode methodNode) {
-    result.asSource() =
-      [
-        methodNode.getParameter(_), methodNode.getKeywordParameter(_),
-        methodNode.getBlockParameter(), methodNode.getSelfParameter()
-      ]
   }
 
   private module ValueFlow {
@@ -36,7 +28,7 @@ module Summaries {
       exists(DataFlow::MethodNode methodNode, API::Node paramNode |
         methodNode.getLocation().getFile() instanceof Util::RelevantFile and
         flow(paramNode.asSource(), methodNode.getAReturnNode()) and
-        paramNode = getAnyParameterNode(methodNode)
+        paramNode.asSource() = Util::getAnyParameter(methodNode)
       |
         Util::pathToMethod(methodNode, type, path) and
         input = Util::getArgumentPath(paramNode.asSource()) and
@@ -53,7 +45,7 @@ module Summaries {
       exists(DataFlow::MethodNode methodNode, API::Node paramNode |
         methodNode.getLocation().getFile() instanceof Util::RelevantFile and
         flow(paramNode.asSource(), methodNode.getAReturnNode()) and
-        paramNode = getAnyParameterNode(methodNode)
+        paramNode.asSource() = Util::getAnyParameter(methodNode)
       |
         Util::pathToMethod(methodNode, type, path) and
         input = Util::getArgumentPath(paramNode.asSource()) and

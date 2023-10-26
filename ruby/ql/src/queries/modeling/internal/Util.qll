@@ -58,9 +58,16 @@ predicate pathToMethod(DataFlow::MethodNode method, string type, string path) {
   )
 }
 
-/** Gets any parameter to `method`. This may be a positional, keyword, or block parameter. */
-private DataFlow::ParameterNode getAnyParameter(DataFlow::MethodNode method) {
-  result = [method.getParameter(_), method.getKeywordParameter(_), method.getBlockParameter()]
+/**
+ * Gets any parameter to `methodNode`. This may be a positional, keyword,
+ * block, or self parameter.
+ */
+DataFlow::ParameterNode getAnyParameter(DataFlow::MethodNode methodNode) {
+  result =
+    [
+      methodNode.getParameter(_), methodNode.getKeywordParameter(_), methodNode.getBlockParameter(),
+      methodNode.getSelfParameter()
+    ]
 }
 
 private predicate pathToNodeBase(API::Node node, string type, string path, boolean isOutput) {
