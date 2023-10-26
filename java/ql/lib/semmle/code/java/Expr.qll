@@ -1956,7 +1956,7 @@ class MethodCall extends Expr, Call, @methodaccess {
 }
 
 /** DEPRECATED: Alias for `MethodCall`. */
-class MethodAccess = MethodCall;
+deprecated class MethodAccess = MethodCall;
 
 /** A type access is a (possibly qualified) reference to a type. */
 class TypeAccess extends Expr, Annotatable, @typeaccess {
@@ -2143,7 +2143,7 @@ class SuperMethodCall extends MethodCall {
 }
 
 /** DEPRECATED: Alias for `SuperMethodCall`. */
-class SuperMethodAccess = SuperMethodCall;
+deprecated class SuperMethodAccess = SuperMethodCall;
 
 /**
  * A constructor call, which occurs either as a constructor invocation inside a
