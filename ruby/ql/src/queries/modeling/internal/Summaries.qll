@@ -31,7 +31,7 @@ module Summaries {
     predicate summaryModel(string type, string path, string input, string output) {
       exists(DataFlow::MethodNode methodNode, API::Node paramNode |
         methodNode.getLocation().getFile() instanceof Util::RelevantFile and
-        paramNode.getAValueReachableFromSource() = methodNode.getAReturnNode() and
+        flow(paramNode.asSource(), methodNode.getAReturnNode()) and
         paramNode = getAnyParameterNode(methodNode)
       |
         Util::pathToMethod(methodNode, type, path) and
@@ -59,7 +59,7 @@ module Summaries {
   }
 
   /**
-   * Holds if calls to `(type, path)`, the value referred to by `input`
+   * Holds if in calls to `(type, path)`, the value referred to by `input`
    * can flow to the value referred to by `output`.
    *
    * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving steps,

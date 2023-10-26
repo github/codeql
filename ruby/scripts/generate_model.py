@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # This script generates a data extensions model for a given library in codeql database form
 # Currently only typeModels and summaryModels are generated
@@ -37,7 +37,7 @@ def parse_args():
         "-w",
         "--overwrite",
         action="store_true",
-        help="if provided, use this command to invoke codeql",
+        help="if provided, overwrite the file if it already exists",
     )
     return parser.parse_args()
 

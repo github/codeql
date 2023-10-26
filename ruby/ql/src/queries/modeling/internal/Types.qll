@@ -13,7 +13,7 @@ private import Util as Util
  */
 module Types {
   /**
-   * Holds `node` should be seen as having the given `type`.
+   * Holds if `node` should be seen as having the given `type`.
    */
   private predicate valueHasTypeName(DataFlow::LocalSourceNode node, string type) {
     node.getLocation().getFile() instanceof Util::RelevantFile and
