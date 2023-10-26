@@ -46,22 +46,21 @@ private string getParentThreatModel(string child) {
 }
 
 /**
- * Gets the `enabled` column of the highest-priority configuration row whose `kind` column includes
- * the specified threat model kind.
+ * Holds if the `enabled` column is set to `true` of the highest-priority configuration row
+ * whose `kind` column includes the specified threat model kind.
  */
-private boolean threatModelExplicitState(string kind) {
+private predicate threatModelEnabled(string kind) {
   // Find the highest-oriority configuration row whose `kind` column includes the specified threat
   // model kind. If such a row exists and its `enabled` column is `true`, then the threat model is
   // enabled.
-  (knownThreatModel(kind) or kind = "<other>") and
-  result =
-    max(boolean enabled, int priority |
-      exists(string configuredKind | configuredKind = getParentThreatModel*(kind) |
-        threatModelConfiguration(configuredKind, enabled, priority)
-      )
-    |
-      enabled order by priority
+  knownThreatModel(kind) and
+  max(boolean enabled, int priority |
+    exists(string configuredKind | configuredKind = getParentThreatModel*(kind) |
+      threatModelConfiguration(configuredKind, enabled, priority)
     )
+  |
+    enabled order by priority
+  ) = true
 }
 
 /**
