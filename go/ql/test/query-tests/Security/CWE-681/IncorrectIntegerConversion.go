@@ -349,6 +349,15 @@ func testBoundsChecking(input string) {
 	}
 }
 
+func testBoundsChecking2(input string) error {
+	version, err := strconv.ParseUint(input, 10, 0)
+	if err != nil || version > math.MaxInt {
+		return fmt.Errorf("checksum has invalid version: %w", err)
+	}
+	_ = int(version)
+	return nil
+}
+
 func testRightShifted(input string) {
 	{
 		parsed, err := strconv.ParseInt(input, 10, 32)
