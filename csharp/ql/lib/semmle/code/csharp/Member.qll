@@ -215,7 +215,12 @@ class Overridable extends Declaration, TOverridable {
    * to members that can be declared on an interface, i.e. methods, properties,
    * indexers and events.
    */
-  Interface getExplicitlyImplementedInterface() { explicitly_implements(this, getTypeRef(result)) }
+  Interface getExplicitlyImplementedInterface() {
+    explicitly_implements(this, result)
+    or
+    not explicitly_implements(this, any(Interface i)) and
+    explicitly_implements(this, getTypeRef(result))
+  }
 
   /**
    * Holds if this member implements an interface member explicitly.
