@@ -137,3 +137,40 @@ func sideEffects() {
   f()
   sink(x) // $ hasValueFlow=sideEffects
 }
+
+class S {
+  var bf1 = 0
+  var bf2 = 0
+  func captureOther() {
+    var other = S()
+    var f = { x in
+      other.bf1 = x;
+    };
+
+    // no flow
+    sink(bf1);
+    sink(other.bf1);
+    sink(other.bf2);
+
+    f(source("captureOther", 2));
+
+    sink(other.bf1); // $ hasValueFlow=captureOther
+    sink(other.bf2);
+  }
+
+  func captureThis() {
+    var f = { [self] x in
+      self.bf1 = x;
+      bf2 = x;
+    };
+
+    // no flow
+    sink(bf1);
+    sink(self.bf2);
+
+    f(source("captureThis", 2));
+
+    sink(bf1); // $ MISSING: hasValueFlow
+    sink(self.bf2); // $ MISSING: hasValueFlow
+  }
+}
