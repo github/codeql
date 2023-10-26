@@ -16,6 +16,14 @@ methodWithDuplicate
 | AbstractCollection<E> | removeAll | Collection<?> |
 | AbstractCollection<E> | retainAll | Collection<?> |
 | AbstractCollection<E> | toArray | T[] |
+| AbstractCollection<Runnable> | add | Runnable |
+| AbstractCollection<Runnable> | addAll | Collection<? extends Runnable> |
+| AbstractCollection<Runnable> | contains | Object |
+| AbstractCollection<Runnable> | containsAll | Collection<?> |
+| AbstractCollection<Runnable> | remove | Object |
+| AbstractCollection<Runnable> | removeAll | Collection<?> |
+| AbstractCollection<Runnable> | retainAll | Collection<?> |
+| AbstractCollection<Runnable> | toArray | T[] |
 | AbstractCollection<String> | add | String |
 | AbstractCollection<String> | addAll | Collection<? extends String> |
 | AbstractCollection<String> | contains | Object |
@@ -139,6 +147,17 @@ methodWithDuplicate
 | Collection<K> | retainAll | Collection<?> |
 | Collection<K> | toArray | IntFunction<T[]> |
 | Collection<K> | toArray | T[] |
+| Collection<Runnable> | add | Runnable |
+| Collection<Runnable> | addAll | Collection<? extends Runnable> |
+| Collection<Runnable> | contains | Object |
+| Collection<Runnable> | containsAll | Collection<?> |
+| Collection<Runnable> | equals | Object |
+| Collection<Runnable> | remove | Object |
+| Collection<Runnable> | removeAll | Collection<?> |
+| Collection<Runnable> | removeIf | Predicate<? super Runnable> |
+| Collection<Runnable> | retainAll | Collection<?> |
+| Collection<Runnable> | toArray | IntFunction<T[]> |
+| Collection<Runnable> | toArray | T[] |
 | Collection<String> | add | String |
 | Collection<String> | addAll | Collection<? extends String> |
 | Collection<String> | contains | Object |
@@ -191,6 +210,8 @@ methodWithDuplicate
 | List<E> | add | int |
 | List<E> | addAll | Collection<? extends E> |
 | List<E> | addAll | int |
+| List<E> | addFirst | E |
+| List<E> | addLast | E |
 | List<E> | contains | Object |
 | List<E> | containsAll | Collection<?> |
 | List<E> | copyOf | Collection<? extends E> |

@@ -1,5 +1,7 @@
 #select
 | addAll |
+| addFirst |
+| addLast |
 | addRange |
 | allOf |
 | asIterator |
@@ -13,6 +15,8 @@
 | finalize |
 | forEach |
 | getDeclaringClass |
+| getFirst |
+| getLast |
 | hasMoreElements |
 | hashCode |
 | name |
@@ -22,7 +26,10 @@
 | ordinal |
 | parallelStream |
 | range |
+| removeFirst |
+| removeLast |
 | resolveConstantDesc |
+| reversed |
 | spliterator |
 | stream |
 | toArray |
