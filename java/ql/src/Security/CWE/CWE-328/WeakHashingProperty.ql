@@ -1,5 +1,5 @@
 /**
- * @name Weak Hashing Property
+ * @name Weak hashing algorithm specified in properties file
  * @description Using weak cryptographic algorithms can allow an attacker to compromise security.
  * @id java/weak-hashing-property
  * @kind path-problem
@@ -16,5 +16,5 @@ import InsecureAlgorithmPropertyFlow::PathGraph
 
 from InsecureAlgorithmPropertyFlow::PathNode source, InsecureAlgorithmPropertyFlow::PathNode sink
 where InsecureAlgorithmPropertyFlow::flowPath(source, sink)
-select sink.getNode(), sink, source, "The $@ algorithm is insecure.", source,
+select sink.getNode(), sink, source, "The $@ hashing algorithm is insecure.", source,
   getWeakHashingAlgorithmName(source.getNode())
