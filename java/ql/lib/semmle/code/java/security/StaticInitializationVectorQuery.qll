@@ -43,13 +43,13 @@ private class ArrayUpdate extends Expr {
       not assign.getSource() instanceof CompileTimeConstantExpr
     )
     or
-    exists(StaticMethodAccess ma |
+    exists(StaticMethodCall ma |
       ma.getMethod().hasQualifiedName("java.lang", "System", "arraycopy") and
       ma = this and
       ma.getArgument(2) = array
     )
     or
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m = ma.getMethod() and
       ma = this and
       ma.getArgument(0) = array
@@ -64,7 +64,7 @@ private class ArrayUpdate extends Expr {
       m.getAnOverride*().hasQualifiedName("org.bouncycastle.crypto", "Digest", "doFinal")
     )
     or
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m = ma.getMethod() and
       ma = this and
       ma.getArgument(1) = array

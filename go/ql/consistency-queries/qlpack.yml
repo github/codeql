@@ -1,0 +1,9 @@
+name: codeql-go-consistency-queries
+version: 0.0.0
+groups:
+  - go
+  - queries
+extractor: go
+dependencies:
+  codeql/go-all: ${workspace}
+warnOnImplicitThis: true

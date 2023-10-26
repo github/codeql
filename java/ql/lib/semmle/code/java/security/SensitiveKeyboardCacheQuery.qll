@@ -56,7 +56,7 @@ private class FindViewMethod extends Method {
 }
 
 /** Gets a use of the view that has the given id. */
-private MethodAccess getAUseOfViewWithId(string id) {
+private MethodCall getAUseOfViewWithId(string id) {
   exists(string name, NestedClass r_id, Field id_field |
     id = "@+id/" + name and
     result.getMethod() instanceof FindViewMethod and
@@ -71,7 +71,7 @@ private MethodAccess getAUseOfViewWithId(string id) {
 
 /** Gets the argument of a use of `setInputType` called on the view with the given id. */
 private Argument setInputTypeForId(string id) {
-  exists(MethodAccess setInputType |
+  exists(MethodCall setInputType |
     setInputType.getMethod().hasQualifiedName("android.widget", "TextView", "setInputType") and
     DataFlow::localExprFlow(getAUseOfViewWithId(id), setInputType.getQualifier()) and
     result = setInputType.getArgument(0)

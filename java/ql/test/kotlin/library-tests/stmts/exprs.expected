@@ -1,5 +1,5 @@
-| stmts.kt:0:0:0:0 | component1(...) | MethodAccess |
-| stmts.kt:0:0:0:0 | component2(...) | MethodAccess |
+| stmts.kt:0:0:0:0 | component1(...) | MethodCall |
+| stmts.kt:0:0:0:0 | component2(...) | MethodCall |
 | stmts.kt:0:0:0:0 | tmp3_loop_parameter | VarAccess |
 | stmts.kt:2:1:20:1 | int | TypeAccess |
 | stmts.kt:2:20:2:25 | int | TypeAccess |
@@ -67,7 +67,7 @@
 | stmts.kt:28:15:28:15 | y | VarAccess |
 | stmts.kt:31:10:31:10 | i | LocalVariableDeclExpr |
 | stmts.kt:31:15:31:15 | x | VarAccess |
-| stmts.kt:31:15:31:18 | rangeTo(...) | MethodAccess |
+| stmts.kt:31:15:31:18 | rangeTo(...) | MethodCall |
 | stmts.kt:31:18:31:18 | y | VarAccess |
 | stmts.kt:32:9:32:24 | when ... | WhenExpr |
 | stmts.kt:32:13:32:13 | x | VarAccess |
@@ -75,7 +75,7 @@
 | stmts.kt:32:17:32:17 | y | VarAccess |
 | stmts.kt:35:18:35:18 | i | LocalVariableDeclExpr |
 | stmts.kt:35:23:35:23 | x | VarAccess |
-| stmts.kt:35:23:35:26 | rangeTo(...) | MethodAccess |
+| stmts.kt:35:23:35:26 | rangeTo(...) | MethodCall |
 | stmts.kt:35:26:35:26 | y | VarAccess |
 | stmts.kt:37:13:37:36 | when ... | WhenExpr |
 | stmts.kt:37:17:37:17 | x | VarAccess |
@@ -89,10 +89,10 @@
 | stmts.kt:41:19:41:36 | tmp3_loop_parameter | LocalVariableDeclExpr |
 | stmts.kt:41:19:41:36 | tmp3_loop_parameter | VarAccess |
 | stmts.kt:41:20:41:20 | x | VarAccess |
-| stmts.kt:41:20:41:23 | rangeTo(...) | MethodAccess |
+| stmts.kt:41:20:41:23 | rangeTo(...) | MethodCall |
 | stmts.kt:41:20:41:36 | CollectionsKt | TypeAccess |
 | stmts.kt:41:20:41:36 | Integer | TypeAccess |
-| stmts.kt:41:20:41:36 | withIndex(...) | MethodAccess |
+| stmts.kt:41:20:41:36 | withIndex(...) | MethodCall |
 | stmts.kt:41:23:41:23 | y | VarAccess |
 | stmts.kt:42:9:42:24 | when ... | WhenExpr |
 | stmts.kt:42:13:42:13 | x | VarAccess |

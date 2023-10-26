@@ -3,7 +3,7 @@ import TestUtilities.InlineExpectationsTest
 import semmle.code.java.security.SensitiveResultReceiverQuery
 
 class TestSource extends RemoteFlowSource {
-  TestSource() { this.asExpr().(MethodAccess).getMethod().hasName("source") }
+  TestSource() { this.asExpr().(MethodCall).getMethod().hasName("source") }
 
   override string getSourceType() { result = "test" }
 }

@@ -310,7 +310,7 @@ class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
@@ -335,7 +335,7 @@ class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
@@ -346,7 +346,7 @@ class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 class JavaxCryptoKeyFactory extends JavaxCryptoAlgoSpec {
@@ -357,7 +357,7 @@ class JavaxCryptoKeyFactory extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 abstract class JavaSecurityAlgoSpec extends CryptoAlgoSpec { }
@@ -396,7 +396,7 @@ class JavaSecurityKeyPairGenerator extends JavaSecurityAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 /** The Java class `java.security.AlgorithmParameterGenerator`. */
@@ -423,7 +423,7 @@ class JavaSecurityAlgoParamGenerator extends JavaSecurityAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 /** An implementation of the `java.security.spec.AlgorithmParameterSpec` interface. */

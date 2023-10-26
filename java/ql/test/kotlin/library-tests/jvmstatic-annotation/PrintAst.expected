@@ -5,70 +5,70 @@ JavaUser.java:
 #    3|       3: [TypeAccess] void
 #    3|       5: [BlockStmt] { ... }
 #    5|         0: [ExprStmt] <Expr>;
-#    5|           0: [MethodAccess] staticMethod(...)
+#    5|           0: [MethodCall] staticMethod(...)
 #    5|             -1: [TypeAccess] HasCompanion
 #    5|             0: [StringLiteral] "1"
 #    6|         1: [ExprStmt] <Expr>;
-#    6|           0: [MethodAccess] nonStaticMethod(...)
+#    6|           0: [MethodCall] nonStaticMethod(...)
 #    6|             -1: [VarAccess] HasCompanion.Companion
 #    6|               -1: [TypeAccess] HasCompanion
 #    6|             0: [StringLiteral] "2"
 #    7|         2: [ExprStmt] <Expr>;
-#    7|           0: [MethodAccess] setStaticProp(...)
+#    7|           0: [MethodCall] setStaticProp(...)
 #    7|             -1: [TypeAccess] HasCompanion
-#    7|             0: [MethodAccess] getNonStaticProp(...)
+#    7|             0: [MethodCall] getNonStaticProp(...)
 #    7|               -1: [VarAccess] HasCompanion.Companion
 #    7|                 -1: [TypeAccess] HasCompanion
 #    8|         3: [ExprStmt] <Expr>;
-#    8|           0: [MethodAccess] setNonStaticProp(...)
+#    8|           0: [MethodCall] setNonStaticProp(...)
 #    8|             -1: [VarAccess] HasCompanion.Companion
 #    8|               -1: [TypeAccess] HasCompanion
-#    8|             0: [MethodAccess] getStaticProp(...)
+#    8|             0: [MethodCall] getStaticProp(...)
 #    8|               -1: [TypeAccess] HasCompanion
 #    9|         4: [ExprStmt] <Expr>;
-#    9|           0: [MethodAccess] setPropWithStaticGetter(...)
+#    9|           0: [MethodCall] setPropWithStaticGetter(...)
 #    9|             -1: [VarAccess] HasCompanion.Companion
 #    9|               -1: [TypeAccess] HasCompanion
-#    9|             0: [MethodAccess] getPropWithStaticSetter(...)
+#    9|             0: [MethodCall] getPropWithStaticSetter(...)
 #    9|               -1: [VarAccess] HasCompanion.Companion
 #    9|                 -1: [TypeAccess] HasCompanion
 #   10|         5: [ExprStmt] <Expr>;
-#   10|           0: [MethodAccess] setPropWithStaticSetter(...)
+#   10|           0: [MethodCall] setPropWithStaticSetter(...)
 #   10|             -1: [TypeAccess] HasCompanion
-#   10|             0: [MethodAccess] getPropWithStaticGetter(...)
+#   10|             0: [MethodCall] getPropWithStaticGetter(...)
 #   10|               -1: [TypeAccess] HasCompanion
 #   13|         6: [ExprStmt] <Expr>;
-#   13|           0: [MethodAccess] staticMethod(...)
+#   13|           0: [MethodCall] staticMethod(...)
 #   13|             -1: [TypeAccess] NonCompanion
 #   13|             0: [StringLiteral] "1"
 #   14|         7: [ExprStmt] <Expr>;
-#   14|           0: [MethodAccess] nonStaticMethod(...)
+#   14|           0: [MethodCall] nonStaticMethod(...)
 #   14|             -1: [VarAccess] NonCompanion.INSTANCE
 #   14|               -1: [TypeAccess] NonCompanion
 #   14|             0: [StringLiteral] "2"
 #   15|         8: [ExprStmt] <Expr>;
-#   15|           0: [MethodAccess] setStaticProp(...)
+#   15|           0: [MethodCall] setStaticProp(...)
 #   15|             -1: [TypeAccess] NonCompanion
-#   15|             0: [MethodAccess] getNonStaticProp(...)
+#   15|             0: [MethodCall] getNonStaticProp(...)
 #   15|               -1: [VarAccess] NonCompanion.INSTANCE
 #   15|                 -1: [TypeAccess] NonCompanion
 #   16|         9: [ExprStmt] <Expr>;
-#   16|           0: [MethodAccess] setNonStaticProp(...)
+#   16|           0: [MethodCall] setNonStaticProp(...)
 #   16|             -1: [VarAccess] NonCompanion.INSTANCE
 #   16|               -1: [TypeAccess] NonCompanion
-#   16|             0: [MethodAccess] getStaticProp(...)
+#   16|             0: [MethodCall] getStaticProp(...)
 #   16|               -1: [TypeAccess] NonCompanion
 #   17|         10: [ExprStmt] <Expr>;
-#   17|           0: [MethodAccess] setPropWithStaticGetter(...)
+#   17|           0: [MethodCall] setPropWithStaticGetter(...)
 #   17|             -1: [VarAccess] NonCompanion.INSTANCE
 #   17|               -1: [TypeAccess] NonCompanion
-#   17|             0: [MethodAccess] getPropWithStaticSetter(...)
+#   17|             0: [MethodCall] getPropWithStaticSetter(...)
 #   17|               -1: [VarAccess] NonCompanion.INSTANCE
 #   17|                 -1: [TypeAccess] NonCompanion
 #   18|         11: [ExprStmt] <Expr>;
-#   18|           0: [MethodAccess] setPropWithStaticSetter(...)
+#   18|           0: [MethodCall] setPropWithStaticSetter(...)
 #   18|             -1: [TypeAccess] NonCompanion
-#   18|             0: [MethodAccess] getPropWithStaticGetter(...)
+#   18|             0: [MethodCall] getPropWithStaticGetter(...)
 #   18|               -1: [TypeAccess] NonCompanion
 test.kt:
 #    0| [CompilationUnit] test
@@ -79,66 +79,66 @@ test.kt:
 #   52|         0: [ExprStmt] <Expr>;
 #   52|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   52|             0: [TypeAccess] Unit
-#   52|             1: [MethodAccess] staticMethod(...)
+#   52|             1: [MethodCall] staticMethod(...)
 #   52|               -1: [VarAccess] Companion
 #   52|               0: [StringLiteral] "1"
 #   53|         1: [ExprStmt] <Expr>;
 #   53|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   53|             0: [TypeAccess] Unit
-#   53|             1: [MethodAccess] nonStaticMethod(...)
+#   53|             1: [MethodCall] nonStaticMethod(...)
 #   53|               -1: [VarAccess] Companion
 #   53|               0: [StringLiteral] "2"
 #   54|         2: [ExprStmt] <Expr>;
-#   54|           0: [MethodAccess] setStaticProp(...)
+#   54|           0: [MethodCall] setStaticProp(...)
 #   54|             -1: [VarAccess] Companion
-#   54|             0: [MethodAccess] getNonStaticProp(...)
+#   54|             0: [MethodCall] getNonStaticProp(...)
 #   54|               -1: [VarAccess] Companion
 #   55|         3: [ExprStmt] <Expr>;
-#   55|           0: [MethodAccess] setNonStaticProp(...)
+#   55|           0: [MethodCall] setNonStaticProp(...)
 #   55|             -1: [VarAccess] Companion
-#   55|             0: [MethodAccess] getStaticProp(...)
+#   55|             0: [MethodCall] getStaticProp(...)
 #   55|               -1: [VarAccess] Companion
 #   56|         4: [ExprStmt] <Expr>;
-#   56|           0: [MethodAccess] setPropWithStaticGetter(...)
+#   56|           0: [MethodCall] setPropWithStaticGetter(...)
 #   56|             -1: [VarAccess] Companion
-#   56|             0: [MethodAccess] getPropWithStaticSetter(...)
+#   56|             0: [MethodCall] getPropWithStaticSetter(...)
 #   56|               -1: [VarAccess] Companion
 #   57|         5: [ExprStmt] <Expr>;
-#   57|           0: [MethodAccess] setPropWithStaticSetter(...)
+#   57|           0: [MethodCall] setPropWithStaticSetter(...)
 #   57|             -1: [VarAccess] Companion
-#   57|             0: [MethodAccess] getPropWithStaticGetter(...)
+#   57|             0: [MethodCall] getPropWithStaticGetter(...)
 #   57|               -1: [VarAccess] Companion
 #   60|         6: [ExprStmt] <Expr>;
 #   60|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   60|             0: [TypeAccess] Unit
-#   60|             1: [MethodAccess] staticMethod(...)
+#   60|             1: [MethodCall] staticMethod(...)
 #   60|               -1: [TypeAccess] NonCompanion
 #   60|               0: [StringLiteral] "1"
 #   61|         7: [ExprStmt] <Expr>;
 #   61|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   61|             0: [TypeAccess] Unit
-#   61|             1: [MethodAccess] nonStaticMethod(...)
+#   61|             1: [MethodCall] nonStaticMethod(...)
 #   61|               -1: [VarAccess] INSTANCE
 #   61|               0: [StringLiteral] "2"
 #   62|         8: [ExprStmt] <Expr>;
-#   62|           0: [MethodAccess] setStaticProp(...)
+#   62|           0: [MethodCall] setStaticProp(...)
 #   62|             -1: [TypeAccess] NonCompanion
-#   62|             0: [MethodAccess] getNonStaticProp(...)
+#   62|             0: [MethodCall] getNonStaticProp(...)
 #   62|               -1: [VarAccess] INSTANCE
 #   63|         9: [ExprStmt] <Expr>;
-#   63|           0: [MethodAccess] setNonStaticProp(...)
+#   63|           0: [MethodCall] setNonStaticProp(...)
 #   63|             -1: [VarAccess] INSTANCE
-#   63|             0: [MethodAccess] getStaticProp(...)
+#   63|             0: [MethodCall] getStaticProp(...)
 #   63|               -1: [TypeAccess] NonCompanion
 #   64|         10: [ExprStmt] <Expr>;
-#   64|           0: [MethodAccess] setPropWithStaticGetter(...)
+#   64|           0: [MethodCall] setPropWithStaticGetter(...)
 #   64|             -1: [VarAccess] INSTANCE
-#   64|             0: [MethodAccess] getPropWithStaticSetter(...)
+#   64|             0: [MethodCall] getPropWithStaticSetter(...)
 #   64|               -1: [VarAccess] INSTANCE
 #   65|         11: [ExprStmt] <Expr>;
-#   65|           0: [MethodAccess] setPropWithStaticSetter(...)
+#   65|           0: [MethodCall] setPropWithStaticSetter(...)
 #   65|             -1: [TypeAccess] NonCompanion
-#   65|             0: [MethodAccess] getPropWithStaticGetter(...)
+#   65|             0: [MethodCall] getPropWithStaticGetter(...)
 #   65|               -1: [TypeAccess] NonCompanion
 #    9|   2: [Class] HasCompanion
 #    9|     1: [Constructor] HasCompanion
@@ -165,7 +165,7 @@ test.kt:
 #   13|             0: [TypeAccess] String
 #   13|         5: [BlockStmt] { ... }
 #   13|           0: [ReturnStmt] return ...
-#   13|             0: [MethodAccess] nonStaticMethod(...)
+#   13|             0: [MethodCall] nonStaticMethod(...)
 #   13|               -1: [ThisAccess] this
 #   13|               0: [VarAccess] s
 #   14|       3: [Method] nonStaticMethod
@@ -175,7 +175,7 @@ test.kt:
 #   14|             0: [TypeAccess] String
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [ReturnStmt] return ...
-#   14|             0: [MethodAccess] staticMethod(...)
+#   14|             0: [MethodCall] staticMethod(...)
 #   14|               -1: [ThisAccess] this
 #   14|               0: [VarAccess] s
 #   16|       4: [FieldDeclaration] String staticProp;
@@ -224,7 +224,7 @@ test.kt:
 #   20|         3: [TypeAccess] String
 #   20|         5: [BlockStmt] { ... }
 #   20|           0: [ReturnStmt] return ...
-#   20|             0: [MethodAccess] getPropWithStaticSetter(...)
+#   20|             0: [MethodCall] getPropWithStaticSetter(...)
 #   20|               -1: [ThisAccess] this
 #   21|       11: [Method] setPropWithStaticGetter
 #   21|         3: [TypeAccess] Unit
@@ -233,14 +233,14 @@ test.kt:
 #   21|             0: [TypeAccess] String
 #   21|         5: [BlockStmt] { ... }
 #   21|           0: [ExprStmt] <Expr>;
-#   21|             0: [MethodAccess] setPropWithStaticSetter(...)
+#   21|             0: [MethodCall] setPropWithStaticSetter(...)
 #   21|               -1: [ThisAccess] this
 #   21|               0: [VarAccess] s
 #   24|       12: [Method] getPropWithStaticSetter
 #   24|         3: [TypeAccess] String
 #   24|         5: [BlockStmt] { ... }
 #   24|           0: [ReturnStmt] return ...
-#   24|             0: [MethodAccess] getPropWithStaticGetter(...)
+#   24|             0: [MethodCall] getPropWithStaticGetter(...)
 #   24|               -1: [ThisAccess] this
 #   25|       13: [Method] setPropWithStaticSetter
 #-----|         1: (Annotations)
@@ -251,7 +251,7 @@ test.kt:
 #   25|             0: [TypeAccess] String
 #   25|         5: [BlockStmt] { ... }
 #   25|           0: [ExprStmt] <Expr>;
-#   25|             0: [MethodAccess] setPropWithStaticGetter(...)
+#   25|             0: [MethodCall] setPropWithStaticGetter(...)
 #   25|               -1: [ThisAccess] this
 #   25|               0: [VarAccess] s
 #   13|     3: [Method] staticMethod
@@ -261,7 +261,7 @@ test.kt:
 #   13|           0: [TypeAccess] String
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [ReturnStmt] return ...
-#   13|           0: [MethodAccess] staticMethod(...)
+#   13|           0: [MethodCall] staticMethod(...)
 #   13|             -1: [VarAccess] HasCompanion.Companion
 #   13|               -1: [TypeAccess] HasCompanion
 #   13|             0: [VarAccess] s
@@ -269,7 +269,7 @@ test.kt:
 #   16|       3: [TypeAccess] String
 #   16|       5: [BlockStmt] { ... }
 #   16|         0: [ReturnStmt] return ...
-#   16|           0: [MethodAccess] getStaticProp(...)
+#   16|           0: [MethodCall] getStaticProp(...)
 #   16|             -1: [VarAccess] HasCompanion.Companion
 #   16|               -1: [TypeAccess] HasCompanion
 #   16|     5: [Method] setStaticProp
@@ -279,7 +279,7 @@ test.kt:
 #   16|           0: [TypeAccess] String
 #   16|       5: [BlockStmt] { ... }
 #   16|         0: [ReturnStmt] return ...
-#   16|           0: [MethodAccess] setStaticProp(...)
+#   16|           0: [MethodCall] setStaticProp(...)
 #   16|             -1: [VarAccess] HasCompanion.Companion
 #   16|               -1: [TypeAccess] HasCompanion
 #   16|             0: [VarAccess] <set-?>
@@ -287,7 +287,7 @@ test.kt:
 #   20|       3: [TypeAccess] String
 #   20|       5: [BlockStmt] { ... }
 #   20|         0: [ReturnStmt] return ...
-#   20|           0: [MethodAccess] getPropWithStaticGetter(...)
+#   20|           0: [MethodCall] getPropWithStaticGetter(...)
 #   20|             -1: [VarAccess] HasCompanion.Companion
 #   20|               -1: [TypeAccess] HasCompanion
 #   25|     7: [Method] setPropWithStaticSetter
@@ -297,7 +297,7 @@ test.kt:
 #   25|           0: [TypeAccess] String
 #   25|       5: [BlockStmt] { ... }
 #   25|         0: [ReturnStmt] return ...
-#   25|           0: [MethodAccess] setPropWithStaticSetter(...)
+#   25|           0: [MethodCall] setPropWithStaticSetter(...)
 #   25|             -1: [VarAccess] HasCompanion.Companion
 #   25|               -1: [TypeAccess] HasCompanion
 #   25|             0: [VarAccess] s
@@ -321,7 +321,7 @@ test.kt:
 #   33|           0: [TypeAccess] String
 #   33|       5: [BlockStmt] { ... }
 #   33|         0: [ReturnStmt] return ...
-#   33|           0: [MethodAccess] nonStaticMethod(...)
+#   33|           0: [MethodCall] nonStaticMethod(...)
 #   33|             -1: [VarAccess] NonCompanion.INSTANCE
 #   33|               -1: [TypeAccess] NonCompanion
 #   33|             0: [VarAccess] s
@@ -332,7 +332,7 @@ test.kt:
 #   34|           0: [TypeAccess] String
 #   34|       5: [BlockStmt] { ... }
 #   34|         0: [ReturnStmt] return ...
-#   34|           0: [MethodAccess] staticMethod(...)
+#   34|           0: [MethodCall] staticMethod(...)
 #   34|             -1: [TypeAccess] NonCompanion
 #   34|             0: [VarAccess] s
 #   36|     4: [FieldDeclaration] String staticProp;
@@ -383,7 +383,7 @@ test.kt:
 #   40|       3: [TypeAccess] String
 #   40|       5: [BlockStmt] { ... }
 #   40|         0: [ReturnStmt] return ...
-#   40|           0: [MethodAccess] getPropWithStaticSetter(...)
+#   40|           0: [MethodCall] getPropWithStaticSetter(...)
 #   40|             -1: [VarAccess] NonCompanion.INSTANCE
 #   40|               -1: [TypeAccess] NonCompanion
 #   41|     11: [Method] setPropWithStaticGetter
@@ -393,14 +393,14 @@ test.kt:
 #   41|           0: [TypeAccess] String
 #   41|       5: [BlockStmt] { ... }
 #   41|         0: [ExprStmt] <Expr>;
-#   41|           0: [MethodAccess] setPropWithStaticSetter(...)
+#   41|           0: [MethodCall] setPropWithStaticSetter(...)
 #   41|             -1: [TypeAccess] NonCompanion
 #   41|             0: [VarAccess] s
 #   44|     12: [Method] getPropWithStaticSetter
 #   44|       3: [TypeAccess] String
 #   44|       5: [BlockStmt] { ... }
 #   44|         0: [ReturnStmt] return ...
-#   44|           0: [MethodAccess] getPropWithStaticGetter(...)
+#   44|           0: [MethodCall] getPropWithStaticGetter(...)
 #   44|             -1: [TypeAccess] NonCompanion
 #   45|     13: [Method] setPropWithStaticSetter
 #-----|       1: (Annotations)
@@ -411,7 +411,7 @@ test.kt:
 #   45|           0: [TypeAccess] String
 #   45|       5: [BlockStmt] { ... }
 #   45|         0: [ExprStmt] <Expr>;
-#   45|           0: [MethodAccess] setPropWithStaticGetter(...)
+#   45|           0: [MethodCall] setPropWithStaticGetter(...)
 #   45|             -1: [VarAccess] NonCompanion.INSTANCE
 #   45|               -1: [TypeAccess] NonCompanion
 #   45|             0: [VarAccess] s

@@ -26,7 +26,7 @@ class GsonDeserializeMethod extends Method {
  * where `T` is a concrete type implementing `Parcelable`.
  */
 predicate intentFlowsToParcel(DataFlow::Node intentNode, DataFlow::Node parcelNode) {
-  exists(MethodAccess getParcelableExtraCall, CreateFromParcelMethod cfpm, Type createdType |
+  exists(MethodCall getParcelableExtraCall, CreateFromParcelMethod cfpm, Type createdType |
     intentNode.asExpr() = getParcelableExtraCall.getQualifier() and
     getParcelableExtraCall.getMethod() instanceof IntentGetParcelableExtraMethod and
     DataFlow::localExprFlow(getParcelableExtraCall, any(Expr e | e.getType() = createdType)) and

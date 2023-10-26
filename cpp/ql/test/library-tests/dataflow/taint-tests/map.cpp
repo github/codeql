@@ -436,3 +436,16 @@ void test_unordered_map()
 	sink(m35.emplace(std::pair<char *, char *>(source(), "def")).first); // $ MISSING: ast,ir
 	sink(m35); // $ MISSING: ast,ir
 }
+
+namespace {
+	int* indirect_source();
+	void indirect_sink(int*);
+}
+
+void test_indirect_taint() {
+  std::map<int, int*> m;
+  int* p = indirect_source();
+  m[1] = p;
+  int* q = m[1];
+  sink(q); // $ ir MISSING: ast
+}
