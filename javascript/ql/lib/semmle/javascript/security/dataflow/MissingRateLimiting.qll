@@ -114,7 +114,14 @@ abstract class RateLimitingMiddleware extends DataFlow::SourceNode {
  * A rate limiter constructed using the `express-rate-limit` package.
  */
 class ExpressRateLimit extends RateLimitingMiddleware {
-  ExpressRateLimit() { this = API::moduleImport("express-rate-limit").getReturn().asSource() }
+  ExpressRateLimit() {
+    exists(API::Node rateLimitImport, API::Node rateLimit |
+      rateLimitImport = API::moduleImport("express-rate-limit") and
+      rateLimit in [rateLimitImport, rateLimitImport.getMember("rateLimit")]
+    |
+      this = rateLimit.getReturn().asSource()
+    )
+  }
 }
 
 /**
