@@ -1,18 +1,9 @@
-/** Definitions for additional flow steps for cross-site scripting (XSS) vulnerabilities. */
+/** Provides definitions and flow steps related to Razor pages. */
 
 import csharp
 private import codeql.util.Unit
 private import codeql.util.FilePath
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
-
-/**
- * A unit class for providing additional flow steps for cross-site scripting (XSS) vulnerabilities.
- * Extend to provide additional flow steps.
- */
-class XssAdditionalFlowStep extends Unit {
-  /** Holds if there is an additional dataflow step from `node1` to `node2`. */
-  abstract predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2);
-}
 
 /** A call to the `View` method */
 private class ViewCall extends MethodCall {
@@ -74,7 +65,7 @@ private class ViewCall extends MethodCall {
 }
 
 /** A compiler-generated Razor page. */
-private class RazorPage extends Class {
+class RazorPage extends Class {
   AssemblyAttribute attr;
 
   RazorPage() {
@@ -90,8 +81,8 @@ private class RazorPage extends Class {
   string getSourceFilepath() { result = attr.getArgument(2).(StringLiteral).getValue() }
 }
 
-private class ViewCallFlowStep extends XssAdditionalFlowStep {
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+private class ViewCallFlowStep extends TaintTracking::AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     exists(ViewCall vc, RazorPage rp, PropertyAccess modelProp |
       viewCallRefersToPage(vc, rp) and
       node1.asExpr() = vc.getModelArgument() and

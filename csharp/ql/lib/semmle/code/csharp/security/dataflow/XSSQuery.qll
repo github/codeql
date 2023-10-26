@@ -5,7 +5,6 @@
 
 import csharp
 private import XSSSinks
-private import XSSFlowSteps
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.dataflow.DataFlow2
@@ -166,13 +165,6 @@ module XssTrackingConfig implements DataFlow::ConfigSig {
    * Holds if `sink` is a relevant data flow sink.
    */
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  /**
-   * Holds if there is an additional dataflow step from `node1` to `node2`.
-   */
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(XssAdditionalFlowStep x).isAdditionalFlowStep(node1, node2)
-  }
 
   /**
    * Holds if data flow through `node` is prohibited. This completely removes

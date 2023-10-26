@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-Additional flow steps have been added to the `cs/web/xss` query to track flow from a `View` call in an MVC controller to the corresponding Razor page.
+Additional flow steps  to track flow from a `View` call in an MVC controller to the corresponding Razor page, which may result in additional results for queries such as `cs/web/xss`.

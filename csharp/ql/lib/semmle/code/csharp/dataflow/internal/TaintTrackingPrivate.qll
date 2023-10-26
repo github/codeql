@@ -9,9 +9,10 @@ private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.commons.ComparisonTest
 private import cil
 private import dotnet
-// import `TaintedMember` definitions from other files to avoid potential reevaluation
+// import `TaintedMember` and `AdditionalTaintStep` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.JsonNET
 private import semmle.code.csharp.frameworks.WCF
+private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /**
@@ -160,6 +161,8 @@ private module Cached {
       nodeTo.(FlowSummaryNode).getSummaryNode(), false)
     or
     nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
+    or
+    any(AdditionalTaintStep step).step(nodeFrom, nodeTo)
   }
 }
 
