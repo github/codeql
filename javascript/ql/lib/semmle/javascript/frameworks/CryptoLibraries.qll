@@ -353,7 +353,9 @@ private module CryptoJS {
     input = result.getParameter(0)
   }
 
-  private API::CallNode getDirectApplication(API::Node input, API::Node algorithmNode, CryptographicAlgorithm algorithm) {
+  private API::CallNode getDirectApplication(
+    API::Node input, API::Node algorithmNode, CryptographicAlgorithm algorithm
+  ) {
     /*
      *    ```
      *    var CryptoJS = require("crypto-js");
@@ -367,6 +369,7 @@ private module CryptoJS {
      *    An `Hmac`-prefix of <algorithmName> is ignored.
      *    Also matches where `CryptoJS.<algorithmName>` has been replaced by `require("crypto-js/<algorithmName>")`
      */
+
     algorithmNode = getAlgorithmNode(algorithm) and
     result = algorithmNode.getACall() and
     input = result.getParameter(0)
@@ -407,7 +410,7 @@ private module CryptoJS {
         this = getEncryptionApplication(input, algorithmNode, algorithm)
         or
         this = getDirectApplication(input, algorithmNode, algorithm)
-        |
+      |
         instantiation = algorithmNode.asSource()
       )
       or
@@ -572,6 +575,7 @@ private module HashJs {
        *      ```
        *      Also matches where `hash.<algorithmName>()` has been replaced by a more specific require a la `require("hash.js/lib/hash/sha/512")`
        */
+
       init = getAlgorithmNode(algorithm) and
       this = init.getAMemberCall("update") and
       input = super.getArgument(0)
@@ -762,10 +766,7 @@ private module Bcrypt {
       // `require("bcrypt").hash(password);` with minor naming variations
       algorithm.matchesName("BCRYPT") and
       init = API::moduleImport(["bcrypt", "bcryptjs", "bcrypt-nodejs"]) and
-      this =
-        init
-            .getMember(["hash", "hashSync"])
-            .getACall() and
+      this = init.getMember(["hash", "hashSync"]).getACall() and
       super.getArgument(0) = input
     }
 
