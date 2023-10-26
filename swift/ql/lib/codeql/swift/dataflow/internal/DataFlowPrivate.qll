@@ -158,7 +158,8 @@ private module Cached {
     TDictionarySubscriptNode(SubscriptExpr e) {
       e.getBase().getType().getCanonicalType() instanceof CanonicalDictionaryType
     } or
-    TCaptureNode(CaptureFlow::SynthesizedCaptureNode cn)
+    TCaptureNode(CaptureFlow::SynthesizedCaptureNode cn) or
+    TClosureSelfParameterNode(ClosureExpr closure)
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
@@ -359,7 +360,9 @@ private predicate hasPatternNode(PatternCfgNode n, Pattern p) {
 import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof FlowSummaryNode or n instanceof ClosureSelfParameterNode
+}
 
 /**
  * The intermediate node for a dictionary subscript operation `dict[key]`. In a write, this is used
@@ -381,12 +384,6 @@ private class DictionarySubscriptNode extends NodeImpl, TDictionarySubscriptNode
   override Location getLocationImpl() { result = expr.getLocation() }
 
   SubscriptExpr getExpr() { result = expr }
-}
-
-private class ClosureSelfReferenceNode extends ExprNodeImpl {
-  override ClosureExpr expr;
-
-  ClosureExpr getClosure() { result = expr }
 }
 
 private module ParameterNodes {
@@ -419,11 +416,23 @@ private module ParameterNodes {
     override ParamDecl getParameter() { result = param }
   }
 
-  class ClosureSelfParameterNode extends ParameterNodeImpl, ClosureSelfReferenceNode {
+  class ClosureSelfParameterNode extends ParameterNodeImpl, TClosureSelfParameterNode {
+    ClosureExpr closure;
+
+    ClosureSelfParameterNode() { this = TClosureSelfParameterNode(closure) }
+
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c.asSourceCallable() = this.getClosure() and
+      c.asSourceCallable() = closure and
       pos instanceof TThisParameter
     }
+
+    override Location getLocationImpl() { result = closure.getLocation() }
+
+    override string toStringImpl() { result = "closure self parameter" }
+
+    override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+
+    ClosureExpr getClosure() { result = closure }
   }
 
   class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {

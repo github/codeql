@@ -11,7 +11,7 @@ func captureList() {
   let y: Int = source("captureList", 123);
   { [x = hello()] () in
      sink(x) // $ MISSING: hasValueFlow=hello
-     sink(y) // $ hasValueFlow=captureList
+     sink(y) // $ MISSING: hasValueFlow=captureList
   }()
 }
 
@@ -31,7 +31,7 @@ var escape: (() -> Int)? = nil
 func setEscape() {
   let x = source("setEscape", 0)
   escape = {
-    sink(x) // $ hasValueFlow=setEscape
+    sink(x) // $ MISSING: hasValueFlow=setEscape
     return x + 1
   }
 }

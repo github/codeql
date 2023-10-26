@@ -47,7 +47,6 @@ edges
 | test.swift:113:14:113:19 | arg | test.swift:114:19:114:19 | arg |
 | test.swift:113:14:113:19 | arg | test.swift:114:19:114:19 | arg |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg |
-| test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg |
 | test.swift:114:19:114:19 | arg | test.swift:114:12:114:22 | call to ... |
 | test.swift:114:19:114:19 | arg | test.swift:114:12:114:22 | call to ... |
 | test.swift:114:19:114:19 | arg | test.swift:123:10:123:13 | i |
@@ -59,9 +58,6 @@ edges
 | test.swift:122:31:122:38 | call to source() | test.swift:113:14:113:19 | arg |
 | test.swift:122:31:122:38 | call to source() | test.swift:122:18:125:6 | call to forward(arg:lambda:) |
 | test.swift:123:10:123:13 | i | test.swift:124:16:124:16 | i |
-| test.swift:128:22:131:6 | call to forward(arg:lambda:) | test.swift:132:15:132:15 | clean |
-| test.swift:128:35:128:42 | call to source() | test.swift:113:14:113:19 | arg |
-| test.swift:128:35:128:42 | call to source() | test.swift:128:22:131:6 | call to forward(arg:lambda:) |
 | test.swift:142:10:142:13 | i | test.swift:143:16:143:16 | i |
 | test.swift:145:23:145:30 | call to source() | test.swift:142:10:142:13 | i |
 | test.swift:145:23:145:30 | call to source() | test.swift:145:15:145:31 | call to ... |
@@ -697,9 +693,6 @@ nodes
 | test.swift:123:10:123:13 | i | semmle.label | i |
 | test.swift:124:16:124:16 | i | semmle.label | i |
 | test.swift:126:15:126:15 | z | semmle.label | z |
-| test.swift:128:22:131:6 | call to forward(arg:lambda:) | semmle.label | call to forward(arg:lambda:) |
-| test.swift:128:35:128:42 | call to source() | semmle.label | call to source() |
-| test.swift:132:15:132:15 | clean | semmle.label | clean |
 | test.swift:138:19:138:26 | call to source() | semmle.label | call to source() |
 | test.swift:142:10:142:13 | i | semmle.label | i |
 | test.swift:143:16:143:16 | i | semmle.label | i |
@@ -1264,11 +1257,9 @@ nodes
 subpaths
 | test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:32:75:32 | [post] y |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
-| test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
 | test.swift:114:19:114:19 | arg | test.swift:123:10:123:13 | i | test.swift:124:16:124:16 | i | test.swift:114:12:114:22 | call to ... |
 | test.swift:119:31:119:31 | x | test.swift:113:14:113:19 | arg | test.swift:114:12:114:22 | call to ... | test.swift:119:18:119:44 | call to forward(arg:lambda:) |
 | test.swift:122:31:122:38 | call to source() | test.swift:113:14:113:19 | arg | test.swift:114:12:114:22 | call to ... | test.swift:122:18:125:6 | call to forward(arg:lambda:) |
-| test.swift:128:35:128:42 | call to source() | test.swift:113:14:113:19 | arg | test.swift:114:12:114:22 | call to ... | test.swift:128:22:131:6 | call to forward(arg:lambda:) |
 | test.swift:145:23:145:30 | call to source() | test.swift:142:10:142:13 | i | test.swift:143:16:143:16 | i | test.swift:145:15:145:31 | call to ... |
 | test.swift:170:9:170:9 | value | test.swift:163:7:163:7 | value | file://:0:0:0:0 | [post] self [x] | test.swift:170:5:170:5 | [post] self [x] |
 | test.swift:174:12:174:12 | self [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:174:12:174:12 | .x |
@@ -1347,7 +1338,6 @@ subpaths
 | test.swift:105:19:105:19 | x | test.swift:89:15:89:22 | call to source() | test.swift:105:19:105:19 | x | result |
 | test.swift:120:15:120:15 | y | test.swift:118:18:118:25 | call to source() | test.swift:120:15:120:15 | y | result |
 | test.swift:126:15:126:15 | z | test.swift:122:31:122:38 | call to source() | test.swift:126:15:126:15 | z | result |
-| test.swift:132:15:132:15 | clean | test.swift:128:35:128:42 | call to source() | test.swift:132:15:132:15 | clean | result |
 | test.swift:138:19:138:26 | call to source() | test.swift:138:19:138:26 | call to source() | test.swift:138:19:138:26 | call to source() | result |
 | test.swift:145:15:145:31 | call to ... | test.swift:145:23:145:30 | call to source() | test.swift:145:15:145:31 | call to ... | result |
 | test.swift:151:15:151:28 | call to ... | test.swift:149:16:149:23 | call to source() | test.swift:151:15:151:28 | call to ... | result |
