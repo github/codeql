@@ -51,10 +51,10 @@ abstract class WeakRandomnessSink extends DataFlow::Node { }
 private class CookieSink extends WeakRandomnessSink {
   CookieSink() {
     this.getType() instanceof TypeCookie and
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("javax.servlet.http", "HttpServletResponse", "addCookie")
+    exists(MethodCall mc |
+      mc.getMethod().hasQualifiedName("javax.servlet.http", "HttpServletResponse", "addCookie")
     |
-      ma.getArgument(0) = this.asExpr()
+      mc.getArgument(0) = this.asExpr()
     )
   }
 }
@@ -71,7 +71,7 @@ private class CredentialsSink extends WeakRandomnessSink instanceof CredentialsS
 private predicate covertsBytesToString(DataFlow::Node bytes, DataFlow::Node str) {
   bytes.getType().(Array).getElementType().(PrimitiveType).hasName("byte") and
   str.getType() instanceof TypeString and
-  exists(MethodAccess ma | ma = str.asExpr() | bytes.asExpr() = ma.getAnArgument())
+  exists(MethodCall mc | mc = str.asExpr() | bytes.asExpr() = mc.getAnArgument())
 }
 
 /**
