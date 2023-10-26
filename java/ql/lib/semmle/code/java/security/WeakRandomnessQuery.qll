@@ -66,15 +66,6 @@ private class SensitiveActionSink extends WeakRandomnessSink {
 private class CredentialsSink extends WeakRandomnessSink instanceof CredentialsSinkNode { }
 
 /**
- * Holds if there is a method access which converts `bytes` to the string `str`.
- */
-private predicate covertsBytesToString(DataFlow::Node bytes, DataFlow::Node str) {
-  bytes.getType().(Array).getElementType().(PrimitiveType).hasName("byte") and
-  str.getType() instanceof TypeString and
-  exists(MethodCall mc | mc = str.asExpr() | bytes.asExpr() = mc.getAnArgument())
-}
-
-/**
  * A taint-tracking configuration for weak randomness.
  */
 module WeakRandomnessConfig implements DataFlow::ConfigSig {
@@ -88,8 +79,6 @@ module WeakRandomnessConfig implements DataFlow::ConfigSig {
     n1.asExpr() = n2.asExpr().(BinaryExpr).getAnOperand()
     or
     n1.asExpr() = n2.asExpr().(UnaryExpr).getExpr()
-    or
-    covertsBytesToString(n1, n2)
   }
 }
 
