@@ -13,7 +13,7 @@ private import Util as Util
 module Summaries {
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
-      exists(DataFlow::MethodNode methodNode | not methodNode.isPublic() |
+      exists(DataFlow::MethodNode methodNode | methodNode.isPublic() |
         getAnyParameterNode(methodNode).asSource() = source
       )
     }
