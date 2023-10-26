@@ -79,6 +79,11 @@ predicate depends(RefType t, RefType dep) {
     exists(InstanceOfExpr ioe | t = ioe.getEnclosingCallable().getDeclaringType() |
       usesType(ioe.getCheckedType(), dep)
     )
+    or
+    // the type accessed in a pattern-switch case statement in `t`.
+    exists(PatternCase pc | t = pc.getEnclosingCallable().getDeclaringType() |
+      usesType(pc.getDecl().getType(), dep)
+    )
   )
 }
 

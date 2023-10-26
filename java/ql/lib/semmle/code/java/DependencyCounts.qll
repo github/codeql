@@ -102,6 +102,11 @@ predicate numDepends(RefType t, RefType dep, int value) {
       |
         usesType(ioe.getCheckedType(), dep)
       )
+      or
+      // the type accessed in a pattern-switch case statement in `t`.
+      exists(PatternCase pc | elem = pc and t = pc.getEnclosingCallable().getDeclaringType() |
+        usesType(pc.getDecl().getType(), dep)
+      )
     )
 }
 
