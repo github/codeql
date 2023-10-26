@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     // An instance of Nullable<T>
                     trapFile.nullable_underlying_type(this, TypeArguments[0].TypeRef);
                 }
-                else if (Symbol.IsReallyUnbound())
+                else if (Symbol.IsUnboundGenericType)
                 {
                     for (var i = 0; i < Symbol.TypeParameters.Length; ++i)
                     {
@@ -63,8 +63,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 else
                 {
                     var unbound = constructUnderlyingTupleType
-                        ? CreateNamedTypeFromTupleType(Context, Symbol.ConstructedFrom)
-                        : Type.Create(Context, Symbol.ConstructedFrom);
+                        ? CreateNamedTypeFromTupleType(Context, Symbol.OriginalDefinition)
+                        : Type.Create(Context, Symbol.OriginalDefinition);
                     trapFile.constructed_generic(this, unbound.TypeRef);
 
                     for (var i = 0; i < TypeArguments.Length; ++i)
@@ -82,7 +82,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             // Class location
-            if (!Symbol.IsGenericType || Symbol.IsReallyUnbound())
+            if (!Symbol.IsGenericType || Symbol.IsUnboundGenericType)
             {
                 foreach (var l in Locations)
                     trapFile.type_location(this, l);

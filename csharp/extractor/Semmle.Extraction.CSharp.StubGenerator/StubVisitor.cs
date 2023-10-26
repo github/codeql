@@ -41,7 +41,7 @@ internal sealed class StubVisitor : SymbolVisitor
             (
                 t1 is INamedTypeSymbol named1 &&
                 t2 is INamedTypeSymbol named2 &&
-                EqualsModuloTupleElementNames(named1.ConstructedFrom, named2.ConstructedFrom) &&
+                EqualsModuloTupleElementNames(named1.OriginalDefinition, named2.OriginalDefinition) &&
                 named1.TypeArguments.Length == named2.TypeArguments.Length &&
                 named1.TypeArguments.Zip(named2.TypeArguments).All(p => EqualsModuloTupleElementNames(p.First, p.Second))
             ) ||

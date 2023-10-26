@@ -104,7 +104,7 @@ namespace Semmle.Extraction.CSharp
                                 named = named.TupleUnderlyingType;
                             if (IdDependsOnImpl(named.ContainingType))
                                 return true;
-                            if (IdDependsOnImpl(named.ConstructedFrom))
+                            if (IdDependsOnImpl(named.OriginalDefinition))
                                 return true;
                             return named.TypeArguments.Any(IdDependsOnImpl);
                         case TypeKind.Pointer:
@@ -320,7 +320,7 @@ namespace Semmle.Extraction.CSharp
             {
                 BuildQualifierAndName(named, cx, trapFile, symbolBeingDefined);
             }
-            else if (named.IsReallyUnbound())
+            else if (named.IsUnboundGenericType)
             {
                 BuildQualifierAndName(named, cx, trapFile, symbolBeingDefined);
                 trapFile.Write("`");
@@ -328,7 +328,7 @@ namespace Semmle.Extraction.CSharp
             }
             else
             {
-                named.ConstructedFrom.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType);
+                named.OriginalDefinition.BuildOrWriteId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType);
                 trapFile.Write('<');
                 // Encode the nullability of the type arguments in the label.
                 // Type arguments with different nullability can result in
@@ -488,11 +488,6 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        public static bool IsReallyUnbound(this INamedTypeSymbol type) =>
-            SymbolEqualityComparer.Default.Equals(type.ConstructedFrom, type) || type.IsUnboundGenericType;
-
-        public static bool IsReallyBound(this INamedTypeSymbol type) => !IsReallyUnbound(type);
-
         /// <summary>
         /// Holds if this type is of the form <code>int?</code> or
         /// <code>System.Nullable<int></code>.
@@ -559,7 +554,7 @@ namespace Semmle.Extraction.CSharp
         /// Holds if this method is a source declaration.
         /// </summary>
         public static bool IsSourceDeclaration(this IMethodSymbol method) =>
-            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.ConstructedFrom) && method.ReducedFrom is null;
+            IsSourceDeclaration((ISymbol)method) && SymbolEqualityComparer.Default.Equals(method, method.OriginalDefinition) && method.ReducedFrom is null;
 
         /// <summary>
         /// Holds if this parameter is a source declaration.

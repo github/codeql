@@ -113,9 +113,9 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (!SymbolEqualityComparer.Default.Equals(m.Symbol, m.Symbol.OriginalDefinition))
             {
-                if (!SymbolEqualityComparer.Default.Equals(m.Symbol, m.ConstructedFromSymbol))
+                if (!SymbolEqualityComparer.Default.Equals(m.Symbol, m.OriginalDefinitionSymbol))
                 {
-                    trapFile.WriteSubId(Create(m.Context, m.ConstructedFromSymbol));
+                    trapFile.WriteSubId(Create(m.Context, m.OriginalDefinitionSymbol));
                     trapFile.Write('<');
                     // Encode the nullability of the type arguments in the label.
                     // Type arguments with different nullability can result in
@@ -257,7 +257,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 case MethodKind.Constructor:
                     return Constructor.Create(cx, methodDecl);
                 case MethodKind.ReducedExtension:
-                    if (SymbolEqualityComparer.Default.Equals(methodDecl, methodDecl.ConstructedFrom))
+                    if (SymbolEqualityComparer.Default.Equals(methodDecl, methodDecl.OriginalDefinition))
                     {
                         return OrdinaryMethod.Create(cx, methodDecl.ReducedFrom!);
                     }
@@ -301,11 +301,11 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Whether this method has unbound type parameters.
         /// </summary>
-        public bool IsUnboundGeneric => IsGeneric && SymbolEqualityComparer.Default.Equals(Symbol.ConstructedFrom, Symbol);
+        public bool IsUnboundGeneric => IsGeneric && SymbolEqualityComparer.Default.Equals(Symbol.OriginalDefinition, Symbol);
 
         public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
 
-        protected IMethodSymbol ConstructedFromSymbol => Symbol.ConstructedFrom;
+        protected IMethodSymbol OriginalDefinitionSymbol => Symbol.OriginalDefinition;
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
@@ -321,7 +321,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (isFullyConstructed)
                 {
-                    trapFile.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol));
+                    trapFile.constructed_generic(this, Method.Create(Context, OriginalDefinitionSymbol));
                     foreach (var tp in Symbol.GetAnnotatedTypeArguments())
                     {
                         trapFile.type_arguments(Type.Create(Context, tp.Symbol), child, this);
