@@ -224,6 +224,10 @@ predicate unsafeDeserialization(MethodCall ma, Expr sink) {
     m instanceof GsonDeserializeMethod and
     sink = ma.getArgument(0) and
     UnsafeTypeFlow::flowToExpr(ma.getArgument(1))
+    or
+    m.getASourceOverriddenMethod*()
+        .hasQualifiedName(["javax", "jakarta"] + ".jms", "ObjectMessage", "getObject") and
+    sink = ma.getQualifier().getUnderlyingExpr()
   )
 }
 
