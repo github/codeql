@@ -97,7 +97,7 @@ func baz() -> () -> Int {
   return r
 }
 
-func sharedCapture() -> Int {
+func sharedCapture() {
   let (incrX, getX) = {
     var x = source("sharedCapture", 0)
     return ({ x += 1 }, { x })
@@ -111,8 +111,6 @@ func sharedCapture() -> Int {
   sink(getX()) // $ MISSING: hasValueFlow=sharedCapture
   doubleIncrX()
   sink(getX()) // $ MISSING: hasTaintFlow=sharedCapture
-  doubleIncrX()
-  return getX()
 }
 
 func sharedCaptureMultipleWriters() {
