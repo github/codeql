@@ -12,14 +12,14 @@ typealias NSRange = _NSRange
 
 func NSMakeRange(_ loc: Int, _ len: Int) -> NSRange { return NSRange(location: loc, length: len) }
 
-class NSTextCheckingResult : NSObject {
-}
+class NSTextCheckingResult : NSObject { }
 
 class NSRegularExpression : NSObject {
 	struct Options : OptionSet {
 	    var rawValue: UInt
 
 		static var caseInsensitive: NSRegularExpression.Options { get { return Options(rawValue: 1) } }
+		static var anchorsMatchLines: NSRegularExpression.Options { get { return Options(rawValue: 2) } }
 	}
 
 	struct MatchingOptions : OptionSet {
@@ -99,4 +99,24 @@ func tests(url: String, secure: Bool) throws {
 
 	_ = try NSRegularExpression(pattern: #"\.com|\.org"#).matches(in: input, range: inputRange) // OK, has no domain name
 	_ = try NSRegularExpression(pattern: #"example\.com|whatever"#).matches(in: input, range: inputRange) // OK, the other disjunction doesn't match a hostname [FALSE POSITIVE]
+
+	// tests for the `isLineAnchoredHostnameRegExp` case
+
+	let attackUrl1 =  "evil.com/blabla?\ngood.com"
+	let attackUrl1Range = NSMakeRange(0, attackUrl1.utf16.count)
+	_ = try NSRegularExpression(pattern: "^good\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK
+	_ = try NSRegularExpression(pattern: "^good\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "(?i)^good\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK
+	_ = try NSRegularExpression(pattern: "(?i)^good\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "^good\\.com$|^another\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK
+	_ = try NSRegularExpression(pattern: "^good\\.com$|^another\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+
+	let attackUrl2 =  "evil.com/blabla?\ngood.com/"
+	let attackUrl2Range = NSMakeRange(0, attackUrl2.utf16.count)
+	_ = try NSRegularExpression(pattern: "^good\\.com/").matches(in: attackUrl2, range: attackUrl2Range) // OK
+	_ = try NSRegularExpression(pattern: "^good\\.com/", options: .anchorsMatchLines).matches(in: attackUrl2, range: attackUrl2Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "(?i)^good\\.com/").matches(in: attackUrl2, range: attackUrl2Range) // OK
+	_ = try NSRegularExpression(pattern: "(?i)^good\\.com/", options: .anchorsMatchLines).matches(in: attackUrl2, range: attackUrl2Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "^good\\.com/|^another\\.com/").matches(in: attackUrl2, range: attackUrl2Range) // OK
+	_ = try NSRegularExpression(pattern: "^good\\.com/|^another\\.com/", options: .anchorsMatchLines).matches(in: attackUrl2, range: attackUrl2Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
 }
