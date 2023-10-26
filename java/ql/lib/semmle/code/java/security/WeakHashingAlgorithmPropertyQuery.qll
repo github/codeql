@@ -8,8 +8,8 @@ private import semmle.code.java.security.Encryption
 private import semmle.code.java.frameworks.Properties
 private import semmle.code.java.dataflow.RangeUtils
 
-private class GetPropertyMethodAccess extends MethodAccess {
-  GetPropertyMethodAccess() { this.getMethod() instanceof PropertiesGetPropertyMethod }
+private class GetPropertyMethodCall extends MethodCall {
+  GetPropertyMethodCall() { this.getMethod() instanceof PropertiesGetPropertyMethod }
 
   private ConfigPair getPair() {
     this.getArgument(0).(ConstantStringExpr).getStringValue() = result.getNameElement().getName()
@@ -25,10 +25,10 @@ private class GetPropertyMethodAccess extends MethodAccess {
  * Get the name of the weak cryptographic algorithm represented by `node`.
  */
 string getWeakHashingAlgorithmName(DataFlow::Node node) {
-  exists(MethodAccess ma, ConfigPair pair |
-    node.asExpr() = ma and ma.getMethod() instanceof PropertiesGetPropertyMethod
+  exists(MethodCall mc, ConfigPair pair |
+    node.asExpr() = mc and mc.getMethod() instanceof PropertiesGetPropertyMethod
   |
-    ma.getArgument(0).(ConstantStringExpr).getStringValue() = pair.getNameElement().getName() and
+    mc.getArgument(0).(ConstantStringExpr).getStringValue() = pair.getNameElement().getName() and
     pair.getValueElement().getValue() = result and
     not pair.getValueElement().getValue().regexpMatch(getSecureAlgorithmRegex())
   )
@@ -39,8 +39,8 @@ string getWeakHashingAlgorithmName(DataFlow::Node node) {
  */
 module InsecureAlgorithmPropertyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
-    exists(GetPropertyMethodAccess ma, string algo | n.asExpr() = ma |
-      algo = ma.getPropertyValue() and
+    exists(GetPropertyMethodCall mc, string algo | n.asExpr() = mc |
+      algo = mc.getPropertyValue() and
       not algo.regexpMatch(getSecureAlgorithmRegex())
     )
   }
