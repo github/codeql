@@ -73,5 +73,5 @@ predicate currentThreatModel(string kind) {
   or
   // For any threat model kind not mentioned in the configuration or grouping tables, its state of
   // enablement is controlled only by the entries that specifiy the "all" kind.
-  not knownThreatModel(kind) and threatModelExplicitState("all") = true
+  not knownThreatModel(kind) and threatModelEnabled("all")
 }
