@@ -1,16 +1,47 @@
 import go
 
-/**
- * Gets the maximum value of an integer (signed if `isSigned`
- * is true, unsigned otherwise) with `bitSize` bits.
- */
-float getMaxIntValue(int bitSize, boolean isSigned) {
-  bitSize in [8, 16, 32, 64] and
-  (
-    isSigned = true and result = 2.pow(bitSize - 1) - 1
-    or
-    isSigned = false and result = 2.pow(bitSize) - 1
-  )
+/** The constant `math.MaxInt` or the constant `math.MaxUint`. */
+abstract private class MaxIntOrMaxUint extends DeclaredConstant {
+  /**
+   * Gets the integer `x` such that `2.pow(x) - 1` is the value of this
+   * constant when the architecture has bit size `architectureBitSize`.
+   */
+  abstract int getX(int architectureBitSize);
+
+  /**
+   * Holds if the value of this constant given `architectureBitSize` minus
+   * `strictnessOffset` is less than or equal to `2.pow(b) - 1`.
+   */
+  predicate isBoundFor(int b, int architectureBitSize, float strictnessOffset) {
+    // 2.pow(x) - 1 - strictnessOffset <= 2.pow(b) - 1
+    exists(int x |
+      x = this.getX(architectureBitSize) and
+      b = validBitSize() and
+      (
+        strictnessOffset = 0 and x <= b
+        or
+        strictnessOffset = 1 and x <= b - 1
+      )
+    )
+  }
+}
+
+/** The constant `math.MaxInt`. */
+private class MaxInt extends MaxIntOrMaxUint {
+  MaxInt() { this.hasQualifiedName("math", "MaxInt") }
+
+  override int getX(int architectureBitSize) {
+    architectureBitSize = [32, 64] and result = architectureBitSize - 1
+  }
+}
+
+/** The constant `math.MaxUint`. */
+private class MaxUint extends MaxIntOrMaxUint {
+  MaxUint() { this.hasQualifiedName("math", "MaxUint") }
+
+  override int getX(int architectureBitSize) {
+    architectureBitSize = [32, 64] and result = architectureBitSize
+  }
 }
 
 /**
@@ -276,7 +307,7 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
   predicate isBoundFor(int bitSize, int architectureBitSize) {
     bitSize = validBitSize() and
     architectureBitSize = [32, 64] and
-    exists(float bound, int b, float strictnessOffset |
+    exists(int b, float strictnessOffset |
       b = max(int a | a = validBitSize() and a < bitSize) and
       // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
       // on the `branch` argument of `checks` is false, which is equivalent to
@@ -285,17 +316,11 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
       then strictnessOffset = 1
       else strictnessOffset = 0
     |
-      exists(DeclaredConstant maxint, DeclaredConstant maxuint |
-        maxint.hasQualifiedName("math", "MaxInt") and maxuint.hasQualifiedName("math", "MaxUint")
-      |
-        if expr.getAnOperand() = maxint.getAReference()
-        then bound = getMaxIntValue(architectureBitSize, true)
-        else
-          if expr.getAnOperand() = maxuint.getAReference()
-          then bound = getMaxIntValue(architectureBitSize, false)
-          else bound = expr.getAnOperand().getExactValue().toFloat()
-      ) and
-      bound - strictnessOffset <= 2.pow(b) - 1
+      if expr.getAnOperand() = any(MaxIntOrMaxUint m).getAReference()
+      then
+        any(MaxIntOrMaxUint m | expr.getAnOperand() = m.getAReference())
+            .isBoundFor(b, architectureBitSize, strictnessOffset)
+      else expr.getAnOperand().getExactValue().toFloat() - strictnessOffset <= 2.pow(b) - 1
     )
   }
 
