@@ -235,7 +235,7 @@ private class MaxValueState extends TMaxValueState {
   predicate architectureBitSizeUnknown() { this.architectureBitSize().isUnknown() }
 
   /**
-   * Gets the bitsize we should use for a sink.
+   * Gets the bitsize we should use for a sink of type `uint`.
    *
    * If the architecture bit size is known, then we should use that. Otherwise,
    * we should use 32 bits, because that will find results that only exist on
@@ -344,7 +344,7 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
  *   _ = uint16(parsed)
  * }
  * ```
- * `parsed < math.MaxInt16` is an `UpperBoundCheckGuard` and `uint16(parsed)`
+ * `parsed <= math.MaxInt16` is an `UpperBoundCheckGuard` and `uint16(parsed)`
  * is an `UpperBoundCheck` that would be a barrier for flow states with bit
  * size greater than 15 and would transform them to a flow state with bit size
  * 15 and the same architecture bit size.
