@@ -12,12 +12,16 @@ private import Util as Util
  */
 module Summaries {
   private module Config implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) { source instanceof DataFlow::ParameterNode }
+    predicate isSource(DataFlow::Node source) {
+      exists(DataFlow::MethodNode methodNode | not methodNode.isPublic() |
+        getAnyParameterNode(methodNode).asSource() = source
+      )
+    }
 
     predicate isSink(DataFlow::Node sink) { sink = any(DataFlow::MethodNode m).getAReturnNode() }
   }
 
-  API::Node getAnyParameterNode(DataFlow::MethodNode methodNode) {
+  private API::Node getAnyParameterNode(DataFlow::MethodNode methodNode) {
     result.asSource() =
       [
         methodNode.getParameter(_), methodNode.getKeywordParameter(_),
