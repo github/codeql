@@ -4357,7 +4357,27 @@ module MakeImpl<InputSig Lang> {
       tftuples = -1
     }
 
-    module FlowExploration<explorationLimitSig/0 explorationLimit> {
+    private signature predicate flag();
+
+    private predicate flagEnable() { any() }
+
+    private predicate flagDisable() { none() }
+
+    module FlowExplorationFwd<explorationLimitSig/0 explorationLimit> {
+      import FlowExploration<explorationLimit/0, flagEnable/0, flagDisable/0>
+
+      predicate partialFlow = partialFlowFwd/3;
+    }
+
+    module FlowExplorationRev<explorationLimitSig/0 explorationLimit> {
+      import FlowExploration<explorationLimit/0, flagDisable/0, flagEnable/0>
+
+      predicate partialFlow = partialFlowRev/3;
+    }
+
+    private module FlowExploration<
+      explorationLimitSig/0 explorationLimit, flag/0 flagFwd, flag/0 flagRev>
+    {
       private predicate callableStep(DataFlowCallable c1, DataFlowCallable c2) {
         exists(NodeEx node1, NodeEx node2 |
           jumpStepEx(node1, node2)
@@ -4526,6 +4546,7 @@ module MakeImpl<InputSig Lang> {
           NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
           TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
         ) {
+          flagFwd() and
           sourceNode(node, state) and
           cc instanceof CallContextAny and
           sc1 = TSummaryCtx1None() and
@@ -4543,6 +4564,7 @@ module MakeImpl<InputSig Lang> {
           NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
           TRevSummaryCtx3 sc3, PartialAccessPath ap
         ) {
+          flagRev() and
           revSinkNode(node, state) and
           sc1 = TRevSummaryCtx1None() and
           sc2 = TRevSummaryCtx2None() and
@@ -5223,7 +5245,7 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      private predicate partialFlow(PartialPathNode source, PartialPathNode node) {
+      private predicate fwdPartialFlow(PartialPathNode source, PartialPathNode node) {
         source.isFwdSource() and
         node = source.getASuccessor+()
       }
@@ -5245,8 +5267,8 @@ module MakeImpl<InputSig Lang> {
        *
        * To use this in a `path-problem` query, import the module `PartialPathGraph`.
        */
-      predicate partialFlow(PartialPathNode source, PartialPathNode node, int dist) {
-        partialFlow(source, node) and
+      predicate partialFlowFwd(PartialPathNode source, PartialPathNode node, int dist) {
+        fwdPartialFlow(source, node) and
         dist = node.getSourceDistance()
       }
 
