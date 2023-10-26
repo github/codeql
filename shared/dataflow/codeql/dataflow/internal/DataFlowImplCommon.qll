@@ -385,6 +385,7 @@ module MakeImplCommon<InputSig Lang> {
     result = viableCallableLambda(call, _)
   }
 
+  cached
   private module Cached {
     /**
      * If needed, call this predicate from `DataFlowImplSpecific.qll` in order to
@@ -437,6 +438,7 @@ module MakeImplCommon<InputSig Lang> {
       )
     }
 
+    cached
     predicate returnNodeExt(Node n, ReturnKindExt k) {
       k = TValueReturn(n.(ReturnNode).getKind())
       or
