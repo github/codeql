@@ -333,8 +333,11 @@ func testBoundsChecking(input string) {
 			_ = uint16(parsed)
 			_ = int16(parsed) // $ hasValueFlow="type conversion"
 		}
-		if parsed < 5 {
-			_ = uint16(parsed)
+		if parsed <= 255 {
+			_ = uint8(parsed)
+		}
+		if parsed <= 256 {
+			_ = uint8(parsed) // $ hasValueFlow="type conversion"
 		}
 		if err == nil && 1 == 1 && parsed < math.MaxInt8 {
 			_ = int8(parsed)
