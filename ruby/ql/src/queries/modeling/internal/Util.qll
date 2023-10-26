@@ -29,6 +29,8 @@ string getArgumentPath(DataFlow::ParameterNode paramNode) {
       param instanceof Ast::BlockParameter and
       paramSpecifier = "block"
     )
+    or
+    paramNode instanceof DataFlow::SelfParameterNode and paramSpecifier = "self"
   |
     result = "Argument[" + paramSpecifier + "]"
   )
