@@ -10,10 +10,10 @@ module Config implements ConfigSig {
 
 int explorationLimit() { result = 10 }
 
-module PartialFlow = Global<Config>::FlowExploration<explorationLimit/0>;
+module PartialFlow = Global<Config>::FlowExplorationRev<explorationLimit/0>;
 
 import PartialFlow::PartialPathGraph
 
 from PartialFlow::PartialPathNode n, int dist
-where PartialFlow::partialFlowRev(n, _, dist)
+where PartialFlow::partialFlow(n, _, dist)
 select dist, n
