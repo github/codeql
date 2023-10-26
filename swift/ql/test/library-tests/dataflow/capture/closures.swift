@@ -68,33 +68,14 @@ func asyncTest() {
   }
 }
 
-func foo() -> Int {
+func foo() {
   var x = 1
   let f = { y in x += y }
   x = source("foo", 41)
   let r = { x }
   sink(r()) // $ hasValueFlow=foo
   f(1)
-  return r()
-}
-
-func bar() -> () -> Int {
-  var x = 1
-  let f = { y in x += y }
-  x = source("bar", 41)
-  let r = { x }
-  f(1)
-  return r // constantly 42
-}
-
-var g: ((Int) -> Void)? = nil
-func baz() -> () -> Int {
-  var x = 1
-  g = { y in x += y }
-  x = source("baz", 41)
-  let r = { x }
-  g!(1)
-  return r
+  sink(r()) // $ hasValueFlow=foo
 }
 
 func sharedCapture() {
