@@ -70,7 +70,7 @@ private boolean threatModelExplicitState(string kind) {
  */
 bindingset[kind]
 predicate currentThreatModel(string kind) {
-  knownThreatModel(kind) and threatModelExplicitState(kind) = true
+  knownThreatModel(kind) and threatModelEnabled(kind)
   or
   // For any threat model kind not mentioned in the configuration or grouping tables, its state of
   // enablement is controlled only by the entries that specifiy the "all" kind.
