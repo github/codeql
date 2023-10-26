@@ -1,5 +1,6 @@
 private import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
+private import semmle.code.cpp.internal.ExtractorVersion
 private import semmle.code.cpp.ir.IRConfiguration
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
@@ -362,10 +363,10 @@ predicate ignoreLoad(Expr expr) {
     expr instanceof FunctionAccess
     or
     // The load is duplicated from the operand.
-    expr instanceof ParenthesisExpr
+    isExtractorFrontendVersion65OrHigher() and expr instanceof ParenthesisExpr
     or
     // The load is duplicated from the right operand.
-    expr instanceof CommaExpr
+    isExtractorFrontendVersion65OrHigher() and expr instanceof CommaExpr
     or
     expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
       instanceof FunctionPointerType
