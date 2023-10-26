@@ -363,10 +363,10 @@ predicate ignoreLoad(Expr expr) {
     expr instanceof FunctionAccess
     or
     // The load is duplicated from the operand.
-    exists(getExtractorFrontendVersion()) and expr instanceof ParenthesisExpr
+    isExtractorFrontendVersion65OrHigher() and expr instanceof ParenthesisExpr
     or
     // The load is duplicated from the right operand.
-    exists(getExtractorFrontendVersion()) and expr instanceof CommaExpr
+    isExtractorFrontendVersion65OrHigher() and expr instanceof CommaExpr
     or
     expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
       instanceof FunctionPointerType
