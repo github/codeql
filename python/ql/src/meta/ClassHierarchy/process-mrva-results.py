@@ -9,6 +9,7 @@ from collections import defaultdict
 import yaml
 import shutil
 import os
+import re
 
 VERSION = "process-mrva-results 0.0.1"
 
@@ -104,6 +105,10 @@ def gather_from_existing():
 gather_from_bqrs_results()
 
 for pkg in package_data:
+    if not re.match(r"[a-zA-Z0-9-_]+", pkg):
+        print(f"Skipping {repr(pkg)}")
+        continue
+
     pkg_path = mad_path / f"auto-{pkg}.model.yml"
 
     print(f"Writing {pkg_path}")
