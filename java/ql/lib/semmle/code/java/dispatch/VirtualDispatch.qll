@@ -48,7 +48,6 @@ class VirtCalledSrcMethod extends SrcMethod {
   }
 }
 
-cached
 private module Dispatch {
   /** Gets a viable implementation of the method called in the given method access. */
   cached
