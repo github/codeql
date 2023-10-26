@@ -413,45 +413,41 @@ private predicate downcastSuccessor(VarAccess va, RefType t) {
   )
 }
 
-/**
- * Holds if `va` is an access to a value that is guarded by `instanceof t`.
- */
-private predicate instanceOfGuarded(VarAccess va, RefType t) {
-  exists(InstanceOfExpr ioe, BaseSsaVariable v |
-    ioe.getExpr() = v.getAUse() and
-    t = ioe.getCheckedType() and
-    va = v.getAUse() and
-    guardControls_v1(ioe, va.getBasicBlock(), true)
+private Expr getAProbableAlias(Expr e) {
+  exists(BaseSsaVariable v |
+    e = v.getAUse() and
+    result = v.getAUse()
+  )
+  or
+  exists(BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1, ArrayAccess aa2 |
+    e = aa1 and
+    result = aa2 and
+    aa1.getArray() = v1.getAUse() and
+    aa1.getIndexExpr() = v2.getAUse() and
+    aa2.getArray() = v1.getAUse() and
+    aa2.getIndexExpr() = v2.getAUse()
   )
 }
 
 /**
- * Holds if `aa` is an access to a value that is guarded by `instanceof t`.
+ * Holds if `e` is an access to a value that is guarded by `instanceof t`.
  */
-predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
-  exists(InstanceOfExpr ioe, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
-    ioe.getExpr() = aa1 and
+private predicate instanceOfGuarded(Expr e, RefType t) {
+  exists(InstanceOfExpr ioe |
     t = ioe.getCheckedType() and
-    aa1.getArray() = v1.getAUse() and
-    aa1.getIndexExpr() = v2.getAUse() and
-    aa.getArray() = v1.getAUse() and
-    aa.getIndexExpr() = v2.getAUse() and
-    guardControls_v1(ioe, aa.getBasicBlock(), true)
+    e = getAProbableAlias(ioe.getExpr()) and
+    guardControls_v1(ioe, e.getBasicBlock(), true)
   )
 }
 
 /**
  * Holds if `va` is an access to a value that is guarded by `case T t`.
  */
-private predicate patternCaseGuarded(VarAccess va, RefType t) {
-  exists(PatternCase pc, BaseSsaVariable v |
-      va = v.getAUse() and
-      (
-        pc.getSwitch().getExpr() = v.getAUse() or
-        pc.getSwitchExpr().getExpr() = v.getAUse()
-      ) and
-      pc.getDecl().getBasicBlock().bbDominates(va.getBasicBlock()) and
-      t = pc.getDecl().getType()
+private predicate patternCaseGuarded(Expr e, RefType t) {
+  exists(PatternCase pc |
+    e = getAProbableAlias([pc.getSwitch().getExpr(), pc.getSwitchExpr().getExpr()]) and
+    guardControls_v1(pc, e.getBasicBlock(), true) and
+    t = pc.getDecl().getType()
   )
 }
 
@@ -478,7 +474,6 @@ private predicate typeFlowBaseCand(TypeFlowNode n, RefType t) {
     upcastEnhancedForStmt(n.asSsa(), srctype) or
     downcastSuccessor(n.asExpr(), srctype) or
     instanceOfGuarded(n.asExpr(), srctype) or
-    arrayInstanceOfGuarded(n.asExpr(), srctype) or
     n.asExpr().(FunctionalExpr).getConstructedType() = srctype or
     superAccess(n.asExpr(), srctype) or
     patternCaseGuarded(n.asExpr(), srctype)

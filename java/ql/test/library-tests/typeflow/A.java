@@ -92,4 +92,14 @@ public class A extends ArrayList<Long> {
       Object r = n;
     }
   }
+
+  public void m9(Object[] xs, int i) {
+    switch (xs[i]) {
+      case Integer i2 -> {
+        Object n = xs[i];
+        Object r = n;
+      }
+      default -> { }
+    }
+  }
 }

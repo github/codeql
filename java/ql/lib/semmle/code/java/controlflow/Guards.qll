@@ -178,11 +178,18 @@ class Guard extends ExprParent {
 private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
   exists(BasicBlock caseblock, Expr selector |
     selector = sc.getSelectorExpr() and
-    caseblock.getFirstNode() = sc.getControlFlowNode() and
-    caseblock.bbDominates(bb) and
-    forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
-      pred.(Expr).getParent*() = selector
-    )
+    (
+      if sc instanceof PatternCase
+      then caseblock.getFirstNode() = sc.(PatternCase).getDecl().getControlFlowNode()
+      else (
+        caseblock.getFirstNode() = sc.getControlFlowNode() and
+        // Check there is no fall-through edge from a previous case:
+        forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
+          pred.(Expr).getParent*() = selector
+        )
+      )
+    ) and
+    caseblock.bbDominates(bb)
   )
 }
 
