@@ -918,7 +918,6 @@ private module CaptureInput implements VariableCapture::InputSig {
         variable = np.getVarDecl() and
         source = np.getMatchingExpr()
       )
-      // TODO: support multiple variables in LHS of =, in both of above cases.
     }
 
     CapturedVariable getVariable() { result = variable }
@@ -929,7 +928,7 @@ private module CaptureInput implements VariableCapture::InputSig {
   class VariableRead extends Expr instanceof S::DeclRefExpr {
     CapturedVariable v;
 
-    VariableRead() { this.getDecl() = v /* TODO: this should be an R-value only. */ }
+    VariableRead() { this.getDecl() = v and not isLValue(this) }
 
     CapturedVariable getVariable() { result = v }
   }
