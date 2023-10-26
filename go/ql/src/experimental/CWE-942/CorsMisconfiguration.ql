@@ -69,22 +69,45 @@ module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSinkHW(sink, _) }
 }
 
+module UntrustedToAllowOriginConfigConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+
+  additional predicate isSinkWrite(DataFlow::Node sink, GinCors::AllowOriginsWrite w) {
+    sink = w
+  }
+
+  predicate isSink(DataFlow::Node sink) { isSinkWrite(sink, _) }
+}
+
 /**
  * Tracks taint flowfor reasoning about when an `UntrustedFlowSource` flows to
  * a `HeaderWrite` that writes an `Access-Control-Allow-Origin` header's value.
  */
 module UntrustedToAllowOriginHeaderFlow = TaintTracking::Global<UntrustedToAllowOriginHeaderConfig>;
 
+module UntrustedToAllowOriginConfigFlow = TaintTracking::Global<UntrustedToAllowOriginConfigConfig>;
+
 /**
  * Holds if the provided `allowOriginHW` HeaderWrite's parent ResponseWriter
  * also has another HeaderWrite that sets a `Access-Control-Allow-Credentials`
  * header to `true`.
  */
-predicate allowCredentialsIsSetToTrue(AllowOriginHeaderWrite allowOriginHW) {
+predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOrigin) {
   exists(AllowCredentialsHeaderWrite allowCredentialsHW |
     allowCredentialsHW.getHeaderValue().toLowerCase() = "true"
   |
-    allowOriginHW.getResponseWriter() = allowCredentialsHW.getResponseWriter()
+  allowOrigin.(AllowOriginHeaderWrite).getResponseWriter() = allowCredentialsHW.getResponseWriter()
+  )
+  or
+  exists(GinCors::AllowCredentialsWrite allowCredentialsGin |
+    allowCredentialsGin.toString() = "true" 
+    |
+    //flow only goes in one direction so fix this before PR
+    allowCredentialsGin.getConfig() = allowOrigin.(GinCors::AllowOriginsWrite).getConfig()
+    and
+    not exists(GinCors::AllowAllOriginsWrite allowAllOrigins |
+      allowAllOrigins.toString() = "true" //and DataFlow::localFlow(allowCredentialsGin.getBase(), allowAllOrigins.getBase())
+    )
   )
 }
 
@@ -93,10 +116,12 @@ predicate allowCredentialsIsSetToTrue(AllowOriginHeaderWrite allowOriginHW) {
  * UntrustedFlowSource.
  * The `message` parameter is populated with the warning message to be returned by the query.
  */
-predicate flowsFromUntrustedToAllowOrigin(AllowOriginHeaderWrite allowOriginHW, string message) {
+predicate flowsFromUntrustedToAllowOrigin(DataFlow::ExprNode allowOriginHW, string message) {
   exists(DataFlow::Node sink |
     UntrustedToAllowOriginHeaderFlow::flowTo(sink) and
-    UntrustedToAllowOriginHeaderConfig::isSinkHW(sink, allowOriginHW)
+    UntrustedToAllowOriginHeaderConfig::isSinkHW(sink, allowOriginHW) or
+    UntrustedToAllowOriginConfigFlow::flowTo(sink) and 
+    UntrustedToAllowOriginConfigConfig::isSinkWrite(sink, allowOriginHW)
   |
     message =
       headerAllowOrigin() + " header is set to a user-defined value, and " +
@@ -108,11 +133,17 @@ predicate flowsFromUntrustedToAllowOrigin(AllowOriginHeaderWrite allowOriginHW, 
  * Holds if the provided `allowOriginHW` HeaderWrite is for a `Access-Control-Allow-Origin`
  * header and the value is set to `null`.
  */
-predicate allowOriginIsNull(AllowOriginHeaderWrite allowOriginHW, string message) {
-  allowOriginHW.getHeaderValue().toLowerCase() = "null" and
+predicate allowOriginIsNull(DataFlow::ExprNode allowOrigin, string message) {
+  allowOrigin.(AllowOriginHeaderWrite).getHeaderValue().toLowerCase() = "null" and
   message =
-    headerAllowOrigin() + " header is set to `" + allowOriginHW.getHeaderValue() + "`, and " +
+    headerAllowOrigin() + " header is set to `" + allowOrigin.(AllowOriginHeaderWrite).getHeaderValue() + "`, and " +
       headerAllowCredentials() + " is set to `true`"
+  or
+  allowOrigin.(GinCors::AllowOriginsWrite).asExpr().(SliceLit).getAnElement().toString().matches("\"null%\"") and
+  message =
+    headerAllowOrigin() + " header is set to `" + allowOrigin.(GinCors::AllowOriginsWrite).asExpr().(SliceLit).getAnElement().toString() + "`, and " +
+      headerAllowCredentials() + " is set to `true`"
+
 }
 
 /**
@@ -170,7 +201,7 @@ module FromUntrustedFlow = TaintTracking::Global<FromUntrustedConfig>;
 /**
  * Holds if the provided `allowOriginHW` is also destination of a `UntrustedFlowSource`.
  */
-predicate flowsToGuardedByCheckOnUntrusted(AllowOriginHeaderWrite allowOriginHW) {
+predicate flowsToGuardedByCheckOnUntrusted(DataFlow::ExprNode allowOriginHW) {
   exists(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn |
     FromUntrustedFlow::flowTo(sink) and FromUntrustedConfig::isSinkCgn(sink, cgn)
   |
@@ -178,18 +209,18 @@ predicate flowsToGuardedByCheckOnUntrusted(AllowOriginHeaderWrite allowOriginHW)
   )
 }
 
-from AllowOriginHeaderWrite allowOriginHW, string message
+from DataFlow::ExprNode allowOrigin, string message
 where
-  allowCredentialsIsSetToTrue(allowOriginHW) and
+  allowCredentialsIsSetToTrue(allowOrigin) and
   (
-    flowsFromUntrustedToAllowOrigin(allowOriginHW, message)
+    flowsFromUntrustedToAllowOrigin(allowOrigin, message)
     or
-    allowOriginIsNull(allowOriginHW, message)
+    allowOriginIsNull(allowOrigin, message)
   ) and
-  not flowsToGuardedByCheckOnUntrusted(allowOriginHW) and
+  not flowsToGuardedByCheckOnUntrusted(allowOrigin) and
   not exists(ControlFlow::ConditionGuardNode cgn |
     cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)
   |
-    cgn.dominates(allowOriginHW.getBasicBlock())
+    cgn.dominates(allowOrigin.getBasicBlock())
   )
-select allowOriginHW, message
+select allowOrigin, message
