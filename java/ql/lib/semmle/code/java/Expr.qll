@@ -530,6 +530,9 @@ class Literal extends Expr, @literal {
    * Gets a string representation of this literal as it appeared
    * in the source code.
    *
+   * For Kotlin the result might not match the exact representation
+   * used in the source code.
+   *
    * **Important:** Unless a query explicitly wants to check how
    * a literal was written in the source code, the predicate
    * `getValue()` (or value predicates of subclasses) should be
