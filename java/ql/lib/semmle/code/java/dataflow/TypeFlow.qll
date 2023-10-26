@@ -441,6 +441,21 @@ predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
 }
 
 /**
+ * Holds if `va` is an access to a value that is guarded by `case T t`.
+ */
+private predicate patternCaseGuarded(VarAccess va, RefType t) {
+  exists(PatternCase pc, BaseSsaVariable v |
+      va = v.getAUse() and
+      (
+        pc.getSwitch().getExpr() = v.getAUse() or
+        pc.getSwitchExpr().getExpr() = v.getAUse()
+      ) and
+      pc.getDecl().getBasicBlock().bbDominates(va.getBasicBlock()) and
+      t = pc.getDecl().getType()
+  )
+}
+
+/**
  * Holds if `t` is the type of the `this` value corresponding to the the
  * `SuperAccess`. As the `SuperAccess` expression has the type of the supertype,
  * the type `t` is a stronger type bound.
@@ -465,7 +480,8 @@ private predicate typeFlowBaseCand(TypeFlowNode n, RefType t) {
     instanceOfGuarded(n.asExpr(), srctype) or
     arrayInstanceOfGuarded(n.asExpr(), srctype) or
     n.asExpr().(FunctionalExpr).getConstructedType() = srctype or
-    superAccess(n.asExpr(), srctype)
+    superAccess(n.asExpr(), srctype) or
+    patternCaseGuarded(n.asExpr(), srctype)
   |
     t = srctype.(BoundedType).getAnUltimateUpperBoundType()
     or
