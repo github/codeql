@@ -23,4 +23,4 @@ where
   )
   or
   operation.getBlockMode().isWeak() and msgPrefix = "The block mode " + operation.getBlockMode()
-select operation, msgPrefix + " is broken or weak, and should not be used."
+select operation, msgPrefix + " (configured $@) is broken or weak, and should not be used.", operation.getInitialization(), "here"
