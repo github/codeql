@@ -103,24 +103,24 @@ classes.kt:
 #   25|       3: [TypeAccess] Unit
 #   25|       5: [BlockStmt] { ... }
 #   28|   9: [Class] ClassSix
-#   28|     1: [Constructor] ClassSix
-#   28|       5: [BlockStmt] { ... }
-#   28|         0: [SuperConstructorInvocationStmt] super(...)
-#   28|         1: [BlockStmt] { ... }
-#   28|     2: [Method] funIF1
+#   28|     1: [Method] funIF1
 #   28|       3: [TypeAccess] Unit
 #   28|       5: [BlockStmt] { ... }
 #   28|         0: [ReturnStmt] return ...
 #   28|           0: [MethodCall] funIF1(...)
 #   28|             -1: [SuperAccess] IF1.super
 #   28|               0: [TypeAccess] IF1
-#   28|     3: [Method] funIF2
+#   28|     2: [Method] funIF2
 #   28|       3: [TypeAccess] Unit
 #   28|       5: [BlockStmt] { ... }
 #   28|         0: [ReturnStmt] return ...
 #   28|           0: [MethodCall] funIF2(...)
 #   28|             -1: [SuperAccess] IF2.super
 #   28|               0: [TypeAccess] IF2
+#   28|     3: [Constructor] ClassSix
+#   28|       5: [BlockStmt] { ... }
+#   28|         0: [SuperConstructorInvocationStmt] super(...)
+#   28|         1: [BlockStmt] { ... }
 #   29|     4: [Constructor] ClassSix
 #-----|       4: (Parameters)
 #   29|         0: [Parameter] i
@@ -160,26 +160,26 @@ classes.kt:
 #   42|       -1: [TypeAccess] int
 #   42|       0: [IntegerLiteral] 3
 #   49|   11: [Class] Direction
-#    0|     2: [Method] getEntries
-#    0|       3: [TypeAccess] EnumEntries<Direction>
-#    0|         0: [TypeAccess] Direction
-#    0|     3: [Method] valueOf
-#    0|       3: [TypeAccess] Direction
-#-----|       4: (Parameters)
-#    0|         0: [Parameter] value
-#    0|           0: [TypeAccess] String
-#    0|     4: [Method] values
-#    0|       3: [TypeAccess] Direction[]
-#    0|         0: [TypeAccess] Direction
-#   49|     5: [Constructor] Direction
+#   49|     2: [Constructor] Direction
 #   49|       5: [BlockStmt] { ... }
 #   49|         0: [ExprStmt] <Expr>;
-#   49|           0: [ClassInstanceExpr] new Enum(...)
+#   49|           0: [ClassInstanceExpr] new Enum<Direction>(...)
 #   49|             -3: [TypeAccess] Enum<Direction>
 #   49|               0: [TypeAccess] Direction
 #   49|             0: [NullLiteral] null
 #   49|             1: [IntegerLiteral] 0
 #   49|         1: [BlockStmt] { ... }
+#   49|     3: [Method] getEntries
+#   49|       3: [TypeAccess] EnumEntries<Direction>
+#   49|         0: [TypeAccess] Direction
+#   49|     4: [Method] valueOf
+#   49|       3: [TypeAccess] Direction
+#-----|       4: (Parameters)
+#   49|         0: [Parameter] value
+#   49|           0: [TypeAccess] String
+#   49|     5: [Method] values
+#   49|       3: [TypeAccess] Direction[]
+#   49|         0: [TypeAccess] Direction
 #   50|     6: [FieldDeclaration] Direction NORTH;
 #   50|       -1: [TypeAccess] Direction
 #   50|       0: [ClassInstanceExpr] new Direction(...)
@@ -197,24 +197,24 @@ classes.kt:
 #   50|       0: [ClassInstanceExpr] new Direction(...)
 #   50|         -3: [TypeAccess] Direction
 #   53|   12: [Class] Color
-#    0|     2: [Method] getEntries
-#    0|       3: [TypeAccess] EnumEntries<Color>
-#    0|         0: [TypeAccess] Color
-#    0|     3: [Method] valueOf
-#    0|       3: [TypeAccess] Color
+#   53|     2: [Method] getEntries
+#   53|       3: [TypeAccess] EnumEntries<Color>
+#   53|         0: [TypeAccess] Color
+#   53|     3: [Method] valueOf
+#   53|       3: [TypeAccess] Color
 #-----|       4: (Parameters)
-#    0|         0: [Parameter] value
-#    0|           0: [TypeAccess] String
-#    0|     4: [Method] values
-#    0|       3: [TypeAccess] Color[]
-#    0|         0: [TypeAccess] Color
+#   53|         0: [Parameter] value
+#   53|           0: [TypeAccess] String
+#   53|     4: [Method] values
+#   53|       3: [TypeAccess] Color[]
+#   53|         0: [TypeAccess] Color
 #   53|     5: [Constructor] Color
 #-----|       4: (Parameters)
 #   53|         0: [Parameter] rgb
 #   53|           0: [TypeAccess] int
 #   53|       5: [BlockStmt] { ... }
 #   53|         0: [ExprStmt] <Expr>;
-#   53|           0: [ClassInstanceExpr] new Enum(...)
+#   53|           0: [ClassInstanceExpr] new Enum<Color>(...)
 #   53|             -3: [TypeAccess] Enum<Color>
 #   53|               0: [TypeAccess] Color
 #   53|             0: [NullLiteral] null
@@ -279,8 +279,8 @@ classes.kt:
 #   66|                     1: [ExprStmt] <Expr>;
 #   66|                       0: [ClassInstanceExpr] new (...)
 #   66|                         -3: [TypeAccess] Object
-#   65|             1: [WhenBranch] ... -> ...
-#   65|               0: [BooleanLiteral] true
+#   68|             1: [WhenBranch] ... -> ...
+#   68|               0: [BooleanLiteral] true
 #   68|               1: [ReturnStmt] return ...
 #   68|                 0: [StmtExpr] <Stmt>
 #   68|                   0: [BlockStmt] { ... }
@@ -658,7 +658,14 @@ generic_anonymous.kt:
 #    1|         0: [ReturnStmt] return ...
 #    1|           0: [VarAccess] this.t
 #    1|             -1: [ThisAccess] this
-#    3|     4: [FieldDeclaration] new Object(...) { ... } x;
+#    3|     4: [Method] getX$private
+#    3|       3: [TypeAccess] new Object(...) { ... }
+#    3|         0: [TypeAccess] T
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [ReturnStmt] return ...
+#    3|           0: [VarAccess] this.x
+#    3|             -1: [ThisAccess] this
+#    3|     5: [FieldDeclaration] new Object(...) { ... } x;
 #    3|       -1: [TypeAccess] new Object(...) { ... }
 #    3|         0: [TypeAccess] T
 #    3|       0: [StmtExpr] <Stmt>
@@ -686,13 +693,6 @@ generic_anonymous.kt:
 #    3|           1: [ExprStmt] <Expr>;
 #    3|             0: [ClassInstanceExpr] new (...)
 #    3|               -3: [TypeAccess] Object
-#    3|     5: [Method] getX$private
-#    3|       3: [TypeAccess] new Object(...) { ... }
-#    3|         0: [TypeAccess] T
-#    3|       5: [BlockStmt] { ... }
-#    3|         0: [ReturnStmt] return ...
-#    3|           0: [VarAccess] this.x
-#    3|             -1: [ThisAccess] this
 #    7|     6: [Method] get
 #    7|       3: [TypeAccess] T
 #    7|       5: [BlockStmt] { ... }
@@ -882,18 +882,22 @@ localClassField.kt:
 #    2|       0: [WhenExpr] when ...
 #    2|         0: [WhenBranch] ... -> ...
 #    2|           0: [BooleanLiteral] true
-#    2|           1: [BlockStmt] { ... }
-#    3|             0: [LocalTypeDeclStmt] class ...
-#    3|               0: [LocalClass] L
-#    3|                 1: [Constructor] L
-#    3|                   5: [BlockStmt] { ... }
-#    3|                     0: [SuperConstructorInvocationStmt] super(...)
-#    3|                     1: [BlockStmt] { ... }
-#    4|             1: [ExprStmt] <Expr>;
-#    4|               0: [ClassInstanceExpr] new L(...)
-#    4|                 -3: [TypeAccess] L
-#    2|         1: [WhenBranch] ... -> ...
-#    2|           0: [BooleanLiteral] true
+#    2|           1: [ExprStmt] <Expr>;
+#    2|             0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#    2|               0: [TypeAccess] Unit
+#    2|               1: [StmtExpr] <Stmt>
+#    2|                 0: [BlockStmt] { ... }
+#    3|                   0: [LocalTypeDeclStmt] class ...
+#    3|                     0: [LocalClass] L
+#    3|                       1: [Constructor] L
+#    3|                         5: [BlockStmt] { ... }
+#    3|                           0: [SuperConstructorInvocationStmt] super(...)
+#    3|                           1: [BlockStmt] { ... }
+#    4|                   1: [ExprStmt] <Expr>;
+#    4|                     0: [ClassInstanceExpr] new L(...)
+#    4|                       -3: [TypeAccess] L
+#    5|         1: [WhenBranch] ... -> ...
+#    5|           0: [BooleanLiteral] true
 #    5|           1: [BlockStmt] { ... }
 #    2|     3: [Method] getX
 #    2|       3: [TypeAccess] Object
@@ -906,18 +910,22 @@ localClassField.kt:
 #    7|       0: [WhenExpr] when ...
 #    7|         0: [WhenBranch] ... -> ...
 #    7|           0: [BooleanLiteral] true
-#    7|           1: [BlockStmt] { ... }
-#    8|             0: [LocalTypeDeclStmt] class ...
-#    8|               0: [LocalClass] L
-#    8|                 1: [Constructor] L
-#    8|                   5: [BlockStmt] { ... }
-#    8|                     0: [SuperConstructorInvocationStmt] super(...)
-#    8|                     1: [BlockStmt] { ... }
-#    9|             1: [ExprStmt] <Expr>;
-#    9|               0: [ClassInstanceExpr] new L(...)
-#    9|                 -3: [TypeAccess] L
-#    7|         1: [WhenBranch] ... -> ...
-#    7|           0: [BooleanLiteral] true
+#    7|           1: [ExprStmt] <Expr>;
+#    7|             0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#    7|               0: [TypeAccess] Unit
+#    7|               1: [StmtExpr] <Stmt>
+#    7|                 0: [BlockStmt] { ... }
+#    8|                   0: [LocalTypeDeclStmt] class ...
+#    8|                     0: [LocalClass] L
+#    8|                       1: [Constructor] L
+#    8|                         5: [BlockStmt] { ... }
+#    8|                           0: [SuperConstructorInvocationStmt] super(...)
+#    8|                           1: [BlockStmt] { ... }
+#    9|                   1: [ExprStmt] <Expr>;
+#    9|                     0: [ClassInstanceExpr] new L(...)
+#    9|                       -3: [TypeAccess] L
+#   10|         1: [WhenBranch] ... -> ...
+#   10|           0: [BooleanLiteral] true
 #   10|           1: [BlockStmt] { ... }
 #    7|     5: [Method] getY
 #    7|       3: [TypeAccess] Object
