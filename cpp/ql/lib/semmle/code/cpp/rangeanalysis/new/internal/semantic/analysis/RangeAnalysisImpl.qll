@@ -78,6 +78,8 @@ module Sem implements Semantic {
 
   predicate guardDirectlyControlsSsaRead = semGuardDirectlyControlsSsaRead/3;
 
+  predicate guardControlsSsaRead = semGuardControlsSsaRead/3;
+
   class Type = SemType;
 
   class IntegerType = SemIntegerType;

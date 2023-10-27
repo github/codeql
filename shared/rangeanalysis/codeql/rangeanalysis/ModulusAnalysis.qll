@@ -10,22 +10,20 @@
  * handles phi inputs.
  */
 
-private import ModulusAnalysisSpecific::Private
-private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
-private import ConstantAnalysis
-private import RangeUtils
-private import codeql.rangeanalysis.RangeAnalysis
-private import RangeAnalysisImpl
+private import codeql.util.Location
+private import RangeAnalysis
 
-module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig<Sem, D> U> {
+module ModulusAnalysis<
+  LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
+  UtilSig<Sem, D> U>
+{
   pragma[nomagic]
   private predicate valueFlowStepSsaEqFlowCond(
-    SemSsaReadPosition pos, SemSsaVariable v, SemExpr e, int delta
+    Sem::SsaReadPosition pos, Sem::SsaVariable v, Sem::Expr e, int delta
   ) {
-    exists(SemGuard guard, boolean testIsTrue |
+    exists(Sem::Guard guard, boolean testIsTrue |
       guard = U::semEqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
-      semGuardDirectlyControlsSsaRead(guard, pos, testIsTrue)
+      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue)
     )
   }
 
@@ -33,7 +31,9 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
    * Holds if `e + delta` equals `v` at `pos`.
    */
   pragma[nomagic]
-  private predicate valueFlowStepSsa(SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, int delta) {
+  private predicate valueFlowStepSsa(
+    Sem::SsaVariable v, Sem::SsaReadPosition pos, Sem::Expr e, int delta
+  ) {
     U::semSsaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
     or
     pos.hasReadOfVar(v) and
@@ -44,40 +44,40 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
    * Holds if `add` is the addition of `larg` and `rarg`, neither of which are
    * `ConstantIntegerExpr`s.
    */
-  private predicate nonConstAddition(SemExpr add, SemExpr larg, SemExpr rarg) {
-    exists(SemAddExpr a | a = add |
+  private predicate nonConstAddition(Sem::Expr add, Sem::Expr larg, Sem::Expr rarg) {
+    exists(Sem::AddExpr a | a = add |
       larg = a.getLeftOperand() and
       rarg = a.getRightOperand()
     ) and
-    not larg instanceof SemConstantIntegerExpr and
-    not rarg instanceof SemConstantIntegerExpr
+    not larg instanceof Sem::ConstantIntegerExpr and
+    not rarg instanceof Sem::ConstantIntegerExpr
   }
 
   /**
    * Holds if `sub` is the subtraction of `larg` and `rarg`, where `rarg` is not
    * a `ConstantIntegerExpr`.
    */
-  private predicate nonConstSubtraction(SemExpr sub, SemExpr larg, SemExpr rarg) {
-    exists(SemSubExpr s | s = sub |
+  private predicate nonConstSubtraction(Sem::Expr sub, Sem::Expr larg, Sem::Expr rarg) {
+    exists(Sem::SubExpr s | s = sub |
       larg = s.getLeftOperand() and
       rarg = s.getRightOperand()
     ) and
-    not rarg instanceof SemConstantIntegerExpr
+    not rarg instanceof Sem::ConstantIntegerExpr
   }
 
   /** Gets an expression that is the remainder modulo `mod` of `arg`. */
-  private SemExpr modExpr(SemExpr arg, int mod) {
-    exists(SemRemExpr rem |
+  private Sem::Expr modExpr(Sem::Expr arg, int mod) {
+    exists(Sem::RemExpr rem |
       result = rem and
       arg = rem.getLeftOperand() and
-      rem.getRightOperand().(SemConstantIntegerExpr).getIntValue() = mod and
+      rem.getRightOperand().(Sem::ConstantIntegerExpr).getIntValue() = mod and
       mod >= 2
     )
     or
-    exists(SemConstantIntegerExpr c |
+    exists(Sem::ConstantIntegerExpr c |
       mod = 2.pow([1 .. 30]) and
       c.getIntValue() = mod - 1 and
-      result.(SemBitAndExpr).hasOperands(arg, c)
+      result.(Sem::BitAndExpr).hasOperands(arg, c)
     )
   }
 
@@ -85,8 +85,8 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
    * Gets a guard that tests whether `v` is congruent with `val` modulo `mod` on
    * its `testIsTrue` branch.
    */
-  private SemGuard moduloCheck(SemSsaVariable v, int val, int mod, boolean testIsTrue) {
-    exists(SemExpr rem, SemConstantIntegerExpr c, int r, boolean polarity |
+  private Sem::Guard moduloCheck(Sem::SsaVariable v, int val, int mod, boolean testIsTrue) {
+    exists(Sem::Expr rem, Sem::ConstantIntegerExpr c, int r, boolean polarity |
       result.isEquality(rem, c, polarity) and
       c.getIntValue() = r and
       rem = modExpr(v.getAUse(), mod) and
@@ -104,11 +104,11 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
   /**
    * Holds if a guard ensures that `v` at `pos` is congruent with `val` modulo `mod`.
    */
-  private predicate moduloGuardedRead(SemSsaVariable v, SemSsaReadPosition pos, int val, int mod) {
-    exists(SemGuard guard, boolean testIsTrue |
+  private predicate moduloGuardedRead(Sem::SsaVariable v, Sem::SsaReadPosition pos, int val, int mod) {
+    exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = moduloCheck(v, val, mod, testIsTrue) and
-      semGuardControlsSsaRead(guard, pos, testIsTrue)
+      Sem::guardControlsSsaRead(guard, pos, testIsTrue)
     )
   }
 
@@ -120,13 +120,13 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
   }
 
   /** Holds if `e` is evenly divisible by `factor`. */
-  private predicate evenlyDivisibleExpr(SemExpr e, int factor) {
-    exists(SemConstantIntegerExpr c, int k | k = c.getIntValue() |
-      e.(SemMulExpr).getAnOperand() = c and factor = k.abs() and factor >= 2
+  private predicate evenlyDivisibleExpr(Sem::Expr e, int factor) {
+    exists(Sem::ConstantIntegerExpr c, int k | k = c.getIntValue() |
+      e.(Sem::MulExpr).getAnOperand() = c and factor = k.abs() and factor >= 2
       or
-      e.(SemShiftLeftExpr).getRightOperand() = c and factor = 2.pow(k) and k > 0
+      e.(Sem::ShiftLeftExpr).getRightOperand() = c and factor = 2.pow(k) and k > 0
       or
-      e.(SemBitAndExpr).getAnOperand() = c and factor = max(int f | andmaskFactor(k, f))
+      e.(Sem::BitAndExpr).getAnOperand() = c and factor = max(int f | andmaskFactor(k, f))
     )
   }
 
@@ -147,7 +147,7 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
    * Holds if `inp` is an input to `phi` and equals `phi` modulo `mod` along `edge`.
    */
   private predicate phiSelfModulus(
-    SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge, int mod
+    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int mod
   ) {
     exists(Bounds::SemSsaBound phibound, int v, int m |
       edge.phiInput(phi, inp) and
@@ -161,8 +161,8 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
   /**
    * Holds if `b + val` modulo `mod` is a candidate congruence class for `phi`.
    */
-  private predicate phiModulusInit(SemSsaPhiNode phi, Bounds::SemBound b, int val, int mod) {
-    exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
+  private predicate phiModulusInit(Sem::SsaPhiNode phi, Bounds::SemBound b, int val, int mod) {
+    exists(Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge |
       edge.phiInput(phi, inp) and
       ssaModulus(inp, edge, b, val, mod)
     )
@@ -173,7 +173,7 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
    */
   pragma[nomagic]
   private predicate phiModulusRankStep(
-    SemSsaPhiNode phi, Bounds::SemBound b, int val, int mod, int rix
+    Sem::SsaPhiNode phi, Bounds::SemBound b, int val, int mod, int rix
   ) {
     /*
      * base case. If any phi input is equal to `b + val` modulo `mod`, that's a potential congruence
@@ -183,7 +183,7 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
     rix = 0 and
     phiModulusInit(phi, b, val, mod)
     or
-    exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge, int v1, int m1 |
+    exists(Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int v1, int m1 |
       mod != 1 and
       val = remainder(v1, mod)
     |
@@ -194,7 +194,7 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
        */
 
       exists(int v2, int m2 |
-        rankedPhiInput(pragma[only_bind_out](phi), inp, edge, rix) and
+        U::rankedPhiInput(pragma[only_bind_out](phi), inp, edge, rix) and
         phiModulusRankStep(phi, b, v1, m1, rix - 1) and
         ssaModulus(inp, edge, b, v2, m2) and
         mod = m1.gcd(m2).gcd(v1 - v2)
@@ -207,7 +207,7 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
        */
 
       exists(int m2 |
-        rankedPhiInput(phi, inp, edge, rix) and
+        U::rankedPhiInput(phi, inp, edge, rix) and
         phiModulusRankStep(phi, b, v1, m1, rix - 1) and
         phiSelfModulus(phi, inp, edge, m2) and
         mod = m1.gcd(m2)
@@ -218,9 +218,9 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
   /**
    * Holds if `phi` is equal to `b + val` modulo `mod`.
    */
-  private predicate phiModulus(SemSsaPhiNode phi, Bounds::SemBound b, int val, int mod) {
+  private predicate phiModulus(Sem::SsaPhiNode phi, Bounds::SemBound b, int val, int mod) {
     exists(int r |
-      maxPhiInputRank(phi, r) and
+      U::maxPhiInputRank(phi, r) and
       phiModulusRankStep(phi, b, val, mod, r)
     )
   }
@@ -229,13 +229,13 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
    * Holds if `v` at `pos` is equal to `b + val` modulo `mod`.
    */
   private predicate ssaModulus(
-    SemSsaVariable v, SemSsaReadPosition pos, Bounds::SemBound b, int val, int mod
+    Sem::SsaVariable v, Sem::SsaReadPosition pos, Bounds::SemBound b, int val, int mod
   ) {
     phiModulus(v, b, val, mod) and pos.hasReadOfVar(v)
     or
     b.(Bounds::SemSsaBound).getVariable() = v and pos.hasReadOfVar(v) and val = 0 and mod = 0
     or
-    exists(SemExpr e, int val0, int delta |
+    exists(Sem::Expr e, int val0, int delta |
       semExprModulus(e, b, val0, mod) and
       valueFlowStepSsa(v, pos, e, delta) and
       val = remainder(val0 + delta, mod)
@@ -252,74 +252,71 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
    * - `mod > 1`: `val` lies within the range `[0 .. mod-1]`.
    */
   cached
-  predicate semExprModulus(SemExpr e, Bounds::SemBound b, int val, int mod) {
-    not ignoreExprModulus(e) and
-    (
-      e = b.getExpr(D::fromInt(val)) and mod = 0
+  predicate semExprModulus(Sem::Expr e, Bounds::SemBound b, int val, int mod) {
+    e = b.getExpr(D::fromInt(val)) and mod = 0
+    or
+    evenlyDivisibleExpr(e, mod) and
+    val = 0 and
+    b instanceof Bounds::SemZeroBound
+    or
+    exists(Sem::SsaVariable v, Sem::SsaReadPositionBlock bb |
+      ssaModulus(v, bb, b, val, mod) and
+      e = v.getAUse() and
+      bb.getBlock() = e.getBasicBlock()
+    )
+    or
+    exists(Sem::Expr mid, int val0, int delta |
+      semExprModulus(mid, b, val0, mod) and
+      U::semValueFlowStep(e, mid, D::fromInt(delta)) and
+      val = remainder(val0 + delta, mod)
+    )
+    or
+    exists(Sem::ConditionalExpr cond, int v1, int v2, int m1, int m2 |
+      cond = e and
+      condExprBranchModulus(cond, true, b, v1, m1) and
+      condExprBranchModulus(cond, false, b, v2, m2) and
+      mod = m1.gcd(m2).gcd(v1 - v2) and
+      mod != 1 and
+      val = remainder(v1, mod)
+    )
+    or
+    exists(Bounds::SemBound b1, Bounds::SemBound b2, int v1, int v2, int m1, int m2 |
+      addModulus(e, true, b1, v1, m1) and
+      addModulus(e, false, b2, v2, m2) and
+      mod = m1.gcd(m2) and
+      mod != 1 and
+      val = remainder(v1 + v2, mod)
+    |
+      b = b1 and b2 instanceof Bounds::SemZeroBound
       or
-      evenlyDivisibleExpr(e, mod) and
-      val = 0 and
-      b instanceof Bounds::SemZeroBound
-      or
-      exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
-        ssaModulus(v, bb, b, val, mod) and
-        e = v.getAUse() and
-        bb.getAnExpr() = e
-      )
-      or
-      exists(SemExpr mid, int val0, int delta |
-        semExprModulus(mid, b, val0, mod) and
-        U::semValueFlowStep(e, mid, D::fromInt(delta)) and
-        val = remainder(val0 + delta, mod)
-      )
-      or
-      exists(SemConditionalExpr cond, int v1, int v2, int m1, int m2 |
-        cond = e and
-        condExprBranchModulus(cond, true, b, v1, m1) and
-        condExprBranchModulus(cond, false, b, v2, m2) and
-        mod = m1.gcd(m2).gcd(v1 - v2) and
-        mod != 1 and
-        val = remainder(v1, mod)
-      )
-      or
-      exists(Bounds::SemBound b1, Bounds::SemBound b2, int v1, int v2, int m1, int m2 |
-        addModulus(e, true, b1, v1, m1) and
-        addModulus(e, false, b2, v2, m2) and
-        mod = m1.gcd(m2) and
-        mod != 1 and
-        val = remainder(v1 + v2, mod)
-      |
-        b = b1 and b2 instanceof Bounds::SemZeroBound
-        or
-        b = b2 and b1 instanceof Bounds::SemZeroBound
-      )
-      or
-      exists(int v1, int v2, int m1, int m2 |
-        subModulus(e, true, b, v1, m1) and
-        subModulus(e, false, any(Bounds::SemZeroBound zb), v2, m2) and
-        mod = m1.gcd(m2) and
-        mod != 1 and
-        val = remainder(v1 - v2, mod)
-      )
+      b = b2 and b1 instanceof Bounds::SemZeroBound
+    )
+    or
+    exists(int v1, int v2, int m1, int m2 |
+      subModulus(e, true, b, v1, m1) and
+      subModulus(e, false, any(Bounds::SemZeroBound zb), v2, m2) and
+      mod = m1.gcd(m2) and
+      mod != 1 and
+      val = remainder(v1 - v2, mod)
     )
   }
 
   private predicate condExprBranchModulus(
-    SemConditionalExpr cond, boolean branch, Bounds::SemBound b, int val, int mod
+    Sem::ConditionalExpr cond, boolean branch, Bounds::SemBound b, int val, int mod
   ) {
     semExprModulus(cond.getBranchExpr(branch), b, val, mod)
   }
 
-  private predicate addModulus(SemExpr add, boolean isLeft, Bounds::SemBound b, int val, int mod) {
-    exists(SemExpr larg, SemExpr rarg | nonConstAddition(add, larg, rarg) |
+  private predicate addModulus(Sem::Expr add, boolean isLeft, Bounds::SemBound b, int val, int mod) {
+    exists(Sem::Expr larg, Sem::Expr rarg | nonConstAddition(add, larg, rarg) |
       semExprModulus(larg, b, val, mod) and isLeft = true
       or
       semExprModulus(rarg, b, val, mod) and isLeft = false
     )
   }
 
-  private predicate subModulus(SemExpr sub, boolean isLeft, Bounds::SemBound b, int val, int mod) {
-    exists(SemExpr larg, SemExpr rarg | nonConstSubtraction(sub, larg, rarg) |
+  private predicate subModulus(Sem::Expr sub, boolean isLeft, Bounds::SemBound b, int val, int mod) {
+    exists(Sem::Expr larg, Sem::Expr rarg | nonConstSubtraction(sub, larg, rarg) |
       semExprModulus(larg, b, val, mod) and isLeft = true
       or
       semExprModulus(rarg, b, val, mod) and isLeft = false

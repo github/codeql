@@ -152,11 +152,15 @@ signature module Semantic {
     Expr asExpr();
 
     predicate directlyControls(BasicBlock controlled, boolean branch);
+
+    predicate isEquality(Expr e1, Expr e2, boolean polarity);
   }
 
   predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2);
 
   predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
+
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
 
   class Type;
 
@@ -356,7 +360,7 @@ signature module OverflowSig<Semantic Sem, DeltaSig D> {
 module RangeStage<
   LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
   OverflowSig<Sem, D> OverflowParam, LangSig<Sem, D> LangParam, SignAnalysisSig<Sem> SignAnalysis,
-  ModulusAnalysisSig<Sem> ModulusAnalysis, UtilSig<Sem, D> UtilParam>
+  ModulusAnalysisSig<Sem> ModulusAnalysisParam, UtilSig<Sem, D> UtilParam>
 {
   private import Bounds
   private import LangParam
@@ -364,7 +368,7 @@ module RangeStage<
   private import D
   private import OverflowParam
   private import SignAnalysis
-  private import ModulusAnalysis
+  private import ModulusAnalysisParam
   private import internal.RangeUtils::MakeUtils<Sem, D>
 
   /**

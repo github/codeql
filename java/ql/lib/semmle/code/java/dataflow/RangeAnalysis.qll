@@ -224,6 +224,10 @@ module Sem implements Semantic {
     RU::guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
   }
 
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    RU::guardControlsSsaRead(guard, controlled, testIsTrue)
+  }
+
   class Type = J::Type;
 
   class IntegerType extends J::IntegralType {
