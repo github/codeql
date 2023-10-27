@@ -29,7 +29,6 @@ module ReflectedXss {
     CookieSanitizer() {
       exists(Method m, DataFlow::CallNode call | call = m.getACall() |
         m.hasQualifiedName("net/http", "Request", "Cookie") and
-        //call.getResult() = this
         this = call.getResult(0)
       )
     }
