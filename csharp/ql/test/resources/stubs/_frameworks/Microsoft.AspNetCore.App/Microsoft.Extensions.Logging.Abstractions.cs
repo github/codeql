@@ -167,6 +167,7 @@ namespace Microsoft
                 public static System.Func<Microsoft.Extensions.Logging.ILogger, T1, T2, T3, T4, T5, System.IDisposable> DefineScope<T1, T2, T3, T4, T5>(string formatString) => throw null;
                 public static System.Func<Microsoft.Extensions.Logging.ILogger, T1, T2, T3, T4, T5, T6, System.IDisposable> DefineScope<T1, T2, T3, T4, T5, T6>(string formatString) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64)]
             public sealed class LoggerMessageAttribute : System.Attribute
             {
                 public LoggerMessageAttribute() => throw null;

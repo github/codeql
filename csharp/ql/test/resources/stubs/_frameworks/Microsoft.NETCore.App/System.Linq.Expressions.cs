@@ -1108,6 +1108,7 @@ namespace System
                 protected DebugInfoGenerator() => throw null;
                 public abstract void MarkSequencePoint(System.Linq.Expressions.LambdaExpression method, int ilOffset, System.Linq.Expressions.DebugInfoExpression sequencePoint);
             }
+            [System.AttributeUsage((System.AttributeTargets)10636)]
             public sealed class DynamicAttribute : System.Attribute
             {
                 public DynamicAttribute() => throw null;

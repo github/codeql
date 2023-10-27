@@ -6,6 +6,7 @@ namespace Microsoft
     {
         namespace Components
         {
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = true)]
             public sealed class BindInputElementAttribute : System.Attribute
             {
                 public string ChangeAttribute { get => throw null; }

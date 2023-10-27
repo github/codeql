@@ -446,6 +446,7 @@ namespace System
     }
     public delegate void AssemblyLoadEventHandler(object sender, System.AssemblyLoadEventArgs args);
     public delegate void AsyncCallback(System.IAsyncResult ar);
+    [System.AttributeUsage((System.AttributeTargets)32767, Inherited = true, AllowMultiple = false)]
     public abstract class Attribute
     {
         protected Attribute() => throw null;
@@ -507,6 +508,7 @@ namespace System
         GenericParameter = 16384,
         All = 32767,
     }
+    [System.AttributeUsage((System.AttributeTargets)4, Inherited = true)]
     public sealed class AttributeUsageAttribute : System.Attribute
     {
         public bool AllowMultiple { get => throw null; set { } }
@@ -1018,6 +1020,7 @@ namespace System
         public bool MoveNext() => throw null;
         public void Reset() => throw null;
     }
+    [System.AttributeUsage((System.AttributeTargets)32767, Inherited = true, AllowMultiple = false)]
     public sealed class CLSCompliantAttribute : System.Attribute
     {
         public CLSCompliantAttribute(bool isCompliant) => throw null;
@@ -1027,6 +1030,7 @@ namespace System
     {
         namespace Compiler
         {
+            [System.AttributeUsage((System.AttributeTargets)32767, Inherited = false, AllowMultiple = false)]
             public sealed class GeneratedCodeAttribute : System.Attribute
             {
                 public GeneratedCodeAttribute(string tool, string version) => throw null;
@@ -1537,6 +1541,7 @@ namespace System
     public delegate int Comparison<T>(T x, T y);
     namespace ComponentModel
     {
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public class DefaultValueAttribute : System.Attribute
         {
             public DefaultValueAttribute(bool value) => throw null;
@@ -1559,6 +1564,7 @@ namespace System
             protected void SetValue(object value) => throw null;
             public virtual object Value { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)6140)]
         public sealed class EditorBrowsableAttribute : System.Attribute
         {
             public EditorBrowsableAttribute() => throw null;
@@ -1606,6 +1612,7 @@ namespace System
         public ContextMarshalException(string message) => throw null;
         public ContextMarshalException(string message, System.Exception inner) => throw null;
     }
+    [System.AttributeUsage((System.AttributeTargets)256, Inherited = false)]
     public class ContextStaticAttribute : System.Attribute
     {
         public ContextStaticAttribute() => throw null;
@@ -2488,29 +2495,35 @@ namespace System
     {
         namespace CodeAnalysis
         {
+            [System.AttributeUsage((System.AttributeTargets)2432, Inherited = false)]
             public sealed class AllowNullAttribute : System.Attribute
             {
                 public AllowNullAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class ConstantExpectedAttribute : System.Attribute
             {
                 public ConstantExpectedAttribute() => throw null;
                 public object Max { get => throw null; set { } }
                 public object Min { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, Inherited = false)]
             public sealed class DisallowNullAttribute : System.Attribute
             {
                 public DisallowNullAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class DoesNotReturnAttribute : System.Attribute
             {
                 public DoesNotReturnAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class DoesNotReturnIfAttribute : System.Attribute
             {
                 public DoesNotReturnIfAttribute(bool parameterValue) => throw null;
                 public bool ParameterValue { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)28108, Inherited = false)]
             public sealed class DynamicallyAccessedMembersAttribute : System.Attribute
             {
                 public DynamicallyAccessedMembersAttribute(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes memberTypes) => throw null;
@@ -2536,6 +2549,7 @@ namespace System
                 NonPublicEvents = 4096,
                 Interfaces = 8192,
             }
+            [System.AttributeUsage((System.AttributeTargets)352, AllowMultiple = true, Inherited = false)]
             public sealed class DynamicDependencyAttribute : System.Attribute
             {
                 public string AssemblyName { get => throw null; }
@@ -2550,26 +2564,31 @@ namespace System
                 public System.Type Type { get => throw null; }
                 public string TypeName { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)749, Inherited = false, AllowMultiple = false)]
             public sealed class ExcludeFromCodeCoverageAttribute : System.Attribute
             {
                 public ExcludeFromCodeCoverageAttribute() => throw null;
                 public string Justification { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, Inherited = false)]
             public sealed class MaybeNullAttribute : System.Attribute
             {
                 public MaybeNullAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class MaybeNullWhenAttribute : System.Attribute
             {
                 public MaybeNullWhenAttribute(bool returnValue) => throw null;
                 public bool ReturnValue { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)192, Inherited = false, AllowMultiple = true)]
             public sealed class MemberNotNullAttribute : System.Attribute
             {
                 public MemberNotNullAttribute(string member) => throw null;
                 public MemberNotNullAttribute(params string[] members) => throw null;
                 public string[] Members { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)192, Inherited = false, AllowMultiple = true)]
             public sealed class MemberNotNullWhenAttribute : System.Attribute
             {
                 public MemberNotNullWhenAttribute(bool returnValue, string member) => throw null;
@@ -2577,20 +2596,24 @@ namespace System
                 public string[] Members { get => throw null; }
                 public bool ReturnValue { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, Inherited = false)]
             public sealed class NotNullAttribute : System.Attribute
             {
                 public NotNullAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)10368, AllowMultiple = true, Inherited = false)]
             public sealed class NotNullIfNotNullAttribute : System.Attribute
             {
                 public NotNullIfNotNullAttribute(string parameterName) => throw null;
                 public string ParameterName { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class NotNullWhenAttribute : System.Attribute
             {
                 public NotNullWhenAttribute(bool returnValue) => throw null;
                 public bool ReturnValue { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)736, Inherited = false, AllowMultiple = false)]
             public sealed class RequiresAssemblyFilesAttribute : System.Attribute
             {
                 public RequiresAssemblyFilesAttribute() => throw null;
@@ -2598,22 +2621,26 @@ namespace System
                 public string Message { get => throw null; }
                 public string Url { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)100, Inherited = false)]
             public sealed class RequiresDynamicCodeAttribute : System.Attribute
             {
                 public RequiresDynamicCodeAttribute(string message) => throw null;
                 public string Message { get => throw null; }
                 public string Url { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)100, Inherited = false)]
             public sealed class RequiresUnreferencedCodeAttribute : System.Attribute
             {
                 public RequiresUnreferencedCodeAttribute(string message) => throw null;
                 public string Message { get => throw null; }
                 public string Url { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)32, AllowMultiple = false, Inherited = false)]
             public sealed class SetsRequiredMembersAttribute : System.Attribute
             {
                 public SetsRequiredMembersAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false, Inherited = false)]
             public sealed class StringSyntaxAttribute : System.Attribute
             {
                 public object[] Arguments { get => throw null; }
@@ -2633,6 +2660,7 @@ namespace System
                 public const string Uri = default;
                 public const string Xml = default;
             }
+            [System.AttributeUsage((System.AttributeTargets)32767, Inherited = false, AllowMultiple = true)]
             public sealed class SuppressMessageAttribute : System.Attribute
             {
                 public string Category { get => throw null; }
@@ -2643,6 +2671,7 @@ namespace System
                 public string Scope { get => throw null; set { } }
                 public string Target { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)32767, Inherited = false, AllowMultiple = true)]
             public sealed class UnconditionalSuppressMessageAttribute : System.Attribute
             {
                 public string Category { get => throw null; }
@@ -2653,11 +2682,13 @@ namespace System
                 public string Scope { get => throw null; set { } }
                 public string Target { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)2240, AllowMultiple = false, Inherited = false)]
             public sealed class UnscopedRefAttribute : System.Attribute
             {
                 public UnscopedRefAttribute() => throw null;
             }
         }
+        [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = true)]
         public sealed class ConditionalAttribute : System.Attribute
         {
             public string ConditionString { get => throw null; }
@@ -2732,6 +2763,7 @@ namespace System
             public static void WriteLineIf(bool condition, string message) => throw null;
             public static void WriteLineIf(bool condition, string message, string category) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)3, AllowMultiple = false)]
         public sealed class DebuggableAttribute : System.Attribute
         {
             public DebuggableAttribute(bool isJITTrackingEnabled, bool isJITOptimizerDisabled) => throw null;
@@ -2759,6 +2791,7 @@ namespace System
             public static void Log(int level, string category, string message) => throw null;
             public static void NotifyOfCrossThreadDependency() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
         public sealed class DebuggerBrowsableAttribute : System.Attribute
         {
             public DebuggerBrowsableAttribute(System.Diagnostics.DebuggerBrowsableState state) => throw null;
@@ -2770,6 +2803,7 @@ namespace System
             Collapsed = 2,
             RootHidden = 3,
         }
+        [System.AttributeUsage((System.AttributeTargets)4509, AllowMultiple = true)]
         public sealed class DebuggerDisplayAttribute : System.Attribute
         {
             public DebuggerDisplayAttribute(string value) => throw null;
@@ -2779,22 +2813,27 @@ namespace System
             public string Type { get => throw null; set { } }
             public string Value { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)224, Inherited = false)]
         public sealed class DebuggerHiddenAttribute : System.Attribute
         {
             public DebuggerHiddenAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)236, Inherited = false)]
         public sealed class DebuggerNonUserCodeAttribute : System.Attribute
         {
             public DebuggerNonUserCodeAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)96, Inherited = false)]
         public sealed class DebuggerStepperBoundaryAttribute : System.Attribute
         {
             public DebuggerStepperBoundaryAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)108, Inherited = false)]
         public sealed class DebuggerStepThroughAttribute : System.Attribute
         {
             public DebuggerStepThroughAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)13, AllowMultiple = true)]
         public sealed class DebuggerTypeProxyAttribute : System.Attribute
         {
             public DebuggerTypeProxyAttribute(string typeName) => throw null;
@@ -2803,6 +2842,7 @@ namespace System
             public System.Type Target { get => throw null; set { } }
             public string TargetTypeName { get => throw null; set { } }
         }
+        [System.AttributeUsage((System.AttributeTargets)13, AllowMultiple = true)]
         public sealed class DebuggerVisualizerAttribute : System.Attribute
         {
             public DebuggerVisualizerAttribute(string visualizerTypeName) => throw null;
@@ -2817,6 +2857,7 @@ namespace System
             public string VisualizerObjectSourceTypeName { get => throw null; }
             public string VisualizerTypeName { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)108, Inherited = false)]
         public sealed class StackTraceHiddenAttribute : System.Attribute
         {
             public StackTraceHiddenAttribute() => throw null;
@@ -3269,6 +3310,7 @@ namespace System
     {
         public FileStyleUriParser() => throw null;
     }
+    [System.AttributeUsage((System.AttributeTargets)16, Inherited = false)]
     public class FlagsAttribute : System.Attribute
     {
         public FlagsAttribute() => throw null;
@@ -6528,6 +6570,7 @@ namespace System
         MultiDomainHost = 3,
         DisallowBindings = 4,
     }
+    [System.AttributeUsage((System.AttributeTargets)64)]
     public sealed class LoaderOptimizationAttribute : System.Attribute
     {
         public LoaderOptimizationAttribute(byte value) => throw null;
@@ -6808,6 +6851,7 @@ namespace System
         public System.RuntimeTypeHandle ResolveTypeHandle(int typeToken) => throw null;
         public System.RuntimeTypeHandle ResolveTypeHandle(int typeToken, System.RuntimeTypeHandle[] typeInstantiationContext, System.RuntimeTypeHandle[] methodInstantiationContext) => throw null;
     }
+    [System.AttributeUsage((System.AttributeTargets)64)]
     public sealed class MTAThreadAttribute : System.Attribute
     {
         public MTAThreadAttribute() => throw null;
@@ -6858,6 +6902,7 @@ namespace System
     {
         public NewsStyleUriParser() => throw null;
     }
+    [System.AttributeUsage((System.AttributeTargets)256, Inherited = false)]
     public sealed class NonSerializedAttribute : System.Attribute
     {
         public NonSerializedAttribute() => throw null;
@@ -7259,6 +7304,7 @@ namespace System
         public static void ThrowIf(bool condition, object instance) => throw null;
         public static void ThrowIf(bool condition, System.Type type) => throw null;
     }
+    [System.AttributeUsage((System.AttributeTargets)6140, Inherited = false)]
     public sealed class ObsoleteAttribute : System.Attribute
     {
         public ObsoleteAttribute() => throw null;
@@ -7325,6 +7371,7 @@ namespace System
         public OverflowException(string message) => throw null;
         public OverflowException(string message, System.Exception innerException) => throw null;
     }
+    [System.AttributeUsage((System.AttributeTargets)2048, Inherited = true, AllowMultiple = false)]
     public sealed class ParamArrayAttribute : System.Attribute
     {
         public ParamArrayAttribute() => throw null;
@@ -7531,17 +7578,20 @@ namespace System
             public override string ToString() => throw null;
             public static System.Reflection.Assembly UnsafeLoadFrom(string assemblyFile) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyAlgorithmIdAttribute : System.Attribute
         {
             public uint AlgorithmId { get => throw null; }
             public AssemblyAlgorithmIdAttribute(System.Configuration.Assemblies.AssemblyHashAlgorithm algorithmId) => throw null;
             public AssemblyAlgorithmIdAttribute(uint algorithmId) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyCompanyAttribute : System.Attribute
         {
             public string Company { get => throw null; }
             public AssemblyCompanyAttribute(string company) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyConfigurationAttribute : System.Attribute
         {
             public string Configuration { get => throw null; }
@@ -7552,36 +7602,43 @@ namespace System
             Default = 0,
             WindowsRuntime = 1,
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyCopyrightAttribute : System.Attribute
         {
             public string Copyright { get => throw null; }
             public AssemblyCopyrightAttribute(string copyright) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyCultureAttribute : System.Attribute
         {
             public AssemblyCultureAttribute(string culture) => throw null;
             public string Culture { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyDefaultAliasAttribute : System.Attribute
         {
             public AssemblyDefaultAliasAttribute(string defaultAlias) => throw null;
             public string DefaultAlias { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyDelaySignAttribute : System.Attribute
         {
             public AssemblyDelaySignAttribute(bool delaySign) => throw null;
             public bool DelaySign { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyDescriptionAttribute : System.Attribute
         {
             public AssemblyDescriptionAttribute(string description) => throw null;
             public string Description { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyFileVersionAttribute : System.Attribute
         {
             public AssemblyFileVersionAttribute(string version) => throw null;
             public string Version { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyFlagsAttribute : System.Attribute
         {
             public int AssemblyFlags { get => throw null; }
@@ -7590,21 +7647,25 @@ namespace System
             public AssemblyFlagsAttribute(uint flags) => throw null;
             public uint Flags { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyInformationalVersionAttribute : System.Attribute
         {
             public AssemblyInformationalVersionAttribute(string informationalVersion) => throw null;
             public string InformationalVersion { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyKeyFileAttribute : System.Attribute
         {
             public AssemblyKeyFileAttribute(string keyFile) => throw null;
             public string KeyFile { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyKeyNameAttribute : System.Attribute
         {
             public AssemblyKeyNameAttribute(string keyName) => throw null;
             public string KeyName { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true, Inherited = false)]
         public sealed class AssemblyMetadataAttribute : System.Attribute
         {
             public AssemblyMetadataAttribute(string key, string value) => throw null;
@@ -7653,27 +7714,32 @@ namespace System
             public AssemblyNameProxy() => throw null;
             public System.Reflection.AssemblyName GetAssemblyName(string assemblyFile) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyProductAttribute : System.Attribute
         {
             public AssemblyProductAttribute(string product) => throw null;
             public string Product { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false, AllowMultiple = false)]
         public sealed class AssemblySignatureKeyAttribute : System.Attribute
         {
             public string Countersignature { get => throw null; }
             public AssemblySignatureKeyAttribute(string publicKey, string countersignature) => throw null;
             public string PublicKey { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyTitleAttribute : System.Attribute
         {
             public AssemblyTitleAttribute(string title) => throw null;
             public string Title { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyTrademarkAttribute : System.Attribute
         {
             public AssemblyTrademarkAttribute(string trademark) => throw null;
             public string Trademark { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyVersionAttribute : System.Attribute
         {
             public AssemblyVersionAttribute(string version) => throw null;
@@ -7825,6 +7891,7 @@ namespace System
             public override string ToString() => throw null;
             public object Value { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1036)]
         public sealed class DefaultMemberAttribute : System.Attribute
         {
             public DefaultMemberAttribute(string memberName) => throw null;
@@ -8255,12 +8322,14 @@ namespace System
             NotNull = 1,
             Nullable = 2,
         }
+        [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
         public sealed class ObfuscateAssemblyAttribute : System.Attribute
         {
             public bool AssemblyIsPrivate { get => throw null; }
             public ObfuscateAssemblyAttribute(bool assemblyIsPrivate) => throw null;
             public bool StripAfterObfuscation { get => throw null; set { } }
         }
+        [System.AttributeUsage((System.AttributeTargets)8157, AllowMultiple = true, Inherited = false)]
         public sealed class ObfuscationAttribute : System.Attribute
         {
             public bool ApplyToMembers { get => throw null; set { } }
@@ -8615,6 +8684,7 @@ namespace System
             public MissingSatelliteAssemblyException(string message, string cultureName) => throw null;
             public string CultureName { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false)]
         public sealed class NeutralResourcesLanguageAttribute : System.Attribute
         {
             public NeutralResourcesLanguageAttribute(string cultureName) => throw null;
@@ -8678,6 +8748,7 @@ namespace System
             public virtual string GetString(string name, bool ignoreCase) => throw null;
             protected virtual void ReadResources() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false)]
         public sealed class SatelliteContractVersionAttribute : System.Attribute
         {
             public SatelliteContractVersionAttribute(string version) => throw null;
@@ -8697,6 +8768,7 @@ namespace System
             public AmbiguousImplementationException(string message) => throw null;
             public AmbiguousImplementationException(string message, System.Exception innerException) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
         public sealed class AssemblyTargetedPatchBandAttribute : System.Attribute
         {
             public AssemblyTargetedPatchBandAttribute(string targetedPatchBand) => throw null;
@@ -8704,6 +8776,7 @@ namespace System
         }
         namespace CompilerServices
         {
+            [System.AttributeUsage((System.AttributeTargets)256)]
             public sealed class AccessedThroughPropertyAttribute : System.Attribute
             {
                 public AccessedThroughPropertyAttribute(string propertyName) => throw null;
@@ -8717,15 +8790,18 @@ namespace System
                 public static System.Runtime.CompilerServices.AsyncIteratorMethodBuilder Create() => throw null;
                 public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
             public sealed class AsyncIteratorStateMachineAttribute : System.Runtime.CompilerServices.StateMachineAttribute
             {
                 public AsyncIteratorStateMachineAttribute(System.Type stateMachineType) : base(default(System.Type)) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)5212, Inherited = false, AllowMultiple = false)]
             public sealed class AsyncMethodBuilderAttribute : System.Attribute
             {
                 public System.Type BuilderType { get => throw null; }
                 public AsyncMethodBuilderAttribute(System.Type builderType) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
             public sealed class AsyncStateMachineAttribute : System.Runtime.CompilerServices.StateMachineAttribute
             {
                 public AsyncStateMachineAttribute(System.Type stateMachineType) : base(default(System.Type)) => throw null;
@@ -8808,19 +8884,23 @@ namespace System
             {
                 public CallConvThiscall() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, AllowMultiple = false, Inherited = false)]
             public sealed class CallerArgumentExpressionAttribute : System.Attribute
             {
                 public CallerArgumentExpressionAttribute(string parameterName) => throw null;
                 public string ParameterName { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class CallerFilePathAttribute : System.Attribute
             {
                 public CallerFilePathAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class CallerLineNumberAttribute : System.Attribute
             {
                 public CallerLineNumberAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class CallerMemberNameAttribute : System.Attribute
             {
                 public CallerMemberNameAttribute() => throw null;
@@ -8830,12 +8910,14 @@ namespace System
             {
                 NoStringInterning = 8,
             }
+            [System.AttributeUsage((System.AttributeTargets)71)]
             public class CompilationRelaxationsAttribute : System.Attribute
             {
                 public int CompilationRelaxations { get => throw null; }
                 public CompilationRelaxationsAttribute(int relaxations) => throw null;
                 public CompilationRelaxationsAttribute(System.Runtime.CompilerServices.CompilationRelaxations relaxations) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)32767, AllowMultiple = true, Inherited = false)]
             public sealed class CompilerFeatureRequiredAttribute : System.Attribute
             {
                 public CompilerFeatureRequiredAttribute(string featureName) => throw null;
@@ -8844,10 +8926,12 @@ namespace System
                 public const string RefStructs = default;
                 public const string RequiredMembers = default;
             }
+            [System.AttributeUsage((System.AttributeTargets)32767, Inherited = true)]
             public sealed class CompilerGeneratedAttribute : System.Attribute
             {
                 public CompilerGeneratedAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4)]
             public class CompilerGlobalScopeAttribute : System.Attribute
             {
                 public CompilerGlobalScopeAttribute() => throw null;
@@ -8927,22 +9011,26 @@ namespace System
                 }
                 public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<TResult>.ConfiguredValueTaskAwaiter GetAwaiter() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2304, Inherited = false)]
             public abstract class CustomConstantAttribute : System.Attribute
             {
                 protected CustomConstantAttribute() => throw null;
                 public abstract object Value { get; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2304, Inherited = false)]
             public sealed class DateTimeConstantAttribute : System.Runtime.CompilerServices.CustomConstantAttribute
             {
                 public DateTimeConstantAttribute(long ticks) => throw null;
                 public override object Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2304, Inherited = false)]
             public sealed class DecimalConstantAttribute : System.Attribute
             {
                 public DecimalConstantAttribute(byte scale, byte sign, int hi, int mid, int low) => throw null;
                 public DecimalConstantAttribute(byte scale, byte sign, uint hi, uint mid, uint low) => throw null;
                 public decimal Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1)]
             public sealed class DefaultDependencyAttribute : System.Attribute
             {
                 public DefaultDependencyAttribute(System.Runtime.CompilerServices.LoadHint loadHintArgument) => throw null;
@@ -8966,36 +9054,44 @@ namespace System
                 public override string ToString() => throw null;
                 public string ToStringAndClear() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true)]
             public sealed class DependencyAttribute : System.Attribute
             {
                 public DependencyAttribute(string dependentAssemblyArgument, System.Runtime.CompilerServices.LoadHint loadHintArgument) => throw null;
                 public string DependentAssembly { get => throw null; }
                 public System.Runtime.CompilerServices.LoadHint LoadHint { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
             public sealed class DisablePrivateReflectionAttribute : System.Attribute
             {
                 public DisablePrivateReflectionAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, Inherited = false, AllowMultiple = false)]
             public sealed class DisableRuntimeMarshallingAttribute : System.Attribute
             {
                 public DisableRuntimeMarshallingAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)32767)]
             public class DiscardableAttribute : System.Attribute
             {
                 public DiscardableAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class EnumeratorCancellationAttribute : System.Attribute
             {
                 public EnumeratorCancellationAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)69)]
             public sealed class ExtensionAttribute : System.Attribute
             {
                 public ExtensionAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)256)]
             public sealed class FixedAddressValueTypeAttribute : System.Attribute
             {
                 public FixedAddressValueTypeAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)256, Inherited = false)]
             public sealed class FixedBufferAttribute : System.Attribute
             {
                 public FixedBufferAttribute(System.Type elementType, int length) => throw null;
@@ -9015,6 +9111,7 @@ namespace System
             {
                 void UnsafeOnCompleted(System.Action continuation);
             }
+            [System.AttributeUsage((System.AttributeTargets)128, Inherited = true)]
             public sealed class IndexerNameAttribute : System.Attribute
             {
                 public IndexerNameAttribute(string indexerName) => throw null;
@@ -9023,22 +9120,26 @@ namespace System
             {
                 void OnCompleted(System.Action continuation);
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true, Inherited = false)]
             public sealed class InternalsVisibleToAttribute : System.Attribute
             {
                 public bool AllInternalsVisible { get => throw null; set { } }
                 public string AssemblyName { get => throw null; }
                 public InternalsVisibleToAttribute(string assemblyName) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, AllowMultiple = false, Inherited = false)]
             public sealed class InterpolatedStringHandlerArgumentAttribute : System.Attribute
             {
                 public string[] Arguments { get => throw null; }
                 public InterpolatedStringHandlerArgumentAttribute(string argument) => throw null;
                 public InterpolatedStringHandlerArgumentAttribute(params string[] arguments) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)12, AllowMultiple = false, Inherited = false)]
             public sealed class InterpolatedStringHandlerAttribute : System.Attribute
             {
                 public InterpolatedStringHandlerAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)8)]
             public sealed class IsByRefLikeAttribute : System.Attribute
             {
                 public IsByRefLikeAttribute() => throw null;
@@ -9049,6 +9150,7 @@ namespace System
             public static class IsExternalInit
             {
             }
+            [System.AttributeUsage((System.AttributeTargets)32767, Inherited = false)]
             public sealed class IsReadOnlyAttribute : System.Attribute
             {
                 public IsReadOnlyAttribute() => throw null;
@@ -9060,6 +9162,7 @@ namespace System
             public static class IsVolatile
             {
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
             public sealed class IteratorStateMachineAttribute : System.Runtime.CompilerServices.StateMachineAttribute
             {
                 public IteratorStateMachineAttribute(System.Type stateMachineType) : base(default(System.Type)) => throw null;
@@ -9082,6 +9185,7 @@ namespace System
                 OPTIL = 2,
                 Runtime = 3,
             }
+            [System.AttributeUsage((System.AttributeTargets)96, Inherited = false)]
             public sealed class MethodImplAttribute : System.Attribute
             {
                 public MethodImplAttribute() => throw null;
@@ -9103,6 +9207,7 @@ namespace System
                 AggressiveOptimization = 512,
                 InternalCall = 4096,
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class ModuleInitializerAttribute : System.Attribute
             {
                 public ModuleInitializerAttribute() => throw null;
@@ -9129,20 +9234,24 @@ namespace System
                 public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw null;
                 public System.Threading.Tasks.ValueTask<TResult> Task { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = false)]
             public sealed class PreserveBaseOverridesAttribute : System.Attribute
             {
                 public PreserveBaseOverridesAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false)]
             public sealed class ReferenceAssemblyAttribute : System.Attribute
             {
                 public ReferenceAssemblyAttribute() => throw null;
                 public ReferenceAssemblyAttribute(string description) => throw null;
                 public string Description { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)396, AllowMultiple = false, Inherited = false)]
             public sealed class RequiredMemberAttribute : System.Attribute
             {
                 public RequiredMemberAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, Inherited = false, AllowMultiple = false)]
             public sealed class RuntimeCompatibilityAttribute : System.Attribute
             {
                 public RuntimeCompatibilityAttribute() => throw null;
@@ -9194,19 +9303,23 @@ namespace System
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public object WrappedException { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1774, Inherited = false)]
             public sealed class SkipLocalsInitAttribute : System.Attribute
             {
                 public SkipLocalsInitAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)972)]
             public sealed class SpecialNameAttribute : System.Attribute
             {
                 public SpecialNameAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
             public class StateMachineAttribute : System.Attribute
             {
                 public StateMachineAttribute(System.Type stateMachineType) => throw null;
                 public System.Type StateMachineType { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
             public sealed class StringFreezingAttribute : System.Attribute
             {
                 public StringFreezingAttribute() => throw null;
@@ -9218,6 +9331,7 @@ namespace System
                 public T Value;
                 object System.Runtime.CompilerServices.IStrongBox.Value { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)3)]
             public sealed class SuppressIldasmAttribute : System.Attribute
             {
                 public SuppressIldasmAttribute() => throw null;
@@ -9247,16 +9361,19 @@ namespace System
                 public void OnCompleted(System.Action continuation) => throw null;
                 public void UnsafeOnCompleted(System.Action continuation) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)11148)]
             public sealed class TupleElementNamesAttribute : System.Attribute
             {
                 public TupleElementNamesAttribute(string[] transformNames) => throw null;
                 public System.Collections.Generic.IList<string> TransformNames { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)5148, Inherited = false, AllowMultiple = false)]
             public sealed class TypeForwardedFromAttribute : System.Attribute
             {
                 public string AssemblyFullName { get => throw null; }
                 public TypeForwardedFromAttribute(string assemblyFullName) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true, Inherited = false)]
             public sealed class TypeForwardedToAttribute : System.Attribute
             {
                 public TypeForwardedToAttribute(System.Type destination) => throw null;
@@ -9307,6 +9424,7 @@ namespace System
                 public static void WriteUnaligned<T>(ref byte destination, T value) => throw null;
                 public static unsafe void WriteUnaligned<T>(void* destination, T value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)8)]
             public sealed class UnsafeValueTypeAttribute : System.Attribute
             {
                 public UnsafeValueTypeAttribute() => throw null;
@@ -9356,10 +9474,12 @@ namespace System
             {
                 protected CriticalFinalizerObject() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)96, Inherited = false)]
             public sealed class PrePrepareMethodAttribute : System.Attribute
             {
                 public PrePrepareMethodAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1133, Inherited = false)]
             public sealed class ReliabilityContractAttribute : System.Attribute
             {
                 public System.Runtime.ConstrainedExecution.Cer Cer { get => throw null; }
@@ -9396,6 +9516,7 @@ namespace System
                 public FirstChanceExceptionEventArgs(System.Exception exception) => throw null;
                 public System.Exception Exception { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = false)]
             public sealed class HandleProcessCorruptedStateExceptionsAttribute : System.Attribute
             {
                 public HandleProcessCorruptedStateExceptionsAttribute() => throw null;
@@ -9441,6 +9562,7 @@ namespace System
                 Unicode = 3,
                 Auto = 4,
             }
+            [System.AttributeUsage((System.AttributeTargets)5597, Inherited = false)]
             public sealed class ComVisibleAttribute : System.Attribute
             {
                 public ComVisibleAttribute(bool visibility) => throw null;
@@ -9469,6 +9591,7 @@ namespace System
                 public virtual int ErrorCode { get => throw null; }
                 public override string ToString() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)256, Inherited = false)]
             public sealed class FieldOffsetAttribute : System.Attribute
             {
                 public FieldOffsetAttribute(int offset) => throw null;
@@ -9499,6 +9622,7 @@ namespace System
                 Normal = 2,
                 Pinned = 3,
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class InAttribute : System.Attribute
             {
                 public InAttribute() => throw null;
@@ -9511,10 +9635,12 @@ namespace System
             }
             namespace Marshalling
             {
+                [System.AttributeUsage((System.AttributeTargets)12)]
                 public sealed class ContiguousCollectionMarshallerAttribute : System.Attribute
                 {
                     public ContiguousCollectionMarshallerAttribute() => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)12, AllowMultiple = true)]
                 public sealed class CustomMarshallerAttribute : System.Attribute
                 {
                     public CustomMarshallerAttribute(System.Type managedType, System.Runtime.InteropServices.Marshalling.MarshalMode marshalMode, System.Type marshallerType) => throw null;
@@ -9538,6 +9664,7 @@ namespace System
                     ElementRef = 8,
                     ElementOut = 9,
                 }
+                [System.AttributeUsage((System.AttributeTargets)4124)]
                 public sealed class NativeMarshallingAttribute : System.Attribute
                 {
                     public NativeMarshallingAttribute(System.Type nativeType) => throw null;
@@ -9599,6 +9726,7 @@ namespace System
                 public override string ToString() => throw null;
                 public static System.Runtime.InteropServices.OSPlatform Windows { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class OutAttribute : System.Attribute
             {
                 public OutAttribute() => throw null;
@@ -9644,6 +9772,7 @@ namespace System
                 protected void SetHandle(nint handle) => throw null;
                 public void SetHandleAsInvalid() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)12, Inherited = false)]
             public sealed class StructLayoutAttribute : System.Attribute
             {
                 public System.Runtime.InteropServices.CharSet CharSet;
@@ -9653,6 +9782,7 @@ namespace System
                 public int Size;
                 public System.Runtime.InteropServices.LayoutKind Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class SuppressGCTransitionAttribute : System.Attribute
             {
                 public SuppressGCTransitionAttribute() => throw null;
@@ -9761,22 +9891,27 @@ namespace System
             {
                 void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context);
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class OnDeserializedAttribute : System.Attribute
             {
                 public OnDeserializedAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class OnDeserializingAttribute : System.Attribute
             {
                 public OnDeserializingAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class OnSerializedAttribute : System.Attribute
             {
                 public OnSerializedAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class OnSerializingAttribute : System.Attribute
             {
                 public OnSerializingAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)256, Inherited = false)]
             public sealed class OptionalFieldAttribute : System.Attribute
             {
                 public OptionalFieldAttribute() => throw null;
@@ -9878,6 +10013,7 @@ namespace System
                 All = 255,
             }
         }
+        [System.AttributeUsage((System.AttributeTargets)96, AllowMultiple = false, Inherited = false)]
         public sealed class TargetedPatchingOptOutAttribute : System.Attribute
         {
             public TargetedPatchingOptOutAttribute(string reason) => throw null;
@@ -9885,6 +10021,7 @@ namespace System
         }
         namespace Versioning
         {
+            [System.AttributeUsage((System.AttributeTargets)5887, AllowMultiple = false, Inherited = false)]
             public sealed class ComponentGuaranteesAttribute : System.Attribute
             {
                 public ComponentGuaranteesAttribute(System.Runtime.Versioning.ComponentGuaranteesOptions guarantees) => throw null;
@@ -9914,6 +10051,7 @@ namespace System
                 public override string ToString() => throw null;
                 public System.Version Version { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2047, AllowMultiple = true, Inherited = false)]
             public sealed class ObsoletedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public ObsoletedOSPlatformAttribute(string platformName) => throw null;
@@ -9925,6 +10063,7 @@ namespace System
             {
                 public string PlatformName { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)6143, Inherited = false)]
             public sealed class RequiresPreviewFeaturesAttribute : System.Attribute
             {
                 public RequiresPreviewFeaturesAttribute() => throw null;
@@ -9932,6 +10071,7 @@ namespace System
                 public string Message { get => throw null; }
                 public string Url { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)224, Inherited = false)]
             public sealed class ResourceConsumptionAttribute : System.Attribute
             {
                 public System.Runtime.Versioning.ResourceScope ConsumptionScope { get => throw null; }
@@ -9939,6 +10079,7 @@ namespace System
                 public ResourceConsumptionAttribute(System.Runtime.Versioning.ResourceScope resourceScope, System.Runtime.Versioning.ResourceScope consumptionScope) => throw null;
                 public System.Runtime.Versioning.ResourceScope ResourceScope { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)480, Inherited = false)]
             public sealed class ResourceExposureAttribute : System.Attribute
             {
                 public ResourceExposureAttribute(System.Runtime.Versioning.ResourceScope exposureLevel) => throw null;
@@ -9955,30 +10096,36 @@ namespace System
                 Private = 16,
                 Assembly = 32,
             }
+            [System.AttributeUsage((System.AttributeTargets)2047, AllowMultiple = true, Inherited = false)]
             public sealed class SupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public SupportedOSPlatformAttribute(string platformName) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)448, AllowMultiple = true, Inherited = false)]
             public sealed class SupportedOSPlatformGuardAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public SupportedOSPlatformGuardAttribute(string platformName) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
             public sealed class TargetFrameworkAttribute : System.Attribute
             {
                 public TargetFrameworkAttribute(string frameworkName) => throw null;
                 public string FrameworkDisplayName { get => throw null; set { } }
                 public string FrameworkName { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
             public sealed class TargetPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public TargetPlatformAttribute(string platformName) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2047, AllowMultiple = true, Inherited = false)]
             public sealed class UnsupportedOSPlatformAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public UnsupportedOSPlatformAttribute(string platformName) => throw null;
                 public UnsupportedOSPlatformAttribute(string platformName, string message) => throw null;
                 public string Message { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)448, AllowMultiple = true, Inherited = false)]
             public sealed class UnsupportedOSPlatformGuardAttribute : System.Runtime.Versioning.OSPlatformAttribute
             {
                 public UnsupportedOSPlatformGuardAttribute(string platformName) => throw null;
@@ -10167,6 +10314,7 @@ namespace System
     }
     namespace Security
     {
+        [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
         public sealed class AllowPartiallyTrustedCallersAttribute : System.Attribute
         {
             public AllowPartiallyTrustedCallersAttribute() => throw null;
@@ -10211,6 +10359,7 @@ namespace System
         }
         namespace Permissions
         {
+            [System.AttributeUsage((System.AttributeTargets)109, AllowMultiple = true, Inherited = false)]
             public abstract class CodeAccessSecurityAttribute : System.Security.Permissions.SecurityAttribute
             {
                 protected CodeAccessSecurityAttribute(System.Security.Permissions.SecurityAction action) : base(default(System.Security.Permissions.SecurityAction)) => throw null;
@@ -10232,6 +10381,7 @@ namespace System
                 RequestOptional = 9,
                 RequestRefuse = 10,
             }
+            [System.AttributeUsage((System.AttributeTargets)109, AllowMultiple = true, Inherited = false)]
             public abstract class SecurityAttribute : System.Attribute
             {
                 public System.Security.Permissions.SecurityAction Action { get => throw null; set { } }
@@ -10239,6 +10389,7 @@ namespace System
                 protected SecurityAttribute(System.Security.Permissions.SecurityAction action) => throw null;
                 public bool Unrestricted { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)109, AllowMultiple = true, Inherited = false)]
             public sealed class SecurityPermissionAttribute : System.Security.Permissions.CodeAccessSecurityAttribute
             {
                 public bool Assertion { get => throw null; set { } }
@@ -10347,6 +10498,7 @@ namespace System
                 Delegation = 4,
             }
         }
+        [System.AttributeUsage((System.AttributeTargets)5501, AllowMultiple = false, Inherited = false)]
         public sealed class SecurityCriticalAttribute : System.Attribute
         {
             public SecurityCriticalAttribute() => throw null;
@@ -10402,6 +10554,7 @@ namespace System
             public override string ToString() => throw null;
             public string Url { get => throw null; set { } }
         }
+        [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false)]
         public sealed class SecurityRulesAttribute : System.Attribute
         {
             public SecurityRulesAttribute(System.Security.SecurityRuleSet ruleSet) => throw null;
@@ -10414,22 +10567,27 @@ namespace System
             Level1 = 1,
             Level2 = 2,
         }
+        [System.AttributeUsage((System.AttributeTargets)5500, AllowMultiple = false, Inherited = false)]
         public sealed class SecuritySafeCriticalAttribute : System.Attribute
         {
             public SecuritySafeCriticalAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
         public sealed class SecurityTransparentAttribute : System.Attribute
         {
             public SecurityTransparentAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)5501, AllowMultiple = false, Inherited = false)]
         public sealed class SecurityTreatAsSafeAttribute : System.Attribute
         {
             public SecurityTreatAsSafeAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)5188, AllowMultiple = true, Inherited = false)]
         public sealed class SuppressUnmanagedCodeSecurityAttribute : System.Attribute
         {
             public SuppressUnmanagedCodeSecurityAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)2, AllowMultiple = true, Inherited = false)]
         public sealed class UnverifiableCodeAttribute : System.Attribute
         {
             public UnverifiableCodeAttribute() => throw null;
@@ -10442,6 +10600,7 @@ namespace System
             public VerificationException(string message, System.Exception innerException) => throw null;
         }
     }
+    [System.AttributeUsage((System.AttributeTargets)4124, Inherited = false)]
     public sealed class SerializableAttribute : System.Attribute
     {
         public SerializableAttribute() => throw null;
@@ -10675,6 +10834,7 @@ namespace System
         public StackOverflowException(string message) => throw null;
         public StackOverflowException(string message, System.Exception innerException) => throw null;
     }
+    [System.AttributeUsage((System.AttributeTargets)64)]
     public sealed class STAThreadAttribute : System.Attribute
     {
         public STAThreadAttribute() => throw null;
@@ -11998,6 +12158,7 @@ namespace System
             public static void SetSafeWaitHandle(this System.Threading.WaitHandle waitHandle, Microsoft.Win32.SafeHandles.SafeWaitHandle value) => throw null;
         }
     }
+    [System.AttributeUsage((System.AttributeTargets)256, Inherited = false)]
     public class ThreadStaticAttribute : System.Attribute
     {
         public ThreadStaticAttribute() => throw null;
