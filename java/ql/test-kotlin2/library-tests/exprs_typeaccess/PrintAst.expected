@@ -74,26 +74,26 @@ A.kt:
 #   20|           0: [VarAccess] B.x
 #   20|             -1: [TypeAccess] B
 #   23|     11: [Class] Enu
-#    0|       2: [Method] getEntries
-#    0|         3: [TypeAccess] EnumEntries<Enu>
-#    0|           0: [TypeAccess] Enu
-#    0|       3: [Method] valueOf
-#    0|         3: [TypeAccess] Enu
-#-----|         4: (Parameters)
-#    0|           0: [Parameter] value
-#    0|             0: [TypeAccess] String
-#    0|       4: [Method] values
-#    0|         3: [TypeAccess] Enu[]
-#    0|           0: [TypeAccess] Enu
-#   23|       5: [Constructor] Enu
+#   23|       2: [Constructor] Enu
 #   23|         5: [BlockStmt] { ... }
 #   23|           0: [ExprStmt] <Expr>;
-#   23|             0: [ClassInstanceExpr] new Enum(...)
+#   23|             0: [ClassInstanceExpr] new Enum<Enu>(...)
 #   23|               -3: [TypeAccess] Enum<Enu>
 #   23|                 0: [TypeAccess] Enu
 #   23|               0: [NullLiteral] null
 #   23|               1: [IntegerLiteral] 0
 #   23|           1: [BlockStmt] { ... }
+#   23|       3: [Method] getEntries
+#   23|         3: [TypeAccess] EnumEntries<Enu>
+#   23|           0: [TypeAccess] Enu
+#   23|       4: [Method] valueOf
+#   23|         3: [TypeAccess] Enu
+#-----|         4: (Parameters)
+#   23|           0: [Parameter] value
+#   23|             0: [TypeAccess] String
+#   23|       5: [Method] values
+#   23|         3: [TypeAccess] Enu[]
+#   23|           0: [TypeAccess] Enu
 #   24|       6: [FieldDeclaration] Enu A;
 #   24|         -1: [TypeAccess] Enu
 #   24|         0: [ClassInstanceExpr] new Enu(...)
