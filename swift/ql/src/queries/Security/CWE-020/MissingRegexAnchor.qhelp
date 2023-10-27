@@ -37,8 +37,8 @@
 		<p>
 
 			The following example code checks that a URL redirection
-			will reach the <code>example.com</code> domain, or one of its
-			subdomains, and not some malicious site.
+			will reach the <code>example.com</code> domain, and not
+			some malicious site.
 
 		</p>
 
@@ -47,9 +47,8 @@
 		<p>
 
 			The check with the regular expression match is, however, easy to bypass. For example
-			by embedding <code>http://example.com/</code> in the query
-			string component: <code>http://evil-example.net/?x=http://example.com/</code>.
-
+			by embedding <code>http://www.example.com/</code> in the query
+			string component: <code>http://evil-example.net/?x=http://www.example.com/</code>.
 			Address these shortcomings by using anchors in the regular expression instead:
 
 		</p>
@@ -69,7 +68,6 @@
 	</example>
 
 	<references>
-		<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">Regular Expressions</a></li>
 		<li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
 		<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
 	</references>
