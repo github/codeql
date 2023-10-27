@@ -317,6 +317,8 @@ private module ControlFlowGraphImpl {
       whenexpr.getBranch(_).getAResult() = b
     )
     or
+    b = any(PatternCase pc).getGuard()
+    or
     inBooleanContext(b.(ExprStmt).getExpr())
     or
     inBooleanContext(b.(StmtExpr).getStmt())
@@ -911,12 +913,19 @@ private module ControlFlowGraphImpl {
       )
     )
     or
-    // The normal last node in a non-rule pattern case is its variable declaration.
+    // The normal last node in a non-rule pattern case is its variable declaration, or the successful
+    // matching of its guard if it has one.
     // Note that either rule or non-rule pattern cases can end with pattern match failure, whereupon
     // they branch to the next candidate pattern. This is accounted for in the `succ` relation.
-    last = n.(PatternCase).getDecl() and
-    not n.(PatternCase).isRule() and
-    completion = NormalCompletion()
+    exists(PatternCase pc | n = pc |
+      (
+        if exists(pc.getGuard())
+        then last(pc.getGuard(), last, BooleanCompletion(true, _))
+        else last = pc.getDecl()
+      ) and
+      not pc.isRule() and
+      completion = NormalCompletion()
+    )
     or
     // the last statement of a synchronized statement is the last statement of its body
     last(n.(SynchronizedStmt).getBlock(), last, completion)
@@ -1275,20 +1284,28 @@ private module ControlFlowGraphImpl {
       )
     )
     or
-    // Edge from rule SwitchCases to their body, after any variable assignment if applicable.
+    // Edge from rule SwitchCases to their body, after any variable assignment and/or guard test if applicable.
     // No edges in a non-rule SwitchCase - the constant expression in a ConstCase isn't included in the CFG.
     exists(SwitchCase case, ControlFlowNode preBodyNode |
-      completion = NormalCompletion() and
       if case instanceof PatternCase
-      then preBodyNode = case.(PatternCase).getDecl()
-      else preBodyNode = case
+      then (
+        if exists(case.(PatternCase).getGuard())
+        then (
+          last(case.(PatternCase).getGuard(), preBodyNode, completion) and
+          completion = basicBooleanCompletion(true)
+        ) else (
+          preBodyNode = case.(PatternCase).getDecl() and completion = NormalCompletion()
+        )
+      ) else (
+        preBodyNode = case and completion = NormalCompletion()
+      )
     |
       n = preBodyNode and result = first(case.getRuleExpression())
       or
       n = preBodyNode and result = first(case.getRuleStatement())
     )
     or
-    // A pattern case conducts a type test, then branches to either the next case or the assignment.
+    // A pattern case conducts a type test, then branches to the next case or the assignment.
     exists(PatternCase case |
       n = case and
       (
@@ -1297,6 +1314,23 @@ private module ControlFlowGraphImpl {
         or
         completion = basicBooleanCompletion(true) and
         result = case.getDecl()
+      )
+    )
+    or
+    // A pattern case with a guard evaluates that guard after declaring its pattern variable,
+    // and thereafter if the guard doesn't match will branch to the next case.
+    // The case of a matching guard is accounted for in the case-with-rule logic above, or for
+    // non-rule case statements in `last`.
+    exists(PatternCase case, Expr guard |
+      guard = case.getGuard() and
+      (
+        n = case.getDecl() and
+        result = first(guard) and
+        completion = NormalCompletion()
+        or
+        last(guard, n, completion) and
+        completion = basicBooleanCompletion(false) and
+        nextSwitchCase(case, result)
       )
     )
     or

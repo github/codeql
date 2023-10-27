@@ -34,6 +34,24 @@ public class Test {
          yield "Something else";
      };
 
+     switch(thing) {
+       case String s when s.length() == 3:
+         System.out.println("Length 3");
+         break;
+       case String s when s.length() == 5:
+         System.out.println("Length 5");
+         break;
+       default:
+         System.out.println("Anything else");
+         break;
+     }
+
+     switch(thing) {
+       case String s when s.length() == 3 -> System.out.println("Length 3");
+       case String s when s.length() == 5 -> System.out.println("Length 5");
+       default -> { }
+     }
+
   }
 
 }
