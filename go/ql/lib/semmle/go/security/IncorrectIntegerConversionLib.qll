@@ -289,17 +289,27 @@ private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch)
 /** An upper bound check that compares a variable to a constant value. */
 class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
   UpperBoundCheckGuard() {
+    // Note that even though `x > c` and `x >= c` do not look like upper bound
+    // checks, on the branches where they are false the conditions are `x <= c`
+    // and `x < c` respectively, which are upper bound checks.
     count(expr.getAnOperand().getExactValue()) = 1 and
     expr.getAnOperand().getType().getUnderlyingType() instanceof IntegerType
   }
 
   /**
-   * Holds if this upper bound check ensures the non-constant operand is less
-   * than or equal to `2^(b) - 1` for some `b` which is a valid bit size less
-   * than `bitSize`. In this  case, the upper bound check is a barrier guard,
-   * because the flow should be for `b` instead of `bitSize`.
-   * `architectureBitSize` is used if the constant operand is `math.MaxInt` or
-   * `math.MaxUint`.
+   * Holds if this upper bound check should stop flow for a flow state with bit
+   * size `bitSize` and architecture bit size `architectureBitSize`.
+   *
+   * A flow state has bit size `bitSize` if that is the smallest valid bit size
+   * `b` such that the maximum value that could get to that point is less than
+   * or equal to `2^(b) - 1`. So the flow should be stopped if there is a valid
+   * bit size `b` which is less than `bitSize` such that the maximum value that
+   * could get to that point is than or equal to `2^(b) - 1`. In this  case,
+   * the upper bound check is a barrier guard, because the flow should have bit
+   * size equal to the smallest such `b` instead of `bitSize`.
+   *
+   * The argument `architectureBitSize` is only used if the constant operand is
+   * `math.MaxInt` or `math.MaxUint`.
    *
    * Note that we have to use floats here because integers in CodeQL are
    * represented by 32-bit signed integers, which cannot represent some of the
@@ -309,10 +319,12 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
     bitSize = validBitSize() and
     architectureBitSize = [32, 64] and
     exists(int b, float strictnessOffset |
+      // It is sufficient to check for the next valid bit size below `bitSize`.
       b = max(int a | a = validBitSize() and a < bitSize) and
-      // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
-      // on the `branch` argument of `checks` is false, which is equivalent to
-      // `x < c`.
+      // We will use the format `x <= c - strictnessOffset`. Since `x < c` is
+      // the same as `x <= c-1`, we set `strictnessOffset` to 1 in this case.
+      // For `x >= c` we will be dealing with the case where the `branch`
+      // argument of `checks` is false, which is equivalent to `x < c`.
       if expr instanceof LssExpr or expr instanceof GeqExpr
       then strictnessOffset = 1
       else strictnessOffset = 0
@@ -321,7 +333,10 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
       then
         any(MaxIntOrMaxUint m | expr.getAnOperand() = m.getAReference())
             .isBoundFor(b, architectureBitSize, strictnessOffset)
-      else expr.getAnOperand().getExactValue().toFloat() - strictnessOffset <= 2.pow(b) - 1
+      else
+        // We want `x <= c - strictnessOffset` to guarantee that `x <= 2^b - 1`,
+        // which is equivalent to saying `c - strictnessOffset <= 2^b - 1`.
+        expr.getAnOperand().getExactValue().toFloat() - strictnessOffset <= 2.pow(b) - 1
     )
   }
 
