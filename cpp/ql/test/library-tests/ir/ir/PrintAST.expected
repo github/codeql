@@ -15938,6 +15938,44 @@ ir.cpp:
 # 2104|             Type = [CTypedefType,Size_t] size_t
 # 2104|             ValueCategory = prvalue(load)
 # 2105|     getStmt(6): [ReturnStmt] return ...
+# 2107| [TopLevelFunction] double strtod(char const*, char**)
+# 2107|   <params>: 
+# 2107|     getParameter(0): [Parameter] str
+# 2107|         Type = [PointerType] const char *
+# 2107|     getParameter(1): [Parameter] endptr
+# 2107|         Type = [PointerType] char **
+# 2109| [TopLevelFunction] char* test_strtod(char*)
+# 2109|   <params>: 
+# 2109|     getParameter(0): [Parameter] s
+# 2109|         Type = [CharPointerType] char *
+# 2109|   getEntryPoint(): [BlockStmt] { ... }
+# 2110|     getStmt(0): [DeclStmt] declaration
+# 2110|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of end
+# 2110|           Type = [CharPointerType] char *
+# 2111|     getStmt(1): [DeclStmt] declaration
+# 2111|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 2111|           Type = [DoubleType] double
+# 2111|         getVariable().getInitializer(): [Initializer] initializer for d
+# 2111|           getExpr(): [FunctionCall] call to strtod
+# 2111|               Type = [DoubleType] double
+# 2111|               ValueCategory = prvalue
+# 2111|             getArgument(0): [VariableAccess] s
+# 2111|                 Type = [CharPointerType] char *
+# 2111|                 ValueCategory = prvalue(load)
+# 2111|             getArgument(1): [AddressOfExpr] & ...
+# 2111|                 Type = [PointerType] char **
+# 2111|                 ValueCategory = prvalue
+# 2111|               getOperand(): [VariableAccess] end
+# 2111|                   Type = [CharPointerType] char *
+# 2111|                   ValueCategory = lvalue
+# 2111|             getArgument(0).getFullyConverted(): [CStyleCast] (const char *)...
+# 2111|                 Conversion = [PointerConversion] pointer conversion
+# 2111|                 Type = [PointerType] const char *
+# 2111|                 ValueCategory = prvalue
+# 2112|     getStmt(2): [ReturnStmt] return ...
+# 2112|       getExpr(): [VariableAccess] end
+# 2112|           Type = [CharPointerType] char *
+# 2112|           ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

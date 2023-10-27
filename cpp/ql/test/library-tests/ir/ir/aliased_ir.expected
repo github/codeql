@@ -12333,6 +12333,39 @@ ir.cpp:
 # 2098|     v2098_8(void)                           = AliasedUse                      : ~m2104_8
 # 2098|     v2098_9(void)                           = ExitFunction                    : 
 
+# 2109| char* test_strtod(char*)
+# 2109|   Block 0
+# 2109|     v2109_1(void)           = EnterFunction            : 
+# 2109|     m2109_2(unknown)        = AliasedDefinition        : 
+# 2109|     m2109_3(unknown)        = InitializeNonLocal       : 
+# 2109|     m2109_4(unknown)        = Chi                      : total:m2109_2, partial:m2109_3
+# 2109|     r2109_5(glval<char *>)  = VariableAddress[s]       : 
+# 2109|     m2109_6(char *)         = InitializeParameter[s]   : &:r2109_5
+# 2109|     r2109_7(char *)         = Load[s]                  : &:r2109_5, m2109_6
+# 2109|     m2109_8(unknown)        = InitializeIndirection[s] : &:r2109_7
+# 2110|     r2110_1(glval<char *>)  = VariableAddress[end]     : 
+# 2110|     m2110_2(char *)         = Uninitialized[end]       : &:r2110_1
+# 2111|     r2111_1(glval<double>)  = VariableAddress[d]       : 
+# 2111|     r2111_2(glval<unknown>) = FunctionAddress[strtod]  : 
+# 2111|     r2111_3(glval<char *>)  = VariableAddress[s]       : 
+# 2111|     r2111_4(char *)         = Load[s]                  : &:r2111_3, m2109_6
+# 2111|     r2111_5(char *)         = Convert                  : r2111_4
+# 2111|     r2111_6(glval<char *>)  = VariableAddress[end]     : 
+# 2111|     r2111_7(char **)        = CopyValue                : r2111_6
+# 2111|     r2111_8(double)         = Call[strtod]             : func:r2111_2, 0:r2111_5, 1:r2111_7
+# 2111|     v2111_9(void)           = ^BufferReadSideEffect[0] : &:r2111_5, ~m2109_8
+# 2111|     v2111_10(void)          = ^BufferReadSideEffect[1] : &:r2111_7, ~m2110_2
+# 2111|     m2111_11(double)        = Store[d]                 : &:r2111_1, r2111_8
+# 2112|     r2112_1(glval<char *>)  = VariableAddress[#return] : 
+# 2112|     r2112_2(glval<char *>)  = VariableAddress[end]     : 
+# 2112|     r2112_3(char *)         = Load[end]                : &:r2112_2, m2110_2
+# 2112|     m2112_4(char *)         = Store[#return]           : &:r2112_1, r2112_3
+# 2109|     v2109_9(void)           = ReturnIndirection[s]     : &:r2109_7, m2109_8
+# 2109|     r2109_10(glval<char *>) = VariableAddress[#return] : 
+# 2109|     v2109_11(void)          = ReturnValue              : &:r2109_10, m2112_4
+# 2109|     v2109_12(void)          = AliasedUse               : m2109_3
+# 2109|     v2109_13(void)          = ExitFunction             : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
