@@ -19,15 +19,17 @@ class RelevantFile extends File {
  */
 string getArgumentPath(DataFlow::ParameterNode paramNode) {
   paramNode.getLocation().getFile() instanceof RelevantFile and
-  exists(Ast::Parameter param, string paramSpecifier |
-    param = paramNode.asParameter() and
-    (
-      paramSpecifier = param.getPosition().toString()
-      or
-      paramSpecifier = param.(Ast::KeywordParameter).getName() + ":"
-      or
-      param instanceof Ast::BlockParameter and
-      paramSpecifier = "block"
+  exists(string paramSpecifier |
+    exists(Ast::Parameter param |
+      param = paramNode.asParameter() and
+      (
+        paramSpecifier = param.getPosition().toString()
+        or
+        paramSpecifier = param.(Ast::KeywordParameter).getName() + ":"
+        or
+        param instanceof Ast::BlockParameter and
+        paramSpecifier = "block"
+      )
     )
     or
     paramNode instanceof DataFlow::SelfParameterNode and paramSpecifier = "self"
