@@ -50,7 +50,7 @@ private string getParentThreatModel(string child) {
  * whose `kind` column includes the specified threat model kind.
  */
 private predicate threatModelEnabled(string kind) {
-  // Find the highest-oriority configuration row whose `kind` column includes the specified threat
+  // Find the highest-priority configuration row whose `kind` column includes the specified threat
   // model kind. If such a row exists and its `enabled` column is `true`, then the threat model is
   // enabled.
   knownThreatModel(kind) and
@@ -69,7 +69,7 @@ private predicate threatModelEnabled(string kind) {
  */
 bindingset[kind]
 predicate currentThreatModel(string kind) {
-  knownThreatModel(kind) and threatModelEnabled(kind)
+  threatModelEnabled(kind)
   or
   // For any threat model kind not mentioned in the configuration or grouping tables, its state of
   // enablement is controlled only by the entries that specifiy the "all" kind.
