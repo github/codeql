@@ -9,6 +9,8 @@ on:
       - "*/ql/lib/**/*.ql"
       - "*/ql/lib/**/*.qll"
       - "*/ql/lib/**/*.yml"
+      - "shared/**/*.ql"
+      - "shared/**/*.qll"
       - "!**/experimental/**"
       - "!ql/**"
       - ".github/workflows/check-change-note.yml"
