@@ -381,6 +381,60 @@ module EssaFlow {
 //--------
 // Local flow
 //--------
+signature predicate stepSig(Node nodeFrom, Node nodeTo);
+
+/**
+ * A module to separate import-time from run-time.
+ *
+ * We really have two local flow relations, on for module initialisation time (or _import time_) and one for runtime.
+ * Consider a read from a global variable `x = foo`. At import time there should be a local flow step from `foo` to `x`,
+ * while at runtime there should be a jump step from the module variable corresponding to `foo` to `x`.
+ *
+ * Similarly for, a write `foo = y`, at import time, there is a local flow step from `y` to `foo` while at runtime there
+ * is a jump step from `y` to the module variable corresponding to `foo`.
+ *
+ * We need a way of distinguishing if we are looking at import time or runtime. We have the following helpful facts:
+ * - All top-level executable statements are import time (and import time only)
+ * - All -non-top-level code may be executed at runtime (but could also be executed at import time)
+ *
+ * We could write an analysis to determine which functions are called at import time, but until we have that, we will go
+ * with the heuristic that global variables act according to import time rules at top-level program points and according
+ * to runtime rules everywhere else. This will forego some import time local flow but otherwise be consistent.
+ */
+module Separate<stepSig/2 rawStep> {
+  /**
+   * Holds if `node` is found at the top level of a module.
+   */
+  pragma[inline]
+  predicate isTopLevel(Node node) { node.getScope() instanceof Module }
+
+  /** Holds if a step can be taken from `nodeFrom` to `nodeTo` at import time. */
+  predicate importTimeStep(Node nodeFrom, Node nodeTo) {
+    // As a proxy for whether statements can be executed at import time,
+    // we check if they appear at the top level.
+    // This will miss statements inside functions called from the top level.
+    isTopLevel(nodeFrom) and
+    isTopLevel(nodeTo) and
+    rawStep(nodeFrom, nodeTo)
+  }
+
+  /** Holds if a step can be taken from `nodeFrom` to `nodeTo` at runtime. */
+  predicate runtimeStep(Node nodeFrom, Node nodeTo) {
+    // Anything not at the top level can be executed at runtime.
+    not isTopLevel(nodeFrom) and
+    not isTopLevel(nodeTo) and
+    rawStep(nodeFrom, nodeTo)
+  }
+
+  /**
+   * Holds if a step can be taken from `nodeFrom` to `nodeTo`.
+   */
+  predicate step(Node nodeFrom, Node nodeTo) {
+    importTimeStep(nodeFrom, nodeTo) or
+    runtimeStep(nodeFrom, nodeTo)
+  }
+}
+
 /**
  * This is the local flow predicate that is used as a building block in global
  * data flow.
@@ -405,35 +459,13 @@ predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
   // both out of `node` and any post-update node of `node`.
   exists(Node node |
     nodeFrom = update(node) and
-    (
-      importTimeLocalFlowStep(node, nodeTo) or
-      runtimeLocalFlowStep(node, nodeTo)
-    )
+    Separate<EssaFlow::essaFlowStep/2>::step(node, nodeTo)
   )
 }
 
-/**
- * Holds if `node` is found at the top level of a module.
- */
-pragma[inline]
-predicate isTopLevel(Node node) { node.getScope() instanceof Module }
-
-/** Holds if there is local flow from `nodeFrom` to `nodeTo` at import time. */
-predicate importTimeLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // As a proxy for whether statements can be executed at import time,
-  // we check if they appear at the top level.
-  // This will miss statements inside functions called from the top level.
-  isTopLevel(nodeFrom) and
-  isTopLevel(nodeTo) and
-  EssaFlow::essaFlowStep(nodeFrom, nodeTo)
-}
-
-/** Holds if there is local flow from `nodeFrom` to `nodeTo` at runtime. */
-predicate runtimeLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // Anything not at the top level can be executed at runtime.
-  not isTopLevel(nodeFrom) and
-  not isTopLevel(nodeTo) and
-  EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
 }
 
 predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
@@ -441,29 +473,8 @@ predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
   // both out of `node` and any post-update node of `node`.
   exists(Node node |
     nodeFrom = update(node) and
-    (
-      importTimeSummaryFlowStep(node, nodeTo) or
-      runtimeSummaryFlowStep(node, nodeTo)
-    )
+    Separate<summaryLocalStep/2>::step(node, nodeTo)
   )
-}
-
-predicate importTimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
-  // As a proxy for whether statements can be executed at import time,
-  // we check if they appear at the top level.
-  // This will miss statements inside functions called from the top level.
-  isTopLevel(nodeFrom) and
-  isTopLevel(nodeTo) and
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
-}
-
-predicate runtimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
-  // Anything not at the top level can be executed at runtime.
-  not isTopLevel(nodeFrom) and
-  not isTopLevel(nodeTo) and
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
 }
 
 /** `ModuleVariable`s are accessed via jump steps at runtime. */
