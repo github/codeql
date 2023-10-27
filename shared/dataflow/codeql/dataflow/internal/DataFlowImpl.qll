@@ -2517,9 +2517,7 @@ module MakeImpl<InputSig Lang> {
       predicate enableTypeFlow() { none() }
     }
 
-    private module Stage2 implements StageSig {
-      import MkStage<Stage1>::Stage<Stage2Param>
-    }
+    private module Stage2 = MkStage<Stage1>::Stage<Stage2Param>;
 
     pragma[nomagic]
     private predicate flowOutOfCallNodeCand2(
@@ -2780,9 +2778,7 @@ module MakeImpl<InputSig Lang> {
       }
     }
 
-    private module Stage3 implements StageSig {
-      import MkStage<Stage2>::Stage<Stage3Param>
-    }
+    private module Stage3 = MkStage<Stage2>::Stage<Stage3Param>;
 
     bindingset[node, t0]
     private predicate strengthenType(NodeEx node, DataFlowType t0, DataFlowType t) {
@@ -2884,9 +2880,7 @@ module MakeImpl<InputSig Lang> {
       }
     }
 
-    private module Stage4 implements StageSig {
-      import MkStage<Stage3>::Stage<Stage4Param>
-    }
+    private module Stage4 = MkStage<Stage3>::Stage<Stage4Param>;
 
     /**
      * Holds if `argApf` is recorded as the summary context for flow reaching `node`
