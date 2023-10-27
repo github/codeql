@@ -1,6 +1,6 @@
 /** Provides definitions and flow steps related to Razor pages. */
 
-import csharp
+private import csharp
 private import codeql.util.Unit
 private import codeql.util.FilePath
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore

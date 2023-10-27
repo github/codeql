@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-Additional flow steps  to track flow from a `View` call in an MVC controller to the corresponding Razor page, which may result in additional results for queries such as `cs/web/xss`.
+* Modelled additional flow steps to track flow from a `View` call in an MVC controller to the corresponding Razor page, which may result in additional results for queries such as `cs/web/xss`.
