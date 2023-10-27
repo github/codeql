@@ -11,9 +11,9 @@ private class ViewCall extends MethodCall {
 
   /** Gets the `name` argument to this call, if any. */
   string getNameArgument() {
-    exists(StringLiteral lit, int i | i in [0 .. 1] |
-      this.getTarget().getParameter(i).getType() instanceof StringType and
-      DataFlow::localExprFlow(lit, this.getArgument(i)) and
+    exists(StringLiteral lit |
+      this.getTarget().getParameter(0).getType() instanceof StringType and
+      DataFlow::localExprFlow(lit, this.getArgument(0)) and
       result = lit.getValue()
     )
   }
