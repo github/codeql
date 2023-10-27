@@ -25,6 +25,9 @@ private class Strtol extends AliasFunction, ArrayFunction, TaintFunction, SideEf
       input.isParameterDeref(0)
     ) and
     output.isReturnValue()
+    or
+    input.isParameter(0) and
+    output.isParameterDeref(1)
   }
 
   override predicate parameterNeverEscapes(int i) {

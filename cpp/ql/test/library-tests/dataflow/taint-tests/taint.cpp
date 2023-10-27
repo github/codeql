@@ -728,6 +728,6 @@ void test_strtol(char *source) {
 	char* endptr = nullptr;
 	long l = strtol(source, &endptr, 10);
 	sink(l); // $ ast,ir
-	sink(endptr); // $ MISSING: ast,ir
-	sink(*endptr); // $ MISSING: ast,ir
+	sink(endptr); // $ ast,ir
+	sink(*endptr); // $ ast,ir
 }

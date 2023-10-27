@@ -6636,6 +6636,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:728:17:728:23 | 0 | taint.cpp:732:8:732:13 | endptr |  |
 | taint.cpp:729:11:729:16 | call to strtol | taint.cpp:730:7:730:7 | l |  |
 | taint.cpp:729:18:729:23 | source | taint.cpp:729:11:729:16 | call to strtol | TAINT |
+| taint.cpp:729:18:729:23 | source | taint.cpp:729:26:729:32 | ref arg & ... | TAINT |
 | taint.cpp:729:26:729:32 | ref arg & ... | taint.cpp:729:27:729:32 | endptr [inner post update] |  |
 | taint.cpp:729:26:729:32 | ref arg & ... | taint.cpp:731:7:731:12 | endptr |  |
 | taint.cpp:729:26:729:32 | ref arg & ... | taint.cpp:732:8:732:13 | endptr |  |
