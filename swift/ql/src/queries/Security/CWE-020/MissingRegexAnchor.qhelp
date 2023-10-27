@@ -42,7 +42,7 @@
 
 		</p>
 
-		<sample src="examples/MissingRegExpAnchor_BAD.js"/>
+		<sample src="examples/MissingRegExpAnchorBad.swift"/>
 
 		<p>
 
@@ -54,7 +54,7 @@
 
 		</p>
 
-		<sample src="examples/MissingRegExpAnchor_GOOD.js"/>
+		<sample src="examples/MissingRegExpAnchorGood.swift"/>
 
 		<p>
 
