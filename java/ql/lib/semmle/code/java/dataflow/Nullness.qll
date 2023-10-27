@@ -100,9 +100,9 @@ predicate dereference(Expr e) {
   or
   exists(SynchronizedStmt synch | synch.getExpr() = e)
   or
-  exists(SwitchStmt switch | switch.getExpr() = e)
+  exists(SwitchStmt switch | switch.getExpr() = e and not switch.hasNullCase())
   or
-  exists(SwitchExpr switch | switch.getExpr() = e)
+  exists(SwitchExpr switch | switch.getExpr() = e and not switch.hasNullCase())
   or
   exists(FieldAccess fa, Field f | fa.getQualifier() = e and fa.getField() = f and not f.isStatic())
   or

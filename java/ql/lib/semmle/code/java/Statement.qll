@@ -409,6 +409,11 @@ class SwitchStmt extends Stmt, @switchstmt {
   /** Gets the expression of this `switch` statement. */
   Expr getExpr() { result.getParent() = this }
 
+  /** Holds if this switch has a case handling a null literal. */
+  predicate hasNullCase() {
+    this.getAConstCase().getValue(_) instanceof NullLiteral
+  }
+
   override string pp() { result = "switch (...)" }
 
   override string toString() { result = "switch (...)" }

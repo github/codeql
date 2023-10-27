@@ -1542,6 +1542,11 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
     exists(YieldStmt yield | yield.getTarget() = this and result = yield.getValue())
   }
 
+  /** Holds if this switch has a case handling a null literal. */
+  predicate hasNullCase() {
+    this.getAConstCase().getValue(_) instanceof NullLiteral
+  }
+
   /** Gets a printable representation of this expression. */
   override string toString() { result = "switch (...)" }
 
