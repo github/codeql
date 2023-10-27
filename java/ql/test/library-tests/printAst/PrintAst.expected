@@ -122,41 +122,45 @@ A.java:
 #   53|                 2: [SwitchStmt] switch (...)
 #   53|                   -1: [VarAccess] thing
 #   54|                   0: [PatternCase] case T t ...
-#   54|                     -2: [TypeAccess] String
 #   54|                     -1: [ExprStmt] <Expr>;
-#   54|                       0: [MethodAccess] println(...)
+#   54|                       0: [MethodCall] println(...)
 #   54|                         -1: [VarAccess] System.out
 #   54|                           -1: [TypeAccess] System
 #   54|                         0: [VarAccess] s
-#   54|                     0: [LocalVariableDeclExpr] s
+#-----|                     0: (Single Local Variable Declaration)
+#   54|                       0: [TypeAccess] String
+#   54|                       1: [LocalVariableDeclExpr] s
 #   55|                   1: [PatternCase] case T t ...
-#   55|                     -2: [TypeAccess] Integer
 #   55|                     -1: [ExprStmt] <Expr>;
-#   55|                       0: [MethodAccess] println(...)
+#   55|                       0: [MethodCall] println(...)
 #   55|                         -1: [VarAccess] System.out
 #   55|                           -1: [TypeAccess] System
 #   55|                         0: [AddExpr] ... + ...
 #   55|                           0: [StringLiteral] "An integer: "
 #   55|                           1: [VarAccess] i
-#   55|                     0: [LocalVariableDeclExpr] i
+#-----|                     0: (Single Local Variable Declaration)
+#   55|                       0: [TypeAccess] Integer
+#   55|                       1: [LocalVariableDeclExpr] i
 #   56|                   2: [DefaultCase] default
 #   56|                     -1: [BlockStmt] { ... }
 #   58|                 3: [SwitchStmt] switch (...)
 #   58|                   -1: [VarAccess] thing
 #   59|                   0: [PatternCase] case T t ...
-#   59|                     -2: [TypeAccess] String
-#   59|                     0: [LocalVariableDeclExpr] s
+#-----|                     0: (Single Local Variable Declaration)
+#   59|                       0: [TypeAccess] String
+#   59|                       1: [LocalVariableDeclExpr] s
 #   60|                   1: [ExprStmt] <Expr>;
-#   60|                     0: [MethodAccess] println(...)
+#   60|                     0: [MethodCall] println(...)
 #   60|                       -1: [VarAccess] System.out
 #   60|                         -1: [TypeAccess] System
 #   60|                       0: [VarAccess] s
 #   61|                   2: [BreakStmt] break
 #   62|                   3: [PatternCase] case T t ...
-#   62|                     -2: [TypeAccess] Integer
-#   62|                     0: [LocalVariableDeclExpr] i
+#-----|                     0: (Single Local Variable Declaration)
+#   62|                       0: [TypeAccess] Integer
+#   62|                       1: [LocalVariableDeclExpr] i
 #   63|                   4: [ExprStmt] <Expr>;
-#   63|                     0: [MethodAccess] println(...)
+#   63|                     0: [MethodCall] println(...)
 #   63|                       -1: [VarAccess] System.out
 #   63|                         -1: [TypeAccess] System
 #   63|                       0: [AddExpr] ... + ...
@@ -170,15 +174,17 @@ A.java:
 #   68|                     0: [SwitchExpr] switch (...)
 #   68|                       -1: [VarAccess] thing
 #   69|                       0: [PatternCase] case T t ...
-#   69|                         -2: [TypeAccess] String
 #   69|                         -1: [VarAccess] s
-#   69|                         0: [LocalVariableDeclExpr] s
+#-----|                         0: (Single Local Variable Declaration)
+#   69|                           0: [TypeAccess] String
+#   69|                           1: [LocalVariableDeclExpr] s
 #   70|                       1: [PatternCase] case T t ...
-#   70|                         -2: [TypeAccess] Integer
 #   70|                         -1: [AddExpr] ... + ...
 #   70|                           0: [StringLiteral] "An integer: "
 #   70|                           1: [VarAccess] i
-#   70|                         0: [LocalVariableDeclExpr] i
+#-----|                         0: (Single Local Variable Declaration)
+#   70|                           0: [TypeAccess] Integer
+#   70|                           1: [LocalVariableDeclExpr] i
 #   71|                       2: [DefaultCase] default
 #   71|                         -1: [StringLiteral] "Something else"
 #   73|                 5: [LocalVariableDeclStmt] var ...;
@@ -186,13 +192,15 @@ A.java:
 #   73|                     0: [SwitchExpr] switch (...)
 #   73|                       -1: [VarAccess] thing
 #   74|                       0: [PatternCase] case T t ...
-#   74|                         -2: [TypeAccess] String
-#   74|                         0: [LocalVariableDeclExpr] s
+#-----|                         0: (Single Local Variable Declaration)
+#   74|                           0: [TypeAccess] String
+#   74|                           1: [LocalVariableDeclExpr] s
 #   75|                       1: [YieldStmt] yield ...
 #   75|                         0: [VarAccess] s
 #   76|                       2: [PatternCase] case T t ...
-#   76|                         -2: [TypeAccess] Integer
-#   76|                         0: [LocalVariableDeclExpr] i
+#-----|                         0: (Single Local Variable Declaration)
+#   76|                           0: [TypeAccess] Integer
+#   76|                           1: [LocalVariableDeclExpr] i
 #   77|                       3: [YieldStmt] yield ...
 #   77|                         0: [AddExpr] ... + ...
 #   77|                           0: [StringLiteral] "An integer: "
