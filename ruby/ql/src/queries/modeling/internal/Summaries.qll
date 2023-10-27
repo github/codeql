@@ -19,19 +19,22 @@ module Summaries {
     }
 
     predicate isSink(DataFlow::Node sink) { sink = any(DataFlow::MethodNode m).getAReturnNode() }
+
+    DataFlow::FlowFeature getAFeature() {
+      result instanceof DataFlow::FeatureEqualSourceSinkCallContext
+    }
   }
 
   private module ValueFlow {
     import DataFlow::Global<Config>
 
     predicate summaryModel(string type, string path, string input, string output) {
-      exists(DataFlow::MethodNode methodNode, API::Node paramNode |
+      exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
         methodNode.getLocation().getFile() instanceof Util::RelevantFile and
-        flow(paramNode.asSource(), methodNode.getAReturnNode()) and
-        paramNode.asSource() = Util::getAnyParameter(methodNode)
+        flow(paramNode, methodNode.getAReturnNode())
       |
         Util::pathToMethod(methodNode, type, path) and
-        input = Util::getArgumentPath(paramNode.asSource()) and
+        input = Util::getArgumentPath(paramNode) and
         output = "ReturnValue"
       )
     }
@@ -42,13 +45,12 @@ module Summaries {
 
     predicate summaryModel(string type, string path, string input, string output) {
       not ValueFlow::summaryModel(type, path, input, output) and
-      exists(DataFlow::MethodNode methodNode, API::Node paramNode |
+      exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
         methodNode.getLocation().getFile() instanceof Util::RelevantFile and
-        flow(paramNode.asSource(), methodNode.getAReturnNode()) and
-        paramNode.asSource() = Util::getAnyParameter(methodNode)
+        flow(paramNode, methodNode.getAReturnNode())
       |
         Util::pathToMethod(methodNode, type, path) and
-        input = Util::getArgumentPath(paramNode.asSource()) and
+        input = Util::getArgumentPath(paramNode) and
         output = "ReturnValue"
       )
     }
