@@ -25,7 +25,6 @@
 | kotlin.Byte | byteValue |
 | kotlin.Byte | compareTo |
 | kotlin.Byte | dec |
-| kotlin.Byte | describeConstable |
 | kotlin.Byte | div |
 | kotlin.Byte | doubleValue |
 | kotlin.Byte | equals |
