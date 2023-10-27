@@ -22,7 +22,7 @@ module ReflectedXss {
   /** A shared XSS sanitizer as a sanitizer for reflected XSS. */
   private class SharedXssSanitizer extends Sanitizer instanceof SharedXss::Sanitizer { }
 
-   /**
+  /**
    * A request.Cookie method returns the request cookie, which is not user controlled in reflected XSS context.
    */
   class CookieSanitizer extends Sanitizer {
