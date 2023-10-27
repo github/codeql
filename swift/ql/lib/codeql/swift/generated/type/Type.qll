@@ -23,6 +23,12 @@ module Generated {
 
     /**
      * Gets the canonical type of this type.
+     *
+     * This is the unique type we get after resolving aliases and desugaring. For example, given
+     * ```
+     * typealias MyInt == Int
+     * ```
+     * then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
      */
     final Type getCanonicalType() {
       exists(Type immediate |
