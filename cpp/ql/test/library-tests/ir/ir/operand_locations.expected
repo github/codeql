@@ -10027,11 +10027,12 @@
 | ir.cpp:2111:21:2111:21 | Unary | r2111_4 |
 | ir.cpp:2111:24:2111:27 | Address | &:r2111_7 |
 | ir.cpp:2111:24:2111:27 | Arg(1) | 1:r2111_7 |
-| ir.cpp:2111:24:2111:27 | SideEffect | ~m2110_2 |
+| ir.cpp:2111:24:2111:27 | ChiPartial | partial:m2111_10 |
+| ir.cpp:2111:24:2111:27 | ChiTotal | total:m2110_2 |
 | ir.cpp:2111:25:2111:27 | Unary | r2111_6 |
 | ir.cpp:2112:3:2112:13 | Address | &:r2112_1 |
 | ir.cpp:2112:10:2112:12 | Address | &:r2112_2 |
-| ir.cpp:2112:10:2112:12 | Load | m2110_2 |
+| ir.cpp:2112:10:2112:12 | Load | m2111_11 |
 | ir.cpp:2112:10:2112:12 | StoreValue | r2112_3 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
