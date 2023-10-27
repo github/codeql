@@ -486,7 +486,11 @@ class SwitchCase extends Stmt, @case {
 
 /** A constant `case` of a switch statement. */
 class ConstCase extends SwitchCase {
-  ConstCase() { exists(Literal e | e.getParent() = this and e.getIndex() >= 0) }
+  ConstCase() {
+    exists(Expr e |
+      e.getParent() = this and e.getIndex() >= 0 and not e instanceof LocalVariableDeclExpr
+    )
+  }
 
   /** Gets the `case` constant at index 0. */
   Expr getValue() { result.isNthChildOf(this, 0) }
