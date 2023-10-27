@@ -1,7 +1,7 @@
 extensions:
 
   - addsTo:
-      pack: codeql/java-all
+      pack: codeql/threat-models
       extensible: threatModelGrouping
     data:
       # Default threat model

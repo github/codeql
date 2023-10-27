@@ -10,6 +10,7 @@ dependencies:
   codeql/mad: ${workspace}
   codeql/rangeanalysis: ${workspace}
   codeql/regex: ${workspace}
+  codeql/threat-models: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/typetracking: ${workspace}
   codeql/util: ${workspace}
@@ -17,5 +18,4 @@ dataExtensions:
   - ext/*.model.yml
   - ext/generated/*.model.yml
   - ext/experimental/*.model.yml
-  - ext/threatmodels/*.model.yml
 warnOnImplicitThis: true
