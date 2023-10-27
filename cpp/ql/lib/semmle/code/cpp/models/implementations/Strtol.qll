@@ -28,7 +28,8 @@ private class Strtol extends AliasFunction, ArrayFunction, TaintFunction, SideEf
   }
 
   override predicate parameterNeverEscapes(int i) {
-    this.getParameter(i).getUnspecifiedType() instanceof PointerType
+    // Parameter 0 does escape into parameter 1.
+    i = 1
   }
 
   override predicate parameterEscapesOnlyViaReturn(int i) { none() }
