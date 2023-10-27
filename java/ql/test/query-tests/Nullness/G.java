@@ -14,7 +14,7 @@ public class G {
 
     switch(s) { // BAD; lack of a null case means this may throw.
       case "foo" -> System.out.println("Foo");
-      default -> System.out.println("Something else");
+      case String s2 -> System.out.println("Other string of length " + s2.length());
     }
 
   }
