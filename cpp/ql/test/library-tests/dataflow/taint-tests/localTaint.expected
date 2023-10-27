@@ -2199,6 +2199,19 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | map.cpp:436:55:436:59 | def | map.cpp:436:19:436:60 | call to pair | TAINT |
 | map.cpp:436:63:436:67 | first | map.cpp:436:7:436:67 | call to iterator |  |
 | map.cpp:437:7:437:9 | m35 | map.cpp:437:7:437:9 | call to unordered_map |  |
+| map.cpp:446:23:446:23 | call to map | map.cpp:448:3:448:3 | m |  |
+| map.cpp:446:23:446:23 | call to map | map.cpp:449:12:449:12 | m |  |
+| map.cpp:446:23:446:23 | call to map | map.cpp:451:1:451:1 | m |  |
+| map.cpp:447:12:447:26 | call to indirect_source | map.cpp:448:10:448:10 | p |  |
+| map.cpp:448:3:448:3 | m | map.cpp:448:4:448:4 | call to operator[] | TAINT |
+| map.cpp:448:3:448:3 | ref arg m | map.cpp:449:12:449:12 | m |  |
+| map.cpp:448:3:448:3 | ref arg m | map.cpp:451:1:451:1 | m |  |
+| map.cpp:448:3:448:10 | ... = ... | map.cpp:448:4:448:4 | call to operator[] [post update] |  |
+| map.cpp:448:4:448:4 | call to operator[] [post update] | map.cpp:448:3:448:3 | ref arg m | TAINT |
+| map.cpp:448:10:448:10 | p | map.cpp:448:3:448:10 | ... = ... |  |
+| map.cpp:449:12:449:12 | m | map.cpp:449:13:449:13 | call to operator[] | TAINT |
+| map.cpp:449:12:449:12 | ref arg m | map.cpp:451:1:451:1 | m |  |
+| map.cpp:449:13:449:13 | call to operator[] | map.cpp:450:8:450:8 | q |  |
 | movableclass.cpp:8:2:8:15 | this | movableclass.cpp:8:27:8:31 | constructor init of field v [pre-this] |  |
 | movableclass.cpp:8:21:8:22 | _v | movableclass.cpp:8:29:8:30 | _v |  |
 | movableclass.cpp:8:29:8:30 | _v | movableclass.cpp:8:27:8:31 | constructor init of field v | TAINT |
@@ -6609,6 +6622,13 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:711:13:711:13 | s | taint.cpp:711:2:711:8 | call to strncpy | TAINT |
 | taint.cpp:711:13:711:13 | s | taint.cpp:711:10:711:10 | ref arg d | TAINT |
 | taint.cpp:712:7:712:7 | ref arg d | taint.cpp:709:25:709:25 | d |  |
+| taint.cpp:718:17:718:31 | call to indirect_source | taint.cpp:720:27:720:32 | source |  |
+| taint.cpp:719:22:719:29 | ,.-;:_ | taint.cpp:720:35:720:39 | delim |  |
+| taint.cpp:719:22:719:29 | ,.-;:_ | taint.cpp:722:8:722:12 | delim |  |
+| taint.cpp:720:20:720:25 | call to strtok | taint.cpp:721:8:721:16 | tokenized |  |
+| taint.cpp:720:27:720:32 | source | taint.cpp:720:20:720:25 | call to strtok | TAINT |
+| taint.cpp:721:8:721:16 | tokenized | taint.cpp:721:7:721:16 | * ... | TAINT |
+| taint.cpp:722:8:722:12 | delim | taint.cpp:722:7:722:12 | * ... | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

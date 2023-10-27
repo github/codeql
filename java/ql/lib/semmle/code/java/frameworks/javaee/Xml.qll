@@ -52,7 +52,7 @@ private module SafeValidatorFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeValidator }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getQualifier() and
       ma.getMethod().getDeclaringType() instanceof Validator
     )

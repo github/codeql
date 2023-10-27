@@ -291,11 +291,13 @@ namespace Microsoft
                 public abstract Microsoft.Extensions.Primitives.IChangeToken GetChangeToken();
                 public virtual System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> GetGroupedEndpoints(Microsoft.AspNetCore.Routing.RouteGroupContext context) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4164, Inherited = false, AllowMultiple = false)]
             public sealed class EndpointGroupNameAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IEndpointGroupNameMetadata
             {
                 public EndpointGroupNameAttribute(string endpointGroupName) => throw null;
                 public string EndpointGroupName { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)4160, Inherited = false, AllowMultiple = false)]
             public sealed class EndpointNameAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IEndpointNameMetadata
             {
                 public EndpointNameAttribute(string endpointName) => throw null;
@@ -306,11 +308,13 @@ namespace Microsoft
                 public EndpointNameMetadata(string endpointName) => throw null;
                 public string EndpointName { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)4164, AllowMultiple = false, Inherited = true)]
             public sealed class ExcludeFromDescriptionAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IExcludeFromDescriptionMetadata
             {
                 public ExcludeFromDescriptionAttribute() => throw null;
                 public bool ExcludeFromDescription { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = false)]
             public sealed class HostAttribute : System.Attribute, Microsoft.AspNetCore.Routing.IHostMetadata
             {
                 public HostAttribute(string host) => throw null;

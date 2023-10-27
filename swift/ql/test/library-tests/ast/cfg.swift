@@ -547,6 +547,14 @@ func testNilCoalescing2(x: Bool?) -> Int {
   }
 }
 
+func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int {
+  return expr()
+}
+
+func autoclosureTest() {
+  usesAutoclosure(1)
+}
+
 // ---
 
 protocol MyProtocol {

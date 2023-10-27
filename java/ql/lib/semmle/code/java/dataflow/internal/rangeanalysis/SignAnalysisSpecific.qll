@@ -200,11 +200,11 @@ private module Impl {
    * `Collection`).
    */
   predicate containerSizeAccess(Expr e) {
-    e.(MethodAccess).getMethod() instanceof StringLengthMethod
+    e.(MethodCall).getMethod() instanceof StringLengthMethod
     or
-    e.(MethodAccess).getMethod() instanceof CollectionSizeMethod
+    e.(MethodCall).getMethod() instanceof CollectionSizeMethod
     or
-    e.(MethodAccess).getMethod() instanceof MapSizeMethod
+    e.(MethodCall).getMethod() instanceof MapSizeMethod
   }
 
   /** Holds if `e` is by definition strictly positive. */
@@ -218,7 +218,7 @@ private module Impl {
     // types handled in `specificSubExprSign`.
     e instanceof ArrayAccess and e.getType() instanceof NumericOrCharType
     or
-    e instanceof MethodAccess and e.getType() instanceof NumericOrCharType
+    e instanceof MethodCall and e.getType() instanceof NumericOrCharType
     or
     e instanceof ClassInstanceExpr and e.getType() instanceof NumericOrCharType
   }
@@ -267,7 +267,7 @@ private module Impl {
 
   /** Holds if `f` can have any sign. */
   predicate fieldWithUnknownSign(Field f) {
-    exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
+    exists(ReflectiveGetFieldCall rfa | rfa.inferAccessedField() = f)
   }
 
   /** Holds if `f` is accessed in an increment operation. */

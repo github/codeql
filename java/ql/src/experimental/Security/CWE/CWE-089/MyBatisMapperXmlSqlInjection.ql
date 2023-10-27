@@ -31,7 +31,7 @@ private module MyBatisMapperXmlSqlInjectionConfig implements DataFlow::ConfigSig
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().getDeclaringType() instanceof TypeObject and
       ma.getMethod().getName() = "toString" and
       ma.getQualifier() = node1.asExpr() and
@@ -45,7 +45,7 @@ private module MyBatisMapperXmlSqlInjectionFlow =
 
 from
   MyBatisMapperXmlSqlInjectionFlow::PathNode source,
-  MyBatisMapperXmlSqlInjectionFlow::PathNode sink, MyBatisMapperXmlElement mmxe, MethodAccess ma,
+  MyBatisMapperXmlSqlInjectionFlow::PathNode sink, MyBatisMapperXmlElement mmxe, MethodCall ma,
   string unsafeExpression
 where
   MyBatisMapperXmlSqlInjectionFlow::flowPath(source, sink) and

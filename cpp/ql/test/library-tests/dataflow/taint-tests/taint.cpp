@@ -13,8 +13,8 @@ void arithAssignments(int source1, int clean1) {
   source1++;
   ++source1;
   source1 += 1;
-  sink(source1); // $ ast ir=12:13 ir=12:22
-  sink(++source1); // $ ast ir=12:13 ir=12:22
+  sink(source1); // $ ast,ir
+  sink(++source1); // $ ast,ir
 }
 
 // --- globals ---
@@ -710,4 +710,14 @@ void test_strncpy(char* d, char* s) {
 	argument_source(s);
 	strncpy(d, s, 16);
 	sink(d); // $ ast ir
+}
+
+char* indirect_source();
+
+void test_strtok_indirect() {
+	char *source = indirect_source();
+	const char* delim = ",.-;:_";
+	char* tokenized = strtok(source, delim);
+	sink(*tokenized); // $ ir MISSING: ast
+	sink(*delim);
 }

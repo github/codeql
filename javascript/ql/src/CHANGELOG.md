@@ -1,3 +1,9 @@
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Added the `AmdModuleDefinition::Range` class, making it possible to define custom aliases for the AMD `define` function.
+
 ## 0.8.0
 
 No user-facing changes.

@@ -34,7 +34,7 @@ class Rabbit
 
 protocol BlockMode { }
 
-struct CBC: BlockMode { 
+struct CBC: BlockMode {
 	init(iv: Array<UInt8>) { }
 }
 
@@ -50,7 +50,7 @@ struct CFB: BlockMode {
 final class GCM: BlockMode {
 	enum Mode { case combined, detached }
 	init(iv: Array<UInt8>, additionalAuthenticatedData: Array<UInt8>? = nil, tagLength: Int = 16, mode: Mode = .detached) { }
-	convenience init(iv: Array<UInt8>, authenticationTag: Array<UInt8>, additionalAuthenticatedData: Array<UInt8>? = nil, mode: Mode = .detached) { 
+	convenience init(iv: Array<UInt8>, authenticationTag: Array<UInt8>, additionalAuthenticatedData: Array<UInt8>? = nil, mode: Mode = .detached) {
 		self.init(iv: iv, additionalAuthenticatedData: additionalAuthenticatedData, tagLength: authenticationTag.count, mode: mode)
 	}
 }
@@ -126,7 +126,7 @@ func test() {
 
 	// Rabbit
 	let rb1 = Rabbit(key: key, iv: iv) // BAD
-	let rb2 = Rabbit(key: key, iv: iv2) // BAD [NOT DETECTED]
+	let rb2 = Rabbit(key: key, iv: iv2) // BAD
 	let rb3 = Rabbit(key: keyString, iv: ivString) // BAD
 	let rg1 = Rabbit(key: key, iv: randomIv) // GOOD
 	let rg2 = Rabbit(key: keyString, iv: randomIvString) // GOOD

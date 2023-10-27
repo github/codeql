@@ -103,7 +103,7 @@ private module TaintedIntentComponentConfig implements DataFlow::ConfigSig {
 private module TaintedIntentComponentFlow = TaintTracking::Global<TaintedIntentComponentConfig>;
 
 /** A call to a method that changes the component of an `Intent`. */
-private class IntentSetComponent extends MethodAccess {
+private class IntentSetComponent extends MethodCall {
   int sinkArg;
 
   IntentSetComponent() {

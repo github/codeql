@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.crypto.spec", "IvParameterSpec", True, "IvParameterSpec", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "GCMParameterSpec", True, "GCMParameterSpec", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "RC2ParameterSpec", True, "RC2ParameterSpec", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "RC5ParameterSpec", True, "RC5ParameterSpec", "", "", "Argument[3]", "Argument[this]", "taint", "manual"]

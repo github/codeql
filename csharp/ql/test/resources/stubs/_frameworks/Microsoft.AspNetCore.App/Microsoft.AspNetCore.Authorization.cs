@@ -6,6 +6,7 @@ namespace Microsoft
     {
         namespace Authorization
         {
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public class AllowAnonymousAttribute : System.Attribute, Microsoft.AspNetCore.Authorization.IAllowAnonymous
             {
                 public AllowAnonymousAttribute() => throw null;
@@ -120,6 +121,7 @@ namespace Microsoft
                 public static System.Threading.Tasks.Task<Microsoft.AspNetCore.Authorization.AuthorizationResult> AuthorizeAsync(this Microsoft.AspNetCore.Authorization.IAuthorizationService service, System.Security.Claims.ClaimsPrincipal user, Microsoft.AspNetCore.Authorization.AuthorizationPolicy policy) => throw null;
                 public static System.Threading.Tasks.Task<Microsoft.AspNetCore.Authorization.AuthorizationResult> AuthorizeAsync(this Microsoft.AspNetCore.Authorization.IAuthorizationService service, System.Security.Claims.ClaimsPrincipal user, string policyName) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = true, Inherited = true)]
             public class AuthorizeAttribute : System.Attribute, Microsoft.AspNetCore.Authorization.IAuthorizeData
             {
                 public string AuthenticationSchemes { get => throw null; set { } }

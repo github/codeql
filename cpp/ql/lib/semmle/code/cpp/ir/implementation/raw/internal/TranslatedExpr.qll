@@ -1,4 +1,5 @@
 private import cpp
+private import semmle.code.cpp.internal.ExtractorVersion
 private import semmle.code.cpp.ir.implementation.IRType
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
@@ -649,7 +650,9 @@ class TranslatedPrefixCrementOperation extends TranslatedCrementOperation {
   override PrefixCrementOperation expr;
 
   override Instruction getResult() {
-    if expr.isPRValueCategory()
+    // The following distinction is needed to work around extractor limitations
+    // in old versions of the extractor.
+    if expr.isPRValueCategory() and not isExtractorFrontendVersion65OrHigher()
     then
       // If this is C, then the result of a prefix crement is a prvalue for the
       // new value assigned to the operand. If this is C++, then the result is
@@ -1504,7 +1507,9 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
   }
 
   final override Instruction getResult() {
-    if expr.isPRValueCategory()
+    // The following distinction is needed to work around extractor limitations
+    // in old versions of the extractor.
+    if expr.isPRValueCategory() and not isExtractorFrontendVersion65OrHigher()
     then
       // If this is C, then the result of an assignment is a prvalue for the new
       // value assigned to the left operand. If this is C++, then the result is
@@ -1642,7 +1647,9 @@ class TranslatedAssignOperation extends TranslatedNonConstantExpr {
   }
 
   final override Instruction getResult() {
-    if expr.isPRValueCategory()
+    // The following distinction is needed to work around extractor limitations
+    // in old versions of the extractor.
+    if expr.isPRValueCategory() and not isExtractorFrontendVersion65OrHigher()
     then
       // If this is C, then the result of an assignment is a prvalue for the new
       // value assigned to the left operand. If this is C++, then the result is
@@ -2191,8 +2198,16 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
         not this.elseIsVoid() and tag = ConditionValueFalseStoreTag()
       ) and
       opcode instanceof Opcode::Store and
-      resultType = this.getResultType()
+      if isExtractorFrontendVersion65OrHigher()
+      then
+        not expr.hasLValueToRValueConversion() and
+        resultType = this.getResultType()
+        or
+        expr.hasLValueToRValueConversion() and
+        resultType = getTypeForPRValue(expr.getType())
+      else resultType = this.getResultType()
       or
+      (not expr.hasLValueToRValueConversion() or not isExtractorFrontendVersion65OrHigher()) and
       tag = ConditionValueResultLoadTag() and
       opcode instanceof Opcode::Load and
       resultType = this.getResultType()
@@ -2222,8 +2237,16 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
       )
       or
       tag = ConditionValueResultTempAddressTag() and
-      result = this.getInstruction(ConditionValueResultLoadTag())
+      if isExtractorFrontendVersion65OrHigher()
+      then
+        not expr.hasLValueToRValueConversion() and
+        result = this.getInstruction(ConditionValueResultLoadTag())
+        or
+        expr.hasLValueToRValueConversion() and
+        result = this.getParent().getChildSuccessor(this)
+      else result = this.getInstruction(ConditionValueResultLoadTag())
       or
+      (not expr.hasLValueToRValueConversion() or not isExtractorFrontendVersion65OrHigher()) and
       tag = ConditionValueResultLoadTag() and
       result = this.getParent().getChildSuccessor(this)
     )
@@ -2252,18 +2275,24 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
         result = this.getElse().getResult()
       )
       or
+      (not expr.hasLValueToRValueConversion() or not isExtractorFrontendVersion65OrHigher()) and
       tag = ConditionValueResultLoadTag() and
-      (
-        operandTag instanceof AddressOperandTag and
-        result = this.getInstruction(ConditionValueResultTempAddressTag())
-      )
+      operandTag instanceof AddressOperandTag and
+      result = this.getInstruction(ConditionValueResultTempAddressTag())
     )
   }
 
   final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
     not this.resultIsVoid() and
     tag = ConditionValueTempVar() and
-    type = this.getResultType()
+    if isExtractorFrontendVersion65OrHigher()
+    then
+      not expr.hasLValueToRValueConversion() and
+      type = this.getResultType()
+      or
+      expr.hasLValueToRValueConversion() and
+      type = getTypeForPRValue(expr.getType())
+    else type = this.getResultType()
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -2278,7 +2307,14 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
 
   final override Instruction getResult() {
     not this.resultIsVoid() and
-    result = this.getInstruction(ConditionValueResultLoadTag())
+    if isExtractorFrontendVersion65OrHigher()
+    then
+      expr.hasLValueToRValueConversion() and
+      result = this.getInstruction(ConditionValueResultTempAddressTag())
+      or
+      not expr.hasLValueToRValueConversion() and
+      result = this.getInstruction(ConditionValueResultLoadTag())
+    else result = this.getInstruction(ConditionValueResultLoadTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -3238,10 +3274,18 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
     expr instanceof AssignExpr
     or
     expr instanceof AssignOperation and
-    not expr.isPRValueCategory() // is C++
+    (
+      not expr.isPRValueCategory() // is C++
+      or
+      isExtractorFrontendVersion65OrHigher()
+    )
     or
     expr instanceof PrefixCrementOperation and
-    not expr.isPRValueCategory() // is C++
+    (
+      not expr.isPRValueCategory() // is C++
+      or
+      isExtractorFrontendVersion65OrHigher()
+    )
     or
     // Because the load is on the `e` in `e++`.
     expr instanceof PostfixCrementOperation

@@ -7,9 +7,12 @@ private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
  * Gets a function that might be called by `call`.
+ *
+ * This predicate does not take additional call targets
+ * from `AdditionalCallTarget` into account.
  */
 cached
-DataFlowCallable viableCallable(DataFlowCall call) {
+DataFlowCallable defaultViableCallable(DataFlowCall call) {
   DataFlowImplCommon::forceCachingInSameStage() and
   result = call.getStaticCallTarget()
   or
@@ -27,6 +30,17 @@ DataFlowCallable viableCallable(DataFlowCall call) {
   or
   // Virtual dispatch
   result = call.(VirtualDispatch::DataSensitiveCall).resolve()
+}
+
+/**
+ * Gets a function that might be called by `call`.
+ */
+cached
+DataFlowCallable viableCallable(DataFlowCall call) {
+  result = defaultViableCallable(call)
+  or
+  // Additional call targets
+  result = any(AdditionalCallTarget additional).viableTarget(call.getUnconvertedResultExpression())
 }
 
 /**

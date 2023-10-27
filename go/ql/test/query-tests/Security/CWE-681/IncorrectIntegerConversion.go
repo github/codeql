@@ -333,8 +333,11 @@ func testBoundsChecking(input string) {
 			_ = uint16(parsed)
 			_ = int16(parsed) // $ hasValueFlow="type conversion"
 		}
-		if parsed < 5 {
-			_ = uint16(parsed)
+		if parsed <= 255 {
+			_ = uint8(parsed)
+		}
+		if parsed <= 256 {
+			_ = uint8(parsed) // $ hasValueFlow="type conversion"
 		}
 		if err == nil && 1 == 1 && parsed < math.MaxInt8 {
 			_ = int8(parsed)
@@ -347,6 +350,15 @@ func testBoundsChecking(input string) {
 		}
 		_ = uint8(parsed)
 	}
+}
+
+func testBoundsChecking2(input string) error {
+	version, err := strconv.ParseUint(input, 10, 0)
+	if err != nil || version > math.MaxInt {
+		return fmt.Errorf("checksum has invalid version: %w", err)
+	}
+	_ = int(version)
+	return nil
 }
 
 func testRightShifted(input string) {

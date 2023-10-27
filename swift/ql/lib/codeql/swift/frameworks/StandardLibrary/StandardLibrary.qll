@@ -17,6 +17,7 @@ private import NsObject
 private import NsString
 private import NsUrl
 private import Numeric
+private import RawRepresentable
 private import PointerTypes
 private import Sequence
 private import Set

@@ -129,7 +129,7 @@ func forwarder() {
         (i: Int) -> Int in
         return 0
     })
-    sink(arg: clean)
+    sink(arg: clean) // clean
 }
 
 func lambdaFlows() {
@@ -900,6 +900,14 @@ func testAsyncFor () async {
     }
 }
 
+func usesAutoclosure(_ expr: @autoclosure () -> Int) {
+  sink(arg: expr()) // $ flow=908
+}
+
+func autoclosureTest() {
+  usesAutoclosure(source())
+}
+
 // ---
 
 protocol MyProtocol {
@@ -913,11 +921,13 @@ class MyProcotolImpl : MyProtocol {
 func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
 func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
 
+func sink(arg: Int) { }
+
 func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
-	sink(arg: x.source()) // $ flow=917
-	sink(arg: y.source()) // $ flow=918
-	sink(arg: getMyProtocol().source()) // $ flow=919
-	sink(arg: getMyProtocolImpl().source()) // $ flow=920
+	sink(arg: x.source()) // $ flow=927
+	sink(arg: y.source()) // $ flow=928
+	sink(arg: getMyProtocol().source()) // $ flow=929
+	sink(arg: getMyProtocolImpl().source()) // $ flow=930
 }
 
 // ---

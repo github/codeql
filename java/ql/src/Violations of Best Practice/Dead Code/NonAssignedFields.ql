@@ -27,7 +27,7 @@ predicate isClassOf(ParameterizedClass c, RefType t) {
  * Holds if field `f` is potentially accessed by an `AtomicReferenceFieldUpdater`.
  */
 predicate subjectToAtomicReferenceFieldUpdater(Field f) {
-  exists(Class arfu, Method newUpdater, MethodAccess c |
+  exists(Class arfu, Method newUpdater, MethodCall c |
     arfu.hasQualifiedName("java.util.concurrent.atomic", "AtomicReferenceFieldUpdater") and
     newUpdater = arfu.getAMethod() and
     newUpdater.hasName("newUpdater") and
@@ -42,7 +42,7 @@ predicate subjectToAtomicReferenceFieldUpdater(Field f) {
  * Holds if `f` is ever looked up reflectively.
  */
 predicate lookedUpReflectively(Field f) {
-  exists(MethodAccess getDeclaredField |
+  exists(MethodCall getDeclaredField |
     isClassOf(getDeclaredField.getQualifier().getType(), f.getDeclaringType()) and
     getDeclaredField.getMethod().hasName("getDeclaredField") and
     getDeclaredField.getArgument(0).(StringLiteral).getValue() = f.getName()

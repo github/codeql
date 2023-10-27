@@ -3,12 +3,12 @@ import semmle.code.java.dataflow.DataFlow
 import DataFlow
 
 predicate src0(Node n) {
-  n.asExpr().(MethodAccess).getMethod().hasName("src") or
+  n.asExpr().(MethodCall).getMethod().hasName("src") or
   n.asExpr().(FieldAccess).getField().hasName("fsrc")
 }
 
 predicate sink0(Node n) {
-  exists(MethodAccess sink |
+  exists(MethodCall sink |
     sink.getMethod().hasName("sink") and
     sink.getAnArgument() = n.asExpr()
   )

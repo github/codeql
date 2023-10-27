@@ -79,7 +79,7 @@ Expr clearlyNotNullExpr(Expr reason) {
     (reason = r1 or reason = r2)
   )
   or
-  exists(SsaVariable v, boolean branch, RValue rval, Guard guard |
+  exists(SsaVariable v, boolean branch, VarRead rval, Guard guard |
     guard = directNullGuard(v, branch, false) and
     guard.controls(rval.getBasicBlock(), branch) and
     reason = guard and
@@ -89,7 +89,7 @@ Expr clearlyNotNullExpr(Expr reason) {
   or
   exists(SsaVariable v | clearlyNotNull(v, reason) and result = v.getAUse())
   or
-  exists(Method m | m = result.(MethodAccess).getMethod() and reason = result |
+  exists(Method m | m = result.(MethodCall).getMethod() and reason = result |
     m.getDeclaringType().hasQualifiedName("com.google.common.base", "Strings") and
     m.hasName("nullToEmpty")
   )
@@ -187,7 +187,7 @@ Expr basicNullGuard(Expr e, boolean branch, boolean isnull) {
   or
   result.(InstanceOfExpr).getExpr() = e and branch = true and isnull = false
   or
-  exists(MethodAccess call |
+  exists(MethodCall call |
     call = result and
     call.getAnArgument() = e and
     nullCheckMethod(call.getMethod(), branch, isnull)
@@ -212,7 +212,7 @@ Expr basicNullGuard(Expr e, boolean branch, boolean isnull) {
 Expr basicOrCustomNullGuard(Expr e, boolean branch, boolean isnull) {
   result = basicNullGuard(e, branch, isnull)
   or
-  exists(MethodAccess call, Method m, int ix |
+  exists(MethodCall call, Method m, int ix |
     call = result and
     call.getArgument(ix) = e and
     call.getMethod().getSourceDeclaration() = m and

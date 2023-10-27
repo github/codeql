@@ -256,6 +256,7 @@ class DataFlowLocation = Location;
 private newtype TDataFlowCallable =
   TCallable(Callable c) or
   TFileScope(File f) or
+  TExternalFileScope() or
   TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
 class DataFlowCallable extends TDataFlowCallable {
@@ -268,6 +269,11 @@ class DataFlowCallable extends TDataFlowCallable {
    * Gets the `File` whose root scope corresponds to this `DataFlowCallable`, if any.
    */
   File asFileScope() { this = TFileScope(result) }
+
+  /**
+   * Holds if this `DataFlowCallable` is an external file scope.
+   */
+  predicate isExternalFileScope() { this = TExternalFileScope() }
 
   /**
    * Gets the `SummarizedCallable` corresponding to this `DataFlowCallable`, if any.
