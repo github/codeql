@@ -24,6 +24,6 @@ where
   sourceNode = source.getNode() and
   sinkNode = sink.getNode() and
   not sourceNode instanceof CleartextPasswordExpr // flagged by js/insufficient-password-hash
-select sinkNode, source, sink,
-  "A broken or weak cryptographic algorithm (configured $@) depends on $@.",
-  sinkNode.getInitialization(), "here", sourceNode, "sensitive data from " + sourceNode.describe()
+select sinkNode, source, sink, "$@ depends on $@.", sinkNode.getInitialization(),
+  "A broken or weak cryptographic algorithm", sourceNode,
+  "sensitive data from " + sourceNode.describe()
