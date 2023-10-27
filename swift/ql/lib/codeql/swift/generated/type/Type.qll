@@ -26,7 +26,7 @@ module Generated {
      *
      * This is the unique type we get after resolving aliases and desugaring. For example, given
      * ```
-     * typealias MyInt == Int
+     * typealias MyInt = Int
      * ```
      * then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
      */
