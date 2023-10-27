@@ -217,36 +217,65 @@ A.java:
 #   82|                         0: [NullLiteral] null
 #   83|                       1: [DefaultCase] default
 #   83|                         -1: [StringLiteral] "Not null"
-#   87|           0: [CatchClause] catch (...)
+#   85|                 7: [LocalVariableDeclStmt] var ...;
+#   85|                   1: [LocalVariableDeclExpr] whenTest
+#   85|                     0: [SwitchExpr] switch (...)
+#   85|                       -1: [CastExpr] (...)...
+#   85|                         0: [TypeAccess] String
+#   85|                         1: [VarAccess] thing
+#   86|                       0: [ConstCase] case ...
+#   86|                         -1: [StringLiteral] "It's constant"
+#   86|                         0: [StringLiteral] "constant"
+#   87|                       1: [PatternCase] case T t ...
+#   87|                         -3: [EQExpr] ... == ...
+#   87|                           0: [MethodCall] length(...)
+#   87|                             -1: [VarAccess] s
+#   87|                           1: [IntegerLiteral] 3
+#   87|                         -1: [StringLiteral] "It's 3 letters long"
+#-----|                         0: (Single Local Variable Declaration)
+#   87|                           0: [TypeAccess] String
+#   87|                           1: [LocalVariableDeclExpr] s
+#   88|                       2: [PatternCase] case T t ...
+#   88|                         -3: [EQExpr] ... == ...
+#   88|                           0: [MethodCall] length(...)
+#   88|                             -1: [VarAccess] s
+#   88|                           1: [IntegerLiteral] 5
+#   88|                         -1: [StringLiteral] "it's 5 letters long"
+#-----|                         0: (Single Local Variable Declaration)
+#   88|                           0: [TypeAccess] String
+#   88|                           1: [LocalVariableDeclExpr] s
+#   89|                       3: [DefaultCase] default
+#   89|                         -1: [StringLiteral] "It's something else"
+#   93|           0: [CatchClause] catch (...)
 #-----|             0: (Single Local Variable Declaration)
-#   87|               0: [TypeAccess] RuntimeException
-#   87|               1: [LocalVariableDeclExpr] rte
-#   87|             1: [BlockStmt] { ... }
-#   88|               0: [ReturnStmt] return ...
-#   92|     10: [Class] E
-#   96|       3: [FieldDeclaration] E A;
+#   93|               0: [TypeAccess] RuntimeException
+#   93|               1: [LocalVariableDeclExpr] rte
+#   93|             1: [BlockStmt] { ... }
+#   94|               0: [ReturnStmt] return ...
+#   98|     10: [Class] E
+#  102|       3: [FieldDeclaration] E A;
 #-----|         -3: (Javadoc)
-#   93|           1: [Javadoc] /** Javadoc for enum constant */
-#   94|             0: [JavadocText] Javadoc for enum constant
-#   96|         -1: [TypeAccess] E
-#   96|         0: [ClassInstanceExpr] new E(...)
-#   96|           -3: [TypeAccess] E
-#   97|       4: [FieldDeclaration] E B;
+#   99|           1: [Javadoc] /** Javadoc for enum constant */
+#  100|             0: [JavadocText] Javadoc for enum constant
+#  102|         -1: [TypeAccess] E
+#  102|         0: [ClassInstanceExpr] new E(...)
+#  102|           -3: [TypeAccess] E
+#  103|       4: [FieldDeclaration] E B;
 #-----|         -3: (Javadoc)
-#   93|           1: [Javadoc] /** Javadoc for enum constant */
-#   94|             0: [JavadocText] Javadoc for enum constant
-#   97|         -1: [TypeAccess] E
-#   97|         0: [ClassInstanceExpr] new E(...)
-#   97|           -3: [TypeAccess] E
-#   98|       5: [FieldDeclaration] E C;
+#   99|           1: [Javadoc] /** Javadoc for enum constant */
+#  100|             0: [JavadocText] Javadoc for enum constant
+#  103|         -1: [TypeAccess] E
+#  103|         0: [ClassInstanceExpr] new E(...)
+#  103|           -3: [TypeAccess] E
+#  104|       5: [FieldDeclaration] E C;
 #-----|         -3: (Javadoc)
-#   93|           1: [Javadoc] /** Javadoc for enum constant */
-#   94|             0: [JavadocText] Javadoc for enum constant
-#   98|         -1: [TypeAccess] E
-#   98|         0: [ClassInstanceExpr] new E(...)
-#   98|           -3: [TypeAccess] E
-#  104|     11: [FieldDeclaration] int i, ...;
+#   99|           1: [Javadoc] /** Javadoc for enum constant */
+#  100|             0: [JavadocText] Javadoc for enum constant
+#  104|         -1: [TypeAccess] E
+#  104|         0: [ClassInstanceExpr] new E(...)
+#  104|           -3: [TypeAccess] E
+#  110|     11: [FieldDeclaration] int i, ...;
 #-----|       -3: (Javadoc)
-#  101|         1: [Javadoc] /** Javadoc for fields */
-#  102|           0: [JavadocText] Javadoc for fields
-#  104|       -1: [TypeAccess] int
+#  107|         1: [Javadoc] /** Javadoc for fields */
+#  108|           0: [JavadocText] Javadoc for fields
+#  110|       -1: [TypeAccess] int

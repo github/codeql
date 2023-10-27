@@ -523,6 +523,9 @@ class PatternCase extends SwitchCase {
   /** Gets the variable declared by this pattern case. */
   LocalVariableDeclExpr getDecl() { result.isNthChildOf(this, 0) }
 
+  /** Gets the guard applicable to this pattern case, if any. */
+  Expr getGuard() { result.isNthChildOf(this, -3) }
+
   override string pp() { result = "case T t ..." }
 
   override string toString() { result = "case T t ..." }

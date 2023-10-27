@@ -82,6 +82,12 @@ class A {
                    case null -> "Null";
                    default -> "Not null";
                };
+               var whenTest = switch((String)thing) {
+                   case "constant" -> "It's constant";
+                   case String s when s.length() == 3 -> "It's 3 letters long";
+                   case String s when s.length() == 5 -> "it's 5 letters long";
+                   default -> "It's something else";
+               };
            }
        }
        catch (RuntimeException rte) {
