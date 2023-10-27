@@ -12,9 +12,9 @@ test.kt:
 #    2|         0: [ExprStmt] <Expr>;
 #    2|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    2|             0: [TypeAccess] Unit
-#    2|             1: [ArrayAccess] ...[...]
-#    2|               0: [VarAccess] arr
-#    2|               1: [IntegerLiteral] 1
+#    2|             1: [MethodCall] get(...)
+#    2|               -1: [VarAccess] arr
+#    2|               0: [IntegerLiteral] 1
 #    3|         1: [ExprStmt] <Expr>;
 #    3|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    3|             0: [TypeAccess] Unit
