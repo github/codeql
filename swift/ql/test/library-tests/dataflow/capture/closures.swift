@@ -187,5 +187,5 @@ func multi() {
   var y = source("multi", 1)
   var f = { () in x = y }
   f()
-  sink(x) // $ MISSING: hasValueFlow=multi
+  sink(x) // $ hasValueFlow=multi
 }

@@ -1387,7 +1387,12 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
  * by default as a heuristic.
  */
-predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+predicate allowParameterReturnInSelf(ParameterNode p) {
+  exists(Callable c |
+    c = p.(ParameterNodeImpl).getEnclosingCallable().asSourceCallable() and
+    CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(c)
+  )
+}
 
 /** An approximated `Content`. */
 class ContentApprox = Unit;
