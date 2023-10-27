@@ -4,6 +4,7 @@ namespace System
 {
     namespace ComponentModel
     {
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class BrowsableAttribute : System.Attribute
         {
             public bool Browsable { get => throw null; }
@@ -15,6 +16,7 @@ namespace System
             public static readonly System.ComponentModel.BrowsableAttribute No;
             public static readonly System.ComponentModel.BrowsableAttribute Yes;
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public class CategoryAttribute : System.Attribute
         {
             public static System.ComponentModel.CategoryAttribute Action { get => throw null; }
@@ -60,6 +62,7 @@ namespace System
             public virtual System.ComponentModel.IComponent this[int index] { get => throw null; }
             public virtual System.ComponentModel.IComponent this[string name] { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public class DescriptionAttribute : System.Attribute
         {
             public DescriptionAttribute() => throw null;
@@ -75,6 +78,7 @@ namespace System
         {
             namespace Serialization
             {
+                [System.AttributeUsage((System.AttributeTargets)1028, AllowMultiple = true, Inherited = true)]
                 public sealed class DesignerSerializerAttribute : System.Attribute
                 {
                     public DesignerSerializerAttribute(string serializerTypeName, string baseSerializerTypeName) => throw null;
@@ -86,6 +90,7 @@ namespace System
                 }
             }
         }
+        [System.AttributeUsage((System.AttributeTargets)1028, AllowMultiple = true, Inherited = true)]
         public sealed class DesignerAttribute : System.Attribute
         {
             public DesignerAttribute(string designerTypeName) => throw null;
@@ -99,6 +104,7 @@ namespace System
             public override int GetHashCode() => throw null;
             public override object TypeId { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = true)]
         public sealed class DesignerCategoryAttribute : System.Attribute
         {
             public string Category { get => throw null; }
@@ -119,6 +125,7 @@ namespace System
             Visible = 1,
             Content = 2,
         }
+        [System.AttributeUsage((System.AttributeTargets)960)]
         public sealed class DesignerSerializationVisibilityAttribute : System.Attribute
         {
             public static readonly System.ComponentModel.DesignerSerializationVisibilityAttribute Content;
@@ -131,6 +138,7 @@ namespace System
             public System.ComponentModel.DesignerSerializationVisibility Visibility { get => throw null; }
             public static readonly System.ComponentModel.DesignerSerializationVisibilityAttribute Visible;
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class DesignOnlyAttribute : System.Attribute
         {
             public DesignOnlyAttribute(bool isDesignOnly) => throw null;
@@ -142,6 +150,7 @@ namespace System
             public static readonly System.ComponentModel.DesignOnlyAttribute No;
             public static readonly System.ComponentModel.DesignOnlyAttribute Yes;
         }
+        [System.AttributeUsage((System.AttributeTargets)708)]
         public class DisplayNameAttribute : System.Attribute
         {
             public DisplayNameAttribute() => throw null;
@@ -153,6 +162,7 @@ namespace System
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)32767, AllowMultiple = true, Inherited = true)]
         public sealed class EditorAttribute : System.Attribute
         {
             public EditorAttribute() => throw null;
@@ -186,6 +196,7 @@ namespace System
             System.ComponentModel.ComponentCollection Components { get; }
             void Remove(System.ComponentModel.IComponent component);
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class ImmutableObjectAttribute : System.Attribute
         {
             public ImmutableObjectAttribute(bool immutable) => throw null;
@@ -197,6 +208,7 @@ namespace System
             public static readonly System.ComponentModel.ImmutableObjectAttribute No;
             public static readonly System.ComponentModel.ImmutableObjectAttribute Yes;
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class InitializationEventAttribute : System.Attribute
         {
             public InitializationEventAttribute(string eventName) => throw null;
@@ -236,6 +248,7 @@ namespace System
             object Invoke(System.Delegate method, object[] args);
             bool InvokeRequired { get; }
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class LocalizableAttribute : System.Attribute
         {
             public LocalizableAttribute(bool isLocalizable) => throw null;
@@ -247,6 +260,7 @@ namespace System
             public static readonly System.ComponentModel.LocalizableAttribute No;
             public static readonly System.ComponentModel.LocalizableAttribute Yes;
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class MergablePropertyAttribute : System.Attribute
         {
             public bool AllowMerge { get => throw null; }
@@ -258,6 +272,7 @@ namespace System
             public static readonly System.ComponentModel.MergablePropertyAttribute No;
             public static readonly System.ComponentModel.MergablePropertyAttribute Yes;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class NotifyParentPropertyAttribute : System.Attribute
         {
             public NotifyParentPropertyAttribute(bool notifyParent) => throw null;
@@ -269,6 +284,7 @@ namespace System
             public bool NotifyParent { get => throw null; }
             public static readonly System.ComponentModel.NotifyParentPropertyAttribute Yes;
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class ParenthesizePropertyNameAttribute : System.Attribute
         {
             public ParenthesizePropertyNameAttribute() => throw null;
@@ -279,6 +295,7 @@ namespace System
             public override bool IsDefaultAttribute() => throw null;
             public bool NeedParenthesis { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class ReadOnlyAttribute : System.Attribute
         {
             public ReadOnlyAttribute(bool isReadOnly) => throw null;
@@ -296,6 +313,7 @@ namespace System
             All = 1,
             Repaint = 2,
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class RefreshPropertiesAttribute : System.Attribute
         {
             public static readonly System.ComponentModel.RefreshPropertiesAttribute All;

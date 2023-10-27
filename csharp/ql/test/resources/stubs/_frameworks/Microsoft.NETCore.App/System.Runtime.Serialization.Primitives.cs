@@ -6,6 +6,7 @@ namespace System
     {
         namespace Serialization
         {
+            [System.AttributeUsage((System.AttributeTargets)12, Inherited = false, AllowMultiple = false)]
             public sealed class CollectionDataContractAttribute : System.Attribute
             {
                 public CollectionDataContractAttribute() => throw null;
@@ -22,12 +23,14 @@ namespace System
                 public string Namespace { get => throw null; set { } }
                 public string ValueName { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)3, Inherited = false, AllowMultiple = true)]
             public sealed class ContractNamespaceAttribute : System.Attribute
             {
                 public string ClrNamespace { get => throw null; set { } }
                 public string ContractNamespace { get => throw null; }
                 public ContractNamespaceAttribute(string contractNamespace) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)28, Inherited = false, AllowMultiple = false)]
             public sealed class DataContractAttribute : System.Attribute
             {
                 public DataContractAttribute() => throw null;
@@ -38,6 +41,7 @@ namespace System
                 public string Name { get => throw null; set { } }
                 public string Namespace { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)384, Inherited = false, AllowMultiple = false)]
             public sealed class DataMemberAttribute : System.Attribute
             {
                 public DataMemberAttribute() => throw null;
@@ -47,12 +51,14 @@ namespace System
                 public string Name { get => throw null; set { } }
                 public int Order { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)256, Inherited = false, AllowMultiple = false)]
             public sealed class EnumMemberAttribute : System.Attribute
             {
                 public EnumMemberAttribute() => throw null;
                 public bool IsValueSetExplicitly { get => throw null; }
                 public string Value { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)384, Inherited = false, AllowMultiple = false)]
             public sealed class IgnoreDataMemberAttribute : System.Attribute
             {
                 public IgnoreDataMemberAttribute() => throw null;
@@ -77,6 +83,7 @@ namespace System
                 void GetKnownCustomDataTypes(System.Collections.ObjectModel.Collection<System.Type> customDataTypes);
                 System.Type GetReferencedTypeOnImport(string typeName, string typeNamespace, object customData);
             }
+            [System.AttributeUsage((System.AttributeTargets)12, Inherited = true, AllowMultiple = true)]
             public sealed class KnownTypeAttribute : System.Attribute
             {
                 public KnownTypeAttribute(string methodName) => throw null;

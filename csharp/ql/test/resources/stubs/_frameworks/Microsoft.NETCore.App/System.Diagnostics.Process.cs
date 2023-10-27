@@ -24,6 +24,7 @@ namespace System
             public string Data { get => throw null; }
         }
         public delegate void DataReceivedEventHandler(object sender, System.Diagnostics.DataReceivedEventArgs e);
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public class MonitoringDescriptionAttribute : System.ComponentModel.DescriptionAttribute
         {
             public MonitoringDescriptionAttribute(string description) => throw null;

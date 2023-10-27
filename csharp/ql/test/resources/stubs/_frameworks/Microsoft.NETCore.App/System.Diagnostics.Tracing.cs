@@ -23,6 +23,7 @@ namespace System
                 Recursive = 4,
                 Detachable = 8,
             }
+            [System.AttributeUsage((System.AttributeTargets)64)]
             public sealed class EventAttribute : System.Attribute
             {
                 public System.Diagnostics.Tracing.EventActivityOptions ActivityOptions { get => throw null; set { } }
@@ -66,11 +67,13 @@ namespace System
                 public void WriteMetric(double value) => throw null;
                 public void WriteMetric(float value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)12, Inherited = false)]
             public class EventDataAttribute : System.Attribute
             {
                 public EventDataAttribute() => throw null;
                 public string Name { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)128)]
             public class EventFieldAttribute : System.Attribute
             {
                 public EventFieldAttribute() => throw null;
@@ -92,6 +95,7 @@ namespace System
             {
                 None = 0,
             }
+            [System.AttributeUsage((System.AttributeTargets)128)]
             public class EventIgnoreAttribute : System.Attribute
             {
                 public EventIgnoreAttribute() => throw null;
@@ -220,6 +224,7 @@ namespace System
                 protected void WriteEventWithRelatedActivityId(int eventId, System.Guid relatedActivityId, params object[] args) => throw null;
                 protected unsafe void WriteEventWithRelatedActivityIdCore(int eventId, System.Guid* relatedActivityId, int eventDataCount, System.Diagnostics.Tracing.EventSource.EventData* data) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4)]
             public sealed class EventSourceAttribute : System.Attribute
             {
                 public EventSourceAttribute() => throw null;
@@ -297,6 +302,7 @@ namespace System
                 public System.TimeSpan DisplayRateTimeScale { get => throw null; set { } }
                 public override string ToString() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64)]
             public sealed class NonEventAttribute : System.Attribute
             {
                 public NonEventAttribute() => throw null;

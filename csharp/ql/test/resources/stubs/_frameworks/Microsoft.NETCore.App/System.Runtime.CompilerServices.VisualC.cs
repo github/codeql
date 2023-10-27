@@ -9,10 +9,12 @@ namespace System
             public static class CompilerMarshalOverride
             {
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true)]
             public sealed class CppInlineNamespaceAttribute : System.Attribute
             {
                 public CppInlineNamespaceAttribute(string dottedName) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)8)]
             public sealed class HasCopySemanticsAttribute : System.Attribute
             {
                 public HasCopySemanticsAttribute() => throw null;
@@ -47,15 +49,18 @@ namespace System
             public static class IsUdtReturn
             {
             }
+            [System.AttributeUsage((System.AttributeTargets)8, Inherited = true)]
             public sealed class NativeCppClassAttribute : System.Attribute
             {
                 public NativeCppClassAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1052, AllowMultiple = true, Inherited = false)]
             public sealed class RequiredAttributeAttribute : System.Attribute
             {
                 public RequiredAttributeAttribute(System.Type requiredContract) => throw null;
                 public System.Type RequiredContract { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)16)]
             public sealed class ScopelessEnumAttribute : System.Attribute
             {
                 public ScopelessEnumAttribute() => throw null;

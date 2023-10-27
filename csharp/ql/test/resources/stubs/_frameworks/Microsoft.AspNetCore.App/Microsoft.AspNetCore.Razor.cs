@@ -24,6 +24,7 @@ namespace Microsoft
                     public override void Reinitialize() => throw null;
                     public override void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = false)]
                 public sealed class HtmlAttributeNameAttribute : System.Attribute
                 {
                     public HtmlAttributeNameAttribute() => throw null;
@@ -32,6 +33,7 @@ namespace Microsoft
                     public bool DictionaryAttributePrefixSet { get => throw null; }
                     public string Name { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = false)]
                 public sealed class HtmlAttributeNotBoundAttribute : System.Attribute
                 {
                     public HtmlAttributeNotBoundAttribute() => throw null;
@@ -43,6 +45,7 @@ namespace Microsoft
                     NoQuotes = 2,
                     Minimized = 3,
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = false)]
                 public sealed class HtmlTargetElementAttribute : System.Attribute
                 {
                     public string Attributes { get => throw null; set { } }
@@ -73,6 +76,7 @@ namespace Microsoft
                     public override unsafe bool TryEncodeUnicodeScalar(int unicodeScalar, char* buffer, int bufferLength, out int numberOfCharactersWritten) => throw null;
                     public override bool WillEncode(int unicodeScalar) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
                 public sealed class OutputElementHintAttribute : System.Attribute
                 {
                     public OutputElementHintAttribute(string outputElement) => throw null;
@@ -89,6 +93,7 @@ namespace Microsoft
                     public bool TryGetAttribute(string name, out Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute attribute) => throw null;
                     public bool TryGetAttributes(string name, out System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute> attributes) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, Inherited = false, AllowMultiple = false)]
                 public sealed class RestrictChildrenAttribute : System.Attribute
                 {
                     public System.Collections.Generic.IEnumerable<string> ChildTags { get => throw null; }
