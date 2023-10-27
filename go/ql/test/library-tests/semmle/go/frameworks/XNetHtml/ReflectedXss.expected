@@ -1,7 +1,9 @@
 edges
-| test.go:11:2:11:42 | ... := ...[0] | test.go:14:42:14:53 | selection of Value |
-| test.go:14:22:14:54 | call to UnescapeString | test.go:14:15:14:55 | type conversion |
-| test.go:14:42:14:53 | selection of Value | test.go:14:22:14:54 | call to UnescapeString |
+| test.go:11:12:11:22 | selection of URL | test.go:11:12:11:30 | call to Query |
+| test.go:11:12:11:30 | call to Query | test.go:11:12:11:44 | call to Get |
+| test.go:11:12:11:44 | call to Get | test.go:14:42:14:47 | param1 |
+| test.go:14:22:14:48 | call to UnescapeString | test.go:14:15:14:49 | type conversion |
+| test.go:14:42:14:47 | param1 | test.go:14:22:14:48 | call to UnescapeString |
 | test.go:16:2:16:36 | ... := ...[0] | test.go:17:15:17:31 | type conversion |
 | test.go:16:2:16:36 | ... := ...[0] | test.go:28:22:28:25 | node |
 | test.go:16:24:16:35 | selection of Body | test.go:16:2:16:36 | ... := ...[0] |
@@ -54,10 +56,12 @@ edges
 | test.go:49:22:49:32 | &... [pointer] | test.go:49:23:49:32 | cleanNode2 |
 | test.go:49:23:49:32 | cleanNode2 | test.go:49:22:49:32 | &... [pointer] |
 nodes
-| test.go:11:2:11:42 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:14:15:14:55 | type conversion | semmle.label | type conversion |
-| test.go:14:22:14:54 | call to UnescapeString | semmle.label | call to UnescapeString |
-| test.go:14:42:14:53 | selection of Value | semmle.label | selection of Value |
+| test.go:11:12:11:22 | selection of URL | semmle.label | selection of URL |
+| test.go:11:12:11:30 | call to Query | semmle.label | call to Query |
+| test.go:11:12:11:44 | call to Get | semmle.label | call to Get |
+| test.go:14:15:14:49 | type conversion | semmle.label | type conversion |
+| test.go:14:22:14:48 | call to UnescapeString | semmle.label | call to UnescapeString |
+| test.go:14:42:14:47 | param1 | semmle.label | param1 |
 | test.go:16:2:16:36 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:16:24:16:35 | selection of Body | semmle.label | selection of Body |
 | test.go:17:15:17:31 | type conversion | semmle.label | type conversion |
@@ -107,7 +111,7 @@ nodes
 | test.go:49:23:49:32 | cleanNode2 | semmle.label | cleanNode2 |
 subpaths
 #select
-| test.go:14:15:14:55 | type conversion | test.go:11:2:11:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:11:2:11:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:14:15:14:49 | type conversion | test.go:11:12:11:22 | selection of URL | test.go:14:15:14:49 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:11:12:11:22 | selection of URL | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:17:15:17:31 | type conversion | test.go:16:24:16:35 | selection of Body | test.go:17:15:17:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:20:15:20:32 | type conversion | test.go:19:36:19:47 | selection of Body | test.go:20:15:20:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:19:36:19:47 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:23:15:23:35 | type conversion | test.go:22:33:22:44 | selection of Body | test.go:23:15:23:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:22:33:22:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
