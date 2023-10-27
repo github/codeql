@@ -15,6 +15,13 @@ func captureList() {
   }()
 }
 
+func withoutCaptureList() {
+  let y: Int = source("withoutCaptureList", 124);
+  { [] () in
+     sink(y) // $ hasValueFlow=withoutCaptureList
+  }()
+}
+
 func setAndCallEscape() {
   let x = source("setAndCallEscape", 0)
 
