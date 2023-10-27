@@ -181,3 +181,11 @@ class S {
     sink(self.bf2); // $ MISSING: hasValueFlow
   }
 }
+
+func multi() {
+  var x = 0
+  var y = source("multi", 1)
+  var f = { () in x = y }
+  f()
+  sink(x) // $ MISSING: hasValueFlow=multi
+}
