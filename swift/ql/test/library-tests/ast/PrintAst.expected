@@ -246,10 +246,6 @@ cfg.swift:
 #   40|               getExpr(): [DefaultArgumentExpr] default terminator
 #   42|     getElement(1): [ReturnStmt] return ...
 #   42|       getResult(): [IntegerLiteralExpr] 0
-#   35| [ConcreteVarDecl] withParam
-#   35|     Type = Int
-#   39| [ConcreteVarDecl] error
-#   39|     Type = Error
 #   45| [NamedFunction] createClosure1(s:)
 #   45|     InterfaceType = (String) -> () -> String
 #   45|   getParam(0): [ParamDecl] s
@@ -5983,10 +5979,6 @@ patterns.swift:
 #   50|           getElement(0): [StringLiteralExpr] false
 #   16| [ConcreteVarDecl] $match
 #   16|     Type = Int
-#   28| [ConcreteVarDecl] i
-#   28|     Type = Int
-#   34| [ConcreteVarDecl] n
-#   34|     Type = Int
 #   54| [NamedFunction] bound_and_unbound()
 #   54|     InterfaceType = () -> ()
 #   54|   getBody(): [BraceStmt] { ... }
@@ -6651,62 +6643,24 @@ patterns.swift:
 #  180|           getPattern(): [AnyPattern] _
 #  181|         getBody(): [BraceStmt] { ... }
 #  181|           getElement(0): [TupleExpr] (...)
-#   83| [ConcreteVarDecl] a
-#   83|     Type = (Int)
-#   85| [ConcreteVarDecl] a
-#   85|     Type = Int
-#   85| [ConcreteVarDecl] b
-#   85|     Type = Int
-#   88| [ConcreteVarDecl] a
-#   88|     Type = Int
 #   92| [ConcreteVarDecl] x
 #   92|     Type = (Int)
 #   95| [ConcreteVarDecl] x
 #   95|     Type = Int
 #   95| [ConcreteVarDecl] y
 #   95|     Type = Int
-#  105| [ConcreteVarDecl] a
-#  105|     Type = (Int)
-#  107| [ConcreteVarDecl] a
-#  107|     Type = Int
-#  107| [ConcreteVarDecl] b
-#  107|     Type = Int
-#  110| [ConcreteVarDecl] a
-#  110|     Type = Int
 #  114| [ConcreteVarDecl] x
 #  114|     Type = (Int)
 #  117| [ConcreteVarDecl] x
 #  117|     Type = Int
 #  117| [ConcreteVarDecl] y
 #  117|     Type = Int
-#  127| [ConcreteVarDecl] a
-#  127|     Type = (Int)
-#  129| [ConcreteVarDecl] a
-#  129|     Type = Int
-#  129| [ConcreteVarDecl] b
-#  129|     Type = Int
-#  132| [ConcreteVarDecl] a
-#  132|     Type = Int
 #  136| [ConcreteVarDecl] x
 #  136|     Type = (Int)
 #  139| [ConcreteVarDecl] x
 #  139|     Type = Int
 #  139| [ConcreteVarDecl] y
 #  139|     Type = Int
-#  149| [ConcreteVarDecl] a
-#  149|     Type = (Int)
-#  151| [ConcreteVarDecl] a
-#  151|     Type = Int
-#  151| [ConcreteVarDecl] b
-#  151|     Type = Int
-#  154| [ConcreteVarDecl] a
-#  154|     Type = Int
-#  154| [ConcreteVarDecl] b
-#  154|     Type = Int
-#  154| [ConcreteVarDecl] c
-#  154|     Type = Int
-#  158| [ConcreteVarDecl] a
-#  158|     Type = Int
 #  162| [ConcreteVarDecl] x
 #  162|     Type = (Int)
 #  165| [ConcreteVarDecl] x
@@ -6715,16 +6669,6 @@ patterns.swift:
 #  165|     Type = Int
 #  169| [ConcreteVarDecl] c
 #  169|     Type = Int
-#  174| [ConcreteVarDecl] a
-#  174|     Type = Int
-#  174| [ConcreteVarDecl] b
-#  174|     Type = Int
-#  174| [ConcreteVarDecl] c
-#  174|     Type = Int
-#  174| [ConcreteVarDecl] d
-#  174|     Type = Int
-#  174| [ConcreteVarDecl] e
-#  174|     Type = Int
 statements.swift:
 #    1| [NamedFunction] loop()
 #    1|     InterfaceType = () -> ()
