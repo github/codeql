@@ -56,7 +56,7 @@ func getVaList(_ args: [CVarArg]) -> CVaListPointer { return (nil as CVaListPoin
 
 func MyLog(_ format: String, _ args: CVarArg...) {
     withVaList(args) { arglist in
-        NSLogv(format, arglist) // BAD
+        NSLogv(format, arglist) // BAD [NOT DETECTED]
     }
 }
 
