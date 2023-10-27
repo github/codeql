@@ -942,7 +942,30 @@ private module CaptureInput implements VariableCapture::InputSig {
   }
 
   class Callable extends S::Callable {
-    predicate isConstructor() { this instanceof S::Initializer }
+    predicate isConstructor() {
+      // A class declaration cannot capture a variable in Swift. Consider this hypothetical example:
+      // ```
+      // protocol Interface { }
+      // func foo() -> Interface {
+      //   let y = 42
+      //   class Impl : Interface {
+      //     let x : Int
+      //     init() {
+      //         x = y
+      //     }
+      //   }
+      //   let object = Impl()
+      //   return object
+      // }
+      // ```
+      // The Swift compiler will reject this with an error message such as
+      // ```
+      // error: class declaration cannot close over value 'y' defined in outer scope
+      //          x = y
+      //              ^
+      // ```
+      none()
+    }
   }
 }
 
@@ -963,8 +986,6 @@ private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter()
   or
   result.(CaptureFlow::ThisParameterNode).getCallable() = n.(ClosureSelfParameterNode).getClosure()
-  or
-  result.(CaptureFlow::MallocNode).getClosureExpr() = n.getCfgNode().getNode().asAstNode() // TODO: figure out why the java version had PostUpdateNode logic here
   or
   exists(CaptureInput::VariableWrite write |
     result.(CaptureFlow::VariableWriteSourceNode).getVariableWrite() = write and
