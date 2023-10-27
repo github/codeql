@@ -488,19 +488,24 @@ module NSStringCompareOptionsFlagFlow = DataFlow::Global<NSStringCompareOptionsF
  * A call to a function that evaluates a regular expression because
  * `NSString.CompareOptions.regularExpression` is set as an `options` argument.
  */
-private class NSStringCompareOptionsRegexEval extends RegexEval {
-  NSStringCompareOptionsPotentialRegexEval potentialEval;
-
+private class NSStringCompareOptionsRegexEval extends RegexEval instanceof NSStringCompareOptionsPotentialRegexEval
+{
   NSStringCompareOptionsRegexEval() {
-    this = potentialEval and
     // check there is flow from a `NSString.CompareOptions.regularExpression` value to an `options` argument;
     // if there isn't, the input won't be interpretted as a regular expression.
-    NSStringCompareOptionsFlagFlow::flow(_, potentialEval.getAnOptionsInput())
+    NSStringCompareOptionsFlagFlow::flow(_,
+      this.(NSStringCompareOptionsPotentialRegexEval).getAnOptionsInput())
   }
 
-  override DataFlow::Node getRegexInputNode() { result = potentialEval.getRegexInput() }
+  override DataFlow::Node getRegexInputNode() {
+    result = this.(NSStringCompareOptionsPotentialRegexEval).getRegexInput()
+  }
 
-  override DataFlow::Node getStringInputNode() { result = potentialEval.getStringInput() }
+  override DataFlow::Node getStringInputNode() {
+    result = this.(NSStringCompareOptionsPotentialRegexEval).getStringInput()
+  }
 
-  override DataFlow::Node getAnOptionsInput() { result = potentialEval.getAnOptionsInput() }
+  override DataFlow::Node getAnOptionsInput() {
+    result = this.(NSStringCompareOptionsPotentialRegexEval).getAnOptionsInput()
+  }
 }
