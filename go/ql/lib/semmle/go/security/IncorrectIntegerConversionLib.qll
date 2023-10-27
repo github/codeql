@@ -3,10 +3,11 @@ import go
 /** The constant `math.MaxInt` or the constant `math.MaxUint`. */
 abstract private class MaxIntOrMaxUint extends DeclaredConstant {
   /**
-   * Gets the integer `x` such that `2.pow(x) - 1` is the value of this
-   * constant when the architecture has bit size `architectureBitSize`.
+   * Gets the (binary) order of magnitude when the architecture has bit size
+   * `architectureBitSize`, which is defined to be the integer `x` such that
+   * `2.pow(x) - 1` is the value of this constant.
    */
-  abstract int getX(int architectureBitSize);
+  abstract int getOrder(int architectureBitSize);
 
   /**
    * Holds if the value of this constant given `architectureBitSize` minus
@@ -15,7 +16,7 @@ abstract private class MaxIntOrMaxUint extends DeclaredConstant {
   predicate isBoundFor(int b, int architectureBitSize, float strictnessOffset) {
     // 2.pow(x) - 1 - strictnessOffset <= 2.pow(b) - 1
     exists(int x |
-      x = this.getX(architectureBitSize) and
+      x = this.getOrder(architectureBitSize) and
       b = validBitSize() and
       (
         strictnessOffset = 0 and x <= b
@@ -30,7 +31,7 @@ abstract private class MaxIntOrMaxUint extends DeclaredConstant {
 private class MaxInt extends MaxIntOrMaxUint {
   MaxInt() { this.hasQualifiedName("math", "MaxInt") }
 
-  override int getX(int architectureBitSize) {
+  override int getOrder(int architectureBitSize) {
     architectureBitSize = [32, 64] and result = architectureBitSize - 1
   }
 }
@@ -39,7 +40,7 @@ private class MaxInt extends MaxIntOrMaxUint {
 private class MaxUint extends MaxIntOrMaxUint {
   MaxUint() { this.hasQualifiedName("math", "MaxUint") }
 
-  override int getX(int architectureBitSize) {
+  override int getOrder(int architectureBitSize) {
     architectureBitSize = [32, 64] and result = architectureBitSize
   }
 }
