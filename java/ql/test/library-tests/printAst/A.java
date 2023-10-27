@@ -78,6 +78,10 @@ class A {
                    default:
                        yield "Something else";
                };
+               var nullTest = switch(thing) {
+                   case null -> "Null";
+                   default -> "Not null";
+               };
            }
        }
        catch (RuntimeException rte) {
