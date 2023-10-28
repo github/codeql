@@ -72,9 +72,7 @@ module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
 module UntrustedToAllowOriginConfigConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  additional predicate isSinkWrite(DataFlow::Node sink, GinCors::AllowOriginsWrite w) {
-    sink = w
-  }
+  additional predicate isSinkWrite(DataFlow::Node sink, GinCors::AllowOriginsWrite w) { sink = w }
 
   predicate isSink(DataFlow::Node sink) { isSinkWrite(sink, _) }
 }
@@ -96,17 +94,18 @@ predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOrigin) {
   exists(AllowCredentialsHeaderWrite allowCredentialsHW |
     allowCredentialsHW.getHeaderValue().toLowerCase() = "true"
   |
-  allowOrigin.(AllowOriginHeaderWrite).getResponseWriter() = allowCredentialsHW.getResponseWriter()
+    allowOrigin.(AllowOriginHeaderWrite).getResponseWriter() =
+      allowCredentialsHW.getResponseWriter()
   )
   or
   exists(GinCors::AllowCredentialsWrite allowCredentialsGin |
-    allowCredentialsGin.toString() = "true" 
-    |
+    allowCredentialsGin.toString() = "true"
+  |
     //flow only goes in one direction so fix this before PR
-    allowCredentialsGin.getConfig() = allowOrigin.(GinCors::AllowOriginsWrite).getConfig()
-    and
+    allowCredentialsGin.getConfig() = allowOrigin.(GinCors::AllowOriginsWrite).getConfig() and
     not exists(GinCors::AllowAllOriginsWrite allowAllOrigins |
-      allowAllOrigins.toString() = "true" //and DataFlow::localFlow(allowCredentialsGin.getBase(), allowAllOrigins.getBase())
+      allowAllOrigins.toString() = "true" and
+      allowCredentialsGin.getConfig() = allowAllOrigins.getConfig()
     )
   )
 }
@@ -119,8 +118,9 @@ predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOrigin) {
 predicate flowsFromUntrustedToAllowOrigin(DataFlow::ExprNode allowOriginHW, string message) {
   exists(DataFlow::Node sink |
     UntrustedToAllowOriginHeaderFlow::flowTo(sink) and
-    UntrustedToAllowOriginHeaderConfig::isSinkHW(sink, allowOriginHW) or
-    UntrustedToAllowOriginConfigFlow::flowTo(sink) and 
+    UntrustedToAllowOriginHeaderConfig::isSinkHW(sink, allowOriginHW)
+    or
+    UntrustedToAllowOriginConfigFlow::flowTo(sink) and
     UntrustedToAllowOriginConfigConfig::isSinkWrite(sink, allowOriginHW)
   |
     message =
@@ -136,14 +136,22 @@ predicate flowsFromUntrustedToAllowOrigin(DataFlow::ExprNode allowOriginHW, stri
 predicate allowOriginIsNull(DataFlow::ExprNode allowOrigin, string message) {
   allowOrigin.(AllowOriginHeaderWrite).getHeaderValue().toLowerCase() = "null" and
   message =
-    headerAllowOrigin() + " header is set to `" + allowOrigin.(AllowOriginHeaderWrite).getHeaderValue() + "`, and " +
-      headerAllowCredentials() + " is set to `true`"
+    headerAllowOrigin() + " header is set to `" +
+      allowOrigin.(AllowOriginHeaderWrite).getHeaderValue() + "`, and " + headerAllowCredentials() +
+      " is set to `true`"
   or
-  allowOrigin.(GinCors::AllowOriginsWrite).asExpr().(SliceLit).getAnElement().toString().matches("\"null%\"") and
+  allowOrigin
+      .(GinCors::AllowOriginsWrite)
+      .asExpr()
+      .(SliceLit)
+      .getAnElement()
+      .toString()
+      .toLowerCase()
+      .matches("\"null\"") and
   message =
-    headerAllowOrigin() + " header is set to `" + allowOrigin.(GinCors::AllowOriginsWrite).asExpr().(SliceLit).getAnElement().toString() + "`, and " +
+    headerAllowOrigin() + " header is set to `" + "null" + "`, and " +
+      //allowOrigin.(GinCors::AllowOriginsWrite).asExpr().(SliceLit).getAnElement().toString()
       headerAllowCredentials() + " is set to `true`"
-
 }
 
 /**
