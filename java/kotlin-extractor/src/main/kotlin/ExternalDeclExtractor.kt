@@ -63,7 +63,9 @@ class ExternalDeclExtractor(val logger: FileLogger, val compression: Compression
                     logger.info("Skipping extracting external decl $shortName")
                 } else {
                     val trapFile = manager.file
+                    logger.info("Will write TRAP file $trapFile")
                     val trapTmpFile = File.createTempFile("${trapFile.nameWithoutExtension}.", ".${trapFile.extension}.tmp", trapFile.parentFile)
+                    logger.debug("Writing temporary TRAP file $trapTmpFile")
                     try {
                         compression.bufferedWriter(trapTmpFile).use {
                             extractorFn(it, signature, manager)
@@ -72,6 +74,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val compression: Compression
                         if (!trapTmpFile.renameTo(trapFile)) {
                             logger.error("Failed to rename $trapTmpFile to $trapFile")
                         }
+                        logger.info("Finished writing TRAP file $trapFile")
                     } catch (e: Exception) {
                         manager.setHasError()
                         logger.error("Failed to extract '$shortName'. Partial TRAP file location is $trapTmpFile", e)
