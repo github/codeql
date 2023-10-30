@@ -23,9 +23,7 @@
  * configuration (see `InvalidPointerToDerefConfig`).
  *
  * The dataflow traversal defines the set of sources as any dataflow node `n` such that there exists a pointer-arithmetic
- * instruction `pai` found by `AllocationToInvalidPointer.qll` and a `n.asInstruction() >= pai + deltaDerefSourceAndPai`.
- * Here, `deltaDerefSourceAndPai` is the constant difference between the source we track for finding a dereference and the
- * pointer-arithmetic instruction.
+ * instruction `pai` found by `AllocationToInvalidPointer.qll` and a `n.asInstruction() = pai`.
  *
  * The set of sinks is defined as any dataflow node `n` such that `addr <= n.asInstruction() + deltaDerefSinkAndDerefAddress`
  * for some address operand `addr` and constant difference `deltaDerefSinkAndDerefAddress`. Since an address operand is
@@ -37,9 +35,8 @@
  * `deltaDerefSinkAndDerefAddress >= 0`. The load attached to `*p` is the "operation". To ensure that the path makes
  * intuitive sense, we only pick operations that are control-flow reachable from the dereference sink.
  *
- * To compute how many elements the dereference is beyond the end position of the allocation, we sum the two deltas
- * `deltaDerefSourceAndPai` and `deltaDerefSinkAndDerefAddress`. This is done in the `operationIsOffBy` predicate
- * (which is the only predicate exposed by this file).
+ * We use the `deltaDerefSinkAndDerefAddress` to compute how many elements the dereference is beyond the end position of
+ * the allocation. This is done in the `operationIsOffBy` predicate (which is the only predicate exposed by this file).
  *
  * Handling false positives:
  *
