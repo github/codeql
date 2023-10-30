@@ -23,13 +23,13 @@ _toolchain_info = {
         platform = "ubuntu2004",
         suffix = "ubuntu20.04",
         extension = "tar.gz",
-        sha = "5fca0c384a1cdf9b3d4f71bcab5ff27aaee25f4bc09a134b16fa7fcf34e34c45",
+        sha = "dd4b04c7f95c4ada4a2aacb66864b1ed20358313aaa4c880dc3974bf1eefa275",
     ),
     "macos": struct(
         platform = "xcode",
         suffix = "osx",
         extension = "pkg",
-        sha = "3cf7a4b2f3efcfcb4fef42b6588a7b1c54f7b0f2d0a479f41c3e1620b045f48e",
+        sha = "417d46f73b2e6b5da82ebbc8a5f4979f7187691fd42119157ba56d5a8bc89eda",
     ),
 }
 
