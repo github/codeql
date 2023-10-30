@@ -236,7 +236,12 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override ValueOrRefType getDeclaringType() { methods(this, _, result, _, _) }
 
-  override Type getReturnType() { methods(this, _, _, getTypeRef(result), _) }
+  override Type getReturnType() {
+    methods(this, _, _, result, _)
+    or
+    not methods(this, _, _, any(Type t), _) and
+    methods(this, _, _, getTypeRef(result), _)
+  }
 
   override Method getUnboundDeclaration() { methods(this, _, _, _, result) }
 
@@ -453,7 +458,12 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
 
   override ValueOrRefType getDeclaringType() { operators(this, _, _, result, _, _) }
 
-  override Type getReturnType() { operators(this, _, _, _, getTypeRef(result), _) }
+  override Type getReturnType() {
+    operators(this, _, _, _, result, _)
+    or
+    not operators(this, _, _, _, any(Type t), _) and
+    operators(this, _, _, _, getTypeRef(result), _)
+  }
 
   override Operator getUnboundDeclaration() { operators(this, _, _, _, _, result) }
 

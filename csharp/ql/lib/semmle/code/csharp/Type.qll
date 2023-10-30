@@ -110,9 +110,16 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     parent_namespace_declaration(this, result)
   }
 
+  private Class getExplicitBaseClass() {
+    extend(this, result)
+    or
+    not extend(this, any(Class c)) and
+    extend(this, getTypeRef(result))
+  }
+
   /** Gets the immediate base class of this class, if any. */
   final Class getBaseClass() {
-    extend(this, getTypeRef(result))
+    result = this.getExplicitBaseClass()
     or
     not extend(this, _) and
     not isObjectClass(this) and
@@ -122,7 +129,11 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   /** Gets an immediate base interface of this type, if any. */
-  Interface getABaseInterface() { implement(this, getTypeRef(result)) }
+  Interface getABaseInterface() {
+    implement(this, result)
+    or
+    implement(this, getTypeRef(result))
+  }
 
   /** Gets an immediate base type of this type, if any. */
   override ValueOrRefType getABaseType() {
@@ -672,7 +683,12 @@ class Enum extends ValueType, @enum_type {
    * }
    * ```
    */
-  IntegralType getUnderlyingType() { enum_underlying_type(this, getTypeRef(result)) }
+  IntegralType getUnderlyingType() {
+    enum_underlying_type(this, result)
+    or
+    not enum_underlying_type(this, any(Type t)) and
+    enum_underlying_type(this, getTypeRef(result))
+  }
 
   /**
    * Gets an `enum` constant declared in this `enum`, for example `Even`
@@ -855,7 +871,12 @@ class Interface extends RefType, @interface_type {
  */
 class DelegateType extends RefType, Parameterizable, @delegate_type {
   /** Gets the return type of this delegate. */
-  Type getReturnType() { delegate_return_type(this, getTypeRef(result)) }
+  Type getReturnType() {
+    delegate_return_type(this, result)
+    or
+    not delegate_return_type(this, any(Type t)) and
+    delegate_return_type(this, getTypeRef(result))
+  }
 
   /** Gets the annotated return type of this delegate. */
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
@@ -939,7 +960,12 @@ class UnmanagedCallingConvention extends CallingConvention {
  */
 class FunctionPointerType extends Type, Parameterizable, @function_pointer_type {
   /** Gets the return type of this function pointer. */
-  Type getReturnType() { function_pointer_return_type(this, getTypeRef(result)) }
+  Type getReturnType() {
+    function_pointer_return_type(this, result)
+    or
+    not function_pointer_return_type(this, any(Type t)) and
+    function_pointer_return_type(this, getTypeRef(result))
+  }
 
   /** Gets the calling convention. */
   CallingConvention getCallingConvention() {
@@ -950,6 +976,9 @@ class FunctionPointerType extends Type, Parameterizable, @function_pointer_type 
 
   /** Gets the unmanaged calling convention at index `i`. */
   Type getUnmanagedCallingConvention(int i) {
+    has_unmanaged_calling_conventions(this, i, result)
+    or
+    not has_unmanaged_calling_conventions(this, i, any(Type t)) and
     has_unmanaged_calling_conventions(this, i, getTypeRef(result))
   }
 
@@ -979,7 +1008,12 @@ class NullableType extends ValueType, ConstructedType, @nullable_type {
    * Gets the underlying value type of this nullable type.
    * For example `int` in `int?`.
    */
-  Type getUnderlyingType() { nullable_underlying_type(this, getTypeRef(result)) }
+  Type getUnderlyingType() {
+    nullable_underlying_type(this, result)
+    or
+    not nullable_underlying_type(this, any(Type t)) and
+    nullable_underlying_type(this, getTypeRef(result))
+  }
 
   override UnboundGenericStruct getUnboundGeneric() {
     result.hasQualifiedName("System", "Nullable<>")
@@ -1021,7 +1055,12 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   predicate isMultiDimensional() { this.getRank() > 1 }
 
   /** Gets the element type of this array, for example `int` in `int[]`. */
-  override Type getElementType() { array_element_type(this, _, _, getTypeRef(result)) }
+  override Type getElementType() {
+    array_element_type(this, _, _, result)
+    or
+    not array_element_type(this, _, _, any(Type t)) and
+    array_element_type(this, _, _, getTypeRef(result))
+  }
 
   /** Holds if this array type has the same shape (dimension and rank) as `that` array type. */
   predicate hasSameShapeAs(ArrayType that) {
@@ -1076,7 +1115,12 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
  * A pointer type, for example `char*`.
  */
 class PointerType extends DotNet::PointerType, Type, @pointer_type {
-  override Type getReferentType() { pointer_referent_type(this, getTypeRef(result)) }
+  override Type getReferentType() {
+    pointer_referent_type(this, result)
+    or
+    not pointer_referent_type(this, any(Type t)) and
+    pointer_referent_type(this, getTypeRef(result))
+  }
 
   override string toStringWithTypes() { result = DotNet::PointerType.super.toStringWithTypes() }
 
@@ -1134,7 +1178,12 @@ class UnknownType extends Type, @unknown_type {
  */
 class TupleType extends ValueType, @tuple_type {
   /** Gets the underlying type of this tuple, which is of type `System.ValueTuple`. */
-  Struct getUnderlyingType() { tuple_underlying_type(this, getTypeRef(result)) }
+  Struct getUnderlyingType() {
+    tuple_underlying_type(this, result)
+    or
+    not tuple_underlying_type(this, any(Type t)) and
+    tuple_underlying_type(this, getTypeRef(result))
+  }
 
   /**
    * Gets the `n`th element of this tuple, indexed from 0.
@@ -1196,7 +1245,11 @@ class TypeMention extends @type_mention {
   Type type;
   @type_mention_parent parent;
 
-  TypeMention() { type_mention(this, getTypeRef(type), parent) }
+  TypeMention() {
+    type_mention(this, type, parent)
+    or
+    type_mention(this, getTypeRef(type), parent)
+  }
 
   /** Gets the type being mentioned. */
   Type getType() { result = type }

@@ -261,7 +261,11 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
  */
 class TypeParameterConstraints extends Element, @type_parameter_constraints {
   /** Gets a specific type constraint, if any. */
-  Type getATypeConstraint() { specific_type_parameter_constraints(this, getTypeRef(result)) }
+  Type getATypeConstraint() {
+    specific_type_parameter_constraints(this, result)
+    or
+    specific_type_parameter_constraints(this, getTypeRef(result))
+  }
 
   /** Gets an annotated specific type constraint, if any. */
   AnnotatedType getAnAnnotatedTypeConstraint() { result.appliesToTypeConstraint(this) }
@@ -413,9 +417,19 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   override Location getALocation() { result = this.getUnboundDeclaration().getALocation() }
 
-  override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, this) }
+  override Type getTypeArgument(int n) {
+    type_arguments(result, n, this)
+    or
+    not type_arguments(any(Type t), n, this) and
+    type_arguments(getTypeRef(result), n, this)
+  }
 
-  override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
+  override UnboundGenericType getUnboundGeneric() {
+    constructed_generic(this, result)
+    or
+    not constructed_generic(this, any(Type t)) and
+    constructed_generic(this, getTypeRef(result))
+  }
 
   final override Type getChild(int n) { result = this.getTypeArgument(n) }
 
@@ -587,7 +601,12 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
 class ConstructedMethod extends Method, ConstructedGeneric {
   override Location getALocation() { result = this.getUnboundDeclaration().getALocation() }
 
-  override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, this) }
+  override Type getTypeArgument(int n) {
+    type_arguments(result, n, this)
+    or
+    not type_arguments(any(Type t), n, this) and
+    type_arguments(getTypeRef(result), n, this)
+  }
 
   override UnboundGenericMethod getUnboundGeneric() { constructed_generic(this, result) }
 
