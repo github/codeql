@@ -220,3 +220,33 @@ class StringList extends StringList_ { }
 
 /** A list of aliases in an import statement */
 class AliasList extends AliasList_ { }
+
+/** A generic type parameter, as seen in function, class, and type alias definitions. */
+class TypeParameter extends TypeParameter_ { }
+
+/** A list of type parameters */
+class TypeParameterList extends TypeParameterList_ { }
+
+/** A parent of a `TypeParameterList`. Internal implementation class. */
+class TypeParameterListParent extends TypeParameterListParent_ { }
+
+/** A type alias statement, such as `type T[T1,T2] = T3`. */
+class TypeAlias extends TypeAlias_, Stmt {
+  /** Gets the name of this type alias. */
+  override Name getName() { result = super.getName() }
+}
+
+/** A type variable, with an optional bound, such as `T1` and `T2` in `type T[T1, T2: T3] = T4`. */
+class TypeVar extends TypeVar_, TypeParameter {
+  override Name getName() { result = super.getName() }
+}
+
+/** A type var tuple parameter, such as `*T1` in `type T[*T1] = T2`. */
+class TypeVarTuple extends TypeVarTuple_, TypeParameter {
+  override Name getName() { result = super.getName() }
+}
+
+/** A param spec parameter, such as `**T1` in `type T[**T1] = T2`. */
+class ParamSpec extends ParamSpec_, TypeParameter {
+  override Name getName() { result = super.getName() }
+}
