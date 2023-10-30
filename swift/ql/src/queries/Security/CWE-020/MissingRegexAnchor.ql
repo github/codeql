@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.8
- * @precision medium
+ * @precision high
  * @id swift/missing-regexp-anchor
  * @tags correctness
  *       security
