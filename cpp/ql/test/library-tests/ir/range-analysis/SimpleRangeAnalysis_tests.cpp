@@ -1039,7 +1039,7 @@ void test_guard_after_use(int pos, int size, int offset) {
   if (offset == 1) {
     return;
   }
-  range(pos + 1); // $ overflow=+ range="==InitializeParameter: pos+1"
+  range(pos + 1); // $ overflow=+ range="==InitializeParameter: pos+1" MISSING: range="<=InitializeParameter: size-1"
 } 
 
 int cond();
@@ -1060,8 +1060,8 @@ void alloc_in_loop(int origLen) {
       }
       len = len * 2; // $ overflow=-
     }
-    // We want that index <= len
-    range(index);
+    // We want that index < len
+    range(index); // $ MISSING: range="<=InitializeParameter: len-1"
     index++;
   }
 }
@@ -1079,7 +1079,7 @@ void mask_at_start(int len) {
   for (int index = leftOver; index < len; index+=64) {
     range(index);  // $ range="<=InitializeParameter: len-1"
     // This should be in bounds
-    range(index + 16); // $ range="<=InitializeParameter: len+15" range="==Phi: index+16"
+    range(index + 16); // $ range="<=InitializeParameter: len+15" range="==Phi: index+16" MISSING: range="<=InitializeParameter: len-1"
   }
 }
 
@@ -1096,7 +1096,7 @@ void mod_at_start(int len) {
   // Do something with leftOver
   for (int index = leftOver; index < len; index+=64) {
     range(index);  // $ range="<=InitializeParameter: len-1"
-    // This should be in bounds
-    range(index + 16); // $ range="<=InitializeParameter: len+15" range="==Phi: index+16"
+    // This should be in bounds 
+    range(index + 16); // $ range="<=InitializeParameter: len+15" range="==Phi: index+16" MISSING: range="<=InitializeParameter: len-49"
   }
 }
