@@ -20,10 +20,10 @@ _swift_version = _swift_prebuilt_version.rpartition(".")[0]
 
 _toolchain_info = {
     "linux": struct(
-        platform = "ubuntu2204",
-        suffix = "ubuntu22.04",
+        platform = "ubuntu2004",
+        suffix = "ubuntu20.04",
         extension = "tar.gz",
-        sha = "bca015e9d727ca39385d7e5b5399f46302d54a02218d40d1c3063662ffc6b42f",
+        sha = "5fca0c384a1cdf9b3d4f71bcab5ff27aaee25f4bc09a134b16fa7fcf34e34c45",
     ),
     "macos": struct(
         platform = "xcode",
@@ -78,7 +78,8 @@ def _pkg_archive_impl(repository_ctx):
         sha256 = repository_ctx.attr.sha256,
     )
     if not repository_ctx.attr.sha256:
-        print("please set sha256 = %s" % repr(res.sha256))
+        print("Rule '%s' indicated that a canonical reproducible form " % repository_ctx.name +
+              "can be obtained by modifying arguments sha256 = \"%s\"" % res.sha256)
     _run(repository_ctx, "extracting %s" % dir, "xar -xf %s" % archive)
     repository_ctx.delete(archive)
     _run(
@@ -99,8 +100,6 @@ _pkg_archive = repository_rule(
         "build_file": attr.label(mandatory = True),
     },
 )
-
-# TODO apply the same mechanism to the macOS toolchain (needs some work as the toolchain is a pkg archive
 
 def _github_archive(*, name, repository, commit, build_file = None, sha256 = None):
     github_name = repository[repository.index("/") + 1:]
