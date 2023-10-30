@@ -96,7 +96,7 @@ int invalidPointerToDereferenceFieldFlowBranchLimit() { result = 0 }
 private module InvalidPointerToDerefBarrier {
   private module BarrierConfig implements DataFlow::ConfigSig {
     additional predicate isSource(DataFlow::Node source, PointerArithmeticInstruction pai) {
-      invalidPointerToDerefSource(_, pai, _, _) and
+      invalidPointerToDerefSource(_, pai, _) and
       // source <= pai
       bounded2(source.asInstruction(), pai, any(int d | d <= 0))
     }
@@ -169,11 +169,11 @@ private module InvalidPointerToDerefBarrier {
  */
 private module InvalidPointerToDerefConfig implements DataFlow::StateConfigSig {
   class FlowState extends PointerArithmeticInstruction {
-    FlowState() { invalidPointerToDerefSource(_, this, _, _) }
+    FlowState() { invalidPointerToDerefSource(_, this, _) }
   }
 
   predicate isSource(DataFlow::Node source, FlowState pai) {
-    invalidPointerToDerefSource(_, pai, source, _)
+    invalidPointerToDerefSource(_, pai, source)
   }
 
   pragma[inline]
@@ -201,16 +201,14 @@ private import DataFlow::GlobalWithState<InvalidPointerToDerefConfig>
  * left-hand side of the pointer-arithmetic instruction represented by `derefSource`.
  */
 private predicate invalidPointerToDerefSource(
-  DataFlow::Node allocSource, PointerArithmeticInstruction pai, DataFlow::Node derefSource,
-  int deltaDerefSourceAndPai
+  DataFlow::Node allocSource, PointerArithmeticInstruction pai, DataFlow::Node derefSource
 ) {
   // Note that `deltaDerefSourceAndPai` is not necessarily equal to `rhsSizeDelta`:
   // `rhsSizeDelta` is the constant offset added to the size of the allocation, and
   // `deltaDerefSourceAndPai` is the constant difference between the pointer-arithmetic instruction
   // and the instruction computing the address for which we will search for a dereference.
   AllocToInvalidPointer::pointerAddInstructionHasBounds(allocSource, pai, _, _) and
-  derefSource.asInstruction() = pai and
-  deltaDerefSourceAndPai = 0
+  derefSource.asInstruction() = pai
 }
 
 /**
@@ -253,11 +251,9 @@ private Instruction getASuccessor(Instruction instr) {
   instr.getBlock().getASuccessor+() = result.getBlock()
 }
 
-private predicate paiForDereferenceSink(
-  PointerArithmeticInstruction pai, DataFlow::Node derefSink, int deltaDerefSourceAndPai
-) {
+private predicate paiForDereferenceSink(PointerArithmeticInstruction pai, DataFlow::Node derefSink) {
   exists(DataFlow::Node derefSource |
-    invalidPointerToDerefSource(_, pai, derefSource, deltaDerefSourceAndPai) and
+    invalidPointerToDerefSource(_, pai, derefSource) and
     flow(derefSource, derefSink)
   )
 }
@@ -269,10 +265,10 @@ private predicate paiForDereferenceSink(
  */
 private predicate derefSinkToOperation(
   DataFlow::Node derefSink, PointerArithmeticInstruction pai, DataFlow::Node operation,
-  string description, int deltaDerefSourceAndPai, int deltaDerefSinkAndDerefAddress
+  string description, int deltaDerefSinkAndDerefAddress
 ) {
   exists(Instruction operationInstr, AddressOperand addr |
-    paiForDereferenceSink(pai, pragma[only_bind_into](derefSink), deltaDerefSourceAndPai) and
+    paiForDereferenceSink(pai, pragma[only_bind_into](derefSink)) and
     isInvalidPointerDerefSink(derefSink, addr, operationInstr, description,
       deltaDerefSinkAndDerefAddress) and
     operationInstr = getASuccessor(derefSink.asInstruction()) and
@@ -293,11 +289,7 @@ predicate operationIsOffBy(
   DataFlow::Node allocation, PointerArithmeticInstruction pai, DataFlow::Node derefSource,
   DataFlow::Node derefSink, string description, DataFlow::Node operation, int delta
 ) {
-  exists(int deltaDerefSourceAndPai, int deltaDerefSinkAndDerefAddress |
-    invalidPointerToDerefSource(allocation, pai, derefSource, deltaDerefSourceAndPai) and
-    flow(derefSource, derefSink) and
-    derefSinkToOperation(derefSink, pai, operation, description, deltaDerefSourceAndPai,
-      deltaDerefSinkAndDerefAddress) and
-    delta = deltaDerefSourceAndPai + deltaDerefSinkAndDerefAddress
-  )
+  invalidPointerToDerefSource(allocation, pai, derefSource) and
+  flow(derefSource, derefSink) and
+  derefSinkToOperation(derefSink, pai, operation, description, delta)
 }
