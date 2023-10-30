@@ -91,17 +91,17 @@ class FooController < ActionController::Base
     # where `params[:fields]` is unsanitized
     User.update_all(params[:fields])
 
+    # GOOD -- `update_all` sanitizes its bind variable arguments
+    User.find_by(name: params[:user_name])
+      .update_all(['name = ?', params[:new_user_name]])
 
+    # BAD -- `update_all` does not sanitize its query (array arg)
+    User.find_by(name: params[:user_name])
+      .update_all(["name = '#{params[:new_user_name]}'"])
 
-
-
-
-
-
-
-
-
-
+    # BAD -- `update_all` does not sanitize its query (string arg)
+    User.find_by(name: params[:user_name])
+      .update_all("name = '#{params[:new_user_name]}'")
 
     User.reorder(params[:direction])
 
