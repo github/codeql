@@ -1155,3 +1155,15 @@
 | test.swift:898:24:898:24 | call to makeAsyncIterator() | test.swift:898:24:898:24 | $i$generator |
 | test.swift:903:22:903:49 | SSA def(expr) | test.swift:904:13:904:13 | expr |
 | test.swift:903:22:903:49 | expr | test.swift:903:22:903:49 | SSA def(expr) |
+| test.swift:917:7:917:7 | SSA def(self) | test.swift:917:7:917:7 | self[return] |
+| test.swift:917:7:917:7 | SSA def(self) | test.swift:917:7:917:7 | self[return] |
+| test.swift:917:7:917:7 | self | test.swift:917:7:917:7 | SSA def(self) |
+| test.swift:917:7:917:7 | self | test.swift:917:7:917:7 | SSA def(self) |
+| test.swift:918:7:918:7 | SSA def(self) | test.swift:918:2:918:34 | self[return] |
+| test.swift:918:7:918:7 | self | test.swift:918:7:918:7 | SSA def(self) |
+| test.swift:926:30:926:33 | SSA def(x) | test.swift:927:12:927:12 | x |
+| test.swift:926:30:926:33 | x | test.swift:926:30:926:33 | SSA def(x) |
+| test.swift:926:45:926:48 | SSA def(y) | test.swift:928:12:928:12 | y |
+| test.swift:926:45:926:48 | y | test.swift:926:45:926:48 | SSA def(y) |
+| test.swift:927:12:927:21 | call to source() | test.swift:927:12:927:21 | OpenExistentialExpr |
+| test.swift:929:12:929:35 | call to source() | test.swift:929:12:929:35 | OpenExistentialExpr |

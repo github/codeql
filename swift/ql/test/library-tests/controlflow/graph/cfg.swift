@@ -554,3 +554,27 @@ func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int {
 func autoclosureTest() {
   usesAutoclosure(1)
 }
+
+// ---
+
+protocol MyProtocol {
+	func source() -> Int
+}
+
+class MyProcotolImpl : MyProtocol {
+	func source() -> Int { return 0 }
+}
+
+func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
+func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
+
+func sink(arg: Int) { }
+
+func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
+	sink(arg: x.source())
+	sink(arg: y.source())
+	sink(arg: getMyProtocol().source())
+	sink(arg: getMyProtocolImpl().source())
+}
+
+// ---

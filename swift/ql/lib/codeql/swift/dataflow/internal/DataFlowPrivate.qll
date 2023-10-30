@@ -261,6 +261,9 @@ private module Cached {
       nodeFrom.asExpr() = ie.getBranch(_)
     )
     or
+    // flow through OpenExistentialExpr (compiler generated expression wrapper)
+    nodeFrom.asExpr() = nodeTo.asExpr().(OpenExistentialExpr).getSubExpr()
+    or
     // flow from Expr to Pattern
     exists(Expr e, Pattern p |
       nodeFrom.asExpr() = e and
