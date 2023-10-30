@@ -16,5 +16,5 @@ void modify_copy(int* ptr) { // $ ast-def=ptr
 void test_output() {
    int x = 0;
    modify_copy(&x);
-   sink(x); // $ ir
+   sink(x); // $ SPURIOUS: ir
 }
