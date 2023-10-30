@@ -2,16 +2,20 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.pattern.Pattern
+import codeql.swift.elements.decl.VarDecl
 
 module Generated {
   class NamedPattern extends Synth::TNamedPattern, Pattern {
     override string getAPrimaryQlClass() { result = "NamedPattern" }
 
     /**
-     * Gets the name of this named pattern.
+     * Gets the variable declaration of this named pattern.
      */
-    string getName() {
-      result = Synth::convertNamedPatternToRaw(this).(Raw::NamedPattern).getName()
+    VarDecl getVarDecl() {
+      result =
+        Synth::convertVarDeclFromRaw(Synth::convertNamedPatternToRaw(this)
+              .(Raw::NamedPattern)
+              .getVarDecl())
     }
   }
 }
