@@ -21,7 +21,7 @@ class MethodLocation extends Method {
   }
 }
 
-from MethodAccess ma, Method m
+from MethodCall ma, Method m
 where
   ma.getFile().(CompilationUnit).fromSource() and
   m = ma.getMethod()

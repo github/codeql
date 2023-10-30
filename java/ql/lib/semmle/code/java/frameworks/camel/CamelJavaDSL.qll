@@ -21,7 +21,7 @@ import semmle.code.java.frameworks.spring.Spring
 /**
  * A method call to a ProcessorDefinition element.
  */
-class ProcessorDefinitionElement extends MethodAccess {
+class ProcessorDefinitionElement extends MethodCall {
   ProcessorDefinitionElement() {
     this.getMethod()
         .getDeclaringType()
@@ -114,7 +114,7 @@ deprecated class CamelJavaDSLBeanRefDecl = CamelJavaDslBeanRefDecl;
  *
  * An expression that represents a call to a bean, or particular method on a bean.
  */
-class CamelJavaDslMethodDecl extends MethodAccess {
+class CamelJavaDslMethodDecl extends MethodCall {
   CamelJavaDslMethodDecl() {
     this.getMethod()
         .getDeclaringType()

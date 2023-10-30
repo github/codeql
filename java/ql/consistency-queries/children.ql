@@ -37,11 +37,11 @@ predicate gapInChildren(Element e, int i) {
   // For statements may or may not declare a new variable (child 0), or
   // have a condition (child 1).
   not (e instanceof ForStmt and i = [0, 1]) and
-  // TODO: Clarify situation with Kotlin and MethodAccess.
+  // TODO: Clarify situation with Kotlin and MethodCall.
   // -1 can be skipped (type arguments from -2 down, no qualifier at -1,
   // then arguments from 0).
   // Can we also skip arguments, e.g. due to defaults for parameters?
-  not (e instanceof MethodAccess and e.getFile().isKotlinSourceFile()) and
+  not (e instanceof MethodCall and e.getFile().isKotlinSourceFile()) and
   // Kotlin-extracted annotations can have missing children where a default
   // value should be, because kotlinc doesn't load annotation defaults and we
   // want to leave a space for another extractor to fill in the default if it

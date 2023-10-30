@@ -129,7 +129,7 @@ func forwarder() {
         (i: Int) -> Int in
         return 0
     })
-    sink(arg: clean)
+    sink(arg: clean) // clean
 }
 
 func lambdaFlows() {
@@ -875,7 +875,7 @@ func testVarargsCaller() {
 
 func testSetForEach() {
     var set1 = Set([source()])
-    
+
     for elem in set1 {
         sink(arg: elem) // $ flow=877
     }
@@ -907,3 +907,27 @@ func usesAutoclosure(_ expr: @autoclosure () -> Int) {
 func autoclosureTest() {
   usesAutoclosure(source())
 }
+
+// ---
+
+protocol MyProtocol {
+	func source() -> Int
+}
+
+class MyProcotolImpl : MyProtocol {
+	func source() -> Int { return 0 }
+}
+
+func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
+func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
+
+func sink(arg: Int) { }
+
+func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
+	sink(arg: x.source()) // $ flow=927
+	sink(arg: y.source()) // $ flow=928
+	sink(arg: getMyProtocol().source()) // $ flow=929
+	sink(arg: getMyProtocolImpl().source()) // $ flow=930
+}
+
+// ---

@@ -687,3 +687,32 @@ func testDecodeCString() {
   sink(arg: str4) // $ tainted=669
   sink(arg: repaired4)
 }
+
+func testSubstringMembers() {
+  let clean = ""
+  let tainted = source2()
+
+  let sub1 = tainted[..<tainted.index(tainted.endIndex, offsetBy: -5)]
+  sink(arg: sub1) // $ tainted=693
+  sink(arg: sub1.base) // $ tainted=693
+  sink(arg: sub1.utf8) // $ tainted=693
+  sink(arg: sub1.capitalized) // $ tainted=693
+  sink(arg: sub1.description) // $ tainted=693
+
+  var sub2 = tainted[tainted.index(tainted.startIndex, offsetBy: 5)...]
+  sink(arg: sub2) // $ tainted=693
+  let result1 = sub2.withUTF8({
+    buffer in
+    sink(arg: buffer[0]) // $ tainted=693
+    return source()
+  })
+  sink(arg: result1) // $ tainted=707
+
+  let sub3 = Substring(sub2.utf8)
+  sink(arg: sub3) // $ tainted=693
+
+  var sub4 = clean.prefix(10)
+  sink(arg: sub4)
+  sub4.replaceSubrange(..<clean.endIndex, with: sub1)
+  sink(arg: sub4) // $ tainted=693
+}

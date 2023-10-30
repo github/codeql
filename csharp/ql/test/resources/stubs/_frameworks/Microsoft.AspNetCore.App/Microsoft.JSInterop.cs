@@ -145,6 +145,7 @@ namespace Microsoft
         {
             public static void InvokeVoid(this Microsoft.JSInterop.IJSInProcessRuntime jsRuntime, string identifier, params object[] args) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = true)]
         public sealed class JSInvokableAttribute : System.Attribute
         {
             public JSInvokableAttribute() => throw null;

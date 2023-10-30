@@ -10,4 +10,4 @@ class MethodLocation extends Method {
   }
 }
 
-query predicate calls(MethodAccess ma, Method m) { ma.getMethod() = m }
+query predicate calls(MethodCall ma, Method m) { ma.getMethod() = m }

@@ -23,6 +23,7 @@ namespace Microsoft
                 public static string GetConnectionString(this Microsoft.Extensions.Configuration.IConfiguration configuration, string name) => throw null;
                 public static Microsoft.Extensions.Configuration.IConfigurationSection GetRequiredSection(this Microsoft.Extensions.Configuration.IConfiguration configuration, string key) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)128)]
             public sealed class ConfigurationKeyNameAttribute : System.Attribute
             {
                 public ConfigurationKeyNameAttribute(string name) => throw null;

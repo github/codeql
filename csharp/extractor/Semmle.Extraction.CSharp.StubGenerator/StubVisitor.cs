@@ -186,7 +186,8 @@ internal sealed class StubVisitor : SymbolVisitor
                 }
                 break;
             case TypedConstantKind.Enum:
-                stubWriter.Write("throw null");
+                stubWriter.Write($"({c.Type!.GetQualifiedName()}) ");
+                stubWriter.Write(c.Value!.ToString());
                 break;
             case TypedConstantKind.Array:
                 stubWriter.Write("new []{");
@@ -200,7 +201,8 @@ internal sealed class StubVisitor : SymbolVisitor
     }
 
     private static readonly HashSet<string> attributeAllowList = new() {
-        "System.FlagsAttribute"
+        "System.FlagsAttribute",
+        "System.AttributeUsageAttribute"
     };
 
     private void StubAttribute(AttributeData a, string prefix)
@@ -219,6 +221,14 @@ internal sealed class StubVisitor : SymbolVisitor
         {
             stubWriter.Write("(");
             WriteCommaSep(a.ConstructorArguments, StubTypedConstant);
+            if (a.ConstructorArguments.Any() && a.NamedArguments.Any())
+                stubWriter.Write(",");
+            WriteCommaSep(a.NamedArguments, arg =>
+            {
+                stubWriter.Write(arg.Key);
+                stubWriter.Write(" = ");
+                StubTypedConstant(arg.Value);
+            });
             stubWriter.Write(")");
         }
         stubWriter.WriteLine("]");

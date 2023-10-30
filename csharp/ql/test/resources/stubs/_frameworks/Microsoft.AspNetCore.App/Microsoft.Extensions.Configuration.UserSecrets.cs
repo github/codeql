@@ -13,6 +13,7 @@ namespace Microsoft
                     public PathHelper() => throw null;
                     public static string GetSecretsPathFromSecretsId(string userSecretsId) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)1, Inherited = false, AllowMultiple = false)]
                 public class UserSecretsIdAttribute : System.Attribute
                 {
                     public UserSecretsIdAttribute(string userSecretId) => throw null;

@@ -12,6 +12,10 @@ edges
 | test_free.cpp:233:14:233:15 | * ... | test_free.cpp:236:9:236:10 | * ... |
 | test_free.cpp:239:14:239:15 | * ... | test_free.cpp:241:9:241:10 | * ... |
 | test_free.cpp:245:10:245:11 | * ... | test_free.cpp:246:9:246:10 | * ... |
+| test_free.cpp:293:8:293:10 | buf | test_free.cpp:294:3:294:13 | ... = ... |
+| test_free.cpp:294:3:294:13 | ... = ... | test_free.cpp:294:5:294:7 | s indirection [post update] [buf] |
+| test_free.cpp:294:5:294:7 | s indirection [post update] [buf] | test_free.cpp:295:12:295:12 | s indirection [buf] |
+| test_free.cpp:295:12:295:12 | s indirection [buf] | test_free.cpp:295:14:295:16 | buf |
 nodes
 | test_free.cpp:11:10:11:10 | a | semmle.label | a |
 | test_free.cpp:12:5:12:5 | a | semmle.label | a |
@@ -38,6 +42,11 @@ nodes
 | test_free.cpp:241:9:241:10 | * ... | semmle.label | * ... |
 | test_free.cpp:245:10:245:11 | * ... | semmle.label | * ... |
 | test_free.cpp:246:9:246:10 | * ... | semmle.label | * ... |
+| test_free.cpp:293:8:293:10 | buf | semmle.label | buf |
+| test_free.cpp:294:3:294:13 | ... = ... | semmle.label | ... = ... |
+| test_free.cpp:294:5:294:7 | s indirection [post update] [buf] | semmle.label | s indirection [post update] [buf] |
+| test_free.cpp:295:12:295:12 | s indirection [buf] | semmle.label | s indirection [buf] |
+| test_free.cpp:295:14:295:16 | buf | semmle.label | buf |
 subpaths
 #select
 | test_free.cpp:12:5:12:5 | a | test_free.cpp:11:10:11:10 | a | test_free.cpp:12:5:12:5 | a | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
@@ -53,3 +62,4 @@ subpaths
 | test_free.cpp:236:9:236:10 | * ... | test_free.cpp:233:14:233:15 | * ... | test_free.cpp:236:9:236:10 | * ... | Memory may have been previously freed by $@. | test_free.cpp:233:9:233:12 | call to free | call to free |
 | test_free.cpp:241:9:241:10 | * ... | test_free.cpp:239:14:239:15 | * ... | test_free.cpp:241:9:241:10 | * ... | Memory may have been previously freed by $@. | test_free.cpp:239:9:239:12 | call to free | call to free |
 | test_free.cpp:246:9:246:10 | * ... | test_free.cpp:245:10:245:11 | * ... | test_free.cpp:246:9:246:10 | * ... | Memory may have been previously freed by $@. | test_free.cpp:245:5:245:8 | call to free | call to free |
+| test_free.cpp:295:14:295:16 | buf | test_free.cpp:293:8:293:10 | buf | test_free.cpp:295:14:295:16 | buf | Memory may have been previously freed by $@. | test_free.cpp:293:3:293:6 | call to free | call to free |

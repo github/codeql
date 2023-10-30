@@ -1,4 +1,4 @@
-sensitiveMethodAccess
+sensitiveMethodCall
 | Test.java:62:9:62:22 | aaPasswordaa(...) |
 | Test.java:63:9:63:20 | aaPasswdaa(...) |
 | Test.java:64:9:64:21 | aaAccountaa(...) |

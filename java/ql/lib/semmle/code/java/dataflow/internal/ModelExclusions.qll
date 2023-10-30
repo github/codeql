@@ -53,10 +53,16 @@ private predicate isJdkInternal(CompilationUnit cu) {
   cu.getPackage().getName() = ""
 }
 
+/** Holds if the given compilation unit's package is internal. */
+private predicate isInternal(CompilationUnit cu) {
+  isJdkInternal(cu) or
+  cu.getPackage().getName().matches("%internal%")
+}
+
 /** Holds if the given callable is not worth modeling. */
 predicate isUninterestingForModels(Callable c) {
   isInTestFile(c.getCompilationUnit().getFile()) or
-  isJdkInternal(c.getCompilationUnit()) or
+  isInternal(c.getCompilationUnit()) or
   c instanceof MainMethod or
   c instanceof StaticInitializer or
   exists(FunctionalExpr funcExpr | c = funcExpr.asMethod()) or

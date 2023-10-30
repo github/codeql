@@ -3,7 +3,7 @@
 import java
 
 /** A call to a string to number conversion. */
-private class SpecialMethodAccess extends MethodAccess {
+private class SpecialMethodCall extends MethodCall {
   predicate isValueOfMethod(string klass) {
     this.getMethod().getName() = "valueOf" and
     this.getQualifier().getType().(RefType).hasQualifiedName("java.lang", klass) and
@@ -78,7 +78,7 @@ deprecated predicate catchesNFE = catchesNfe/1;
 
 /** Holds if `java.lang.NumberFormatException` can be thrown. */
 predicate throwsNfe(Expr e) {
-  e.(SpecialClassInstanceExpr).throwsNfe() or e.(SpecialMethodAccess).throwsNfe()
+  e.(SpecialClassInstanceExpr).throwsNfe() or e.(SpecialMethodCall).throwsNfe()
 }
 
 /** DEPRECATED: Alias for throwsNfe */

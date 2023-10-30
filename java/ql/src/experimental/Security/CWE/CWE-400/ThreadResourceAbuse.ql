@@ -27,7 +27,7 @@ module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     exists(
-      MethodAccess ma // Math.min(sleepTime, MAX_INTERVAL)
+      MethodCall ma // Math.min(sleepTime, MAX_INTERVAL)
     |
       ma.getMethod().hasQualifiedName("java.lang", "Math", "min") and
       node.asExpr() = ma.getAnArgument()

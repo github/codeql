@@ -103,8 +103,8 @@ func taintThroughMutablePointer() {
     ptr4 in
     let return5 = myArray5.withUnsafeBytes({
       ptr5 in
-      sink(arg: ptr5)
-      sink(arg: ptr5[0]) // $ MISSING: tainted=97
+      sink(arg: ptr5) // $ tainted=97
+      sink(arg: ptr5[0]) // $ tainted=97
       ptr4.copyBytes(from: ptr5)
       sink(arg: ptr4)
       sink(arg: ptr4[0]) // $ MISSING: tainted=97
@@ -146,8 +146,8 @@ func taintCollections(array: inout Array<Int>, contiguousArray: inout Contiguous
     buffer in
     sink(arg: buffer) // $ tainted=142
     sink(arg: buffer[0]) // $ tainted=142
-    sink(arg: array)
-    sink(arg: array[0]) // $ MISSING: tainted=142
+    sink(arg: array) // $ tainted=142
+    sink(arg: array[0]) // $ tainted=142
   })
 
   contiguousArray[0] = source2()
