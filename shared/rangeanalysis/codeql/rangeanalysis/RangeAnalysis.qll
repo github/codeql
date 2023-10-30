@@ -106,6 +106,8 @@ signature module Semantic {
 
   class ShiftRightUnsignedExpr extends BinaryExpr;
 
+  default predicate isAssignOp(BinaryExpr bin) { none() }
+
   class RelationalExpr extends Expr {
     Expr getLesserOperand();
 
@@ -126,9 +128,15 @@ signature module Semantic {
 
   class NegateExpr extends UnaryExpr;
 
-  class AddOneExpr extends UnaryExpr;
+  class PreIncExpr extends UnaryExpr;
 
-  class SubOneExpr extends UnaryExpr;
+  class PreDecExpr extends UnaryExpr;
+
+  class PostIncExpr extends UnaryExpr;
+
+  class PostDecExpr extends UnaryExpr;
+
+  class CopyValueExpr extends UnaryExpr;
 
   class ConditionalExpr extends Expr {
     Expr getBranchExpr(boolean branch);
@@ -168,7 +176,9 @@ signature module Semantic {
 
   class SsaPhiNode extends SsaVariable;
 
-  class SsaExplicitUpdate extends SsaVariable;
+  class SsaExplicitUpdate extends SsaVariable {
+    Expr getDefiningExpr();
+  }
 
   class SsaReadPosition {
     predicate hasReadOfVar(SsaVariable v);
@@ -1188,12 +1198,12 @@ module RangeStage<
     positively = false and
     (
       expr instanceof Sem::NegateExpr or
-      expr instanceof Sem::SubOneExpr or
+      expr instanceof Sem::PreDecExpr or
       getTrackedType(expr.(Sem::DivExpr)) instanceof Sem::FloatingPointType
     )
     or
     positively = true and
-    expr instanceof Sem::AddOneExpr
+    expr instanceof Sem::PreIncExpr
   }
 
   /**

@@ -52,9 +52,21 @@ module Sem implements Semantic {
 
   class NegateExpr = SemNegateExpr;
 
-  class AddOneExpr = SemAddOneExpr;
+  class PreIncExpr = SemAddOneExpr;
 
-  class SubOneExpr = SemSubOneExpr;
+  class PreDecExpr = SemSubOneExpr;
+
+  class PostIncExpr extends SemUnaryExpr {
+    PostIncExpr() { none() }
+  }
+
+  class PostDecExpr extends SemUnaryExpr {
+    PostDecExpr() { none() }
+  }
+
+  class CopyValueExpr extends SemUnaryExpr {
+    CopyValueExpr() { this instanceof SemCopyValueExpr or this instanceof SemStoreExpr }
+  }
 
   class ConditionalExpr = SemConditionalExpr;
 

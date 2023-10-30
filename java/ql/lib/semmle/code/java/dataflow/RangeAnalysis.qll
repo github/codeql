@@ -150,6 +150,8 @@ module Sem implements Semantic {
     }
   }
 
+  predicate isAssignOp(BinaryExpr bin) { bin instanceof AssignOp }
+
   class RelationalExpr = J::ComparisonExpr;
 
   abstract class UnaryExpr extends Expr {
@@ -176,18 +178,34 @@ module Sem implements Semantic {
     override Expr getOperand() { result = super.getExpr() }
   }
 
-  // TODO: Implement once utils are properly shared
-  class AddOneExpr extends UnaryExpr {
-    AddOneExpr() { none() }
-
-    override Expr getOperand() { none() }
+  class PreIncExpr extends UnaryExpr instanceof J::PreIncExpr {
+    override Expr getOperand() { result = super.getExpr() }
   }
 
-  // TODO: Implement once utils are properly shared
-  class SubOneExpr extends UnaryExpr {
-    SubOneExpr() { none() }
+  class PreDecExpr extends UnaryExpr instanceof J::PreDecExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
 
-    override Expr getOperand() { none() }
+  class PostIncExpr extends UnaryExpr instanceof J::PostIncExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
+
+  class PostDecExpr extends UnaryExpr instanceof J::PostDecExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
+
+  class CopyValueExpr extends UnaryExpr {
+    CopyValueExpr() {
+      this instanceof J::PlusExpr or
+      this instanceof J::AssignExpr or
+      this instanceof LocalVariableDeclExpr
+    }
+
+    override Expr getOperand() {
+      result = this.(J::PlusExpr).getExpr() or
+      result = this.(J::AssignExpr).getSource() or
+      result = this.(J::LocalVariableDeclExpr).getInit()
+    }
   }
 
   class ConditionalExpr = J::ConditionalExpr;
@@ -228,7 +246,9 @@ module Sem implements Semantic {
 
   class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiNode { }
 
-  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate { }
+  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate {
+    Expr getDefiningExpr() { result = super.getDefiningExpr() }
+  }
 
   final private class FinalSsaReadPosition = SsaReadPos::SsaReadPosition;
 
