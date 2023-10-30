@@ -198,11 +198,7 @@ private import DataFlow::GlobalWithState<InvalidPointerToDerefConfig>
 
 /**
  * Holds if `allocSource` is dataflow node that represents an allocation that flows to the
- * left-hand side of the pointer-arithmetic `pai`, and `derefSource <= pai + derefSourcePaiDelta`.
- *
- * For example, if `pai` is a pointer-arithmetic operation `p + size` in an expression such
- * as `(p + size) + 1` and `derefSource` is the node representing `(p + size) + 1`. In this
- * case `derefSourcePaiDelta` is 1.
+ * left-hand side of the pointer-arithmetic instruction represented by `derefSource`.
  */
 private predicate invalidPointerToDerefSource(
   DataFlow::Node allocSource, PointerArithmeticInstruction pai, DataFlow::Node derefSource,
@@ -213,9 +209,8 @@ private predicate invalidPointerToDerefSource(
   // `deltaDerefSourceAndPai` is the constant difference between the pointer-arithmetic instruction
   // and the instruction computing the address for which we will search for a dereference.
   AllocToInvalidPointer::pointerAddInstructionHasBounds(allocSource, pai, _, _) and
-  // derefSource <= pai + deltaDerefSourceAndPai
-  bounded2(derefSource.asInstruction(), pai, deltaDerefSourceAndPai) and
-  deltaDerefSourceAndPai >= 0
+  derefSource.asInstruction() = pai and
+  deltaDerefSourceAndPai = 0
 }
 
 /**
