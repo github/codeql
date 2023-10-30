@@ -159,65 +159,65 @@ extension String {
 
 // --- tests ---
 
-func getRemoteData() -> String {
-	let url = URL(string: "http://example.com/")
-	do {
-		return try String(contentsOf: url!)
-	} catch {
-		return ""
-	}
-}
+
+
+
+
+
+
+
+
 
 func testAsync(_ sink: @escaping (String) async throws -> ()) {
 	Task {
 		let localString = "console.log('localString')"
 		let localStringFragment = "'localStringFragment'"
-		let remoteString = getRemoteData()
+		let url = URL(string: "http://example.com/")
 
 		try! await sink(localString) // GOOD: the HTML data is local
 		try! await sink(try String(contentsOf: URL(string: "http://example.com/")!)) // BAD [NOT DETECTED - TODO]: HTML contains remote input, may access local secrets
-		try! await sink(remoteString) // BAD [NOT DETECTED - TODO]
+		try! await sink(try! String(contentsOf: url!)) // BAD [NOT DETECTED - TODO]
 
 		try! await sink("console.log(" + localStringFragment + ")") // GOOD: the HTML data is local
-		try! await sink("console.log(" + remoteString + ")") // BAD [NOT DETECTED - TODO]
+		try! await sink("console.log(" + (try! String(contentsOf: url!)) + ")") // BAD [NOT DETECTED - TODO]
 
 		let localData = Data(localString.utf8)
-		let remoteData = Data(remoteString.utf8)
+		let remoteData = Data((try! String(contentsOf: url!)).utf8)
 
 		try! await sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
 		try! await sink(String(decoding: remoteData, as: UTF8.self)) // BAD [NOT DETECTED - TODO]: the data is remote
 
 		try! await sink("console.log(" + String(Int(localStringFragment) ?? 0) + ")") // GOOD: Primitive conversion
-		try! await sink("console.log(" + String(Int(remoteString) ?? 0) + ")") // GOOD: Primitive conversion
+		try! await sink("console.log(" + String(Int(try! String(contentsOf: url!)) ?? 0) + ")") // GOOD: Primitive conversion
 
 		try! await sink("console.log(" + (localStringFragment.count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
-		try! await sink("console.log(" + (remoteString.count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
+		try! await sink("console.log(" + ((try! String(contentsOf: url!)).count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
 	}
 }
 
 func testSync(_ sink: @escaping (String) -> ()) {
 	let localString = "console.log('localString')"
 	let localStringFragment = "'localStringFragment'"
-	let remoteString = getRemoteData()
+	let url = URL(string: "http://example.com/")
 
 	sink(localString) // GOOD: the HTML data is local
 	sink(try! String(contentsOf: URL(string: "http://example.com/")!)) // BAD: HTML contains remote input, may access local secrets
-	sink(remoteString) // BAD
+	sink(try! String(contentsOf: url!)) // BAD
 
 	sink("console.log(" + localStringFragment + ")") // GOOD: the HTML data is local
-	sink("console.log(" + remoteString + ")") // BAD
+	sink("console.log(" + (try! String(contentsOf: url!)) + ")") // BAD
 
 	let localData = Data(localString.utf8)
-	let remoteData = Data(remoteString.utf8)
+	let remoteData = Data((try! String(contentsOf: url!)).utf8)
 
 	sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
 	sink(String(decoding: remoteData, as: UTF8.self)) // BAD: the data is remote
 
 	sink("console.log(" + String(Int(localStringFragment) ?? 0) + ")") // GOOD: Primitive conversion
-	sink("console.log(" + String(Int(remoteString) ?? 0) + ")") // GOOD: Primitive conversion
+	sink("console.log(" + String(Int(try! String(contentsOf: url!)) ?? 0) + ")") // GOOD: Primitive conversion
 
 	sink("console.log(" + (localStringFragment.count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
-	sink("console.log(" + (remoteString.count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
+	sink("console.log(" + ((try! String(contentsOf: url!)).count != 0 ? "1" : "0") + ")") // GOOD: Primitive conversion
 }
 
 func testUIWebView() {
