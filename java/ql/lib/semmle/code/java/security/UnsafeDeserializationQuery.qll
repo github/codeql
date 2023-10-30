@@ -4,6 +4,7 @@
 
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking2
+private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.frameworks.Kryo
 private import semmle.code.java.frameworks.XStream
 private import semmle.code.java.frameworks.SnakeYaml
@@ -15,6 +16,7 @@ private import semmle.code.java.frameworks.HessianBurlap
 private import semmle.code.java.frameworks.Castor
 private import semmle.code.java.frameworks.Jackson
 private import semmle.code.java.frameworks.Jabsorb
+private import semmle.code.java.frameworks.Jms
 private import semmle.code.java.frameworks.JoddJson
 private import semmle.code.java.frameworks.Flexjson
 private import semmle.code.java.frameworks.google.Gson
@@ -225,9 +227,10 @@ predicate unsafeDeserialization(MethodCall ma, Expr sink) {
     sink = ma.getArgument(0) and
     UnsafeTypeFlow::flowToExpr(ma.getArgument(1))
     or
-    m.getASourceOverriddenMethod*()
-        .hasQualifiedName(["javax", "jakarta"] + ".jms", "ObjectMessage", "getObject") and
-    sink = ma.getQualifier().getUnderlyingExpr()
+    m.getASourceOverriddenMethod*() instanceof ObjectMessageGetObjectMethod and
+    sink = ma.getQualifier().getUnderlyingExpr() and
+    // If we can see an implementation, we trust dataflow to find a path to the other sinks instead
+    not exists(viableCallable(ma))
   )
 }
 
