@@ -737,5 +737,5 @@ void *realloc(void *, size_t);
 void test_realloc() {
 	char *source = indirect_source();
 	char *dest = (char*)realloc(source, 16);
-	sink(dest); // $ MISSING: ast,ir
+	sink(dest); // $ ir MISSING: ast
 }
