@@ -119,6 +119,7 @@ codeql::CaptureListExpr ExprTranslator::translateCaptureListExpr(
   entry.closure_body = dispatcher.fetchLabel(expr.getClosureBody());
   for (const auto& item : const_cast<swift::CaptureListExpr&>(expr).getCaptureList()) {
     entry.binding_decls.push_back(dispatcher.fetchLabel(item.PBD));
+    entry.variables.push_back(dispatcher.fetchLabel(item.getVar()));
   }
   return entry;
 }

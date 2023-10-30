@@ -1138,12 +1138,13 @@ private module Impl {
   private Element getImmediateChildOfCaptureListExpr(
     CaptureListExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n, int nBindingDecl, int nClosureBody |
+    exists(int b, int bExpr, int n, int nBindingDecl, int nVariable, int nClosureBody |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nBindingDecl = n + 1 + max(int i | i = -1 or exists(e.getBindingDecl(i)) | i) and
-      nClosureBody = nBindingDecl + 1 and
+      nVariable = nBindingDecl + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nClosureBody = nVariable + 1 and
       (
         none()
         or
@@ -1152,7 +1153,10 @@ private module Impl {
         result = e.getBindingDecl(index - n) and
         partialPredicateCall = "BindingDecl(" + (index - n).toString() + ")"
         or
-        index = nBindingDecl and
+        result = e.getVariable(index - nBindingDecl) and
+        partialPredicateCall = "Variable(" + (index - nBindingDecl).toString() + ")"
+        or
+        index = nVariable and
         result = e.getImmediateClosureBody() and
         partialPredicateCall = "ClosureBody()"
       )
