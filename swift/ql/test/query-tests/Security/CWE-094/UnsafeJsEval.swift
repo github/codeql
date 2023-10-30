@@ -224,7 +224,7 @@ func testUIWebView() {
 	let webview = UIWebView()
 
 	testAsync { string in
-		_ = await webview.stringByEvaluatingJavaScript(from: string)
+		_ = await webview.stringByEvaluatingJavaScript(from: string) // BAD [NOT DETECTED]
 	}
 }
 
@@ -232,7 +232,7 @@ func testWebView() {
 	let webview = WebView()
 
 	testAsync { string in
-		_ = await webview.stringByEvaluatingJavaScript(from: string)
+		_ = await webview.stringByEvaluatingJavaScript(from: string) // BAD [NOT DETECTED]
 	}
 }
 
@@ -240,22 +240,22 @@ func testWKWebView() {
 	let webview = WKWebView()
 
 	testAsync { string in
-		_ = try await webview.evaluateJavaScript(string)
+		_ = try await webview.evaluateJavaScript(string) // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		await webview.evaluateJavaScript(string) { _, _ in }
+		await webview.evaluateJavaScript(string) { _, _ in } // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		await webview.evaluateJavaScript(string, in: nil, in: WKContentWorld.defaultClient) { _ in }
+		await webview.evaluateJavaScript(string, in: nil, in: WKContentWorld.defaultClient) { _ in } // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		_ = try await webview.evaluateJavaScript(string, contentWorld: .defaultClient)
+		_ = try await webview.evaluateJavaScript(string, contentWorld: .defaultClient) // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		await webview.callAsyncJavaScript(string, in: nil, in: .defaultClient) { _ in () }
+		await webview.callAsyncJavaScript(string, in: nil, in: .defaultClient) { _ in () } // BAD [NOT DETECTED]
 	}
 	testAsync { string in
-		_ = try await webview.callAsyncJavaScript(string, contentWorld: WKContentWorld.defaultClient)
+		_ = try await webview.callAsyncJavaScript(string, contentWorld: WKContentWorld.defaultClient) // BAD [NOT DETECTED]
 	}
 }
 
@@ -263,10 +263,10 @@ func testWKUserContentController() {
 	let ctrl = WKUserContentController()
 
 	testSync { string in
-		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentStart, forMainFrameOnly: false))
+		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentStart, forMainFrameOnly: false)) // BAD (multiple sources)
 	}
 	testSync { string in
-		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentEnd, forMainFrameOnly: true, in: .defaultClient))
+		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentEnd, forMainFrameOnly: true, in: .defaultClient)) // BAD (multiple sources)
 	}
 }
 
@@ -274,10 +274,10 @@ func testJSContext() {
 	let ctx = JSContext()
 
 	testSync { string in
-		_ = ctx.evaluateScript(string)
+		_ = ctx.evaluateScript(string) // BAD (multiple sources)
 	}
 	testSync { string in
-		_ = ctx.evaluateScript(string, withSourceURL: URL(string: "https://example.com"))
+		_ = ctx.evaluateScript(string, withSourceURL: URL(string: "https://example.com")) // BAD (multiple sources)
 	}
 }
 
@@ -288,7 +288,7 @@ func testJSEvaluateScript() {
 			defer { JSStringRelease(jsstr) }
 			_ = JSEvaluateScript(
 				/*ctx:*/ OpaquePointer(bitPattern: 0),
-				/*script:*/ jsstr,
+				/*script:*/ jsstr, // BAD (multiple sources)
 				/*thisObject:*/ OpaquePointer(bitPattern: 0),
 				/*sourceURL:*/ OpaquePointer(bitPattern: 0),
 				/*startingLineNumber:*/ 0,
@@ -302,7 +302,7 @@ func testJSEvaluateScript() {
 			defer { JSStringRelease(jsstr) }
 			_ = JSEvaluateScript(
 				/*ctx:*/ OpaquePointer(bitPattern: 0),
-				/*script:*/ jsstr,
+				/*script:*/ jsstr, // BAD (multiple sources)
 				/*thisObject:*/ OpaquePointer(bitPattern: 0),
 				/*sourceURL:*/ OpaquePointer(bitPattern: 0),
 				/*startingLineNumber:*/ 0,
