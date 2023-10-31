@@ -98,7 +98,7 @@ predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOriginHW) {
   exists(AllowCredentialsHeaderWrite allowCredentialsHW |
     allowCredentialsHW.getHeaderValue().toLowerCase() = "true"
   |
-  allowOriginHW.(AllowOriginHeaderWrite).getResponseWriter() =
+    allowOriginHW.(AllowOriginHeaderWrite).getResponseWriter() =
       allowCredentialsHW.getResponseWriter()
   )
   or
@@ -141,8 +141,8 @@ predicate allowOriginIsNull(DataFlow::ExprNode allowOriginHW, string message) {
   allowOriginHW.(AllowOriginHeaderWrite).getHeaderValue().toLowerCase() = "null" and
   message =
     headerAllowOrigin() + " header is set to `" +
-    allowOriginHW.(AllowOriginHeaderWrite).getHeaderValue() + "`, and " + headerAllowCredentials() +
-      " is set to `true`"
+      allowOriginHW.(AllowOriginHeaderWrite).getHeaderValue() + "`, and " + headerAllowCredentials()
+      + " is set to `true`"
   or
   allowOriginHW
       .(GinCors::AllowOriginsWrite)
@@ -152,8 +152,8 @@ predicate allowOriginIsNull(DataFlow::ExprNode allowOriginHW, string message) {
       .toString()
       .toLowerCase() = "\"null\"" and
   message =
-    headerAllowOrigin() + " header is set to `" + "null" + "`, and " +
-      headerAllowCredentials() + " is set to `true`"
+    headerAllowOrigin() + " header is set to `" + "null" + "`, and " + headerAllowCredentials() +
+      " is set to `true`"
 }
 
 /**
@@ -219,18 +219,18 @@ predicate flowsToGuardedByCheckOnUntrusted(DataFlow::ExprNode allowOriginHW) {
   )
 }
 
-from DataFlow::ExprNode allowOrigin, string message
+from DataFlow::ExprNode allowOriginHW, string message
 where
-  allowCredentialsIsSetToTrue(allowOrigin) and
+  allowCredentialsIsSetToTrue(allowOriginHW) and
   (
-    flowsFromUntrustedToAllowOrigin(allowOrigin, message)
+    flowsFromUntrustedToAllowOrigin(allowOriginHW, message)
     or
-    allowOriginIsNull(allowOrigin, message)
+    allowOriginIsNull(allowOriginHW, message)
   ) and
-  not flowsToGuardedByCheckOnUntrusted(allowOrigin) and
+  not flowsToGuardedByCheckOnUntrusted(allowOriginHW) and
   not exists(ControlFlow::ConditionGuardNode cgn |
     cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)
   |
-    cgn.dominates(allowOrigin.getBasicBlock())
+    cgn.dominates(allowOriginHW.getBasicBlock())
   )
-select allowOrigin, message
+select allowOriginHW, message

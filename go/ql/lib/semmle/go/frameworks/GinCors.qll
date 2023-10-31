@@ -1,9 +1,12 @@
 /**
- * Provides classes for working with untrusted flow sources from the `github.com/gin-contrib/cors` package.
+ * Provides classes for modeling the `github.com/gin-contrib/cors` package.
  */
 
 import go
 
+/**
+ * Provides classes for modeling the `github.com/gin-contrib/cors` package.
+ */
 module GinCors {
   /** Gets the package name `github.com/gin-gonic/gin`. */
   string packagePath() { result = package("github.com/gin-contrib/cors", "") }
@@ -35,6 +38,9 @@ module GinCors {
       )
     }
 
+    /**
+     * Get config variable holding header values
+     */
     GinConfig getConfig() { result = gc }
   }
 
@@ -58,6 +64,9 @@ module GinCors {
       )
     }
 
+    /**
+     * Get config variable holding header values
+     */
     GinConfig getConfig() { result = gc }
   }
 
@@ -81,6 +90,9 @@ module GinCors {
       )
     }
 
+    /**
+     * Get config variable holding header values
+     */
     GinConfig getConfig() { result = gc }
   }
 
