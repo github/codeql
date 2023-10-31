@@ -1,5 +1,3 @@
-## 0.8.3
-
 ---
 category: minorAnalysis
 ---
