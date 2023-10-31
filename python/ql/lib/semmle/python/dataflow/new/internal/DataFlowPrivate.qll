@@ -445,13 +445,11 @@ module StepRelationTransformations {
    */
   module IncludePostUpdateFlow<stepSig/2 rawStep> {
     predicate step(Node nodeFrom, Node nodeTo) {
-      // If a raw step can be taken out of a node `node`, a step can be taken
-      // both out of `node` and any post-update node of `node`.
-      exists(Node node | rawStep(node, nodeTo) |
-        nodeFrom = node
-        or
-        nodeFrom.(PostUpdateNode).getPreUpdateNode() = node
-      )
+      // We either have a raw step from `nodeFrom`...
+      rawStep(nodeFrom, nodeTo)
+      or
+      // ...or we have a raw step from a pre-update node of `nodeFrom`
+      rawStep(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     }
   }
 }
