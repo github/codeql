@@ -1036,7 +1036,7 @@ void test_guard_after_use(int pos, int size, int offset) {
   if (pos + offset >= size) { // $ overflow=+-
     return;
   }
-  if (offset == 1) {
+  if (offset != 1) {
     return;
   }
   range(pos + 1); // $ overflow=+ range="==InitializeParameter: pos+1" MISSING: range="<=InitializeParameter: size-1"
