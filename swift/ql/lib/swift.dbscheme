@@ -846,13 +846,6 @@ capture_list_expr_binding_decls(  //dir=expr
   int binding_decl: @pattern_binding_decl_or_none ref
 );
 
-#keyset[id, index]
-capture_list_expr_variables(  //dir=expr
-  int id: @capture_list_expr ref,
-  int index: int ref,
-  int variable: @var_decl_or_none ref
-);
-
 @closure_expr =
   @auto_closure_expr
 | @explicit_closure_expr

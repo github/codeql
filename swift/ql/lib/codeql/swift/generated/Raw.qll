@@ -1104,11 +1104,6 @@ module Raw {
     }
 
     /**
-     * Gets the `index`th variable of this capture list expression (0-based).
-     */
-    VarDecl getVariable(int index) { capture_list_expr_variables(this, index, result) }
-
-    /**
      * Gets the closure body of this capture list expression.
      */
     ClosureExpr getClosureBody() { capture_list_exprs(this, result) }

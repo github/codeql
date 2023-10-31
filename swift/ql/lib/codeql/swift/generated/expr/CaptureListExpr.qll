@@ -32,13 +32,10 @@ module Generated {
 
     /**
      * Gets the `index`th variable of this capture list expression (0-based).
+     *
+     * These are the variables introduced by this capture in the closure's scope, not the captured ones.
      */
-    VarDecl getVariable(int index) {
-      result =
-        Synth::convertVarDeclFromRaw(Synth::convertCaptureListExprToRaw(this)
-              .(Raw::CaptureListExpr)
-              .getVariable(index))
-    }
+    VarDecl getVariable(int index) { none() }
 
     /**
      * Gets any of the variables of this capture list expression.
