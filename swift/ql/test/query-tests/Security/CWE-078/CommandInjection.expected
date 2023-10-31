@@ -33,6 +33,7 @@ edges
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:114:36:114:36 | userControlledString |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:115:28:115:28 | userControlledString |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:119:45:119:45 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:120:36:120:36 | userControlledString |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:121:28:121:36 | ... .+(_:_:) ... |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:125:46:125:46 | userControlledString |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:126:22:126:22 | userControlledString |
@@ -49,6 +50,7 @@ edges
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:114:36:114:36 | userControlledString |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:115:28:115:28 | userControlledString |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:119:45:119:45 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:120:36:120:36 | userControlledString |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:121:28:121:36 | ... .+(_:_:) ... |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:125:46:125:46 | userControlledString |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:126:22:126:22 | userControlledString |
@@ -72,6 +74,10 @@ edges
 | CommandInjection.swift:119:2:119:2 | [post] task4 [executableURL] | CommandInjection.swift:119:2:119:2 | [post] task4 |
 | CommandInjection.swift:119:24:119:65 | call to URL.init(fileURLWithPath:) | CommandInjection.swift:119:2:119:2 | [post] task4 [executableURL] |
 | CommandInjection.swift:119:45:119:45 | userControlledString | CommandInjection.swift:119:24:119:65 | call to URL.init(fileURLWithPath:) |
+| CommandInjection.swift:120:2:120:2 | [post] task4 [executableURL] | CommandInjection.swift:120:2:120:2 | [post] task4 |
+| CommandInjection.swift:120:24:120:56 | call to URL.init(string:) [some:0] | CommandInjection.swift:120:24:120:57 | ...! |
+| CommandInjection.swift:120:24:120:57 | ...! | CommandInjection.swift:120:2:120:2 | [post] task4 [executableURL] |
+| CommandInjection.swift:120:36:120:36 | userControlledString | CommandInjection.swift:120:24:120:56 | call to URL.init(string:) [some:0] |
 | CommandInjection.swift:121:2:121:2 | [post] task4 [arguments, Collection element] | CommandInjection.swift:121:2:121:2 | [post] task4 |
 | CommandInjection.swift:121:20:121:56 | [...] [Collection element] | CommandInjection.swift:121:2:121:2 | [post] task4 [arguments, Collection element] |
 | CommandInjection.swift:121:28:121:36 | ... .+(_:_:) ... | CommandInjection.swift:121:20:121:56 | [...] [Collection element] |
@@ -194,6 +200,11 @@ nodes
 | CommandInjection.swift:119:2:119:2 | [post] task4 [executableURL] | semmle.label | [post] task4 [executableURL] |
 | CommandInjection.swift:119:24:119:65 | call to URL.init(fileURLWithPath:) | semmle.label | call to URL.init(fileURLWithPath:) |
 | CommandInjection.swift:119:45:119:45 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:120:2:120:2 | [post] task4 | semmle.label | [post] task4 |
+| CommandInjection.swift:120:2:120:2 | [post] task4 [executableURL] | semmle.label | [post] task4 [executableURL] |
+| CommandInjection.swift:120:24:120:56 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:120:24:120:57 | ...! | semmle.label | ...! |
+| CommandInjection.swift:120:36:120:36 | userControlledString | semmle.label | userControlledString |
 | CommandInjection.swift:121:2:121:2 | [post] task4 | semmle.label | [post] task4 |
 | CommandInjection.swift:121:2:121:2 | [post] task4 [arguments, Collection element] | semmle.label | [post] task4 [arguments, Collection element] |
 | CommandInjection.swift:121:20:121:56 | [...] [Collection element] | semmle.label | [...] [Collection element] |
@@ -282,6 +293,7 @@ subpaths
 | CommandInjection.swift:114:2:114:2 | [post] task3 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:114:2:114:2 | [post] task3 | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:115:2:115:2 | [post] task3 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:115:2:115:2 | [post] task3 | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:119:2:119:2 | [post] task4 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:119:2:119:2 | [post] task4 | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:120:2:120:2 | [post] task4 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:120:2:120:2 | [post] task4 | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:121:2:121:2 | [post] task4 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:121:2:121:2 | [post] task4 | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:125:2:125:7 | [post] ...? | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:125:2:125:7 | [post] ...? | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:126:2:126:7 | [post] ...? | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:126:2:126:7 | [post] ...? | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |

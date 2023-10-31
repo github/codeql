@@ -117,7 +117,7 @@ func testCommandInjectionMore(mySafeString: String) {
 
 	let task4 = Process()
 	task4.executableURL = URL(fileURLWithPath: userControlledString) // BAD
-
+	task4.executableURL = URL(string: userControlledString)! // BAD
 	task4.arguments = ["abc", "def" + userControlledString] // BAD
 	try! task4.run()
 
@@ -127,7 +127,7 @@ func testCommandInjectionMore(mySafeString: String) {
 	try! task5?.run()
 
 	let task6 = MyProcess()
-
+	task6.executableURL = URL(fileURLWithPath: userControlledString) // BAD [NOT DETECTED]
 	task6.executableURL = URL(string: userControlledString)! // BAD [NOT DETECTED]
 	task6.arguments = [userControlledString] // BAD [NOT DETECTED]
 	task6.setArguments([userControlledString]) // BAD [NOT DETECTED]
