@@ -437,12 +437,62 @@ private module ControlFlowGraphImpl {
   }
 
   /**
-   * Holds if `succ` is `pred`'s successor `SwitchCase`.
+   * Gets the `i`th `SwitchCase` defined on `switch`, if one exists.
    */
-  private predicate nextSwitchCase(SwitchCase pred, SwitchCase succ) {
-    exists(SwitchExpr se, int idx | se.getCase(idx) = pred and se.getCase(idx + 1) = succ)
-    or
-    exists(SwitchStmt ss, int idx | ss.getCase(idx) = pred and ss.getCase(idx + 1) = succ)
+  private SwitchCase getCase(StmtParent switch, int i) {
+    result = switch.(SwitchExpr).getCase(i) or result = switch.(SwitchStmt).getCase(i)
+  }
+
+  /**
+   * Gets the `i`th `PatternCase` defined on `switch`, if one exists.
+   */
+  private PatternCase getPatternCase(StmtParent switch, int i) {
+    result = rank[i + 1](PatternCase pc, int caseIdx | pc = getCase(switch, caseIdx) | pc order by caseIdx asc)
+  }
+
+  /**
+   * Gets the PatternCase after pc, if one exists.
+   */
+  private PatternCase getNextPatternCase(PatternCase pc) {
+    exists(int idx, StmtParent switch | pc = getPatternCase(switch, idx) and result = getPatternCase(switch, idx + 1))
+  }
+
+  /**
+   * Gets a `SwitchCase` that may be `pred`'s direct successor.
+   *
+   * This means any switch case that comes after `pred` up to the next pattern case, if any, except for `case null`.
+   *
+   * Because we know the switch block contains at least one pattern, we know by https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.11
+   * that any default case comes after the last pattern case.
+   */
+  private SwitchCase getASuccessorSwitchCase(PatternCase pred) {
+    result.getParent() = pred.getParent() and
+    result.getIndex() > pred.getIndex() and
+    not result.(ConstCase).getValue(_) instanceof NullLiteral and
+    (
+      result.getIndex() <= getNextPatternCase(pred).getIndex()
+      or
+      not exists(getNextPatternCase(pred))
+    )
+  }
+
+  /**
+   * Gets a `SwitchCase` that may occur first in `switch`.
+   *
+   * If the block contains at least one PatternCase, this is any case up to and including that case, or
+   * the case handling the null literal if any.
+   *
+   * Otherwise it is any case in the switch block.
+   */
+  private SwitchCase getAFirstSwitchCase(StmtParent switch) {
+    result.getParent() = switch and
+    (
+      result.(ConstCase).getValue(_) instanceof NullLiteral
+      or
+      not exists(getPatternCase(switch, _))
+      or
+      result.getIndex() <= getPatternCase(switch, 0).getIndex()
+    )
   }
 
   /**
@@ -868,7 +918,7 @@ private module ControlFlowGraphImpl {
       completion = NormalCompletion()
       or
       // if no default case exists, then normal completion of the expression may terminate the switch
-      not exists(switch.getDefaultCase()) and
+      not exists(switch.getDefaultOrNullDefaultCase()) and
       last(switch.getExpr(), last, completion) and
       completion = NormalCompletion()
     )
@@ -1241,14 +1291,8 @@ private module ControlFlowGraphImpl {
       // From the entry point control is transferred first to the expression...
       n = switch and result = first(switch.getExpr())
       or
-      // ...and then for a vanilla switch to any case, or for a pattern switch to the first one.
-      exists(SwitchCase firstExecutedCase |
-        if switch.getACase() instanceof PatternCase
-        then firstExecutedCase = switch.getCase(0)
-        else firstExecutedCase = switch.getACase()
-      |
-        last(switch.getExpr(), n, completion) and result = first(firstExecutedCase)
-      )
+      // ...and then to any case up to and including the first pattern case, if any.
+      last(switch.getExpr(), n, completion) and result = first(getAFirstSwitchCase(switch))
       or
       // Statements within a switch body execute sequentially.
       // Note this includes non-rule case statements and the successful pattern match successor
@@ -1265,14 +1309,8 @@ private module ControlFlowGraphImpl {
       // From the entry point control is transferred first to the expression...
       n = switch and result = first(switch.getExpr())
       or
-      // ...and then to one of the cases.
-      exists(SwitchCase firstExecutedCase |
-        if switch.getACase() instanceof PatternCase
-        then firstExecutedCase = switch.getCase(0)
-        else firstExecutedCase = switch.getACase()
-      |
-        last(switch.getExpr(), n, completion) and result = first(firstExecutedCase)
-      )
+      // ...and then to any case up to and including the first pattern case, if any.
+      last(switch.getExpr(), n, completion) and result = first(getAFirstSwitchCase(switch))
       or
       // Statements within a switch body execute sequentially.
       // Note this includes non-rule case statements and the successful pattern match successor
@@ -1310,7 +1348,7 @@ private module ControlFlowGraphImpl {
       n = case and
       (
         completion = basicBooleanCompletion(false) and
-        nextSwitchCase(case, result)
+        result = getASuccessorSwitchCase(case)
         or
         completion = basicBooleanCompletion(true) and
         result = case.getDecl()
@@ -1330,7 +1368,7 @@ private module ControlFlowGraphImpl {
         or
         last(guard, n, completion) and
         completion = basicBooleanCompletion(false) and
-        nextSwitchCase(case, result)
+        result = getASuccessorSwitchCase(case)
       )
     )
     or

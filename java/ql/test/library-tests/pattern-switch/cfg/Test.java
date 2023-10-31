@@ -70,6 +70,20 @@ public class Test {
          System.out.println("It's null, or something else");
      }
 
+     switch(thing) {
+       case String s:
+         System.out.println(s);
+         break;
+       case null:
+         System.out.println("It's null");
+         break;
+       case Integer i:
+         System.out.println("An integer:" + i);
+         break;
+       default:
+         break;
+     }
+
   }
 
 }
