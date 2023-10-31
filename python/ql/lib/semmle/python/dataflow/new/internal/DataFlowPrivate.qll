@@ -393,12 +393,12 @@ module StepRelationTransformations {
    * Consider a read from a global variable `x = foo`. At import time there should be a local flow step from `foo` to `x`,
    * while at runtime there should be a jump step from the module variable corresponding to `foo` to `x`.
    *
-   * Similarly for, a write `foo = y`, at import time, there is a local flow step from `y` to `foo` while at runtime there
+   * Similarly, for a write `foo = y`, at import time, there is a local flow step from `y` to `foo` while at runtime there
    * is a jump step from `y` to the module variable corresponding to `foo`.
    *
    * We need a way of distinguishing if we are looking at import time or runtime. We have the following helpful facts:
    * - All top-level executable statements are import time (and import time only)
-   * - All -non-top-level code may be executed at runtime (but could also be executed at import time)
+   * - All non-top-level code may be executed at runtime (but could also be executed at import time)
    *
    * We could write an analysis to determine which functions are called at import time, but until we have that, we will go
    * with the heuristic that global variables act according to import time rules at top-level program points and according
@@ -409,7 +409,7 @@ module StepRelationTransformations {
      * Holds if `node` is found at the top level of a module.
      */
     pragma[inline]
-    predicate isTopLevel(Node node) { node.getScope() instanceof Module }
+    private predicate isTopLevel(Node node) { node.getScope() instanceof Module }
 
     /** Holds if a step can be taken from `nodeFrom` to `nodeTo` at import time. */
     predicate importTimeStep(Node nodeFrom, Node nodeTo) {
