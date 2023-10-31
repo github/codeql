@@ -52,6 +52,24 @@ public class Test {
        default -> { }
      }
 
+     switch((String)thing) {
+       case "Const1":
+         System.out.println("It's Const1!");
+       case "Const2":
+         System.out.println("It's Const1 or Const2!");
+         break;
+       case String s when s.length() <= 6:
+         System.out.println("It's <= 6 chars long, and neither Const1 nor Const2");
+       case "Const3":
+         System.out.println("It's (<= 6 chars long, and neither Const1 nor Const2), or Const3");
+         break;
+       case "Const30":
+         System.out.println("It's Const30");
+         break;
+       case null, default:
+         System.out.println("It's null, or something else");
+     }
+
   }
 
 }

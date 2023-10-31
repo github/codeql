@@ -1514,7 +1514,8 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
    * which may be either a normal `case` or a `default`.
    */
   SwitchCase getCase(int i) {
-    result = rank[i + 1](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
+    result =
+      rank[i + 1](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
   }
 
   /**
@@ -1532,6 +1533,9 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
   /** Gets the `default` case of this switch expression, if any. */
   DefaultCase getDefaultCase() { result = this.getACase() }
 
+  /** Gets the `default` or `case null, default` case of this switch statement, if any. */
+  SwitchCase getDefaultOrNullDefaultCase() { result = this.getACase() and result.hasDefaultLabel() }
+
   /** Gets the expression of this `switch` expression. */
   Expr getExpr() { result.getParent() = this }
 
@@ -1543,9 +1547,7 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
   }
 
   /** Holds if this switch has a case handling a null literal. */
-  predicate hasNullCase() {
-    this.getAConstCase().getValue(_) instanceof NullLiteral
-  }
+  predicate hasNullCase() { this.getAConstCase().getValue(_) instanceof NullLiteral }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "switch (...)" }
@@ -1638,19 +1640,13 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   string getName() { result = this.getVariable().getName() }
 
   /** Gets the switch statement or expression whose pattern declares this identifier, if any. */
-  StmtParent getAssociatedSwitch() {
-    result = this.getParent().(PatternCase).getParent()
-  }
+  StmtParent getAssociatedSwitch() { result = this.getParent().(PatternCase).getParent() }
 
   /** Holds if this is a declaration stemming from a pattern switch case. */
-  predicate hasAssociatedSwitch() {
-    exists(this.getAssociatedSwitch())
-  }
+  predicate hasAssociatedSwitch() { exists(this.getAssociatedSwitch()) }
 
   /** Gets the initializer expression of this local variable declaration expression, if any. */
-  Expr getInit() {
-    result.isNthChildOf(this, 0)
-  }
+  Expr getInit() { result.isNthChildOf(this, 0) }
 
   /** Holds if this variable declaration implicitly initializes the variable. */
   predicate hasImplicitInit() {

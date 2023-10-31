@@ -55,9 +55,13 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
     )
   )
   or
-  g1.(DefaultCase).getSwitch().getAConstCase() = g2 and b1 = true and b2 = false
+  exists(SwitchCase sc | g1 = sc and sc.hasDefaultLabel() |
+    sc.getSwitch().getAConstCase() = g2 and b1 = true and b2 = false
+  )
   or
-  g1.(DefaultCase).getSwitchExpr().getAConstCase() = g2 and b1 = true and b2 = false
+  exists(SwitchCase sc | g1 = sc and sc.hasDefaultLabel() |
+    sc.getSwitchExpr().getAConstCase() = g2 and b1 = true and b2 = false
+  )
   or
   exists(MethodCall check, int argIndex | check = g1 |
     conditionCheckArgument(check, argIndex, _) and

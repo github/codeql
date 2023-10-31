@@ -406,6 +406,9 @@ class SwitchStmt extends Stmt, @switchstmt {
   /** Gets the `default` case of this switch statement, if any. */
   DefaultCase getDefaultCase() { result = this.getACase() }
 
+  /** Gets the `default` or `case null, default` case of this switch statement, if any. */
+  SwitchCase getDefaultOrNullDefaultCase() { result = this.getACase() and result.hasDefaultLabel() }
+
   /** Gets the expression of this `switch` statement. */
   Expr getExpr() { result.getParent() = this }
 
@@ -487,14 +490,28 @@ class SwitchCase extends Stmt, @case {
   Stmt getRuleStatementOrExpressionStatement() {
     result.getParent() = this and result.getIndex() = -1
   }
+
+  /**
+   * Holds if this case statement includes the default label, i.e. it is either `default`
+   * or `case null, default`.
+   */
+  predicate hasDefaultLabel() { this instanceof DefaultCase or this instanceof NullDefaultCase }
 }
 
-/** A constant `case` of a switch statement. */
+/**
+ * A constant `case` of a switch statement.
+ *
+ * Note this excludes `case null, default` even though that includes a null constant. It
+ * does however include plain `case null`.
+ */
 class ConstCase extends SwitchCase {
   ConstCase() {
     exists(Expr e |
       e.getParent() = this and e.getIndex() >= 0 and not e instanceof LocalVariableDeclExpr
     )
+    // For backward compatibility, we don't include `case null, default:` here, on the assumption
+    // this will come as a surprise to CodeQL that predates that statement's validity.
+    and not isNullDefaultCase(this)
   }
 
   /** Gets the `case` constant at index 0. */
@@ -535,7 +552,11 @@ class PatternCase extends SwitchCase {
   override string getAPrimaryQlClass() { result = "PatternCase" }
 }
 
-/** A `default` case of a `switch` statement */
+/**
+ * A `default` case of a `switch` statement.
+ *
+ * Note this does not include `case null, default` -- for that, see `NullDefaultCase`.
+ */
 class DefaultCase extends SwitchCase {
   DefaultCase() { not exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
 
@@ -546,6 +567,19 @@ class DefaultCase extends SwitchCase {
   override string getHalsteadID() { result = "DefaultCase" }
 
   override string getAPrimaryQlClass() { result = "DefaultCase" }
+}
+
+/** A `case null, default` statement of a `switch` statement or expression. */
+class NullDefaultCase extends SwitchCase {
+  NullDefaultCase() { isNullDefaultCase(this) }
+
+  override string pp() { result = "case null, default" }
+
+  override string toString() { result = "case null, default" }
+
+  override string getHalsteadID() { result = "NullDefaultCase" }
+
+  override string getAPrimaryQlClass() { result = "NullDefaultCase" }
 }
 
 /** A `synchronized` statement. */

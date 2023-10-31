@@ -88,6 +88,10 @@ class A {
                    case String s when s.length() == 5 -> "it's 5 letters long";
                    default -> "It's something else";
                };
+               var nullDefaultTest = switch(thing) {
+                   case String s -> "It's a string";
+                   case null, default -> "It's something else";
+               };
            }
        }
        catch (RuntimeException rte) {

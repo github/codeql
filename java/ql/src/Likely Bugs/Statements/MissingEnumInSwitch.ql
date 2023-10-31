@@ -17,6 +17,6 @@ from SwitchStmt switch, EnumType enum, EnumConstant missing
 where
   switch.getExpr().getType() = enum and
   missing.getDeclaringType() = enum and
-  not exists(switch.getDefaultCase()) and
+  not exists(switch.getDefaultOrNullDefaultCase()) and
   not switch.getAConstCase().getValue() = missing.getAnAccess()
 select switch, "Switch statement does not have a case for $@.", missing, missing.getName()

@@ -992,6 +992,10 @@ providesWith(
   string serviceImpl: string ref
 );
 
+isNullDefaultCase(
+  int id: @case ref
+);
+
 /*
  * Javadoc
  */
