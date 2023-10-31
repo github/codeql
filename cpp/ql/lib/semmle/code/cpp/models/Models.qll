@@ -9,6 +9,7 @@ private import implementations.Iterator
 private import implementations.MemberFunction
 private import implementations.Memcpy
 private import implementations.Memset
+private import implementations.ODBC
 private import implementations.Printf
 private import implementations.Pure
 private import implementations.Strcat
