@@ -140,5 +140,5 @@ void test_clear_memory(char *username) {
 
 	printf("%s", secret); // BAD
 	RtlZeroMemory(secret, 1024);
-	printf("%s", secret); // GOOD [FALSE POSITIVE]
+	printf("%s", secret); // GOOD
 }
