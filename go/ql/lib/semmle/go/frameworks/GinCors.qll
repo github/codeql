@@ -12,7 +12,7 @@ module GinCors {
   string packagePath() { result = package("github.com/gin-contrib/cors", "") }
 
   /**
-   * New function create a new gin Handler that passed to gin as middleware
+   * A new function create a new gin Handler that passed to gin as middleware
    */
   class New extends Function {
     New() { exists(Function f | f.hasQualifiedName(packagePath(), "New") | this = f) }
@@ -107,6 +107,9 @@ module GinCors {
       exists(Type t | t.hasQualifiedName(packagePath(), "Config") | v.getType() = t)
     }
 
+    /**
+     * Get variable declaration of GinConfig
+     */
     SsaWithFields getV() { result = v }
   }
 }
