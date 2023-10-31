@@ -389,7 +389,7 @@ module StepRelationTransformations {
   /**
    * A module to separate import-time from run-time.
    *
-   * We really have two local flow relations, on for module initialisation time (or _import time_) and one for runtime.
+   * We really have two local flow relations, one for module initialisation time (or _import time_) and one for runtime.
    * Consider a read from a global variable `x = foo`. At import time there should be a local flow step from `foo` to `x`,
    * while at runtime there should be a jump step from the module variable corresponding to `foo` to `x`.
    *
@@ -404,7 +404,7 @@ module StepRelationTransformations {
    * with the heuristic that global variables act according to import time rules at top-level program points and according
    * to runtime rules everywhere else. This will forego some import time local flow but otherwise be consistent.
    */
-  module Separate<stepSig/2 rawStep> {
+  module PhaseDependentFlow<stepSig/2 rawStep> {
     /**
      * Holds if `node` is found at the top level of a module.
      */
@@ -476,7 +476,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
  * or at runtime when callables in the module are called.
  */
 predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
-  IncludePostUpdateFlow<Separate<EssaFlow::essaFlowStep/2>::step/2>::step(nodeFrom, nodeTo)
+  IncludePostUpdateFlow<PhaseDependentFlow<EssaFlow::essaFlowStep/2>::step/2>::step(nodeFrom, nodeTo)
 }
 
 private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
@@ -485,7 +485,7 @@ private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
 }
 
 predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
-  IncludePostUpdateFlow<Separate<summaryLocalStep/2>::step/2>::step(nodeFrom, nodeTo)
+  IncludePostUpdateFlow<PhaseDependentFlow<summaryLocalStep/2>::step/2>::step(nodeFrom, nodeTo)
 }
 
 /** `ModuleVariable`s are accessed via jump steps at runtime. */
