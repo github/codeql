@@ -167,7 +167,7 @@ private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryNod
 class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { entryBB(this) }
 
-  override CfgScope getScope() { this.getFirstNode() = TEntryNode(result) }
+  override CfgScope getScope() { this.getFirstNode() = any(EntryNode node | node.getScope() = result) }
 }
 
 /**

@@ -27,7 +27,7 @@ class CfgScope extends Scope instanceof CfgScope::Range_ {
  *
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
-class ControlFlowNode extends TCfgNode {
+class ControlFlowNode extends Node {
   /** Gets a textual representation of this control flow node. */
   string toString() { none() }
 
@@ -50,7 +50,7 @@ class ControlFlowNode extends TCfgNode {
   BasicBlock getBasicBlock() { result.getANode() = this }
 
   /** Gets a successor node of a given type, if any. */
-  final ControlFlowNode getASuccessor(SuccessorType t) { result = getASuccessor(this, t) }
+  final ControlFlowNode getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }
 
   /** Gets an immediate successor, if any. */
   final ControlFlowNode getASuccessor() { result = this.getASuccessor(_) }
