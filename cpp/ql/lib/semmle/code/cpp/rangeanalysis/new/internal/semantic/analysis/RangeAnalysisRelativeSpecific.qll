@@ -65,14 +65,6 @@ module CppLangImplRelative implements LangSig<Sem, FloatDelta> {
   predicate ignoreZeroLowerBound(SemExpr e) { none() }
 
   /**
-   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadArithmeticExpr(SemExpr e) { none() }
-
-  /**
    * Holds if the specified variable should be excluded from the result of `ssaRead()`.
    *
    * This predicate is to keep the results identical to the original Java implementation. It should be

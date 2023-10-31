@@ -19,16 +19,14 @@ module RangeUtil<DeltaSig D, LangSig<Sem, D> Lang> implements UtilSig<Sem, D> {
     or
     exists(D::Delta d1, SemConstantIntegerExpr c |
       result.(SemAddExpr).hasOperands(semSsaRead(v, d1), c) and
-      delta = D::fromFloat(D::toFloat(d1) - c.getIntValue()) and
-      not Lang::ignoreSsaReadArithmeticExpr(result)
+      delta = D::fromFloat(D::toFloat(d1) - c.getIntValue())
     )
     or
     exists(SemSubExpr sub, D::Delta d1, SemConstantIntegerExpr c |
       result = sub and
       sub.getLeftOperand() = semSsaRead(v, d1) and
       sub.getRightOperand() = c and
-      delta = D::fromFloat(D::toFloat(d1) + c.getIntValue()) and
-      not Lang::ignoreSsaReadArithmeticExpr(result)
+      delta = D::fromFloat(D::toFloat(d1) + c.getIntValue())
     )
     or
     result = v.(SemSsaExplicitUpdate).getSourceExpr() and
