@@ -1,4 +1,2 @@
 testFailures
-| closures.swift:180:16:181:1 | // $ hasValueFlow=captureThis\n | Missing result:hasValueFlow=captureThis |
-| closures.swift:181:21:182:1 | // $ hasValueFlow=captureThis\n | Missing result:hasValueFlow=captureThis |
 failures
