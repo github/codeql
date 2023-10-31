@@ -41,7 +41,10 @@ class Endpoint extends DataFlow::MethodNode {
   string getTypeName() {
     result =
       any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getMethodName()) = this)
-          .getQualifiedName()
+          .getQualifiedName() or
+    result =
+      any(DataFlow::ModuleNode m | m.getOwnSingletonMethod(this.getMethodName()) = this)
+            .getQualifiedName() + "!"
   }
 
   /**
