@@ -279,14 +279,16 @@ class NonSyntheticPostUpdateNode extends PostUpdateNodeImpl, CfgNode {
 class DataFlowExpr = Expr;
 
 /**
- * Flow between ESSA variables.
- * This includes both local and global variables.
- * Flow comes from definitions, uses and refinements.
+ * A module to compute local flow.
+ *
+ * Flow will generally go from control flow nodes into essa variables at definitions,
+ * and from there via use-use flow to other control flow nodes.
+ *
+ * Some syntaxtic constructs are handled separately.
  */
-// TODO: Consider constraining `nodeFrom` and `nodeTo` to be in the same scope.
-// If they have different enclosing callables, we get consistency errors.
-module EssaFlow {
-  predicate essaFlowStep(Node nodeFrom, Node nodeTo) {
+module LocalFlow {
+  /** Holds if `nodeFrom` is the control flow node defining the essa variable `nodeTo`. */
+  predicate definitionFlowStep(Node nodeFrom, Node nodeTo) {
     // Definition
     //   `x = f(42)`
     //   nodeFrom is `f(42)`, cfg node
@@ -336,10 +338,37 @@ module EssaFlow {
     //   nodeFrom is `x`, cfgNode
     //   nodeTo is `x`, essa var
     exists(ParameterDefinition pd |
-      nodeFrom.asCfgNode() = pd.getDefiningNode() and
-      nodeTo.asVar() = pd.getVariable()
+      nodeFrom.(CfgNode).getNode() = pd.getDefiningNode() and
+      nodeTo.(EssaNode).getVar() = pd.getVariable()
     )
+  }
+
+  predicate expressionFlowStep(Node nodeFrom, Node nodeTo) {
+    // If expressions
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
     or
+    // Assignment expressions
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(AssignmentExprNode).getValue()
+    or
+    // boolean inline expressions such as `x or y` or `x and y`
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(BoolExprNode).getAnOperand()
+    or
+    // Flow inside an unpacking assignment
+    iterableUnpackingFlowStep(nodeFrom, nodeTo)
+    or
+    // Flow inside a match statement
+    matchFlowStep(nodeFrom, nodeTo)
+  }
+
+  predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
+    AdjacentUses::adjacentUseUse(nodeFrom, nodeTo)
+  }
+
+  predicate defToFirstUse(EssaVariable var, NameNode nodeTo) {
+    AdjacentUses::firstUse(var.getDefinition(), nodeTo)
+  }
+
+  predicate useUseFlowStep(Node nodeFrom, Node nodeTo) {
     // First use after definition
     //   `y = 42`
     //   `x = f(y)`
@@ -353,28 +382,18 @@ module EssaFlow {
     //   nodeFrom is 'y' on first line, cfg node
     //   nodeTo is `y` on second line, cfg node
     useToNextUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode())
-    or
-    // If expressions
-    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
-    or
-    // Assignment expressions
-    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(AssignmentExprNode).getValue()
-    or
-    // boolean inline expressions such as `x or y` or `x and y`
-    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(BoolExprNode).getAnOperand()
-    or
-    // Flow inside an unpacking assignment
-    iterableUnpackingFlowStep(nodeFrom, nodeTo)
-    or
-    matchFlowStep(nodeFrom, nodeTo)
   }
 
-  predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
-    AdjacentUses::adjacentUseUse(nodeFrom, nodeTo)
-  }
-
-  predicate defToFirstUse(EssaVariable var, NameNode nodeTo) {
-    AdjacentUses::firstUse(var.getDefinition(), nodeTo)
+  predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+    IncludePostUpdateFlow<PhaseDependentFlow<definitionFlowStep/2>::step/2>::step(nodeFrom, nodeTo)
+    or
+    IncludePostUpdateFlow<PhaseDependentFlow<expressionFlowStep/2>::step/2>::step(nodeFrom, nodeTo)
+    or
+    // Use-use flow can generate self loops. We want to filter steps from `n` to `n`
+    // after we have included steps from `[post] n` to `n`, so after
+    // `IncludePostUpdateFlow` has ben applied.
+    IncludePostUpdateFlow<PhaseDependentFlow<useUseFlowStep/2>::step/2>::step(nodeFrom, nodeTo) and
+    nodeFrom != nodeTo
   }
 }
 
@@ -481,7 +500,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
  * or at runtime when callables in the module are called.
  */
 predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
-  IncludePostUpdateFlow<PhaseDependentFlow<EssaFlow::essaFlowStep/2>::step/2>::step(nodeFrom, nodeTo)
+  IncludePostUpdateFlow<PhaseDependentFlow<LocalFlow::localFlowStep/2>::step/2>::step(nodeFrom,
+    nodeTo)
 }
 
 private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {

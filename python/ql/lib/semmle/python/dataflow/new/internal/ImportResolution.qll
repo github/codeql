@@ -111,13 +111,13 @@ module ImportResolution {
       allowedEssaImportStep*(firstDef, lastUseVar) and
       not allowedEssaImportStep(_, firstDef)
     |
-      not EssaFlow::defToFirstUse(firstDef, _) and
+      not LocalFlow::defToFirstUse(firstDef, _) and
       val.asVar() = firstDef
       or
       exists(ControlFlowNode mid, ControlFlowNode end |
-        EssaFlow::defToFirstUse(firstDef, mid) and
-        EssaFlow::useToNextUse*(mid, end) and
-        not EssaFlow::useToNextUse(end, _) and
+        LocalFlow::defToFirstUse(firstDef, mid) and
+        LocalFlow::useToNextUse*(mid, end) and
+        not LocalFlow::useToNextUse(end, _) and
         val.asCfgNode() = end
       )
     )
