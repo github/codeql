@@ -396,8 +396,6 @@ module Utils implements UtilSig<Sem, IntDelta> {
   private import RangeUtils as RU
   private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SsaReadPos
 
-  Sem::Expr semSsaRead(Sem::SsaVariable v, int delta) { result = RU::ssaRead(v, delta) }
-
   Sem::Guard semEqFlowCond(
     Sem::SsaVariable v, Sem::Expr e, int delta, boolean isEq, boolean testIsTrue
   ) {

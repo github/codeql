@@ -337,8 +337,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
 }
 
 signature module UtilSig<Semantic Sem, DeltaSig DeltaParam> {
-  Sem::Expr semSsaRead(Sem::SsaVariable v, DeltaParam::Delta delta);
-
   Sem::Guard semEqFlowCond(
     Sem::SsaVariable v, Sem::Expr e, DeltaParam::Delta delta, boolean isEq, boolean testIsTrue
   );
@@ -409,6 +407,7 @@ module RangeStage<
   private import OverflowParam
   private import SignAnalysis
   private import ModulusAnalysis
+  private import internal.RangeUtils::MakeUtils<Sem, D>
 
   /**
    * An expression that does conversion, boxing, or unboxing
@@ -522,11 +521,11 @@ module RangeStage<
   private predicate boundCondition(
     Sem::RelationalExpr comp, Sem::SsaVariable v, Sem::Expr e, D::Delta delta, boolean upper
   ) {
-    comp.getLesserOperand() = semSsaRead(v, delta) and
+    comp.getLesserOperand() = ssaRead(v, delta) and
     e = comp.getGreaterOperand() and
     upper = true
     or
-    comp.getGreaterOperand() = semSsaRead(v, delta) and
+    comp.getGreaterOperand() = ssaRead(v, delta) and
     e = comp.getLesserOperand() and
     upper = false
     or
@@ -534,7 +533,7 @@ module RangeStage<
       // (v - d) - e < c
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
-      sub.getLeftOperand() = semSsaRead(v, d) and
+      sub.getLeftOperand() = ssaRead(v, d) and
       sub.getRightOperand() = e and
       upper = true and
       delta = D::fromFloat(D::toFloat(d) + c.getIntValue())
@@ -542,7 +541,7 @@ module RangeStage<
       // (v - d) - e > c
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
-      sub.getLeftOperand() = semSsaRead(v, d) and
+      sub.getLeftOperand() = ssaRead(v, d) and
       sub.getRightOperand() = e and
       upper = false and
       delta = D::fromFloat(D::toFloat(d) + c.getIntValue())
@@ -551,7 +550,7 @@ module RangeStage<
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = semSsaRead(v, d) and
+      sub.getRightOperand() = ssaRead(v, d) and
       upper = false and
       delta = D::fromFloat(D::toFloat(d) - c.getIntValue())
       or
@@ -559,7 +558,7 @@ module RangeStage<
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = semSsaRead(v, d) and
+      sub.getRightOperand() = ssaRead(v, d) and
       upper = true and
       delta = D::fromFloat(D::toFloat(d) - c.getIntValue())
     )
@@ -677,7 +676,7 @@ module RangeStage<
     Sem::SsaVariable v1, Sem::SsaVariable v2, float delta
   ) {
     exists(Sem::Guard guardEq, D::Delta d1, D::Delta d2, boolean eqIsTrue |
-      guardEq = semEqFlowCond(v1, semSsaRead(v2, d1), d2, true, eqIsTrue) and
+      guardEq = semEqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
       delta = D::toFloat(d2) - D::toFloat(d1) and
       guardEq.directlyControls(result, eqIsTrue)
     )

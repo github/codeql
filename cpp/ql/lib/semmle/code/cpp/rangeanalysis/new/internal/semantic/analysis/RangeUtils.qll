@@ -12,7 +12,7 @@ module RangeUtil<DeltaSig D, LangSig<Sem, D> Lang> implements UtilSig<Sem, D> {
   /**
    * Gets an expression that equals `v - d`.
    */
-  SemExpr semSsaRead(SemSsaVariable v, D::Delta delta) {
+  private SemExpr semSsaRead(SemSsaVariable v, D::Delta delta) {
     // There are various language-specific extension points that can be removed once we no longer
     // expect to match the original Java implementation's results exactly.
     result = v.getAUse() and delta = D::fromInt(0)
