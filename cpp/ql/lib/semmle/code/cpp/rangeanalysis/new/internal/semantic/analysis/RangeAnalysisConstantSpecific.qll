@@ -33,16 +33,6 @@ module CppLangImplConstant implements LangSig<Sem, FloatDelta> {
   predicate ignoreZeroLowerBound(SemExpr e) { none() }
 
   /**
-   * Adds additional results to `ssaRead()` that are specific to Java.
-   *
-   * This predicate handles propagation of offsets for post-increment and post-decrement expressions
-   * in exactly the same way as the old Java implementation. Once the new implementation matches the
-   * old one, we should remove this predicate and propagate deltas for all similar patterns, whether
-   * or not they come from a post-increment/decrement expression.
-   */
-  SemExpr specificSsaRead(SemSsaVariable v, float delta) { none() }
-
-  /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
   predicate hasConstantBound(SemExpr e, float bound, boolean upper) { none() }

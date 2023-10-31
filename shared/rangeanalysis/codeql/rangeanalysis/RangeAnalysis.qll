@@ -285,16 +285,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   predicate ignoreZeroLowerBound(Sem::Expr e);
 
   /**
-   * Adds additional results to `ssaRead()` that are specific to Java.
-   *
-   * This predicate handles propagation of offsets for post-increment and post-decrement expressions
-   * in exactly the same way as the old Java implementation. Once the new implementation matches the
-   * old one, we should remove this predicate and propagate deltas for all similar patterns, whether
-   * or not they come from a post-increment/decrement expression.
-   */
-  Sem::Expr specificSsaRead(Sem::SsaVariable v, D::Delta delta);
-
-  /**
    * Holds if the value of `dest` is known to be `src + delta`.
    */
   predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, D::Delta delta);

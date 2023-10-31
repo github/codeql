@@ -377,8 +377,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 
   predicate ignoreZeroLowerBound(Sem::Expr e) { none() }
 
-  Sem::Expr specificSsaRead(Sem::SsaVariable v, int delta) { none() }
-
   predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, int delta) { none() }
 
   Sem::Type getAlternateType(Sem::Expr e) { none() }
