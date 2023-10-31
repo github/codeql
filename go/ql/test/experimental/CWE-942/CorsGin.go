@@ -14,12 +14,12 @@ import (
 func vunlnerable() {
 	router := gin.Default()
 	// CORS for https://foo.com and null
-	// - GET and POST methods
+	// - PUT and PATCH methods
 	// - Origin header
 	// - Credentials share
 	// - Preflight requests cached for 12 hours
 	config_vulnerable := cors.Config{
-		AllowMethods:     []string{"GET", "POST"},
+		AllowMethods:     []string{"PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
@@ -39,12 +39,12 @@ func vunlnerable() {
 func safe() {
 	router := gin.Default()
 	// CORS for https://foo.com origin, allowing:
-	// - GET and POST methods
+	// - PUT and PATCH methods
 	// - Origin header
 	// - Credentials share
 	// - Preflight requests cached for 12 hours
 	config_safe := cors.Config{
-		AllowMethods:     []string{"GET", "POST"},
+		AllowMethods:     []string{"PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
@@ -63,13 +63,13 @@ func safe() {
  */
 func AllowAllTrue() {
 	router := gin.Default()
-	// CORS for https://foo.com origin, allowing:
+	// CORS for "*" origin, allowing:
 	// - PUT and PATCH methods
 	// - Origin header
 	// - Credentials share
 	// - Preflight requests cached for 12 hours
 	config_allowall := cors.Config{
-		AllowMethods:     []string{"GET", "POST"},
+		AllowMethods:     []string{"PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
