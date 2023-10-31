@@ -30,8 +30,7 @@ module RangeUtil<DeltaSig D, LangSig<Sem, D> Lang> implements UtilSig<Sem, D> {
     )
     or
     result = v.(SemSsaExplicitUpdate).getSourceExpr() and
-    delta = D::fromFloat(0) and
-    not Lang::ignoreSsaReadAssignment(v)
+    delta = D::fromFloat(0)
     or
     result = Lang::specificSsaRead(v, delta)
     or
