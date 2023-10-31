@@ -1334,16 +1334,11 @@ funbind(
                      | @assignxorexpr
                      | @assignlshiftexpr
                      | @assignrshiftexpr
-                     ;
-
-@assign_pointer_expr = @assignpaddexpr
+                     | @assignpaddexpr
                      | @assignpsubexpr
                      ;
 
-@assign_op_expr = @assign_arith_expr
-                | @assign_bitwise_expr
-                | @assign_pointer_expr
-                ;
+@assign_op_expr = @assign_arith_expr | @assign_bitwise_expr
 
 @assign_expr = @assignexpr | @assign_op_expr | @blockassignexpr
 
