@@ -65,10 +65,13 @@ private class ViewCall extends MethodCall {
 }
 
 /** A compiler-generated Razor page. */
-class RazorPage extends Class {
+class RazorPageClass extends Class {
   AssemblyAttribute attr;
 
-  RazorPage() {
+  RazorPageClass() {
+    this.getBaseClass()
+        .getUnboundDeclaration()
+        .hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorPage<>") and
     attr.getFile() = this.getFile() and
     attr.getType()
         .hasQualifiedName("Microsoft.AspNetCore.Razor.Hosting", "RazorCompiledItemAttribute")
@@ -83,7 +86,7 @@ class RazorPage extends Class {
 
 private class ViewCallFlowStep extends TaintTracking::AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(ViewCall vc, RazorPage rp, PropertyAccess modelProp |
+    exists(ViewCall vc, RazorPageClass rp, PropertyAccess modelProp |
       viewCallRefersToPage(vc, rp) and
       node1.asExpr() = vc.getModelArgument() and
       node2.asExpr() = modelProp and
@@ -93,23 +96,24 @@ private class ViewCallFlowStep extends TaintTracking::AdditionalTaintStep {
   }
 }
 
-private predicate viewCallRefersToPage(ViewCall vc, RazorPage rp) {
+private predicate viewCallRefersToPage(ViewCall vc, RazorPageClass rp) {
   viewCallRefersToPageAbsolute(vc, rp) or
   viewCallRefersToPageRelative(vc, rp)
 }
 
-private predicate viewCallRefersToPageAbsolute(ViewCall vc, RazorPage rp) {
+private predicate viewCallRefersToPageAbsolute(ViewCall vc, RazorPageClass rp) {
   ["/", ""] + vc.getNameArgument() = ["", "~"] + rp.getSourceFilepath()
 }
 
-private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPage rp) {
-  ["", "~"] + rp.getSourceFilepath() =
-    min(int i, RelativeViewCallFilepath fp |
-      fp.hasViewCallWithIndex(vc, i) and
-      exists(RazorPage rp2 | ["", "~"] + rp2.getSourceFilepath() = fp.getNormalizedPath())
-    |
-      fp.getNormalizedPath() order by i
-    )
+private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPageClass rp) {
+  rp = min(int i, RazorPageClass rp2 | matchesViewCallWithIndex(vc, rp2, i) | rp2 order by i)
+}
+
+private predicate matchesViewCallWithIndex(ViewCall vc, RazorPageClass rp, int i) {
+  exists(RelativeViewCallFilepath fp |
+    fp.hasViewCallWithIndex(vc, i) and
+    fp.getNormalizedPath() = ["", "~"] + rp.getSourceFilepath()
+  )
 }
 
 /** Gets the `i`th template for view discovery. */

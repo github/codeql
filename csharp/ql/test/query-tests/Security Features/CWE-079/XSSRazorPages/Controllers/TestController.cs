@@ -2,7 +2,6 @@ namespace test;
 
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Razor;
 
 public class UserData
