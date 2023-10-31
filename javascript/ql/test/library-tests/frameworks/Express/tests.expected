@@ -1109,6 +1109,7 @@ test_RequestInputAccess
 | src/express.js:55:12:55:25 | req.params.foo | parameter | src/express.js:53:23:57:1 | functio ... res);\\n} |
 | src/express.js:61:12:61:25 | req.params.foo | parameter | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:67:12:67:25 | req.params.foo | parameter | src/express.js:65:27:69:1 | functio ... res);\\n} |
+| src/express.js:73:12:73:19 | req.path | url | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:7:2:7:8 | req.url | url | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/params.js:4:35:4:39 | value | parameter | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:5:17:5:28 | req.query.xx | parameter | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
