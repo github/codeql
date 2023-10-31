@@ -251,14 +251,6 @@ signature module DeltaSig {
 
 signature module LangSig<Semantic Sem, DeltaSig D> {
   /**
-   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadCopy(Sem::Expr e);
-
-  /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
   predicate hasConstantBound(Sem::Expr e, D::Delta bound, boolean upper);

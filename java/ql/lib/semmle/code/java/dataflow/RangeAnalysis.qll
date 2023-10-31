@@ -315,8 +315,6 @@ module IntDelta implements DeltaSig {
 }
 
 module JavaLangImpl implements LangSig<Sem, IntDelta> {
-  predicate ignoreSsaReadCopy(Sem::Expr e) { none() }
-
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
