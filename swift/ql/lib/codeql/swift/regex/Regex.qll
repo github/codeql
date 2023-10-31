@@ -520,5 +520,5 @@ private class NSStringCompareOptionsRegexEval extends RegexEval instanceof NSStr
     result = this.(NSStringCompareOptionsPotentialRegexEval).getAnOptionsInput()
   }
 
-  override predicate isUsedAsReplace() { this.getStaticTarget().getName().matches(["replac%"]) }
+  override predicate isUsedAsReplace() { this.getStaticTarget().getName().matches("replac%") }
 }
