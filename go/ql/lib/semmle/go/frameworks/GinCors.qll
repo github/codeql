@@ -62,7 +62,7 @@ module GinCors {
   }
 
   /**
-   * A write to the value of Access-Control-Allow-Origins to "*"
+   * A write to the value of Access-Control-Allow-Origins of value "*", overriding AllowOrigins
    */
   class AllowAllOriginsWrite extends DataFlow::ExprNode {
     DataFlow::Node base;

@@ -83,6 +83,10 @@ module UntrustedToAllowOriginConfigConfig implements DataFlow::ConfigSig {
  */
 module UntrustedToAllowOriginHeaderFlow = TaintTracking::Global<UntrustedToAllowOriginHeaderConfig>;
 
+/**
+ * Tracks taint flowfor reasoning about when an `UntrustedFlowSource` flows to
+ * a `AllowOriginsWrite` that writes an `Access-Control-Allow-Origin` header's value.
+ */
 module UntrustedToAllowOriginConfigFlow = TaintTracking::Global<UntrustedToAllowOriginConfigConfig>;
 
 /**
@@ -111,17 +115,17 @@ predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOrigin) {
 }
 
 /**
- * Holds if the provided `allowOriginHW` HeaderWrite's value is set using an
+ * Holds if the provided `allowOrigin` HeaderWrite's value is set using an
  * UntrustedFlowSource.
  * The `message` parameter is populated with the warning message to be returned by the query.
  */
-predicate flowsFromUntrustedToAllowOrigin(DataFlow::ExprNode allowOriginHW, string message) {
+predicate flowsFromUntrustedToAllowOrigin(DataFlow::ExprNode allowOrigin, string message) {
   exists(DataFlow::Node sink |
     UntrustedToAllowOriginHeaderFlow::flowTo(sink) and
-    UntrustedToAllowOriginHeaderConfig::isSinkHW(sink, allowOriginHW)
+    UntrustedToAllowOriginHeaderConfig::isSinkHW(sink, allowOrigin)
     or
     UntrustedToAllowOriginConfigFlow::flowTo(sink) and
-    UntrustedToAllowOriginConfigConfig::isSinkWrite(sink, allowOriginHW)
+    UntrustedToAllowOriginConfigConfig::isSinkWrite(sink, allowOrigin)
   |
     message =
       headerAllowOrigin() + " header is set to a user-defined value, and " +
@@ -146,8 +150,7 @@ predicate allowOriginIsNull(DataFlow::ExprNode allowOrigin, string message) {
       .(SliceLit)
       .getAnElement()
       .toString()
-      .toLowerCase()
-      .matches("\"null\"") and
+      .toLowerCase() = "\"null\"" and
   message =
     headerAllowOrigin() + " header is set to `" + "null" + "`, and " +
       //allowOrigin.(GinCors::AllowOriginsWrite).asExpr().(SliceLit).getAnElement().toString()
