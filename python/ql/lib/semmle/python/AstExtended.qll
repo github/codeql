@@ -222,7 +222,10 @@ class StringList extends StringList_ { }
 class AliasList extends AliasList_ { }
 
 /** A generic type parameter, as seen in function, class, and type alias definitions. */
-class TypeParameter extends TypeParameter_ { }
+class TypeParameter extends TypeParameter_ {
+  /** Gets a textual representation of this element */
+  override string toString() { result = TypeParameter_.super.toString() }
+}
 
 /** A list of type parameters */
 class TypeParameterList extends TypeParameterList_ { }
