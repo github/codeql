@@ -214,6 +214,8 @@ v5.8.swift:
 #   37|             getInit(0): [DeclRefExpr] self
 #   37|             getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (ViewController?) ...
 #   37|             getPattern(0): [NamedPattern] self
+#   37|           getVariable(0): [ConcreteVarDecl] self
+#   37|               Type = ViewController?
 #   37|           getClosureBody(): [ExplicitClosureExpr] { ... }
 #   37|             getBody(): [BraceStmt] { ... }
 #   38|               getElement(0): [GuardStmt] guard ... else { ... }
@@ -248,8 +250,6 @@ v5.8.swift:
 #   33|         Type = ViewController
 #   33|     getBody(): [BraceStmt] { ... }
 #   33|       getElement(0): [ReturnStmt] return
-#   37| [ConcreteVarDecl] self
-#   37|     Type = ViewController?
 #   38| [ConcreteVarDecl] self
 #   38|     Type = ViewController
 #   39| [Comment] // refers to `self.dismiss()`
