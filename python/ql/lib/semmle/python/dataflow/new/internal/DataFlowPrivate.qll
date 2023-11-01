@@ -383,7 +383,12 @@ module EssaFlow {
 //--------
 /** A module for transforming step relations. */
 module StepRelationTransformations {
-  /** A step relation */
+  /**
+   * Holds if there is a step from `nodeFrom` to `nodeTo` in
+   * the step relation to be transformed.
+   *
+   * This is the input relation to the transformations.
+   */
   signature predicate stepSig(Node nodeFrom, Node nodeTo);
 
   /**
