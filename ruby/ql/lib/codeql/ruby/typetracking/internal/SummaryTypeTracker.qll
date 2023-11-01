@@ -73,8 +73,12 @@ signature module Input {
   }
 
   // Relating nodes to summaries
-  /** Gets a dataflow node respresenting the argument of `call` indicated by `arg`. */
-  Node argumentOf(Node call, SummaryComponent arg, boolean isOutput);
+  /**
+   * Gets a dataflow node respresenting the argument of `call` indicated by `arg`.
+   *
+   * Returns the post-update node of the argument when `isPostUpdate` is true.
+   */
+  Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate);
 
   /** Gets a dataflow node respresenting the parameter of `callable` indicated by `param`. */
   Node parameterOf(Node callable, SummaryComponent param);
@@ -221,7 +225,8 @@ module SummaryFlow<Input I> implements Output<I> {
 
   /**
    * Gets a data flow `I::Node` corresponding an argument or return value of `call`,
-   * as specified by `component`.
+   * as specified by `component`. `isOutput` indicates whether the node represents
+   * an output node or an input node.
    */
   bindingset[call, component]
   private I::Node evaluateSummaryComponentLocal(
@@ -300,10 +305,16 @@ module SummaryFlow<Input I> implements Output<I> {
         pragma[only_bind_out](tail)) and
       stack = I::push(pragma[only_bind_out](head), pragma[only_bind_out](tail))
     |
+      // `Parameter[X]` is only allowed in the output of flow summaries (hence `isOutput = true`),
+      // however the target of the parameter (e.g. `Argument[Y].Parameter[X]`) should be fetched
+      // not from a post-update argument node (hence `isOutput0 = false`)
       result = I::parameterOf(prev, head) and
       isOutput0 = false and
       isOutput = true
       or
+      // `ReturnValue` is only allowed in the input of flow summaries (hence `isOutput = false`),
+      // and the target of the return value (e.g. `Argument[X].ReturnValue`) should be fetched not
+      // from a post-update argument node (hence `isOutput0 = false`)
       result = I::returnOf(prev, head) and
       isOutput0 = false and
       isOutput = false
