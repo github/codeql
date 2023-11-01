@@ -1639,7 +1639,11 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   /** Gets the name of the variable declared by this local variable declaration expression. */
   string getName() { result = this.getVariable().getName() }
 
-  /** Gets the switch statement or expression whose pattern declares this identifier, if any. */
+  /**
+   * Gets the switch statement or expression whose pattern declares this identifier, if any.
+   *
+   * Note this only applies to a direct binding pattern, such as `case T t`, not a record pattern.
+   */
   StmtParent getAssociatedSwitch() { result = this.getParent().(PatternCase).getParent() }
 
   /** Holds if this is a declaration stemming from a pattern switch case. */

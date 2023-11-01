@@ -576,6 +576,10 @@ lambdaKind(
   int bodyKind: int ref
 );
 
+isCanonicalConstr(
+  int constructorid: @constructor ref
+);
+
 arrays(
   unique int id: @array,
   string nodeName: string ref,

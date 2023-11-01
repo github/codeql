@@ -190,6 +190,18 @@ predicate simpleAstFlowStep(Expr e1, Expr e2) {
   e2 = any(NotNullExpr nne | e1 = nne.getExpr())
   or
   e2.(WhenExpr).getBranch(_).getAResult() = e1
+  or
+  exists(SwitchExpr se |
+    e1 = se.getExpr() and e2 = se.getACase().(PatternCase).getPattern()
+  )
+  or
+  exists(SwitchStmt ss |
+    e1 = ss.getExpr() and e2 = ss.getACase().(PatternCase).getPattern()
+  )
+  or
+  exists(InstanceOfExpr ioe |
+    e1 = ioe.getExpr() and e2 = ioe.getLocalVariableDeclExpr()
+  )
 }
 
 private predicate simpleLocalFlowStep0(Node node1, Node node2) {
@@ -198,8 +210,7 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
     upd.getDefiningExpr().(AssignOp) = node1.asExpr() or
-    upd.getDefiningExpr().(LocalVariableDeclExpr).getAssociatedSwitch().(SwitchStmt).getExpr() = node1.asExpr() or
-    upd.getDefiningExpr().(LocalVariableDeclExpr).getAssociatedSwitch().(SwitchExpr).getExpr() = node1.asExpr()
+    upd.getDefiningExpr().(Pattern).asBindingPattern() = node1.asExpr()
   |
     node2.asExpr() = upd.getAFirstUse() and
     not capturedVariableRead(node2)

@@ -232,6 +232,17 @@ predicate storeStep(Node node1, ContentSet f, Node node2) {
     pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
+private Field getLexicallyOrderedRecordField(Record r, int idx) {
+  result =
+    rank[idx + 1](Field f, int i, Parameter p |
+      f = r.getAField() and
+      p = r.getCanonicalConstructor().getParameter(i) and
+      f.getName() = p.getName()
+    |
+      f order by i
+    )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via a read of `f`.
  * Thus, `node1` references an object with a field `f` whose value ends up in
@@ -254,6 +265,13 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
     get.getMethod() = getter and
     node1.asExpr() = get.getQualifier() and
     node2.asExpr() = get
+  )
+  or
+  exists(RecordPatternExpr rpe, Pattern subPattern, int i |
+    node1.asExpr() = rpe and
+    subPattern = rpe.getSubPattern(i) and
+    node2.asExpr() = subPattern and
+    f.(FieldContent).getField() = getLexicallyOrderedRecordField(rpe.getType(), i)
   )
   or
   f instanceof ArrayContent and arrayReadStep(node1, node2, _)
