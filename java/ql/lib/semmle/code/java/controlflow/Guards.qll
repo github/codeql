@@ -180,7 +180,7 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
     selector = sc.getSelectorExpr() and
     (
       if sc instanceof PatternCase
-      then caseblock.getFirstNode() = sc.(PatternCase).getPattern().getControlFlowNode()
+      then caseblock.getANode() = sc.(PatternCase).getPattern().getControlFlowNode()
       else (
         caseblock.getFirstNode() = sc.getControlFlowNode() and
         // Check there is no fall-through edge from a previous case:
