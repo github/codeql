@@ -26,12 +26,24 @@ protocol UIApplicationDelegate {
 }
 
 class UIScene {
-    class ConnectionOptions {}
+    class ConnectionOptions {
+        var userActivities: Set<NSUserActivity> { get { return Set() } }
+        var urlContexts: Set<UIOpenURLContext> { get { return Set() } }
+    }
 }
 
 class UISceneSession {}
 
-class NSUserActivity {}
+class NSUserActivity: Hashable {
+    static func == (lhs: NSUserActivity, rhs: NSUserActivity) -> Bool {
+        return true;
+    }
+
+    func hash(into hasher: inout Hasher) {}
+
+    var webpageURL: URL? { get { return nil } set { } }
+    var referrerURL: URL? { get { return nil } set { } }
+}
 
 class UIOpenURLContext: Hashable {
     static func == (lhs: UIOpenURLContext, rhs: UIOpenURLContext) -> Bool {
@@ -39,6 +51,8 @@ class UIOpenURLContext: Hashable {
     }
 
     func hash(into hasher: inout Hasher) {}
+
+    var url: URL { get { return URL() } }
 }
 
 protocol UISceneDelegate {
@@ -47,6 +61,8 @@ protocol UISceneDelegate {
     func scene(_: UIScene, didUpdate: NSUserActivity)
     func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>)
 }
+
+func sink(arg: Any) {}
 
 // --- tests ---
 
@@ -64,28 +80,88 @@ class AppDelegate: UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
-        launchOptions?[.url] // $ source=remote
+        _ = launchOptions?[.url] // $ source=remote
         return true
     }
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
-        launchOptions?[.url] // $ source=remote
+        _ = launchOptions?[.url] // $ source=remote
         return true
     }
 }
 
 class SceneDelegate : UISceneDelegate {
-    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) {} // $ source=remote
-    func scene(_: UIScene, continue: NSUserActivity) {} // $ source=remote
-    func scene(_: UIScene, didUpdate: NSUserActivity) {} // $ source=remote
-    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) {} // $ source=remote
+    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) { // $ source=remote
+      for userActivity in options.userActivities {
+        let x = userActivity.webpageURL
+        sink(arg: x) // $ MISSING: tainted
+        let y = userActivity.referrerURL
+        sink(arg: y) // $ MISSING: tainted
+      }
+
+      for urlContext in options.urlContexts {
+        let z = urlContext.url
+        sink(arg: z) // $ MISSING: tainted
+      }
+    }
+
+    func scene(_: UIScene, continue: NSUserActivity) { // $ source=remote
+      let x = `continue`.webpageURL
+      sink(arg: x) // $ tainted
+      let y = `continue`.referrerURL
+      sink(arg: y) // $ tainted
+    }
+
+    func scene(_: UIScene, didUpdate: NSUserActivity) { // $ source=remote
+      let x = didUpdate.webpageURL
+      sink(arg: x) // $ tainted
+      let y = didUpdate.referrerURL
+      sink(arg: y) // $ tainted
+    }
+
+    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) { // $ source=remote
+      for openURLContext in openURLContexts {
+        let x = openURLContext.url
+        sink(arg: x) // $ MISSING: tainted
+      }
+    }
 }
 
 class Extended {}
 
 extension Extended : UISceneDelegate {
-    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) {} // $ source=remote
-    func scene(_: UIScene, continue: NSUserActivity) {} // $ source=remote
-    func scene(_: UIScene, didUpdate: NSUserActivity) {} // $ source=remote
-    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) {} // $ source=remote
+    func scene(_: UIScene, willConnectTo: UISceneSession, options: UIScene.ConnectionOptions) { // $ source=remote
+      for userActivity in options.userActivities {
+        let x = userActivity.webpageURL
+        sink(arg: x) // $ MISSING: tainted
+        let y = userActivity.referrerURL
+        sink(arg: y) // $ MISSING: tainted
+      }
+
+      for urlContext in options.urlContexts {
+        let z = urlContext.url
+        sink(arg: z) // $ MISSING: tainted
+      }
+    }
+
+    func scene(_: UIScene, continue: NSUserActivity) { // $ source=remote
+      let x = `continue`.webpageURL
+      sink(arg: x) // $ tainted
+      let y = `continue`.referrerURL
+      sink(arg: y) // $ tainted
+    }
+
+    func scene(_: UIScene, didUpdate: NSUserActivity) { // $ source=remote
+      let x = didUpdate.webpageURL
+      sink(arg: x) // $ tainted
+      let y = didUpdate.referrerURL
+      sink(arg: y) // $ tainted
+    }
+
+    func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) { // $ source=remote
+      for openURLContext in openURLContexts {
+        let x = openURLContext.url
+        sink(arg: x) // $ MISSING: tainted
+      }
+    }
 }

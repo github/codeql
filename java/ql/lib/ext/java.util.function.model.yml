@@ -9,4 +9,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.function", "Function", "identity", "()", "manual"]
+      - ["java.util.function", "Function", "identity", "()", "summary", "manual"]

@@ -13,7 +13,7 @@
 import python
 import semmle.python.regex
 
-from Regex r, int offset
+from RegExp r, int offset
 where
   r.escapingChar(offset) and
   r.getChar(offset + 1) = "b" and

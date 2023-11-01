@@ -3,12 +3,12 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,System.Data.SqlClient.SqlConnection)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SqlClient", "SqlDataAdapter", False, "SqlDataAdapter", "(System.Data.SqlClient.SqlCommand)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SqlClient", "SqlDataAdapter", False, "SqlDataAdapter", "(System.String,System.Data.SqlClient.SqlConnection)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SqlClient", "SqlDataAdapter", False, "SqlDataAdapter", "(System.String,System.String)", "", "Argument[0]", "sql", "manual"]
+      - ["System.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,System.Data.SqlClient.SqlConnection)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SqlClient", "SqlDataAdapter", False, "SqlDataAdapter", "(System.Data.SqlClient.SqlCommand)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SqlClient", "SqlDataAdapter", False, "SqlDataAdapter", "(System.String,System.Data.SqlClient.SqlConnection)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SqlClient", "SqlDataAdapter", False, "SqlDataAdapter", "(System.String,System.String)", "", "Argument[0]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel

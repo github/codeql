@@ -1,1 +1,1 @@
-semmle-extractor-options: --max-import-depth=1 --lang=3
+semmle-extractor-options: --max-import-depth=3 --lang=3

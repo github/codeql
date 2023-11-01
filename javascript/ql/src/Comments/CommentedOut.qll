@@ -127,7 +127,7 @@ class CommentedOutCode extends Comment {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(Location loc, File f | loc = getLocation() and f = loc.getFile() |
+    exists(Location loc, File f | loc = this.getLocation() and f = loc.getFile() |
       filepath = f.getAbsolutePath() and
       startline = loc.getStartLine() and
       startcolumn = loc.getStartColumn() and

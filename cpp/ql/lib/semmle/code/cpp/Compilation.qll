@@ -42,7 +42,7 @@ class Compilation extends @compilation {
   }
 
   /** Gets a file compiled during this invocation. */
-  File getAFileCompiled() { result = getFileCompiled(_) }
+  File getAFileCompiled() { result = this.getFileCompiled(_) }
 
   /** Gets the `i`th file compiled during this invocation */
   File getFileCompiled(int i) { compilation_compiling_files(this, i, unresolveElement(result)) }
@@ -74,7 +74,7 @@ class Compilation extends @compilation {
   /**
    * Gets an argument passed to the extractor on this invocation.
    */
-  string getAnArgument() { result = getArgument(_) }
+  string getAnArgument() { result = this.getArgument(_) }
 
   /**
    * Gets the `i`th argument passed to the extractor on this invocation.

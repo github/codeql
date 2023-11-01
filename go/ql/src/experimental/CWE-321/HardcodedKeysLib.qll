@@ -6,7 +6,6 @@
 
 import go
 import StringOps
-import DataFlow::PathGraph
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
@@ -363,9 +362,11 @@ module HardcodedKeys {
   }
 
   /**
+   * DEPRECATED: Use `Flow` instead.
+   *
    * A configuration depicting taint flow for studying JWT token signing vulnerabilities.
    */
-  class Configuration extends TaintTracking::Configuration {
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "Hard-coded JWT Signing Key" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -374,4 +375,15 @@ module HardcodedKeys {
 
     override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof Sanitizer }
   }
+
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  }
+
+  /** Tracks taint flow for reasoning about JWT token signing vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
 }

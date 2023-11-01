@@ -5,6 +5,7 @@
  */
 
 import swift
+import internal.SensitiveDataHeuristics
 
 private newtype TSensitiveDataType =
   TCredential() or
@@ -29,7 +30,12 @@ class SensitiveCredential extends SensitiveDataType, TCredential {
   override string toString() { result = "credential" }
 
   override string getRegexp() {
-    result = ".*(password|passwd|accountid|account.?key|accnt.?key|license.?key|trusted).*"
+    exists(SensitiveDataClassification classification |
+      not classification = SensitiveDataClassification::id() and // not accurate enough
+      result = HeuristicNames::maybeSensitiveRegexp(classification)
+    )
+    or
+    result = "(?is).*((account|accnt|licen(se|ce)).?(id|key)|one.?time.?code|pass.?phrase).*"
   }
 }
 
@@ -41,24 +47,29 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
 
   override string getRegexp() {
     result =
-      ".*(" +
+      "(?is).*(" +
         // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
         // Government identifiers, such as Social Security Numbers
-        "social.?security|national.?insurance|" +
+        "social.?security|employer.?identification|national.?insurance|resident.?id|" +
+        "passport.?(num|no)|" +
         // Contact information, such as home addresses
-        "post.?code|zip.?code|home.?address|" +
+        "post.?code|zip.?code|home.?addr|" +
         // and telephone numbers
-        "telephone|home.?phone|mobile|fax.?no|fax.?number|" +
+        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no|phone)|" + "emergency.?contact|" +
         // Geographic location - where the user is (or was)
-        "latitude|longitude|" +
+        "l(atitude|ongitude)|nationality|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "credit.?card|debit.?card|salary|bank.?account|" +
+        "(credit|debit|bank|visa).?(card|num|no|acc(ou?)nt)|acc(ou)?nt.?(no|num|credit)|" +
+        "salary|billing|credit.?(rating|score)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-        "email|" +
+        "e(mail|_mail)|" +
         // Health - medical conditions, insurance status, prescription records
-        "birthday|birth.?date|date.?of.?birth|medical|" +
+        "birth.?da(te|y)|da(te|y).?(of.?)?birth|" +
+        "medical|(health|care).?plan|healthkit|appointment|prescription|" +
+        "blood.?(type|alcohol|glucose|pressure)|heart.?(rate|rhythm)|body.?(mass|fat)|" +
+        "menstrua|pregnan|insulin|inhaler|" +
         // Relationships - work and family
-        "employer|spouse" +
+        "employ(er|ee)|spouse|maiden.?name" +
         // ---
         ").*"
   }
@@ -69,7 +80,29 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
  * contain hashed or encrypted data, or are only a reference to data that is
  * actually stored elsewhere.
  */
-private string regexpProbablySafe() { result = ".*(hash|crypt|file|path|invalid).*" }
+private string regexpProbablySafe() {
+  result = HeuristicNames::notSensitiveRegexp() or
+  result = "(?is).*(file|path|url|invalid).*"
+}
+
+/**
+ * Gets a string that is to be tested for sensitivity.
+ */
+private string sensitiveCandidateStrings() {
+  result = any(VarDecl v).getName()
+  or
+  result = any(Function f).getShortName()
+  or
+  result = any(Argument a).getLabel()
+}
+
+/**
+ * Gets a string from the candidates that is sensitive.
+ */
+private string sensitiveStrings(SensitiveDataType sensitiveType) {
+  result = sensitiveCandidateStrings() and
+  result.regexpMatch(sensitiveType.getRegexp())
+}
 
 /**
  * A `VarDecl` that might be used to contain sensitive data.
@@ -77,7 +110,7 @@ private string regexpProbablySafe() { result = ".*(hash|crypt|file|path|invalid)
 private class SensitiveVarDecl extends VarDecl {
   SensitiveDataType sensitiveType;
 
-  SensitiveVarDecl() { this.getName().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveVarDecl() { this.getName() = sensitiveStrings(sensitiveType) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getName() and
@@ -86,15 +119,15 @@ private class SensitiveVarDecl extends VarDecl {
 }
 
 /**
- * An `AbstractFunctionDecl` that might be used to contain sensitive data.
+ * A `Function` that might be used to contain sensitive data.
  */
-private class SensitiveFunctionDecl extends AbstractFunctionDecl {
+private class SensitiveFunction extends Function {
   SensitiveDataType sensitiveType;
 
-  SensitiveFunctionDecl() { this.getName().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveFunction() { this.getShortName() = sensitiveStrings(sensitiveType) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
-    label = this.getName() and
+    label = this.getShortName() and
     sensitiveType = type
   }
 }
@@ -105,7 +138,7 @@ private class SensitiveFunctionDecl extends AbstractFunctionDecl {
 private class SensitiveArgument extends Argument {
   SensitiveDataType sensitiveType;
 
-  SensitiveArgument() { this.getLabel().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveArgument() { this.getLabel() = sensitiveStrings(sensitiveType) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getLabel() and
@@ -129,7 +162,7 @@ class SensitiveExpr extends Expr {
       this.(MemberRefExpr).getMember().(SensitiveVarDecl).hasInfo(label, sensitiveType)
       or
       // function call
-      this.(ApplyExpr).getStaticTarget().(SensitiveFunctionDecl).hasInfo(label, sensitiveType)
+      this.(ApplyExpr).getStaticTarget().(SensitiveFunction).hasInfo(label, sensitiveType)
       or
       // sensitive argument
       exists(SensitiveArgument a |
@@ -138,7 +171,7 @@ class SensitiveExpr extends Expr {
       )
     ) and
     // do not mark as sensitive it if it is probably safe
-    not label.toLowerCase().regexpMatch(regexpProbablySafe())
+    not label.regexpMatch(regexpProbablySafe())
   }
 
   /**
@@ -155,8 +188,9 @@ class SensitiveExpr extends Expr {
 /**
  * A function that is likely used to encrypt or hash data.
  */
-private class EncryptionFunction extends AbstractFunctionDecl {
-  EncryptionFunction() { this.getName().regexpMatch(".*(crypt|hash|encode|protect).*") }
+private class EncryptionFunction extends Function {
+  cached
+  EncryptionFunction() { this.getName().regexpMatch("(?is).*(crypt|hash|encode|protect).*") }
 }
 
 /**

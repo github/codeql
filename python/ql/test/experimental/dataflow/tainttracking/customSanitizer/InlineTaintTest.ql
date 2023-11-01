@@ -12,8 +12,12 @@ predicate isUnsafeCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean bra
   branch = false
 }
 
-class CustomSanitizerOverrides extends TestTaintTrackingConfiguration {
-  override predicate isSanitizer(DataFlow::Node node) {
+module CustomSanitizerOverridesConfig implements DataFlow::ConfigSig {
+  predicate isSource = TestTaintTrackingConfig::isSource/1;
+
+  predicate isSink = TestTaintTrackingConfig::isSink/1;
+
+  predicate isBarrier(DataFlow::Node node) {
     exists(Call call |
       call.getFunc().(Name).getId() = "emulated_authentication_check" and
       call.getArg(0) = node.asExpr()
@@ -27,7 +31,9 @@ class CustomSanitizerOverrides extends TestTaintTrackingConfiguration {
   }
 }
 
-query predicate isSanitizer(TestTaintTrackingConfiguration conf, DataFlow::Node node) {
+import MakeInlineTaintTest<CustomSanitizerOverridesConfig>
+
+query predicate isSanitizer(DataFlow::Node node) {
   exists(node.getLocation().getFile().getRelativePath()) and
-  conf.isSanitizer(node)
+  CustomSanitizerOverridesConfig::isBarrier(node)
 }

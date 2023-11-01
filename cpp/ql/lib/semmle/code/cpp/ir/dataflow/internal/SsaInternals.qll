@@ -10,32 +10,35 @@ private import ssa0.SsaInternals as SsaInternals0
 import SsaInternalsCommon
 
 private module SourceVariables {
-  int getMaxIndirectionForIRVariable(IRVariable var) {
-    exists(Type type, boolean isGLValue |
-      var.getLanguageType().hasType(type, isGLValue) and
-      if isGLValue = true
-      then result = 1 + getMaxIndirectionsForType(type)
-      else result = getMaxIndirectionsForType(type)
-    )
-  }
-
   cached
   private newtype TSourceVariable =
-    TSourceIRVariable(BaseIRVariable baseVar, int ind) {
-      ind = [0 .. getMaxIndirectionForIRVariable(baseVar.getIRVariable())]
-    } or
-    TCallVariable(AllocationInstruction call, int ind) {
-      ind = [0 .. countIndirectionsForCppType(getResultLanguageType(call))]
+    TMkSourceVariable(SsaInternals0::SourceVariable base, int ind) {
+      ind = [0 .. countIndirectionsForCppType(base.getLanguageType()) + 1]
     }
 
-  abstract class SourceVariable extends TSourceVariable {
+  class SourceVariable extends TSourceVariable {
+    SsaInternals0::SourceVariable base;
     int ind;
 
-    bindingset[ind]
-    SourceVariable() { any() }
+    SourceVariable() { this = TMkSourceVariable(base, ind) }
+
+    /** Gets the IR variable associated with this `SourceVariable`, if any. */
+    IRVariable getIRVariable() { result = base.(BaseIRVariable).getIRVariable() }
+
+    /**
+     * Gets the base source variable (i.e., the variable without any
+     * indirections) of this source variable.
+     */
+    SsaInternals0::SourceVariable getBaseVariable() { result = base }
 
     /** Gets a textual representation of this element. */
-    abstract string toString();
+    string toString() {
+      ind = 0 and
+      result = this.getBaseVariable().toString()
+      or
+      ind > 0 and
+      result = this.getBaseVariable().toString() + " indirection"
+    }
 
     /**
      * Gets the number of loads performed on the base source variable
@@ -43,65 +46,19 @@ private module SourceVariables {
      */
     int getIndirection() { result = ind }
 
-    /**
-     * Gets the base source variable (i.e., the variable without any
-     * indirections) of this source variable.
-     */
-    abstract BaseSourceVariable getBaseVariable();
-
     /** Holds if this variable is a glvalue. */
-    predicate isGLValue() { none() }
+    predicate isGLValue() { ind = 0 }
 
     /**
      * Gets the type of this source variable. If `isGLValue()` holds, then
      * the type of this source variable should be thought of as "pointer
      * to `getType()`".
      */
-    abstract DataFlowType getType();
-  }
-
-  class SourceIRVariable extends SourceVariable, TSourceIRVariable {
-    BaseIRVariable var;
-
-    SourceIRVariable() { this = TSourceIRVariable(var, ind) }
-
-    IRVariable getIRVariable() { result = var.getIRVariable() }
-
-    override BaseIRVariable getBaseVariable() { result.getIRVariable() = this.getIRVariable() }
-
-    override string toString() {
-      ind = 0 and
-      result = this.getIRVariable().toString()
-      or
-      ind > 0 and
-      result = this.getIRVariable().toString() + " indirection"
+    DataFlowType getType() {
+      if this.isGLValue()
+      then result = base.getType()
+      else result = getTypeImpl(base.getType(), ind - 1)
     }
-
-    override predicate isGLValue() { ind = 0 }
-
-    override DataFlowType getType() {
-      if ind = 0 then result = var.getType() else result = getTypeImpl(var.getType(), ind - 1)
-    }
-  }
-
-  class CallVariable extends SourceVariable, TCallVariable {
-    AllocationInstruction call;
-
-    CallVariable() { this = TCallVariable(call, ind) }
-
-    AllocationInstruction getCall() { result = call }
-
-    override BaseCallVariable getBaseVariable() { result.getCallInstruction() = call }
-
-    override string toString() {
-      ind = 0 and
-      result = "Call"
-      or
-      ind > 0 and
-      result = "Call indirection"
-    }
-
-    override DataFlowType getType() { result = getTypeImpl(call.getResultType(), ind) }
   }
 }
 
@@ -117,7 +74,7 @@ predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
     type = getLanguageType(op) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectOperand(op, indirectionIndex))
+    not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
   )
 }
 
@@ -131,28 +88,29 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
     type = getResultLanguageType(instr) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectInstruction(instr, indirectionIndex))
+    not hasIRRepresentationOfIndirectInstruction(instr, indirectionIndex, _, _)
   )
 }
 
 cached
 private newtype TDefOrUseImpl =
-  TDefImpl(Operand address, int indirectionIndex) {
-    exists(Instruction base | isDef(_, _, address, base, _, indirectionIndex) |
+  TDefImpl(BaseSourceVariableInstruction base, Operand address, int indirectionIndex) {
+    isDef(_, _, address, base, _, indirectionIndex) and
+    (
       // We only include the definition if the SSA pruning stage
       // concluded that the definition is live after the write.
       any(SsaInternals0::Def def).getAddressOperand() = address
       or
       // Since the pruning stage doesn't know about global variables we can't use the above check to
       // rule out dead assignments to globals.
-      base.(VariableAddressInstruction).getAstVariable() instanceof Cpp::GlobalOrNamespaceVariable
+      base.(VariableAddressInstruction).getAstVariable() instanceof GlobalLikeVariable
     )
   } or
-  TUseImpl(Operand operand, int indirectionIndex) {
-    isUse(_, operand, _, _, indirectionIndex) and
-    not isDef(_, _, operand, _, _, _)
+  TUseImpl(BaseSourceVariableInstruction base, Operand operand, int indirectionIndex) {
+    isUse(_, operand, base, _, indirectionIndex) and
+    not isDef(true, _, operand, _, _, _)
   } or
-  TGlobalUse(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
+  TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
     // the assignment to a global variable isn't ruled out as dead.
     exists(VariableAddressInstruction vai, int defIndex |
@@ -162,7 +120,7 @@ private newtype TDefOrUseImpl =
       indirectionIndex = [0 .. defIndex] + 1
     )
   } or
-  TGlobalDefImpl(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
+  TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents the initial "definition" of a global variable when entering
     // a function body.
     exists(VariableAddressInstruction vai |
@@ -236,7 +194,7 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
 
   /**
    * Gets the instruction that computes the base of this definition or use.
-   * This is always a `VariableAddressInstruction` or an `AllocationInstruction`.
+   * This is always a `VariableAddressInstruction` or an `CallInstruction`.
    */
   abstract BaseSourceVariableInstruction getBase();
 
@@ -308,15 +266,17 @@ abstract class DefImpl extends DefOrUseImpl {
 }
 
 private class DirectDef extends DefImpl, TDefImpl {
-  DirectDef() { this = TDefImpl(address, ind) }
+  BaseSourceVariableInstruction base;
 
-  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+  DirectDef() { this = TDefImpl(base, address, ind) }
 
-  override int getIndirection() { isDef(_, _, address, _, result, ind) }
+  override BaseSourceVariableInstruction getBase() { result = base }
 
-  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+  override int getIndirection() { isDef(_, _, address, base, result, ind) }
 
-  override predicate isCertain() { isDef(true, _, address, _, _, ind) }
+  override Node0Impl getValue() { isDef(_, result, address, base, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, base, _, ind) }
 }
 
 private class IteratorDef extends DefImpl, TIteratorDef {
@@ -359,13 +319,32 @@ abstract class UseImpl extends DefOrUseImpl {
 
 abstract private class OperandBasedUse extends UseImpl {
   Operand operand;
+  BaseSourceVariableInstruction base;
 
   bindingset[ind]
   OperandBasedUse() { any() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    operand.getUse() = block.getInstruction(index)
+    // See the comment in `ssa0`'s `OperandBasedUse` for an explanation of this
+    // predicate's implementation.
+    if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
+    then
+      exists(Operand op, int indirectionIndex, int indirection |
+        indirectionIndex = this.getIndirectionIndex() and
+        indirection = this.getIndirection() and
+        op =
+          min(Operand cand, int i |
+            isUse(_, cand, base, indirection, indirectionIndex) and
+            block.getInstruction(i) = cand.getUse()
+          |
+            cand order by i
+          ) and
+        block.getInstruction(index) = op.getUse()
+      )
+    else operand.getUse() = block.getInstruction(index)
   }
+
+  final override BaseSourceVariableInstruction getBase() { result = base }
 
   final Operand getOperand() { result = operand }
 
@@ -373,25 +352,19 @@ abstract private class OperandBasedUse extends UseImpl {
 }
 
 private class DirectUse extends OperandBasedUse, TUseImpl {
-  DirectUse() { this = TUseImpl(operand, ind) }
+  DirectUse() { this = TUseImpl(base, operand, ind) }
 
-  override int getIndirection() { isUse(_, operand, _, result, ind) }
+  override int getIndirection() { isUse(_, operand, base, result, ind) }
 
-  override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
-
-  override predicate isCertain() { isUse(true, operand, _, _, ind) }
+  override predicate isCertain() { isUse(true, operand, base, _, ind) }
 
   override Node getNode() { nodeHasOperand(result, operand, ind) }
 }
 
 private class IteratorUse extends OperandBasedUse, TIteratorUse {
-  BaseSourceVariableInstruction container;
+  IteratorUse() { this = TIteratorUse(operand, base, ind) }
 
-  IteratorUse() { this = TIteratorUse(operand, container, ind) }
-
-  override int getIndirection() { isIteratorUse(container, operand, result, ind) }
-
-  override BaseSourceVariableInstruction getBase() { result = container }
+  override int getIndirection() { isIteratorUse(base, operand, result, ind) }
 
   override predicate isCertain() { none() }
 
@@ -458,7 +431,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
 }
 
 class GlobalUse extends UseImpl, TGlobalUse {
-  Cpp::GlobalOrNamespaceVariable global;
+  GlobalLikeVariable global;
   IRFunction f;
 
   GlobalUse() { this = TGlobalUse(global, f, ind) }
@@ -468,15 +441,22 @@ class GlobalUse extends UseImpl, TGlobalUse {
   override int getIndirection() { result = ind + 1 }
 
   /** Gets the global variable associated with this use. */
-  Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
+  GlobalLikeVariable getVariable() { result = global }
 
   /** Gets the `IRFunction` whose body is exited from after this use. */
   IRFunction getIRFunction() { result = f }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    exists(ExitFunctionInstruction exit |
-      exit = f.getExitFunctionInstruction() and
-      block.getInstruction(index) = exit
+    // Similar to the `FinalParameterUse` case, we want to generate flow out of
+    // globals at any exit so that we can flow out of non-returning functions.
+    // Obviously this isn't correct as we can't actually flow but the global flow
+    // requires this if we want to flow into children.
+    exists(Instruction return |
+      return instanceof ReturnInstruction or
+      return instanceof UnreachedInstruction
+    |
+      block.getInstruction(index) = return and
+      return.getEnclosingIRFunction() = f
     )
   }
 
@@ -496,14 +476,14 @@ class GlobalUse extends UseImpl, TGlobalUse {
 }
 
 class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
-  Cpp::GlobalOrNamespaceVariable global;
+  GlobalLikeVariable global;
   IRFunction f;
   int indirectionIndex;
 
   GlobalDefImpl() { this = TGlobalDefImpl(global, f, indirectionIndex) }
 
   /** Gets the global variable associated with this definition. */
-  Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
+  GlobalLikeVariable getVariable() { result = global }
 
   /** Gets the `IRFunction` whose body is evaluated after this definition. */
   IRFunction getIRFunction() { result = f }
@@ -637,7 +617,7 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
       hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
       hasOperandAndIndex(nTo, op2, indirectionIndex - 1) and
       instr = op2.getDef() and
-      isDereference(instr, op1)
+      isDereference(instr, op1, _)
     )
   )
 }
@@ -657,27 +637,32 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
  * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
  * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
  */
-private predicate adjustForPointerArith(
-  DefOrUse defOrUse, Node nodeFrom, UseOrPhi use, boolean uncertain
-) {
-  nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-  exists(Node adjusted |
-    indirectConversionFlowStep*(adjusted, nodeFrom) and
-    nodeToDefOrUse(adjusted, defOrUse, uncertain) and
+private predicate adjustForPointerArith(PostUpdateNode pun, UseOrPhi use) {
+  exists(DefOrUse defOrUse, Node adjusted |
+    indirectConversionFlowStep*(adjusted, pun.getPreUpdateNode()) and
+    nodeToDefOrUse(adjusted, defOrUse, _) and
     adjacentDefRead(defOrUse, use)
   )
 }
 
+/**
+ * Holds if `nodeFrom` flows to `nodeTo` because there is `def-use` or
+ * `use-use` flow from `defOrUse` to `use`.
+ *
+ * `uncertain` is `true` if the `defOrUse` is an uncertain definition.
+ */
+private predicate localSsaFlow(
+  SsaDefOrUse defOrUse, Node nodeFrom, UseOrPhi use, Node nodeTo, boolean uncertain
+) {
+  nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
+  adjacentDefRead(defOrUse, use) and
+  useToNode(use, nodeTo) and
+  nodeFrom != nodeTo
+}
+
 private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, boolean uncertain) {
-  // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
   exists(UseOrPhi use |
-    adjustForPointerArith(defOrUse, nodeFrom, use, uncertain) and
-    useToNode(use, nodeTo)
-    or
-    not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-    nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
-    adjacentDefRead(defOrUse, use) and
-    useToNode(use, nodeTo)
+    localSsaFlow(defOrUse, nodeFrom, use, nodeTo, uncertain)
     or
     // Initial global variable value to a first use
     nodeFrom.(InitialGlobalValue).getGlobalDef() = defOrUse and
@@ -712,8 +697,105 @@ private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and nodeFrom != nodeTo
+  |
     if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
+  )
+}
+
+private predicate isArgumentOfCallableInstruction(DataFlowCall call, Instruction instr) {
+  isArgumentOfCallableOperand(call, unique( | | getAUse(instr)))
+}
+
+private predicate isArgumentOfCallableOperand(DataFlowCall call, Operand operand) {
+  operand.(ArgumentOperand).getCall() = call
+  or
+  exists(FieldAddressInstruction fai |
+    fai.getObjectAddressOperand() = operand and
+    isArgumentOfCallableInstruction(call, fai)
+  )
+  or
+  exists(Instruction deref |
+    isArgumentOfCallableInstruction(call, deref) and
+    isDereference(deref, operand, _)
+  )
+  or
+  exists(Instruction instr |
+    isArgumentOfCallableInstruction(call, instr) and
+    conversionFlow(operand, instr, _, _)
+  )
+}
+
+private predicate isArgumentOfCallable(DataFlowCall call, Node n) {
+  isArgumentOfCallableOperand(call, n.asOperand())
+  or
+  exists(Operand op |
+    n.(IndirectOperand).hasOperandAndIndirectionIndex(op, _) and
+    isArgumentOfCallableOperand(call, op)
+  )
+  or
+  exists(Instruction instr |
+    n.(IndirectInstruction).hasInstructionAndIndirectionIndex(instr, _) and
+    isArgumentOfCallableInstruction(call, instr)
+  )
+}
+
+/**
+ * Holds if there is use-use flow from `pun`'s pre-update node to `n`.
+ */
+private predicate postUpdateNodeToFirstUse(PostUpdateNode pun, Node n) {
+  exists(UseOrPhi use |
+    adjustForPointerArith(pun, use) and
+    useToNode(use, n)
+  )
+}
+
+private predicate stepUntilNotInCall(DataFlowCall call, Node n1, Node n2) {
+  isArgumentOfCallable(call, n1) and
+  exists(Node mid | localSsaFlow(_, n1, _, mid, _) |
+    isArgumentOfCallable(call, mid) and
+    stepUntilNotInCall(call, mid, n2)
+    or
+    not isArgumentOfCallable(call, mid) and
+    mid = n2
+  )
+}
+
+bindingset[n1, n2]
+pragma[inline_late]
+private predicate isArgumentOfSameCall(DataFlowCall call, Node n1, Node n2) {
+  isArgumentOfCallable(call, n1) and isArgumentOfCallable(call, n2)
+}
+
+/**
+ * Holds if there is def-use or use-use flow from `pun` to `nodeTo`.
+ *
+ * Note: This is more complex than it sounds. Consider a call such as:
+ * ```cpp
+ * write_first_argument(x, x);
+ * sink(x);
+ * ```
+ * Assume flow comes out of the first argument to `write_first_argument`. We
+ * don't want flow to go to the `x` that's also an argument to
+ * `write_first_argument` (because we just flowed out of that function, and we
+ * don't want to flow back into it again).
+ *
+ * We do, however, want flow from the output argument to `x` on the next line, and
+ * similarly we want flow from the second argument of `write_first_argument` to `x`
+ * on the next line.
+ */
+predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
+  exists(Node preUpdate, Node mid |
+    preUpdate = pun.getPreUpdateNode() and
+    postUpdateNodeToFirstUse(pun, mid)
+  |
+    exists(DataFlowCall call |
+      isArgumentOfSameCall(call, preUpdate, mid) and
+      stepUntilNotInCall(call, mid, nodeTo)
+    )
+    or
+    not isArgumentOfSameCall(_, preUpdate, mid) and
+    nodeTo = mid
   )
 }
 
@@ -742,7 +824,8 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     fromPhiNodeToUse(phi, sv, bb1, i1, use)
     or
     exists(PhiNode phiTo |
-      lastRefRedefExt(phi, _, _, phiTo) and
+      phi != phiTo and
+      lastRefRedefExt(phi, bb1, i1, phiTo) and
       nodeTo.(SsaPhiNode).getPhiNode() = phiTo
     )
   )
@@ -760,13 +843,14 @@ private predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
 }
 
 private predicate sourceVariableIsGlobal(
-  SourceVariable sv, Cpp::GlobalOrNamespaceVariable global, IRFunction func, int indirectionIndex
+  SourceVariable sv, GlobalLikeVariable global, IRFunction func, int indirectionIndex
 ) {
   exists(IRVariable irVar, BaseIRVariable base |
     sourceVariableHasBaseAndIndex(sv, base, indirectionIndex) and
     irVar = base.getIRVariable() and
     irVar.getEnclosingIRFunction() = func and
-    global = irVar.getAst()
+    global = irVar.getAst() and
+    not irVar instanceof IRDynamicInitializationFlag
   )
 }
 
@@ -919,7 +1003,7 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
   IRFunction getIRFunction() { result = global.getIRFunction() }
 
   /** Gets the global variable associated with this definition. */
-  Cpp::GlobalOrNamespaceVariable getVariable() { result = global.getVariable() }
+  GlobalLikeVariable getVariable() { result = global.getVariable() }
 }
 
 class Phi extends TPhi, SsaDefOrUse {
@@ -997,6 +1081,14 @@ class PhiNode extends SsaImpl::DefinitionExt {
     this instanceof SsaImpl::PhiNode or
     this instanceof SsaImpl::PhiReadNode
   }
+
+  /**
+   * Holds if this phi node is a phi-read node.
+   *
+   * Phi-read nodes are like normal phi nodes, but they are inserted based
+   * on reads instead of writes.
+   */
+  predicate isPhiRead() { this instanceof SsaImpl::PhiReadNode }
 }
 
 class DefinitionExt = SsaImpl::DefinitionExt;

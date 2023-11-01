@@ -88,14 +88,6 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
         e = any(StoreInstruction store).getDestinationAddress().getUnconvertedResultExpression()
       )
     }
-
-    predicate isBarrier(DataFlow::Node n, FlowState state) { none() }
-
-    predicate isAdditionalFlowStep(
-      DataFlow::Node n1, FlowState state1, DataFlow::Node n2, FlowState state2
-    ) {
-      none()
-    }
   }
 
   import DataFlow::GlobalWithState<FlowFromFreeConfig>
@@ -106,8 +98,11 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
  * is being freed by a deallocation expression `dealloc`.
  */
 predicate isFree(DataFlow::Node n, Expr e, DeallocationExpr dealloc) {
-  e = dealloc.getFreedExpr() and
-  e = n.asExpr() and
+  exists(Expr conv |
+    e = conv.getUnconverted() and
+    conv = dealloc.getFreedExpr().getFullyConverted() and
+    conv = n.asConvertedExpr()
+  ) and
   // Ignore realloc functions
   not exists(dealloc.(FunctionCall).getTarget().(AllocationFunction).getReallocPtrArg())
 }

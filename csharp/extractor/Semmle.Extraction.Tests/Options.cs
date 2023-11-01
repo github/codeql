@@ -1,9 +1,9 @@
 using Xunit;
-using Semmle.Util.Logging;
 using System;
 using System.IO;
-using Semmle.Util;
 using System.Text.RegularExpressions;
+using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.Tests
 {
@@ -135,25 +135,23 @@ namespace Semmle.Extraction.Tests
         public void StandaloneDefaults()
         {
             standaloneOptions = CSharp.Standalone.Options.Create(Array.Empty<string>());
-            Assert.Equal(0, standaloneOptions.DllDirs.Count);
-            Assert.True(standaloneOptions.UseNuGet);
-            Assert.True(standaloneOptions.UseMscorlib);
+            Assert.Empty(standaloneOptions.Dependencies.DllDirs);
+            Assert.True(standaloneOptions.Dependencies.UseNuGet);
             Assert.False(standaloneOptions.SkipExtraction);
-            Assert.Null(standaloneOptions.SolutionFile);
-            Assert.True(standaloneOptions.ScanNetFrameworkDlls);
+            Assert.Null(standaloneOptions.Dependencies.SolutionFile);
+            Assert.True(standaloneOptions.Dependencies.ScanNetFrameworkDlls);
             Assert.False(standaloneOptions.Errors);
         }
 
         [Fact]
         public void StandaloneOptions()
         {
-            standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--references:foo", "--silent", "--skip-nuget", "--skip-dotnet", "--exclude", "bar", "--nostdlib" });
-            Assert.Equal("foo", standaloneOptions.DllDirs[0]);
-            Assert.Equal("bar", standaloneOptions.Excludes[0]);
+            standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--references:foo", "--silent", "--skip-nuget", "--skip-dotnet", "--exclude", "bar" });
+            Assert.Equal("foo", standaloneOptions.Dependencies.DllDirs[0]);
+            Assert.Equal("bar", standaloneOptions.Dependencies.Excludes[0]);
             Assert.Equal(Verbosity.Off, standaloneOptions.Verbosity);
-            Assert.False(standaloneOptions.UseNuGet);
-            Assert.False(standaloneOptions.UseMscorlib);
-            Assert.False(standaloneOptions.ScanNetFrameworkDlls);
+            Assert.False(standaloneOptions.Dependencies.UseNuGet);
+            Assert.False(standaloneOptions.Dependencies.ScanNetFrameworkDlls);
             Assert.False(standaloneOptions.Errors);
             Assert.False(standaloneOptions.Help);
         }

@@ -2,12 +2,10 @@ import go
 import TestUtilities.InlineExpectationsTest
 import experimental.frameworks.Fiber
 
-class HttpRedirectTest extends InlineExpectationsTest {
-  HttpRedirectTest() { this = "HttpRedirectTest" }
+module HttpRedirectTest implements TestSig {
+  string getARelevantTag() { result = "redirectUrl" }
 
-  override string getARelevantTag() { result = "redirectUrl" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "redirectUrl" and
     exists(Http::Redirect rd |
       rd.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -17,3 +15,5 @@ class HttpRedirectTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HttpRedirectTest>

@@ -16,10 +16,8 @@ module AstTest {
   }
 
   /** Common data flow configuration to be used by tests. */
-  class AstTestAllocationConfig extends DataFlow::Configuration {
-    AstTestAllocationConfig() { this = "ASTTestAllocationConfig" }
-
-    override predicate isSource(DataFlow::Node source) {
+  module AstTestAllocationConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asParameter().getName().matches("source%")
@@ -32,21 +30,24 @@ module AstTest {
       exists(source.asUninitialized())
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
-        call.getTarget().getName() = "sink" and
+        call.getTarget().getName() = ["sink", "indirect_sink"] and
         sink.asExpr() = call.getAnArgument()
       )
     }
 
-    override predicate isBarrier(DataFlow::Node barrier) {
+    predicate isBarrier(DataFlow::Node barrier) {
       barrier.asExpr().(VariableAccess).getTarget().hasName("barrier") or
       barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getABarrierNode()
     }
   }
+
+  module AstFlow = DataFlow::Global<AstTestAllocationConfig>;
 }
 
 module IRTest {
+  private import cpp
   private import semmle.code.cpp.ir.dataflow.DataFlow
   private import semmle.code.cpp.ir.IR
   private import semmle.code.cpp.controlflow.IRGuards
@@ -56,17 +57,18 @@ module IRTest {
    * S in `if (guarded(x)) S`.
    */
   // This is tested in `BarrierGuard.cpp`.
-  predicate testBarrierGuard(IRGuardCondition g, Instruction checked, boolean isTrue) {
-    g.(CallInstruction).getStaticCallTarget().getName() = "guarded" and
-    checked = g.(CallInstruction).getPositionalArgument(0) and
-    isTrue = true
+  predicate testBarrierGuard(IRGuardCondition g, Expr checked, boolean isTrue) {
+    exists(Call call |
+      call = g.getUnconvertedResultExpression() and
+      call.getTarget().hasName("guarded") and
+      checked = call.getArgument(0) and
+      isTrue = true
+    )
   }
 
   /** Common data flow configuration to be used by tests. */
-  class IRTestAllocationConfig extends DataFlow::Configuration {
-    IRTestAllocationConfig() { this = "IRTestAllocationConfig" }
-
-    override predicate isSource(DataFlow::Node source) {
+  module IRTestAllocationConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asIndirectExpr(1).(FunctionCall).getTarget().getName() = "indirect_source"
@@ -78,19 +80,28 @@ module IRTest {
       exists(source.asUninitialized())
     }
 
-    override predicate isSink(DataFlow::Node sink) {
-      exists(FunctionCall call |
+    predicate isSink(DataFlow::Node sink) {
+      exists(FunctionCall call, Expr e | e = call.getAnArgument() |
         call.getTarget().getName() = "sink" and
-        call.getAnArgument() in [sink.asExpr(), sink.asIndirectExpr()]
+        sink.asExpr() = e
+        or
+        call.getTarget().getName() = "indirect_sink" and
+        sink.asIndirectExpr() = e
       )
     }
 
-    override predicate isBarrier(DataFlow::Node barrier) {
+    predicate isBarrier(DataFlow::Node barrier) {
       exists(Expr barrierExpr | barrierExpr in [barrier.asExpr(), barrier.asIndirectExpr()] |
         barrierExpr.(VariableAccess).getTarget().hasName("barrier")
       )
       or
-      barrier = DataFlow::InstructionBarrierGuard<testBarrierGuard/3>::getABarrierNode()
+      barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getABarrierNode()
+      or
+      barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getAnIndirectBarrierNode()
     }
   }
+
+  module IRFlow = DataFlow::Global<IRTestAllocationConfig>;
 }
+
+import MakeTest<MergeTests<AstFlowTest<AstTest::AstFlow>, IRFlowTest<IRTest::IRFlow>>>

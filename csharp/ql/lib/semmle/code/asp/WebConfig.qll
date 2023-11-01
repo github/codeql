@@ -18,9 +18,6 @@ class WebConfigReleaseTransformXml extends XmlFile {
   WebConfigReleaseTransformXml() { this.getName().matches("%Web.Release.config") }
 }
 
-/** DEPRECATED: Alias for WebConfigXml */
-deprecated class WebConfigXML = WebConfigXml;
-
 /** A `<configuration>` tag in an ASP.NET configuration file. */
 class ConfigurationXmlElement extends XmlElement {
   ConfigurationXmlElement() { this.getName().toLowerCase() = "configuration" }
@@ -31,9 +28,6 @@ class CompilationXmlElement extends XmlElement {
   CompilationXmlElement() { this.getName().toLowerCase() = "compilation" }
 }
 
-/** DEPRECATED: Alias for ConfigurationXmlElement */
-deprecated class ConfigurationXMLElement = ConfigurationXmlElement;
-
 /** A `<location>` tag in an ASP.NET configuration file. */
 class LocationXmlElement extends XmlElement {
   LocationXmlElement() {
@@ -41,9 +35,6 @@ class LocationXmlElement extends XmlElement {
     this.getName().toLowerCase() = "location"
   }
 }
-
-/** DEPRECATED: Alias for LocationXmlElement */
-deprecated class LocationXMLElement = LocationXmlElement;
 
 /** A `<system.web>` tag in an ASP.NET configuration file. */
 class SystemWebXmlElement extends XmlElement {
@@ -57,9 +48,6 @@ class SystemWebXmlElement extends XmlElement {
   }
 }
 
-/** DEPRECATED: Alias for SystemWebXmlElement */
-deprecated class SystemWebXMLElement = SystemWebXmlElement;
-
 /** A `<system.webServer>` tag in an ASP.NET configuration file. */
 class SystemWebServerXmlElement extends XmlElement {
   SystemWebServerXmlElement() {
@@ -72,9 +60,6 @@ class SystemWebServerXmlElement extends XmlElement {
   }
 }
 
-/** DEPRECATED: Alias for SystemWebServerXmlElement */
-deprecated class SystemWebServerXMLElement = SystemWebServerXmlElement;
-
 /** A `<customErrors>` tag in an ASP.NET configuration file. */
 class CustomErrorsXmlElement extends XmlElement {
   CustomErrorsXmlElement() {
@@ -83,9 +68,6 @@ class CustomErrorsXmlElement extends XmlElement {
   }
 }
 
-/** DEPRECATED: Alias for CustomErrorsXmlElement */
-deprecated class CustomErrorsXMLElement = CustomErrorsXmlElement;
-
 /** A `<httpRuntime>` tag in an ASP.NET configuration file. */
 class HttpRuntimeXmlElement extends XmlElement {
   HttpRuntimeXmlElement() {
@@ -93,9 +75,6 @@ class HttpRuntimeXmlElement extends XmlElement {
     this.getName().toLowerCase() = "httpruntime"
   }
 }
-
-/** DEPRECATED: Alias for HttpRuntimeXmlElement */
-deprecated class HttpRuntimeXMLElement = HttpRuntimeXmlElement;
 
 /** A `<forms>` tag under `<system.web><authentication>` in an ASP.NET configuration file. */
 class FormsElement extends XmlElement {

@@ -1,66 +1,33 @@
+// Generated automatically from com.google.gson.stream.JsonReader for testing purposes
+
 package com.google.gson.stream;
 
+import com.google.gson.stream.JsonToken;
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.Reader;
 
-public class JsonReader implements Closeable {
-  public JsonReader(Reader in) {
-  }
-
-  public final void setLenient(boolean lenient) {
-  }
-
-  public final boolean isLenient() {
-    return false;
-  }
-
-  public void beginArray() throws IOException {
-  }
-
-  public void endArray() throws IOException {
-  }
-
-  public void beginObject() throws IOException {
-  }
-
-  public void endObject() throws IOException {
-  }
-
-  public boolean hasNext() throws IOException {
-      return false;
-  }
-
-  public String nextName() throws IOException {
-    return null;
-  }
-
-  public String nextString() throws IOException {
-    return null;
-  }
-
-  public boolean nextBoolean() throws IOException {
-    return false;
-  }
-
-  public void nextNull() throws IOException {
-  }
-
-  public double nextDouble() throws IOException {
-    return -1;
-  }
-
-  public long nextLong() throws IOException {
-    return -1;
-  }
-
-  public int nextInt() throws IOException {
-    return -1;
-  }
-
-  public void close() throws IOException {
-  }
-
-  public void skipValue() throws IOException {
-  }
+public class JsonReader implements Closeable
+{
+    protected JsonReader() {}
+    public JsonReader(Reader p0){}
+    public JsonToken peek(){ return null; }
+    public String getPath(){ return null; }
+    public String getPreviousPath(){ return null; }
+    public String nextName(){ return null; }
+    public String nextString(){ return null; }
+    public String toString(){ return null; }
+    public boolean hasNext(){ return false; }
+    public boolean nextBoolean(){ return false; }
+    public double nextDouble(){ return 0; }
+    public final boolean isLenient(){ return false; }
+    public final void setLenient(boolean p0){}
+    public int nextInt(){ return 0; }
+    public long nextLong(){ return 0; }
+    public void beginArray(){}
+    public void beginObject(){}
+    public void close(){}
+    public void endArray(){}
+    public void endObject(){}
+    public void nextNull(){}
+    public void skipValue(){}
 }

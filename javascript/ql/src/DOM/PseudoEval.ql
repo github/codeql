@@ -20,7 +20,7 @@ class EvilTwin extends DataFlow::CallNode {
   EvilTwin() {
     exists(string fn | fn = "setTimeout" or fn = "setInterval" |
       this = DataFlow::globalVarRef(fn).getACall() and
-      getArgument(0).asExpr() instanceof ConstantString
+      this.getArgument(0).asExpr() instanceof ConstantString
     )
   }
 }

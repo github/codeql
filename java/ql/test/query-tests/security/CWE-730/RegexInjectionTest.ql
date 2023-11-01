@@ -2,12 +2,10 @@ import java
 import TestUtilities.InlineExpectationsTest
 import semmle.code.java.security.regexp.RegexInjectionQuery
 
-class RegexInjectionTest extends InlineExpectationsTest {
-  RegexInjectionTest() { this = "RegexInjectionTest" }
+module RegexInjectionTest implements TestSig {
+  string getARelevantTag() { result = "hasRegexInjection" }
 
-  override string getARelevantTag() { result = "hasRegexInjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasRegexInjection" and
     exists(RegexInjectionFlow::PathNode sink | RegexInjectionFlow::flowPath(_, sink) |
       location = sink.getNode().getLocation() and
@@ -16,3 +14,5 @@ class RegexInjectionTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<RegexInjectionTest>

@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.jsonwebtoken", "JwsHeader", True, "getAlgorithm", "", "", "Argument[this].SyntheticField[io.jsonwebtoken.JwsHeader.algorithm]", "ReturnValue", "taint", "manual"]
+      - ["io.jsonwebtoken", "JwsHeader", True, "setAlgorithm", "", "", "Argument[0]", "Argument[this].SyntheticField[io.jsonwebtoken.JwsHeader.algorithm]", "taint", "manual"]
+      - ["io.jsonwebtoken", "JwsHeader", True, "getKeyId", "", "", "Argument[this].SyntheticField[io.jsonwebtoken.JwsHeader.keyId]", "ReturnValue", "taint", "manual"]
+      - ["io.jsonwebtoken", "JwsHeader", True, "setKeyId", "", "", "Argument[0]", "Argument[this].SyntheticField[io.jsonwebtoken.JwsHeader.keyId]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.jsonwebtoken", "SigningKeyResolver", True, "resolveSigningKey", "", "", "Parameter[0]", "remote", "manual"]
+      - ["io.jsonwebtoken", "SigningKeyResolverAdapter", True, "resolveSigningKeyBytes", "", "", "Parameter[0]", "remote", "manual"]

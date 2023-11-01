@@ -38,7 +38,7 @@ class SemType extends TSemType {
    * Gets a string that uniquely identifies this `SemType`. This string is often the same as the
    * result of `SemType.toString()`, but for some types it may be more verbose to ensure uniqueness.
    */
-  string getIdentityString() { result = toString() }
+  string getIdentityString() { result = this.toString() }
 
   /**
    * Gets the size of the type, in bytes, if known.
@@ -132,7 +132,7 @@ class SemIntegerType extends SemNumericType {
   final predicate isSigned() { signed = true }
 
   /** Holds if this integer type is unsigned. */
-  final predicate isUnsigned() { not isSigned() }
+  final predicate isUnsigned() { not this.isSigned() }
   // Don't override `getByteSize()` here. The optimizer seems to generate better code when this is
   // overridden only in the leaf classes.
 }

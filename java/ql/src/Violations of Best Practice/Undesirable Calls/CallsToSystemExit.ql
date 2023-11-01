@@ -13,7 +13,7 @@
 
 import java
 
-from Method m, MethodAccess sysexitCall, Method sysexit, Class system
+from Method m, MethodCall sysexitCall, Method sysexit, Class system
 where
   sysexitCall = m.getACallSite(sysexit) and
   (sysexit.hasName("exit") or sysexit.hasName("halt")) and

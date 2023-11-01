@@ -579,6 +579,13 @@ nodes
 | react-use-router.js:23:43:23:54 | router.query |
 | react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-router.js:23:43:23:61 | router.query.foobar |
+| react-use-router.js:29:9:29:30 | router |
+| react-use-router.js:29:18:29:30 | myUseRouter() |
+| react-use-router.js:33:21:33:26 | router |
+| react-use-router.js:33:21:33:32 | router.query |
+| react-use-router.js:33:21:33:32 | router.query |
+| react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:39 | router.query.foobar |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:10:4:14 | state |
@@ -1749,6 +1756,14 @@ edges
 | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:22:17:22:22 | router |
+| react-use-router.js:29:9:29:30 | router | react-use-router.js:33:21:33:26 | router |
+| react-use-router.js:29:18:29:30 | myUseRouter() | react-use-router.js:29:9:29:30 | router |
+| react-use-router.js:33:21:33:26 | router | react-use-router.js:33:21:33:32 | router.query |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:39 | router.query.foobar | react-use-router.js:29:18:29:30 | myUseRouter() |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
@@ -2447,6 +2462,7 @@ edges
 | react-use-router.js:11:24:11:42 | router.query.foobar | react-use-router.js:8:21:8:32 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:8:21:8:32 | router.query | user-provided value |
 | react-use-router.js:11:24:11:42 | router.query.foobar | react-use-router.js:11:24:11:35 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:11:24:11:35 | router.query | user-provided value |
 | react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:23:43:23:54 | router.query | user-provided value |
+| react-use-router.js:33:21:33:39 | router.query.foobar | react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:33:21:33:32 | router.query | user-provided value |
 | react-use-state.js:5:51:5:55 | state | react-use-state.js:4:38:4:48 | window.name | react-use-state.js:5:51:5:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:4:38:4:48 | window.name | user-provided value |
 | react-use-state.js:11:51:11:55 | state | react-use-state.js:10:14:10:24 | window.name | react-use-state.js:11:51:11:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:10:14:10:24 | window.name | user-provided value |
 | react-use-state.js:17:51:17:55 | state | react-use-state.js:16:20:16:30 | window.name | react-use-state.js:17:51:17:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:16:20:16:30 | window.name | user-provided value |

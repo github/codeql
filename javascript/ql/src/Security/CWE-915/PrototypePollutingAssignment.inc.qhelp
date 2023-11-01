@@ -35,8 +35,8 @@
   <p>
     In the example below, the untrusted value <code>req.params.id</code> is used as the property name
     <code>req.session.todos[id]</code>. If a malicious user passes in the ID value <code>__proto__</code>,
-    the variable <code>todo</code> will then refer to <code>Object.prototype</code>.
-    Finally, the modification of <code>todo</code> then allows the attacker to inject arbitrary properties
+    the variable <code>items</code> will then refer to <code>Object.prototype</code>.
+    Finally, the modification of <code>items</code> then allows the attacker to inject arbitrary properties
     onto <code>Object.prototype</code>.
   </p>
 
@@ -48,6 +48,12 @@
   </p>
 
   <sample src="examples/PrototypePollutingAssignmentFixed.js"/>
+
+  <p>
+    Another way to fix it is to prevent the <code>__proto__</code> property from being used as a key, as shown below:
+  </p>
+
+  <sample src="examples/PrototypePollutingAssignmentFixed2.js"/>
   
 </example>
 

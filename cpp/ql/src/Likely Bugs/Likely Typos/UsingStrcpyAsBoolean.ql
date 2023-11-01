@@ -20,7 +20,7 @@ import semmle.code.cpp.ir.dataflow.DataFlow
  * code).
  */
 class InterestingStrcpyFunction extends StrcpyFunction {
-  InterestingStrcpyFunction() { getType().getUnspecifiedType() instanceof PointerType }
+  InterestingStrcpyFunction() { this.getType().getUnspecifiedType() instanceof PointerType }
 }
 
 predicate isBoolean(Expr e1) {

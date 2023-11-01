@@ -55,6 +55,7 @@ private newtype TOpcode =
   TVariableAddress() or
   TFieldAddress() or
   TFunctionAddress() or
+  TVirtualDeleteFunctionAddress() or
   TElementsAddress() or
   TConstant() or
   TStringConstant() or
@@ -135,11 +136,11 @@ class Opcode extends TOpcode {
    * Holds if the instruction must have an operand with the specified `OperandTag`.
    */
   final predicate hasOperand(OperandTag tag) {
-    hasOperandInternal(tag)
+    this.hasOperandInternal(tag)
     or
-    hasAddressOperand() and tag instanceof AddressOperandTag
+    this.hasAddressOperand() and tag instanceof AddressOperandTag
     or
-    hasBufferSizeOperand() and tag instanceof BufferSizeOperandTag
+    this.hasBufferSizeOperand() and tag instanceof BufferSizeOperandTag
   }
 
   /**
@@ -885,6 +886,15 @@ module Opcode {
    */
   class FunctionAddress extends Opcode, TFunctionAddress {
     final override string toString() { result = "FunctionAddress" }
+  }
+
+  /**
+   * The `Opcode` for a `VirtualDeleteFunctionAddress`.
+   *
+   * See the `VirtualDeleteFunctionAddressInstruction` documentation for more details.
+   */
+  class VirtualDeleteFunctionAddress extends Opcode, TVirtualDeleteFunctionAddress {
+    final override string toString() { result = "VirtualDeleteFunctionAddress" }
   }
 
   /**

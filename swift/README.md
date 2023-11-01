@@ -1,12 +1,11 @@
 # Swift on CodeQL
 
-## Warning
+> [!NOTE]
+> CodeQL analysis for Swift is currently in beta. During the beta, analysis of Swift code, and the accompanying documentation, will not be as comprehensive as for other languages.
 
-The Swift CodeQL package is an experimental and unsupported work in progress.
+## Development
 
-##
-
-## Building the Swift extractor
+### Building the Swift extractor
 
 First ensure you have Bazel installed, for example with
 
@@ -30,8 +29,6 @@ set up the search path
 in [the per-user CodeQL configuration file](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/specifying-command-options-in-a-codeql-configuration-file#using-a-codeql-configuration-file)
 .
 
-## Development
-
 ### Code generation
 
 Run
@@ -52,7 +49,7 @@ A log file is produced for each run under `CODEQL_EXTRACTOR_SWIFT_LOG_DIR` (the 
 You can use the environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` to configure levels for
 loggers and outputs. This must have the form of a comma separated `spec:min_level` list, where
 `spec` is either a glob pattern (made up of alphanumeric, `/`, `*` and `.` characters) for
-matching logger names or one of `out:bin`, `out:text` or `out:console`, and `min_level` is one
+matching logger names or one of `out:binary`, `out:text`, `out:console` or `out:diagnostics`, and `min_level` is one
 of `trace`, `debug`, `info`, `warning`, `error`, `critical` or `no_logs` to turn logs completely off.
 
 Current output default levels are no binary logs, `info` logs or higher in the text file and `warning` logs or higher on

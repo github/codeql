@@ -66,7 +66,7 @@ class JestTest extends Test, @call_expr {
       exists(call.getArgument(0).getStringValue()) and
       exists(call.getArgument(1).flow().getAFunctionValue(0))
     ) and
-    getFile() = getTestFile(any(File f), "test")
+    this.getFile() = getTestFile(any(File f), "test")
   }
 }
 

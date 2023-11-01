@@ -13,15 +13,15 @@ module NetHttpHttputil {
 
     FunctionModels() {
       // signature: func NewChunkedWriter(w io.Writer) io.WriteCloser
-      hasQualifiedName("net/http/httputil", "NewChunkedWriter") and
+      this.hasQualifiedName("net/http/httputil", "NewChunkedWriter") and
       (inp.isResult() and outp.isParameter(0))
       or
       // signature: func NewClientConn(c net.Conn, r *bufio.Reader) *ClientConn
-      hasQualifiedName("net/http/httputil", "NewClientConn") and
+      this.hasQualifiedName("net/http/httputil", "NewClientConn") and
       (inp.isResult() and outp.isParameter(0))
       or
       // signature: func NewProxyClientConn(c net.Conn, r *bufio.Reader) *ClientConn
-      hasQualifiedName("net/http/httputil", "NewProxyClientConn") and
+      this.hasQualifiedName("net/http/httputil", "NewProxyClientConn") and
       (inp.isResult() and outp.isParameter(0))
     }
 
@@ -36,11 +36,11 @@ module NetHttpHttputil {
 
     MethodModels() {
       // signature: func (*ClientConn) Hijack() (c net.Conn, r *bufio.Reader)
-      hasQualifiedName("net/http/httputil", "ClientConn", "Hijack") and
+      this.hasQualifiedName("net/http/httputil", "ClientConn", "Hijack") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*ServerConn) Hijack() (net.Conn, *bufio.Reader)
-      hasQualifiedName("net/http/httputil", "ServerConn", "Hijack") and
+      this.hasQualifiedName("net/http/httputil", "ServerConn", "Hijack") and
       (inp.isResult(0) and outp.isReceiver())
     }
 

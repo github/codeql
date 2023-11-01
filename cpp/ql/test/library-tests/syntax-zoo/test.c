@@ -233,3 +233,14 @@ void f_if_ternary_1(int b, int x, int y) {
   if (b ? x : y) {
   }
 }
+
+struct _A
+{
+    unsigned int x;
+    const char *y;
+} as[];
+
+void regression_test(void)
+{
+    static const void *a[] = {0 ? 0 : as};
+}

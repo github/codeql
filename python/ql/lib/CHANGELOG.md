@@ -1,3 +1,118 @@
+## 0.11.2
+
+### Minor Analysis Improvements
+
+* Added support for functions decorated with `contextlib.contextmanager`.
+* Namespace packages in the form of regular packages with missing `__init__.py`-files are now allowed. This enables the analysis to resolve modules and functions inside such packages.
+
+## 0.11.1
+
+### Minor Analysis Improvements
+
+* Added better support for API graphs when encountering `from ... import *`. For example in the code `from foo import *; Bar()`, we will now find a result for `API::moduleImport("foo").getMember("Bar").getACall()`
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `getAUse`, `getAnImmediateUse`, `getARhs`, and `getAValueReachingRhs` predicates from the `API::Node` class.
+* Deleted the deprecated `fullyQualifiedToAPIGraphPath` class from `SubclassFinder.qll`, use `fullyQualifiedToApiGraphPath` instead.
+* Deleted the deprecated `Paths.qll` file.
+* Deleted the deprecated `semmle.python.security.performance` folder, use `semmle.python.security.regexp` instead.
+* Deleted the deprecated `semmle.python.security.strings` and `semmle.python.web` folders.
+* Improved modeling of decoding through pickle related functions (which can lead to code execution), resulting in additional sinks for the _Deserializing untrusted input_ query (`py/unsafe-deserialization`). Added support for `pandas.read_pickle`, `numpy.load` and `joblib.load`.
+
+## 0.11.0
+
+### Minor Analysis Improvements
+
+* Django Rest Framework better handles custom `ModelViewSet` classes functions
+* Regular expression fragments residing inside implicitly concatenated strings now have better location information.
+
+### Bug Fixes
+
+* Subterms of regular expressions encoded as single-line string literals now have better source-location information.
+
+## 0.10.5
+
+No user-facing changes.
+
+## 0.10.4
+
+### Minor Analysis Improvements
+
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+* Added `shlex.quote` as a sanitizer for the `py/shell-command-constructed-from-input` query.
+
+## 0.10.3
+
+### Minor Analysis Improvements
+
+* Support analyzing packages (folders with python code) that do not have `__init__.py` files, although this is technically required, we see real world projects that don't have this.
+* Added modeling of AWS Lambda handlers that can be identified with `AWS::Serverless::Function` in YAML files, where the event parameter is modeled as a remote-flow-source.
+* Improvements of the `aiohttp` models including remote-flow-sources from type annotations, new path manipulation, and SSRF sinks.
+
+### Bug Fixes
+
+* Fixed the computation of locations for imports with aliases in jump-to-definition.
+
+## 0.10.2
+
+No user-facing changes.
+
+## 0.10.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* Add support for Models as Data for Reflected XSS query
+* Parameters with a default value are now considered a `DefinitionNode`. This improvement was motivated by allowing type-tracking and API graphs to follow flow from such a default value to a use by a captured variable.
+
+## 0.10.0
+
+### New Features
+
+* It is now possible to specify flow summaries in the format "MyPkg;Member[list_map];Argument[1].ListElement;Argument[0].Parameter[0];value"
+
+### Minor Analysis Improvements
+
+* Deleted many models that used the old dataflow library, the new models can be found in the `python/ql/lib/semmle/python/frameworks` folder.
+* More precise modeling of several container functions (such as `sorted`, `reversed`) and methods (such as `set.add`, `list.append`).
+* Added modeling of taint flow through the template argument of `flask.render_template_string` and `flask.stream_template_string`.
+* Deleted many deprecated predicates and classes with uppercase `API`, `HTTP`, `XSS`, `SQL`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getName()` predicate from the `Container` class, use `getAbsolutePath()` instead.
+* Deleted many deprecated module names that started with a lowercase letter, use the versions that start with an uppercase letter instead.
+* Deleted many deprecated predicates in `PointsTo.qll`. 
+* Deleted many deprecated files from the `semmle.python.security` package.
+* Deleted the deprecated `BottleRoutePointToExtension` class from `Extensions.qll`.
+* Type tracking is now aware of flow summaries. This leads to a richer API graph, and may lead to more results in some queries.
+
+## 0.9.4
+
+No user-facing changes.
+
+## 0.9.3
+
+No user-facing changes.
+
+## 0.9.2
+
+### Minor Analysis Improvements
+
+* Type tracking is now aware of reads of captured variables (variables defined in an outer scope). This leads to a richer API graph, and may lead to more results in some queries.
+* Added more content-flow/field-flow for dictionaries, by adding support for reads through `mydict.get("key")` and `mydict.setdefault("key", value)`, and store steps through `dict["key"] = value` and `mydict.setdefault("key", value)`.
+
+## 0.9.1
+
+### Minor Analysis Improvements
+
+* Added support for querying the contents of YAML files.
+
 ## 0.9.0
 
 ### Deprecated APIs

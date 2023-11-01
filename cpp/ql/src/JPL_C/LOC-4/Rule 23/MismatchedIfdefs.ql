@@ -19,20 +19,22 @@ class FileWithDirectives extends File {
   }
 
   int getDirectiveIndex(Directive d) {
-    exists(int line | line = getDirectiveLine(d) | line = rank[result](getDirectiveLine(_)))
+    exists(int line | line = this.getDirectiveLine(d) |
+      line = rank[result](this.getDirectiveLine(_))
+    )
   }
 
   int depth(Directive d) {
-    exists(int index | index = getDirectiveIndex(d) |
+    exists(int index | index = this.getDirectiveIndex(d) |
       index = 1 and result = d.depthChange()
       or
-      exists(Directive prev | getDirectiveIndex(prev) = index - 1 |
-        result = d.depthChange() + depth(prev)
+      exists(Directive prev | this.getDirectiveIndex(prev) = index - 1 |
+        result = d.depthChange() + this.depth(prev)
       )
     )
   }
 
-  Directive lastDirective() { getDirectiveIndex(result) = max(getDirectiveIndex(_)) }
+  Directive lastDirective() { this.getDirectiveIndex(result) = max(this.getDirectiveIndex(_)) }
 }
 
 abstract class Directive extends PreprocessorDirective {
@@ -63,13 +65,13 @@ class ElseDirective extends Directive {
 
   override int depthChange() { result = 0 }
 
-  override predicate mismatched() { depth() < 1 }
+  override predicate mismatched() { this.depth() < 1 }
 }
 
 class EndifDirective extends Directive instanceof PreprocessorEndif {
   override int depthChange() { result = -1 }
 
-  override predicate mismatched() { depth() < 0 }
+  override predicate mismatched() { this.depth() < 0 }
 }
 
 from FileWithDirectives f, Directive d, string msg

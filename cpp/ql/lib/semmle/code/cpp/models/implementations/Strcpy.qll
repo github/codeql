@@ -108,7 +108,7 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
     // these may do only a partial copy of the input buffer to the output
     // buffer
     exists(this.getParamSize()) and
-    input.isParameter(this.getParamSrc()) and
+    input.isParameterDeref(this.getParamSrc()) and
     (
       output.isParameterDeref(this.getParamDest()) or
       output.isReturnValueDeref()

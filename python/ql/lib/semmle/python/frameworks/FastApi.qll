@@ -37,9 +37,6 @@ private module FastApi {
     }
   }
 
-  /** DEPRECATED: Alias for ApiRouter */
-  deprecated module APIRouter = ApiRouter;
-
   // ---------------------------------------------------------------------------
   // routing modeling
   // ---------------------------------------------------------------------------

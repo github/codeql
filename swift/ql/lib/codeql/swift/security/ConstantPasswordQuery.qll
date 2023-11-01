@@ -28,10 +28,15 @@ module ConstantPasswordConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof ConstantPasswordSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof ConstantPasswordSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof ConstantPasswordBarrier }
+
+  predicate isBarrierIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    isSource(node)
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(ConstantPasswordAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(ConstantPasswordAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

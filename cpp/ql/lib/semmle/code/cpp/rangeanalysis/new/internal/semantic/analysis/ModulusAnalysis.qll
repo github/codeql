@@ -12,22 +12,32 @@
 
 private import ModulusAnalysisSpecific::Private
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
 private import ConstantAnalysis
 private import RangeUtils
-private import RangeAnalysisStage
+private import codeql.rangeanalysis.RangeAnalysis
+private import RangeAnalysisImpl
 
-module ModulusAnalysis<DeltaSig D, BoundSig<D> Bounds, UtilSig<D> U> {
-  /**
-   * Holds if `e + delta` equals `v` at `pos`.
-   */
-  private predicate valueFlowStepSsa(SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, int delta) {
-    U::semSsaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
-    or
+module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig<Sem, D> U> {
+  pragma[nomagic]
+  private predicate valueFlowStepSsaEqFlowCond(
+    SemSsaReadPosition pos, SemSsaVariable v, SemExpr e, int delta
+  ) {
     exists(SemGuard guard, boolean testIsTrue |
-      pos.hasReadOfVar(v) and
       guard = U::semEqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
       semGuardDirectlyControlsSsaRead(guard, pos, testIsTrue)
     )
+  }
+
+  /**
+   * Holds if `e + delta` equals `v` at `pos`.
+   */
+  pragma[nomagic]
+  private predicate valueFlowStepSsa(SemSsaVariable v, SemSsaReadPosition pos, SemExpr e, int delta) {
+    U::semSsaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
+    or
+    pos.hasReadOfVar(v) and
+    valueFlowStepSsaEqFlowCond(pos, v, e, delta)
   }
 
   /**
@@ -121,13 +131,6 @@ module ModulusAnalysis<DeltaSig D, BoundSig<D> Bounds, UtilSig<D> U> {
   }
 
   /**
-   * Holds if `rix` is the number of input edges to `phi`.
-   */
-  private predicate maxPhiInputRank(SemSsaPhiNode phi, int rix) {
-    rix = max(int r | rankedPhiInput(phi, _, _, r))
-  }
-
-  /**
    * Gets the remainder of `val` modulo `mod`.
    *
    * For `mod = 0` the result equals `val` and for `mod > 1` the result is within
@@ -148,7 +151,7 @@ module ModulusAnalysis<DeltaSig D, BoundSig<D> Bounds, UtilSig<D> U> {
   ) {
     exists(Bounds::SemSsaBound phibound, int v, int m |
       edge.phiInput(phi, inp) and
-      phibound.getAVariable() = phi and
+      phibound.getVariable() = phi and
       ssaModulus(inp, edge, phibound, v, m) and
       mod = m.gcd(v) and
       mod != 1
@@ -230,7 +233,7 @@ module ModulusAnalysis<DeltaSig D, BoundSig<D> Bounds, UtilSig<D> U> {
   ) {
     phiModulus(v, b, val, mod) and pos.hasReadOfVar(v)
     or
-    b.(Bounds::SemSsaBound).getAVariable() = v and pos.hasReadOfVar(v) and val = 0 and mod = 0
+    b.(Bounds::SemSsaBound).getVariable() = v and pos.hasReadOfVar(v) and val = 0 and mod = 0
     or
     exists(SemExpr e, int val0, int delta |
       semExprModulus(e, b, val0, mod) and
@@ -321,21 +324,5 @@ module ModulusAnalysis<DeltaSig D, BoundSig<D> Bounds, UtilSig<D> U> {
       or
       semExprModulus(rarg, b, val, mod) and isLeft = false
     )
-  }
-
-  /**
-   * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
-   * in an arbitrary 1-based numbering of the input edges to `phi`.
-   */
-  private predicate rankedPhiInput(
-    SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge, int r
-  ) {
-    edge.phiInput(phi, inp) and
-    edge =
-      rank[r](SemSsaReadPositionPhiInputEdge e |
-        e.phiInput(phi, _)
-      |
-        e order by e.getOrigBlock().getUniqueId()
-      )
   }
 }

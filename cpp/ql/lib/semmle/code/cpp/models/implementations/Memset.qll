@@ -9,18 +9,17 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
-/**
- * The standard function `memset` and its assorted variants
- */
-private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunction,
+private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, AliasFunction,
   SideEffectFunction
 {
-  MemsetFunction() {
+  MemsetFunctionModel() {
     this.hasGlobalOrStdOrBslName("memset")
     or
     this.hasGlobalOrStdName("wmemset")
     or
-    this.hasGlobalName([bzero(), "__builtin_memset", "__builtin_memset_chk"])
+    this.hasGlobalName([
+        bzero(), "__builtin_memset", "__builtin_memset_chk", "RtlZeroMemory", "RtlSecureZeroMemory"
+      ])
   }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
@@ -60,3 +59,8 @@ private class MemsetFunction extends ArrayFunction, DataFlowFunction, AliasFunct
 }
 
 private string bzero() { result = ["bzero", "explicit_bzero"] }
+
+/**
+ * The standard function `memset` and its assorted variants
+ */
+class MemsetFunction extends Function instanceof MemsetFunctionModel { }

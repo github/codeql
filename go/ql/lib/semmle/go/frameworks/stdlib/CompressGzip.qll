@@ -13,11 +13,11 @@ module CompressGzip {
 
     FunctionModels() {
       // signature: func NewWriter(w io.Writer) *Writer
-      hasQualifiedName("compress/gzip", "NewWriter") and
+      this.hasQualifiedName("compress/gzip", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
       or
       // signature: func NewWriterLevel(w io.Writer, level int) (*Writer, error)
-      hasQualifiedName("compress/gzip", "NewWriterLevel") and
+      this.hasQualifiedName("compress/gzip", "NewWriterLevel") and
       (inp.isResult(0) and outp.isParameter(0))
     }
 

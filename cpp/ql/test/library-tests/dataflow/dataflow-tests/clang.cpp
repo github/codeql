@@ -1,7 +1,7 @@
 // semmle-extractor-options: --edg --clang
 
 int source();
-void sink(int); void sink(const int *); void sink(int **);
+void sink(int); void sink(const int *); void sink(int **); void indirect_sink(...);
 
 struct twoIntFields {
   int m1, m2;
@@ -19,7 +19,8 @@ void following_pointers( // $ ast-def=sourceStruct1_ptr
 
   sink(sourceArray1[0]); // no flow
   sink(*sourceArray1); // no flow
-  sink(&sourceArray1); // $ ast,ir // [should probably be taint only]
+  sink(&sourceArray1); // $ ast // [should probably be taint only]
+  indirect_sink(&sourceArray1); // $ ast,ir
 
   sink(sourceStruct1.m1); // no flow
   sink(sourceStruct1_ptr->m1); // no flow
@@ -48,5 +49,6 @@ void following_pointers( // $ ast-def=sourceStruct1_ptr
 
   int stackArray[2] = { source(), source() };
   stackArray[0] = source();
-  sink(stackArray); // $ ast ir ir=49:25 ir=49:35 ir=50:19
+  sink(stackArray); // $ ast,ir
+  indirect_sink(stackArray); // $ ast ir=50:25 ir=50:35 ir=51:19
 }

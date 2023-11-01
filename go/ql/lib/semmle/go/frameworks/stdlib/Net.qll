@@ -13,15 +13,15 @@ module Net {
 
     FunctionModels() {
       // signature: func FileConn(f *os.File) (c Conn, err error)
-      hasQualifiedName("net", "FileConn") and
+      this.hasQualifiedName("net", "FileConn") and
       (inp.isResult(0) and outp.isParameter(0))
       or
       // signature: func FilePacketConn(f *os.File) (c PacketConn, err error)
-      hasQualifiedName("net", "FilePacketConn") and
+      this.hasQualifiedName("net", "FilePacketConn") and
       (inp.isResult(0) and outp.isParameter(0))
       or
       // signature: func Pipe() (Conn, Conn)
-      hasQualifiedName("net", "Pipe") and
+      this.hasQualifiedName("net", "Pipe") and
       (
         inp.isResult(0) and outp.isResult(1)
         or
@@ -40,35 +40,35 @@ module Net {
 
     MethodModels() {
       // signature: func (*IPConn) SyscallConn() (syscall.RawConn, error)
-      hasQualifiedName("net", "IPConn", "SyscallConn") and
+      this.hasQualifiedName("net", "IPConn", "SyscallConn") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*TCPConn) SyscallConn() (syscall.RawConn, error)
-      hasQualifiedName("net", "TCPConn", "SyscallConn") and
+      this.hasQualifiedName("net", "TCPConn", "SyscallConn") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*TCPListener) File() (f *os.File, err error)
-      hasQualifiedName("net", "TCPListener", "File") and
+      this.hasQualifiedName("net", "TCPListener", "File") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*TCPListener) SyscallConn() (syscall.RawConn, error)
-      hasQualifiedName("net", "TCPListener", "SyscallConn") and
+      this.hasQualifiedName("net", "TCPListener", "SyscallConn") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*UDPConn) SyscallConn() (syscall.RawConn, error)
-      hasQualifiedName("net", "UDPConn", "SyscallConn") and
+      this.hasQualifiedName("net", "UDPConn", "SyscallConn") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*UnixConn) SyscallConn() (syscall.RawConn, error)
-      hasQualifiedName("net", "UnixConn", "SyscallConn") and
+      this.hasQualifiedName("net", "UnixConn", "SyscallConn") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*UnixListener) File() (f *os.File, err error)
-      hasQualifiedName("net", "UnixListener", "File") and
+      this.hasQualifiedName("net", "UnixListener", "File") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*UnixListener) SyscallConn() (syscall.RawConn, error)
-      hasQualifiedName("net", "UnixListener", "SyscallConn") and
+      this.hasQualifiedName("net", "UnixListener", "SyscallConn") and
       (inp.isResult(0) and outp.isReceiver())
     }
 

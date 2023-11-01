@@ -12,17 +12,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.XSS
-
-module XssLocalConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
-}
-
-module XssLocalFlow = TaintTracking::Global<XssLocalConfig>;
-
+import semmle.code.java.security.XssLocalQuery
 import XssLocalFlow::PathGraph
 
 from XssLocalFlow::PathNode source, XssLocalFlow::PathNode sink

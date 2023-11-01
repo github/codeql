@@ -11,8 +11,7 @@
 			Consider this regular expression:
 		</p>
 		<sample language="javascript">
-			/^_(__|.)+_$/
-		</sample>
+/^_(__|.)+_$/</sample>
 		<p>
 			Its sub-expression <code>"(__|.)+?"</code> can match the string <code>"__"</code> either by the
 			first alternative <code>"__"</code> to the left of the <code>"|"</code> operator, or by two
@@ -25,8 +24,7 @@
 			the two branches of the alternative inside the repetition:
 		</p>
 		<sample language="javascript">
-			/^_(__|[^_])+_$/
-		</sample>
+/^_(__|[^_])+_$/</sample>
 	</example>
 
 	<include src="ReDoSReferences.inc.qhelp"/>

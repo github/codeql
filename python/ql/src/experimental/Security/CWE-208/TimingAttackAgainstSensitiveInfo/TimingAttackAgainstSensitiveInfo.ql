@@ -15,22 +15,25 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import experimental.semmle.python.security.TimingAttack
-import DataFlow::PathGraph
+import TimingAttackAgainstSensitiveInfoFlow::PathGraph
 
 /**
  * A configuration tracing flow from obtaining a client Secret to a unsafe Comparison.
  */
-class ClientSuppliedSecretConfig extends TaintTracking::Configuration {
-  ClientSuppliedSecretConfig() { this = "ClientSuppliedSecretConfig" }
+private module TimingAttackAgainstSensitiveInfoConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof SecretSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof SecretSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 }
 
-from ClientSuppliedSecretConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+module TimingAttackAgainstSensitiveInfoFlow =
+  TaintTracking::Global<TimingAttackAgainstSensitiveInfoConfig>;
+
+from
+  TimingAttackAgainstSensitiveInfoFlow::PathNode source,
+  TimingAttackAgainstSensitiveInfoFlow::PathNode sink
 where
-  config.hasFlowPath(source, sink) and
+  TimingAttackAgainstSensitiveInfoFlow::flowPath(source, sink) and
   (
     source.getNode().(SecretSource).includesUserInput() or
     sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()

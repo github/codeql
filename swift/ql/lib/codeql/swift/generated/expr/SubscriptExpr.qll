@@ -10,11 +10,8 @@ module Generated {
 
     /**
      * Gets the `index`th argument of this subscript expression (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Argument getImmediateArgument(int index) {
+    Argument getArgument(int index) {
       result =
         Synth::convertArgumentFromRaw(Synth::convertSubscriptExprToRaw(this)
               .(Raw::SubscriptExpr)
@@ -22,19 +19,14 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th argument of this subscript expression (0-based).
-     */
-    final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
-
-    /**
      * Gets any of the arguments of this subscript expression.
      */
-    final Argument getAnArgument() { result = getArgument(_) }
+    final Argument getAnArgument() { result = this.getArgument(_) }
 
     /**
      * Gets the number of arguments of this subscript expression.
      */
-    final int getNumberOfArguments() { result = count(int i | exists(getArgument(i))) }
+    final int getNumberOfArguments() { result = count(int i | exists(this.getArgument(i))) }
 
     /**
      * Holds if this subscript expression has direct to storage semantics.

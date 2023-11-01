@@ -23,9 +23,6 @@ class SpringXmlComponentScan extends SpringXmlElement {
   string getAProfileExpr() { result = this.getSpringBeanFile().getAProfileExpr() }
 }
 
-/** DEPRECATED: Alias for SpringXmlComponentScan */
-deprecated class SpringXMLComponentScan = SpringXmlComponentScan;
-
 /**
  * An annotation of a class that configures which packages are considered to be "base" packages
  * when performing the Spring component scan.

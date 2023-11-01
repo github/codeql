@@ -25,7 +25,7 @@ module TrustedTypes {
 
     /** Gets the function passed as the given option. */
     DataFlow::FunctionNode getPolicyCallback(string method) {
-      result = getParameter(1).getMember(method).getAValueReachingSink()
+      result = this.getParameter(1).getMember(method).getAValueReachingSink()
     }
   }
 

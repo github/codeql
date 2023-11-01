@@ -12,7 +12,6 @@
  */
 
 import go
-import DataFlow::PathGraph
 
 /**
  * Holds if `source` corresponds to a string literal that contains an escaped `character`.
@@ -28,11 +27,8 @@ predicate containsEscapedCharacter(DataFlow::Node source, string character) {
   )
 }
 
-/** A dataflow configuration that traces strings containing suspicious escape sequences to a use as a regular expression. */
-class Config extends DataFlow::Configuration {
-  Config() { this = "SuspiciousRegexpEscape" }
-
-  predicate isSourceString(DataFlow::Node source, string report) {
+module SuspiciousCharacterInRegexpConfig implements DataFlow::ConfigSig {
+  additional predicate isSourceString(DataFlow::Node source, string report) {
     containsEscapedCharacter(source, "a") and
     report =
       "the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text?"
@@ -41,12 +37,22 @@ class Config extends DataFlow::Configuration {
     report = "a literal backspace \\b; did you mean \\\\b, a word boundary?"
   }
 
-  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
+  predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
+  predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 }
 
-from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string report
-where c.hasFlowPath(source, sink) and c.isSourceString(source.getNode(), report)
+/**
+ * Tracks data flow from strings containing suspicious escape sequences to a
+ * use as a regular expression.
+ */
+module Flow = DataFlow::Global<SuspiciousCharacterInRegexpConfig>;
+
+import Flow::PathGraph
+
+from Flow::PathNode source, Flow::PathNode sink, string report
+where
+  Flow::flowPath(source, sink) and
+  SuspiciousCharacterInRegexpConfig::isSourceString(source.getNode(), report)
 select source, source, sink, "This string literal that is $@ contains " + report, sink,
   "used as a regular expression"

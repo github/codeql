@@ -7,12 +7,12 @@ private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysi
  */
 class StrlenLiteralRangeExpr extends SimpleRangeAnalysisExpr, FunctionCall {
   StrlenLiteralRangeExpr() {
-    getTarget().hasGlobalOrStdName("strlen") and getArgument(0).isConstant()
+    this.getTarget().hasGlobalOrStdName("strlen") and this.getArgument(0).isConstant()
   }
 
-  override int getLowerBounds() { result = getArgument(0).getValue().length() }
+  override int getLowerBounds() { result = this.getArgument(0).getValue().length() }
 
-  override int getUpperBounds() { result = getArgument(0).getValue().length() }
+  override int getUpperBounds() { result = this.getArgument(0).getValue().length() }
 
   override predicate dependsOnChild(Expr e) { none() }
 }

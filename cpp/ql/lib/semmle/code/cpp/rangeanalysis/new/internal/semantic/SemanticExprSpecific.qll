@@ -188,6 +188,9 @@ module SemanticExprConfig {
     none()
   }
 
+  /** Holds if no range analysis should be performed on the phi edges in `f`. */
+  private predicate excludeFunction(Cpp::Function f) { count(f.getEntryPoint()) > 1 }
+
   SemType getUnknownExprType(Expr expr) { result = getSemanticType(expr.getResultIRType()) }
 
   class BasicBlock = IR::IRBlock;
@@ -270,7 +273,13 @@ module SemanticExprConfig {
     getSemanticExpr(v.asInstruction()) = sourceExpr
   }
 
-  predicate phi(SsaVariable v) { v.asInstruction() instanceof IR::PhiInstruction }
+  predicate phi(SsaVariable v) {
+    exists(IR::PhiInstruction phi, Cpp::Function f |
+      phi = v.asInstruction() and
+      f = phi.getEnclosingFunction() and
+      not excludeFunction(f)
+    )
+  }
 
   SsaVariable getAPhiInput(SsaVariable v) {
     exists(IR::PhiInstruction instr | v.asInstruction() = instr |

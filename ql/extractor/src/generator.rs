@@ -32,10 +32,6 @@ pub fn run(options: Options) -> std::io::Result<()> {
             node_types: tree_sitter_ql_dbscheme::NODE_TYPES,
         },
         Language {
-            name: "Yaml".to_owned(),
-            node_types: tree_sitter_ql_yaml::NODE_TYPES,
-        },
-        Language {
             name: "Blame".to_owned(),
             node_types: tree_sitter_blame::NODE_TYPES,
         },

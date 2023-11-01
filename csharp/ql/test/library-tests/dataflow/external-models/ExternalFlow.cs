@@ -149,9 +149,9 @@ namespace My.Qltest
 
         static T Apply<S, T>(Func<S, T> f, S s) => throw null;
 
-        static S[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
+        static T[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
 
-        static void Apply2<S>(Action<S> f, S s1, S s2) => throw null;
+        static void Apply2(Action<object> f, D d1, D d2) => throw null;
 
         static void Parse(string s, out int i) => throw null;
 
@@ -211,6 +211,27 @@ namespace My.Qltest
         object GeneratedFlowArgs(object o1, object o2) => throw null;
 
         object MixedFlowArgs(object o1, object o2) => throw null;
+
+        static void Sink(object o) { }
+    }
+
+    public interface HI { }
+
+    public class HC : HI { }
+
+    public static class HE
+    {
+        public static object ExtensionMethod(this HI h) => throw null;
+    }
+
+    public class H
+    {
+        void M1()
+        {
+            var h = new HC();
+            var o = h.ExtensionMethod();
+            Sink(o);
+        }
 
         static void Sink(object o) { }
     }

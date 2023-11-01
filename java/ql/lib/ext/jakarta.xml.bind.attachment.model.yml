@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["jakarta.xml.bind.attachment", "AttachmentUnmarshaller", True, "getAttachmentAsDataHandler", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.xml.bind.attachment", "AttachmentUnmarshaller", True, "getAttachmentAsByteArray", "", "", "Parameter[0]", "remote", "manual"]

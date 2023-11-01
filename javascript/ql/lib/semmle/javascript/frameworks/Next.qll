@@ -241,14 +241,11 @@ module NextJS {
     }
   }
 
-  /** DEPRECATED: Alias for NextApiRouteHandler */
-  deprecated class NextAPIRouteHandler = NextApiRouteHandler;
-
   /**
    * Gets a reference to a [Next.js router](https://nextjs.org/docs/api-reference/next/router).
    */
   DataFlow::SourceNode nextRouter() {
-    result = DataFlow::moduleMember("next/router", "useRouter").getACall()
+    result = API::moduleImport("next/router").getMember("useRouter").getACall()
     or
     result =
       API::moduleImport("next/router")

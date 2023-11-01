@@ -12,17 +12,17 @@ import internal.TaintMetrics
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 
-class BasicTaintConfiguration extends TaintTracking::Configuration {
-  BasicTaintConfiguration() { this = "BasicTaintConfiguration" }
+private module BasicTaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node = relevantTaintSource(_) }
 
-  override predicate isSource(DataFlow::Node node) { node = relevantTaintSource(_) }
-
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     // To reduce noise from synthetic nodes, only count nodes that have an associated expression.
     exists(node.asExpr().getExpr())
   }
 }
 
+private module BasicTaintFlow = TaintTracking::Global<BasicTaintConfig>;
+
 from DataFlow::Node node
-where any(BasicTaintConfiguration cfg).hasFlow(_, node)
+where BasicTaintFlow::flow(_, node)
 select node, "Tainted node"

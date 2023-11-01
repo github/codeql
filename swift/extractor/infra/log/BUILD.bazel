@@ -1,7 +1,0 @@
-cc_library(
-    name = "log",
-    srcs = glob(["*.cpp"]),
-    hdrs = glob(["*.h"]),
-    visibility = ["//visibility:public"],
-    deps = ["@binlog"],
-)

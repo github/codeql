@@ -13,9 +13,9 @@
 
 import go
 import semmle.go.security.LogInjection
-import DataFlow::PathGraph
+import LogInjection::Flow::PathGraph
 
-from LogInjection::Configuration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from LogInjection::Flow::PathNode source, LogInjection::Flow::PathNode sink
+where LogInjection::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This log entry depends on a $@.", source.getNode(),
   "user-provided value"

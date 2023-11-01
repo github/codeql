@@ -91,7 +91,7 @@ class BasicBlock extends TControlFlowNode {
   BasicBlock getAPredecessor() { result.getASuccessor() = this }
 
   /** Gets a node in this block. */
-  ControlFlow::Node getANode() { result = getNode(_) }
+  ControlFlow::Node getANode() { result = this.getNode(_) }
 
   /** Gets the node at the given position in this block. */
   ControlFlow::Node getNode(int pos) { bbIndex(this, result, pos) }
@@ -100,7 +100,7 @@ class BasicBlock extends TControlFlowNode {
   ControlFlow::Node getFirstNode() { result = this }
 
   /** Gets the last node in this block. */
-  ControlFlow::Node getLastNode() { result = getNode(length() - 1) }
+  ControlFlow::Node getLastNode() { result = this.getNode(this.length() - 1) }
 
   /** Gets the length of this block. */
   int length() { result = bbLength(this) }
@@ -109,7 +109,7 @@ class BasicBlock extends TControlFlowNode {
   ReachableBasicBlock getImmediateDominator() { bbIDominates(result, this) }
 
   /** Gets the innermost function or file to which this basic block belongs. */
-  ControlFlow::Root getRoot() { result = getFirstNode().getRoot() }
+  ControlFlow::Root getRoot() { result = this.getFirstNode().getRoot() }
 
   /** Gets a textual representation of this basic block. */
   string toString() { result = "basic block" }
@@ -124,8 +124,8 @@ class BasicBlock extends TControlFlowNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getFirstNode().hasLocationInfo(filepath, startline, startcolumn, _, _) and
-    getLastNode().hasLocationInfo(_, _, _, endline, endcolumn)
+    this.getFirstNode().hasLocationInfo(filepath, startline, startcolumn, _, _) and
+    this.getLastNode().hasLocationInfo(_, _, _, endline, endcolumn)
   }
 }
 
@@ -155,7 +155,7 @@ class ReachableBasicBlock extends BasicBlock {
    */
   predicate dominates(ReachableBasicBlock bb) {
     bb = this or
-    strictlyDominates(bb)
+    this.strictlyDominates(bb)
   }
 
   /**
@@ -171,7 +171,7 @@ class ReachableBasicBlock extends BasicBlock {
    */
   predicate postDominates(ReachableBasicBlock bb) {
     bb = this or
-    strictlyPostDominates(bb)
+    this.strictlyPostDominates(bb)
   }
 }
 
@@ -179,7 +179,7 @@ class ReachableBasicBlock extends BasicBlock {
  * A reachable basic block with more than one predecessor.
  */
 class ReachableJoinBlock extends ReachableBasicBlock {
-  ReachableJoinBlock() { getFirstNode().isJoin() }
+  ReachableJoinBlock() { this.getFirstNode().isJoin() }
 
   /**
    * Holds if this basic block belongs to the dominance frontier of `b`, that is
@@ -190,11 +190,11 @@ class ReachableJoinBlock extends ReachableBasicBlock {
    * its use in optimization".
    */
   predicate inDominanceFrontierOf(ReachableBasicBlock b) {
-    b = getAPredecessor() and not b = getImmediateDominator()
+    b = this.getAPredecessor() and not b = this.getImmediateDominator()
     or
-    exists(ReachableBasicBlock prev | inDominanceFrontierOf(prev) |
+    exists(ReachableBasicBlock prev | this.inDominanceFrontierOf(prev) |
       b = prev.getImmediateDominator() and
-      not b = getImmediateDominator()
+      not b = this.getImmediateDominator()
     )
   }
 }

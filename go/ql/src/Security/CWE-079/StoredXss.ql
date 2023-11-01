@@ -13,10 +13,10 @@
  */
 
 import go
-import semmle.go.security.StoredXss::StoredXss
-import DataFlow::PathGraph
+import semmle.go.security.StoredXss
+import StoredXss::Flow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from StoredXss::Flow::PathNode source, StoredXss::Flow::PathNode sink
+where StoredXss::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Stored cross-site scripting vulnerability due to $@.",
   source.getNode(), "stored value"

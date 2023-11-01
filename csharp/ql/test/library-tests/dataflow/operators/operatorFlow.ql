@@ -3,9 +3,10 @@
  */
 
 import csharp
-import DefaultValueFlow::PathGraph
 import TestUtilities.InlineFlowTest
+import DefaultFlowTest
+import PathGraph
 
-from DefaultValueFlow::PathNode source, DefaultValueFlow::PathNode sink
-where DefaultValueFlow::flowPath(source, sink)
+from PathNode source, PathNode sink
+where flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

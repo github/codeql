@@ -5,6 +5,7 @@
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
 #include <swift/Parse/Token.h>
+#include "absl/strings/str_cat.h"
 
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/SwiftTagTraits.h"
@@ -13,7 +14,7 @@
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 #include "swift/extractor/infra/SwiftMangledName.h"
 #include "swift/extractor/config/SwiftExtractorState.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/logging/SwiftAssert.h"
 
 namespace codeql {
 
@@ -36,19 +37,6 @@ class SwiftDispatcher {
                               const swift::CapturedValue*,
                               const swift::PoundAvailableInfo*,
                               const swift::AvailabilitySpec*>;
-
-  template <typename E>
-  static constexpr bool IsFetchable = std::is_constructible_v<Handle, const E&>;
-
-  template <typename E>
-  static constexpr bool IsLocatable =
-      std::is_base_of_v<LocatableTag, TrapTagOf<E>> && !std::is_base_of_v<TypeTag, TrapTagOf<E>>;
-
-  template <typename E>
-  static constexpr bool IsDeclPointer = std::is_convertible_v<E, const swift::Decl*>;
-
-  template <typename E>
-  static constexpr bool IsTypePointer = std::is_convertible_v<E, const swift::TypeBase*>;
 
  public:
   // all references and pointers passed as parameters to this constructor are supposed to outlive
@@ -74,21 +62,20 @@ class SwiftDispatcher {
     entry.forEachLabel([&valid, &entry, this](const char* field, int index, auto& label) {
       using Label = std::remove_reference_t<decltype(label)>;
       if (!label.valid()) {
-        std::cerr << entry.NAME << " has undefined " << field;
-        if (index >= 0) {
-          std::cerr << '[' << index << ']';
-        }
-        if constexpr (std::is_base_of_v<typename Label::Tag, UnspecifiedElementTag>) {
-          std::cerr << ", replacing with unspecified element\n";
+        const char* action;
+        if constexpr (std::derived_from<UnspecifiedElementTag, typename Label::Tag>) {
+          action = "replacing with unspecified element";
           label = emitUnspecified(idOf(entry), field, index);
         } else {
-          std::cerr << ", skipping emission\n";
+          action = "skipping emission";
           valid = false;
         }
+        LOG_ERROR("{} has undefined field {}{}, {}", entry.NAME, field,
+                  index >= 0 ? absl::StrCat("[", index, "]") : "", action);
       }
     });
     if (valid) {
-      trap.emit(entry);
+      trap.emit(entry, /* check */ false);
     }
   }
 
@@ -132,7 +119,7 @@ class SwiftDispatcher {
 
   template <typename E>
   std::optional<TrapLabel<ElementTag>> idOf(const E& entry) {
-    if constexpr (HasId<E>::value) {
+    if constexpr (requires { entry.id; }) {
       return entry.id;
     } else {
       return std::nullopt;
@@ -142,18 +129,25 @@ class SwiftDispatcher {
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
-  template <typename E, std::enable_if_t<IsFetchable<E>>* = nullptr>
-  TrapLabelOf<E> fetchLabel(const E& e, swift::Type type = {}) {
-    if constexpr (std::is_constructible_v<bool, const E&>) {
-      if (!e) {
-        // this will be treated on emission
-        return undefined_label;
+  // clang-format off
+  template <typename E>
+    requires std::constructible_from<Handle, E*>
+  TrapLabelOf<E> fetchLabel(const E* e, swift::Type type = {}) {
+    // clang-format on
+    if (!e) {
+      // this will be treated on emission
+      return undefined_label;
+    }
+    if constexpr (std::derived_from<swift::VarDecl, E>) {
+      // canonicalize all VarDecls. For details, see doc of getCanonicalVarDecl
+      if (auto var = llvm::dyn_cast<const swift::VarDecl>(e)) {
+        e = var->getCanonicalVarDecl();
       }
     }
     auto& stored = store[e];
     if (!stored.valid()) {
       auto inserted = fetching.insert(e);
-      assert(inserted.second && "detected infinite fetchLabel recursion");
+      CODEQL_ASSERT(inserted.second, "detected infinite fetchLabel recursion");
       stored = createLabel(e, type);
       fetching.erase(e);
     }
@@ -165,11 +159,20 @@ class SwiftDispatcher {
   TrapLabel<TypeTag> fetchLabel(swift::Type t) { return fetchLabel(t.getPointer()); }
 
   TrapLabel<AstNodeTag> fetchLabel(swift::ASTNode node) {
-    return fetchLabelFromUnion<AstNodeTag>(node);
+    auto ret = fetchLabelFromUnion<AstNodeTag>(node);
+    if (!ret.valid()) {
+      // TODO to be more useful, we need a generic way of attaching original source location info
+      // to logs, this will come in upcoming work
+      LOG_ERROR("Unable to fetch label for ASTNode");
+    }
+    return ret;
   }
 
-  template <typename E, std::enable_if_t<IsFetchable<E*>>* = nullptr>
+  // clang-format off
+  template <typename E>
+    requires std::constructible_from<Handle, E*>
   TrapLabelOf<E> fetchLabel(const E& e) {
+    // clang-format on
     return fetchLabel(&e);
   }
 
@@ -177,8 +180,9 @@ class SwiftDispatcher {
   template <typename E>
   auto createEntry(const E& e) {
     auto found = store.find(&e);
-    assert(found != store.end() && "createEntry called on non-fetched label");
-    auto label = TrapLabel<ConcreteTrapTagOf<E>>::unsafeCreateFromUntyped(found->second);
+    CODEQL_ASSERT(found != store.end(), "createEntry called on non-fetched label");
+    using Tag = ConcreteTrapTagOf<E>;
+    auto label = TrapLabel<Tag>::unsafeCreateFromUntyped(found->second);
     if constexpr (IsLocatable<E>) {
       locationExtractor.attachLocation(sourceManager, e, label);
     }
@@ -189,7 +193,8 @@ class SwiftDispatcher {
   // an example is swift::Argument, that are created on the fly and thus have no stable pointer
   template <typename E>
   auto createUncachedEntry(const E& e) {
-    auto label = trap.createTypedLabel<TrapTagOf<E>>();
+    using Tag = TrapTagOf<E>;
+    auto label = trap.createTypedLabel<Tag>();
     locationExtractor.attachLocation(sourceManager, &e, label);
     return TrapClassOf<E>{label};
   }
@@ -212,7 +217,7 @@ class SwiftDispatcher {
   auto fetchRepeatedLabels(Iterable&& arg) {
     using Label = decltype(fetchLabel(*arg.begin()));
     TrapLabelVectorWrapper<typename Label::Tag> ret;
-    if constexpr (HasSize<Iterable>::value) {
+    if constexpr (requires { arg.size(); }) {
       ret.data.reserve(arg.size());
     }
     for (auto&& e : arg) {
@@ -245,7 +250,7 @@ class SwiftDispatcher {
  private:
   template <typename E>
   UntypedTrapLabel createLabel(const E& e, swift::Type type) {
-    if constexpr (IsDeclPointer<E> || IsTypePointer<E>) {
+    if constexpr (requires { name(e); }) {
       if (auto mangledName = name(e)) {
         if (shouldVisit(e)) {
           toBeVisited.emplace_back(e, type);
@@ -260,7 +265,7 @@ class SwiftDispatcher {
 
   template <typename E>
   bool shouldVisit(const E& e) {
-    if constexpr (IsDeclPointer<E>) {
+    if constexpr (std::convertible_to<E, const swift::Decl*>) {
       encounteredModules.insert(e->getModuleContext());
       if (bodyEmissionStrategy.shouldEmitDeclBody(*e)) {
         extractedDeclaration(e);
@@ -289,25 +294,12 @@ class SwiftDispatcher {
            module->isNonSwiftModule();
   }
 
-  template <typename T, typename = void>
-  struct HasSize : std::false_type {};
-
-  template <typename T>
-  struct HasSize<T, decltype(std::declval<T>().size(), void())> : std::true_type {};
-
-  template <typename T, typename = void>
-  struct HasId : std::false_type {};
-
-  template <typename T>
-  struct HasId<T, decltype(std::declval<T>().id, void())> : std::true_type {};
-
   template <typename Tag, typename... Ts>
   TrapLabel<Tag> fetchLabelFromUnion(const llvm::PointerUnion<Ts...> u) {
     TrapLabel<Tag> ret{};
     // with logical op short-circuiting, this will stop trying on the first successful fetch
     bool unionCaseFound = (... || fetchLabelFromUnionCase<Tag, Ts>(u, ret));
     if (!unionCaseFound) {
-      // TODO emit error/warning here
       return undefined_label;
     }
     return ret;
@@ -319,7 +311,7 @@ class SwiftDispatcher {
     // on `BraceStmt`/`IfConfigDecl` elements), we cannot encounter a standalone `TypeRepr` there,
     // so we skip this case; extracting `TypeRepr`s here would be problematic as we would not be
     // able to provide the corresponding type
-    if constexpr (!std::is_same_v<T, swift::TypeRepr*>) {
+    if constexpr (!std::same_as<T, swift::TypeRepr*>) {
       if (auto e = u.template dyn_cast<T>()) {
         output = fetchLabel(e);
         return true;
@@ -343,10 +335,8 @@ class SwiftDispatcher {
   virtual void visit(const swift::TypeBase* type) = 0;
   virtual void visit(const swift::CapturedValue* capture) = 0;
 
-  template <typename T, std::enable_if<!std::is_base_of_v<swift::TypeRepr, T>>* = nullptr>
-  void visit(const T* e, swift::Type) {
-    visit(e);
-  }
+  template <typename T>
+  requires(!std::derived_from<T, swift::TypeRepr>) void visit(const T* e, swift::Type) { visit(e); }
 
   const swift::SourceManager& sourceManager;
   SwiftExtractorState& state;
@@ -357,7 +347,10 @@ class SwiftDispatcher {
   SwiftLocationExtractor& locationExtractor;
   SwiftBodyEmissionStrategy& bodyEmissionStrategy;
   std::unordered_set<swift::ModuleDecl*> encounteredModules;
-  Logger logger{"dispatcher"};
+  Logger& logger() {
+    static Logger ret{"dispatcher"};
+    return ret;
+  }
 };
 
 }  // namespace codeql

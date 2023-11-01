@@ -1,12 +1,10 @@
 import TestUtilities.InlineExpectationsTest
 import semmle.code.java.security.regexp.PolynomialReDoSQuery
 
-class HasPolyRedos extends InlineExpectationsTest {
-  HasPolyRedos() { this = "HasPolyRedos" }
+module HasPolyRedos implements TestSig {
+  string getARelevantTag() { result = "hasPolyRedos" }
 
-  override string getARelevantTag() { result = "hasPolyRedos" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasPolyRedos" and
     exists(DataFlow::Node sink |
       PolynomialRedosFlow::flowTo(sink) and
@@ -16,3 +14,5 @@ class HasPolyRedos extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasPolyRedos>

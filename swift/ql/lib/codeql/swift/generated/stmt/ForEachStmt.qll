@@ -5,6 +5,7 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.pattern.Pattern
+import codeql.swift.elements.decl.PatternBindingDecl
 
 module Generated {
   class ForEachStmt extends Synth::TForEachStmt, LabeledStmt {
@@ -26,25 +27,12 @@ module Generated {
     /**
      * Gets the pattern of this for each statement.
      */
-    final Pattern getPattern() { result = getImmediatePattern().resolve() }
-
-    /**
-     * Gets the sequence of this for each statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    Expr getImmediateSequence() {
-      result =
-        Synth::convertExprFromRaw(Synth::convertForEachStmtToRaw(this)
-              .(Raw::ForEachStmt)
-              .getSequence())
+    final Pattern getPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediatePattern() and
+        result = immediate.resolve()
+      )
     }
-
-    /**
-     * Gets the sequence of this for each statement.
-     */
-    final Expr getSequence() { result = getImmediateSequence().resolve() }
 
     /**
      * Gets the where of this for each statement, if it exists.
@@ -60,29 +48,69 @@ module Generated {
     /**
      * Gets the where of this for each statement, if it exists.
      */
-    final Expr getWhere() { result = getImmediateWhere().resolve() }
+    final Expr getWhere() {
+      exists(Expr immediate |
+        immediate = this.getImmediateWhere() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getWhere()` exists.
      */
-    final predicate hasWhere() { exists(getWhere()) }
+    final predicate hasWhere() { exists(this.getWhere()) }
 
     /**
-     * Gets the body of this for each statement.
+     * Gets the iteratorvar of this for each statement, if it exists.
+     */
+    PatternBindingDecl getIteratorVar() {
+      result =
+        Synth::convertPatternBindingDeclFromRaw(Synth::convertForEachStmtToRaw(this)
+              .(Raw::ForEachStmt)
+              .getIteratorVar())
+    }
+
+    /**
+     * Holds if `getIteratorVar()` exists.
+     */
+    final predicate hasIteratorVar() { exists(this.getIteratorVar()) }
+
+    /**
+     * Gets the nextcall of this for each statement, if it exists.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    BraceStmt getImmediateBody() {
+    Expr getImmediateNextCall() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertForEachStmtToRaw(this)
+              .(Raw::ForEachStmt)
+              .getNextCall())
+    }
+
+    /**
+     * Gets the nextcall of this for each statement, if it exists.
+     */
+    final Expr getNextCall() {
+      exists(Expr immediate |
+        immediate = this.getImmediateNextCall() and
+        result = immediate.resolve()
+      )
+    }
+
+    /**
+     * Holds if `getNextCall()` exists.
+     */
+    final predicate hasNextCall() { exists(this.getNextCall()) }
+
+    /**
+     * Gets the body of this for each statement.
+     */
+    BraceStmt getBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertForEachStmtToRaw(this)
               .(Raw::ForEachStmt)
               .getBody())
     }
-
-    /**
-     * Gets the body of this for each statement.
-     */
-    final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
 }

@@ -22,6 +22,22 @@
                 "command": "${config:python.pythonPath}",
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Accept .expected changes from CI",
+            "type": "process",
+            // Non-Windows OS will usually have Python 3 already installed at /usr/bin/python3.
+            "command": "python3",
+            "args": [
+                "misc/scripts/accept-expected-changes-from-ci.py"
+            ],
+            "group": "build",
+            "windows": {
+                // On Windows, use whatever Python interpreter is configured for this workspace. The default is
+                // just `python`, so if Python is already on the path, this will find it.
+                "command": "${config:python.pythonPath}",
+            },
+            "problemMatcher": []
         }
     ]
 }

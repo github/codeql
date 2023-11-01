@@ -35,7 +35,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 public class JdbcTemplate extends JdbcAccessor implements JdbcOperations
 {
-    protected <T> RowMapper<T> getSingleColumnRowMapper(Class<T> p0){ return null; }
+    protected <T> org.springframework.jdbc.core.RowMapper<T> getSingleColumnRowMapper(java.lang.Class<T> p0){ return null; }
     protected Connection createConnectionProxy(Connection p0){ return null; }
     protected DataAccessException translateException(String p0, String p1, SQLException p2){ return null; }
     protected Map<String, Object> createResultsMap(){ return null; }
@@ -49,43 +49,43 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations
     protected void applyStatementSettings(Statement p0){}
     protected void handleWarnings(SQLWarning p0){}
     protected void handleWarnings(Statement p0){}
-    public <T> List<T> query(PreparedStatementCreator p0, RowMapper<T> p1){ return null; }
-    public <T> List<T> query(String p0, Object[] p1, RowMapper<T> p2){ return null; }
-    public <T> List<T> query(String p0, Object[] p1, int[] p2, RowMapper<T> p3){ return null; }
-    public <T> List<T> query(String p0, PreparedStatementSetter p1, RowMapper<T> p2){ return null; }
-    public <T> List<T> query(String p0, RowMapper<T> p1){ return null; }
-    public <T> List<T> query(String p0, RowMapper<T> p1, Object... p2){ return null; }
-    public <T> List<T> queryForList(String p0, Class<T> p1){ return null; }
-    public <T> List<T> queryForList(String p0, Class<T> p1, Object... p2){ return null; }
-    public <T> List<T> queryForList(String p0, Object[] p1, Class<T> p2){ return null; }
-    public <T> List<T> queryForList(String p0, Object[] p1, int[] p2, Class<T> p3){ return null; }
-    public <T> Stream<T> queryForStream(PreparedStatementCreator p0, PreparedStatementSetter p1, RowMapper<T> p2){ return null; }
-    public <T> Stream<T> queryForStream(PreparedStatementCreator p0, RowMapper<T> p1){ return null; }
-    public <T> Stream<T> queryForStream(String p0, PreparedStatementSetter p1, RowMapper<T> p2){ return null; }
-    public <T> Stream<T> queryForStream(String p0, RowMapper<T> p1){ return null; }
-    public <T> Stream<T> queryForStream(String p0, RowMapper<T> p1, Object... p2){ return null; }
-    public <T> T execute(CallableStatementCreator p0, CallableStatementCallback<T> p1){ return null; }
-    public <T> T execute(ConnectionCallback<T> p0){ return null; }
-    public <T> T execute(PreparedStatementCreator p0, PreparedStatementCallback<T> p1){ return null; }
-    public <T> T execute(StatementCallback<T> p0){ return null; }
-    public <T> T execute(String p0, CallableStatementCallback<T> p1){ return null; }
-    public <T> T execute(String p0, PreparedStatementCallback<T> p1){ return null; }
-    public <T> T query(PreparedStatementCreator p0, PreparedStatementSetter p1, ResultSetExtractor<T> p2){ return null; }
-    public <T> T query(PreparedStatementCreator p0, ResultSetExtractor<T> p1){ return null; }
-    public <T> T query(String p0, Object[] p1, ResultSetExtractor<T> p2){ return null; }
-    public <T> T query(String p0, Object[] p1, int[] p2, ResultSetExtractor<T> p3){ return null; }
-    public <T> T query(String p0, PreparedStatementSetter p1, ResultSetExtractor<T> p2){ return null; }
-    public <T> T query(String p0, ResultSetExtractor<T> p1){ return null; }
-    public <T> T query(String p0, ResultSetExtractor<T> p1, Object... p2){ return null; }
-    public <T> T queryForObject(String p0, Class<T> p1){ return null; }
-    public <T> T queryForObject(String p0, Class<T> p1, Object... p2){ return null; }
-    public <T> T queryForObject(String p0, Object[] p1, Class<T> p2){ return null; }
-    public <T> T queryForObject(String p0, Object[] p1, RowMapper<T> p2){ return null; }
-    public <T> T queryForObject(String p0, Object[] p1, int[] p2, Class<T> p3){ return null; }
-    public <T> T queryForObject(String p0, Object[] p1, int[] p2, RowMapper<T> p3){ return null; }
-    public <T> T queryForObject(String p0, RowMapper<T> p1){ return null; }
-    public <T> T queryForObject(String p0, RowMapper<T> p1, Object... p2){ return null; }
-    public <T> int[] batchUpdate(String p0, Collection<T> p1, int p2, ParameterizedPreparedStatementSetter<T> p3){ return null; }
+    public <T> T execute(CallableStatementCreator p0, org.springframework.jdbc.core.CallableStatementCallback<T> p1){ return null; }
+    public <T> T execute(PreparedStatementCreator p0, org.springframework.jdbc.core.PreparedStatementCallback<T> p1){ return null; }
+    public <T> T execute(String p0, org.springframework.jdbc.core.CallableStatementCallback<T> p1){ return null; }
+    public <T> T execute(String p0, org.springframework.jdbc.core.PreparedStatementCallback<T> p1){ return null; }
+    public <T> T execute(org.springframework.jdbc.core.ConnectionCallback<T> p0){ return null; }
+    public <T> T execute(org.springframework.jdbc.core.StatementCallback<T> p0){ return null; }
+    public <T> T query(PreparedStatementCreator p0, PreparedStatementSetter p1, org.springframework.jdbc.core.ResultSetExtractor<T> p2){ return null; }
+    public <T> T query(PreparedStatementCreator p0, org.springframework.jdbc.core.ResultSetExtractor<T> p1){ return null; }
+    public <T> T query(String p0, Object[] p1, int[] p2, org.springframework.jdbc.core.ResultSetExtractor<T> p3){ return null; }
+    public <T> T query(String p0, Object[] p1, org.springframework.jdbc.core.ResultSetExtractor<T> p2){ return null; }
+    public <T> T query(String p0, PreparedStatementSetter p1, org.springframework.jdbc.core.ResultSetExtractor<T> p2){ return null; }
+    public <T> T query(String p0, org.springframework.jdbc.core.ResultSetExtractor<T> p1){ return null; }
+    public <T> T query(String p0, org.springframework.jdbc.core.ResultSetExtractor<T> p1, Object... p2){ return null; }
+    public <T> T queryForObject(String p0, Object[] p1, int[] p2, java.lang.Class<T> p3){ return null; }
+    public <T> T queryForObject(String p0, Object[] p1, int[] p2, org.springframework.jdbc.core.RowMapper<T> p3){ return null; }
+    public <T> T queryForObject(String p0, Object[] p1, java.lang.Class<T> p2){ return null; }
+    public <T> T queryForObject(String p0, Object[] p1, org.springframework.jdbc.core.RowMapper<T> p2){ return null; }
+    public <T> T queryForObject(String p0, java.lang.Class<T> p1){ return null; }
+    public <T> T queryForObject(String p0, java.lang.Class<T> p1, Object... p2){ return null; }
+    public <T> T queryForObject(String p0, org.springframework.jdbc.core.RowMapper<T> p1){ return null; }
+    public <T> T queryForObject(String p0, org.springframework.jdbc.core.RowMapper<T> p1, Object... p2){ return null; }
+    public <T> int[][] batchUpdate(String p0, java.util.Collection<T> p1, int p2, org.springframework.jdbc.core.ParameterizedPreparedStatementSetter<T> p3){ return null; }
+    public <T> java.util.List<T> query(PreparedStatementCreator p0, org.springframework.jdbc.core.RowMapper<T> p1){ return null; }
+    public <T> java.util.List<T> query(String p0, Object[] p1, int[] p2, org.springframework.jdbc.core.RowMapper<T> p3){ return null; }
+    public <T> java.util.List<T> query(String p0, Object[] p1, org.springframework.jdbc.core.RowMapper<T> p2){ return null; }
+    public <T> java.util.List<T> query(String p0, PreparedStatementSetter p1, org.springframework.jdbc.core.RowMapper<T> p2){ return null; }
+    public <T> java.util.List<T> query(String p0, org.springframework.jdbc.core.RowMapper<T> p1){ return null; }
+    public <T> java.util.List<T> query(String p0, org.springframework.jdbc.core.RowMapper<T> p1, Object... p2){ return null; }
+    public <T> java.util.List<T> queryForList(String p0, Object[] p1, int[] p2, java.lang.Class<T> p3){ return null; }
+    public <T> java.util.List<T> queryForList(String p0, Object[] p1, java.lang.Class<T> p2){ return null; }
+    public <T> java.util.List<T> queryForList(String p0, java.lang.Class<T> p1){ return null; }
+    public <T> java.util.List<T> queryForList(String p0, java.lang.Class<T> p1, Object... p2){ return null; }
+    public <T> java.util.stream.Stream<T> queryForStream(PreparedStatementCreator p0, PreparedStatementSetter p1, org.springframework.jdbc.core.RowMapper<T> p2){ return null; }
+    public <T> java.util.stream.Stream<T> queryForStream(PreparedStatementCreator p0, org.springframework.jdbc.core.RowMapper<T> p1){ return null; }
+    public <T> java.util.stream.Stream<T> queryForStream(String p0, PreparedStatementSetter p1, org.springframework.jdbc.core.RowMapper<T> p2){ return null; }
+    public <T> java.util.stream.Stream<T> queryForStream(String p0, org.springframework.jdbc.core.RowMapper<T> p1){ return null; }
+    public <T> java.util.stream.Stream<T> queryForStream(String p0, org.springframework.jdbc.core.RowMapper<T> p1, Object... p2){ return null; }
     public JdbcTemplate(){}
     public JdbcTemplate(DataSource p0){}
     public JdbcTemplate(DataSource p0, boolean p1){}

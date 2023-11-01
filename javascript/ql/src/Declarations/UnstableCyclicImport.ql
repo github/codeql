@@ -63,7 +63,7 @@ predicate isImportedAtRuntime(Module source, Module destination) {
  */
 class CandidateVarAccess extends VarAccess {
   CandidateVarAccess() {
-    isImmediatelyExecutedContainer(getContainer()) and
+    isImmediatelyExecutedContainer(this.getContainer()) and
     not exists(ExportSpecifier spec | spec.getLocal() = this)
   }
 }

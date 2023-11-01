@@ -2,7 +2,7 @@ private import codeql.swift.generated.expr.DotSyntaxBaseIgnoredExpr
 private import codeql.swift.elements.expr.AutoClosureExpr
 private import codeql.swift.elements.expr.CallExpr
 private import codeql.swift.elements.expr.TypeExpr
-private import codeql.swift.elements.decl.MethodDecl
+private import codeql.swift.elements.decl.Method
 
 /**
  * An expression representing a partially applied lookup of an instance property via the receiver's type object.
@@ -28,7 +28,7 @@ class DotSyntaxBaseIgnoredExpr extends Generated::DotSyntaxBaseIgnoredExpr {
    * Gets the underlying instance method that is called when the result of this
    * expression is fully applied.
    */
-  MethodDecl getMethod() {
+  Method getMethod() {
     result =
       this.getSubExpr()
           .(AutoClosureExpr)

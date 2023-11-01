@@ -13,6 +13,7 @@ private import semmle.python.frameworks.Stdlib
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.PathInjectionCustomizations
+private import semmle.python.dataflow.new.FlowSummary
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -178,7 +179,13 @@ module Flask {
      * - https://flask.palletsprojects.com/en/2.2.x/api/#flask.json.jsonify
      */
     private class FlaskJsonifyCall extends InstanceSource, DataFlow::CallCfgNode {
-      FlaskJsonifyCall() { this = API::moduleImport("flask").getMember("jsonify").getACall() }
+      FlaskJsonifyCall() {
+        this = API::moduleImport("flask").getMember("jsonify").getACall()
+        or
+        this = API::moduleImport("flask").getMember("json").getMember("jsonify").getACall()
+        or
+        this = FlaskApp::instance().getMember("json").getMember("response").getACall()
+      }
 
       override DataFlow::Node getBody() { result in [this.getArg(_), this.getArgByName(_)] }
 
@@ -452,7 +459,8 @@ module Flask {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
-        node = routeHandler.getAReturnValueFlowNode()
+        node = routeHandler.getAReturnValueFlowNode() and
+        not this instanceof Flask::Response::InstanceSource
       )
     }
 
@@ -586,5 +594,58 @@ module Flask {
    */
   private class FlaskLogger extends Stdlib::Logger::InstanceSource {
     FlaskLogger() { this = FlaskApp::instance().getMember("logger").asSource() }
+  }
+
+  /**
+   * A flow summary for `flask.render_template_string`.
+   *
+   * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.render_template_string
+   */
+  private class RenderTemplateStringSummary extends SummarizedCallable {
+    RenderTemplateStringSummary() { this = "flask.render_template_string" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("flask").getMember("render_template_string").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("flask")
+            .getMember("render_template_string")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `flask.stream_template_string`.
+   *
+   * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.stream_template_string
+   */
+  private class StreamTemplateStringSummary extends SummarizedCallable {
+    StreamTemplateStringSummary() { this = "flask.stream_template_string" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("flask").getMember("stream_template_string").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("flask")
+            .getMember("stream_template_string")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      // Technically it's `Iterator[str]`, but list will do :)
+      output = "ReturnValue.ListElement" and
+      preservesValue = false
+    }
   }
 }

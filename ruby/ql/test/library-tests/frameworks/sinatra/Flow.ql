@@ -4,16 +4,20 @@
 
 import ruby
 import TestUtilities.InlineFlowTest
-import PathGraph
+import TaintFlow::PathGraph
 import codeql.ruby.frameworks.Sinatra
 import codeql.ruby.Concepts
 
-class SinatraConf extends DefaultTaintFlowConf {
-  override predicate isSource(DataFlow::Node source) {
+module SinatraConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source instanceof Http::Server::RequestInputAccess::Range
   }
+
+  predicate isSink(DataFlow::Node sink) { DefaultFlowConfig::isSink(sink) }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, SinatraConf conf
-where conf.hasFlowPath(source, sink)
+import FlowTest<DefaultFlowConfig, SinatraConfig>
+
+from TaintFlow::PathNode source, TaintFlow::PathNode sink
+where TaintFlow::flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

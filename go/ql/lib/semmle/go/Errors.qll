@@ -19,7 +19,7 @@ class Error extends @error {
   int getIndex() { errors(this, _, _, _, _, _, _, _, result) }
 
   /** Gets the file in which this error was reported, if it can be determined. */
-  ExtractedOrExternalFile getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+  ExtractedOrExternalFile getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
 
   /**
    * Holds if this element is at the specified location.
@@ -37,7 +37,7 @@ class Error extends @error {
   }
 
   /** Gets a textual representation of this error. */
-  string toString() { result = getMessage() }
+  string toString() { result = this.getMessage() }
 }
 
 /** An error reported by an unknown part of the Go frontend. */

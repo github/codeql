@@ -17,7 +17,10 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  exists(node) and
+  c.isElementOfTypeOrUnknown("int")
+}
 
 private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
   CfgNodes::ExprNodes::CasePatternCfgNode p
@@ -64,9 +67,10 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
 cached
 private module Cached {
   private import codeql.ruby.dataflow.FlowSteps as FlowSteps
+  private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 
   cached
-  predicate forceCachingInSameStage() { any() }
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
 
   /**
    * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
@@ -96,7 +100,8 @@ private module Cached {
         )
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false)
     or
     any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)
     or
@@ -112,6 +117,13 @@ private module Cached {
     )
   }
 
+  cached
+  predicate summaryThroughStepTaint(
+    DataFlow::Node arg, DataFlow::Node out, FlowSummaryImpl::Public::SummarizedCallable sc
+  ) {
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(arg, out, sc)
+  }
+
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.
@@ -122,7 +134,7 @@ private module Cached {
     defaultAdditionalTaintStep(nodeFrom, nodeTo) or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
+    summaryThroughStepTaint(nodeFrom, nodeTo, _)
   }
 }
 

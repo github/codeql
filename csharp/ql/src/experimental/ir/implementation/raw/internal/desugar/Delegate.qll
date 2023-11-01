@@ -61,7 +61,7 @@ private class TranslatedDelegateConstructorCall extends TranslatedCompilerGenera
 
   override Instruction getQualifierResult() {
     exists(ConstructorCallContext context |
-      context = getParent() and
+      context = this.getParent() and
       result = context.getReceiver()
     )
   }
@@ -101,7 +101,7 @@ private class TranslatedDelegateInvokeCall extends TranslatedCompilerGeneratedCa
 
   override TranslatedExprBase getQualifier() { result = getTranslatedExpr(generatedBy.getExpr()) }
 
-  override Instruction getQualifierResult() { result = getQualifier().getResult() }
+  override Instruction getQualifierResult() { result = this.getQualifier().getResult() }
 
   override TranslatedExpr getArgument(int index) {
     result = getTranslatedExpr(generatedBy.getArgument(index))

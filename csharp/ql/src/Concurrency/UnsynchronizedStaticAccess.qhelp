@@ -12,7 +12,7 @@ invariants.
 
 <p>
 For example, the behavior of <code>Dictionary</code> when a write happens concurrently with another write or a read is 
-undefined, and frequently leads to data corruption and can lead to ​ issues as serious as livelock.
+undefined, and frequently leads to data corruption and can lead to issues as serious as livelock.
 </p>
 
 </overview>
@@ -35,6 +35,6 @@ dictionary. This means that multiple threads can access the dictionary, potentia
 
 </example>
 <references>
-  <li>MSDN, C# Reference: <a href="https://msdn.microsoft.com/en-us/library/xfhwa508.aspx#Anchor_10">Dictionary: Thread safety</a>.</li>
+  <li>MSDN, C# Reference: <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?#thread-safety">Dictionary: Thread safety</a>.</li>
 </references>
 </qhelp>

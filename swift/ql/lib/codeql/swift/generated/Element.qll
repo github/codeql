@@ -36,9 +36,9 @@ module Generated {
      * transitively.
      */
     final Element resolve() {
-      not exists(getResolveStep()) and result = this
+      not exists(this.getResolveStep()) and result = this
       or
-      result = getResolveStep().resolve()
+      result = this.getResolveStep().resolve()
     }
 
     /**

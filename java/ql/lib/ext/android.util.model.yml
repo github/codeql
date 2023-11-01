@@ -23,9 +23,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["android.util", "Log", True, "d", "", "", "Argument[1]", "logging", "manual"]
-      - ["android.util", "Log", True, "e", "", "", "Argument[1]", "logging", "manual"]
-      - ["android.util", "Log", True, "i", "", "", "Argument[1]", "logging", "manual"]
-      - ["android.util", "Log", True, "v", "", "", "Argument[1]", "logging", "manual"]
-      - ["android.util", "Log", True, "w", "", "", "Argument[1]", "logging", "manual"]
-      - ["android.util", "Log", True, "wtf", "", "", "Argument[1]", "logging", "manual"]
+      - ["android.util", "Log", True, "d", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["android.util", "Log", True, "e", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["android.util", "Log", True, "i", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["android.util", "Log", True, "v", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["android.util", "Log", True, "w", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["android.util", "Log", True, "wtf", "", "", "Argument[1]", "log-injection", "manual"]

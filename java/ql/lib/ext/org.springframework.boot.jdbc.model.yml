@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.springframework.boot.jdbc", "DataSourceBuilder", False, "url", "(String)", "", "Argument[0]", "jdbc-url", "manual"]
+      - ["org.springframework.boot.jdbc", "DataSourceBuilder", False, "url", "(String)", "", "Argument[0]", "request-forgery", "manual"]

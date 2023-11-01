@@ -58,7 +58,9 @@ def _parse_args() -> argparse.Namespace:
                        help="output directory for generated C++ files, required if trap or cpp is provided to "
                             "--generate"),
         p.add_argument("--generated-registry",
-                       help="registry file containing information about checked-in generated code"),
+                       help="registry file containing information about checked-in generated code. A .gitattributes"
+                            "file is generated besides it to mark those files with linguist-generated=true. Must"
+                            "be in a directory containing all generated code."),
     ]
     p.add_argument("--script-name",
                    help="script name to put in header comments of generated files. By default, the path of this "
@@ -108,7 +110,7 @@ def run():
         log_level = logging.INFO
     logging.basicConfig(format="{levelname} {message}", style='{', level=log_level)
     for target in opts.generate:
-        generate(target, opts, render.Renderer(opts.script_name, opts.root_dir))
+        generate(target, opts, render.Renderer(opts.script_name))
 
 
 if __name__ == "__main__":

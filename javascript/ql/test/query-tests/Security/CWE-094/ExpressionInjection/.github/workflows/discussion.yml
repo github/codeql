@@ -1,0 +1,8 @@
+on: discussion
+
+jobs:
+  echo-chamber:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo '${{ github.event.discussion.title }}'
+    - run: echo '${{ github.event.discussion.body }}'

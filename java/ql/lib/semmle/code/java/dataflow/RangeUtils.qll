@@ -104,6 +104,17 @@ private predicate constantBooleanExpr(Expr e, boolean val) {
   CalcConstants::calculateBooleanValue(e) = val
 }
 
+pragma[nomagic]
+private predicate constantStringExpr(Expr e, string val) {
+  e.(CompileTimeConstantExpr).getStringValue() = val
+  or
+  exists(SsaExplicitUpdate v, Expr src |
+    e = v.getAUse() and
+    src = v.getDefiningExpr().(VariableAssign).getSource() and
+    constantStringExpr(src, val)
+  )
+}
+
 private boolean getBoolValue(Expr e) { constantBooleanExpr(e, result) }
 
 private int getIntValue(Expr e) { constantIntegerExpr(e, result) }
@@ -126,6 +137,17 @@ class ConstantBooleanExpr extends Expr {
   boolean getBooleanValue() { constantBooleanExpr(this, result) }
 }
 
+/** An expression that always has the same string value. */
+class ConstantStringExpr extends Expr {
+  ConstantStringExpr() { constantStringExpr(this, _) }
+
+  /** Get the string value of this expression. */
+  string getStringValue() { constantStringExpr(this, result) }
+}
+
+bindingset[f]
+private predicate okInt(float f) { -2.pow(31) <= f and f <= 2.pow(31) - 1 }
+
 /**
  * Gets an expression that equals `v - d`.
  */
@@ -134,14 +156,16 @@ Expr ssaRead(SsaVariable v, int delta) {
   or
   exists(int d1, ConstantIntegerExpr c |
     result.(AddExpr).hasOperands(ssaRead(v, d1), c) and
-    delta = d1 - c.getIntValue()
+    delta = d1 - c.getIntValue() and
+    okInt(d1.(float) - c.getIntValue().(float))
   )
   or
   exists(SubExpr sub, int d1, ConstantIntegerExpr c |
     result = sub and
     sub.getLeftOperand() = ssaRead(v, d1) and
     sub.getRightOperand() = c and
-    delta = d1 + c.getIntValue()
+    delta = d1 + c.getIntValue() and
+    okInt(d1.(float) + c.getIntValue().(float))
   )
   or
   v.(SsaExplicitUpdate).getDefiningExpr().(PreIncExpr) = result and delta = 0

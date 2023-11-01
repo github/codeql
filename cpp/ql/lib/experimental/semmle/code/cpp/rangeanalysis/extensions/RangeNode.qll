@@ -83,20 +83,23 @@ private class ExprRangeNode extends DataFlow::ExprNode {
   private string getCallBounds(Call e) {
     result =
       getExprBoundAsString(e) + "(" +
-        concat(Expr arg, int i | arg = e.getArgument(i) | getIntegralBounds(arg) order by i, ",") +
-        ")"
+        concat(Expr arg, int i |
+          arg = e.getArgument(i)
+        |
+          this.getIntegralBounds(arg), "," order by i
+        ) + ")"
   }
 
   override string toString() {
-    exists(Expr e | e = getExpr() |
+    exists(Expr e | e = this.getExpr() |
       if hasIntegralOrReferenceIntegralType(e)
       then
-        result = super.toString() + ": " + getOperationBounds(e)
+        result = super.toString() + ": " + this.getOperationBounds(e)
         or
-        result = super.toString() + ": " + getCallBounds(e)
+        result = super.toString() + ": " + this.getCallBounds(e)
         or
-        not exists(getOperationBounds(e)) and
-        not exists(getCallBounds(e)) and
+        not exists(this.getOperationBounds(e)) and
+        not exists(this.getCallBounds(e)) and
         result = super.toString() + ": " + getExprBoundAsString(e)
       else result = super.toString()
     )
@@ -108,8 +111,8 @@ private class ExprRangeNode extends DataFlow::ExprNode {
  */
 private class ReferenceArgumentRangeNode extends DataFlow::DefinitionByReferenceNode {
   override string toString() {
-    if hasIntegralOrReferenceIntegralType(asDefiningArgument())
-    then result = super.toString() + ": " + getExprBoundAsString(getArgument())
+    if hasIntegralOrReferenceIntegralType(this.asDefiningArgument())
+    then result = super.toString() + ": " + getExprBoundAsString(this.getArgument())
     else result = super.toString()
   }
 }

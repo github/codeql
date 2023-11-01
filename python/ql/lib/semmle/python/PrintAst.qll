@@ -7,7 +7,7 @@
  */
 
 import python
-import semmle.python.RegexTreeView
+import semmle.python.regexp.RegexTreeView
 import semmle.python.Yaml
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()

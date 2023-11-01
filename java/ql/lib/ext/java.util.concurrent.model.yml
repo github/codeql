@@ -32,15 +32,15 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.concurrent", "CompletableFuture", "completeExceptionally", "(Throwable)", "manual"]
-      - ["java.util.concurrent", "CompletableFuture", "isDone", "()", "manual"]
-      - ["java.util.concurrent", "CountDownLatch", "await", "", "manual"]
-      - ["java.util.concurrent", "CountDownLatch", "countDown", "()", "manual"]
-      - ["java.util.concurrent", "Executor", "execute", "(Runnable)", "manual"]
-      - ["java.util.concurrent", "ExecutorService", "shutdown", "()", "manual"]
+      - ["java.util.concurrent", "CompletableFuture", "completeExceptionally", "(Throwable)", "summary", "manual"]
+      - ["java.util.concurrent", "CompletableFuture", "isDone", "()", "summary", "manual"]
+      - ["java.util.concurrent", "CountDownLatch", "await", "", "summary", "manual"]
+      - ["java.util.concurrent", "CountDownLatch", "countDown", "()", "summary", "manual"]
+      - ["java.util.concurrent", "Executor", "execute", "(Runnable)", "summary", "manual"]
+      - ["java.util.concurrent", "ExecutorService", "shutdown", "()", "summary", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.util.concurrent", "CountDownLatch", "CountDownLatch", "(int)", "manual"] # value-numeric
-      - ["java.util.concurrent", "CountDownLatch", "getCount", "()", "manual"]          # value-numeric
-      - ["java.util.concurrent", "TimeUnit", "toMillis", "(long)", "manual"]            # taint-numeric
+      - ["java.util.concurrent", "CountDownLatch", "CountDownLatch", "(int)", "summary", "manual"] # value-numeric
+      - ["java.util.concurrent", "CountDownLatch", "getCount", "()", "summary", "manual"]          # value-numeric
+      - ["java.util.concurrent", "TimeUnit", "toMillis", "(long)", "summary", "manual"]            # taint-numeric

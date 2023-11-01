@@ -12,8 +12,8 @@
  * - Summaries:
  *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
  * - Neutrals:
- *   `namespace; type; name; signature; provenance`
- *   A neutral is used to indicate that there is no flow via a callable.
+ *   `namespace; type; name; signature; kind; provenance`
+ *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -62,8 +62,8 @@
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
  *
- *    For summaries, `input` and `output` may be prefixed by one of the following,
- *    separated by the "of" keyword:
+ *    For summaries, `input` and `output` may be suffixed by any number of the
+ *    following, separated by ".":
  *    - "Element": Selects an element in a collection.
  *    - "Field[f]": Selects the contents of field `f`.
  *    - "Property[p]": Selects the contents of property `p`.
@@ -72,7 +72,9 @@
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
- *    globally applicable value-preserving step.
+ *    globally applicable value-preserving step. For neutrals the kind can be `summary`,
+ *    `source` or `sink` to indicate that the neutral is neutral with respect to
+ *    flow (no summary), source (is not a source) or sink (is not a sink).
  * 9. The `provenance` column is a tag to indicate the origin and verification of a model.
  *    The format is {origin}-{verification} or just "manual" where the origin describes
  *    the origin of the model and verification describes how the model has been verified.
@@ -93,6 +95,7 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel = Extensions::sourceModel/9;
@@ -103,8 +106,8 @@ predicate sinkModel = Extensions::sinkModel/9;
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel = Extensions::summaryModel/10;
 
-/** Holds if a model exists indicating there is no flow for the given parameters. */
-predicate neutralModel = Extensions::neutralModel/5;
+/** Holds if a neutral model exists for the given parameters. */
+predicate neutralModel = Extensions::neutralModel/6;
 
 private predicate relevantNamespace(string namespace) {
   sourceModel(namespace, _, _, _, _, _, _, _, _) or
@@ -202,23 +205,17 @@ module ModelValidation {
     )
   }
 
-  private string getInvalidModelKind() {
-    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["code", "sql", "xss", "remote", "html"] and
-      not kind.matches("encryption-%") and
-      result = "Invalid kind \"" + kind + "\" in sink model."
-    )
-    or
-    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["local", "remote", "file", "file-write"] and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSignature() {
     exists(
@@ -232,7 +229,7 @@ module ModelValidation {
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
       pred = "summary"
       or
-      neutralModel(namespace, type, name, signature, provenance) and
+      neutralModel(namespace, type, name, signature, _, provenance) and
       ext = "" and
       pred = "neutral"
     |
@@ -261,7 +258,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelKind()
+        KindVal::getInvalidModelKind()
       ]
   }
 }
@@ -275,7 +272,7 @@ private predicate elementSpec(
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  neutralModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
+  neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
 private predicate elementSpec(
@@ -419,6 +416,20 @@ Element interpretElement(
     or
     ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = e
   )
+}
+
+/**
+ * A callable where there exists a MaD sink model that applies to it.
+ */
+class SinkCallable extends Callable {
+  SinkCallable() { sinkElement(this, _, _, _) }
+}
+
+/**
+ * A callable where there exists a MaD source model that applies to it.
+ */
+class SourceCallable extends Callable {
+  SourceCallable() { sourceElement(this, _, _, _) }
 }
 
 cached

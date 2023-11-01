@@ -12,8 +12,8 @@
  * - Summaries:
  *   `package; type; subtypes; name; signature; ext; input; output; kind; provenance`
  * - Neutrals:
- *   `package; type; name; signature; provenance`
- *   A neutral is used to indicate that there is no flow via a callable.
+ *   `package; type; name; signature; kind; provenance`
+ *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -35,8 +35,9 @@
  *    or method, or a parameter.
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
- *    element selected by the first 6 columns. An `input` can be either "",
- *    "Argument[n]", "Argument[n1..n2]", "ReturnValue":
+ *    element selected by the first 6 columns. An `input` can be a dot separated
+ *    path consisting of either "", "Argument[n]", "Argument[n1..n2]",
+ *    "ReturnValue", "Element", "WithoutElement", or "WithElement":
  *    - "": Selects a write to the selected element in case this is a field.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
  *      The arguments are zero-indexed, and `this` specifies the qualifier.
@@ -44,9 +45,15 @@
  *      the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      This requires that the selected element is a method with a body.
+ *    - "Element": Selects the collection elements of the selected element.
+ *    - "WithoutElement": Selects the selected element but without
+ *       its collection elements.
+ *    - "WithElement": Selects the collection elements of the selected element, but
+ *       points to the selected element.
  *
- *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
- *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
+ *    An `output` can be can be a dot separated path consisting of either "",
+ *    "Argument[n]", "Argument[n1..n2]", "Parameter", "Parameter[n]",
+ *    "Parameter[n1..n2]", "ReturnValue", or "Element":
  *    - "": Selects a read of a selected field, or a selected parameter.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
@@ -61,11 +68,14 @@
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
+ *    - "Element": Selects the collection elements of the selected element.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
- *    globally applicable value-preserving step.
+ *    globally applicable value-preserving step. For neutrals the kind can be `summary`,
+ *    `source` or `sink` to indicate that the neutral is neutral with respect to
+ *    flow (no summary), source (is not a source) or sink (is not a sink).
  * 9. The `provenance` column is a tag to indicate the origin and verification of a model.
  *    The format is {origin}-{verification} or just "manual" where the origin describes
  *    the origin of the model and verification describes how the model has been verified.
@@ -85,6 +95,7 @@ private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import ExternalFlowExtensions as Extensions
 private import FlowSummary
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
  * A class for activating additional model rows.
@@ -164,8 +175,8 @@ predicate summaryModel(
       .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 }
 
-/** Holds if a neutral model exists indicating there is no flow for the given parameters. */
-predicate neutralModel = Extensions::neutralModel/5;
+/** Holds if a neutral model exists for the given parameters. */
+predicate neutralModel = Extensions::neutralModel/6;
 
 private predicate relevantPackage(string package) {
   sourceModel(package, _, _, _, _, _, _, _, _) or
@@ -263,32 +274,17 @@ module ModelValidation {
     )
   }
 
-  private string getInvalidModelKind() {
-    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind =
-        [
-          "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
-          "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent",
-          "url-open-stream", "url-redirect", "create-file", "read-file", "write-file",
-          "set-hostname-verifier", "header-splitting", "information-leak", "xslt", "jexl",
-          "bean-validation", "ssti", "fragment-injection", "command-injection"
-        ] and
-      not kind.matches("regex-use%") and
-      not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in sink model."
-    )
-    or
-    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["remote", "contentprovider", "android-widget", "android-external-storage-dir"] and
-      not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSignature() {
     exists(
@@ -302,7 +298,7 @@ module ModelValidation {
       summaryModel(package, type, _, name, signature, ext, _, _, _, provenance) and
       pred = "summary"
       or
-      neutralModel(package, type, name, signature, provenance) and
+      neutralModel(package, type, name, signature, _, provenance) and
       ext = "" and
       pred = "neutral"
     |
@@ -331,7 +327,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelKind()
+        KindVal::getInvalidModelKind()
       ]
   }
 }
@@ -346,7 +342,30 @@ private predicate elementSpec(
   or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  neutralModel(package, type, name, signature, _) and ext = "" and subtypes = false
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
+}
+
+private string getNestedName(Type t) {
+  not t instanceof RefType and result = t.toString()
+  or
+  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).nestedName()
+  or
+  result =
+    t.(Array).getElementType().(NestedType).getEnclosingType().nestedName() + "$" + t.getName()
+}
+
+private string getQualifiedName(Type t) {
+  not t instanceof RefType and result = t.toString()
+  or
+  result = t.(RefType).getQualifiedName()
+  or
+  exists(Array a, Type c | a = t and c = a.getElementType() |
+    not c instanceof RefType and result = t.toString()
+    or
+    exists(string pkgName | pkgName = c.(RefType).getPackage().getName() |
+      if pkgName = "" then result = getNestedName(a) else result = pkgName + "." + getNestedName(a)
+    )
+  )
 }
 
 /**
@@ -358,31 +377,39 @@ private predicate elementSpec(
 cached
 string paramsString(Callable c) {
   result =
-    "(" + concat(int i | | c.getParameterType(i).getErasure().toString(), "," order by i) + ")"
+    "(" + concat(int i | | getNestedName(c.getParameterType(i).getErasure()), "," order by i) + ")"
+}
+
+private string paramsStringQualified(Callable c) {
+  result =
+    "(" + concat(int i | | getQualifiedName(c.getParameterType(i).getErasure()), "," order by i) +
+      ")"
 }
 
 private Element interpretElement0(
   string package, string type, boolean subtypes, string name, string signature
 ) {
   elementSpec(package, type, subtypes, name, signature, _) and
-  exists(RefType t | t.hasQualifiedName(package, type) |
+  (
     exists(Member m |
       (
         result = m
         or
         subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m)
       ) and
-      m.getDeclaringType() = t and
-      m.hasName(name)
+      m.hasQualifiedName(package, type, name)
     |
       signature = "" or
-      m.(Callable).getSignature() = any(string nameprefix) + signature or
+      paramsStringQualified(m) = signature or
       paramsString(m) = signature
     )
     or
-    (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
-    name = "" and
-    signature = ""
+    exists(RefType t |
+      t.hasQualifiedName(package, type) and
+      (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
+      name = "" and
+      signature = ""
+    )
   )
 }
 

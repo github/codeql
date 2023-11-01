@@ -1,3 +1,4 @@
+failures
 argumentToEnsureNotTaintedNotMarkedAsSpurious
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
-failures
+testFailures

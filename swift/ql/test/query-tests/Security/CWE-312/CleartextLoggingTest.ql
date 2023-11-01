@@ -3,12 +3,10 @@ import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.CleartextLoggingQuery
 import TestUtilities.InlineExpectationsTest
 
-class CleartextLogging extends InlineExpectationsTest {
-  CleartextLogging() { this = "CleartextLogging" }
+module CleartextLogging implements TestSig {
+  string getARelevantTag() { result = "hasCleartextLogging" }
 
-  override string getARelevantTag() { result = "hasCleartextLogging" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node source, DataFlow::Node sink, Expr sinkExpr |
       CleartextLoggingFlow::flow(source, sink) and
       sinkExpr = sink.asExpr() and
@@ -19,3 +17,5 @@ class CleartextLogging extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<CleartextLogging>

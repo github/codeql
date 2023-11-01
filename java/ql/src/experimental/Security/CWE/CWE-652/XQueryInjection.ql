@@ -20,7 +20,7 @@ import XQueryInjectionFlow::PathGraph
  * A taint-tracking configuration tracing flow from remote sources, through an XQuery parser, to its eventual execution.
  */
 module XQueryInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(XQueryPreparedExecuteCall xpec).getPreparedExpression() or

@@ -7,6 +7,8 @@ namespace codeql {
 
 class PatternTranslator : public AstTranslatorBase<PatternTranslator> {
  public:
+  static constexpr std::string_view name = "pattern";
+
   using AstTranslatorBase<PatternTranslator>::AstTranslatorBase;
 
   codeql::NamedPattern translateNamedPattern(const swift::NamedPattern& pattern);

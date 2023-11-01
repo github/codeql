@@ -35,13 +35,6 @@ module SharedXss {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for XSS vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * An expression that is sent as part of an HTTP response body, considered as an
    * XSS sink.
    *
@@ -73,12 +66,12 @@ module SharedXss {
       exists(body.getAContentTypeNode())
       or
       exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |
-        body = call.getAnArgument() and
+        body = call.getASyntacticArgument() and
         // checks that the format value does not start with (ignoring whitespace as defined by
         // https://mimesniff.spec.whatwg.org/#whitespace-byte):
         //  - '<', which could lead to an HTML content type being detected, or
         //  - '%', which could be a format string.
-        call.getArgument(1).getStringValue().regexpMatch("(?s)[\\t\\n\\x0c\\r ]*+[^<%].*")
+        call.getSyntacticArgument(1).getStringValue().regexpMatch("(?s)[\\t\\n\\x0c\\r ]*+[^<%].*")
       )
       or
       exists(DataFlow::Node pred | body = pred.getASuccessor*() |
@@ -110,6 +103,18 @@ module SharedXss {
   }
 
   /**
+   * A http.Error function returns with the ContentType of text/plain, and is not a valid XSS sink
+   */
+  class ErrorSanitizer extends Sanitizer {
+    ErrorSanitizer() {
+      exists(Function f, DataFlow::CallNode call | call = f.getACall() |
+        f.hasQualifiedName("net/http", "Error") and
+        call.getArgument(1) = this
+      )
+    }
+  }
+
+  /**
    * A regexp replacement involving an HTML meta-character, or a call to an escape
    * function, viewed as a sanitizer for XSS vulnerabilities.
    *
@@ -124,6 +129,22 @@ module SharedXss {
         f instanceof HtmlEscapeFunction
         or
         f instanceof JsEscapeFunction
+      )
+    }
+  }
+
+  /**
+   * A `Template` from `html/template` will HTML-escape data automatically
+   * and therefore acts as a sanitizer for XSS vulnerabilities.
+   */
+  class HtmlTemplateSanitizer extends Sanitizer, DataFlow::Node {
+    HtmlTemplateSanitizer() {
+      exists(Method m, DataFlow::CallNode call | m = call.getCall().getTarget() |
+        m.hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
+        call.getArgument(2) = this
+        or
+        m.hasQualifiedName("html/template", "Template", "Execute") and
+        call.getArgument(1) = this
       )
     }
   }

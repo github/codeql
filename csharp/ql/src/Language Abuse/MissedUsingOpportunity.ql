@@ -14,12 +14,12 @@ import semmle.code.csharp.frameworks.System
 
 /** A call to IDisposable.Dispose or a method that overrides it. */
 class DisposeCall extends MethodCall {
-  DisposeCall() { getTarget() instanceof DisposeMethod }
+  DisposeCall() { this.getTarget() instanceof DisposeMethod }
 
   /** The object being disposed by the call (provided it can be easily determined). */
   Variable getDisposee() {
     exists(VariableAccess va |
-      va = getQualifier().stripCasts() and
+      va = this.getQualifier().stripCasts() and
       result = va.getTarget()
     )
   }

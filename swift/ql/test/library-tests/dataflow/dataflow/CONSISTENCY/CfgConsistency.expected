@@ -1,0 +1,3 @@
+multipleSuccessors
+| test.swift:538:8:538:12 | let ...? | no-match | test.swift:538:27:538:27 | y |
+| test.swift:538:8:538:12 | let ...? | no-match | test.swift:543:9:543:9 | tuple1 |

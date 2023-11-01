@@ -171,5 +171,9 @@ module PrototypePollution {
     call.isDeep() and
     call = AngularJS::angular().getAMemberCall("merge") and
     id = "angular"
+    or
+    call.isDeep() and
+    call = Webix::webix().getMember(["extend", "copy"]).getACall() and
+    id = "webix"
   }
 }

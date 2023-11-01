@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "CodeQL encountered an unexpected internal error with the following message:\n> Assertion failed: `false`. Format the int 1234 and string myString if this assertion fails.\n\nSome or all of the Swift analysis may have failed.\n\nIf the error persists, contact support, quoting the error message and describing what happened, or [open an issue in our open source repository][1].\n\n[1]: https://github.com/github/codeql/issues/new?labels=bug&template=ql---general.md",
+  "severity": "warning",
+  "source": {
+    "extractorName": "swift",
+    "id": "swift/test/internal-error",
+    "name": "Internal error"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

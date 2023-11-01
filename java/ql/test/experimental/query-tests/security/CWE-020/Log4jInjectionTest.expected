@@ -2075,28 +2075,28 @@ edges
 | Log4jJndiInjectionTest.java:1085:39:1085:46 | source(...) : String | Log4jJndiInjectionTest.java:1085:25:1085:46 | (...)... |
 | Log4jJndiInjectionTest.java:1088:47:1088:54 | source(...) : String | Log4jJndiInjectionTest.java:1088:38:1088:54 | (...)... |
 | Log4jJndiInjectionTest.java:1089:53:1089:60 | source(...) : String | Log4jJndiInjectionTest.java:1089:44:1089:60 | (...)... |
-| Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] : Map [<map.value>] : String | Log4jJndiInjectionTest.java:1092:34:1092:36 | map |
-| Log4jJndiInjectionTest.java:1091:28:1091:44 | (...)... : String | Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] : Map [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1092:34:1092:36 | map |
+| Log4jJndiInjectionTest.java:1091:28:1091:44 | (...)... : String | Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1091:37:1091:44 | source(...) : String | Log4jJndiInjectionTest.java:1091:28:1091:44 | (...)... : String |
-| Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : MapMessage | Log4jJndiInjectionTest.java:1096:26:1096:29 | mmsg |
-| Log4jJndiInjectionTest.java:1095:71:1095:87 | (...)... : String | Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : MapMessage |
+| Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : StringMapMessage | Log4jJndiInjectionTest.java:1096:26:1096:29 | mmsg |
+| Log4jJndiInjectionTest.java:1095:71:1095:87 | (...)... : String | Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : StringMapMessage |
 | Log4jJndiInjectionTest.java:1095:80:1095:87 | source(...) : String | Log4jJndiInjectionTest.java:1095:71:1095:87 | (...)... : String |
-| Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : MapMessage | Log4jJndiInjectionTest.java:1101:26:1101:29 | mmsg |
-| Log4jJndiInjectionTest.java:1100:35:1100:51 | (...)... : String | Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : StringMapMessage | Log4jJndiInjectionTest.java:1101:26:1101:29 | mmsg |
+| Log4jJndiInjectionTest.java:1100:35:1100:51 | (...)... : String | Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1100:44:1100:51 | source(...) : String | Log4jJndiInjectionTest.java:1100:35:1100:51 | (...)... : String |
-| Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : MapMessage | Log4jJndiInjectionTest.java:1106:26:1106:29 | mmsg |
-| Log4jJndiInjectionTest.java:1105:34:1105:50 | (...)... : String | Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : StringMapMessage | Log4jJndiInjectionTest.java:1106:26:1106:29 | mmsg |
+| Log4jJndiInjectionTest.java:1105:34:1105:50 | (...)... : String | Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1105:43:1105:50 | source(...) : String | Log4jJndiInjectionTest.java:1105:34:1105:50 | (...)... : String |
-| Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] : Map [<map.value>] : String | Log4jJndiInjectionTest.java:1112:25:1112:27 | map : Map [<map.value>] : String |
-| Log4jJndiInjectionTest.java:1111:33:1111:49 | (...)... : String | Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] : Map [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1112:25:1112:27 | map : HashMap [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1111:33:1111:49 | (...)... : String | Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1111:42:1111:49 | source(...) : String | Log4jJndiInjectionTest.java:1111:33:1111:49 | (...)... : String |
-| Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : MapMessage | Log4jJndiInjectionTest.java:1113:26:1113:29 | mmsg |
-| Log4jJndiInjectionTest.java:1112:25:1112:27 | map : Map [<map.value>] : String | Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : StringMapMessage | Log4jJndiInjectionTest.java:1113:26:1113:29 | mmsg |
+| Log4jJndiInjectionTest.java:1112:25:1112:27 | map : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1116:61:1116:68 | source(...) : String | Log4jJndiInjectionTest.java:1116:52:1116:68 | (...)... |
 | Log4jJndiInjectionTest.java:1117:81:1117:88 | source(...) : String | Log4jJndiInjectionTest.java:1117:72:1117:88 | (...)... |
-| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : Map [<map.value>] : String | Log4jJndiInjectionTest.java:1120:43:1120:45 | map |
-| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : Map [<map.value>] : String | Log4jJndiInjectionTest.java:1121:63:1121:65 | map |
-| Log4jJndiInjectionTest.java:1119:33:1119:49 | (...)... : String | Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : Map [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1120:43:1120:45 | map |
+| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1121:63:1121:65 | map |
+| Log4jJndiInjectionTest.java:1119:33:1119:49 | (...)... : String | Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1119:42:1119:49 | source(...) : String | Log4jJndiInjectionTest.java:1119:33:1119:49 | (...)... : String |
 nodes
 | Log4jJndiInjectionTest.java:24:16:24:45 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -4168,33 +4168,33 @@ nodes
 | Log4jJndiInjectionTest.java:1088:47:1088:54 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1089:44:1089:60 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:1089:53:1089:60 | source(...) : String | semmle.label | source(...) : String |
-| Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] : Map [<map.value>] : String | semmle.label | map [post update] : Map [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] : HashMap [<map.value>] : String | semmle.label | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1091:28:1091:44 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1091:37:1091:44 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1092:34:1092:36 | map | semmle.label | map |
-| Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : MapMessage | semmle.label | with(...) : MapMessage |
+| Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : StringMapMessage | semmle.label | with(...) : StringMapMessage |
 | Log4jJndiInjectionTest.java:1095:71:1095:87 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1095:80:1095:87 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1096:26:1096:29 | mmsg | semmle.label | mmsg |
-| Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : MapMessage | semmle.label | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : StringMapMessage | semmle.label | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1100:35:1100:51 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1100:44:1100:51 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1101:26:1101:29 | mmsg | semmle.label | mmsg |
-| Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : MapMessage | semmle.label | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : StringMapMessage | semmle.label | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1105:34:1105:50 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1105:43:1105:50 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1106:26:1106:29 | mmsg | semmle.label | mmsg |
-| Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] : Map [<map.value>] : String | semmle.label | map [post update] : Map [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] : HashMap [<map.value>] : String | semmle.label | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1111:33:1111:49 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1111:42:1111:49 | source(...) : String | semmle.label | source(...) : String |
-| Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : MapMessage | semmle.label | mmsg [post update] : MapMessage |
-| Log4jJndiInjectionTest.java:1112:25:1112:27 | map : Map [<map.value>] : String | semmle.label | map : Map [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : StringMapMessage | semmle.label | mmsg [post update] : StringMapMessage |
+| Log4jJndiInjectionTest.java:1112:25:1112:27 | map : HashMap [<map.value>] : String | semmle.label | map : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1113:26:1113:29 | mmsg | semmle.label | mmsg |
 | Log4jJndiInjectionTest.java:1116:52:1116:68 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:1116:61:1116:68 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1117:72:1117:88 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:1117:81:1117:88 | source(...) : String | semmle.label | source(...) : String |
-| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : Map [<map.value>] : String | semmle.label | map [post update] : Map [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : HashMap [<map.value>] : String | semmle.label | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1119:33:1119:49 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1119:42:1119:49 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1120:43:1120:45 | map | semmle.label | map |

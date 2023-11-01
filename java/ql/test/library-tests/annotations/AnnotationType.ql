@@ -1,7 +1,7 @@
 import java
 
 class RelevantAnnotationType extends AnnotationType {
-  RelevantAnnotationType() { getCompilationUnit().hasName("AnnotationType") }
+  RelevantAnnotationType() { this.getCompilationUnit().hasName("AnnotationType") }
 }
 
 query predicate annotationType(

@@ -30,10 +30,15 @@ module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof StaticInitializationVectorSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof StaticInitializationVectorSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof StaticInitializationVectorBarrier }
+
+  predicate isBarrierIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    isSource(node)
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(StaticInitializationVectorAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(StaticInitializationVectorAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

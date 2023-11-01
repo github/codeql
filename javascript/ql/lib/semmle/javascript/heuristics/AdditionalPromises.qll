@@ -7,5 +7,5 @@
 import javascript
 
 private class PromotedPromiseCandidate extends PromiseDefinition, PromiseCandidate {
-  override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
+  override DataFlow::FunctionNode getExecutor() { result = this.getCallback(0) }
 }

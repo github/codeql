@@ -1,7 +1,13 @@
+| .github/workflows/pull_request_target_if_job.yml:9:7:12:2 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
+| .github/workflows/pull_request_target_if_job.yml:16:7:19:2 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
 | .github/workflows/pull_request_target_if_job.yml:30:7:33:2 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
 | .github/workflows/pull_request_target_if_job.yml:36:7:38:54 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
+| .github/workflows/pull_request_target_if_step.yml:9:7:14:4 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
+| .github/workflows/pull_request_target_if_step.yml:14:7:19:4 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
 | .github/workflows/pull_request_target_if_step.yml:24:7:29:4 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
 | .github/workflows/pull_request_target_if_step.yml:29:7:31:54 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
+| .github/workflows/pull_request_target_label_only.yml:10:7:12:54 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
+| .github/workflows/pull_request_target_label_only_mapping.yml:11:7:13:54 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
 | .github/workflows/pull_request_target_labels_mapping.yml:13:7:15:54 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
 | .github/workflows/pull_request_target_labels_sequence.yml:10:7:12:54 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
 | .github/workflows/pull_request_target_mapping.yml:8:7:10:54 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |

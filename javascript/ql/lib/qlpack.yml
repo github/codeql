@@ -1,14 +1,16 @@
 name: codeql/javascript-all
-version: 0.6.1-dev
+version: 0.8.3-dev
 groups: javascript
 dbscheme: semmlecode.javascript.dbscheme
 extractor: javascript
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/mad: ${workspace}
   codeql/regex: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
   codeql/yaml: ${workspace}
 dataExtensions:
   - semmle/javascript/frameworks/**/model.yml
+warnOnImplicitThis: true

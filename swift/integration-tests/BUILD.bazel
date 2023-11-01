@@ -1,0 +1,8 @@
+py_library(
+    name = "integration_tests",
+    srcs = [
+        "create_database_utils.py",
+        "diagnostics_test_utils.py",
+    ],
+    visibility = ["//swift:__subpackages__"],
+)

@@ -1,0 +1,16 @@
+on: push
+
+jobs:
+  echo-chamber:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo '${{ github.event.commits[11].message }}'
+    - run: echo '${{ github.event.commits[11].author.email }}'
+    - run: echo '${{ github.event.commits[11].author.name }}'
+    - run: echo '${{ github.event.head_commit.message }}'
+    - run: echo '${{ github.event.head_commit.author.email }}'
+    - run: echo '${{ github.event.head_commit.author.name }}'
+    - run: echo '${{ github.event.head_commit.committer.email }}'
+    - run: echo '${{ github.event.head_commit.committer.name }}'
+    - run: echo '${{ github.event.commits[11].committer.email }}'
+    - run: echo '${{ github.event.commits[11].committer.name }}'

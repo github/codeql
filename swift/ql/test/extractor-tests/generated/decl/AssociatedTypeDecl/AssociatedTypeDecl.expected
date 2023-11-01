@@ -1,2 +1,2 @@
-| associated_type.swift:2:5:2:20 | Bar | getModule: | file://:0:0:0:0 | associated_type | getNumberOfMembers: | 0 | getInterfaceType: | Self.Bar.Type | getName: | Bar | getNumberOfBaseTypes: | 0 |
-| associated_type.swift:3:5:3:25 | Baz | getModule: | file://:0:0:0:0 | associated_type | getNumberOfMembers: | 0 | getInterfaceType: | Self.Baz.Type | getName: | Baz | getNumberOfBaseTypes: | 1 |
+| associated_type.swift:2:5:2:20 | Bar | getModule: | file://:0:0:0:0 | associated_type | getNumberOfMembers: | 0 | getInterfaceType: | Self.Bar.Type | getName: | Bar | getNumberOfInheritedTypes: | 0 |
+| associated_type.swift:3:5:3:25 | Baz | getModule: | file://:0:0:0:0 | associated_type | getNumberOfMembers: | 0 | getInterfaceType: | Self.Baz.Type | getName: | Baz | getNumberOfInheritedTypes: | 1 |

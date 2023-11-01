@@ -72,6 +72,11 @@ VariableAccess commonException() {
   or
   result.getParent() instanceof BuiltInOperation
   or
+  // Ignore any uninitialized use that is explicitly cast to void and
+  // is an expression statement.
+  result.getActualType() instanceof VoidType and
+  result.getParent() instanceof ExprStmt
+  or
   // Finally, exclude functions that contain assembly blocks. It's
   // anyone's guess what happens in those.
   containsInlineAssembly(result.getEnclosingFunction())

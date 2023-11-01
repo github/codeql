@@ -74,19 +74,11 @@ private module Shared {
 
   class TNonSsaMemoryOperand = Internal::TNonSsaMemoryOperand;
 
-  /** DEPRECATED: Alias for TNonSsaMemoryOperand */
-  deprecated class TNonSSAMemoryOperand = TNonSsaMemoryOperand;
-
   /**
    * Returns the non-Phi memory operand with the specified parameters.
    */
   TNonSsaMemoryOperand nonSsaMemoryOperand(TRawInstruction useInstr, MemoryOperandTag tag) {
     result = Internal::TNonSsaMemoryOperand(useInstr, tag)
-  }
-
-  /** DEPRECATED: Alias for nonSsaMemoryOperand */
-  deprecated TNonSSAMemoryOperand nonSSAMemoryOperand(TRawInstruction useInstr, MemoryOperandTag tag) {
-    result = nonSsaMemoryOperand(useInstr, tag)
   }
 }
 
@@ -167,9 +159,6 @@ module UnaliasedSsaOperands {
   TChiOperand chiOperand(Unaliased::Instruction useInstr, ChiOperandTag tag) { none() }
 }
 
-/** DEPRECATED: Alias for UnaliasedSsaOperands */
-deprecated module UnaliasedSSAOperands = UnaliasedSsaOperands;
-
 /**
  * Provides wrappers for the constructors of each branch of `TOperand` that is used by the
  * aliased SSA stage.
@@ -217,6 +206,3 @@ module AliasedSsaOperands {
     result = Internal::TAliasedChiOperand(useInstr, tag)
   }
 }
-
-/** DEPRECATED: Alias for AliasedSsaOperands */
-deprecated module AliasedSSAOperands = AliasedSsaOperands;

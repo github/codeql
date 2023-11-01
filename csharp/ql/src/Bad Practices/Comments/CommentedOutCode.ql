@@ -14,8 +14,8 @@ import csharp
 
 class CommentedOutCode extends CommentBlock {
   CommentedOutCode() {
-    not isXmlCommentBlock() and
-    2 * count(getAProbableCodeLine()) > count(getANonEmptyLine())
+    not this.isXmlCommentBlock() and
+    2 * count(this.getAProbableCodeLine()) > count(this.getANonEmptyLine())
   }
 }
 

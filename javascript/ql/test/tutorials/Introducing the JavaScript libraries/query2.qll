@@ -1,7 +1,7 @@
 import javascript
 
 class CommaToken extends PunctuatorToken {
-  CommaToken() { getValue() = "," }
+  CommaToken() { this.getValue() = "," }
 }
 
 query predicate test_query2(CommaToken comma, string res) {

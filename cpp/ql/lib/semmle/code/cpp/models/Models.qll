@@ -19,6 +19,7 @@ private import implementations.Strtok
 private import implementations.Strset
 private import implementations.Strcrement
 private import implementations.Strnextc
+private import implementations.Strtol
 private import implementations.StdContainer
 private import implementations.StdPair
 private import implementations.StdMap

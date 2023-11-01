@@ -1042,6 +1042,17 @@ class VarDeclStmt extends @var_decl_stmt, DeclStmt { }
 class ConstDeclStmt extends @const_decl_stmt, DeclStmt { }
 
 /**
+ * A `using` declaration statement.
+ *
+ * Example:
+ *
+ * ```
+ * using file = new TextFile("file.txt");
+ * ```
+ */
+class UsingDeclStmt extends @using_decl_stmt, DeclStmt { }
+
+/**
  * A `let` declaration statement.
  *
  * Example:

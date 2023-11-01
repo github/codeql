@@ -7,14 +7,15 @@ import semmle.python.dataflow.new.RemoteFlowSources
 /**
  * A taint-tracking configuration for detecting HTTP Header injections.
  */
-class HeaderInjectionFlowConfig extends TaintTracking::Configuration {
-  HeaderInjectionFlowConfig() { this = "HeaderInjectionFlowConfig" }
+private module HeaderInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(HeaderDeclaration headerDeclaration |
       sink in [headerDeclaration.getNameArg(), headerDeclaration.getValueArg()]
     )
   }
 }
+
+/** Global taint-tracking for detecting "HTTP Header injection" vulnerabilities. */
+module HeaderInjectionFlow = TaintTracking::Global<HeaderInjectionConfig>;

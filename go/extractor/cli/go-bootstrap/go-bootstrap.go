@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"regexp"
@@ -22,7 +21,7 @@ func main() {
 	buildSteps := os.Args[2]
 
 	haveRepo := false
-	content, err := ioutil.ReadFile(vars)
+	content, err := os.ReadFile(vars)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,7 +33,7 @@ func main() {
 		additionalVars += "SEMMLE_REPO_URL=${repository}\n"
 	}
 	content = append(content, []byte(additionalVars)...)
-	err = ioutil.WriteFile(vars, content, 0644)
+	err = os.WriteFile(vars, content, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -47,7 +46,7 @@ func main() {
   <build export="%s">${semmle_dist}/language-packs/go/tools/platform/${semmle_platform}/bin/go-autobuilder</build>
 </autoupdate>
 `, export))
-	err = ioutil.WriteFile(buildSteps, content, 0644)
+	err = os.WriteFile(buildSteps, content, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

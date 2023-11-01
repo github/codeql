@@ -27,7 +27,7 @@ class LogInjectionAdditionalTaintStep extends Unit {
 }
 
 private class DefaultLogInjectionSink extends LogInjectionSink {
-  DefaultLogInjectionSink() { sinkNode(this, "logging") }
+  DefaultLogInjectionSink() { sinkNode(this, "log-injection") }
 }
 
 private class DefaultLogInjectionSanitizer extends LogInjectionSanitizer {
@@ -46,16 +46,33 @@ private class LineBreaksLogInjectionSanitizer extends LogInjectionSanitizer {
   }
 }
 
+private predicate stringMethodCall(
+  MethodCall ma, CompileTimeConstantExpr arg0, CompileTimeConstantExpr arg1
+) {
+  ma.getMethod().getDeclaringType() instanceof TypeString and
+  arg0 = ma.getArgument(0) and
+  arg1 = ma.getArgument(1)
+}
+
+private predicate stringMethodArgument(CompileTimeConstantExpr arg) {
+  stringMethodCall(_, arg, _) or stringMethodCall(_, _, arg)
+}
+
+bindingset[match]
+pragma[inline_late]
+private predicate stringMethodArgumentValueMatches(CompileTimeConstantExpr const, string match) {
+  stringMethodArgument(const) and
+  const.getStringValue().matches(match)
+}
+
 /**
  * Holds if the return value of `ma` is sanitized against log injection attacks
  * by removing line breaks from it.
  */
-private predicate logInjectionSanitizer(MethodAccess ma) {
+private predicate logInjectionSanitizer(MethodCall ma) {
   exists(CompileTimeConstantExpr target, CompileTimeConstantExpr replacement |
-    ma.getMethod().getDeclaringType() instanceof TypeString and
-    target = ma.getArgument(0) and
-    replacement = ma.getArgument(1) and
-    not replacement.getStringValue().matches(["%\n%", "%\r%"])
+    stringMethodCall(ma, target, replacement) and
+    not stringMethodArgumentValueMatches(replacement, ["%\n%", "%\r%"])
   |
     ma.getMethod().hasName("replace") and
     not replacement.getIntValue() = [10, 13] and
@@ -68,7 +85,7 @@ private predicate logInjectionSanitizer(MethodAccess ma) {
     (
       // Replace anything not in an allow list
       target.getStringValue().matches("[^%]") and
-      not target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
+      not stringMethodArgumentValueMatches(target, "%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
       or
       // Replace line breaks
       target.getStringValue() = ["\n", "\r", "\\n", "\\r", "\\R"]
@@ -81,7 +98,7 @@ private predicate logInjectionSanitizer(MethodAccess ma) {
  * by checking if there are line breaks in `e`.
  */
 private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
-  exists(MethodAccess ma, CompileTimeConstantExpr target |
+  exists(MethodCall ma, CompileTimeConstantExpr target |
     ma = g and
     target = ma.getArgument(0)
   |

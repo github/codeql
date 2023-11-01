@@ -8,11 +8,8 @@ module Generated {
   class Locatable extends Synth::TLocatable, Element {
     /**
      * Gets the location associated with this element in the code, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Location getImmediateLocation() {
+    Location getLocation() {
       result =
         Synth::convertLocationFromRaw(Synth::convertLocatableToRaw(this)
               .(Raw::Locatable)
@@ -20,13 +17,8 @@ module Generated {
     }
 
     /**
-     * Gets the location associated with this element in the code, if it exists.
-     */
-    final Location getLocation() { result = getImmediateLocation().resolve() }
-
-    /**
      * Holds if `getLocation()` exists.
      */
-    final predicate hasLocation() { exists(getLocation()) }
+    final predicate hasLocation() { exists(this.getLocation()) }
   }
 }

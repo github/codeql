@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface KeyHolder
 {
-    <T> T getKeyAs(Class<T> p0);
+    <T> T getKeyAs(java.lang.Class<T> p0);
     List<Map<String, Object>> getKeyList();
     Map<String, Object> getKeys();
     Number getKey();

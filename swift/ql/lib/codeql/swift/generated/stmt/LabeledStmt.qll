@@ -15,6 +15,6 @@ module Generated {
     /**
      * Holds if `getLabel()` exists.
      */
-    final predicate hasLabel() { exists(getLabel()) }
+    final predicate hasLabel() { exists(this.getLabel()) }
   }
 }

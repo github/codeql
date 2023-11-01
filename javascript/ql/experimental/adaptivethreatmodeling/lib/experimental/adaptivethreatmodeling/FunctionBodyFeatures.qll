@@ -41,9 +41,6 @@ AstNode getAnAstNodeToFeaturize(Function f) {
   not result = f.getIdentifier()
 }
 
-/** DEPRECATED: Alias for getAnAstNodeToFeaturize */
-deprecated ASTNode getAnASTNodeToFeaturize(Function f) { result = getAnAstNodeToFeaturize(f) }
-
 /**
  * Gets a function that contains the endpoint.
  *
@@ -129,9 +126,6 @@ AstNode getAnAstNodeWithAFeature(Function f) {
   f = getRepresentativeFunctionForEndpoint(any(FeaturizationConfig cfg).getAnEndpointToFeaturize()) and
   result = getAnAstNodeToFeaturize(f)
 }
-
-/** DEPRECATED: Alias for getAnAstNodeWithAFeature */
-deprecated ASTNode getAnASTNodeWithAFeature(Function f) { result = getAnAstNodeWithAFeature(f) }
 
 /** Returns the number of source-code characters in a function. */
 int getNumCharsInFunction(Function f) {

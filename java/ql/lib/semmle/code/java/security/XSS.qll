@@ -6,6 +6,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
+private import semmle.code.java.frameworks.hudson.Hudson
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
@@ -39,9 +40,9 @@ class XssAdditionalTaintStep extends Unit {
 /** A default sink representing methods susceptible to XSS attacks. */
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
-    sinkNode(this, "xss")
+    sinkNode(this, ["html-injection", "js-injection"])
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof WritingMethod and
       XssVulnerableWriterSourceToWritingMethodFlow::flowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
@@ -55,7 +56,7 @@ private class DefaultXssSanitizer extends XssSanitizer {
     this.getType() instanceof NumericType or
     this.getType() instanceof BooleanType or
     // Match `org.springframework.web.util.HtmlUtils.htmlEscape` and possibly other methods like it.
-    this.asExpr().(MethodAccess).getMethod().getName().regexpMatch("(?i)html_?escape.*")
+    this.asExpr().(MethodCall).getMethod().getName().regexpMatch("(?i)html_?escape.*")
   }
 }
 
@@ -64,7 +65,7 @@ private module XssVulnerableWriterSourceToWritingMethodFlowConfig implements Dat
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof XssVulnerableWriterSource }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getQualifier() and ma.getMethod() instanceof WritingMethod
     )
   }
@@ -87,7 +88,7 @@ private class WritingMethod extends Method {
 }
 
 /** An output stream or writer that writes to a servlet, JSP or JSF response. */
-class XssVulnerableWriterSource extends MethodAccess {
+class XssVulnerableWriterSource extends MethodCall {
   XssVulnerableWriterSource() {
     this.getMethod() instanceof ServletResponseGetWriterMethod
     or

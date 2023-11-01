@@ -1,3 +1,84 @@
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### New Queries
+
+* Added a new experimental query, `rb/jwt-empty-secret-or-algorithm`, to detect when application uses an empty secret or weak algorithm.
+* Added a new experimental query, `rb/jwt-missing-verification`, to detect when the application does not verify a JWT payload.
+
+## 0.8.0
+
+### Minor Analysis Improvements
+
+* Built-in Ruby queries now use the new DataFlow API.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Queries
+
+* Added a new experimental query, `rb/improper-ldap-auth`, to detect cases where user input is used during LDAP authentication without proper validation or sanitization, potentially leading to authentication bypass.
+
+## 0.7.3
+
+No user-facing changes.
+
+## 0.7.2
+
+### New Queries
+
+* Added a new experimental query, `rb/ldap-injection`, to detect cases where user input is incorporated into LDAP queries without proper validation or sanitization, potentially leading to LDAP injection vulnerabilities.
+
+## 0.7.1
+
+### New Queries
+
+* Added a new experimental query, `rb/xpath-injection`, to detect cases where XPath statements are constructed from user input in an unsafe manner.
+
+### Minor Analysis Improvements
+
+* Improved resolution of calls performed on an object created with `Proc.new`.
+
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* Fixed a bug in how `map_filter` calls are analyzed. Previously, such calls would
+  appear to the return the receiver of the call, but now the return value of the callback
+  is properly taken into account.
+
+### Bug Fixes
+
+* The experimental query "Arbitrary file write during zipfile/tarfile extraction" (`ruby/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* Fixed a bug that would occur when an `initialize` method returns `self` or one of its parameters.
+  In such cases, the corresponding calls to `new` would be associated with an incorrect return type.
+  This could result in inaccurate call target resolution and cause false positive alerts.
+* Fixed an issue where calls to `delete` or `assoc` with a constant-valued argument would be analyzed imprecisely,
+  as if the argument value was not a known constant.
+
+## 0.6.2
+
+No user-facing changes.
+
+## 0.6.1
+
+No user-facing changes.
+
 ## 0.6.0
 
 ### New Queries

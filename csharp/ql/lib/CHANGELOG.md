@@ -1,3 +1,98 @@
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* The `--nostdlib` extractor option for the standalone extractor has been removed.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* The query library for `cs/hardcoded-credentials` now excludes benign properties such as `UserNameClaimType` and `AllowedUserNameCharacters` from `Microsoft.AspNetCore.Identity` options classes.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+
+## 0.7.0
+
+### Major Analysis Improvements
+
+* The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
+
+### Minor Analysis Improvements
+
+* Additional support for `command-injection`, `ldap-injection`, `log-injection`, and `url-redirection` sink kinds for Models as Data.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Major Analysis Improvements
+
+* The extractor has been changed to run after the traced compiler call. This allows inspecting compiler generated files, such as the output of source generators. With this change, `.cshtml` files and their generated `.cshtml.g.cs` counterparts are extracted on dotnet 6 and above.
+
+### Minor Analysis Improvements
+
+* C#: Analysis of the `dotnet test` command supplied with a `dll` or `exe` file as argument no longer fails due to the addition of an erroneous `-p:SharedCompilation=false` argument.
+* Deleted the deprecated `WebConfigXML`, `ConfigurationXMLElement`, `LocationXMLElement`, `SystemWebXMLElement`, `SystemWebServerXMLElement`, `CustomErrorsXMLElement`, and `HttpRuntimeXMLElement` classes from `WebConfig.qll`. The non-deprecated names with PascalCased Xml suffixes should be used instead.
+* Deleted the deprecated `Record` class from both `Types.qll` and `Type.qll`.
+* Deleted the deprecated `StructuralComparisonConfiguration` class from `StructuralComparison.qll`, use `sameGvn` instead.
+* Deleted the deprecated `isParameterOf` predicate from the `ParameterNode` class.
+* Deleted the deprecated `SafeExternalAPICallable`, `ExternalAPIDataNode`, `UntrustedDataToExternalAPIConfig`, `UntrustedExternalAPIDataNode`, and `ExternalAPIUsedWithUntrustedData` classes from `ExternalAPIsQuery.qll`. The non-deprecated names with PascalCased Api suffixes should be used instead.
+* Updated the following C# sink kind names. Any custom data extensions that use these sink kinds will need to be updated accordingly in order to continue working.
+  * `code` to `code-injection`
+  * `sql` to `sql-injection`
+  * `html` to `html-injection`
+  * `xss` to `js-injection`
+  * `remote` to `file-content-store`
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* The `cs/log-forging`, `cs/cleartext-storage`, and `cs/exposure-of-sensitive-information` queries now correctly handle unsanitized arguments to `ILogger` extension methods.
+* Updated the `neutralModel` extensible predicate to include a `kind` column.
+
+## 0.6.1
+
+No user-facing changes.
+
 ## 0.6.0
 
 ### Deprecated APIs

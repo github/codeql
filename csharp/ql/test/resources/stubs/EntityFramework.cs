@@ -10,17 +10,12 @@ namespace System.Data.Entity
     {
     }
 
-    public class DbSet<T> : IEnumerable<T>
+    public class DbSet<TEntity> : IEnumerable<TEntity>
     {
-        public void Add(T t) { }
-        public System.Threading.Tasks.Task<int> AddAsync(T t) => null;
-        public void AddRange(IEnumerable<T> t) { }
-        public System.Threading.Tasks.Task<int> AddRangeAsync(IEnumerable<T> t) => null;
-        public void Attach(T t) { }
-        public void AttachRange(IEnumerable<T> t) { }
-        public void Update(T t) { }
-        public void UpdateRange(IEnumerable<T> t) { }
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => null;
+        public void Add(TEntity t) { }
+        public void AddRange(IEnumerable<TEntity> t) { }
+        public void Attach(TEntity t) { }
+        IEnumerator<TEntity> IEnumerable<TEntity>.GetEnumerator() => null;
         IEnumerator IEnumerable.GetEnumerator() => null;
     }
 
@@ -59,17 +54,22 @@ namespace System.Data.Entity.Infrastructure
 
 namespace Microsoft.EntityFrameworkCore
 {
-    public class DbSet<T> : IEnumerable<T>
+    public class DbSet<TEntity> : IEnumerable<TEntity>
     {
-        public void Add(T t) { }
-        public System.Threading.Tasks.Task<int> AddAsync(T t) => null;
-        public void AddRange(IEnumerable<T> t) { }
-        public System.Threading.Tasks.Task<int> AddRangeAsync(IEnumerable<T> t) => null;
-        public void Attach(T t) { }
-        public void AttachRange(IEnumerable<T> t) { }
-        public void Update(T t) { }
-        public void UpdateRange(IEnumerable<T> t) { }
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => null;
+        public void Add(TEntity t) { }
+        public System.Threading.Tasks.Task<int> AddAsync(TEntity t, System.Threading.CancellationToken ct = default) => null;
+        public void AddRange(IEnumerable<TEntity> t) { }
+        public void AddRange(TEntity[] t) { }
+        public System.Threading.Tasks.Task<int> AddRangeAsync(IEnumerable<TEntity> t, System.Threading.CancellationToken ct = default) => null;
+        public System.Threading.Tasks.Task<int> AddRangeAsync(TEntity[] t) => null;
+        public void Attach(TEntity t) { }
+        public void AttachRange(IEnumerable<TEntity> t) { }
+        public void AttachRange(TEntity[] t) { }
+        public void Update(TEntity t) { }
+        public void UpdateRange(IEnumerable<TEntity> t) { }
+        public void UpdateRange(TEntity[] t) { }
+
+        IEnumerator<TEntity> IEnumerable<TEntity>.GetEnumerator() => null;
         IEnumerator IEnumerable.GetEnumerator() => null;
     }
 

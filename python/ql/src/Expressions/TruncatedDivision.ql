@@ -34,4 +34,4 @@ where
     )
   )
 select div, "Result of division may be truncated as its $@ and $@ arguments may both be integers.",
-  left.getLocation(), "left", right.getLocation(), "right"
+  left, "left", right, "right"

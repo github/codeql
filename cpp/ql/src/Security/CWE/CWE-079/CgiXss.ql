@@ -13,35 +13,39 @@
 
 import cpp
 import semmle.code.cpp.commons.Environment
-import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
-import TaintedWithPath
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import semmle.code.cpp.ir.IR
+import Flow::PathGraph
 
 /** A call that prints its arguments to `stdout`. */
 class PrintStdoutCall extends FunctionCall {
-  PrintStdoutCall() {
-    getTarget().hasGlobalOrStdName("puts") or
-    getTarget().hasGlobalOrStdName("printf")
-  }
+  PrintStdoutCall() { this.getTarget().hasGlobalOrStdName(["puts", "printf"]) }
 }
 
 /** A read of the QUERY_STRING environment variable */
 class QueryString extends EnvironmentRead {
-  QueryString() { getEnvironmentVariable() = "QUERY_STRING" }
+  QueryString() { this.getEnvironmentVariable() = "QUERY_STRING" }
 }
 
-class Configuration extends TaintTrackingConfiguration {
-  override predicate isSource(Expr source) { source instanceof QueryString }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asIndirectExpr() instanceof QueryString }
 
-  override predicate isSink(Element tainted) {
-    exists(PrintStdoutCall call | call.getAnArgument() = tainted)
+  predicate isSink(DataFlow::Node node) {
+    exists(PrintStdoutCall call | call.getAnArgument() = [node.asIndirectExpr(), node.asExpr()])
   }
 
-  override predicate isBarrier(Expr e) {
-    super.isBarrier(e) or e.getUnspecifiedType() instanceof IntegralType
+  predicate isBarrier(DataFlow::Node node) {
+    isSink(node) and node.asExpr().getUnspecifiedType() instanceof ArithmeticType
+    or
+    node.asInstruction().(StoreInstruction).getResultType() instanceof ArithmeticType
   }
 }
 
-from QueryString query, Element printedArg, PathNode sourceNode, PathNode sinkNode
-where taintedWithPath(query, printedArg, sourceNode, sinkNode)
-select printedArg, sourceNode, sinkNode, "Cross-site scripting vulnerability due to $@.", query,
-  "this query data"
+module Flow = TaintTracking::Global<Config>;
+
+from QueryString query, Flow::PathNode sourceNode, Flow::PathNode sinkNode
+where
+  Flow::flowPath(sourceNode, sinkNode) and
+  query = sourceNode.getNode().asIndirectExpr()
+select sinkNode.getNode(), sourceNode, sinkNode, "Cross-site scripting vulnerability due to $@.",
+  query, "this query data"

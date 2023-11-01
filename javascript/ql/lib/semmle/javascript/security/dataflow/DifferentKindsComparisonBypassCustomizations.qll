@@ -45,6 +45,6 @@ module DifferentKindsComparisonBypass {
    * A data flow sink for a potential suspicious comparisons.
    */
   private class ComparisonOperandSink extends Sink {
-    ComparisonOperandSink() { asExpr() = any(Comparison c).getAnOperand() }
+    ComparisonOperandSink() { this.asExpr() = any(Comparison c).getAnOperand() }
   }
 }

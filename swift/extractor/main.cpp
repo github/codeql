@@ -10,6 +10,7 @@
 #include <swift/Basic/InitializeSwiftModules.h>
 
 #include "absl/strings/str_join.h"
+#include "absl/strings/str_cat.h"
 
 #include "swift/extractor/SwiftExtractor.h"
 #include "swift/extractor/infra/TargetDomains.h"
@@ -18,11 +19,12 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/logging/SwiftAssert.h"
 
 using namespace std::string_literals;
+using namespace codeql::main_logger;
 
-const std::string_view codeql::logRootName = "extractor";
+const std::string_view codeql::programName = "extractor";
 
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
@@ -32,9 +34,10 @@ static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
         !module.empty()) {
       if (auto target = codeql::createTargetTrapDomain(state, codeql::resolvePath(module),
                                                        codeql::TrapType::module)) {
-        target->emit("// trap file deliberately empty\n"
-                     "// this swiftmodule was created during the build, so its entities must have"
-                     " been extracted directly from source files");
+        target->emitComment(
+            "trap file deliberately empty\n"
+            " * this swiftmodule was created during the build, so its entities must have\n"
+            " * been extracted directly from source files\n");
       }
     }
   }
@@ -45,7 +48,6 @@ static void processFrontendOptions(codeql::SwiftExtractorState& state,
   auto& inOuts = options.InputsAndOutputs;
   std::vector<swift::InputFile> inputs;
   inOuts.forEachInput([&](const swift::InputFile& input) {
-    std::cerr << input.getFileName() << ":\n";
     swift::PrimarySpecificPaths psp{};
     if (std::filesystem::path output = input.getPrimarySpecificPaths().OutputFilename;
         !output.empty()) {
@@ -83,15 +85,18 @@ class Observer : public swift::FrontendObserver {
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
     auto& options = invocation.getFrontendOptions();
+    options.KeepASTContext = true;
     lockOutputSwiftModuleTraps(state, options);
     processFrontendOptions(state, options);
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
+    // remove default consumers to avoid double messaging
+    instance.getDiags().takeConsumers();
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
-  void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
+  void performedCompilation(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
     codeql::extractExtractLazyDeclarations(state, compiler);
@@ -142,7 +147,7 @@ static bool checkRunUnderFilter(int argc, char* const* argv) {
 // An example usage is to run the extractor under `gdbserver :1234` when the
 // arguments match a given source file.
 static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
-  assert(argc > 0);
+  if (argc == 0) return;
 
   auto runUnder = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER");
   if (runUnder == nullptr || !checkRunUnderFilter(argc, argv)) {
@@ -165,17 +170,16 @@ static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
 // compilations, diagnostics, etc.
 codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
   auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
-  auto filename = std::to_string(timestamp) + '-' + std::to_string(getpid());
+  auto filename = absl::StrCat(timestamp, "-", getpid());
   auto target = std::filesystem::path("invocations") / std::filesystem::path(filename);
   auto maybeDomain = codeql::createTargetTrapDomain(state, target, codeql::TrapType::invocation);
-  if (!maybeDomain) {
-    std::cerr << "Cannot create invocation trap file: " << target << "\n";
-    abort();
-  }
+  CODEQL_ASSERT(maybeDomain, "Cannot create invocation trap file for {}", target);
   return std::move(maybeDomain.value());
 }
 
-codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
+codeql::SwiftExtractorConfiguration configure(int argc,
+                                              char** argv,
+                                              const std::string& resourceDir) {
   codeql::SwiftExtractorConfiguration configuration{};
   configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", "extractor-out/trap/swift");
   configuration.sourceArchiveDir =
@@ -183,6 +187,13 @@ codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
   configuration.scratchDir =
       getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", "extractor-out/working");
   configuration.frontendOptions.assign(argv + 1, argv + argc);
+  // TODO: Should be moved to the tracer config
+  for (int i = 0; i < argc - 1; i++) {
+    if (std::string("-resource-dir") == configuration.frontendOptions[i]) {
+      configuration.frontendOptions[i + 1] = resourceDir.c_str();
+      break;
+    }
+  }
   return configuration;
 }
 
@@ -215,12 +226,11 @@ int main(int argc, char** argv, char** envp) {
   INITIALIZE_LLVM();
   initializeSwiftModules();
 
-  const auto configuration = configure(argc, argv);
-  {
-    codeql::Logger logger{"main"};
-    LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
-    LOG_DEBUG("environment:\n{}\n", envDump(envp));
-  }
+  std::string resourceDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_ROOT", ".") + "/resource-dir/" +
+                            getenv_or("CODEQL_PLATFORM", ".");
+  const auto configuration = configure(argc, argv, resourceDir);
+  LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
+  LOG_DEBUG("environment:\n{}\n", envDump(envp));
 
   auto openInterception = codeql::setupFileInterception(configuration);
 

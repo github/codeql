@@ -1,4 +1,5 @@
 failures
+testFailures
 debug_callableNotUnique
 pointsTo_found_typeTracker_notFound
 typeTracker_found_pointsTo_notFound

@@ -112,7 +112,7 @@ Configuring settings for testing queries locally
 
 To increase the number of threads used for testing queries, you can update the **Running Tests > Number Of Threads** setting.
 
-To pass additional arguments to the CodeQL CLI when running tests, you can update the **Running Tests > Additional Test Arguments** setting. For more information about the available arguments, see "`test run <https://codeql.github.com/docs/codeql-cli/manual/test-run/>`_" in the CodeQL CLI help. 
+To pass additional arguments to the CodeQL CLI when running tests, you can update the **Running Tests > Additional Test Arguments** setting. For more information about the available arguments, see `test run <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual/test-run/>`_ in the documentation for CodeQL CLI. 
 
 Configuring settings for telemetry and data collection
 --------------------------------------------------------

@@ -22,16 +22,21 @@ module Generated {
     /**
      * Gets the `index`th argument type of this bound generic type (0-based).
      */
-    final Type getArgType(int index) { result = getImmediateArgType(index).resolve() }
+    final Type getArgType(int index) {
+      exists(Type immediate |
+        immediate = this.getImmediateArgType(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the argument types of this bound generic type.
      */
-    final Type getAnArgType() { result = getArgType(_) }
+    final Type getAnArgType() { result = this.getArgType(_) }
 
     /**
      * Gets the number of argument types of this bound generic type.
      */
-    final int getNumberOfArgTypes() { result = count(int i | exists(getArgType(i))) }
+    final int getNumberOfArgTypes() { result = count(int i | exists(this.getArgType(i))) }
   }
 }

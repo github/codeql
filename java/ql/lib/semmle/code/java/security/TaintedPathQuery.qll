@@ -5,7 +5,6 @@ import semmle.code.java.frameworks.Networking
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.security.PathCreation
 import semmle.code.java.security.PathSanitizer
 
 /**
@@ -53,13 +52,9 @@ private class TaintPreservingUriCtorParam extends Parameter {
  * A taint-tracking configuration for tracking flow from remote sources to the creation of a path.
  */
 module TaintedPathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(PathCreation p).getAnInput()
-    or
-    sinkNode(sink, ["create-file", "read-file"])
-  }
+  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "path-injection") }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer.getType() instanceof BoxedType or
@@ -82,11 +77,7 @@ module TaintedPathFlow = TaintTracking::Global<TaintedPathConfig>;
 module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(PathCreation p).getAnInput()
-    or
-    sinkNode(sink, "create-file")
-  }
+  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "path-injection") }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer.getType() instanceof BoxedType or

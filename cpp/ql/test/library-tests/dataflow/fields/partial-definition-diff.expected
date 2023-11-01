@@ -1,3 +1,4 @@
+WARNING: Module DataFlow has been deprecated and may be removed in future (partial-definition-diff.ql:7,8-51)
 | A.cpp:25:13:25:13 | c | AST only |
 | A.cpp:27:28:27:28 | c | AST only |
 | A.cpp:28:29:28:29 | this | IR only |
@@ -167,6 +168,66 @@
 | by_reference.cpp:88:9:88:9 | a | AST only |
 | by_reference.cpp:92:3:92:5 | * ... | AST only |
 | by_reference.cpp:96:3:96:4 | pa | AST only |
+| clearning.cpp:18:7:18:7 | s | IR only |
+| clearning.cpp:19:3:19:6 | * ... | AST only |
+| clearning.cpp:20:12:20:12 | s | IR only |
+| clearning.cpp:25:7:25:7 | s | IR only |
+| clearning.cpp:26:7:26:7 | s | IR only |
+| clearning.cpp:27:12:27:12 | s | IR only |
+| clearning.cpp:32:3:32:6 | * ... | AST only |
+| clearning.cpp:33:7:33:7 | s | IR only |
+| clearning.cpp:34:8:34:11 | * ... | IR only |
+| clearning.cpp:34:11:34:11 | s | IR only |
+| clearning.cpp:39:3:39:6 | * ... | AST only |
+| clearning.cpp:40:5:40:5 | x | AST only |
+| clearning.cpp:41:8:41:11 | * ... | IR only |
+| clearning.cpp:41:11:41:11 | s | IR only |
+| clearning.cpp:46:7:46:7 | s | IR only |
+| clearning.cpp:47:5:47:5 | x | AST only |
+| clearning.cpp:48:8:48:11 | * ... | IR only |
+| clearning.cpp:48:11:48:11 | s | IR only |
+| clearning.cpp:53:3:53:6 | * ... | AST only |
+| clearning.cpp:54:5:54:5 | x | AST only |
+| clearning.cpp:60:7:60:7 | s | IR only |
+| clearning.cpp:61:5:61:5 | x | AST only |
+| clearning.cpp:75:2:75:10 | access to array | AST only |
+| clearning.cpp:76:10:76:12 | s | IR only |
+| clearning.cpp:82:2:82:9 | access to array | AST only |
+| clearning.cpp:83:7:83:9 | val | AST only |
+| clearning.cpp:83:15:83:17 | s | IR only |
+| clearning.cpp:84:10:84:12 | s | IR only |
+| clearning.cpp:90:5:90:7 | val | AST only |
+| clearning.cpp:91:10:91:12 | s | IR only |
+| clearning.cpp:97:4:97:6 | val | AST only |
+| clearning.cpp:97:12:97:14 | s | IR only |
+| clearning.cpp:98:10:98:12 | s | IR only |
+| clearning.cpp:104:4:104:6 | val | AST only |
+| clearning.cpp:105:10:105:12 | s | IR only |
+| clearning.cpp:111:6:111:8 | val | AST only |
+| clearning.cpp:112:10:112:12 | s | IR only |
+| clearning.cpp:118:4:118:6 | val | AST only |
+| clearning.cpp:119:10:119:12 | s | IR only |
+| clearning.cpp:124:4:124:6 | val | AST only |
+| clearning.cpp:125:4:125:6 | val | AST only |
+| clearning.cpp:131:4:131:6 | val | AST only |
+| clearning.cpp:132:4:132:6 | val | AST only |
+| clearning.cpp:138:4:138:6 | val | AST only |
+| clearning.cpp:139:6:139:8 | val | AST only |
+| clearning.cpp:151:5:151:7 | val | AST only |
+| clearning.cpp:152:10:152:12 | s | IR only |
+| clearning.cpp:157:5:157:7 | val | AST only |
+| clearning.cpp:158:5:158:7 | val | AST only |
+| clearning.cpp:159:10:159:12 | s | IR only |
+| clearning.cpp:164:5:164:7 | val | AST only |
+| clearning.cpp:165:5:165:7 | val | AST only |
+| clearning.cpp:166:10:166:12 | s | IR only |
+| clearning.cpp:171:5:171:7 | val | AST only |
+| clearning.cpp:172:5:172:7 | val | AST only |
+| clearning.cpp:173:10:173:12 | s | IR only |
+| clearning.cpp:178:5:178:7 | val | AST only |
+| clearning.cpp:179:5:179:7 | val | AST only |
+| clearning.cpp:179:13:179:15 | s | IR only |
+| clearning.cpp:180:10:180:12 | s | IR only |
 | complex.cpp:9:20:9:21 | this | IR only |
 | complex.cpp:10:20:10:21 | this | IR only |
 | complex.cpp:11:22:11:23 | a_ | AST only |

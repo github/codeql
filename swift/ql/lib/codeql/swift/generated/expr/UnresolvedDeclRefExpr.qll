@@ -18,6 +18,6 @@ module Generated {
     /**
      * Holds if `getName()` exists.
      */
-    final predicate hasName() { exists(getName()) }
+    final predicate hasName() { exists(this.getName()) }
   }
 }

@@ -48,5 +48,7 @@ import java.security.Key;
  * @since 0.4
  */
 public interface SigningKeyResolver {
+    public Key resolveSigningKey(JwsHeader header, Claims claims);
 
+    public Key resolveSigningKey(JwsHeader header, String plaintext);
 }

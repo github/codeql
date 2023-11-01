@@ -32,11 +32,8 @@ module Generated {
 
     /**
      * Gets the `index`th argument to an array or dictionary subscript expression (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Argument getImmediateSubscriptArgument(int index) {
+    Argument getSubscriptArgument(int index) {
       result =
         Synth::convertArgumentFromRaw(Synth::convertKeyPathComponentToRaw(this)
               .(Raw::KeyPathComponent)
@@ -44,22 +41,15 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th argument to an array or dictionary subscript expression (0-based).
-     */
-    final Argument getSubscriptArgument(int index) {
-      result = getImmediateSubscriptArgument(index).resolve()
-    }
-
-    /**
      * Gets any of the arguments to an array or dictionary subscript expression.
      */
-    final Argument getASubscriptArgument() { result = getSubscriptArgument(_) }
+    final Argument getASubscriptArgument() { result = this.getSubscriptArgument(_) }
 
     /**
      * Gets the number of arguments to an array or dictionary subscript expression.
      */
     final int getNumberOfSubscriptArguments() {
-      result = count(int i | exists(getSubscriptArgument(i)))
+      result = count(int i | exists(this.getSubscriptArgument(i)))
     }
 
     /**
@@ -72,15 +62,12 @@ module Generated {
     /**
      * Holds if `getTupleIndex()` exists.
      */
-    final predicate hasTupleIndex() { exists(getTupleIndex()) }
+    final predicate hasTupleIndex() { exists(this.getTupleIndex()) }
 
     /**
      * Gets the property or subscript operator, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ValueDecl getImmediateDeclRef() {
+    ValueDecl getDeclRef() {
       result =
         Synth::convertValueDeclFromRaw(Synth::convertKeyPathComponentToRaw(this)
               .(Raw::KeyPathComponent)
@@ -88,14 +75,9 @@ module Generated {
     }
 
     /**
-     * Gets the property or subscript operator, if it exists.
-     */
-    final ValueDecl getDeclRef() { result = getImmediateDeclRef().resolve() }
-
-    /**
      * Holds if `getDeclRef()` exists.
      */
-    final predicate hasDeclRef() { exists(getDeclRef()) }
+    final predicate hasDeclRef() { exists(this.getDeclRef()) }
 
     /**
      * Gets the return type of this component application.
@@ -117,6 +99,11 @@ module Generated {
      * path; an optional-wrapping component is inserted if required to produce an optional type
      * as the final output.
      */
-    final Type getComponentType() { result = getImmediateComponentType().resolve() }
+    final Type getComponentType() {
+      exists(Type immediate |
+        immediate = this.getImmediateComponentType() and
+        result = immediate.resolve()
+      )
+    }
   }
 }

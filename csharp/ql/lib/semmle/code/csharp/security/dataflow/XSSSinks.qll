@@ -24,7 +24,7 @@ abstract class Sink extends DataFlow::ExprNode, RemoteFlowSink {
 }
 
 private class ExternalXssSink extends Sink {
-  ExternalXssSink() { sinkNode(this, "xss") }
+  ExternalXssSink() { sinkNode(this, "js-injection") }
 }
 
 private class HtmlSinkSink extends Sink instanceof HtmlSink {

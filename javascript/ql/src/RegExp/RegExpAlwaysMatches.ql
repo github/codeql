@@ -87,8 +87,8 @@ class RegExpSearchCall extends DataFlow::MethodCallNode, RegExpQuery {
   DataFlow::RegExpCreationNode regexp;
 
   RegExpSearchCall() {
-    getMethodName() = "search" and
-    regexp.getAReference().flowsTo(getArgument(0))
+    this.getMethodName() = "search" and
+    regexp.getAReference().flowsTo(this.getArgument(0))
   }
 
   override RegExpTerm getRegExp() { result = regexp.getRoot() }

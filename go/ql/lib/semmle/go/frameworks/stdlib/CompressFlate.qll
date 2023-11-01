@@ -13,11 +13,11 @@ module CompressFlate {
 
     FunctionModels() {
       // signature: func NewWriter(w io.Writer, level int) (*Writer, error)
-      hasQualifiedName("compress/flate", "NewWriter") and
+      this.hasQualifiedName("compress/flate", "NewWriter") and
       (inp.isResult(0) and outp.isParameter(0))
       or
       // signature: func NewWriterDict(w io.Writer, level int, dict []byte) (*Writer, error)
-      hasQualifiedName("compress/flate", "NewWriterDict") and
+      this.hasQualifiedName("compress/flate", "NewWriterDict") and
       (inp.isResult(0) and outp.isParameter(0))
     }
 

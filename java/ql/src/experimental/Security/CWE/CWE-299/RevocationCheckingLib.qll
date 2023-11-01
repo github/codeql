@@ -22,10 +22,10 @@ module DisabledRevocationCheckingFlow = TaintTracking::Global<DisabledRevocation
  */
 class SetRevocationEnabledSink extends DataFlow::ExprNode {
   SetRevocationEnabledSink() {
-    exists(MethodAccess setRevocationEnabledCall |
+    exists(MethodCall setRevocationEnabledCall |
       setRevocationEnabledCall.getMethod() instanceof SetRevocationEnabledMethod and
-      setRevocationEnabledCall.getArgument(0) = getExpr() and
-      not exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      setRevocationEnabledCall.getArgument(0) = this.getExpr() and
+      not exists(MethodCall ma, Method m | m = ma.getMethod() |
         (m instanceof AddCertPathCheckerMethod or m instanceof SetCertPathCheckersMethod) and
         ma.getQualifier().(VarAccess).getVariable() =
           setRevocationEnabledCall.getQualifier().(VarAccess).getVariable()
@@ -36,25 +36,25 @@ class SetRevocationEnabledSink extends DataFlow::ExprNode {
 
 class SetRevocationEnabledMethod extends Method {
   SetRevocationEnabledMethod() {
-    getDeclaringType() instanceof PKIXParameters and
-    hasName("setRevocationEnabled")
+    this.getDeclaringType() instanceof PKIXParameters and
+    this.hasName("setRevocationEnabled")
   }
 }
 
 class AddCertPathCheckerMethod extends Method {
   AddCertPathCheckerMethod() {
-    getDeclaringType() instanceof PKIXParameters and
-    hasName("addCertPathChecker")
+    this.getDeclaringType() instanceof PKIXParameters and
+    this.hasName("addCertPathChecker")
   }
 }
 
 class SetCertPathCheckersMethod extends Method {
   SetCertPathCheckersMethod() {
-    getDeclaringType() instanceof PKIXParameters and
-    hasName("setCertPathCheckers")
+    this.getDeclaringType() instanceof PKIXParameters and
+    this.hasName("setCertPathCheckers")
   }
 }
 
 class PKIXParameters extends RefType {
-  PKIXParameters() { hasQualifiedName("java.security.cert", "PKIXParameters") }
+  PKIXParameters() { this.hasQualifiedName("java.security.cert", "PKIXParameters") }
 }

@@ -6,6 +6,8 @@
 namespace codeql {
 class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
  public:
+  static constexpr std::string_view name = "type";
+
   using TypeTranslatorBase<TypeTranslator>::TypeTranslatorBase;
   using TypeTranslatorBase<TypeTranslator>::translateAndEmit;
 

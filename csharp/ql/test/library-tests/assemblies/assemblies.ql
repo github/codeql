@@ -5,7 +5,7 @@ private class KnownType extends Type {
 }
 
 class TypeRef extends @typeref {
-  string toString() { hasName(result) }
+  string toString() { this.hasName(result) }
 
   predicate hasName(string name) { typerefs(this, name) }
 
@@ -13,7 +13,7 @@ class TypeRef extends @typeref {
 }
 
 class MissingType extends TypeRef {
-  MissingType() { not exists(getType()) }
+  MissingType() { not exists(this.getType()) }
 }
 
 from

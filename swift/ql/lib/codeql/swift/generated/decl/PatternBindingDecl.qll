@@ -25,17 +25,22 @@ module Generated {
     /**
      * Gets the `index`th init of this pattern binding declaration (0-based), if it exists.
      */
-    final Expr getInit(int index) { result = getImmediateInit(index).resolve() }
+    final Expr getInit(int index) {
+      exists(Expr immediate |
+        immediate = this.getImmediateInit(index) and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getInit(index)` exists.
      */
-    final predicate hasInit(int index) { exists(getInit(index)) }
+    final predicate hasInit(int index) { exists(this.getInit(index)) }
 
     /**
      * Gets any of the inits of this pattern binding declaration.
      */
-    final Expr getAnInit() { result = getInit(_) }
+    final Expr getAnInit() { result = this.getInit(_) }
 
     /**
      * Gets the `index`th pattern of this pattern binding declaration (0-based).
@@ -53,16 +58,21 @@ module Generated {
     /**
      * Gets the `index`th pattern of this pattern binding declaration (0-based).
      */
-    final Pattern getPattern(int index) { result = getImmediatePattern(index).resolve() }
+    final Pattern getPattern(int index) {
+      exists(Pattern immediate |
+        immediate = this.getImmediatePattern(index) and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the patterns of this pattern binding declaration.
      */
-    final Pattern getAPattern() { result = getPattern(_) }
+    final Pattern getAPattern() { result = this.getPattern(_) }
 
     /**
      * Gets the number of patterns of this pattern binding declaration.
      */
-    final int getNumberOfPatterns() { result = count(int i | exists(getPattern(i))) }
+    final int getNumberOfPatterns() { result = count(int i | exists(this.getPattern(i))) }
   }
 }

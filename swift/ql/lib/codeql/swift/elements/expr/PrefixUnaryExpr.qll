@@ -1,6 +1,6 @@
 private import codeql.swift.generated.expr.PrefixUnaryExpr
 private import codeql.swift.elements.expr.Expr
-private import codeql.swift.elements.decl.AbstractFunctionDecl
+private import codeql.swift.elements.decl.Function
 
 /**
  * A Swift prefix unary expression, that is, a unary expression that appears
@@ -18,7 +18,7 @@ class PrefixUnaryExpr extends Generated::PrefixUnaryExpr {
   /**
    * Gets the operator of this prefix unary expression (the function that is called).
    */
-  AbstractFunctionDecl getOperator() { result = this.getStaticTarget() }
+  Function getOperator() { result = this.getStaticTarget() }
 
-  override AbstractFunctionDecl getStaticTarget() { result = super.getStaticTarget() }
+  override Function getStaticTarget() { result = super.getStaticTarget() }
 }

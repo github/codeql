@@ -17,15 +17,12 @@ module Generated {
     /**
      * Holds if `getTargetName()` exists.
      */
-    final predicate hasTargetName() { exists(getTargetName()) }
+    final predicate hasTargetName() { exists(this.getTargetName()) }
 
     /**
      * Gets the target of this continue statement, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Stmt getImmediateTarget() {
+    Stmt getTarget() {
       result =
         Synth::convertStmtFromRaw(Synth::convertContinueStmtToRaw(this)
               .(Raw::ContinueStmt)
@@ -33,13 +30,8 @@ module Generated {
     }
 
     /**
-     * Gets the target of this continue statement, if it exists.
-     */
-    final Stmt getTarget() { result = getImmediateTarget().resolve() }
-
-    /**
      * Holds if `getTarget()` exists.
      */
-    final predicate hasTarget() { exists(getTarget()) }
+    final predicate hasTarget() { exists(this.getTarget()) }
   }
 }

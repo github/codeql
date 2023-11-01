@@ -13,26 +13,26 @@ func sink(string) {
 
 func main() {
 	s := source()
-	sink(test.FunctionWithParameter(s)) // $ taintflow dataflow
+	sink(test.FunctionWithParameter(s)) // $ hasValueFlow="call to FunctionWithParameter"
 
 	stringSlice := []string{source()}
-	sink(stringSlice[0]) // $ taintflow dataflow
+	sink(stringSlice[0]) // $ hasValueFlow="index expression"
 
 	s0 := ""
 	s1 := source()
 	sSlice := []string{s0, s1}
-	sink(test.FunctionWithParameter(sSlice[1]))        // $ taintflow dataflow
-	sink(test.FunctionWithSliceParameter(sSlice))      // $ taintflow dataflow
-	sink(test.FunctionWithVarArgsParameter(sSlice...)) // $ taintflow dataflow
-	sink(test.FunctionWithVarArgsParameter(s0, s1))    // $ MISSING: taintflow dataflow
+	sink(test.FunctionWithParameter(sSlice[1]))        // $ hasValueFlow="call to FunctionWithParameter"
+	sink(test.FunctionWithSliceParameter(sSlice))      // $ hasValueFlow="call to FunctionWithSliceParameter"
+	sink(test.FunctionWithVarArgsParameter(sSlice...)) // $ hasValueFlow="call to FunctionWithVarArgsParameter"
+	sink(test.FunctionWithVarArgsParameter(s0, s1))    // $ hasValueFlow="call to FunctionWithVarArgsParameter"
 
 	sliceOfStructs := []test.A{{Field: source()}}
-	sink(sliceOfStructs[0].Field) // $ taintflow dataflow
+	sink(sliceOfStructs[0].Field) // $ hasValueFlow="selection of Field"
 
 	a0 := test.A{Field: ""}
 	a1 := test.A{Field: source()}
 	aSlice := []test.A{a0, a1}
-	sink(test.FunctionWithSliceOfStructsParameter(aSlice))      // $ taintflow dataflow
-	sink(test.FunctionWithVarArgsOfStructsParameter(aSlice...)) // $ taintflow dataflow
-	sink(test.FunctionWithVarArgsOfStructsParameter(a0, a1))    // $ MISSING: taintflow dataflow
+	sink(test.FunctionWithSliceOfStructsParameter(aSlice))      // $ hasValueFlow="call to FunctionWithSliceOfStructsParameter"
+	sink(test.FunctionWithVarArgsOfStructsParameter(aSlice...)) // $ hasValueFlow="call to FunctionWithVarArgsOfStructsParameter"
+	sink(test.FunctionWithVarArgsOfStructsParameter(a0, a1))    // $ hasValueFlow="call to FunctionWithVarArgsOfStructsParameter"
 }

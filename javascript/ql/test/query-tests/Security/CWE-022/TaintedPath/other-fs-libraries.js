@@ -71,3 +71,10 @@ http.createServer(function(req, res) {
   mkdirp(path); // NOT OK
   mkdirp.sync(path); // NOT OK
 });
+
+const fsp = require("fs/promises");
+http.createServer(function(req, res) {
+  var path = url.parse(req.url, true).query.path;
+
+  fsp.readFile(path); // NOT OK
+});

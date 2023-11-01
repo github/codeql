@@ -33,8 +33,8 @@ abstract class EmailSender extends DataFlow::SourceNode {
    * Gets a data flow node that refers to the HTML body or plaintext body of the email.
    */
   DataFlow::Node getABody() {
-    result = getPlainTextBody() or
-    result = getHtmlBody()
+    result = this.getPlainTextBody() or
+    result = this.getHtmlBody()
   }
 }
 
@@ -47,13 +47,13 @@ private class NodemailerEmailSender extends EmailSender, DataFlow::MethodCallNod
       DataFlow::moduleMember("nodemailer", "createTransport").getACall().getAMethodCall("sendMail")
   }
 
-  override DataFlow::Node getPlainTextBody() { result = getOptionArgument(0, "text") }
+  override DataFlow::Node getPlainTextBody() { result = this.getOptionArgument(0, "text") }
 
-  override DataFlow::Node getHtmlBody() { result = getOptionArgument(0, "html") }
+  override DataFlow::Node getHtmlBody() { result = this.getOptionArgument(0, "html") }
 
-  override DataFlow::Node getTo() { result = getOptionArgument(0, "to") }
+  override DataFlow::Node getTo() { result = this.getOptionArgument(0, "to") }
 
-  override DataFlow::Node getFrom() { result = getOptionArgument(0, "from") }
+  override DataFlow::Node getFrom() { result = this.getOptionArgument(0, "from") }
 
-  override DataFlow::Node getSubject() { result = getOptionArgument(0, "subject") }
+  override DataFlow::Node getSubject() { result = this.getOptionArgument(0, "subject") }
 }

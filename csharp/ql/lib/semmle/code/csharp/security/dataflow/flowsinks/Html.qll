@@ -23,7 +23,7 @@ private import semmle.code.asp.AspNet
 abstract class HtmlSink extends DataFlow::ExprNode, RemoteFlowSink { }
 
 private class ExternalHtmlSink extends HtmlSink {
-  ExternalHtmlSink() { sinkNode(this, "html") }
+  ExternalHtmlSink() { sinkNode(this, "html-injection") }
 }
 
 /**

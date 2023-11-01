@@ -7,7 +7,7 @@ import java
 /**
  * A method access that returns random data or writes random data to an argument.
  */
-abstract class RandomDataSource extends MethodAccess {
+abstract class RandomDataSource extends MethodCall {
   /**
    * Gets the integer lower bound, inclusive, of the values returned by this call,
    * if applicable to this method's type and a constant bound is known.
@@ -103,7 +103,7 @@ class StdlibRandomSource extends RandomDataSource {
   }
 
   override Expr getOutput() {
-    if m.hasName("getBytes") then result = this.getArgument(0) else result = this
+    if m.hasName("nextBytes") then result = this.getArgument(0) else result = this
   }
 }
 

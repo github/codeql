@@ -814,14 +814,35 @@ private predicate floatingPointTypeMapping(
   // _Float128
   kind = 49 and base = 2 and domain = TRealDomain() and realKind = 49 and extended = false
   or
-  // _Float128x
-  kind = 50 and base = 2 and domain = TRealDomain() and realKind = 50 and extended = true
-  or
   // _Float16
   kind = 52 and base = 2 and domain = TRealDomain() and realKind = 52 and extended = false
   or
   // _Complex _Float16
   kind = 53 and base = 2 and domain = TComplexDomain() and realKind = 52 and extended = false
+  or
+  // __fp16
+  kind = 54 and base = 2 and domain = TRealDomain() and realKind = 54 and extended = false
+  or
+  // __bf16
+  kind = 55 and base = 2 and domain = TRealDomain() and realKind = 55 and extended = false
+  or
+  // std::float16_t
+  kind = 56 and base = 2 and domain = TRealDomain() and realKind = 56 and extended = false
+  or
+  // _Complex _Float32
+  kind = 57 and base = 2 and domain = TComplexDomain() and realKind = 45 and extended = false
+  or
+  // _Complex _Float32x
+  kind = 58 and base = 2 and domain = TComplexDomain() and realKind = 46 and extended = true
+  or
+  // _Complex _Float64
+  kind = 59 and base = 2 and domain = TComplexDomain() and realKind = 47 and extended = false
+  or
+  // _Complex _Float64x
+  kind = 60 and base = 2 and domain = TComplexDomain() and realKind = 48 and extended = true
+  or
+  // _Complex _Float128
+  kind = 61 and base = 2 and domain = TComplexDomain() and realKind = 49 and extended = false
 }
 
 /**
@@ -1699,7 +1720,28 @@ class AutoType extends TemplateParameter {
 
 private predicate suppressUnusedThis(Type t) { any() }
 
-/** A source code location referring to a type */
+/**
+ * A source code location referring to a user-defined type.
+ *
+ * Note that only _user-defined_ types have `TypeMention`s. In particular,
+ * built-in types, and derived types with built-in types as their base don't
+ * have any `TypeMention`s. For example, given
+ * ```cpp
+ * struct S { ... };
+ * void f(S s1, int i1) {
+ *   S s2;
+ *   S* s3;
+ *   S& s4 = s2;
+ *   decltype(s2) s5;
+ *
+ *   int i2;
+ *   int* i3;
+ *   int i4[10];
+ * }
+ * ```
+ * there will be a `TypeMention` for the mention of `S` at `S s1`, `S s2`, and `S& s4 = s2`,
+ * but not at `decltype(s2) s5`. Additionally, there will be no `TypeMention`s for `int`.
+ */
 class TypeMention extends Locatable, @type_mention {
   override string toString() { result = "type mention" }
 

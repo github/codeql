@@ -114,7 +114,7 @@ private predicate live_at_exit_of_bb(StackVariable v, BasicBlock b) {
 
 /** Common SSA logic for standard SSA and range-analysis SSA. */
 cached
-library class SsaHelper extends int {
+class SsaHelper extends int {
   /* 0 = StandardSSA, 1 = RangeSSA */
   cached
   SsaHelper() { this in [0 .. 1] }
@@ -130,7 +130,7 @@ library class SsaHelper extends int {
    * Remove any custom phi nodes that are invalid.
    */
   private predicate sanitized_custom_phi_node(StackVariable v, BasicBlock b) {
-    custom_phi_node(v, b) and
+    this.custom_phi_node(v, b) and
     not addressTakenVariable(v) and
     not isReferenceVar(v) and
     b.isReachable()
@@ -142,7 +142,7 @@ library class SsaHelper extends int {
    */
   cached
   predicate phi_node(StackVariable v, BasicBlock b) {
-    frontier_phi_node(v, b) or sanitized_custom_phi_node(v, b)
+    this.frontier_phi_node(v, b) or this.sanitized_custom_phi_node(v, b)
   }
 
   /**
@@ -154,14 +154,15 @@ library class SsaHelper extends int {
    */
   private predicate frontier_phi_node(StackVariable v, BasicBlock b) {
     exists(BasicBlock x |
-      dominanceFrontier(x, b) and ssa_defn_rec(pragma[only_bind_into](v), pragma[only_bind_into](x))
+      dominanceFrontier(x, b) and
+      this.ssa_defn_rec(pragma[only_bind_into](v), pragma[only_bind_into](x))
     ) and
     /* We can also eliminate those nodes where the variable is not live on any incoming edge */
     live_at_start_of_bb(pragma[only_bind_into](v), b)
   }
 
   private predicate ssa_defn_rec(StackVariable v, BasicBlock b) {
-    phi_node(v, b)
+    this.phi_node(v, b)
     or
     variableUpdate(v, _, b, _)
   }
@@ -172,7 +173,7 @@ library class SsaHelper extends int {
    */
   cached
   predicate ssa_defn(StackVariable v, ControlFlowNode node, BasicBlock b, int index) {
-    phi_node(v, b) and b.getStart() = node and index = -1
+    this.phi_node(v, b) and b.getStart() = node and index = -1
     or
     variableUpdate(v, node, b, index)
   }
@@ -196,7 +197,7 @@ library class SsaHelper extends int {
    * basic blocks.
    */
   private predicate defUseRank(StackVariable v, BasicBlock b, int rankix, int i) {
-    i = rank[rankix](int j | ssa_defn(v, _, b, j) or ssa_use(v, _, b, j))
+    i = rank[rankix](int j | this.ssa_defn(v, _, b, j) or ssa_use(v, _, b, j))
   }
 
   /**
@@ -206,7 +207,7 @@ library class SsaHelper extends int {
    * the block.
    */
   private int lastRank(StackVariable v, BasicBlock b) {
-    result = max(int rankix | defUseRank(v, b, rankix, _)) + 1
+    result = max(int rankix | this.defUseRank(v, b, rankix, _)) + 1
   }
 
   /**
@@ -215,8 +216,8 @@ library class SsaHelper extends int {
    */
   private predicate ssaDefRank(StackVariable v, ControlFlowNode def, BasicBlock b, int rankix) {
     exists(int i |
-      ssa_defn(v, def, b, i) and
-      defUseRank(v, b, rankix, i)
+      this.ssa_defn(v, def, b, i) and
+      this.defUseRank(v, b, rankix, i)
     )
   }
 
@@ -232,21 +233,21 @@ library class SsaHelper extends int {
     // use is understood to happen _before_ the definition. Phi nodes are
     // at rankidx -1 and will therefore always reach the first node in the
     // basic block.
-    ssaDefRank(v, def, b, rankix - 1)
+    this.ssaDefRank(v, def, b, rankix - 1)
     or
-    ssaDefReachesRank(v, def, b, rankix - 1) and
-    rankix <= lastRank(v, b) and // Without this, the predicate would be infinite.
-    not ssaDefRank(v, _, b, rankix - 1) // Range is inclusive of but not past next def.
+    this.ssaDefReachesRank(v, def, b, rankix - 1) and
+    rankix <= this.lastRank(v, b) and // Without this, the predicate would be infinite.
+    not this.ssaDefRank(v, _, b, rankix - 1) // Range is inclusive of but not past next def.
   }
 
   /** Holds if SSA variable `(v, def)` reaches the end of block `b`. */
   cached
   predicate ssaDefinitionReachesEndOfBB(StackVariable v, ControlFlowNode def, BasicBlock b) {
-    live_at_exit_of_bb(v, b) and ssaDefReachesRank(v, def, b, lastRank(v, b))
+    live_at_exit_of_bb(v, b) and this.ssaDefReachesRank(v, def, b, this.lastRank(v, b))
     or
     exists(BasicBlock idom |
-      ssaDefinitionReachesEndOfBB(v, def, idom) and
-      noDefinitionsSinceIDominator(v, idom, b)
+      this.ssaDefinitionReachesEndOfBB(v, def, idom) and
+      this.noDefinitionsSinceIDominator(v, idom, b)
     )
   }
 
@@ -260,7 +261,7 @@ library class SsaHelper extends int {
   private predicate noDefinitionsSinceIDominator(StackVariable v, BasicBlock idom, BasicBlock b) {
     bbIDominates(idom, b) and // It is sufficient to traverse the dominator graph, cf. discussion above.
     live_at_exit_of_bb(v, b) and
-    not ssa_defn(v, _, b, _)
+    not this.ssa_defn(v, _, b, _)
   }
 
   /**
@@ -269,8 +270,8 @@ library class SsaHelper extends int {
    */
   private predicate ssaDefinitionReachesUseWithinBB(StackVariable v, ControlFlowNode def, Expr use) {
     exists(BasicBlock b, int rankix, int i |
-      ssaDefReachesRank(v, def, b, rankix) and
-      defUseRank(v, b, rankix, i) and
+      this.ssaDefReachesRank(v, def, b, rankix) and
+      this.defUseRank(v, b, rankix, i) and
       ssa_use(v, use, b, i)
     )
   }
@@ -279,12 +280,12 @@ library class SsaHelper extends int {
    * Holds if SSA variable `(v, def)` reaches the control-flow node `use`.
    */
   private predicate ssaDefinitionReaches(StackVariable v, ControlFlowNode def, Expr use) {
-    ssaDefinitionReachesUseWithinBB(v, def, use)
+    this.ssaDefinitionReachesUseWithinBB(v, def, use)
     or
     exists(BasicBlock b |
       ssa_use(v, use, b, _) and
-      ssaDefinitionReachesEndOfBB(v, def, b.getAPredecessor()) and
-      not ssaDefinitionReachesUseWithinBB(v, _, use)
+      this.ssaDefinitionReachesEndOfBB(v, def, b.getAPredecessor()) and
+      not this.ssaDefinitionReachesUseWithinBB(v, _, use)
     )
   }
 
@@ -294,10 +295,10 @@ library class SsaHelper extends int {
    */
   cached
   string toString(ControlFlowNode node, StackVariable v) {
-    if phi_node(v, node)
+    if this.phi_node(v, node)
     then result = "SSA phi(" + v.getName() + ")"
     else (
-      ssa_defn(v, node, _, _) and result = "SSA def(" + v.getName() + ")"
+      this.ssa_defn(v, node, _, _) and result = "SSA def(" + v.getName() + ")"
     )
   }
 
@@ -307,10 +308,7 @@ library class SsaHelper extends int {
    */
   cached
   VariableAccess getAUse(ControlFlowNode def, StackVariable v) {
-    ssaDefinitionReaches(v, def, result) and
+    this.ssaDefinitionReaches(v, def, result) and
     ssa_use(v, result, _, _)
   }
 }
-
-/** DEPRECATED: Alias for SsaHelper */
-deprecated class SSAHelper = SsaHelper;

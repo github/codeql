@@ -1,0 +1,7 @@
+name: codeql/swift-examples
+groups: 
+  - swift
+  - examples
+dependencies:
+  codeql/swift-all: ${workspace}
+warnOnImplicitThis: true

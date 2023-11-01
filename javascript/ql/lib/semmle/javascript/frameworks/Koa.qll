@@ -45,13 +45,6 @@ module Koa {
     }
 
     /**
-     * DEPRECATED: Use `getAContextNode` instead.
-     * Gets an expression that contains the "context" object of
-     * a route handler invocation.
-     */
-    deprecated Expr getAContextExpr() { result = this.getAContextNode().asExpr() }
-
-    /**
      * Gets an expression that contains the "context" object of
      * a route handler invocation.
      *
@@ -62,28 +55,12 @@ module Koa {
     DataFlow::Node getAContextNode() { result.(ContextNode).getRouteHandler() = this }
 
     /**
-     * DEPRECATED: Use `getAResponseOrContextNode` instead.
-     * Gets an expression that contains the context or response
-     * object of a route handler invocation.
-     */
-    deprecated Expr getAResponseOrContextExpr() {
-      result = this.getAResponseOrContextNode().asExpr()
-    }
-
-    /**
      * Gets an expression that contains the context or response
      * object of a route handler invocation.
      */
     DataFlow::Node getAResponseOrContextNode() {
       result = this.getAResponseNode() or result = this.getAContextNode()
     }
-
-    /**
-     * DEPRECATED: Use `getARequestOrContextNode` instead.
-     * Gets an expression that contains the context or request
-     * object of a route handler invocation.
-     */
-    deprecated Expr getARequestOrContextExpr() { result = this.getARequestOrContextNode().asExpr() }
 
     /**
      * Gets an expression that contains the context or request
@@ -274,19 +251,6 @@ module Koa {
   }
 
   /**
-   * DEPRECATED: Use `ContextNode` instead.
-   * An expression that may hold a Koa context object.
-   */
-  deprecated class ContextExpr extends Expr {
-    ContextNode node;
-
-    ContextExpr() { node.asExpr() = this }
-
-    /** Gets the route handler that provides this response. */
-    deprecated RouteHandler getRouteHandler() { result = node.getRouteHandler() }
-  }
-
-  /**
    * An expression that may hold a Koa context object.
    */
   class ContextNode extends DataFlow::Node {
@@ -301,26 +265,10 @@ module Koa {
   }
 
   /**
-   * DEPRECATED: Use `RequestNode` instead.
-   * An expression that may hold a Koa request object.
-   */
-  deprecated class RequestExpr extends HTTP::Servers::StandardRequestExpr {
-    RequestExpr() { this.flow() instanceof RequestNode }
-  }
-
-  /**
    * An expression that may hold a Koa request object.
    */
   class RequestNode extends Http::Servers::StandardRequestNode {
     override RequestSource src;
-  }
-
-  /**
-   * DEPRECATED: Use `ResponseNode` instead.
-   * An expression that may hold a Koa response object.
-   */
-  deprecated class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
-    ResponseExpr() { this.flow() instanceof ResponseNode }
   }
 
   /**

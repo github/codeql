@@ -466,3 +466,19 @@ module TS50 {
     
     const b = foo[1]; // <- "b"
 }
+
+/////////////////
+
+module TS52 {
+    class SomeClass {
+        @((_target, _context) => {})
+        foo = 123;
+    }
+    
+    console.log(SomeClass[Symbol.metadata]); // <- has type DecoratorMetadataObject
+
+    // named and anonymous tuple elements. 
+    type Pair3<T> = [first: T, T];
+
+    console.log(["hello", "world"] satisfies Pair3<string>);
+}

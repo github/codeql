@@ -1886,4 +1886,230 @@ namespace missing_declaration_entries {
     }
 }
 
+template<typename T> T global_template = 42;
+
+int test_global_template_int() {
+    int local_int = global_template<int>;
+    char local_char = global_template<char>;
+    return local_int + (int)local_char;
+}
+
+[[noreturn]] void noreturnFunc();
+
+int noreturnTest(int x) {
+    if (x < 10) {
+        return x;
+    } else {
+        noreturnFunc();
+    }
+}
+
+int noreturnTest2(int x) {
+    if (x < 10) {
+        noreturnFunc();
+    }
+    return x;
+}
+
+int static_function(int x) {
+    return x;
+}
+
+void test_static_functions_with_assignments() {
+    C c;
+    int x;
+    x = c.StaticMemberFunction(10);
+    int y;
+    y = C::StaticMemberFunction(10);
+    int z;
+    z = static_function(10);
+}
+
+void test_double_assign() {
+  int i, j;
+  i = j = 40;
+}
+
+void test_assign_with_assign_operation() {
+  int i, j = 0;
+  i = (j += 40);
+}
+
+class D {
+    static D x;
+
+public:
+    static D& ReferenceStaticMemberFunction() {
+        return x;
+    }
+    static D ObjectStaticMemberFunction() {
+        return x;
+    }
+};
+
+void test_static_member_functions_with_reference_return() {
+    D d;
+
+    d.ReferenceStaticMemberFunction();
+    D::ReferenceStaticMemberFunction();
+    d.ObjectStaticMemberFunction();
+    D::ObjectStaticMemberFunction();
+
+    D x;
+    x = d.ReferenceStaticMemberFunction();
+    D y;
+    y = D::ReferenceStaticMemberFunction();
+    D j;
+    j = d.ObjectStaticMemberFunction();
+    D k;
+    k = D::ObjectStaticMemberFunction();
+}
+
+void test_volatile() {
+    volatile int x;
+    x;
+}
+
+struct ValCat {
+  static ValCat& lvalue();
+  static ValCat&& xvalue();
+  static ValCat prvalue();
+};
+
+void value_category_test() {
+    ValCat c;
+
+    c.lvalue() = {};
+    c.xvalue() = {};
+    c.prvalue() = {};
+    ValCat::lvalue() = {};
+    ValCat::xvalue() = {};
+    ValCat::prvalue() = {};
+}
+
+void SetStaticFuncPtr() {
+    C c;
+    int (*pfn)(int) = C::StaticMemberFunction;
+    pfn = c.StaticMemberFunction;
+}
+
+void TernaryTestInt(bool a, int x, int y, int z) {
+    z = a ? x : y;
+    z = a ? x : 5;
+    z = a ? 3 : 5;
+    (a ? x : y) = 7;
+}
+
+struct TernaryPodObj {
+};
+
+void TernaryTestPodObj(bool a, TernaryPodObj x, TernaryPodObj y, TernaryPodObj z) {
+    z = a ? x : y;
+    z = a ? x : TernaryPodObj();
+    z = a ? TernaryPodObj() : TernaryPodObj();
+    (z = a ? x : y) = TernaryPodObj();
+}
+
+struct TernaryNonPodObj {
+    virtual ~TernaryNonPodObj() {}
+};
+
+void TernaryTestNonPodObj(bool a, TernaryNonPodObj x, TernaryNonPodObj y, TernaryNonPodObj z) {
+    z = a ? x : y;
+    z = a ? x : TernaryNonPodObj();
+    z = a ? TernaryNonPodObj() : TernaryNonPodObj();
+    (z = a ? x : y) = TernaryNonPodObj();
+}
+
+void CommaTestHelper(unsigned int);
+
+unsigned int CommaTest(unsigned int x) {
+  unsigned int y;
+  y = x < 100 ?
+    (CommaTestHelper(x), x) :
+    (CommaTestHelper(x), 10);
+}
+
+void NewDeleteMem() {
+  int* x = new int;  // No constructor
+  *x = 6;
+  delete x;
+}
+
+class Base2 {
+public:
+    void operator delete(void* p) {
+    }
+    virtual ~Base2() {};
+};
+
+class Derived2 : public Base2 {
+    int i;
+public:
+    ~Derived2() {};
+
+    void operator delete(void* p) {
+    }
+};
+
+// Delete is kind-of virtual in these cases
+int virtual_delete()
+{
+    Base2* b1 = new Base2{};
+    delete b1;
+
+    Base2* b2 = new Derived2{};
+    delete b2;
+
+    Derived2* d = new Derived2{};
+    delete d;
+}
+
+void test_constant_folding_use(int);
+
+void test_constant_folding() {
+  const int x = 116;
+  test_constant_folding_use(x);
+}
+
+void exit(int code);
+
+int NonExit() {
+    int x = Add(3,4);
+    if (x == 7)
+        exit(3);
+    VoidFunc();
+    return x;
+}
+
+void CallsNonExit() {
+    VoidFunc();
+    exit(3);
+}
+
+int TransNonExit() {
+    int x = Add(3,4);
+    if (x == 7)
+        CallsNonExit();
+    VoidFunc();
+    return x;
+}
+
+void newArrayCorrectType(size_t n) {
+  new int[n];  // No constructor
+  new(1.0f) int[n];  // Placement new, no constructor
+  new String[n];  // Constructor
+  new Overaligned[n];  // Aligned new
+  new DefaultCtorWithDefaultParam[n];
+  new int[n] { 0, 1, 2 };
+}
+
+double strtod (const char* str, char** endptr);
+
+char* test_strtod(char *s) {
+  char *end;
+  double d = strtod(s, &end);
+  return end;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

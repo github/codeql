@@ -26,7 +26,8 @@ private import TypeRef
 class Generic extends DotNet::Generic, Declaration, @generic {
   Generic() {
     type_parameters(_, _, this, _) or
-    type_arguments(_, _, this)
+    type_arguments(_, _, this) or
+    nullable_underlying_type(this, _)
   }
 }
 
@@ -39,7 +40,7 @@ class Generic extends DotNet::Generic, Declaration, @generic {
 class UnboundGeneric extends DotNet::UnboundGeneric, Generic {
   UnboundGeneric() { type_parameters(_, _, this, _) }
 
-  override TypeParameter getTypeParameter(int n) { type_parameters(result, n, this, _) }
+  final override TypeParameter getTypeParameter(int n) { type_parameters(result, n, this, _) }
 
   override ConstructedGeneric getAConstructedGeneric() { result.getUnboundGeneric() = this }
 
@@ -67,15 +68,17 @@ private string getTypeParameterCommas(UnboundGeneric ug) {
  * generic method (`ConstructedMethod`).
  */
 class ConstructedGeneric extends DotNet::ConstructedGeneric, Generic {
-  ConstructedGeneric() { type_arguments(_, _, this) }
+  ConstructedGeneric() {
+    type_arguments(_, _, this)
+    or
+    nullable_underlying_type(this, _)
+  }
 
   override UnboundGeneric getUnboundGeneric() { constructed_generic(this, result) }
 
   override UnboundGeneric getUnboundDeclaration() {
     result = this.getUnboundGeneric().getUnboundDeclaration()
   }
-
-  override int getNumberOfTypeArguments() { result = count(int i | type_arguments(_, i, this)) }
 
   override Type getTypeArgument(int i) { none() }
 
@@ -258,7 +261,11 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
  */
 class TypeParameterConstraints extends Element, @type_parameter_constraints {
   /** Gets a specific type constraint, if any. */
-  Type getATypeConstraint() { specific_type_parameter_constraints(this, getTypeRef(result)) }
+  Type getATypeConstraint() {
+    specific_type_parameter_constraints(this, result)
+    or
+    specific_type_parameter_constraints(this, getTypeRef(result))
+  }
 
   /** Gets an annotated specific type constraint, if any. */
   AnnotatedType getAnAnnotatedTypeConstraint() { result.appliesToTypeConstraint(this) }
@@ -410,13 +417,23 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   override Location getALocation() { result = this.getUnboundDeclaration().getALocation() }
 
-  override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, getTypeRef(this)) }
+  override Type getTypeArgument(int n) {
+    type_arguments(result, n, this)
+    or
+    not type_arguments(any(Type t), n, this) and
+    type_arguments(getTypeRef(result), n, this)
+  }
 
-  override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
+  override UnboundGenericType getUnboundGeneric() {
+    constructed_generic(this, result)
+    or
+    not constructed_generic(this, any(Type t)) and
+    constructed_generic(this, getTypeRef(result))
+  }
 
   final override Type getChild(int n) { result = this.getTypeArgument(n) }
 
-  final override string toStringWithTypes() {
+  override string toStringWithTypes() {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsToString(this) + ">"
   }
 
@@ -424,7 +441,7 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
   }
 
-  final override predicate hasQualifiedName(string qualifier, string name) {
+  override predicate hasQualifiedName(string qualifier, string name) {
     exists(string name0 | name = name0 + "<" + getTypeArgumentsQualifiedNames(this) + ">" |
       exists(string enclosing |
         this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
@@ -584,7 +601,12 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
 class ConstructedMethod extends Method, ConstructedGeneric {
   override Location getALocation() { result = this.getUnboundDeclaration().getALocation() }
 
-  override Type getTypeArgument(int n) { type_arguments(getTypeRef(result), n, this) }
+  override Type getTypeArgument(int n) {
+    type_arguments(result, n, this)
+    or
+    not type_arguments(any(Type t), n, this) and
+    type_arguments(getTypeRef(result), n, this)
+  }
 
   override UnboundGenericMethod getUnboundGeneric() { constructed_generic(this, result) }
 

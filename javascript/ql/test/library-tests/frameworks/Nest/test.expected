@@ -31,6 +31,7 @@ requestSource
 | local/routes.ts:61:23:61:25 | req |
 responseSource
 | local/routes.ts:61:35:61:37 | res |
+| local/routes.ts:62:5:62:25 | res.sen ... uery.x) |
 requestInputAccess
 | body | local/routes.ts:40:16:40:19 | body |
 | body | local/routes.ts:66:26:66:29 | file |

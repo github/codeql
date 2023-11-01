@@ -31,7 +31,7 @@ class CallUsedToHandleErrors extends FunctionCall {
     this.(ControlFlowNode).getASuccessor() instanceof FormattingFunction
     or
     // enabling recursive search
-    exists(CallUsedToHandleErrors fr | getTarget() = fr.getEnclosingFunction())
+    exists(CallUsedToHandleErrors fr | this.getTarget() = fr.getEnclosingFunction())
   }
 }
 

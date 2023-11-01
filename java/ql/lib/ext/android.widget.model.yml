@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      - ["android.widget", "EditText", True, "getText", "", "", "ReturnValue", "android-widget", "manual"]
+      - ["android.widget", "EditText", True, "getText", "", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

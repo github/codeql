@@ -24,10 +24,10 @@ module UnsafeTlsVersionFlow = TaintTracking::Global<UnsafeTlsVersionConfig>;
  */
 class SslContextGetInstanceSink extends DataFlow::ExprNode {
   SslContextGetInstanceSink() {
-    exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
+    exists(StaticMethodCall ma, Method m | m = ma.getMethod() |
       m.getDeclaringType() instanceof SslContext and
       m.hasName("getInstance") and
-      ma.getArgument(0) = asExpr()
+      ma.getArgument(0) = this.asExpr()
     )
   }
 }
@@ -39,7 +39,7 @@ class SslContextGetInstanceSink extends DataFlow::ExprNode {
 class CreateSslParametersSink extends DataFlow::ExprNode {
   CreateSslParametersSink() {
     exists(ConstructorCall cc | cc.getConstructedType() instanceof SslParameters |
-      cc.getArgument(1) = asExpr()
+      cc.getArgument(1) = this.asExpr()
     )
   }
 }
@@ -50,10 +50,10 @@ class CreateSslParametersSink extends DataFlow::ExprNode {
  */
 class SslParametersSetProtocolsSink extends DataFlow::ExprNode {
   SslParametersSetProtocolsSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       m.getDeclaringType() instanceof SslParameters and
       m.hasName("setProtocols") and
-      ma.getArgument(0) = asExpr()
+      ma.getArgument(0) = this.asExpr()
     )
   }
 }
@@ -64,7 +64,7 @@ class SslParametersSetProtocolsSink extends DataFlow::ExprNode {
  */
 class SetEnabledProtocolsSink extends DataFlow::ExprNode {
   SetEnabledProtocolsSink() {
-    exists(MethodAccess ma, Method m, RefType type |
+    exists(MethodCall ma, Method m, RefType type |
       m = ma.getMethod() and type = m.getDeclaringType()
     |
       (
@@ -73,7 +73,7 @@ class SetEnabledProtocolsSink extends DataFlow::ExprNode {
         type instanceof SslEngine
       ) and
       m.hasName("setEnabledProtocols") and
-      ma.getArgument(0) = asExpr()
+      ma.getArgument(0) = this.asExpr()
     )
   }
 }
@@ -83,15 +83,15 @@ class SetEnabledProtocolsSink extends DataFlow::ExprNode {
  */
 class UnsafeTlsVersion extends StringLiteral {
   UnsafeTlsVersion() {
-    getValue() = "SSL" or
-    getValue() = "SSLv2" or
-    getValue() = "SSLv3" or
-    getValue() = "TLS" or
-    getValue() = "TLSv1" or
-    getValue() = "TLSv1.1"
+    this.getValue() = "SSL" or
+    this.getValue() = "SSLv2" or
+    this.getValue() = "SSLv3" or
+    this.getValue() = "TLS" or
+    this.getValue() = "TLSv1" or
+    this.getValue() = "TLSv1.1"
   }
 }
 
 class SslServerSocket extends RefType {
-  SslServerSocket() { hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
+  SslServerSocket() { this.hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
 }

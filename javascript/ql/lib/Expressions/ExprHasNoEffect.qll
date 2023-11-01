@@ -83,7 +83,7 @@ predicate isGetterProperty(string name) {
  * A property access that may invoke a getter.
  */
 class GetterPropertyAccess extends PropAccess {
-  override predicate isImpure() { isGetterProperty(getPropertyName()) }
+  override predicate isImpure() { isGetterProperty(this.getPropertyName()) }
 }
 
 /**

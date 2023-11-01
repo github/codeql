@@ -12,12 +12,10 @@ predicate irTaint(Expr source, Element sink, string globalVar) {
   IRDefaultTaintTracking::taintedIncludingGlobalVars(source, sink, globalVar) and globalVar != ""
 }
 
-class IRGlobalDefaultTaintTrackingTest extends InlineExpectationsTest {
-  IRGlobalDefaultTaintTrackingTest() { this = "IRGlobalDefaultTaintTrackingTest" }
+module IRGlobalDefaultTaintTrackingTest implements TestSig {
+  string getARelevantTag() { result = "ir" }
 
-  override string getARelevantTag() { result = "ir" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Element tainted |
       tag = "ir" and
       irTaint(_, tainted, value) and
@@ -27,12 +25,10 @@ class IRGlobalDefaultTaintTrackingTest extends InlineExpectationsTest {
   }
 }
 
-class AstGlobalDefaultTaintTrackingTest extends InlineExpectationsTest {
-  AstGlobalDefaultTaintTrackingTest() { this = "ASTGlobalDefaultTaintTrackingTest" }
+module AstGlobalDefaultTaintTrackingTest implements TestSig {
+  string getARelevantTag() { result = "ast" }
 
-  override string getARelevantTag() { result = "ast" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Element tainted |
       tag = "ast" and
       astTaint(_, tainted, value) and
@@ -41,3 +37,5 @@ class AstGlobalDefaultTaintTrackingTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests<IRGlobalDefaultTaintTrackingTest, AstGlobalDefaultTaintTrackingTest>>

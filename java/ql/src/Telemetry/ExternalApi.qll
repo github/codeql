@@ -10,10 +10,6 @@ private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummary
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.internal.ModelExclusions
 
-private string containerAsJar(Container container) {
-  if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
-}
-
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(Callable c) {
   c.getDeclaringType() instanceof TestLibrary or
@@ -31,14 +27,23 @@ class ExternalApi extends Callable {
    */
   string getApiName() {
     result =
-      this.getDeclaringType().getPackage() + "." + this.getDeclaringType().getSourceDeclaration() +
-        "#" + this.getName() + paramsString(this)
+      this.getDeclaringType().getPackage() + "." +
+        this.getDeclaringType().getSourceDeclaration().nestedName() + "#" + this.getName() +
+        paramsString(this)
+  }
+
+  private string getJarName() {
+    result = this.getCompilationUnit().getParentContainer*().(JarFile).getBaseName()
   }
 
   /**
    * Gets the jar file containing this API. Normalizes the Java Runtime to "rt.jar" despite the presence of modules.
    */
-  string jarContainer() { result = containerAsJar(this.getCompilationUnit().getParentContainer*()) }
+  string jarContainer() {
+    result = this.getJarName()
+    or
+    not exists(this.getJarName()) and result = "rt.jar"
+  }
 
   /** Gets a node that is an input to a call to this API. */
   private DataFlow::Node getAnInput() {
@@ -74,7 +79,7 @@ class ExternalApi extends Callable {
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
-  predicate isNeutral() { this = any(FlowSummaryImpl::Public::NeutralCallable nsc).asCallable() }
+  predicate isNeutral() { this instanceof FlowSummaryImpl::Public::NeutralCallable }
 
   /**
    * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
@@ -85,13 +90,10 @@ class ExternalApi extends Callable {
   }
 }
 
-/** DEPRECATED: Alias for ExternalApi */
-deprecated class ExternalAPI = ExternalApi;
-
 /**
  * Gets the limit for the number of results produced by a telemetry query.
  */
-int resultLimit() { result = 1000 }
+int resultLimit() { result = 100 }
 
 /**
  * Holds if it is relevant to count usages of `api`.

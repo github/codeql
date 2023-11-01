@@ -13,7 +13,7 @@ module MimeMultipart {
 
     FunctionModels() {
       // signature: func NewWriter(w io.Writer) *Writer
-      hasQualifiedName("mime/multipart", "NewWriter") and
+      this.hasQualifiedName("mime/multipart", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 
@@ -28,15 +28,15 @@ module MimeMultipart {
 
     MethodModels() {
       // signature: func (*Writer) CreateFormField(fieldname string) (io.Writer, error)
-      hasQualifiedName("mime/multipart", "Writer", "CreateFormField") and
+      this.hasQualifiedName("mime/multipart", "Writer", "CreateFormField") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*Writer) CreateFormFile(fieldname string, filename string) (io.Writer, error)
-      hasQualifiedName("mime/multipart", "Writer", "CreateFormFile") and
+      this.hasQualifiedName("mime/multipart", "Writer", "CreateFormFile") and
       (inp.isResult(0) and outp.isReceiver())
       or
       // signature: func (*Writer) CreatePart(header net/textproto.MIMEHeader) (io.Writer, error)
-      hasQualifiedName("mime/multipart", "Writer", "CreatePart") and
+      this.hasQualifiedName("mime/multipart", "Writer", "CreatePart") and
       (inp.isResult(0) and outp.isReceiver())
     }
 

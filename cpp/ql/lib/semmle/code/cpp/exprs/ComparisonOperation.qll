@@ -76,9 +76,9 @@ class GTExpr extends RelationalOperation, @gtexpr {
 
   override string getOperator() { result = ">" }
 
-  override Expr getGreaterOperand() { result = getLeftOperand() }
+  override Expr getGreaterOperand() { result = this.getLeftOperand() }
 
-  override Expr getLesserOperand() { result = getRightOperand() }
+  override Expr getLesserOperand() { result = this.getRightOperand() }
 }
 
 /**
@@ -92,9 +92,9 @@ class LTExpr extends RelationalOperation, @ltexpr {
 
   override string getOperator() { result = "<" }
 
-  override Expr getGreaterOperand() { result = getRightOperand() }
+  override Expr getGreaterOperand() { result = this.getRightOperand() }
 
-  override Expr getLesserOperand() { result = getLeftOperand() }
+  override Expr getLesserOperand() { result = this.getLeftOperand() }
 }
 
 /**
@@ -108,9 +108,9 @@ class GEExpr extends RelationalOperation, @geexpr {
 
   override string getOperator() { result = ">=" }
 
-  override Expr getGreaterOperand() { result = getLeftOperand() }
+  override Expr getGreaterOperand() { result = this.getLeftOperand() }
 
-  override Expr getLesserOperand() { result = getRightOperand() }
+  override Expr getLesserOperand() { result = this.getRightOperand() }
 }
 
 /**
@@ -124,7 +124,7 @@ class LEExpr extends RelationalOperation, @leexpr {
 
   override string getOperator() { result = "<=" }
 
-  override Expr getGreaterOperand() { result = getRightOperand() }
+  override Expr getGreaterOperand() { result = this.getRightOperand() }
 
-  override Expr getLesserOperand() { result = getLeftOperand() }
+  override Expr getLesserOperand() { result = this.getLeftOperand() }
 }

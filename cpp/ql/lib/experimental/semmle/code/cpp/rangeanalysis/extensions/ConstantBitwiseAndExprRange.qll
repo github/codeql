@@ -50,8 +50,8 @@ private class ConstantBitwiseAndExprRange extends SimpleRangeAnalysisExpr {
     // If an operand can have negative values, the lower bound is unconstrained.
     // Otherwise, the lower bound is zero.
     exists(float lLower, float rLower |
-      lLower = getFullyConvertedLowerBounds(getLeftOperand()) and
-      rLower = getFullyConvertedLowerBounds(getRightOperand()) and
+      lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
+      rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
       (
         (lLower < 0 or rLower < 0) and
         result = exprMinVal(this)
@@ -68,10 +68,10 @@ private class ConstantBitwiseAndExprRange extends SimpleRangeAnalysisExpr {
     // If an operand can have negative values, the upper bound is unconstrained.
     // Otherwise, the upper bound is the minimum of the upper bounds of the operands
     exists(float lLower, float lUpper, float rLower, float rUpper |
-      lLower = getFullyConvertedLowerBounds(getLeftOperand()) and
-      lUpper = getFullyConvertedUpperBounds(getLeftOperand()) and
-      rLower = getFullyConvertedLowerBounds(getRightOperand()) and
-      rUpper = getFullyConvertedUpperBounds(getRightOperand()) and
+      lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
+      lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
+      rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
+      rUpper = getFullyConvertedUpperBounds(this.getRightOperand()) and
       (
         (lLower < 0 or rLower < 0) and
         result = exprMaxVal(this)
@@ -85,6 +85,6 @@ private class ConstantBitwiseAndExprRange extends SimpleRangeAnalysisExpr {
   }
 
   override predicate dependsOnChild(Expr child) {
-    child = getLeftOperand() or child = getRightOperand()
+    child = this.getLeftOperand() or child = this.getRightOperand()
   }
 }

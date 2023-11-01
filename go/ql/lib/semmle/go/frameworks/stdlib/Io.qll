@@ -13,15 +13,15 @@ module Io {
 
     FunctionModels() {
       // signature: func MultiReader(readers ...Reader) Reader
-      hasQualifiedName("io", "MultiReader") and
+      this.hasQualifiedName("io", "MultiReader") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func MultiWriter(writers ...Writer) Writer
-      hasQualifiedName("io", "MultiWriter") and
+      this.hasQualifiedName("io", "MultiWriter") and
       (inp.isResult() and outp.isParameter(_))
       or
       // signature: func Pipe() (*PipeReader, *PipeWriter)
-      hasQualifiedName("io", "Pipe") and
+      this.hasQualifiedName("io", "Pipe") and
       (inp.isResult(1) and outp.isResult(0))
     }
 

@@ -19,9 +19,9 @@ class IgnoredFile extends File {
   IgnoredFile() {
     any(Test t).getFile() = this
     or
-    getRelativePath().regexpMatch("(?i).*/test(case)?s?/.*")
+    this.getRelativePath().regexpMatch("(?i).*/test(case)?s?/.*")
     or
-    getBaseName().regexpMatch("(?i)(.*[._\\-]|^)(min|bundle|concat|spec|tests?)\\.[a-zA-Z]+")
+    this.getBaseName().regexpMatch("(?i)(.*[._\\-]|^)(min|bundle|concat|spec|tests?)\\.[a-zA-Z]+")
     or
     exists(TopLevel tl | tl.getFile() = this |
       tl.isExterns()

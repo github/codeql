@@ -21,26 +21,26 @@ abstract class TranslatedCallBase extends TranslatedElement {
     // though the `this` argument exists and is the result of the instruction
     // that allocated the new object. For those calls, `getQualifier()` should
     // be void.
-    id = -1 and result = getQualifier()
+    id = -1 and result = this.getQualifier()
     or
-    result = getArgument(id)
+    result = this.getArgument(id)
   }
 
   final override Instruction getFirstInstruction() {
-    if exists(getQualifier())
-    then result = getQualifier().getFirstInstruction()
-    else result = getInstruction(CallTargetTag())
+    if exists(this.getQualifier())
+    then result = this.getQualifier().getFirstInstruction()
+    else result = this.getInstruction(CallTargetTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = CallTag() and
     opcode instanceof Opcode::Call and
-    resultType = getTypeForPRValue(getCallResultType())
+    resultType = getTypeForPRValue(this.getCallResultType())
     or
-    hasSideEffect() and
+    this.hasSideEffect() and
     tag = CallSideEffectTag() and
     (
-      if hasWriteSideEffect()
+      if this.hasWriteSideEffect()
       then (
         opcode instanceof Opcode::CallSideEffect and
         resultType = getUnknownType()
@@ -58,14 +58,14 @@ abstract class TranslatedCallBase extends TranslatedElement {
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getQualifier() and
-    result = getInstruction(CallTargetTag())
+    child = this.getQualifier() and
+    result = this.getInstruction(CallTargetTag())
     or
     exists(int argIndex |
-      child = getArgument(argIndex) and
-      if exists(getArgument(argIndex + 1))
-      then result = getArgument(argIndex + 1).getFirstInstruction()
-      else result = getInstruction(CallTag())
+      child = this.getArgument(argIndex) and
+      if exists(this.getArgument(argIndex + 1))
+      then result = this.getArgument(argIndex + 1).getFirstInstruction()
+      else result = this.getInstruction(CallTag())
     )
   }
 
@@ -74,18 +74,18 @@ abstract class TranslatedCallBase extends TranslatedElement {
     (
       (
         tag = CallTag() and
-        if hasSideEffect()
-        then result = getInstruction(CallSideEffectTag())
-        else result = getParent().getChildSuccessor(this)
+        if this.hasSideEffect()
+        then result = this.getInstruction(CallSideEffectTag())
+        else result = this.getParent().getChildSuccessor(this)
       )
       or
-      hasSideEffect() and
+      this.hasSideEffect() and
       tag = CallSideEffectTag() and
-      result = getParent().getChildSuccessor(this)
+      result = this.getParent().getChildSuccessor(this)
       or
       tag = CallTargetTag() and
       kind instanceof GotoEdge and
-      result = getFirstArgumentOrCallInstruction()
+      result = this.getFirstArgumentOrCallInstruction()
     )
   }
 
@@ -93,26 +93,26 @@ abstract class TranslatedCallBase extends TranslatedElement {
     tag = CallTag() and
     (
       operandTag instanceof CallTargetOperandTag and
-      result = getInstruction(CallTargetTag())
+      result = this.getInstruction(CallTargetTag())
       or
       operandTag instanceof ThisArgumentOperandTag and
-      result = getQualifierResult()
+      result = this.getQualifierResult()
       or
       exists(PositionalArgumentOperandTag argTag |
         argTag = operandTag and
-        result = getArgument(argTag.getArgIndex()).getResult()
+        result = this.getArgument(argTag.getArgIndex()).getResult()
       )
     )
   }
 
   final override CSharpType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
     tag = CallSideEffectTag() and
-    hasSideEffect() and
+    this.hasSideEffect() and
     operandTag instanceof SideEffectOperandTag and
     result = getUnknownType()
   }
 
-  Instruction getResult() { result = getInstruction(CallTag()) }
+  Instruction getResult() { result = this.getInstruction(CallTag()) }
 
   /**
    * Gets the result type of the call.
@@ -122,7 +122,7 @@ abstract class TranslatedCallBase extends TranslatedElement {
   /**
    * Holds if the call has a `this` argument.
    */
-  predicate hasQualifier() { exists(getQualifier()) }
+  predicate hasQualifier() { exists(this.getQualifier()) }
 
   /**
    * Gets the expr for the qualifier of the call.
@@ -150,25 +150,25 @@ abstract class TranslatedCallBase extends TranslatedElement {
    * argument. Otherwise, returns the call instruction.
    */
   final Instruction getFirstArgumentOrCallInstruction() {
-    if hasArguments()
-    then result = getArgument(0).getFirstInstruction()
-    else result = getInstruction(CallTag())
+    if this.hasArguments()
+    then result = this.getArgument(0).getFirstInstruction()
+    else result = this.getInstruction(CallTag())
   }
 
   /**
    * Holds if the call has any arguments, not counting the `this` argument.
    */
-  final predicate hasArguments() { exists(getArgument(0)) }
+  final predicate hasArguments() { exists(this.getArgument(0)) }
 
   predicate hasReadSideEffect() { any() }
 
   predicate hasWriteSideEffect() { any() }
 
-  private predicate hasSideEffect() { hasReadSideEffect() or hasWriteSideEffect() }
+  private predicate hasSideEffect() { this.hasReadSideEffect() or this.hasWriteSideEffect() }
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
-    hasSideEffect() and
+    this.hasSideEffect() and
     tag = CallSideEffectTag() and
-    result = getResult()
+    result = this.getResult()
   }
 }

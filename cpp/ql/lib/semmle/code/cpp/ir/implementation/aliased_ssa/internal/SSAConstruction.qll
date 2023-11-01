@@ -34,9 +34,13 @@ private module Cached {
 
   cached
   predicate hasUnreachedInstructionCached(IRFunction irFunc) {
-    exists(OldInstruction oldInstruction |
+    exists(OldIR::Instruction oldInstruction |
       irFunc = oldInstruction.getEnclosingIRFunction() and
-      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+      (
+        Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+        or
+        oldInstruction.getOpcode() instanceof Opcode::Unreached
+      )
     )
   }
 
@@ -366,21 +370,19 @@ private module Cached {
     then
       result = getChi(getOldInstruction(instruction)) and
       kind instanceof GotoEdge
-    else (
+    else
       exists(OldInstruction oldInstruction |
-        oldInstruction = getOldInstruction(instruction) and
+        (
+          oldInstruction = getOldInstruction(instruction)
+          or
+          instruction = getChi(oldInstruction)
+        ) and
         (
           if Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind)
           then result = unreachedInstruction(instruction.getEnclosingIRFunction())
           else result = getNewInstruction(oldInstruction.getSuccessor(kind))
         )
       )
-      or
-      exists(OldInstruction oldInstruction |
-        instruction = getChi(oldInstruction) and
-        result = getNewInstruction(oldInstruction.getSuccessor(kind))
-      )
-    )
   }
 
   cached
@@ -418,12 +420,6 @@ private module Cached {
     exists(IRFunctionBase irFunc |
       instr = unreachedInstruction(irFunc) and result = irFunc.getFunction()
     )
-  }
-
-  /** DEPRECATED: Alias for getInstructionAst */
-  cached
-  deprecated Language::AST getInstructionAST(Instruction instr) {
-    result = getInstructionAst(instr)
   }
 
   cached
@@ -991,9 +987,6 @@ predicate canReuseSsaForMemoryResult(Instruction instruction) {
   // We don't support reusing SSA for any location that could create a `Chi` instruction.
 }
 
-/** DEPRECATED: Alias for canReuseSsaForMemoryResult */
-deprecated predicate canReuseSSAForMemoryResult = canReuseSsaForMemoryResult/1;
-
 /**
  * Expose some of the internal predicates to PrintSSA.qll. We do this by publicly importing those modules in the
  * `DebugSsa` module, which is then imported by PrintSSA.
@@ -1002,9 +995,6 @@ module DebugSsa {
   import PhiInsertion
   import DefUse
 }
-
-/** DEPRECATED: Alias for DebugSsa */
-deprecated module DebugSSA = DebugSsa;
 
 import CachedForDebugging
 

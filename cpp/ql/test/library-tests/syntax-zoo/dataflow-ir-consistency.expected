@@ -4,7 +4,7 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
-missingToString
+| cpp11.cpp:50:15:50:16 | (no string representation) | Node should have one toString but has 0. |
 parameterCallable
 localFlowIsLocal
 readStepIsLocal
@@ -15,6 +15,7 @@ localCallNodes
 postIsNotPre
 postHasUniquePre
 uniquePostUpdate
+| allocators.cpp:4:24:4:26 | this indirection | Node has multiple PostUpdateNodes. |
 | cpp11.cpp:82:17:82:17 | this indirection | Node has multiple PostUpdateNodes. |
 | cpp11.cpp:82:17:82:55 | [...](...){...} indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:514:10:514:11 | definition of r2 indirection | Node has multiple PostUpdateNodes. |
@@ -51,3 +52,6 @@ uniqueParameterNodeAtPosition
 | ir.cpp:726:6:726:13 | TryCatch | 0 indirection | ir.cpp:740:24:740:24 | e indirection | Parameters with overlapping positions. |
 uniqueParameterNodePosition
 uniqueContentApprox
+identityLocalStep
+missingArgumentCall
+multipleArgumentCall

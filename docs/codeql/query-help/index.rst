@@ -7,11 +7,13 @@ View the query help for the queries included in the ``default``, ``security-exte
 - :doc:`CodeQL query help for C# <csharp>`
 - :doc:`CodeQL query help for Go <go>`
 - :doc:`CodeQL query help for Java and Kotlin <java>`
-- :doc:`CodeQL query help for JavaScript <javascript>`
+- :doc:`CodeQL query help for JavaScript and TypeScript <javascript>`
 - :doc:`CodeQL query help for Python <python>`
 - :doc:`CodeQL query help for Ruby <ruby>`
+- :doc:`CodeQL query help for Swift <swift>`
 
 .. include:: ../reusables/kotlin-beta-note.rst
+.. include:: ../reusables/swift-beta-note.rst
 
 .. pull-quote:: Information
 
@@ -36,4 +38,5 @@ For a full list of the CWEs covered by these queries, see ":doc:`CodeQL CWE cove
    javascript
    python
    ruby
+   swift
    codeql-cwe-coverage

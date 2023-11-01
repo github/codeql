@@ -1,6 +1,6 @@
 private import codeql.swift.generated.expr.PostfixUnaryExpr
 private import codeql.swift.elements.expr.Expr
-private import codeql.swift.elements.decl.AbstractFunctionDecl
+private import codeql.swift.elements.decl.Function
 
 /**
  * A Swift postfix unary expression, that is, a unary expression that appears
@@ -18,5 +18,5 @@ class PostfixUnaryExpr extends Generated::PostfixUnaryExpr {
   /**
    * Gets the operator of this postfix unary expression (the function that is called).
    */
-  AbstractFunctionDecl getOperator() { result = this.getStaticTarget() }
+  Function getOperator() { result = this.getStaticTarget() }
 }

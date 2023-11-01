@@ -19,10 +19,10 @@ import cpp
 class CandidateParameter extends Parameter {
   CandidateParameter() {
     // an array parameter
-    getUnspecifiedType() instanceof ArrayType
+    this.getUnspecifiedType() instanceof ArrayType
     or
     // a pointer parameter
-    getUnspecifiedType() instanceof PointerType and
+    this.getUnspecifiedType() instanceof PointerType and
     // whose address is never taken (rules out common
     // false positive patterns)
     not exists(AddressOfExpr aoe | aoe.getAddressable() = this)

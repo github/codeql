@@ -1,9 +1,7 @@
 package com.github.codeql
 
 import com.github.codeql.utils.*
-import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
-import com.github.codeql.utils.versions.getKotlinType
-import com.github.codeql.utils.versions.isRawType
+import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.*
@@ -71,18 +69,41 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
+    fun useFileClassType(fqName: FqName) = TypeResults(
+        TypeResult(extractFileClass(fqName), "", ""),
+        TypeResult(fakeKotlinType(), "", "")
+    )
+
+    private fun useFileClassType(pkg: String, jvmName: String) = TypeResults(
+        TypeResult(extractFileClass(pkg, jvmName), "", ""),
+        TypeResult(fakeKotlinType(), "", "")
+    )
+
     fun extractFileClass(f: IrFile): Label<out DbClassorinterface> {
-        val pkg = f.fqName.asString()
+        val pkg = f.packageFqName.asString()
         val jvmName = getFileClassName(f)
+        val id = extractFileClass(pkg, jvmName)
+        if (tw.lm.fileClassLocationsExtracted.add(f)) {
+            val fileId = tw.mkFileId(f.path, false)
+            val locId = tw.getWholeFileLocation(fileId)
+            tw.writeHasLocation(id, locId)
+        }
+        return id
+    }
+
+    private fun extractFileClass(fqName: FqName): Label<out DbClassorinterface> {
+        val pkg = if (fqName.isRoot()) "" else fqName.parent().asString()
+        val jvmName = fqName.shortName().asString()
+        return extractFileClass(pkg, jvmName)
+    }
+
+    private fun extractFileClass(pkg: String, jvmName: String): Label<out DbClassorinterface> {
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
         val label = "@\"class;$qualClassName\""
         val id: Label<DbClassorinterface> = tw.getLabelFor(label) {
-            val fileId = tw.mkFileId(f.path, false)
-            val locId = tw.getWholeFileLocation(fileId)
             val pkgId = extractPackage(pkg)
             tw.writeClasses_or_interfaces(it, jvmName, pkgId, it)
             tw.writeFile_class(it)
-            tw.writeHasLocation(it, locId)
 
             addModifiers(it, "public", "final")
         }
@@ -118,7 +139,7 @@ open class KotlinUsesExtractor(
     }
 
     fun getJavaEquivalentClass(c: IrClass) =
-        getJavaEquivalentClassId(c)?.let { getClassByFqName(pluginContext, it.asSingleFqName()) }?.owner
+        getJavaEquivalentClassId(c)?.let { getClassByClassId(pluginContext, it) }?.owner
 
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
@@ -139,13 +160,13 @@ open class KotlinUsesExtractor(
         if (clsFile == null || isExternalDeclaration(cls)) {
             val filePath = getIrClassBinaryPath(cls)
             val newTrapWriter = tw.makeFileTrapWriter(filePath, true)
-            val newLoggerTrapWriter = logger.tw.makeFileTrapWriter(filePath, false)
+            val newLoggerTrapWriter = logger.dtw.makeFileTrapWriter(filePath, false)
             val newLogger = FileLogger(logger.loggerBase, newLoggerTrapWriter)
             return KotlinFileExtractor(newLogger, newTrapWriter, null, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, newDeclarationStack, globalExtensionState)
         }
 
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, true)
-        val newLoggerTrapWriter = logger.tw.makeSourceFileTrapWriter(clsFile, false)
+        val newLoggerTrapWriter = logger.dtw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.loggerBase, newLoggerTrapWriter)
         return KotlinFileExtractor(newLogger, newTrapWriter, null, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, newDeclarationStack, globalExtensionState)
     }
@@ -239,8 +260,6 @@ open class KotlinUsesExtractor(
         return UseClassInstanceResult(classTypeResult, extractClass)
     }
 
-    private fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
-
     private fun extractClassLaterIfExternal(c: IrClass) {
         if (isExternalDeclaration(c)) {
             extractExternalClassLater(c)
@@ -252,7 +271,11 @@ open class KotlinUsesExtractor(
             is IrClass -> extractExternalClassLater(parent)
             is IrFunction -> extractExternalEnclosingClassLater(parent)
             is IrFile -> logger.error("extractExternalEnclosingClassLater but no enclosing class.")
-            else -> logger.error("Unrecognised extractExternalEnclosingClassLater: " + d.javaClass)
+            is IrExternalPackageFragment -> {
+                // The parent is a (multi)file class. We don't need
+                // extract it separately.
+            }
+            else -> logger.error("Unrecognised extractExternalEnclosingClassLater ${parent.javaClass} for ${d.javaClass}")
         }
     }
 
@@ -275,9 +298,23 @@ open class KotlinUsesExtractor(
             }
         }
 
+    private fun extractParentExternalClassLater(d: IrDeclaration) {
+        val p = d.parent
+        when (p) {
+            is IrClass -> extractExternalClassLater(p)
+            is IrExternalPackageFragment -> {
+                // The parent is a (multi)file class. We don't need to
+                // extract it separately.
+            }
+            else -> {
+                logger.warn("Unexpected parent type ${p.javaClass} for external file class member")
+            }
+        }
+    }
+
     private fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
         if (isExternalFileClassMember(p)) {
-            extractExternalClassLater(p.parentAsClass)
+            extractParentExternalClassLater(p)
             val signature = getTrapFileSignature(p)
             dependencyCollector?.addDependency(p, signature)
             externalClassExtractor.extractLater(p, signature)
@@ -286,7 +323,7 @@ open class KotlinUsesExtractor(
 
     private fun extractFieldLaterIfExternalFileMember(f: IrField) {
         if (isExternalFileClassMember(f)) {
-            extractExternalClassLater(f.parentAsClass)
+            extractParentExternalClassLater(f)
             val signature = getTrapFileSignature(f)
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
@@ -295,7 +332,7 @@ open class KotlinUsesExtractor(
 
     private fun extractFunctionLaterIfExternalFileMember(f: IrFunction) {
         if (isExternalFileClassMember(f)) {
-            extractExternalClassLater(f.parentAsClass)
+            extractParentExternalClassLater(f)
             (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
                 extractPropertyLaterIfExternalFileMember(it.owner)
                 // No need to extract the function specifically, as the property's
@@ -551,6 +588,22 @@ open class KotlinUsesExtractor(
                 )
         }
 
+    /*
+    Kotlin arrays can be broken down as:
+
+    isArray(t)
+    |- t.isBoxedArray
+    |  |- t.isArray()         e.g. Array<Boolean>, Array<Boolean?>
+    |  |- t.isNullableArray() e.g. Array<Boolean>?, Array<Boolean?>?
+    |- t.isPrimitiveArray()   e.g. BooleanArray
+
+    For the corresponding Java types:
+    Boxed arrays are represented as e.g. java.lang.Boolean[].
+    Primitive arrays are represented as e.g. boolean[].
+    */
+
+    private fun isArray(t: IrType) = t.isBoxedArray || t.isPrimitiveArray()
+
     data class ArrayInfo(val elementTypeResults: TypeResults,
                          val componentTypeResults: TypeResults,
                          val dimensions: Int)
@@ -565,7 +618,7 @@ open class KotlinUsesExtractor(
      */
     private fun useArrayType(t: IrType, isPrimitiveArray: Boolean): ArrayInfo {
 
-        if (!t.isBoxedArray && !t.isPrimitiveArray()) {
+        if (!isArray(t)) {
             val nullableT = if (t.isPrimitiveType() && !isPrimitiveArray) t.makeNullable() else t
             val typeResults = useType(nullableT)
             return ArrayInfo(typeResults, typeResults, 0)
@@ -598,7 +651,7 @@ open class KotlinUsesExtractor(
         val componentTypeLabel = recInfo.componentTypeResults.javaResult.id
         val dimensions = recInfo.dimensions + 1
 
-        val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabel}}\"") {
+        val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{$elementTypeLabel}\"") {
             tw.writeArrays(
                 it,
                 javaShortName,
@@ -747,6 +800,41 @@ open class KotlinUsesExtractor(
         }
     }
 
+    private fun parentOf(d: IrDeclaration): IrDeclarationParent {
+        if (d is IrField) {
+            return getFieldParent(d)
+        }
+        return d.parent
+    }
+
+    fun useDeclarationParentOf(
+        // The declaration
+        d: IrDeclaration,
+        // Whether the type of entity whose parent this is can be a
+        // top-level entity in the JVM's eyes. If so, then its parent may
+        // be a file; otherwise, if dp is a file foo.kt, then the parent
+        // is really the JVM class FooKt.
+        canBeTopLevel: Boolean,
+        classTypeArguments: List<IrTypeArgument>? = null,
+        inReceiverContext: Boolean = false):
+        Label<out DbElement>? {
+
+        val parent = parentOf(d)
+        if (parent is IrExternalPackageFragment) {
+            // This is in a file class.
+            val fqName = getFileClassFqName(d)
+            if (fqName == null) {
+                logger.error("Can't get FqName for declaration in external package fragment ${d.javaClass}")
+                return null
+            }
+            return extractFileClass(fqName)
+        }
+        return useDeclarationParent(parent, canBeTopLevel, classTypeArguments, inReceiverContext)
+    }
+
+    // Generally, useDeclarationParentOf should be used instead of
+    // calling this directly, as this cannot handle
+    // IrExternalPackageFragment
     fun useDeclarationParent(
         // The declaration parent according to Kotlin
         dp: IrDeclarationParent,
@@ -761,7 +849,7 @@ open class KotlinUsesExtractor(
         when(dp) {
             is IrFile ->
                 if(canBeTopLevel) {
-                    usePackage(dp.fqName.asString())
+                    usePackage(dp.packageFqName.asString())
                 } else {
                     extractFileClass(dp)
                 }
@@ -778,8 +866,7 @@ open class KotlinUsesExtractor(
                 }
             is IrFunction -> useFunction(dp)
             is IrExternalPackageFragment -> {
-                // TODO
-                logger.error("Unhandled IrExternalPackageFragment")
+                logger.error("Unable to handle IrExternalPackageFragment as an IrDeclarationParent")
                 null
             }
             else -> {
@@ -1020,8 +1107,13 @@ open class KotlinUsesExtractor(
      * enclosing classes to get the instantiation that this function is
      * in.
      */
-    fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) : String {
-        return getFunctionLabel(f, null, classTypeArgsIncludingOuterClasses)
+    fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): String? {
+        val parentId = useDeclarationParentOf(f, false, classTypeArgsIncludingOuterClasses, true)
+        if (parentId == null) {
+            logger.error("Couldn't get parent ID for function label")
+            return null
+        }
+        return getFunctionLabel(f, parentId, classTypeArgsIncludingOuterClasses)
     }
 
     /*
@@ -1038,10 +1130,10 @@ open class KotlinUsesExtractor(
      * that omit one or more parameters that has a default value specified.
      */
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, maybeParameterList: List<IrValueParameter>? = null) =
+    fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, maybeParameterList: List<IrValueParameter>? = null): String =
         getFunctionLabel(
             f.parent,
-            maybeParentId,
+            parentId,
             getFunctionShortName(f).nameInDB,
             (maybeParameterList ?: f.valueParameters).map { it.type },
             getAdjustedReturnType(f),
@@ -1064,7 +1156,7 @@ open class KotlinUsesExtractor(
         // The parent of the function; normally f.parent.
         parent: IrDeclarationParent,
         // The ID of the function's parent, or null if we should work it out ourselves.
-        maybeParentId: Label<out DbElement>?,
+        parentId: Label<out DbElement>,
         // The name of the function; normally f.name.asString().
         name: String,
         // The types of the value parameters that the functions takes; normally f.valueParameters.map { it.type }.
@@ -1088,7 +1180,6 @@ open class KotlinUsesExtractor(
         // The prefix used in the label. "callable", unless a property label is created, then it's "property".
         prefix: String = "callable"
     ): String {
-        val parentId = maybeParentId ?: useDeclarationParent(parent, false, classTypeArgsIncludingOuterClasses, true)
         val allParamTypes = if (extensionParamType == null) parameterTypes else listOf(extensionParamType) + parameterTypes
 
         val substitutionMap = classTypeArgsIncludingOuterClasses?.let { notNullArgs ->
@@ -1127,7 +1218,7 @@ open class KotlinUsesExtractor(
         // method (and presumably that disambiguation is never needed when the method belongs to a parameterized
         // instance of a generic class), but as of now I don't know when the raw method would be referred to.
         val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArgsIncludingOuterClasses.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
-        return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
+        return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}$typeArgSuffix\""
     }
 
     val javaLangClass by lazy { referenceExternalClass("java.lang.Class") }
@@ -1141,13 +1232,13 @@ open class KotlinUsesExtractor(
                     }
                 } else {
                     t.classOrNull?.let { tCls ->
-                        if (t.isArray() || t.isNullableArray()) {
+                        if (t.isBoxedArray) {
                             (t.arguments.singleOrNull() as? IrTypeProjection)?.let { elementTypeArg ->
                                 val elementType = elementTypeArg.type
                                 val replacedElementType = kClassToJavaClass(elementType)
                                 if (replacedElementType !== elementType) {
                                     val newArg = makeTypeProjection(replacedElementType, elementTypeArg.variance)
-                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullableArray())
+                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullable())
                                 }
                             }
                         }
@@ -1308,16 +1399,30 @@ open class KotlinUsesExtractor(
             else -> false
         }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
-        return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
-    }
-
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
+    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T>? {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
         }
         val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        val parentId = useDeclarationParentOf(javaFun, false, classTypeArgsIncludingOuterClasses, true)
+        if (parentId == null) {
+            logger.error("Couldn't find parent ID for function ${f.name.asString()}")
+            return null
+        }
+        return useFunction(f, javaFun, parentId, classTypeArgsIncludingOuterClasses)
+    }
+
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
+        if (f.isLocalFunction()) {
+            val ids = getLocallyVisibleFunctionLabels(f)
+            return ids.function.cast<T>()
+        }
+        val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        return useFunction(f, javaFun, parentId, classTypeArgsIncludingOuterClasses)
+    }
+
+    private fun <T: DbCallable> useFunction(f: IrFunction, javaFun: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out T> {
         val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
         val id: Label<T> = tw.getLabelFor(label) {
             extractPrivateSpecialisedDeclaration(f, classTypeArgsIncludingOuterClasses)
@@ -1365,7 +1470,7 @@ open class KotlinUsesExtractor(
                 val boundResults = useType(arg.type, TypeContext.GENERIC_ARGUMENT)
                 val boundLabel = boundResults.javaResult.id.cast<DbReftype>()
 
-                return if(arg.variance == Variance.INVARIANT)
+                if(arg.variance == Variance.INVARIANT)
                     boundResults.javaResult.cast<DbReftype>().forgetSignature()
                 else {
                     val keyPrefix = if (arg.variance == Variance.IN_VARIANCE) "super" else "extends"
@@ -1379,7 +1484,7 @@ open class KotlinUsesExtractor(
             }
             else -> {
                 logger.error("Unexpected type argument.")
-                return extractJavaErrorType().forgetSignature()
+                extractJavaErrorType().forgetSignature()
             }
         }
     }
@@ -1450,21 +1555,21 @@ open class KotlinUsesExtractor(
 
     fun getTypeParameterParentLabel(param: IrTypeParameter) =
         param.parent.let {
-            (it as? IrFunction)?.let { fn ->
-                if (this is KotlinFileExtractor)
-                    this.declarationStack.findOverriddenAttributes(fn)?.takeUnless {
-                        // When extracting the `static fun f$default(...)` that accompanies `fun <T> f(val x: T? = defaultExpr, ...)`,
-                        // `f$default` has no type parameters, and so there is no `f$default::T` to refer to.
-                        // We have no good way to extract references to `T` in `defaultExpr`, so we just fall back on describing it
-                        // in terms of `f::T`, even though that type variable ought to be out of scope here.
-                        attribs -> attribs.typeParameters?.isEmpty() == true
-                    }?.id
-                else
-                    null
-            } ?:
             when (it) {
                 is IrClass -> useClassSource(it)
-                is IrFunction -> useFunction(it, noReplace = true)
+                is IrFunction ->
+                    (if (this is KotlinFileExtractor)
+                        this.declarationStack.findOverriddenAttributes(it)?.takeUnless {
+                            // When extracting the `static fun f$default(...)` that accompanies `fun <T> f(val x: T? = defaultExpr, ...)`,
+                            // `f$default` has no type parameters, and so there is no `f$default::T` to refer to.
+                            // We have no good way to extract references to `T` in `defaultExpr`, so we just fall back on describing it
+                            // in terms of `f::T`, even though that type variable ought to be out of scope here.
+                            attribs -> attribs.typeParameters?.isEmpty() == true
+                        }?.id
+                    else
+                        null
+                    ) ?:
+                    useFunction(it, noReplace = true)
                 else -> { logger.error("Unexpected type parameter parent $it"); null }
             }
         }
@@ -1578,7 +1683,7 @@ open class KotlinUsesExtractor(
             }
 
             if (owner is IrClass) {
-                if (t.isArray() || t.isNullableArray()) {
+                if (t.isBoxedArray) {
                     val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
                     val erasedElementType = erase(elementType)
                     return owner.typeWith(erasedElementType).codeQlWithHasQuestionMark(t.isNullable())
@@ -1607,7 +1712,7 @@ open class KotlinUsesExtractor(
         val overriddenParentAttributes = (declarationParent as? IrFunction)?.let {
             (this as? KotlinFileExtractor)?.declarationStack?.findOverriddenAttributes(it)
         }
-        val parentId = parent ?: overriddenParentAttributes?.id ?: useDeclarationParent(declarationParent, false)
+        val parentId = parent ?: overriddenParentAttributes?.id ?: useDeclarationParentOf(vp, false)
 
         val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: vp.index
         val idxOffset = if (declarationParent is IrFunction && declarationParent.extensionReceiverParameter != null)
@@ -1635,7 +1740,7 @@ open class KotlinUsesExtractor(
             it.isConst || it.isLateinit
         } ?: false
 
-    fun getFieldParent(f: IrField) =
+    private fun getFieldParent(f: IrField) =
         f.parentClassOrNull?.let {
             if (it.isCompanion && isDirectlyExposableCompanionObjectField(f))
                 it.parent
@@ -1652,20 +1757,20 @@ open class KotlinUsesExtractor(
         }
 
     fun getFieldLabel(f: IrField): String {
-        val parentId = useDeclarationParent(getFieldParent(f), false)
+        val parentId = useDeclarationParentOf(f, false)
         // Distinguish backing fields of properties based on their extension receiver type;
         // otherwise two extension properties declared in the same enclosing context will get
         // clashing trap labels. These are always private, so we can just make up a label without
         // worrying about their names as seen from Java.
         val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it).javaResult.id}" } ?: ""
-        return "@\"field;{$parentId};${extensionPropertyDiscriminator}${f.name.asString()}\""
+        return "@\"field;{$parentId};$extensionPropertyDiscriminator${f.name.asString()}\""
     }
 
     fun useField(f: IrField): Label<out DbField> =
         tw.getLabelFor<DbField>(getFieldLabel(f)).also { extractFieldLaterIfExternalFileMember(f) }
 
     fun getPropertyLabel(p: IrProperty): String? {
-        val parentId = useDeclarationParent(p.parent, false)
+        val parentId = useDeclarationParentOf(p, false)
         if (parentId == null) {
             return null
         } else {
@@ -1697,7 +1802,7 @@ open class KotlinUsesExtractor(
         }
 
     fun getEnumEntryLabel(ee: IrEnumEntry): String {
-        val parentId = useDeclarationParent(ee.parent, false)
+        val parentId = useDeclarationParentOf(ee, false)
         return "@\"field;{$parentId};${ee.name.asString()}\""
     }
 
@@ -1705,7 +1810,7 @@ open class KotlinUsesExtractor(
         tw.getLabelFor(getEnumEntryLabel(ee))
 
     fun getTypeAliasLabel(ta: IrTypeAlias): String {
-        val parentId = useDeclarationParent(ta.parent, true)
+        val parentId = useDeclarationParentOf(ta, true)
         return "@\"type_alias;{$parentId};${ta.name.asString()}\""
     }
 

@@ -82,7 +82,7 @@ public class Test {
             Connection con = DriverManager.getConnection("");
             PreparedStatement ps1 = con.prepareStatement("UPDATE EMPLOYEES SET NAME = ? WHERE ID = ?");
             ps1.setString(1, (String)source());
-            sink(ps1); // $hasValueFlow
+            sink(ps1); // safe
 
             // java.util.concurrent.atomic
             AtomicReference ar = new AtomicReference(source());

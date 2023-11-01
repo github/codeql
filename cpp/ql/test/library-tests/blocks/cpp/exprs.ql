@@ -6,7 +6,7 @@ import cpp
  */
 
 class CStyleCastPlain extends CStyleCast {
-  override string toString() { result = "Conversion of " + getExpr().toString() }
+  override string toString() { result = "Conversion of " + this.getExpr().toString() }
 }
 
 from Expr e

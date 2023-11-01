@@ -5,3 +5,4 @@ dependencies:
     codeql/python-queries: ${workspace}
 extractor: python
 tests: .
+warnOnImplicitThis: true

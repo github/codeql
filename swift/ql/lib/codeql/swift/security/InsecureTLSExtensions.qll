@@ -20,16 +20,16 @@ abstract class InsecureTlsExtensionsSource extends DataFlow::Node { }
 abstract class InsecureTlsExtensionsSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for insecure TLS configuration vulnerabilities.
+ * A barrier for insecure TLS configuration vulnerabilities.
  */
-abstract class InsecureTlsExtensionsSanitizer extends DataFlow::Node { }
+abstract class InsecureTlsExtensionsBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class InsecureTlsExtensionsAdditionalTaintStep extends Unit {
+class InsecureTlsExtensionsAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to insecure TLS configuration vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
@@ -45,19 +45,16 @@ private class EnumInsecureTlsExtensionsSource extends InsecureTlsExtensionsSourc
   }
 }
 
-/**
- * A sink for assignment of TLS-related properties of `NSURLSessionConfiguration`.
- */
-private class NsUrlTlsExtensionsSink extends InsecureTlsExtensionsSink {
-  NsUrlTlsExtensionsSink() {
-    exists(AssignExpr assign |
-      assign.getSource() = this.asExpr() and
-      assign.getDest().(MemberRefExpr).getMember().(ConcreteVarDecl).getName() =
-        [
-          "tlsMinimumSupportedProtocolVersion", "tlsMinimumSupportedProtocol",
-          "tlsMaximumSupportedProtocolVersion", "tlsMaximumSupportedProtocol"
-        ]
-    )
+private class TlsExtensionsSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // TLS-related properties of `URLSessionConfiguration`
+        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocolVersion;;;PostUpdate;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocol;;;PostUpdate;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocolVersion;;;PostUpdate;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocol;;;PostUpdate;tls-protocol-version",
+      ]
   }
 }
 

@@ -10,7 +10,7 @@ class ArgumentPosition = DataFlowDispatch::ArgumentPosition;
 
 // import all instances below
 private module Summaries {
-  /* TODO */
+  private import codeql.swift.frameworks.Frameworks
 }
 
 class SummaryComponent = Impl::Public::SummaryComponent;
@@ -21,25 +21,11 @@ module SummaryComponent {
 
   predicate content = SummaryComponentInternal::content/1;
 
-  /** Gets a summary component for parameter `i`. */
-  SummaryComponent parameter(int i) {
-    none() // TODO
-  }
+  predicate parameter = SummaryComponentInternal::parameter/1;
 
-  /** Gets a summary component for argument `i`. */
-  SummaryComponent argument(int i) {
-    none() // TODO
-  }
+  predicate argument = SummaryComponentInternal::argument/1;
 
   predicate return = SummaryComponentInternal::return/1;
-
-  /** Gets a summary component that represents a qualifier. */
-  SummaryComponent qualifier() {
-    none() // TODO
-  }
-
-  /** Gets a summary component that represents the return value of a call. */
-  SummaryComponent return() { result = return(any(DataFlowDispatch::NormalReturnKind rk)) }
 }
 
 class SummaryComponentStack = Impl::Public::SummaryComponentStack;
@@ -52,16 +38,9 @@ module SummaryComponentStack {
 
   predicate push = SummaryComponentStackInternal::push/2;
 
-  /** Gets a singleton stack for argument `i`. */
-  SummaryComponentStack argument(int i) { result = singleton(SummaryComponent::argument(i)) }
+  predicate argument = SummaryComponentStackInternal::argument/1;
 
   predicate return = SummaryComponentStackInternal::return/1;
-
-  /** Gets a singleton stack representing a qualifier. */
-  SummaryComponentStack qualifier() { result = singleton(SummaryComponent::qualifier()) }
-
-  /** Gets a singleton stack representing the return value of a call. */
-  SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;

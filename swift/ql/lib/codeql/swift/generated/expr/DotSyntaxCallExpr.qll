@@ -4,6 +4,9 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.SelfApplyExpr
 
 module Generated {
+  /**
+   * INTERNAL: Do not use.
+   */
   class DotSyntaxCallExpr extends Synth::TDotSyntaxCallExpr, SelfApplyExpr {
     override string getAPrimaryQlClass() { result = "DotSyntaxCallExpr" }
   }

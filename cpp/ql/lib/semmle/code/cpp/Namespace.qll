@@ -230,8 +230,12 @@ class GlobalNamespace extends Namespace {
 }
 
 /**
- * The C++ `std::` namespace.
+ * The C++ `std::` namespace and its inline namespaces.
  */
 class StdNamespace extends Namespace {
-  StdNamespace() { this.hasName("std") and this.getParentNamespace() instanceof GlobalNamespace }
+  StdNamespace() {
+    this.hasName("std") and this.getParentNamespace() instanceof GlobalNamespace
+    or
+    this.isInline() and this.getParentNamespace() instanceof StdNamespace
+  }
 }

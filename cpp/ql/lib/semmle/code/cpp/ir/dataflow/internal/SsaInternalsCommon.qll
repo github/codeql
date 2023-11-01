@@ -6,6 +6,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
 private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import DataFlowPrivate
+private import semmle.code.cpp.ir.ValueNumbering
 
 /**
  * Holds if `operand` is an operand that is not used by the dataflow library.
@@ -117,6 +118,16 @@ private int countIndirections(Type t) {
   else (
     result = any(Indirection ind | ind.getType() = t).getNumberOfIndirections()
     or
+    // If there is an indirection for the type, but we cannot count the number of indirections
+    // it means we couldn't reach a non-indirection type by stripping off indirections. This
+    // can occur if an iterator specifies itself as the value type. In this case we default to
+    // 1 indirection fore the type.
+    exists(Indirection ind |
+      ind.getType() = t and
+      not exists(ind.getNumberOfIndirections()) and
+      result = 1
+    )
+    or
     not exists(Indirection ind | ind.getType() = t) and
     result = 0
   )
@@ -136,13 +147,19 @@ int countIndirectionsForCppType(LanguageType langType) {
   )
 }
 
-/**
- * A `CallInstruction` that calls an allocation function such
- * as `malloc` or `operator new`.
- */
-class AllocationInstruction extends CallInstruction {
-  AllocationInstruction() { this.getStaticCallTarget() instanceof Cpp::AllocationFunction }
+private predicate isIndirectionType(Type t) { t instanceof Indirection }
+
+private predicate hasUnspecifiedBaseType(Indirection t, Type base) {
+  base = t.getBaseType().getUnspecifiedType()
 }
+
+/**
+ * Holds if `t2` is the same type as `t1`, but after stripping away `result` number
+ * of indirections.
+ * Furthermore, specifies in `t2` been deeply stripped and typedefs has been resolved.
+ */
+private int getNumberOfIndirectionsImpl(Type t1, Type t2) =
+  shortestDistances(isIndirectionType/1, hasUnspecifiedBaseType/2)(t1, t2, result)
 
 /**
  * An abstract class for handling indirections.
@@ -162,7 +179,10 @@ abstract class Indirection extends Type {
    * For example, the number of indirections of a variable `p` of type
    * `int**` is `3` (i.e., `p`, `*p` and `**p`).
    */
-  abstract int getNumberOfIndirections();
+  final int getNumberOfIndirections() {
+    result =
+      getNumberOfIndirectionsImpl(this.getType(), any(Type end | not end instanceof Indirection))
+  }
 
   /**
    * Holds if `deref` is an instruction that behaves as a `LoadInstruction`
@@ -200,23 +220,15 @@ private class PointerOrArrayOrReferenceTypeIndirection extends Indirection insta
   PointerOrArrayOrReferenceTypeIndirection() {
     baseType = PointerOrArrayOrReferenceType.super.getBaseType()
   }
-
-  override int getNumberOfIndirections() {
-    result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
-  }
 }
 
 private class PointerWrapperTypeIndirection extends Indirection instanceof PointerWrapper {
   PointerWrapperTypeIndirection() { baseType = PointerWrapper.super.getBaseType() }
 
-  override int getNumberOfIndirections() {
-    result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
-  }
-
   override predicate isAdditionalDereference(Instruction deref, Operand address) {
     exists(CallInstruction call |
       operandForFullyConvertedCall(getAUse(deref), call) and
-      this = call.getStaticCallTarget().getClassAndName("operator*") and
+      this = call.getStaticCallTarget().getClassAndName(["operator*", "operator->", "get"]) and
       address = call.getThisArgumentOperand()
     )
   }
@@ -231,10 +243,6 @@ private module IteratorIndirections {
     IteratorIndirection() {
       not this instanceof PointerOrArrayOrReferenceTypeIndirection and
       baseType = super.getValueType()
-    }
-
-    override int getNumberOfIndirections() {
-      result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
     }
 
     override predicate isAdditionalDereference(Instruction deref, Operand address) {
@@ -258,7 +266,7 @@ private module IteratorIndirections {
         // Taint through `operator+=` and `operator-=` on iterators.
         call.getStaticCallTarget() instanceof Iterator::IteratorAssignArithmeticOperator and
         node2.(IndirectArgumentOutNode).getPreUpdateNode() = node1 and
-        node1.(IndirectOperand).getOperand() = call.getArgumentOperand(0) and
+        node1.(IndirectOperand).hasOperandAndIndirectionIndex(call.getArgumentOperand(0), _) and
         node1.getType().getUnspecifiedType() = this
       )
     }
@@ -312,10 +320,20 @@ private module IteratorIndirections {
   }
 }
 
-predicate isDereference(Instruction deref, Operand address) {
-  any(Indirection ind).isAdditionalDereference(deref, address)
+/**
+ * Holds if `deref` is the result of loading the value at the address
+ * represented by `address`.
+ *
+ * If `additional = true` then the dereference comes from an `Indirection`
+ * class (such as a call to an iterator's `operator*`), and if
+ * `additional = false` the dereference is a `LoadInstruction`.
+ */
+predicate isDereference(Instruction deref, Operand address, boolean additional) {
+  any(Indirection ind).isAdditionalDereference(deref, address) and
+  additional = true
   or
-  deref.(LoadInstruction).getSourceAddressOperand() = address
+  deref.(LoadInstruction).getSourceAddressOperand() = address and
+  additional = false
 }
 
 predicate isWrite(Node0Impl value, Operand address, boolean certain) {
@@ -353,17 +371,22 @@ newtype TBaseSourceVariable =
   // Each IR variable gets its own source variable
   TBaseIRVariable(IRVariable var) or
   // Each allocation gets its own source variable
-  TBaseCallVariable(AllocationInstruction call)
+  TBaseCallVariable(CallInstruction call) { not call.getResultIRType() instanceof IRVoidType }
 
-abstract class BaseSourceVariable extends TBaseSourceVariable {
+abstract private class AbstractBaseSourceVariable extends TBaseSourceVariable {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
   /** Gets the type of this base source variable. */
-  abstract DataFlowType getType();
+  final DataFlowType getType() { this.getLanguageType().hasUnspecifiedType(result, _) }
+
+  /** Gets the `CppType` of this base source variable. */
+  abstract CppType getLanguageType();
 }
 
-class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
+final class BaseSourceVariable = AbstractBaseSourceVariable;
+
+class BaseIRVariable extends AbstractBaseSourceVariable, TBaseIRVariable {
   IRVariable var;
 
   IRVariable getIRVariable() { result = var }
@@ -372,19 +395,19 @@ class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
 
   override string toString() { result = var.toString() }
 
-  override DataFlowType getType() { result = var.getType() }
+  override CppType getLanguageType() { result = var.getLanguageType() }
 }
 
-class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
-  AllocationInstruction call;
+class BaseCallVariable extends AbstractBaseSourceVariable, TBaseCallVariable {
+  CallInstruction call;
 
   BaseCallVariable() { this = TBaseCallVariable(call) }
 
-  AllocationInstruction getCallInstruction() { result = call }
+  CallInstruction getCallInstruction() { result = call }
 
   override string toString() { result = call.toString() }
 
-  override DataFlowType getType() { result = call.getResultType() }
+  override CppType getLanguageType() { result = getResultLanguageType(call) }
 }
 
 /**
@@ -484,8 +507,7 @@ private class BaseIRVariableInstruction extends BaseSourceVariableInstruction,
   override BaseIRVariable getBaseSourceVariable() { result.getIRVariable() = this.getIRVariable() }
 }
 
-private class BaseAllocationInstruction extends BaseSourceVariableInstruction, AllocationInstruction
-{
+private class BaseCallInstruction extends BaseSourceVariableInstruction, CallInstruction {
   override BaseCallVariable getBaseSourceVariable() { result.getCallInstruction() = this }
 }
 
@@ -533,7 +555,7 @@ private module Cached {
       isDef(_, value, iteratorDerefAddress, iteratorBase, numberOfLoads + 2, 0) and
       isUse(_, iteratorAddress, iteratorBase, numberOfLoads + 1, 0) and
       iteratorBase.getResultType() instanceof Interfaces::Iterator and
-      isDereference(iteratorAddress.getDef(), read.getArgumentDef().getAUse()) and
+      isDereference(iteratorAddress.getDef(), read.getArgumentDef().getAUse(), _) and
       memory = read.getSideEffectOperand().getAnyDef()
     )
   }
@@ -573,7 +595,6 @@ private module Cached {
     )
   }
 
-  pragma[assume_small_delta]
   private predicate convertsIntoArgumentRev(Instruction instr) {
     convertsIntoArgumentFwd(instr) and
     (
@@ -770,11 +791,14 @@ private module Cached {
    * instead associated with the operand returned by this predicate.
    */
   cached
-  Operand getIRRepresentationOfIndirectOperand(Operand operand, int indirectionIndex) {
+  predicate hasIRRepresentationOfIndirectOperand(
+    Operand operand, int indirectionIndex, Operand operandRepr, int indirectionIndexRepr
+  ) {
+    indirectionIndex = [1 .. countIndirectionsForCppType(getLanguageType(operand))] and
     exists(Instruction load |
-      isDereference(load, operand) and
-      result = unique( | | getAUse(load)) and
-      isUseImpl(operand, _, indirectionIndex - 1)
+      isDereference(load, operand, false) and
+      operandRepr = unique( | | getAUse(load)) and
+      indirectionIndexRepr = indirectionIndex - 1
     )
   }
 
@@ -786,12 +810,15 @@ private module Cached {
    * instead associated with the instruction returned by this predicate.
    */
   cached
-  Instruction getIRRepresentationOfIndirectInstruction(Instruction instr, int indirectionIndex) {
+  predicate hasIRRepresentationOfIndirectInstruction(
+    Instruction instr, int indirectionIndex, Instruction instrRepr, int indirectionIndexRepr
+  ) {
+    indirectionIndex = [1 .. countIndirectionsForCppType(getResultLanguageType(instr))] and
     exists(Instruction load, Operand address |
-      address.getDef() = instr and
-      isDereference(load, address) and
-      isUseImpl(address, _, indirectionIndex - 1) and
-      result = instr
+      address = unique( | | getAUse(instr)) and
+      isDereference(load, address, false) and
+      instrRepr = load and
+      indirectionIndexRepr = indirectionIndex - 1
     )
   }
 
@@ -812,7 +839,7 @@ private module Cached {
     or
     exists(int ind0 |
       exists(Operand address |
-        isDereference(operand.getDef(), address) and
+        isDereference(operand.getDef(), address, _) and
         isUseImpl(address, base, ind0)
       )
       or
@@ -854,7 +881,7 @@ private module Cached {
    * to a specific address.
    */
   private predicate isCertainAddress(Operand operand) {
-    operand.getDef() instanceof VariableAddressInstruction
+    valueNumberOfOperand(operand).getAnInstruction() instanceof VariableAddressInstruction
     or
     operand.getType() instanceof Cpp::ReferenceType
   }
@@ -882,7 +909,7 @@ private module Cached {
     )
     or
     exists(Operand address, boolean certain0 |
-      isDereference(operand.getDef(), address) and
+      isDereference(operand.getDef(), address, _) and
       isDefImpl(address, base, ind - 1, certain0)
     |
       if isCertainAddress(operand) then certain = certain0 else certain = false

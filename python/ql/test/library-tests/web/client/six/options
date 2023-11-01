@@ -1,2 +1,0 @@
-semmle-extractor-options: --max-import-depth=2
-optimize: true

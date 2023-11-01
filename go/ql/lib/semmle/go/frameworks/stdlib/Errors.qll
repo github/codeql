@@ -13,7 +13,7 @@ module Errors {
 
     FunctionModels() {
       // signature: func Join(errs ...error) error
-      hasQualifiedName("errors", "Join") and
+      this.hasQualifiedName("errors", "Join") and
       (inp.isParameter(_) and outp.isResult())
     }
 
