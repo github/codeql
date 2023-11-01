@@ -56,23 +56,6 @@ private predicate isObjectClass(Class c) { c instanceof ObjectType }
  * Either a value type (`ValueType`) or a reference type (`RefType`).
  */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
-  /**
-   * Holds if this type has the qualified name `qualifier`.`name`.
-   *
-   * For example the class `System.IO.IOException` has
-   * `qualifier`=`System.IO` and `name`=`IOException`.
-   */
-  override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string enclosing |
-      this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
-      name = enclosing + "+" + this.getUndecoratedName()
-    )
-    or
-    not exists(this.getDeclaringType()) and
-    qualifier = this.getNamespace().getFullName() and
-    name = this.getUndecoratedName()
-  }
-
   /** Gets the namespace containing this type. */
   Namespace getNamespace() {
     if exists(this.getDeclaringType())
@@ -409,11 +392,6 @@ class NonNestedType extends ValueOrRefType {
  * The `void` type.
  */
 class VoidType extends ValueOrRefType, @void_type {
-  override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = "System" and
-    name = "Void"
-  }
-
   final override string getName() { result = "Void" }
 
   final override string getUndecoratedName() { result = "Void" }
@@ -1028,11 +1006,6 @@ class NullableType extends ValueType, ConstructedType, @nullable_type {
   override Type getTypeArgument(int p) { p = 0 and result = this.getUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "NullableType" }
-
-  final override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = "System" and
-    name = "Nullable<" + this.getUnderlyingType().getQualifiedName() + ">"
-  }
 }
 
 /**
@@ -1102,13 +1075,6 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     not type_location(this, _) and
     result = this.getElementType().getALocation()
   }
-
-  final override predicate hasQualifiedName(string qualifier, string name) {
-    exists(Type elementType, string name0 |
-      elementType.hasQualifiedName(qualifier, name0) and
-      name = name0 + this.getDimensionString(elementType)
-    )
-  }
 }
 
 /**
@@ -1137,13 +1103,6 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
   override string toString() { result = DotNet::PointerType.super.toString() }
 
   override string getAPrimaryQlClass() { result = "PointerType" }
-
-  final override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string name0 |
-      this.getReferentType().hasQualifiedName(qualifier, name0) and
-      name = name0 + "*"
-    )
-  }
 }
 
 /**
@@ -1229,10 +1188,6 @@ class TupleType extends ValueType, @tuple_type {
   override string getLabel() { result = this.getUnderlyingType().getLabel() }
 
   override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
-
-  final override predicate hasQualifiedName(string qualifier, string name) {
-    this.getUnderlyingType().hasQualifiedName(qualifier, name)
-  }
 
   override string getAPrimaryQlClass() { result = "TupleType" }
 }

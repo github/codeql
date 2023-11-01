@@ -7,6 +7,9 @@ import Variable
 private import dotnet
 private import Implements
 private import TypeRef
+private import commons.QualifiedName
+
+private module QualifiedNameInput implements QualifiedNameInputSig { }
 
 /**
  * A declaration.
@@ -20,6 +23,10 @@ class Declaration extends DotNet::Declaration, Element, @declaration {
   final predicate isSourceDeclaration() { this.fromSource() and this.isUnboundDeclaration() }
 
   override string toString() { result = this.getName() }
+
+  override predicate hasQualifiedName(string qualifier, string name) {
+    QualifiedName<QualifiedNameInput>::hasQualifiedName(this, qualifier, name)
+  }
 
   /**
    * Gets the fully qualified name of this declaration, including types, for example
@@ -199,6 +206,10 @@ class Member extends DotNet::Member, Modifiable, @member {
   override predicate isRequired() { Modifiable.super.isRequired() }
 
   override predicate isFile() { Modifiable.super.isFile() }
+
+  final override predicate hasQualifiedName(string namespace, string type, string name) {
+    QualifiedName<QualifiedNameInput>::hasQualifiedName(this, namespace, type, name)
+  }
 }
 
 private class TOverridable = @virtualizable or @callable_accessor;
