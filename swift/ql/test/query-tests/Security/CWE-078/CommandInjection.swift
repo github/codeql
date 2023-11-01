@@ -91,7 +91,7 @@ class MyProcess : Process {
 	var harmlessField: String?
 
 	func setArguments(_ arguments: [String]) {
-		self.arguments = arguments
+		self.arguments = arguments // BAD
 	}
 }
 
@@ -127,10 +127,10 @@ func testCommandInjectionMore(mySafeString: String) {
 	try! task5?.run()
 
 	let task6 = MyProcess()
-	task6.executableURL = URL(fileURLWithPath: userControlledString) // BAD [NOT DETECTED]
-	task6.executableURL = URL(string: userControlledString)! // BAD [NOT DETECTED]
-	task6.arguments = [userControlledString] // BAD [NOT DETECTED]
-	task6.setArguments([userControlledString]) // BAD [NOT DETECTED]
+	task6.executableURL = URL(fileURLWithPath: userControlledString) // BAD
+	task6.executableURL = URL(string: userControlledString)! // BAD
+	task6.arguments = [userControlledString] // BAD
+	task6.setArguments([userControlledString]) // BAD (flagged inside `setArguments`)
 	task6.harmlessField = userControlledString // GOOD
 	try! task6.run()
 
