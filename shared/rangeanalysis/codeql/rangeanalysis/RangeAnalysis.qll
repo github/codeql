@@ -345,7 +345,7 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
   class SemZeroBound extends SemBound;
 
   class SemSsaBound extends SemBound {
-    Sem::SsaVariable getAVariable();
+    Sem::SsaVariable getVariable();
   }
 }
 
@@ -917,7 +917,7 @@ module RangeStage<
       or
       boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason)
       or
-      b.(SemSsaBound).getAVariable() = inp and
+      b.(SemSsaBound).getVariable() = inp and
       d = D::fromFloat(0) and
       (upper = true or upper = false) and
       fromBackEdge0 = false and
@@ -967,7 +967,7 @@ module RangeStage<
     Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, boolean upper
   ) {
     exists(D::Delta d, SemSsaBound phibound |
-      phibound.getAVariable() = phi and
+      phibound.getVariable() = phi and
       boundedPhiInp(phi, inp, edge, phibound, d, upper, _, _, _) and
       (
         upper = true and D::toFloat(d) <= 0

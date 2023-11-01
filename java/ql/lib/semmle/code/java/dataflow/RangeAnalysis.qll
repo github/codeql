@@ -419,7 +419,7 @@ module Bounds implements BoundSig<Location, Sem, IntDelta> {
   class SemZeroBound = ZeroBound;
 
   class SemSsaBound extends SsaBound {
-    Sem::SsaVariable getAVariable() { result = super.getSsa() }
+    Sem::SsaVariable getVariable() { result = super.getSsa() }
   }
 }
 

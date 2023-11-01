@@ -128,7 +128,7 @@ module ConstantBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
 
   class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+    SemSsaVariable getVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
 
@@ -146,7 +146,7 @@ module RelativeBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
 
   class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+    SemSsaVariable getVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
 
@@ -162,7 +162,7 @@ module AllBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
 
   class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+    SemSsaVariable getVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
 
