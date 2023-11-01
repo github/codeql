@@ -8,7 +8,7 @@
 
 			Sanitizing untrusted input with regular expressions is a
 			common technique, but malicious actors may be able to embed one of the 
-			allowed patterns in an unexpected location. To prevent against this,
+			allowed patterns in an unexpected location. To prevent this,
 			you should use anchors in your regular expressions,
 			such as <code>^</code> or <code>$</code>.
 
