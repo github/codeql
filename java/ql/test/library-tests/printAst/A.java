@@ -92,6 +92,15 @@ class A {
                    case String s -> "It's a string";
                    case null, default -> "It's something else";
                };
+               var qualifiedEnumTest = switch(thing) {
+                   case E.A -> "It's E.A";
+                   default -> "It's something else";
+               };
+               var unnecessaryQualifiedEnumTest = switch((E)thing) {
+                   case A -> "It's E.A";
+                   case E.B -> "It's E.B";
+                   default -> "It's something else";
+               };
            }
        }
        catch (RuntimeException rte) {
