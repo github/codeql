@@ -101,6 +101,10 @@ class A {
                    case E.B -> "It's E.B";
                    default -> "It's something else";
                };
+               var recordPatterntest = switch(thing) {
+                   case Middle(Inner(String field)) -> field;
+                   default -> "Doesn't match pattern Middle(Inner(...))";
+               };
            }
        }
        catch (RuntimeException rte) {
@@ -122,3 +126,6 @@ class A {
     */
     int i, j, k;
 }
+
+record Inner(String field) { }
+record Middle(Inner inner) { }

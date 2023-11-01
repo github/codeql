@@ -2541,3 +2541,10 @@ class NotNullExpr extends UnaryExpr, @notnullexpr {
 
   override string getAPrimaryQlClass() { result = "NotNullExpr" }
 }
+
+/** A record pattern expr, as in `if (x instanceof SomeRecord(int field))`. */
+class RecordPatternExpr extends Expr, @recordpatternexpr {
+  override string toString() { result = this.getType().toString() + "(...)" }
+
+  override string getAPrimaryQlClass() { result = "RecordPatternExpr" }
+}

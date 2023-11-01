@@ -82,7 +82,7 @@ predicate depends(RefType t, RefType dep) {
     or
     // the type accessed in a pattern-switch case statement in `t`.
     exists(PatternCase pc | t = pc.getEnclosingCallable().getDeclaringType() |
-      usesType(pc.getDecl().getType(), dep)
+      usesType(pc.getPattern().getType(), dep)
     )
   )
 }

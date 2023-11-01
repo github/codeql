@@ -82,7 +82,7 @@ private predicate step(Node n1, Node n2) {
     )
     or
     exists(PatternCase pc |
-      pc.getDecl() = def.(BaseSsaUpdate).getDefiningExpr() and
+      pc.getPattern() = def.(BaseSsaUpdate).getDefiningExpr() and
       (
         pc.getSwitch().getExpr() = n1.asExpr()
         or

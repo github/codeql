@@ -507,7 +507,7 @@ class SwitchCase extends Stmt, @case {
 class ConstCase extends SwitchCase {
   ConstCase() {
     exists(Expr e |
-      e.getParent() = this and e.getIndex() >= 0 and not e instanceof LocalVariableDeclExpr
+      e.getParent() = this and e.getIndex() >= 0 and not e instanceof Pattern
     )
     // For backward compatibility, we don't include `case null, default:` here, on the assumption
     // this will come as a surprise to CodeQL that predates that statement's validity.
@@ -531,14 +531,35 @@ class ConstCase extends SwitchCase {
   override string getAPrimaryQlClass() { result = "ConstCase" }
 }
 
+/**
+ * A binding or record pattern.
+ *
+ * Note binding patterns are represented as `LocalVariableDeclExpr`s.
+ */
+class Pattern extends Expr {
+  Pattern() {
+    (this.getParent() instanceof SwitchCase or this.getParent() instanceof InstanceOfExpr)
+    and
+    (this instanceof LocalVariableDeclExpr or this instanceof RecordPatternExpr)
+  }
+
+  LocalVariableDeclExpr asBindingPattern() {
+    result = this
+  }
+
+  RecordPatternExpr asRecordPattern() {
+    result = this
+  }
+}
+
 /** A pattern case of a `switch` statement */
 class PatternCase extends SwitchCase {
-  LocalVariableDeclExpr patternVar;
+  Pattern pattern;
 
-  PatternCase() { patternVar.isNthChildOf(this, 0) }
+  PatternCase() { pattern.isNthChildOf(this, 0) }
 
-  /** Gets the variable declared by this pattern case. */
-  LocalVariableDeclExpr getDecl() { result.isNthChildOf(this, 0) }
+  /** Gets this case's pattern. */
+  Pattern getPattern() { result.isNthChildOf(this, 0) }
 
   /** Gets the guard applicable to this pattern case, if any. */
   Expr getGuard() { result.isNthChildOf(this, -3) }

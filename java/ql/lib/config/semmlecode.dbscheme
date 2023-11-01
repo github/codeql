@@ -774,6 +774,7 @@ case @expr.kind of
 | 86  = @valueeqexpr
 | 87  = @valueneexpr
 | 88  = @propertyref
+| 89  = @recordpatternexpr
 ;
 
 /** Holds if this `when` expression was written as an `if` expression. */

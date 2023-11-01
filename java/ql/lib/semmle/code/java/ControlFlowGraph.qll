@@ -529,7 +529,7 @@ private module ControlFlowGraphImpl {
       or
       this instanceof LocalVariableDeclExpr and
       not this = any(InstanceOfExpr ioe).getLocalVariableDeclExpr() and
-      not this = any(PatternCase pc).getDecl()
+      not this = any(PatternCase pc).getPattern()
       or
       this instanceof StringTemplateExpr
       or
@@ -971,7 +971,7 @@ private module ControlFlowGraphImpl {
       (
         if exists(pc.getGuard())
         then last(pc.getGuard(), last, BooleanCompletion(true, _))
-        else last = pc.getDecl()
+        else last = pc.getPattern()
       ) and
       not pc.isRule() and
       completion = NormalCompletion()
@@ -1332,7 +1332,7 @@ private module ControlFlowGraphImpl {
           last(case.(PatternCase).getGuard(), preBodyNode, completion) and
           completion = basicBooleanCompletion(true)
         ) else (
-          preBodyNode = case.(PatternCase).getDecl() and completion = NormalCompletion()
+          preBodyNode = case.(PatternCase).getPattern() and completion = NormalCompletion()
         )
       ) else (
         preBodyNode = case and completion = NormalCompletion()
@@ -1351,7 +1351,7 @@ private module ControlFlowGraphImpl {
         result = getASuccessorSwitchCase(case)
         or
         completion = basicBooleanCompletion(true) and
-        result = case.getDecl()
+        result = case.getPattern()
       )
     )
     or
@@ -1362,7 +1362,7 @@ private module ControlFlowGraphImpl {
     exists(PatternCase case, Expr guard |
       guard = case.getGuard() and
       (
-        n = case.getDecl() and
+        n = case.getPattern() and
         result = first(guard) and
         completion = NormalCompletion()
         or

@@ -447,7 +447,7 @@ private predicate patternCaseGuarded(Expr e, RefType t) {
   exists(PatternCase pc |
     e = getAProbableAlias([pc.getSwitch().getExpr(), pc.getSwitchExpr().getExpr()]) and
     guardControls_v1(pc, e.getBasicBlock(), true) and
-    t = pc.getDecl().getType()
+    t = pc.getPattern().getType()
   )
 }
 
