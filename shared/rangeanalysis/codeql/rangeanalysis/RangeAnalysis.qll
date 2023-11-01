@@ -269,14 +269,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   predicate ignoreExprBound(Sem::Expr e);
 
   /**
-   * Ignore any inferred zero lower bound on this expression.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreZeroLowerBound(Sem::Expr e);
-
-  /**
    * Holds if the value of `dest` is known to be `src + delta`.
    */
   predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, D::Delta delta);
@@ -1066,9 +1058,7 @@ module RangeStage<
     or
     upper = false and
     b = D::fromInt(0) and
-    semPositive(e.(Sem::BitAndExpr).getAnOperand()) and
-    // REVIEW: We let the language opt out here to preserve original results.
-    not ignoreZeroLowerBound(e)
+    semPositive(e.(Sem::BitAndExpr).getAnOperand())
   }
 
   /**
