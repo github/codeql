@@ -175,11 +175,8 @@ module ModulusAnalysis<
   private predicate phiModulusRankStep(
     Sem::SsaPhiNode phi, Bounds::SemBound b, int val, int mod, int rix
   ) {
-    /*
-     * base case. If any phi input is equal to `b + val` modulo `mod`, that's a potential congruence
-     * class for the phi node.
-     */
-
+    // Base case. If any phi input is equal to `b + val` modulo `mod`, that's a
+    // potential congruence class for the phi node.
     rix = 0 and
     phiModulusInit(phi, b, val, mod)
     or
@@ -187,12 +184,12 @@ module ModulusAnalysis<
       mod != 1 and
       val = remainder(v1, mod)
     |
-      /*
-       * Recursive case. If `inp` = `b + v2` mod `m2`, we combine that with the preceding potential
-       * congruence class `b + v1` mod `m1`. The result will be the congruence class of `v1` modulo
-       * the greatest common denominator of `m1`, `m2`, and `v1 - v2`.
-       */
-
+      // Recursive case. If `inp` = `b + v2` modulo `m2`, we combine that with
+      // the preceding potential congruence class `b + v1` modulo `m1`. In order
+      // to represent the result as a single congruence class `b + v` modulo
+      // `mod`, we must have that `mod` divides both `m1` and `m2` and that `v1`
+      // equals `v2` modulo `mod`. The largest value of `mod` that satisfies
+      // this is the greatest common divisor of `m1`, `m2`, and `v1 - v2`.
       exists(int v2, int m2 |
         U::rankedPhiInput(pragma[only_bind_out](phi), inp, edge, rix) and
         phiModulusRankStep(phi, b, v1, m1, rix - 1) and
@@ -200,12 +197,9 @@ module ModulusAnalysis<
         mod = m1.gcd(m2).gcd(v1 - v2)
       )
       or
-      /*
-       * Recursive case. If `inp` = `phi` mod `m2`, we combine that with the preceding potential
-       * congruence class `b + v1` mod `m1`. The result will be a congruence class modulo the greatest
-       * common denominator of `m1` and `m2`.
-       */
-
+      // Recursive case. If `inp` = `phi` mod `m2`, we combine that with the
+      // preceding potential congruence class `b + v1` mod `m1`. The result will be
+      // the congruence class modulo the greatest common divisor of `m1` and `m2`.
       exists(int m2 |
         U::rankedPhiInput(phi, inp, edge, rix) and
         phiModulusRankStep(phi, b, v1, m1, rix - 1) and
