@@ -70,7 +70,6 @@ private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionC
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.security.RandomDataSource
 private import SignAnalysis
-private import ModulusAnalysis
 private import semmle.code.java.Reflection
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
@@ -296,7 +295,8 @@ module SignInp implements SignAnalysisSig<Sem> {
 module Modulus implements ModulusAnalysisSig<Sem> {
   class ModBound = Bound;
 
-  predicate semExprModulus = exprModulus/4;
+  private import codeql.rangeanalysis.ModulusAnalysis as Mod
+  import Mod::ModulusAnalysis<Location, Sem, IntDelta, Bounds, Utils>
 }
 
 module IntDelta implements DeltaSig {
