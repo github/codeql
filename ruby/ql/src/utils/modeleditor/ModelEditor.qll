@@ -14,6 +14,16 @@ private predicate isUninteresting(DataFlow::MethodNode c) {
   c.getLocation().getFile() instanceof TestFile
 }
 
+private predicate fileStep(Folder folder, File file, int n) {
+  n = 0 and folder.getAFile() = file
+  or
+  exists(int m | fileStep(folder.getAFolder(), file, m) | n = m + 1)
+}
+
+private predicate gemFileStep(Gem::GemSpec gem, File file, int n) {
+  fileStep(any(Folder f | f.getAFile() = gem.(File)), file, n)
+}
+
 /**
  * A callable method or accessor from either the Ruby Standard Library, a 3rd party library, or from the source.
  */
@@ -29,9 +39,8 @@ class Endpoint extends DataFlow::MethodNode {
    */
   bindingset[this]
   string getNamespace() {
-    // Return the name of any gemspec file in the database.
-    // TODO: make this work for projects with multiple gems (and hence multiple gemspec files)
-    result = any(Gem::GemSpec g).getName()
+    // The nearest gemspec to this endpoint
+    result = min(Gem::GemSpec g, int n | gemFileStep(g, this.getFile(), n) | g order by n).getName()
   }
 
   /**
