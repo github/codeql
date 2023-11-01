@@ -413,9 +413,7 @@ class SwitchStmt extends Stmt, @switchstmt {
   Expr getExpr() { result.getParent() = this }
 
   /** Holds if this switch has a case handling a null literal. */
-  predicate hasNullCase() {
-    this.getAConstCase().getValue(_) instanceof NullLiteral
-  }
+  predicate hasNullCase() { this.getAConstCase().getValue(_) instanceof NullLiteral }
 
   override string pp() { result = "switch (...)" }
 
@@ -506,12 +504,10 @@ class SwitchCase extends Stmt, @case {
  */
 class ConstCase extends SwitchCase {
   ConstCase() {
-    exists(Expr e |
-      e.getParent() = this and e.getIndex() >= 0 and not e instanceof Pattern
-    )
+    exists(Expr e | e.getParent() = this and e.getIndex() >= 0 and not e instanceof Pattern) and
     // For backward compatibility, we don't include `case null, default:` here, on the assumption
     // this will come as a surprise to CodeQL that predates that statement's validity.
-    and not isNullDefaultCase(this)
+    not isNullDefaultCase(this)
   }
 
   /** Gets the `case` constant at index 0. */
@@ -543,13 +539,9 @@ class Pattern extends Expr {
     (this instanceof LocalVariableDeclExpr or this instanceof RecordPatternExpr)
   }
 
-  LocalVariableDeclExpr asBindingPattern() {
-    result = this
-  }
+  LocalVariableDeclExpr asBindingPattern() { result = this }
 
-  RecordPatternExpr asRecordPattern() {
-    result = this
-  }
+  RecordPatternExpr asRecordPattern() { result = this }
 }
 
 /** A pattern case of a `switch` statement */
