@@ -17,14 +17,10 @@ module ModulusAnalysis<
   LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
   UtilSig<Sem, D> U>
 {
-  pragma[nomagic]
-  private predicate valueFlowStepSsaEqFlowCond(
-    Sem::SsaReadPosition pos, Sem::SsaVariable v, Sem::Expr e, int delta
-  ) {
-    exists(Sem::Guard guard, boolean testIsTrue |
-      guard = U::semEqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
-      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue)
-    )
+  bindingset[pos, v]
+  pragma[inline_late]
+  private predicate hasReadOfVarInlineLate(Sem::SsaReadPosition pos, Sem::SsaVariable v) {
+    pos.hasReadOfVar(v)
   }
 
   /**
@@ -36,8 +32,11 @@ module ModulusAnalysis<
   ) {
     U::semSsaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
     or
-    pos.hasReadOfVar(v) and
-    valueFlowStepSsaEqFlowCond(pos, v, e, delta)
+    exists(Sem::Guard guard, boolean testIsTrue |
+      hasReadOfVarInlineLate(pos, v) and
+      guard = U::semEqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
+      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue)
+    )
   }
 
   /**
