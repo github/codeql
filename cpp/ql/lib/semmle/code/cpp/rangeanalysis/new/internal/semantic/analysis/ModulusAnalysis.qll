@@ -151,7 +151,7 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
   ) {
     exists(Bounds::SemSsaBound phibound, int v, int m |
       edge.phiInput(phi, inp) and
-      phibound.getAVariable() = phi and
+      phibound.getVariable() = phi and
       ssaModulus(inp, edge, phibound, v, m) and
       mod = m.gcd(v) and
       mod != 1
@@ -233,7 +233,7 @@ module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig
   ) {
     phiModulus(v, b, val, mod) and pos.hasReadOfVar(v)
     or
-    b.(Bounds::SemSsaBound).getAVariable() = v and pos.hasReadOfVar(v) and val = 0 and mod = 0
+    b.(Bounds::SemSsaBound).getVariable() = v and pos.hasReadOfVar(v) and val = 0 and mod = 0
     or
     exists(SemExpr e, int val0, int delta |
       semExprModulus(e, b, val0, mod) and

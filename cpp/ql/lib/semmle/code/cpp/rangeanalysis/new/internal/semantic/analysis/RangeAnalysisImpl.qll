@@ -52,9 +52,21 @@ module Sem implements Semantic {
 
   class NegateExpr = SemNegateExpr;
 
-  class AddOneExpr = SemAddOneExpr;
+  class PreIncExpr = SemAddOneExpr;
 
-  class SubOneExpr = SemSubOneExpr;
+  class PreDecExpr = SemSubOneExpr;
+
+  class PostIncExpr extends SemUnaryExpr {
+    PostIncExpr() { none() }
+  }
+
+  class PostDecExpr extends SemUnaryExpr {
+    PostDecExpr() { none() }
+  }
+
+  class CopyValueExpr extends SemUnaryExpr {
+    CopyValueExpr() { this instanceof SemCopyValueExpr or this instanceof SemStoreExpr }
+  }
 
   class ConditionalExpr = SemConditionalExpr;
 
@@ -116,7 +128,7 @@ module ConstantBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
 
   class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+    SemSsaVariable getVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
 
@@ -134,7 +146,7 @@ module RelativeBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
 
   class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+    SemSsaVariable getVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
 
@@ -150,7 +162,7 @@ module AllBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
 
   class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+    SemSsaVariable getVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
 
