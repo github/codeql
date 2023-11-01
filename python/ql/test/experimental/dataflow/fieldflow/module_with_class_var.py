@@ -1,0 +1,2 @@
+class WithClassVariable():
+    VAR = SOURCE
