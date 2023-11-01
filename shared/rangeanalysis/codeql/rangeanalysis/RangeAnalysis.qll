@@ -230,7 +230,7 @@ signature module SignAnalysisSig<Semantic Sem> {
 signature module ModulusAnalysisSig<Semantic Sem> {
   class ModBound;
 
-  predicate semExprModulus(Sem::Expr e, ModBound b, int val, int mod);
+  predicate exprModulus(Sem::Expr e, ModBound b, int val, int mod);
 }
 
 signature module DeltaSig {
@@ -541,8 +541,8 @@ module RangeStage<
       // strict then the strengthening amount is instead `k - 1` modulo `mod`:
       // `x < y` means `0 <= y - x - 1 =(mod) k - 1` so `k - 1 <= y - x - 1` and
       // thus `k - 1 < y - x` with `0 <= k - 1 < mod`.
-      semExprModulus(comp.getLesserOperand(), b, v1, mod1) and
-      semExprModulus(comp.getGreaterOperand(), b, v2, mod2) and
+      exprModulus(comp.getLesserOperand(), b, v1, mod1) and
+      exprModulus(comp.getGreaterOperand(), b, v2, mod2) and
       mod = mod1.gcd(mod2) and
       mod != 1 and
       (testIsTrue = true or testIsTrue = false) and

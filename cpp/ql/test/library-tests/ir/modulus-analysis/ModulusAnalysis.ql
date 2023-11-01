@@ -33,7 +33,7 @@ import MakeTest<ModulusAnalysisTest>
 
 private string getAModString(SemExpr e) {
   exists(SemBound b, int delta, int mod |
-    ModulusAnalysisInstantiated::semExprModulus(e, b, delta, mod) and
+    ModulusAnalysisInstantiated::exprModulus(e, b, delta, mod) and
     result = b.toString() + "," + delta.toString() + "," + mod.toString() and
     not (delta = 0 and mod = 0)
   )

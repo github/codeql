@@ -5,7 +5,7 @@
  */
 
 /*
- * The main recursion has base cases in both `ssaModulus` (for guarded reads) and `semExprModulus`
+ * The main recursion has base cases in both `ssaModulus` (for guarded reads) and `exprModulus`
  * (for constant values). The most interesting recursive case is `phiModulusRankStep`, which
  * handles phi inputs.
  */
@@ -229,7 +229,7 @@ module ModulusAnalysis<
     b.(Bounds::SemSsaBound).getVariable() = v and pos.hasReadOfVar(v) and val = 0 and mod = 0
     or
     exists(Sem::Expr e, int val0, int delta |
-      semExprModulus(e, b, val0, mod) and
+      exprModulus(e, b, val0, mod) and
       valueFlowStepSsa(v, pos, e, delta) and
       val = remainder(val0 + delta, mod)
     )
@@ -245,7 +245,7 @@ module ModulusAnalysis<
    * - `mod > 1`: `val` lies within the range `[0 .. mod-1]`.
    */
   cached
-  predicate semExprModulus(Sem::Expr e, Bounds::SemBound b, int val, int mod) {
+  predicate exprModulus(Sem::Expr e, Bounds::SemBound b, int val, int mod) {
     e = b.getExpr(D::fromInt(val)) and mod = 0
     or
     evenlyDivisibleExpr(e, mod) and
@@ -259,7 +259,7 @@ module ModulusAnalysis<
     )
     or
     exists(Sem::Expr mid, int val0, int delta |
-      semExprModulus(mid, b, val0, mod) and
+      exprModulus(mid, b, val0, mod) and
       U::semValueFlowStep(e, mid, D::fromInt(delta)) and
       val = remainder(val0 + delta, mod)
     )
@@ -297,22 +297,22 @@ module ModulusAnalysis<
   private predicate condExprBranchModulus(
     Sem::ConditionalExpr cond, boolean branch, Bounds::SemBound b, int val, int mod
   ) {
-    semExprModulus(cond.getBranchExpr(branch), b, val, mod)
+    exprModulus(cond.getBranchExpr(branch), b, val, mod)
   }
 
   private predicate addModulus(Sem::Expr add, boolean isLeft, Bounds::SemBound b, int val, int mod) {
     exists(Sem::Expr larg, Sem::Expr rarg | nonConstAddition(add, larg, rarg) |
-      semExprModulus(larg, b, val, mod) and isLeft = true
+      exprModulus(larg, b, val, mod) and isLeft = true
       or
-      semExprModulus(rarg, b, val, mod) and isLeft = false
+      exprModulus(rarg, b, val, mod) and isLeft = false
     )
   }
 
   private predicate subModulus(Sem::Expr sub, boolean isLeft, Bounds::SemBound b, int val, int mod) {
     exists(Sem::Expr larg, Sem::Expr rarg | nonConstSubtraction(sub, larg, rarg) |
-      semExprModulus(larg, b, val, mod) and isLeft = true
+      exprModulus(larg, b, val, mod) and isLeft = true
       or
-      semExprModulus(rarg, b, val, mod) and isLeft = false
+      exprModulus(rarg, b, val, mod) and isLeft = false
     )
   }
 }
