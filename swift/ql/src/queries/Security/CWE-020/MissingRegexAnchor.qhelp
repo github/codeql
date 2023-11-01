@@ -7,10 +7,10 @@
 		<p>
 
 			Sanitizing untrusted input with regular expressions is a
-			common technique.  However, it is error-prone to match untrusted input
-			against regular expressions without anchors such as <code>^</code> or
-			<code>$</code>.  Malicious input can bypass such security checks by
-			embedding one of the allowed patterns in an unexpected location.
+			common technique, but malicious actors may be able to embed one of the 
+			allowed patterns in an unexpected location. To prevent against this,
+			you should use anchors in your regular expressions,
+			such as <code>^</code> or <code>$</code>.
 
 		</p>
 
@@ -36,9 +36,9 @@
 
 		<p>
 
-			The following example code checks that a URL redirection
+			The following example code attempts to check that a URL redirection
 			will reach the <code>example.com</code> domain, and not
-			some malicious site.
+			a malicious site:
 
 		</p>
 
