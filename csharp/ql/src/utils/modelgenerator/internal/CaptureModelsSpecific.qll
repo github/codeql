@@ -65,9 +65,9 @@ class TargetApiSpecific extends DotNet::Callable {
   }
 }
 
-predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
+predicate asPartialModel = ExternalFlow::asPartialModel/1;
 
-predicate asPartialNeutralModel = DataFlowPrivate::Csv::asPartialNeutralModel/1;
+predicate asPartialNeutralModel = ExternalFlow::asPartialNeutralModel/1;
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.

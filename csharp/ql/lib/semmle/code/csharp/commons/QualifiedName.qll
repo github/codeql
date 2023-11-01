@@ -160,30 +160,30 @@ module QualifiedName<QualifiedNameInputSig Input> {
   }
 
   /**
-   * Holds if member `m` has name `name` and is defined in type `type`
+   * Holds if declaration `d` has name `name` and is defined in type `type`
    * with namespace `namespace`.
    */
-  predicate hasQualifiedName(Member m, string namespace, string type, string name) {
-    m =
-      any(ConstructedMethod cm |
-        hasQualifiedName(cm.getDeclaringType(), namespace, type) and
-        name = cm.getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(cm) + ">"
-      )
-    or
-    m =
-      any(UnboundGenericMethod ugm |
-        hasQualifiedName(ugm.getDeclaringType(), namespace, type) and
-        name = ugm.getUndecoratedName() + Input::getUnboundGenericSuffix(ugm)
-      )
-    or
-    not m instanceof ConstructedMethod and
-    not m instanceof UnboundGenericMethod and
-    hasQualifiedName(m.getDeclaringType(), namespace, type) and
+  predicate hasQualifiedName(Declaration d, string namespace, string type, string name) {
+    hasQualifiedName(d.getDeclaringType(), namespace, type) and
     (
-      name = m.(Operator).getFunctionName()
+      d =
+        any(ConstructedMethod cm |
+          name = cm.getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(cm) + ">"
+        )
       or
-      not m instanceof Operator and
-      name = m.getName()
+      d =
+        any(UnboundGenericMethod ugm |
+          name = ugm.getUndecoratedName() + Input::getUnboundGenericSuffix(ugm)
+        )
+      or
+      not d instanceof ConstructedMethod and
+      not d instanceof UnboundGenericMethod and
+      (
+        name = d.(Operator).getFunctionName()
+        or
+        not d instanceof Operator and
+        name = d.getName()
+      )
     )
   }
 }

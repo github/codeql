@@ -95,6 +95,7 @@ private import DataFlowPublic
 private import FlowSummaryImpl::Public
 private import FlowSummaryImpl::Private::External
 private import FlowSummaryImplSpecific
+private import semmle.code.csharp.commons.QualifiedName
 private import codeql.mad.ModelValidation as SharedModelVal
 
 private predicate relevantNamespace(string namespace) {
@@ -449,3 +450,76 @@ private module Cached {
 }
 
 import Cached
+
+/** Holds if the summary should apply for all overrides of `c`. */
+predicate isBaseCallableOrPrototype(UnboundCallable c) {
+  c.getDeclaringType() instanceof Interface
+  or
+  exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
+    m.isAbstract()
+    or
+    c.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+  )
+}
+
+/** Gets a string representing whether the summary should apply for all overrides of `c`. */
+private string getCallableOverride(UnboundCallable c) {
+  if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
+}
+
+private module QualifiedNameInput implements QualifiedNameInputSig {
+  string getUnboundGenericSuffix(UnboundGeneric ug) {
+    result =
+      "<" + strictconcat(int i, string s | s = ug.getTypeParameter(i).getName() | s, "," order by i)
+        + ">"
+  }
+}
+
+private module QN = QualifiedName<QualifiedNameInput>;
+
+pragma[nomagic]
+private string parameterQualifiedType(Parameter p) {
+  exists(string qualifier, string name |
+    QN::hasQualifiedName(p.getType(), qualifier, name) and
+    result = getQualifiedName(qualifier, name)
+  )
+}
+
+/** Gets the string representation of the parameters of `c`. */
+string parameterQualifiedTypeNamesToString(Callable c) {
+  result =
+    concat(int i, string s | s = parameterQualifiedType(c.getParameter(i)) | s, "," order by i)
+}
+
+private predicate partialModel(
+  UnboundCallable c, string namespace, string type, string name, string parameters
+) {
+  QN::hasQualifiedName(c, namespace, type, name) and
+  parameters = "(" + parameterQualifiedTypeNamesToString(c) + ")"
+}
+
+/** Computes the first 6 columns for positive CSV rows of `c`. */
+string asPartialModel(UnboundCallable c) {
+  exists(string namespace, string type, string name, string parameters |
+    partialModel(c, namespace, type, name, parameters) and
+    result =
+      namespace + ";" //
+        + type + ";" //
+        + getCallableOverride(c) + ";" //
+        + name + ";" //
+        + parameters + ";" //
+        + /* ext + */ ";" //
+  )
+}
+
+/** Computes the first 4 columns for neutral CSV rows of `c`. */
+string asPartialNeutralModel(UnboundCallable c) {
+  exists(string namespace, string type, string name, string parameters |
+    partialModel(c, namespace, type, name, parameters) and
+    result =
+      namespace + ";" //
+        + type + ";" //
+        + name + ";" //
+        + parameters + ";" //
+  )
+}
