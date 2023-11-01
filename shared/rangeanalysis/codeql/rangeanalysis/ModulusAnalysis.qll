@@ -191,7 +191,7 @@ module ModulusAnalysis<
       // equals `v2` modulo `mod`. The largest value of `mod` that satisfies
       // this is the greatest common divisor of `m1`, `m2`, and `v1 - v2`.
       exists(int v2, int m2 |
-        U::rankedPhiInput(pragma[only_bind_out](phi), inp, edge, rix) and
+        U::rankedPhiInput(phi, inp, edge, rix) and
         phiModulusRankStep(phi, b, v1, m1, rix - 1) and
         ssaModulus(inp, edge, b, v2, m2) and
         mod = m1.gcd(m2).gcd(v1 - v2)
