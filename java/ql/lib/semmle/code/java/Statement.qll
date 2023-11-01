@@ -534,8 +534,11 @@ class ConstCase extends SwitchCase {
  */
 class Pattern extends Expr {
   Pattern() {
-    (this.getParent() instanceof SwitchCase or this.getParent() instanceof InstanceOfExpr)
-    and
+    (
+      this.getParent() instanceof SwitchCase or
+      this.getParent() instanceof InstanceOfExpr or
+      this.getParent() instanceof Pattern
+    ) and
     (this instanceof LocalVariableDeclExpr or this instanceof RecordPatternExpr)
   }
 

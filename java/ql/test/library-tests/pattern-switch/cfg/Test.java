@@ -84,6 +84,23 @@ public class Test {
          break;
      }
 
+     switch(thing) {
+       case A(B(int x, String y), float z):
+         break;
+       default:
+         break;
+     }
+
+     switch(thing) {
+       case A(B(var x, var y), var z):
+         break;
+       default:
+         break;
+     }
+
   }
 
 }
+
+record A(B b, float field3) { }
+record B(int field1, String field2) { }

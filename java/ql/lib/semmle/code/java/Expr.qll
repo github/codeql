@@ -2547,4 +2547,8 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
   override string toString() { result = this.getType().toString() + "(...)" }
 
   override string getAPrimaryQlClass() { result = "RecordPatternExpr" }
+
+  Pattern getSubPattern(int i) {
+    result.isNthChildOf(this, i)
+  }
 }
