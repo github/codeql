@@ -3,10 +3,12 @@
 import sys
 import os
 
-work_dir = os.path.dirname(sys.argv[0])
+work_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
 gen_dir = f"{work_dir}/Generated"
 with open(f"{gen_dir}/Template.g") as f:
     template = f.read()
+
+verbose = False
 
 
 def process_file(path: str):
@@ -21,8 +23,12 @@ def process_file(path: str):
 
     gen = template.replace("$PATHSLASH", path).replace("$PATHUNDER", path_under)
 
-    with open(f"{gen_dir}/{path_under}.cshtml.g.cs", "w") as f:
+    out_path = f"{gen_dir}/{path_under}.cshtml.g.cs"
+    with open(out_path, "w") as f:
         f.write(gen)
+
+    if verbose:
+        print(out_path)
 
 
 def process_dir(path: str):
@@ -43,4 +49,22 @@ def process_dir(path: str):
             process_dir(sub_rel)
 
 
-process_dir("")
+def print_usage():
+    print("""Usage: python3 gen_files.py [-v] [--verbose] [-h] [--help]
+
+Generates files from .cshtml files found in the directory tree of this script's parent folder, mimicking the C# compiler.
+`.testproj` is ignored.
+    
+-h, --help: Displays this message and exits.
+-v, --verbose: Prints the name of each file generated.""")
+
+
+if __name__ == "__main__":
+    if "-h" in sys.argv or "--help" in sys.argv:
+        print_usage()
+        exit()
+
+    if "-v" in sys.argv or "--verbose" in sys.argv:
+        verbose = True
+
+    process_dir("")
