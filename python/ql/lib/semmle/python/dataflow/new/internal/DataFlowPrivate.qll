@@ -389,9 +389,10 @@ module LocalFlow {
     or
     IncludePostUpdateFlow<PhaseDependentFlow<expressionFlowStep/2>::step/2>::step(nodeFrom, nodeTo)
     or
-    // Use-use flow can generate self loops. We want to filter steps from `n` to `n`
-    // after we have included steps from `[post] n` to `n`, so after
-    // `IncludePostUpdateFlow` has ben applied.
+    // Blindly applying use-use flow can result in a node that steps to itself, for
+    // example in while-loops. To uphold dataflow consistency checks, we don't want
+    // that. However, we do want to allow `[post] n` to `n` (to handle while loops), so
+    // we should only do the filtering after `IncludePostUpdateFlow` has ben applied.
     IncludePostUpdateFlow<PhaseDependentFlow<useUseFlowStep/2>::step/2>::step(nodeFrom, nodeTo) and
     nodeFrom != nodeTo
   }
