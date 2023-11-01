@@ -8,6 +8,7 @@ private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific
 private import codeql.ruby.frameworks.core.Gem
 private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.frameworks.data.internal.ApiGraphModelsExtensions
+private import queries.modeling.internal.Util as Util
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(DataFlow::MethodNode c) {
@@ -130,12 +131,10 @@ class TestFile extends File {
  */
 class SinkCallable extends DataFlow::MethodNode {
   SinkCallable() {
-    this = ModelOutput::getASinkNode(_).asCallable() and
-    exists(string type, string path, string kind, string method |
-      sinkModel(type, path, kind) and
-      path = "Method[" + method + "]" and
-      method = this.getMethodName()
-      // TODO: (type, path) corresponds to this method
+    exists(string type, string path, string method |
+      method = path.regexpCapture("(Method\\[[^\\]]+\\]).*", 1) and
+      Util::pathToMethod(this, type, method) and
+      sinkModel(type, path, _)
     )
   }
 }
@@ -144,7 +143,13 @@ class SinkCallable extends DataFlow::MethodNode {
  * A callable where there exists a MaD source model that applies to it.
  */
 class SourceCallable extends DataFlow::CallableNode {
-  SourceCallable() { sourceElement(this.asExpr().getExpr(), _, _, _) }
+  SourceCallable() {
+    exists(string type, string path, string method |
+      method = path.regexpCapture("(Method\\[[^\\]]+\\]).*", 1) and
+      Util::pathToMethod(this, type, method) and
+      sinkModel(type, path, _)
+    )
+  }
 }
 
 /**
