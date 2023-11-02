@@ -116,7 +116,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (options.ScanNetFrameworkDlls)
             {
                 AddNetFrameworkDlls(dllPaths);
-                AddAspNetFrameworkDlls(dllPaths);
+                AddAspNetCoreFrameworkDlls(dllPaths);
                 AddMicrosoftWindowsDesktopDlls(dllPaths);
             }
 
@@ -247,14 +247,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             dllPaths.Add(runtimeLocation);
         }
 
-        private void AddAspNetFrameworkDlls(List<string> dllPaths)
+        private void AddAspNetCoreFrameworkDlls(List<string> dllPaths)
         {
             if (!fileContent.IsNewProjectStructureUsed || !fileContent.UseAspNetCoreDlls)
             {
                 return;
             }
 
-            // First try to find ASP.NET assemblies in the NuGet packages
+            // First try to find ASP.NET Core assemblies in the NuGet packages
             if (GetPackageDirectory("microsoft.aspnetcore.app.ref") is string aspNetCorePackage)
             {
                 progressMonitor.LogInfo($"Found ASP.NET Core in NuGet packages. Not adding installation directory.");
@@ -678,27 +678,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             });
         }
 
-        public void Dispose()
+        public void Dispose(TemporaryDirectory? dir, string name)
         {
             try
             {
-                packageDirectory?.Dispose();
-                missingPackageDirectory?.Dispose();
+                dir?.Dispose();
             }
             catch (Exception exc)
             {
-                progressMonitor.LogInfo("Couldn't delete package directory: " + exc.Message);
+                progressMonitor.LogInfo($"Couldn't delete {name} directory {exc.Message}");
             }
+        }
+
+        public void Dispose()
+        {
+            Dispose(packageDirectory, "package");
+            Dispose(missingPackageDirectory, "missing package");
             if (cleanupTempWorkingDirectory)
             {
-                try
-                {
-                    tempWorkingDirectory?.Dispose();
-                }
-                catch (Exception exc)
-                {
-                    progressMonitor.LogInfo("Couldn't delete temporary working directory: " + exc.Message);
-                }
+                Dispose(tempWorkingDirectory, "temporary working");
             }
         }
     }
