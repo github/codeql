@@ -20,22 +20,22 @@ func fasthttpClient() {
 
 	res := &fasthttp.Response{}
 	req := &fasthttp.Request{}
-	req.SetHost(userInput)                // $ ReqSucc=req ReqPred=userInput
-	req.SetHostBytes(userInputByte)       // $ ReqSucc=req ReqPred=userInputByte
-	req.SetRequestURI(userInput)          // $ ReqSucc=req ReqPred=userInput
-	req.SetRequestURIBytes(userInputByte) // $ ReqSucc=req ReqPred=userInputByte
+	req.SetHost(userInput)                // $ hasTaintFlow="req" ReqPred=userInput
+	req.SetHostBytes(userInputByte)       // $ hasTaintFlow="req" ReqPred=userInputByte
+	req.SetRequestURI(userInput)          // $ hasTaintFlow="req" ReqPred=userInput
+	req.SetRequestURIBytes(userInputByte) // $ hasTaintFlow="req" ReqPred=userInputByte
 
 	uri := fasthttp.AcquireURI()
 	userInput = "UserControlled.com:80"
 	userInputByte = []byte("UserControlled.com:80")
-	uri.SetHost(userInput)          // $ UriPred=userInput UriSucc=uri
-	uri.SetHostBytes(userInputByte) // $ UriPred=userInputByte UriSucc=uri
+	uri.SetHost(userInput)          // $ hasTaintFlow="uri"
+	uri.SetHostBytes(userInputByte) // $ hasTaintFlow="uri"
 	userInput = "http://UserControlled.com"
 	userInputByte = []byte("http://UserControlled.com")
-	uri.Update(userInput)                   // $ UriPred=userInput UriSucc=uri
-	uri.UpdateBytes(userInputByte)          // $ UriPred=userInputByte UriSucc=uri
-	uri.Parse(userInputByte, userInputByte) // $ UriPred=userInputByte UriPred=userInputByte UriSucc=uri
-	req.SetURI(uri)                         // $ ReqSucc=req ReqPred=uri UriSucc=uri
+	uri.Update(userInput)                   // $ hasTaintFlow="uri"
+	uri.UpdateBytes(userInputByte)          // $ hasTaintFlow="uri"
+	uri.Parse(userInputByte, userInputByte) // $ hasTaintFlow="uri"
+	req.SetURI(uri)                         // $ hasTaintFlow="uri" hasTaintFlow="req"
 
 	resByte := make([]byte, 1000)
 	userInput = "http://127.0.0.1:8909"
@@ -43,10 +43,10 @@ func fasthttpClient() {
 	fasthttp.GetDeadline(resByte, userInput, time.Time{}) // $ SsrfSink=userInput
 	fasthttp.GetTimeout(resByte, userInput, 5)            // $ SsrfSink=userInput
 	fasthttp.Post(resByte, userInput, nil)                // $ SsrfSink=userInput
-	fasthttp.Do(req, res)                                 // $ ReqSucc=req SsrfSink=req
-	fasthttp.DoRedirects(req, res, 2)                     // $ ReqSucc=req SsrfSink=req
-	fasthttp.DoDeadline(req, res, time.Time{})            // $ ReqSucc=req SsrfSink=req
-	fasthttp.DoTimeout(req, res, 5)                       // $ ReqSucc=req SsrfSink=req
+	fasthttp.Do(req, res)                                 // $ hasTaintFlow="req" SsrfSink=req
+	fasthttp.DoRedirects(req, res, 2)                     // $ hasTaintFlow="req" SsrfSink=req
+	fasthttp.DoDeadline(req, res, time.Time{})            // $ hasTaintFlow="req" SsrfSink=req
+	fasthttp.DoTimeout(req, res, 5)                       // $ hasTaintFlow="req" SsrfSink=req
 
 	hostClient := &fasthttp.HostClient{
 		Addr: "localhost:8080",
@@ -55,31 +55,31 @@ func fasthttpClient() {
 	hostClient.GetDeadline(resByte, userInput, time.Time{}) // $ SsrfSink=userInput
 	hostClient.GetTimeout(resByte, userInput, 5)            // $ SsrfSink=userInput
 	hostClient.Post(resByte, userInput, nil)                // $ SsrfSink=userInput
-	hostClient.Do(req, res)                                 // $ ReqSucc=req SsrfSink=req
-	hostClient.DoDeadline(req, res, time.Time{})            // $ ReqSucc=req SsrfSink=req
-	hostClient.DoRedirects(req, res, 2)                     // $ ReqSucc=req SsrfSink=req
-	hostClient.DoTimeout(req, res, 5)                       // $ ReqSucc=req SsrfSink=req
+	hostClient.Do(req, res)                                 // $ hasTaintFlow="req" SsrfSink=req
+	hostClient.DoDeadline(req, res, time.Time{})            // $ hasTaintFlow="req" SsrfSink=req
+	hostClient.DoRedirects(req, res, 2)                     // $ hasTaintFlow="req" SsrfSink=req
+	hostClient.DoTimeout(req, res, 5)                       // $ hasTaintFlow="req" SsrfSink=req
 
 	var lbclient fasthttp.LBClient
 	lbclient.Clients = append(lbclient.Clients, hostClient)
-	lbclient.Do(req, res)                      // $ ReqSucc=req SsrfSink=req
-	lbclient.DoDeadline(req, res, time.Time{}) // $ ReqSucc=req SsrfSink=req
-	lbclient.DoTimeout(req, res, 5)            // $ ReqSucc=req SsrfSink=req
+	lbclient.Do(req, res)                      // $ hasTaintFlow="req" SsrfSink=req
+	lbclient.DoDeadline(req, res, time.Time{}) // $ hasTaintFlow="req" SsrfSink=req
+	lbclient.DoTimeout(req, res, 5)            // $ hasTaintFlow="req" SsrfSink=req
 
 	client := fasthttp.Client{}
 	client.Get(resByte, userInput)                      // $ SsrfSink=userInput
 	client.GetDeadline(resByte, userInput, time.Time{}) // $ SsrfSink=userInput
 	client.GetTimeout(resByte, userInput, 5)            // $ SsrfSink=userInput
 	client.Post(resByte, userInput, nil)                // $ SsrfSink=userInput
-	client.Do(req, res)                                 // $ ReqSucc=req SsrfSink=req SsrfSink=req
-	client.DoDeadline(req, res, time.Time{})            // $ ReqSucc=req SsrfSink=req SsrfSink=req
-	client.DoRedirects(req, res, 2)                     // $ ReqSucc=req SsrfSink=req SsrfSink=req
-	client.DoTimeout(req, res, 5)                       // $ ReqSucc=req SsrfSink=req SsrfSink=req
+	client.Do(req, res)                                 // $ hasTaintFlow="req" SsrfSink=req SsrfSink=req
+	client.DoDeadline(req, res, time.Time{})            // $ hasTaintFlow="req" SsrfSink=req SsrfSink=req
+	client.DoRedirects(req, res, 2)                     // $ hasTaintFlow="req" SsrfSink=req SsrfSink=req
+	client.DoTimeout(req, res, 5)                       // $ hasTaintFlow="req" SsrfSink=req SsrfSink=req
 
 	pipelineClient := fasthttp.PipelineClient{}
-	pipelineClient.Do(req, res)                      // $ ReqSucc=req SsrfSink=req SsrfSink=req
-	pipelineClient.DoDeadline(req, res, time.Time{}) // $ ReqSucc=req SsrfSink=req SsrfSink=req
-	pipelineClient.DoTimeout(req, res, 5)            // $ ReqSucc=req SsrfSink=req SsrfSink=req
+	pipelineClient.Do(req, res)                      // $ hasTaintFlow="req" SsrfSink=req SsrfSink=req
+	pipelineClient.DoDeadline(req, res, time.Time{}) // $ hasTaintFlow="req" SsrfSink=req SsrfSink=req
+	pipelineClient.DoTimeout(req, res, 5)            // $ hasTaintFlow="req" SsrfSink=req SsrfSink=req
 
 	tcpDialer := fasthttp.TCPDialer{}
 	userInput = "127.0.0.1:8909"

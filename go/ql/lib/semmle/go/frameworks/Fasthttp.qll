@@ -17,17 +17,6 @@ module Fasthttp {
   string packagePath() { result = package(v1modulePath(), "") }
 
   /**
-   * A class when you are using Fasthttp related queries to fully supports additional steps
-   */
-  bindingset[this]
-  abstract class AdditionalStep extends string {
-    /**
-     * Holds if `pred` to `succ` is an additional taint-propagating step for this query.
-     */
-    abstract predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ);
-  }
-
-  /**
    * Provide models for sanitizer/Dangerous Functions of fasthttp
    */
   module Functions {
@@ -125,32 +114,6 @@ module Fasthttp {
    * Provide modeling for fasthttp.URI Type
    */
   module URI {
-    /**
-     * The additioanl steps that can be used in fasthttp framework.
-     * Fasthttp has its own uri creating/manipulation methods and these methods usually are used in code.
-     * Pred can be an user controlled value like any potential part of URL and succ is the URI instance.
-     * So if we called a method like `URIInstance.SetHost(pred)` then the URIInstance is succ.
-     */
-    class UriAdditionalStep extends AdditionalStep {
-      UriAdditionalStep() { this = "URI additional steps" }
-
-      override predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-        exists(DataFlow::MethodCallNode m, DataFlow::Variable frn |
-          (
-            m.getTarget()
-                .hasQualifiedName(packagePath(), "URI",
-                  ["SetHost", "SetHostBytes", "Update", "UpdateBytes"]) and
-            pred = m.getArgument(0)
-            or
-            m.getTarget().hasQualifiedName(packagePath(), "URI", "Parse") and
-            pred = m.getArgument([0, 1])
-          ) and
-          frn.getARead() = m.getReceiver() and
-          succ = frn.getARead()
-        )
-      }
-    }
-
     /**
      * The methods as Remote user controllable source which are part of the incoming URL
      */
@@ -384,30 +347,6 @@ module Fasthttp {
    * Provide modeling for fasthttp.Request Type
    */
   module Request {
-    /**
-     * The additioanl steps that can be used in fasthttp framework.
-     * Pred can be an user controlled value like any potential part of URL and succ is the URI instance.
-     * So if we called a method like `RequestInstance.SetHost(pred)` then the RequestInstance is succ.
-     * for SetURI the argument type is fasthttp.URI which is already modeled, look at URI module.
-     */
-    class RequestAdditionalStep extends AdditionalStep {
-      RequestAdditionalStep() { this = "Request additional steps" }
-
-      override predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-        exists(DataFlow::MethodCallNode m, DataFlow::Variable frn |
-          m.getTarget()
-              .hasQualifiedName(packagePath(), "Request",
-                [
-                  "SetRequestURI", "SetRequestURIBytes", "SetURI", "String", "SetHost",
-                  "SetHostBytes"
-                ]) and
-          pred = m.getArgument(0) and
-          frn.getARead() = m.getReceiver() and
-          succ = frn.getARead()
-        )
-      }
-    }
-
     /**
      * The methods as Remote user controllable source which can be many part of request
      */
