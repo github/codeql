@@ -15,7 +15,6 @@ module ServerSideRequestForgery {
   private import semmle.go.security.UrlConcatenation
   private import semmle.go.dataflow.barrierguardutil.RegexpCheck
   private import semmle.go.dataflow.Properties
-  private import semmle.go.frameworks.Fasthttp
 
   /**
    * DEPRECATED: Use `Flow` instead.
