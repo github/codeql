@@ -269,7 +269,7 @@ private predicate elementSpec(
   UnboundValueOrRefType t
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
-  t.hasQualifiedName(namespace, type)
+  QN::hasQualifiedName(t, namespace, type)
 }
 
 private class UnboundValueOrRefType extends ValueOrRefType {
@@ -299,19 +299,6 @@ class UnboundCallable extends Callable {
   }
 }
 
-private predicate hasName(Declaration d, string name) {
-  d.(Operator).getFunctionName() = name
-  or
-  not d instanceof Operator and
-  d.hasName(name)
-}
-
-pragma[nomagic]
-private predicate callableSpecInfo(Callable c, string namespace, string type, string name) {
-  c.getDeclaringType().hasQualifiedName(namespace, type) and
-  hasName(c, name)
-}
-
 pragma[nomagic]
 private predicate subtypeSpecCandidate(string name, UnboundValueOrRefType t) {
   exists(UnboundValueOrRefType t0 |
@@ -322,14 +309,19 @@ private predicate subtypeSpecCandidate(string name, UnboundValueOrRefType t) {
 
 pragma[nomagic]
 private predicate callableInfo(Callable c, string name, UnboundValueOrRefType decl) {
-  hasName(c, name) and
-  decl = c.getDeclaringType()
+  decl = c.getDeclaringType() and
+  (
+    c.(Operator).getFunctionName() = name
+    or
+    not c instanceof Operator and
+    c.hasName(name)
+  )
 }
 
 private class InterpretedCallable extends Callable {
   InterpretedCallable() {
     exists(string namespace, string type, string name |
-      callableSpecInfo(this, namespace, type, name) and
+      partialModel(this, namespace, type, name, _) and
       elementSpec(namespace, type, _, name, _, _)
     )
     or
@@ -340,49 +332,16 @@ private class InterpretedCallable extends Callable {
   }
 }
 
-private string paramsStringPartA(InterpretedCallable c, int i) {
-  i = -1 and result = "("
-  or
-  exists(int n |
-    exists(c.getParameter(n)) and
-    i = 2 * n - 1 and
-    result = "," and
-    n != 0
-  )
-  or
-  i = 2 * c.getNumberOfParameters() and result = ")"
-}
-
-private string paramsStringPartB(InterpretedCallable c, int i) {
-  exists(int n, string p, Type t |
-    t = c.getParameter(n).getType() and
-    i = 2 * n and
-    result = p and
-    p = t.getQualifiedName()
-  )
-}
-
-private string paramsString(InterpretedCallable c) {
-  result =
-    strictconcat(int i, string s |
-      s in [paramsStringPartA(c, i), paramsStringPartB(c, i)]
-    |
-      s order by i
-    )
-}
-
-/** Gets the source/sink/summary/neutral base declaration corresponding to the supplied parameters. */
 pragma[nomagic]
 Declaration interpretBaseDeclaration(string namespace, string type, string name, string signature) {
   exists(UnboundValueOrRefType t | elementSpec(namespace, type, _, name, signature, _, t) |
     result =
       any(Declaration d |
-        d.getDeclaringType() = t and
-        hasName(d, name) and
+        QN::hasQualifiedName(d, namespace, type, name) and
         (
           signature = ""
           or
-          paramsString(d) = signature
+          signature = "(" + parameterQualifiedTypeNamesToString(d) + ")"
         )
       )
     or
@@ -394,7 +353,7 @@ Declaration interpretBaseDeclaration(string namespace, string type, string name,
 
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 pragma[nomagic]
-Element interpretElement(
+Declaration interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
