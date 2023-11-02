@@ -4,17 +4,11 @@ edges
 | test.go:59:16:59:27 | selection of Body | test.go:147:20:147:23 | definition of file |
 | test.go:60:16:60:46 | call to FormValue | test.go:106:20:106:27 | definition of filename |
 | test.go:61:20:61:48 | call to PostFormValue | test.go:77:24:77:31 | definition of filename |
-| test.go:63:17:63:28 | selection of Body | test.go:97:21:97:23 | definition of src |
 | test.go:77:24:77:31 | definition of filename | test.go:78:25:78:32 | filename |
 | test.go:78:2:78:33 | ... := ...[0] | test.go:81:12:81:12 | f |
 | test.go:78:25:78:32 | filename | test.go:78:2:78:33 | ... := ...[0] |
 | test.go:81:3:81:19 | ... := ...[0] | test.go:83:37:83:38 | rc |
 | test.go:81:12:81:12 | f | test.go:81:3:81:19 | ... := ...[0] |
-| test.go:97:21:97:23 | definition of src | test.go:98:29:98:31 | src |
-| test.go:98:2:98:32 | ... := ...[0] | test.go:102:26:102:30 | gzipR |
-| test.go:98:29:98:31 | src | test.go:98:2:98:32 | ... := ...[0] |
-| test.go:102:11:102:44 | call to LimitReader | test.go:103:23:103:28 | newSrc |
-| test.go:102:26:102:30 | gzipR | test.go:102:11:102:44 | call to LimitReader |
 | test.go:106:20:106:27 | definition of filename | test.go:108:25:108:32 | filename |
 | test.go:106:20:106:27 | definition of filename | test.go:121:43:121:50 | filename |
 | test.go:108:2:108:33 | ... := ...[0] | test.go:110:12:110:12 | f |
@@ -166,19 +160,12 @@ nodes
 | test.go:59:16:59:27 | selection of Body | semmle.label | selection of Body |
 | test.go:60:16:60:46 | call to FormValue | semmle.label | call to FormValue |
 | test.go:61:20:61:48 | call to PostFormValue | semmle.label | call to PostFormValue |
-| test.go:63:17:63:28 | selection of Body | semmle.label | selection of Body |
 | test.go:77:24:77:31 | definition of filename | semmle.label | definition of filename |
 | test.go:78:2:78:33 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:78:25:78:32 | filename | semmle.label | filename |
 | test.go:81:3:81:19 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:81:12:81:12 | f | semmle.label | f |
 | test.go:83:37:83:38 | rc | semmle.label | rc |
-| test.go:97:21:97:23 | definition of src | semmle.label | definition of src |
-| test.go:98:2:98:32 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:98:29:98:31 | src | semmle.label | src |
-| test.go:102:11:102:44 | call to LimitReader | semmle.label | call to LimitReader |
-| test.go:102:26:102:30 | gzipR | semmle.label | gzipR |
-| test.go:103:23:103:28 | newSrc | semmle.label | newSrc |
 | test.go:106:20:106:27 | definition of filename | semmle.label | definition of filename |
 | test.go:108:2:108:33 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:108:25:108:32 | filename | semmle.label | filename |
@@ -314,7 +301,6 @@ nodes
 subpaths
 #select
 | test.go:83:37:83:38 | rc | test.go:61:20:61:48 | call to PostFormValue | test.go:83:37:83:38 | rc | This decompression is $@. | test.go:61:20:61:48 | call to PostFormValue | decompressing compressed data without managing output size |
-| test.go:103:23:103:28 | newSrc | test.go:63:17:63:28 | selection of Body | test.go:103:23:103:28 | newSrc | This decompression is $@. | test.go:63:17:63:28 | selection of Body | decompressing compressed data without managing output size |
 | test.go:112:37:112:38 | rc | test.go:60:16:60:46 | call to FormValue | test.go:112:37:112:38 | rc | This decompression is $@. | test.go:60:16:60:46 | call to FormValue | decompressing compressed data without managing output size |
 | test.go:125:37:125:38 | rc | test.go:60:16:60:46 | call to FormValue | test.go:125:37:125:38 | rc | This decompression is $@. | test.go:60:16:60:46 | call to FormValue | decompressing compressed data without managing output size |
 | test.go:142:36:142:51 | fileReaderCloser | test.go:58:15:58:26 | selection of Body | test.go:142:36:142:51 | fileReaderCloser | This decompression is $@. | test.go:58:15:58:26 | selection of Body | decompressing compressed data without managing output size |

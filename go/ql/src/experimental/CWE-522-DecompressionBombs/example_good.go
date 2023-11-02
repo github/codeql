@@ -12,8 +12,9 @@ func ZipOpenReader(filename string) {
 	r, _ := zip.OpenReader(filename)
 	var totalBytes int64
 	for _, f := range r.File {
+		rc, _ := f.Open()
+		totalBytes = 0
 		for {
-			rc, _ := f.Open()
 			result, _ := io.CopyN(os.Stdout, rc, 68)
 			if result == 0 {
 				break

@@ -94,12 +94,12 @@ func ZipOpenReaderSafe(filename string) {
 	}
 }
 
-func GZipsafeReader(src io.Reader, dst string) {
+func GZipReader(src io.Reader, dst string) {
 	gzipR, _ := gzip.NewReader(src)
 	dstF, _ := os.OpenFile(dst, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 	defer dstF.Close()
 	var newSrc io.Reader
-	newSrc = io.LimitReader(gzipR, 1024*1024*5)
+	newSrc = io.Reader(gzipR)
 	_, _ = io.Copy(dstF, newSrc)
 }
 

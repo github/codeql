@@ -4,13 +4,6 @@ module DecompressionBombs {
   class FlowState = DataFlow::FlowState;
 
   /**
-   * The Sinks of uncontrolled data decompression
-   */
-  class Sink extends DataFlow::Node {
-    Sink() { this = any(Range r).sink() }
-  }
-
-  /**
    * The additional taint steps that need for creating taint tracking or dataflow.
    */
   abstract class AdditionalTaintStep extends string {
@@ -30,30 +23,20 @@ module DecompressionBombs {
   }
 
   /**
-   * A abstract class responsible for extending new decompression sinks
+   * The Sinks of uncontrolled data decompression
    */
-  abstract private class Range extends DataFlow::Node {
-    /**
-     * Gets the sink of responsible for decompression node
-     *
-     * it can be a path, stream of compressed data,
-     * or a call to function that use pipe
-     */
-    abstract DataFlow::Node sink();
-  }
+  abstract class Sink extends DataFlow::Node { }
 
   /**
    * Provides Decompression Sinks and additional flow steps for `github.com/DataDog/zstd` package
    */
   module DataDogZstd {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f | f.hasQualifiedName("github.com/DataDog/zstd", "reader", "Read") |
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -83,7 +66,7 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional flow steps for `github.com/klauspost/compress/zstd` package
    */
   module KlauspostZstd {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f |
           f.hasQualifiedName("github.com/klauspost/compress/zstd", "Decoder",
@@ -98,8 +81,6 @@ module DecompressionBombs {
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -195,14 +176,12 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `github.com/ulikunitz/xz` package
    */
   module UlikunitzXz {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f | f.hasQualifiedName("github.com/ulikunitz/xz", "Reader", "Read") |
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -231,14 +210,12 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `compress/gzip` package
    */
   module CompressGzip {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f | f.hasQualifiedName("compress/gzip", "Reader", "Read") |
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -268,7 +245,7 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/gzip` package
    */
   module KlauspostGzip {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f |
           f.hasQualifiedName("github.com/klauspost/compress/gzip", "Reader", "Read")
@@ -283,8 +260,6 @@ module DecompressionBombs {
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -315,14 +290,12 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `compress/bzip2` package
    */
   module CompressBzip2 {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f | f.hasQualifiedName("compress/bzip2", "reader", "Read") |
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -352,14 +325,12 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `github.com/dsnet/compress/bzip2` package
    */
   module DsnetBzip2 {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f | f.hasQualifiedName("github.com/dsnet/compress/bzip2", "Reader", "Read") |
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -389,14 +360,12 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `github.com/dsnet/compress/flate` package
    */
   module DsnetFlate {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f | f.hasQualifiedName("github.com/dsnet/compress/flate", "Reader", "Read") |
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -426,14 +395,12 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `compress/flate` package
    */
   module CompressFlate {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f | f.hasQualifiedName("compress/flate", "decompressor", "Read") |
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -463,7 +430,7 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/flate` package
    */
   module KlauspostFlate {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f |
           f.hasQualifiedName("github.com/klauspost/compress/flate", "decompressor", "Read")
@@ -471,8 +438,6 @@ module DecompressionBombs {
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -482,7 +447,7 @@ module DecompressionBombs {
         DataFlow::Node fromNode, FlowState fromState, DataFlow::Node toNode, FlowState toState
       ) {
         exists(Function f, DataFlow::CallNode call |
-          f.hasQualifiedName(["github.com/klauspost/compress/flate"], ["NewReaderDict", "NewReader"]) and
+          f.hasQualifiedName("github.com/klauspost/compress/flate", ["NewReaderDict", "NewReader"]) and
           call = f.getACall()
         |
           fromNode = call.getArgument(0) and
@@ -502,7 +467,7 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/zlib` package
    */
   module KlauspostZlib {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f |
           f.hasQualifiedName("github.com/klauspost/compress/zlib", "reader", "Read")
@@ -510,8 +475,6 @@ module DecompressionBombs {
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -541,14 +504,12 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `compress/zlib` package
    */
   module CompressZlib {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f | f.hasQualifiedName("compress/zlib", "reader", "Read") |
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -578,7 +539,7 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `github.com/golang/snappy` package
    */
   module GolangSnappy {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f |
           f.hasQualifiedName("github.com/golang/snappy", "Reader", ["Read", "ReadByte"])
@@ -586,8 +547,6 @@ module DecompressionBombs {
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -644,7 +603,7 @@ module DecompressionBombs {
    * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/s2` package
    */
   module KlauspostS2 {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method m |
           m.hasQualifiedName("github.com/klauspost/compress/s2", "Reader",
@@ -653,8 +612,6 @@ module DecompressionBombs {
           this = m.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
 
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -684,14 +641,12 @@ module DecompressionBombs {
    * Provides Decompression Sinks for `"archive/tar` package
    */
   module ArchiveTar {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Method f | f.hasQualifiedName("archive/tar", "Reader", "Read") |
           this = f.getACall().getReceiver()
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
   }
 
@@ -699,7 +654,7 @@ module DecompressionBombs {
    * Provides Decompression Sinks for packages that use some standard IO interfaces/methods for reading decompressed data
    */
   module GeneralReadIoSink {
-    class TheSink extends Range {
+    class TheSink extends Sink {
       TheSink() {
         exists(Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer", "CopyN"]) |
           this = f.getACall().getArgument(1)
@@ -726,8 +681,6 @@ module DecompressionBombs {
           this = f.getACall().getArgument(0)
         )
       }
-
-      override DataFlow::Node sink() { result = this }
     }
   }
 }

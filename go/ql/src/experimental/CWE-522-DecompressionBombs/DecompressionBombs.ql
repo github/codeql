@@ -47,37 +47,17 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node node, FlowState state) {
-    // //here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
-    // // exists(Function f | f.hasQualifiedName("io", "CopyN") |
-    // //   node = f.getACall().getArgument([0, 1]) and
-    // //   TaintTracking::localExprTaint(f.getACall().getResult(_).asExpr(),
-    // //     any(RelationalComparisonExpr e).getAChildExpr*())
-    // // )
-    // // or
-    // exists(Function f | f.hasQualifiedName("io", "LimitReader") |
-    //   node = f.getACall().getArgument(0) and f.getACall().getArgument(1).isConst()
-    // ) and
-    // state =
-    //   [
-    //     "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
-    //     "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost"
-    //   ]
-    none()
+  predicate isBarrier(DataFlow::Node node) {
+    // here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
+    exists(Function f | f.hasQualifiedName("io", "CopyN") |
+      node = f.getACall().getArgument(1) and
+      TaintTracking::localExprTaint(f.getACall().getResult(0).asExpr(),
+        // only >=, <=,>,<
+        any(RelationalComparisonExpr rce).getAnOperand())
+    )
   }
 }
 
-// // here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
-// predicate test(DataFlow::Node n2) { any(Test testconfig).hasFlowTo(n2) }
-// class Test extends DataFlow::Configuration {
-//   Test() { this = "test" }
-//   override predicate isSource(DataFlow::Node source) {
-//     exists(Function f | f.hasQualifiedName("io", "CopyN") |
-//       f.getACall().getResult(0) = source
-//     )
-//   }
-//   override predicate isSink(DataFlow::Node sink) { sink instanceof DataFlow::Node }
-// }
 module DecompressionBombsFlow = TaintTracking::GlobalWithState<DecompressionBombsConfig>;
 
 import DecompressionBombsFlow::PathGraph
