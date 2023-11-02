@@ -1,1 +1,2 @@
+| TaintedEnvironment.java:28:35:28:55 | new String[] | Command with a relative path 'ls' is executed. |
 | Test.java:50:46:50:49 | "ls" | Command with a relative path 'ls' is executed. |
