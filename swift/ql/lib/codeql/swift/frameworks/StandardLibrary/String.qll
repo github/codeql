@@ -47,7 +47,7 @@ private class StringSummaries extends SummaryModelCsv {
         ";StringProtocol;true;capitalized(with:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;completePath(into:caseSensitive:matchesInto:filterTypes:);;;Argument[-1];Argument[0].OptionalSome.CollectionElement;taint",
         ";StringProtocol;true;completePath(into:caseSensitive:matchesInto:filterTypes:);;;Argument[-1];Argument[2].OptionalSome.CollectionElement.CollectionElement;taint",
-        ";StringProtocol;true;components(separatedBy:);;;Argument[-1];ReturnValue;taint",
+        ";StringProtocol;true;components(separatedBy:);;;Argument[-1];ReturnValue.CollectionElement;taint",
         ";StringProtocol;true;data(using:allowLossyConversion:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;folding(options:locale:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;getBytes(_:maxLength:usedLength:encoding:options:range:remaining:);;;Argument[-1];Argument[0].CollectionElement;taint",
