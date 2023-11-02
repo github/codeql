@@ -1,46 +1,48 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import TestUtilities.InlineFlowTest
+import semmle.go.security.RequestForgeryCustomizations
 
-module FasthttpTest implements TestSig {
-  string getARelevantTag() { result = ["UriSucc", "UriPred", "ReqSucc", "ReqPred"] }
-
-  predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Fasthttp::Request::RequestAdditionalStep q, DataFlow::Node succ, DataFlow::Node pred |
-      q.hasTaintStep(pred, succ)
-    |
-      (
-        pred.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-          location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-        element = pred.toString() and
-        value = pred.toString() and
-        tag = "ReqPred"
-        or
-        succ.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-          location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-        element = succ.toString() and
-        value = succ.toString() and
-        tag = "ReqSucc"
-      )
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(DataFlow::MethodCallNode m |
+      m.getTarget()
+          .hasQualifiedName("github.com/valyala/fasthttp", "URI",
+            ["SetHost", "SetHostBytes", "Update", "UpdateBytes"]) and
+      source = m.getArgument(0)
+      or
+      m.getTarget().hasQualifiedName("github.com/valyala/fasthttp", "URI", "Parse") and
+      source = m.getArgument([0, 1])
     )
     or
-    exists(Fasthttp::URI::UriAdditionalStep q, DataFlow::Node succ, DataFlow::Node pred |
-      q.hasTaintStep(pred, succ)
-    |
+    exists(DataFlow::MethodCallNode m |
+      m.getTarget()
+          .hasQualifiedName("github.com/valyala/fasthttp", "Request",
+            ["SetRequestURI", "SetRequestURIBytes", "SetURI", "String", "SetHost", "SetHostBytes"]) and
+      source = m.getArgument(0)
+    )
+  }
+
+  predicate isSink(DataFlow::Node source) {
+    exists(DataFlow::MethodCallNode m, DataFlow::Variable frn |
       (
-        pred.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-          location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-        element = pred.toString() and
-        value = pred.toString() and
-        tag = "UriPred"
+        m.getTarget()
+            .hasQualifiedName("github.com/valyala/fasthttp", "URI",
+              ["SetHost", "SetHostBytes", "Update", "UpdateBytes"])
         or
-        succ.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-          location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-        element = succ.toString() and
-        value = succ.toString() and
-        tag = "UriSucc"
-      )
+        m.getTarget().hasQualifiedName("github.com/valyala/fasthttp", "URI", "Parse")
+      ) and
+      frn.getARead() = m.getReceiver() and
+      source = frn.getARead()
+    )
+    or
+    exists(DataFlow::MethodCallNode m, DataFlow::Variable frn |
+      m.getTarget()
+          .hasQualifiedName("github.com/valyala/fasthttp", "Request",
+            ["SetRequestURI", "SetRequestURIBytes", "SetURI", "String", "SetHost", "SetHostBytes"]) and
+      frn.getARead() = m.getReceiver() and
+      source = frn.getARead()
     )
   }
 }
 
-import MakeTest<FasthttpTest>
+import TaintFlowTest<Config>
