@@ -385,7 +385,12 @@ private class PpInstanceOfExpr extends PpAst, InstanceOfExpr {
     or
     i = 3 and result = " " and this.isPattern()
     or
-    i = 4 and result = this.getLocalVariableDeclExpr().getName()
+    i = 4 and
+    (
+      result = this.getPattern().asBindingPattern().getName()
+      or
+      result = this.getPattern().asRecordPattern().toString()
+    )
   }
 
   override PpAst getChild(int i) {
