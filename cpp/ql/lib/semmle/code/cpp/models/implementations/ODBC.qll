@@ -18,7 +18,7 @@ private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
  */
 private class ODBCExecutionFunction extends SqlExecutionFunction {
   ODBCExecutionFunction() {
-    exists(string s | s in ["SQLExecDirect", "SQLPrepare"] and this.hasName(s))
+    this.hasGlobalName(["SQLExecDirect", "SQLPrepare"])
   }
 
   override predicate hasSqlArgument(FunctionInput input) { input.isParameterDeref(1) }

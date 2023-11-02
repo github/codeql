@@ -9,7 +9,6 @@ private import implementations.Iterator
 private import implementations.MemberFunction
 private import implementations.Memcpy
 private import implementations.Memset
-private import implementations.ODBC
 private import implementations.Printf
 private import implementations.Pure
 private import implementations.Strcat
@@ -36,6 +35,7 @@ private import implementations.Accept
 private import implementations.Poll
 private import implementations.Select
 private import implementations.MySql
+private import implementations.ODBC
 private import implementations.SqLite3
 private import implementations.PostgreSql
 private import implementations.System
