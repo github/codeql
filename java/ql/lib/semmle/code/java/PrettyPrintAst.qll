@@ -770,7 +770,9 @@ private class PpSwitchCase extends PpAst, SwitchCase {
 
   private int lastConstCaseValueIndex() {
     result =
-      1 + 2 * (max(int j | j = 0 or exists(this.(ConstCase).getValue(j))) + this.getCaseDefaultOffset())
+      1 +
+        2 *
+          (max(int j | j = 0 or exists(this.(ConstCase).getValue(j))) + this.getCaseDefaultOffset())
   }
 
   override PpAst getChild(int i) {

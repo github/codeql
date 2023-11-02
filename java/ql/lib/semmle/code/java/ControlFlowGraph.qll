@@ -447,14 +447,17 @@ private module ControlFlowGraphImpl {
    * Gets the `i`th `PatternCase` defined on `switch`, if one exists.
    */
   private PatternCase getPatternCase(StmtParent switch, int i) {
-    result = rank[i + 1](PatternCase pc, int caseIdx | pc = getCase(switch, caseIdx) | pc order by caseIdx asc)
+    result =
+      rank[i + 1](PatternCase pc, int caseIdx | pc = getCase(switch, caseIdx) | pc order by caseIdx)
   }
 
   /**
    * Gets the PatternCase after pc, if one exists.
    */
   private PatternCase getNextPatternCase(PatternCase pc) {
-    exists(int idx, StmtParent switch | pc = getPatternCase(switch, idx) and result = getPatternCase(switch, idx + 1))
+    exists(int idx, StmtParent switch |
+      pc = getPatternCase(switch, idx) and result = getPatternCase(switch, idx + 1)
+    )
   }
 
   /**

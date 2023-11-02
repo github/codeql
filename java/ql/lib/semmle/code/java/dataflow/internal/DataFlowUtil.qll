@@ -191,17 +191,11 @@ predicate simpleAstFlowStep(Expr e1, Expr e2) {
   or
   e2.(WhenExpr).getBranch(_).getAResult() = e1
   or
-  exists(SwitchExpr se |
-    e1 = se.getExpr() and e2 = se.getACase().(PatternCase).getPattern()
-  )
+  exists(SwitchExpr se | e1 = se.getExpr() and e2 = se.getACase().(PatternCase).getPattern())
   or
-  exists(SwitchStmt ss |
-    e1 = ss.getExpr() and e2 = ss.getACase().(PatternCase).getPattern()
-  )
+  exists(SwitchStmt ss | e1 = ss.getExpr() and e2 = ss.getACase().(PatternCase).getPattern())
   or
-  exists(InstanceOfExpr ioe |
-    e1 = ioe.getExpr() and e2 = ioe.getPattern()
-  )
+  exists(InstanceOfExpr ioe | e1 = ioe.getExpr() and e2 = ioe.getPattern())
 }
 
 private predicate simpleLocalFlowStep0(Node node1, Node node2) {

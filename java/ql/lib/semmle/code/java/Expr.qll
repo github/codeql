@@ -1558,9 +1558,7 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
 /** An `instanceof` expression. */
 class InstanceOfExpr extends Expr, @instanceofexpr {
   /** Gets the expression on the left-hand side of the `instanceof` operator. */
-  Expr getExpr() {
-    result.isNthChildOf(this, 0)
-  }
+  Expr getExpr() { result.isNthChildOf(this, 0) }
 
   /**
    * Gets the pattern of an `x instanceof T pattern` expression, if any.
@@ -2558,7 +2556,5 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
 
   override string getAPrimaryQlClass() { result = "RecordPatternExpr" }
 
-  Pattern getSubPattern(int i) {
-    result.isNthChildOf(this, i)
-  }
+  Pattern getSubPattern(int i) { result.isNthChildOf(this, i) }
 }
