@@ -115,7 +115,7 @@ module NotExposed {
   predicate isAllowedModule(Module mod) {
     // don't include anything found in site-packages
     exists(mod.getFile().getRelativePath()) and
-    not mod.getFile().getRelativePath().regexpMatch("(?i)(^|/)examples?/.*") and
+    not mod.getFile().getRelativePath().regexpMatch("(?i)((^|/)examples?|^docs)/.*") and
     // to counter things like `my-example/app/foo.py` being allowed under `app.foo`
     forall(string part | part = mod.getFile().getParent().getRelativePath().splitAt("/") |
       legalShortName(part)
