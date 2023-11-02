@@ -39,7 +39,7 @@ private class WKScriptMessageBodyInheritsTaint extends TaintInheritingContent,
 }
 
 /**
- * A type or extension delcaration that adopts the protocol `WKNavigationDelegate`.
+ * A type or extension declaration that adopts the protocol `WKNavigationDelegate`.
  */
 private class AdoptsWkNavigationDelegate extends Decl {
   AdoptsWkNavigationDelegate() {
