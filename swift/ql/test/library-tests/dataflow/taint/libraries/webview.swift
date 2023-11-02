@@ -150,5 +150,5 @@ func testWKNavigationAction() {
     sink(src.request) // $ tainted=WKNavigationAction
 
     let keypath = \WKNavigationAction.request
-    sink(src[keyPath: keypath]) // $ MISSING: tainted=WKNavigationAction
+    sink(src[keyPath: keypath]) // $ tainted=WKNavigationAction
 }

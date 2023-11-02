@@ -74,19 +74,15 @@ private class WKNavigationDelegateSource extends RemoteFlowSource {
 }
 
 /**
- * A taint step implying that, if a `WKNavigationAction` is tainted, its `request` field is also tainted.
+ * A content implying that, if a `WKNavigationAction` is tainted, its
+ * `request` field is also tainted.
  */
-private class WKNavigationActionTaintStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(MemberRefExpr e, Expr self, VarDecl member |
-      self.getType().getName() = "WKNavigationAction" and
-      member.getName() = "request"
-    |
-      e.getBase() = self and
-      e.getMember() = member and
-      n1.asExpr() = self and
-      n2.asExpr() = e
-    )
+private class UrlRequestFieldsInheritTaint extends TaintInheritingContent,
+  DataFlow::Content::FieldContent
+{
+  UrlRequestFieldsInheritTaint() {
+    this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "WKNavigationAction" and
+    this.getField().getName() = "request"
   }
 }
 
