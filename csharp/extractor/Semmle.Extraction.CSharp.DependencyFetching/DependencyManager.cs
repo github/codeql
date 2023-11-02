@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var solutions = options.SolutionFile is not null
                 ? new[] { options.SolutionFile }
                 : allNonBinaryFiles.SelectFileNamesByExtension(".sln");
-            var dllDirNames = options.DllDirs.Count == 0
+            var dllPaths = options.DllDirs.Count == 0
                 ? allFiles.SelectFileNamesByExtension(".dll").ToList()
                 : options.DllDirs.Select(Path.GetFullPath).ToList();
 
@@ -107,20 +107,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
                     .ToList();
 
-                // TODO: Rename the dllDirNames var - it's not only dirs anymore.
-                dllDirNames.AddRange(paths);
-                DownloadMissingPackages(allNonBinaryFiles, dllDirNames);
+                dllPaths.AddRange(paths);
+                DownloadMissingPackages(allNonBinaryFiles, dllPaths);
             }
 
             // Find DLLs in the .Net / Asp.Net Framework
             // This block needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
             if (options.ScanNetFrameworkDlls)
             {
-                AddNetFrameworkDlls(dllDirNames);
-                AddAspNetFrameworkDlls(dllDirNames);
+                AddNetFrameworkDlls(dllPaths);
+                AddAspNetFrameworkDlls(dllPaths);
             }
 
-            assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
+            assemblyCache = new AssemblyCache(dllPaths, progressMonitor);
             AnalyseSolutions(solutions);
 
             foreach (var filename in assemblyCache.AllAssemblies.Select(a => a.Filename))
@@ -220,7 +219,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private void AddNetFrameworkDlls(List<string> dllDirNames)
+        private void AddNetFrameworkDlls(List<string> dllPaths)
         {
             // Multiple dotnet framework packages could be present.
             // The order of the packages is important, we're adding the first one that is present in the nuget cache.
@@ -238,7 +237,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (frameworkPath is not null)
             {
-                dllDirNames.Add(frameworkPath);
+                dllPaths.Add(frameworkPath);
                 progressMonitor.LogInfo("Found .NET Core/Framework DLLs in NuGet packages. Not adding installation directory.");
                 return;
             }
@@ -261,10 +260,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             runtimeLocation ??= Runtime.ExecutingRuntime;
 
             progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
-            dllDirNames.Add(runtimeLocation);
+            dllPaths.Add(runtimeLocation);
         }
 
-        private void AddAspNetFrameworkDlls(List<string> dllDirNames)
+        private void AddAspNetFrameworkDlls(List<string> dllPaths)
         {
             if (!fileContent.IsNewProjectStructureUsed || !fileContent.UseAspNetCoreDlls)
             {
@@ -275,12 +274,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (GetPackageDirectory("microsoft.aspnetcore.app.ref") is string aspNetCorePackage)
             {
                 progressMonitor.LogInfo($"Found ASP.NET Core in NuGet packages. Not adding installation directory.");
-                dllDirNames.Add(aspNetCorePackage);
+                dllPaths.Add(aspNetCorePackage);
             }
             else if (Runtime.AspNetCoreRuntime is string aspNetCoreRuntime)
             {
                 progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspNetCoreRuntime}");
-                dllDirNames.Add(aspNetCoreRuntime);
+                dllPaths.Add(aspNetCoreRuntime);
             }
         }
 
@@ -663,7 +662,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             assets = assetFiles;
         }
 
-        private void DownloadMissingPackages(List<FileInfo> allFiles, List<string> dllDirNames)
+        private void DownloadMissingPackages(List<FileInfo> allFiles, List<string> dllPaths)
         {
             var nugetConfigs = allFiles.SelectFileNamesByName("nuget.config").ToArray();
             string? nugetConfig = null;
@@ -712,7 +711,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             });
 
-            dllDirNames.Add(missingPackageDirectory.DirInfo.FullName);
+            dllPaths.Add(missingPackageDirectory.DirInfo.FullName);
         }
 
         private void AnalyseSolutions(IEnumerable<string> solutions)
