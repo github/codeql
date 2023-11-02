@@ -1,1 +1,1 @@
-Security/CWE-321-noVerification/jwtNoVerification.ql
+Security/CWE-321-noVerification/JsonWebToken.ql

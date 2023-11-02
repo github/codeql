@@ -14,14 +14,8 @@ import javascript
 
 from DataFlow::Node sink
 where
-  sink = API::moduleImport("jsonwebtoken").getMember("decode").getParameter(0).asSink()
-  or
-  sink = API::moduleImport("jwt-decode").getParameter(0).asSink()
-  or
-  sink = API::moduleImport("jose").getMember("decodeJwt").getParameter(0).asSink()
-  or
   exists(API::Node n | n = API::moduleImport("jwt-simple").getMember("decode") |
     n.getParameter(2).asSink().asExpr() = any(BoolLiteral b | b.getBoolValue() = true) and
     sink = n.getParameter(0).asSink()
   )
-select sink, "This Token is Decoded in without signature validatoin"
+select sink, "This Token is Decoded in without signature validation"
