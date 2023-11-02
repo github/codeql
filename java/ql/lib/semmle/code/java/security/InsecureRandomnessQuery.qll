@@ -1,6 +1,7 @@
 /** Provides classes and predicates for reasoning about insecure randomness. */
 
 import java
+private import semmle.code.java.frameworks.OpenSaml
 private import semmle.code.java.frameworks.Servlets
 private import semmle.code.java.security.SensitiveActions
 private import semmle.code.java.security.SensitiveApi
@@ -40,7 +41,7 @@ private class TypeHadoopOsSecureRandom extends SafeRandomImplementation {
 }
 
 /**
- * A node representing an operation which should not use a Insecurely random value.
+ * A node representing an operation which should not use an insecurely random value.
  */
 abstract class InsecureRandomnessSink extends DataFlow::Node { }
 
