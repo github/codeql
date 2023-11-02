@@ -32,6 +32,16 @@ module HardcodedCredentials {
     ConstantStringSource() { not astNode.getStringValue() = "" }
   }
 
+  class NonProductionFiles extends Sanitizer {
+    NonProductionFiles() {
+      this.getFile()
+          .getLocation()
+          .hasLocationInfo(any(string s |
+              s.regexpMatch(["/.*test[.].*", "/.*demo[.].*", "/.*example[.].*", "/.*sample[.].*"])
+            ), _, _, _, _)
+    }
+  }
+
   /**
    * A subclass of `Sink` that includes every `CredentialsNode`
    * as a credentials sink.
