@@ -100,7 +100,7 @@ def gather_from_bqrs_results():
                 package_data[pkg].add(tuple(t))
 
 def gather_from_existing():
-    for f in glob.glob(f"{mad_path}/auto-*.model.yml", recursive=True):
+    for f in glob.glob(f"{mad_path}/subclass-capture/auto-*.model.yml", recursive=True):
         print(f"Processing {f}")
 
         all_data = parse_from_file(Path(f))
@@ -114,7 +114,7 @@ for pkg in package_data:
         print(f"Skipping {repr(pkg)}")
         continue
 
-    pkg_path = mad_path / f"auto-{pkg}.model.yml"
+    pkg_path = mad_path / "subclass-capture" / f"auto-{pkg}.model.yml"
 
     print(f"Writing {pkg_path}")
 
