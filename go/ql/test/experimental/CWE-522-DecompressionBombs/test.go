@@ -60,7 +60,7 @@ func DecompressHandler(w http.ResponseWriter, request *http.Request) {
 	ZipOpenReader(request.FormValue("filepathba"))
 	ZipOpenReaderSafe(request.PostFormValue("test"))
 	GZipOpenReaderSafe(request.PostFormValue("test"))
-	GZipsafeReader(request.Body, "dest")
+	GZipReader(request.Body, "dest")
 }
 
 func GZipOpenReaderSafe(filename string) {
