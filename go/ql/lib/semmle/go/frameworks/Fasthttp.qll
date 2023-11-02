@@ -32,7 +32,7 @@ module Fasthttp {
    */
   module Functions {
     /**
-     * A function that don't sanitize user-provided file paths
+     * A function that doesn't sanitize user-provided file paths
      */
     class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
@@ -65,10 +65,11 @@ module Fasthttp {
     }
 
     /**
-     * A function that sends HTTP requests
+     * A function that sends HTTP requests.
+     *
      * Get* send a HTTP GET request.
      * Post send a HTTP POST request.
-     * these Functions first arguments is a URL.
+     * These functions first argument is a URL.
      */
     class RequestForgerySink extends RequestForgery::Sink {
       RequestForgerySink() {
