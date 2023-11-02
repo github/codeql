@@ -371,31 +371,21 @@ private string paramsString(InterpretedCallable c) {
     )
 }
 
+/** Gets the source/sink/summary/neutral base declaration corresponding to the supplied parameters. */
 pragma[nomagic]
-private Element interpretElement0(
-  string namespace, string type, boolean subtypes, string name, string signature
-) {
-  exists(UnboundValueOrRefType t | elementSpec(namespace, type, subtypes, name, signature, _, t) |
-    exists(Declaration m |
-      (
-        result = m
-        or
-        subtypes = true and result.(UnboundCallable).overridesOrImplementsUnbound(m)
-      ) and
-      m.getDeclaringType() = t and
-      hasName(m, name)
-    |
-      signature = ""
-      or
-      paramsString(m) = signature
-    )
+Declaration interpretBaseDeclaration(string namespace, string type, string name, string signature) {
+  exists(UnboundValueOrRefType t | elementSpec(namespace, type, _, name, signature, _, t) |
+    result =
+      any(Declaration d |
+        d.getDeclaringType() = t and
+        hasName(d, name) and
+        (
+          signature = ""
+          or
+          paramsString(d) = signature
+        )
+      )
     or
-    (
-      result = t
-      or
-      subtypes = true and
-      result = t.getASubTypeUnbound+()
-    ) and
     result = t and
     name = "" and
     signature = ""
@@ -403,14 +393,27 @@ private Element interpretElement0(
 }
 
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
+pragma[nomagic]
 Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
-  exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
-    ext = "" and result = e
+  exists(Declaration base, Declaration d |
+    base = interpretBaseDeclaration(namespace, type, name, signature) and
+    (
+      d = base
+      or
+      subtypes = true and
+      (
+        d.(UnboundCallable).overridesOrImplementsUnbound(base)
+        or
+        d = base.(UnboundValueOrRefType).getASubTypeUnbound+()
+      )
+    )
+  |
+    ext = "" and result = d
     or
-    ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = e
+    ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = d
   )
 }
 
@@ -491,7 +494,7 @@ string parameterQualifiedTypeNamesToString(Callable c) {
     concat(int i, string s | s = parameterQualifiedType(c.getParameter(i)) | s, "," order by i)
 }
 
-private predicate partialModel(
+predicate partialModel(
   UnboundCallable c, string namespace, string type, string name, string parameters
 ) {
   QN::hasQualifiedName(c, namespace, type, name) and
