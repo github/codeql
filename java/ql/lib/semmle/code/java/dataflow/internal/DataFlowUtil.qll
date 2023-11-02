@@ -200,7 +200,7 @@ predicate simpleAstFlowStep(Expr e1, Expr e2) {
   )
   or
   exists(InstanceOfExpr ioe |
-    e1 = ioe.getExpr() and e2 = ioe.getLocalVariableDeclExpr()
+    e1 = ioe.getExpr() and e2 = ioe.getPattern()
   )
 }
 

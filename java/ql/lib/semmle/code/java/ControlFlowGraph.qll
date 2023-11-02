@@ -527,8 +527,7 @@ private module ControlFlowGraphImpl {
       or
       this instanceof NotInstanceOfExpr
       or
-      this instanceof LocalVariableDeclExpr and
-      not this = any(InstanceOfExpr ioe).getLocalVariableDeclExpr()
+      this instanceof LocalVariableDeclExpr
       or
       this instanceof StringTemplateExpr
       or
@@ -832,7 +831,7 @@ private module ControlFlowGraphImpl {
     exists(InstanceOfExpr ioe | ioe.isPattern() and ioe = n |
       last = n and completion = basicBooleanCompletion(false)
       or
-      last = ioe.getLocalVariableDeclExpr() and completion = basicBooleanCompletion(true)
+      last(ioe.getPattern(), last, NormalCompletion()) and completion = basicBooleanCompletion(true)
     )
     or
     // The last node of a node executed in post-order is the node itself.
@@ -1128,7 +1127,7 @@ private module ControlFlowGraphImpl {
       last(ioe.getExpr(), n, completion) and completion = NormalCompletion() and result = ioe
       or
       n = ioe and
-      result = ioe.getLocalVariableDeclExpr() and
+      result = first(ioe.getPattern()) and
       completion = basicBooleanCompletion(true)
     )
     or

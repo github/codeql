@@ -1559,20 +1559,26 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
 class InstanceOfExpr extends Expr, @instanceofexpr {
   /** Gets the expression on the left-hand side of the `instanceof` operator. */
   Expr getExpr() {
-    if this.isPattern()
-    then result = this.getLocalVariableDeclExpr().getInit()
-    else result.isNthChildOf(this, 0)
+    result.isNthChildOf(this, 0)
   }
+
+  /**
+   * Gets the pattern of an `x instanceof T pattern` expression, if any.
+   */
+  Pattern getPattern() { result.isNthChildOf(this, 2) }
 
   /**
    * Holds if this `instanceof` expression uses pattern matching.
    */
-  predicate isPattern() { exists(this.getLocalVariableDeclExpr()) }
+  predicate isPattern() { exists(this.getPattern()) }
 
   /**
-   * Gets the local variable declaration of this `instanceof` expression if pattern matching is used.
+   * Gets the local variable declaration of this `instanceof` expression if simple pattern matching is used.
+   *
+   * Note that this won't get anything when record pattern matching is used-- for more general patterns,
+   * use `getPattern`.
    */
-  LocalVariableDeclExpr getLocalVariableDeclExpr() { result.isNthChildOf(this, 0) }
+  LocalVariableDeclExpr getLocalVariableDeclExpr() { result = this.getPattern().asBindingPattern() }
 
   /** Gets the access to the type on the right-hand side of the `instanceof` operator. */
   Expr getTypeName() { result.isNthChildOf(this, 1) }
