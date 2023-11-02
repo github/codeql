@@ -268,6 +268,7 @@ module ModulusAnalysis<
       exprModulus(mid, b, v, m1) and
       e = modExpr(mid, m2) and
       mod = m1.gcd(m2) and
+      mod != 1 and
       val = remainder(v, mod)
     )
     or
