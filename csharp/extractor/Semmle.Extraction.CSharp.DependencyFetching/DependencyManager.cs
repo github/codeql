@@ -117,6 +117,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 AddNetFrameworkDlls(dllPaths);
                 AddAspNetFrameworkDlls(dllPaths);
+                AddMicrosoftWindowsDesktopDlls(dllPaths);
             }
 
             assemblyCache = new AssemblyCache(dllPaths, progressMonitor);
@@ -263,6 +264,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspNetCoreRuntime}");
                 dllPaths.Add(aspNetCoreRuntime);
+            }
+        }
+
+        private void AddMicrosoftWindowsDesktopDlls(List<string> dllPaths)
+        {
+            if (GetPackageDirectory("microsoft.windowsdesktop.app.ref") is string windowsDesktopApp)
+            {
+                progressMonitor.LogInfo($"Found Windows Desktop App in NuGet packages.");
+                dllPaths.Add(windowsDesktopApp);
             }
         }
 
