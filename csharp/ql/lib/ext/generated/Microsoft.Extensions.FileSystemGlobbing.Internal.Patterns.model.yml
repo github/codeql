@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns", "PatternBuilder", "Build", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns", "PatternBuilder", "PatternBuilder", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns", "PatternBuilder", "PatternBuilder", "(System.StringComparison)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns", "PatternBuilder", "get_ComparisonType", "()", "summary", "df-generated"]

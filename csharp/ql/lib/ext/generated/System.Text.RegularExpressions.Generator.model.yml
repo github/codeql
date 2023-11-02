@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Text.RegularExpressions.Generator", "RegexGenerator", "Initialize", "(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)", "summary", "df-generated"]
