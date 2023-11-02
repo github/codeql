@@ -10,6 +10,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportResolution
 private import semmle.python.ApiGraphs
 private import semmle.python.filters.Tests
+private import semmle.python.Module
 
 // very much inspired by the draft at https://github.com/github/codeql/pull/5632
 module NotExposed {
@@ -114,7 +115,11 @@ module NotExposed {
   predicate isAllowedModule(Module mod) {
     // don't include anything found in site-packages
     exists(mod.getFile().getRelativePath()) and
-    not mod.getFile().getRelativePath().regexpMatch("(?i)(^|/)examples?/.*")
+    not mod.getFile().getRelativePath().regexpMatch("(?i)(^|/)examples?/.*") and
+    // to counter things like `my-example/app/foo.py` being allowed under `app.foo`
+    forall(string part | part = mod.getFile().getParent().getRelativePath().splitAt("/") |
+      legalShortName(part)
+    )
   }
 
   predicate isTestCode(AstNode ast) {
