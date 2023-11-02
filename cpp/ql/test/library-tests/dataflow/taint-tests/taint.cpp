@@ -743,5 +743,5 @@ void test_realloc() {
 void test_realloc_2_indirections(int **buffer) {
   **buffer = source();
   buffer = (int**)realloc(buffer, 16);
-  sink(**buffer); // $ MISSING: ir,ast
+  sink(**buffer); // $ ir MISSING: ast
 }
