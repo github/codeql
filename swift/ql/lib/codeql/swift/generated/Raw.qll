@@ -2454,9 +2454,9 @@ module Raw {
     override string toString() { result = "NamedPattern" }
 
     /**
-     * Gets the name of this named pattern.
+     * Gets the variable declaration of this named pattern.
      */
-    string getName() { named_patterns(this, result) }
+    VarDecl getVarDecl() { named_patterns(this, result) }
   }
 
   /**
@@ -2609,11 +2609,6 @@ module Raw {
     override string toString() { result = "CaseStmt" }
 
     /**
-     * Gets the body of this case statement.
-     */
-    Stmt getBody() { case_stmts(this, result) }
-
-    /**
      * Gets the `index`th label of this case statement (0-based).
      */
     CaseLabelItem getLabel(int index) { case_stmt_labels(this, index, result) }
@@ -2622,6 +2617,11 @@ module Raw {
      * Gets the `index`th variable of this case statement (0-based).
      */
     VarDecl getVariable(int index) { case_stmt_variables(this, index, result) }
+
+    /**
+     * Gets the body of this case statement.
+     */
+    Stmt getBody() { case_stmts(this, result) }
   }
 
   /**

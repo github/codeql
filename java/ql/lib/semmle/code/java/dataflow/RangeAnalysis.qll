@@ -70,7 +70,6 @@ private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionC
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.security.RandomDataSource
 private import SignAnalysis
-private import ModulusAnalysis
 private import semmle.code.java.Reflection
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
@@ -150,6 +149,8 @@ module Sem implements Semantic {
     }
   }
 
+  predicate isAssignOp(BinaryExpr bin) { bin instanceof AssignOp }
+
   class RelationalExpr = J::ComparisonExpr;
 
   abstract class UnaryExpr extends Expr {
@@ -176,18 +177,34 @@ module Sem implements Semantic {
     override Expr getOperand() { result = super.getExpr() }
   }
 
-  // TODO: Implement once utils are properly shared
-  class AddOneExpr extends UnaryExpr {
-    AddOneExpr() { none() }
-
-    override Expr getOperand() { none() }
+  class PreIncExpr extends UnaryExpr instanceof J::PreIncExpr {
+    override Expr getOperand() { result = super.getExpr() }
   }
 
-  // TODO: Implement once utils are properly shared
-  class SubOneExpr extends UnaryExpr {
-    SubOneExpr() { none() }
+  class PreDecExpr extends UnaryExpr instanceof J::PreDecExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
 
-    override Expr getOperand() { none() }
+  class PostIncExpr extends UnaryExpr instanceof J::PostIncExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
+
+  class PostDecExpr extends UnaryExpr instanceof J::PostDecExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
+
+  class CopyValueExpr extends UnaryExpr {
+    CopyValueExpr() {
+      this instanceof J::PlusExpr or
+      this instanceof J::AssignExpr or
+      this instanceof LocalVariableDeclExpr
+    }
+
+    override Expr getOperand() {
+      result = this.(J::PlusExpr).getExpr() or
+      result = this.(J::AssignExpr).getSource() or
+      result = this.(J::LocalVariableDeclExpr).getInit()
+    }
   }
 
   class ConditionalExpr = J::ConditionalExpr;
@@ -204,6 +221,10 @@ module Sem implements Semantic {
 
   predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
     RU::guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
+  }
+
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    RU::guardControlsSsaRead(guard, controlled, testIsTrue)
   }
 
   class Type = J::Type;
@@ -228,7 +249,9 @@ module Sem implements Semantic {
 
   class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiNode { }
 
-  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate { }
+  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate {
+    Expr getDefiningExpr() { result = super.getDefiningExpr() }
+  }
 
   final private class FinalSsaReadPosition = SsaReadPos::SsaReadPosition;
 
@@ -272,7 +295,8 @@ module SignInp implements SignAnalysisSig<Sem> {
 module Modulus implements ModulusAnalysisSig<Sem> {
   class ModBound = Bound;
 
-  predicate semExprModulus = exprModulus/4;
+  private import codeql.rangeanalysis.ModulusAnalysis as Mod
+  import Mod::ModulusAnalysis<Location, Sem, IntDelta, Bounds, Utils>
 }
 
 module IntDelta implements DeltaSig {
@@ -295,8 +319,6 @@ module IntDelta implements DeltaSig {
 }
 
 module JavaLangImpl implements LangSig<Sem, IntDelta> {
-  predicate ignoreSsaReadCopy(Sem::Expr e) { none() }
-
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
@@ -355,14 +377,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 
   predicate ignoreExprBound(Sem::Expr e) { none() }
 
-  predicate ignoreZeroLowerBound(Sem::Expr e) { none() }
-
-  predicate ignoreSsaReadArithmeticExpr(Sem::Expr e) { none() }
-
-  predicate ignoreSsaReadAssignment(Sem::SsaVariable v) { none() }
-
-  Sem::Expr specificSsaRead(Sem::SsaVariable v, int delta) { none() }
-
   predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, int delta) { none() }
 
   Sem::Type getAlternateType(Sem::Expr e) { none() }
@@ -375,8 +389,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 module Utils implements UtilSig<Sem, IntDelta> {
   private import RangeUtils as RU
   private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SsaReadPos
-
-  Sem::Expr semSsaRead(Sem::SsaVariable v, int delta) { result = RU::ssaRead(v, delta) }
 
   Sem::Guard semEqFlowCond(
     Sem::SsaVariable v, Sem::Expr e, int delta, boolean isEq, boolean testIsTrue
@@ -411,7 +423,7 @@ module Bounds implements BoundSig<Location, Sem, IntDelta> {
   class SemZeroBound = ZeroBound;
 
   class SemSsaBound extends SsaBound {
-    Sem::SsaVariable getAVariable() { result = super.getSsa() }
+    Sem::SsaVariable getVariable() { result = super.getSsa() }
   }
 }
 

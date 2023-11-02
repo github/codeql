@@ -1,3 +1,9 @@
+## 0.7.2
+
+### Minor Analysis Improvements
+
+* The query `go/incorrect-integer-conversion` now correctly recognizes more guards of the form `if val <= x` to protect a conversion `uintX(val)`.
+
 ## 0.7.1
 
 ### Minor Analysis Improvements

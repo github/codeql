@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.azure.identity", "ClientSecretCredentialBuilder", False, "clientSecret", "(String)", "", "Argument[0]", "credentials-key", "manual"]
+      - ["com.azure.identity", "UsernamePasswordCredentialBuilder", False, "password", "(String)", "", "Argument[0]", "credentials-password", "manual"]
+      - ["com.azure.identity", "UsernamePasswordCredentialBuilder", False, "username", "(String)", "", "Argument[0]", "credentials-username", "manual"]

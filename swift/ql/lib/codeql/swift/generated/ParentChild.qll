@@ -1138,12 +1138,13 @@ private module Impl {
   private Element getImmediateChildOfCaptureListExpr(
     CaptureListExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n, int nBindingDecl, int nClosureBody |
+    exists(int b, int bExpr, int n, int nBindingDecl, int nVariable, int nClosureBody |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nBindingDecl = n + 1 + max(int i | i = -1 or exists(e.getBindingDecl(i)) | i) and
-      nClosureBody = nBindingDecl + 1 and
+      nVariable = nBindingDecl + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nClosureBody = nVariable + 1 and
       (
         none()
         or
@@ -1152,7 +1153,10 @@ private module Impl {
         result = e.getBindingDecl(index - n) and
         partialPredicateCall = "BindingDecl(" + (index - n).toString() + ")"
         or
-        index = nBindingDecl and
+        result = e.getVariable(index - nBindingDecl) and
+        partialPredicateCall = "Variable(" + (index - nBindingDecl).toString() + ")"
+        or
+        index = nVariable and
         result = e.getImmediateClosureBody() and
         partialPredicateCall = "ClosureBody()"
       )
@@ -3472,21 +3476,25 @@ private module Impl {
   }
 
   private Element getImmediateChildOfCaseStmt(CaseStmt e, int index, string partialPredicateCall) {
-    exists(int b, int bStmt, int n, int nBody, int nLabel |
+    exists(int b, int bStmt, int n, int nLabel, int nVariable, int nBody |
       b = 0 and
       bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
       n = bStmt and
-      nBody = n + 1 and
-      nLabel = nBody + 1 + max(int i | i = -1 or exists(e.getLabel(i)) | i) and
+      nLabel = n + 1 + max(int i | i = -1 or exists(e.getLabel(i)) | i) and
+      nVariable = nLabel + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nBody = nVariable + 1 and
       (
         none()
         or
         result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getBody() and partialPredicateCall = "Body()"
+        result = e.getLabel(index - n) and
+        partialPredicateCall = "Label(" + (index - n).toString() + ")"
         or
-        result = e.getLabel(index - nBody) and
-        partialPredicateCall = "Label(" + (index - nBody).toString() + ")"
+        result = e.getVariable(index - nLabel) and
+        partialPredicateCall = "Variable(" + (index - nLabel).toString() + ")"
+        or
+        index = nVariable and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }

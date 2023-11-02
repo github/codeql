@@ -212,6 +212,5 @@
 | /microsoft.windowsdesktop.app.ref/7.0.2/ref/net7.0/UIAutomationTypes.dll |
 | /microsoft.windowsdesktop.app.ref/7.0.2/ref/net7.0/WindowsBase.dll |
 | /microsoft.windowsdesktop.app.ref/7.0.2/ref/net7.0/WindowsFormsIntegration.dll |
-| /netstandard.library/2.0.3/build/netstandard2.0/ref/System.ComponentModel.Composition.dll |
 | /newtonsoft.json/12.0.1/lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll |
 | /nunit/3.13.3/lib/netstandard2.0/nunit.framework.dll |

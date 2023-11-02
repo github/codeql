@@ -856,8 +856,6 @@
 /test/extractor-tests/generated/pattern/TypedPattern/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/BraceStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/BreakStmt/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/stmt/CaseLabelItem/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/stmt/CaseStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/ConditionElement/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/ContinueStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/DeferStmt/MISSING_SOURCE.txt linguist-generated
@@ -872,7 +870,14 @@
 /test/extractor-tests/generated/stmt/RepeatWhileStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/ReturnStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/StmtCondition/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/stmt/SwitchStmt/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseLabelItem.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseLabelItem_getGuard.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseStmt.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseStmt_getLabel.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseStmt_getVariable.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/SwitchStmt.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/SwitchStmt_getCase.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/SwitchStmt_getLabel.ql linguist-generated
 /test/extractor-tests/generated/stmt/ThrowStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/WhileStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/YieldStmt/MISSING_SOURCE.txt linguist-generated

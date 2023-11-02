@@ -12,33 +12,27 @@ module RangeUtil<DeltaSig D, LangSig<Sem, D> Lang> implements UtilSig<Sem, D> {
   /**
    * Gets an expression that equals `v - d`.
    */
-  SemExpr semSsaRead(SemSsaVariable v, D::Delta delta) {
+  private SemExpr semSsaRead(SemSsaVariable v, D::Delta delta) {
     // There are various language-specific extension points that can be removed once we no longer
     // expect to match the original Java implementation's results exactly.
     result = v.getAUse() and delta = D::fromInt(0)
     or
     exists(D::Delta d1, SemConstantIntegerExpr c |
       result.(SemAddExpr).hasOperands(semSsaRead(v, d1), c) and
-      delta = D::fromFloat(D::toFloat(d1) - c.getIntValue()) and
-      not Lang::ignoreSsaReadArithmeticExpr(result)
+      delta = D::fromFloat(D::toFloat(d1) - c.getIntValue())
     )
     or
     exists(SemSubExpr sub, D::Delta d1, SemConstantIntegerExpr c |
       result = sub and
       sub.getLeftOperand() = semSsaRead(v, d1) and
       sub.getRightOperand() = c and
-      delta = D::fromFloat(D::toFloat(d1) + c.getIntValue()) and
-      not Lang::ignoreSsaReadArithmeticExpr(result)
+      delta = D::fromFloat(D::toFloat(d1) + c.getIntValue())
     )
     or
     result = v.(SemSsaExplicitUpdate).getSourceExpr() and
-    delta = D::fromFloat(0) and
-    not Lang::ignoreSsaReadAssignment(v)
+    delta = D::fromFloat(0)
     or
-    result = Lang::specificSsaRead(v, delta)
-    or
-    result.(SemCopyValueExpr).getOperand() = semSsaRead(v, delta) and
-    not Lang::ignoreSsaReadCopy(result)
+    result.(SemCopyValueExpr).getOperand() = semSsaRead(v, delta)
     or
     result.(SemStoreExpr).getOperand() = semSsaRead(v, delta)
   }

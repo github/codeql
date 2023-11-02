@@ -177,8 +177,8 @@ class S {
 
     f(source("captureThis", 2));
 
-    sink(bf1); // $ MISSING: hasValueFlow
-    sink(self.bf2); // $ MISSING: hasValueFlow
+    sink(bf1); // $ MISSING: hasValueFlow=captureThis
+    sink(self.bf2); // $ MISSING: hasValueFlow=captureThis
   }
 }
 
