@@ -11,43 +11,10 @@
  */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.security.TaintedEnvironmentVariableQuery
+import ExecTaintedEnvironmentFlow::PathGraph
 
-class ExecMethod extends Method {
-  ExecMethod() {
-    this.hasName("exec") and
-    this.getDeclaringType().hasQualifiedName("java.lang", "Runtime")
-  }
-}
-
-module ProcessBuilderEnvironmentFlow implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.getType().(RefType).hasQualifiedName("java.lang", "ProcessBuilder")
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma | ma.getQualifier() = sink.asExpr() |
-      ma.getMethod().hasName("environment")
-    )
-  }
-}
-
-module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
-
-  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "environment-injection") }
-}
-
-module ExecTaintedEnvironmentFlow = TaintTracking::Global<ExecTaintedEnvironmentConfig>;
-
-from Flow::PathNode source, Flow::PathNode sink, string label
-where
-  ExecTaintedCommandFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and label = "argument"
-  or
-  ExecTaintedEnvironmentFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
-  label = "environment"
-select sink.getNode(), sink, source, "This command will be execute with a tainted $@.",
-  sink.getNode(), label
+from ExecTaintedEnvironmentFlow::PathNode source, ExecTaintedEnvironmentFlow::PathNode sink
+where ExecTaintedEnvironmentFlow::flowPath(source, sink)
+select sink.getNode(), source, sink, "This command will be execute with a tainted $@.",
+  sink.getNode(), "environment variable"
