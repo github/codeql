@@ -1,3 +1,24 @@
+## 0.8.1
+
+### New Queries
+
+* The query `cpp/redundant-null-check-simple` has been promoted to Code Scanning. The query finds cases where a pointer is compared to null after it has already been dereferenced. Such comparisons likely indicate a bug at the place where the pointer is dereferenced, or where the pointer is compared to null.
+
+  Note: This query was incorrectly noted as being promoted to Code Scanning in CodeQL version 2.14.6.
+
+## 0.8.0
+
+### Query Metadata Changes
+
+* The `cpp/double-free` query has been further improved to reduce false positives and its precision has been increased from `medium` to `high`.
+* The `cpp/use-after-free` query has been further improved to reduce false positives and its precision has been increased from `medium` to `high`.
+
+### Minor Analysis Improvements
+
+* The queries `cpp/double-free` and `cpp/use-after-free` find fewer false positives
+  in cases where a non-returning function is called.
+* The number of duplicated dataflow paths reported by queries has been significantly reduced.
+
 ## 0.7.5
 
 No user-facing changes.

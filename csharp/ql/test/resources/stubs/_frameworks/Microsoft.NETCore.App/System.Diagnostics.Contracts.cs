@@ -32,19 +32,23 @@ namespace System
                 public static T Result<T>() => throw null;
                 public static T ValueAtReturn<T>(out T value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false)]
             public sealed class ContractAbbreviatorAttribute : System.Attribute
             {
                 public ContractAbbreviatorAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false)]
             public sealed class ContractArgumentValidatorAttribute : System.Attribute
             {
                 public ContractArgumentValidatorAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)5124, AllowMultiple = false, Inherited = false)]
             public sealed class ContractClassAttribute : System.Attribute
             {
                 public ContractClassAttribute(System.Type typeContainingContracts) => throw null;
                 public System.Type TypeContainingContracts { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
             public sealed class ContractClassForAttribute : System.Attribute
             {
                 public ContractClassForAttribute(System.Type typeContractsAreFor) => throw null;
@@ -71,10 +75,12 @@ namespace System
                 Assert = 4,
                 Assume = 5,
             }
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = false)]
             public sealed class ContractInvariantMethodAttribute : System.Attribute
             {
                 public ContractInvariantMethodAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)32767, AllowMultiple = true, Inherited = false)]
             public sealed class ContractOptionAttribute : System.Attribute
             {
                 public string Category { get => throw null; }
@@ -84,24 +90,29 @@ namespace System
                 public string Setting { get => throw null; }
                 public string Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)256)]
             public sealed class ContractPublicPropertyNameAttribute : System.Attribute
             {
                 public ContractPublicPropertyNameAttribute(string name) => throw null;
                 public string Name { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1)]
             public sealed class ContractReferenceAssemblyAttribute : System.Attribute
             {
                 public ContractReferenceAssemblyAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)192, AllowMultiple = false, Inherited = true)]
             public sealed class ContractRuntimeIgnoredAttribute : System.Attribute
             {
                 public ContractRuntimeIgnoredAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)237)]
             public sealed class ContractVerificationAttribute : System.Attribute
             {
                 public ContractVerificationAttribute(bool value) => throw null;
                 public bool Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)6884, AllowMultiple = false, Inherited = true)]
             public sealed class PureAttribute : System.Attribute
             {
                 public PureAttribute() => throw null;

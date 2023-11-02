@@ -1,3 +1,59 @@
+## 0.8.1
+
+### New Features
+
+* Added predicate `MemberRefExpr::getReceiverExpr`
+
+### Minor Analysis Improvements
+
+* The `isBarrier`, `isBarrierIn`, `isBarrierOut`, and `isAdditionalFlowStep` methods of the taint-tracking configurations for local queries in the `ArithmeticTaintedLocalQuery`, `ExternallyControlledFormatStringLocalQuery`, `ImproperValidationOfArrayIndexQuery`, `NumericCastTaintedQuery`, `ResponseSplittingLocalQuery`, `SqlTaintedLocalQuery`, and `XssLocalQuery` libraries have been changed to match their remote counterpart configurations.
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `getAValue` predicate from the `Annotation` class.
+* Deleted the deprecated alias `FloatingPointLiteral`, use `FloatLiteral` instead.
+* Deleted the deprecated `getASuppressedWarningLiteral` predicate from the `SuppressWarningsAnnotation` class.
+* Deleted the deprecated `getATargetExpression` predicate form the `TargetAnnotation` class.
+* Deleted the deprecated `getRetentionPolicyExpression` predicate from the `RetentionAnnotation` class.
+* Deleted the deprecated `conditionCheck` predicate from `Preconditions.qll`.
+* Deleted the deprecated `semmle.code.java.security.performance` folder, use `semmle.code.java.security.regexp` instead.
+* Deleted the deprecated `ExternalAPI` class from `ExternalApi.qll`, use `ExternalApi` instead.
+* Modified the `EnvInput` class in `semmle.code.java.dataflow.FlowSources` to include `environment` and `file` source nodes.
+  There are no changes to results unless you add source models using the `environment` or `file` source kinds.
+* Added `environment` source models for the following methods:
+  * `java.lang.System#getenv`
+  * `java.lang.System#getProperties`
+  * `java.lang.System#getProperty`
+  * `java.util.Properties#get`
+  * `java.util.Properties#getProperty`
+* Added `file` source models for the following methods:
+  * the `java.io.FileInputStream` constructor
+  * `hudson.FilePath#newInputStreamDenyingSymlinkAsNeeded`
+  * `hudson.FilePath#openInputStream`
+  * `hudson.FilePath#read`
+  * `hudson.FilePath#readFromOffset`
+  * `hudson.FilePath#readToString`
+* Modified the `DatabaseInput` class in `semmle.code.java.dataflow.FlowSources` to include `database` source nodes.
+  There are no changes to results unless you add source models using the `database` source kind.
+* Added `database` source models for the following method:
+  * `java.sql.ResultSet#getString`
+
+## 0.8.0
+
+### New Features
+
+* Kotlin versions up to 1.9.20 are now supported.
+
+### Minor Analysis Improvements
+
+* Fixed a control-flow bug where case rule statements would incorrectly include a fall-through edge.
+* Added support for default cases as proper guards in switch expressions to match switch statements.
+* Improved the class `ArithExpr` of the `Overflow.qll` module to also include compound operators. Because of this, new alerts may be raised in queries related to overflows/underflows.
+* Added new dataflow models for the Apache CXF framework.
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+
+### Bug Fixes
+
+* The regular expressions library no longer incorrectly matches mode flag characters against the input.
+
 ## 0.7.5
 
 No user-facing changes.

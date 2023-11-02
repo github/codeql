@@ -4,7 +4,7 @@
 
 import go
 
-private module Gin {
+private module Fiber {
   /** Gets the package name `github.com/gofiber/fiber`. */
   string packagePath() { result = package("github.com/gofiber/fiber", "") }
 

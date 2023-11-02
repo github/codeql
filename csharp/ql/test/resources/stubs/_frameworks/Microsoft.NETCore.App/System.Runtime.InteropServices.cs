@@ -65,11 +65,13 @@ namespace System
     {
         namespace CompilerServices
         {
+            [System.AttributeUsage((System.AttributeTargets)2304, Inherited = false)]
             public sealed class IDispatchConstantAttribute : System.Runtime.CompilerServices.CustomConstantAttribute
             {
                 public IDispatchConstantAttribute() => throw null;
                 public override object Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2304, Inherited = false)]
             public sealed class IUnknownConstantAttribute : System.Runtime.CompilerServices.CustomConstantAttribute
             {
                 public IUnknownConstantAttribute() => throw null;
@@ -78,6 +80,7 @@ namespace System
         }
         namespace InteropServices
         {
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = false)]
             public sealed class AllowReversePInvokeCallsAttribute : System.Attribute
             {
                 public AllowReversePInvokeCallsAttribute() => throw null;
@@ -93,11 +96,13 @@ namespace System
                 public static bool operator ==(System.Runtime.InteropServices.ArrayWithOffset a, System.Runtime.InteropServices.ArrayWithOffset b) => throw null;
                 public static bool operator !=(System.Runtime.InteropServices.ArrayWithOffset a, System.Runtime.InteropServices.ArrayWithOffset b) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1029, Inherited = false)]
             public sealed class AutomationProxyAttribute : System.Attribute
             {
                 public AutomationProxyAttribute(bool val) => throw null;
                 public bool Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1037, Inherited = false)]
             public sealed class BestFitMappingAttribute : System.Attribute
             {
                 public bool BestFitMapping { get => throw null; }
@@ -118,6 +123,7 @@ namespace System
                 ThisCall = 4,
                 FastCall = 5,
             }
+            [System.AttributeUsage((System.AttributeTargets)5, Inherited = false)]
             public sealed class ClassInterfaceAttribute : System.Attribute
             {
                 public ClassInterfaceAttribute(short classInterfaceType) => throw null;
@@ -140,6 +146,7 @@ namespace System
                 public override string ToString() => throw null;
                 public nint Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1024, Inherited = false)]
             public sealed class CoClassAttribute : System.Attribute
             {
                 public System.Type CoClass { get => throw null; }
@@ -151,6 +158,7 @@ namespace System
                 public static TValue GetValueRefOrAddDefault<TKey, TValue>(System.Collections.Generic.Dictionary<TKey, TValue> dictionary, TKey key, out bool exists) => throw null;
                 public static TValue GetValueRefOrNullRef<TKey, TValue>(System.Collections.Generic.Dictionary<TKey, TValue> dictionary, TKey key) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, Inherited = false)]
             public sealed class ComAliasNameAttribute : System.Attribute
             {
                 public ComAliasNameAttribute(string alias) => throw null;
@@ -176,6 +184,7 @@ namespace System
                 public override System.Type ReflectedType { get => throw null; }
                 public override void RemoveEventHandler(object target, System.Delegate handler) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
             public sealed class ComCompatibleVersionAttribute : System.Attribute
             {
                 public int BuildNumber { get => throw null; }
@@ -184,15 +193,18 @@ namespace System
                 public int MinorVersion { get => throw null; }
                 public int RevisionNumber { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)32767, Inherited = false)]
             public sealed class ComConversionLossAttribute : System.Attribute
             {
                 public ComConversionLossAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4, Inherited = false)]
             public sealed class ComDefaultInterfaceAttribute : System.Attribute
             {
                 public ComDefaultInterfaceAttribute(System.Type defaultInterface) => throw null;
                 public System.Type Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1024, Inherited = false)]
             public sealed class ComEventInterfaceAttribute : System.Attribute
             {
                 public ComEventInterfaceAttribute(System.Type SourceInterface, System.Type EventProvider) => throw null;
@@ -213,6 +225,7 @@ namespace System
                 public COMException(string message, int errorCode) => throw null;
                 public override string ToString() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1028, Inherited = false)]
             public sealed class ComImportAttribute : System.Attribute
             {
                 public ComImportAttribute() => throw null;
@@ -230,10 +243,12 @@ namespace System
                 PropGet = 1,
                 PropSet = 2,
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class ComRegisterFunctionAttribute : System.Attribute
             {
                 public ComRegisterFunctionAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4, Inherited = true)]
             public sealed class ComSourceInterfacesAttribute : System.Attribute
             {
                 public ComSourceInterfacesAttribute(string sourceInterfaces) => throw null;
@@ -843,6 +858,7 @@ namespace System
                     VAR_DISPATCH = 3,
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class ComUnregisterFunctionAttribute : System.Attribute
             {
                 public ComUnregisterFunctionAttribute() => throw null;
@@ -914,16 +930,19 @@ namespace System
                 NotHandled = 1,
                 Failed = 2,
             }
+            [System.AttributeUsage((System.AttributeTargets)2, Inherited = false)]
             public sealed class DefaultCharSetAttribute : System.Attribute
             {
                 public System.Runtime.InteropServices.CharSet CharSet { get => throw null; }
                 public DefaultCharSetAttribute(System.Runtime.InteropServices.CharSet charSet) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)65, AllowMultiple = false)]
             public sealed class DefaultDllImportSearchPathsAttribute : System.Attribute
             {
                 public DefaultDllImportSearchPathsAttribute(System.Runtime.InteropServices.DllImportSearchPath paths) => throw null;
                 public System.Runtime.InteropServices.DllImportSearchPath Paths { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2048)]
             public sealed class DefaultParameterValueAttribute : System.Attribute
             {
                 public DefaultParameterValueAttribute(object value) => throw null;
@@ -934,11 +953,13 @@ namespace System
                 public DispatchWrapper(object obj) => throw null;
                 public object WrappedObject { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)960, Inherited = false)]
             public sealed class DispIdAttribute : System.Attribute
             {
                 public DispIdAttribute(int dispId) => throw null;
                 public int Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class DllImportAttribute : System.Attribute
             {
                 public bool BestFitMapping;
@@ -964,6 +985,7 @@ namespace System
                 System32 = 2048,
                 SafeDirectories = 4096,
             }
+            [System.AttributeUsage((System.AttributeTargets)1024, AllowMultiple = false, Inherited = false)]
             public sealed class DynamicInterfaceCastableImplementationAttribute : System.Attribute
             {
                 public DynamicInterfaceCastableImplementationAttribute() => throw null;
@@ -975,6 +997,7 @@ namespace System
                 public ErrorWrapper(object errorCode) => throw null;
                 public int ErrorCode { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)5149, Inherited = false)]
             public sealed class GuidAttribute : System.Attribute
             {
                 public GuidAttribute(string guid) => throw null;
@@ -1024,11 +1047,13 @@ namespace System
                 System.RuntimeTypeHandle GetInterfaceImplementation(System.RuntimeTypeHandle interfaceType);
                 bool IsInterfaceImplemented(System.RuntimeTypeHandle interfaceType, bool throwIfNotImplemented);
             }
+            [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
             public sealed class ImportedFromTypeLibAttribute : System.Attribute
             {
                 public ImportedFromTypeLibAttribute(string tlbFile) => throw null;
                 public string Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1024, Inherited = false)]
             public sealed class InterfaceTypeAttribute : System.Attribute
             {
                 public InterfaceTypeAttribute(short interfaceType) => throw null;
@@ -1049,11 +1074,13 @@ namespace System
                 public InvalidOleVariantTypeException(string message) => throw null;
                 public InvalidOleVariantTypeException(string message, System.Exception inner) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class LCIDConversionAttribute : System.Attribute
             {
                 public LCIDConversionAttribute(int lcid) => throw null;
                 public int Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = false)]
             public sealed class LibraryImportAttribute : System.Attribute
             {
                 public LibraryImportAttribute(string libraryName) => throw null;
@@ -1063,6 +1090,7 @@ namespace System
                 public System.Runtime.InteropServices.StringMarshalling StringMarshalling { get => throw null; set { } }
                 public System.Type StringMarshallingCustomType { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
             public sealed class ManagedToNativeComInteropStubAttribute : System.Attribute
             {
                 public System.Type ClassType { get => throw null; }
@@ -1235,6 +1263,7 @@ namespace System
                 public static void ZeroFreeGlobalAllocAnsi(nint s) => throw null;
                 public static void ZeroFreeGlobalAllocUnicode(nint s) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)10496, Inherited = false)]
             public sealed class MarshalAsAttribute : System.Attribute
             {
                 public System.Runtime.InteropServices.UnmanagedType ArraySubType;
@@ -1306,6 +1335,7 @@ namespace System
                         public unsafe ushort* ToUnmanaged() => throw null;
                     }
                 }
+                [System.AttributeUsage((System.AttributeTargets)10240, AllowMultiple = true)]
                 public sealed class MarshalUsingAttribute : System.Attribute
                 {
                     public int ConstantElementCount { get => throw null; set { } }
@@ -1625,11 +1655,13 @@ namespace System
                     public static void SetMessageSendPendingException(System.Exception exception) => throw null;
                     public unsafe delegate delegate* unmanaged<nint, void> UnhandledExceptionPropagationHandler(System.Exception exception, System.RuntimeMethodHandle lastMethod, out nint context);
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, Inherited = true, AllowMultiple = false)]
                 public sealed class ObjectiveCTrackedTypeAttribute : System.Attribute
                 {
                     public ObjectiveCTrackedTypeAttribute() => throw null;
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false)]
             public sealed class OptionalAttribute : System.Attribute
             {
                 public OptionalAttribute() => throw null;
@@ -1658,16 +1690,19 @@ namespace System
                 public static System.Runtime.InteropServices.PosixSignalRegistration Create(System.Runtime.InteropServices.PosixSignal signal, System.Action<System.Runtime.InteropServices.PosixSignalContext> handler) => throw null;
                 public void Dispose() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class PreserveSigAttribute : System.Attribute
             {
                 public PreserveSigAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, Inherited = false, AllowMultiple = true)]
             public sealed class PrimaryInteropAssemblyAttribute : System.Attribute
             {
                 public PrimaryInteropAssemblyAttribute(int major, int minor) => throw null;
                 public int MajorVersion { get => throw null; }
                 public int MinorVersion { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)4, Inherited = false)]
             public sealed class ProgIdAttribute : System.Attribute
             {
                 public ProgIdAttribute(string progId) => throw null;
@@ -1714,6 +1749,7 @@ namespace System
                 Utf8 = 1,
                 Utf16 = 2,
             }
+            [System.AttributeUsage((System.AttributeTargets)5144, AllowMultiple = false, Inherited = false)]
             public sealed class TypeIdentifierAttribute : System.Attribute
             {
                 public TypeIdentifierAttribute() => throw null;
@@ -1721,6 +1757,7 @@ namespace System
                 public string Identifier { get => throw null; }
                 public string Scope { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class TypeLibFuncAttribute : System.Attribute
             {
                 public TypeLibFuncAttribute(short flags) => throw null;
@@ -1744,11 +1781,13 @@ namespace System
                 FReplaceable = 2048,
                 FImmediateBind = 4096,
             }
+            [System.AttributeUsage((System.AttributeTargets)1024, Inherited = false)]
             public sealed class TypeLibImportClassAttribute : System.Attribute
             {
                 public TypeLibImportClassAttribute(System.Type importClass) => throw null;
                 public string Value { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1052, Inherited = false)]
             public sealed class TypeLibTypeAttribute : System.Attribute
             {
                 public TypeLibTypeAttribute(short flags) => throw null;
@@ -1773,6 +1812,7 @@ namespace System
                 FDispatchable = 4096,
                 FReverseBind = 8192,
             }
+            [System.AttributeUsage((System.AttributeTargets)256, Inherited = false)]
             public sealed class TypeLibVarAttribute : System.Attribute
             {
                 public TypeLibVarAttribute(short flags) => throw null;
@@ -1796,6 +1836,7 @@ namespace System
                 FReplaceable = 2048,
                 FImmediateBind = 4096,
             }
+            [System.AttributeUsage((System.AttributeTargets)1, Inherited = false)]
             public sealed class TypeLibVersionAttribute : System.Attribute
             {
                 public TypeLibVersionAttribute(int major, int minor) => throw null;
@@ -1807,17 +1848,20 @@ namespace System
                 public UnknownWrapper(object obj) => throw null;
                 public object WrappedObject { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = false)]
             public sealed class UnmanagedCallConvAttribute : System.Attribute
             {
                 public System.Type[] CallConvs;
                 public UnmanagedCallConvAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class UnmanagedCallersOnlyAttribute : System.Attribute
             {
                 public System.Type[] CallConvs;
                 public UnmanagedCallersOnlyAttribute() => throw null;
                 public string EntryPoint;
             }
+            [System.AttributeUsage((System.AttributeTargets)4096, AllowMultiple = false, Inherited = false)]
             public sealed class UnmanagedFunctionPointerAttribute : System.Attribute
             {
                 public bool BestFitMapping;

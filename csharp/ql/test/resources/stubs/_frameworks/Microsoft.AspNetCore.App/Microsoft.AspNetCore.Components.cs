@@ -73,6 +73,7 @@ namespace Microsoft
                 public static bool TryConvertToTimeOnly(object obj, System.Globalization.CultureInfo culture, out System.TimeOnly value) => throw null;
                 public static bool TryConvertToTimeOnly(object obj, System.Globalization.CultureInfo culture, string format, out System.TimeOnly value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = true)]
             public sealed class BindElementAttribute : System.Attribute
             {
                 public string ChangeAttribute { get => throw null; }
@@ -81,11 +82,13 @@ namespace Microsoft
                 public string Suffix { get => throw null; }
                 public string ValueAttribute { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
             public sealed class CascadingParameterAttribute : System.Attribute
             {
                 public CascadingParameterAttribute() => throw null;
                 public string Name { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = false)]
             public sealed class CascadingTypeParameterAttribute : System.Attribute
             {
                 public CascadingTypeParameterAttribute(string name) => throw null;
@@ -161,6 +164,7 @@ namespace Microsoft
                 public System.Threading.Tasks.Task SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) => throw null;
                 public System.Type Type { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false)]
             public sealed class EditorRequiredAttribute : System.Attribute
             {
                 public EditorRequiredAttribute() => throw null;
@@ -300,6 +304,7 @@ namespace Microsoft
                 public static readonly Microsoft.AspNetCore.Components.EventCallbackWorkItem Empty;
                 public System.Threading.Tasks.Task InvokeAsync(object arg) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = true)]
             public sealed class EventHandlerAttribute : System.Attribute
             {
                 public string AttributeName { get => throw null; }
@@ -336,6 +341,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Components.PersistentComponentState State { get => throw null; }
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
             public sealed class InjectAttribute : System.Attribute
             {
                 public InjectAttribute() => throw null;
@@ -345,6 +351,7 @@ namespace Microsoft
                 System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, byte[]>> GetPersistedStateAsync();
                 System.Threading.Tasks.Task PersistStateAsync(System.Collections.Generic.IReadOnlyDictionary<string, byte[]> state);
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = true)]
             public sealed class LayoutAttribute : System.Attribute
             {
                 public LayoutAttribute(System.Type layoutType) => throw null;
@@ -447,6 +454,7 @@ namespace Microsoft
                 protected OwningComponentBase() => throw null;
                 protected TService Service { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
             public sealed class ParameterAttribute : System.Attribute
             {
                 public bool CaptureUnmatchedValues { get => throw null; set { } }
@@ -647,6 +655,7 @@ namespace Microsoft
                     Markup = 8,
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = false)]
             public sealed class RouteAttribute : System.Attribute
             {
                 public RouteAttribute(string template) => throw null;
@@ -714,6 +723,7 @@ namespace Microsoft
                     public System.Threading.Tasks.Task SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) => throw null;
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
             public sealed class SupplyParameterFromQueryAttribute : System.Attribute
             {
                 public SupplyParameterFromQueryAttribute() => throw null;

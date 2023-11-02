@@ -20,7 +20,7 @@ import java
  * `super.m(x, y, z)`, possibly wrapped in one or more casts and/or parentheses.
  */
 predicate delegatingSuperCall(Expr e, Method target) {
-  exists(MethodAccess call | call = e |
+  exists(MethodCall call | call = e |
     call.getQualifier() instanceof SuperAccess and
     call.getCallee() = target and
     forall(Expr arg | arg = call.getAnArgument() | arg instanceof VarAccess)

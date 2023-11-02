@@ -1,3 +1,16 @@
+## 0.8.1
+
+### New Queries
+
+* Added a new experimental query, `rb/jwt-empty-secret-or-algorithm`, to detect when application uses an empty secret or weak algorithm.
+* Added a new experimental query, `rb/jwt-missing-verification`, to detect when the application does not verify a JWT payload.
+
+## 0.8.0
+
+### Minor Analysis Improvements
+
+* Built-in Ruby queries now use the new DataFlow API.
+
 ## 0.7.5
 
 No user-facing changes.

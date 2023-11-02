@@ -29,14 +29,14 @@
 | delegatedProperties.kt:1:9:1:12 | this | delegatedProperties.kt:87:31:87:46 | setExtDelegated | ExtensionReceiverAccess |
 | delegatedProperties.kt:5:5:12:5 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:6:24:9:9 | ...::... | delegatedProperties.kt:6:24:9:9 | <get-prop1> | PropertyRefExpr |
-| delegatedProperties.kt:6:24:9:9 | <get-prop1>(...) | delegatedProperties.kt:6:24:9:9 | get | MethodAccess |
+| delegatedProperties.kt:6:24:9:9 | <get-prop1>(...) | delegatedProperties.kt:6:24:9:9 | get | MethodCall |
 | delegatedProperties.kt:6:24:9:9 | Integer | delegatedProperties.kt:6:24:9:9 | <get-prop1> | TypeAccess |
 | delegatedProperties.kt:6:24:9:9 | Integer | delegatedProperties.kt:6:24:9:9 | <get-prop1> | TypeAccess |
 | delegatedProperties.kt:6:24:9:9 | KProperty0<Integer> | delegatedProperties.kt:6:24:9:9 | <get-prop1> | TypeAccess |
 | delegatedProperties.kt:6:24:9:9 | LazyKt | delegatedProperties.kt:6:24:9:9 | <get-prop1> | TypeAccess |
 | delegatedProperties.kt:6:24:9:9 | Object | delegatedProperties.kt:6:24:9:9 | get | TypeAccess |
-| delegatedProperties.kt:6:24:9:9 | get(...) | delegatedProperties.kt:6:24:9:9 | invoke | MethodAccess |
-| delegatedProperties.kt:6:24:9:9 | getValue(...) | delegatedProperties.kt:6:24:9:9 | <get-prop1> | MethodAccess |
+| delegatedProperties.kt:6:24:9:9 | get(...) | delegatedProperties.kt:6:24:9:9 | invoke | MethodCall |
+| delegatedProperties.kt:6:24:9:9 | getValue(...) | delegatedProperties.kt:6:24:9:9 | <get-prop1> | MethodCall |
 | delegatedProperties.kt:6:24:9:9 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:6:24:9:9 | new (...) | delegatedProperties.kt:6:24:9:9 | get | ClassInstanceExpr |
 | delegatedProperties.kt:6:24:9:9 | prop1$delegate | delegatedProperties.kt:5:5:12:5 | fn | LocalVariableDeclExpr |
@@ -44,23 +44,23 @@
 | delegatedProperties.kt:6:24:9:9 | this | delegatedProperties.kt:6:24:9:9 | invoke | ThisAccess |
 | delegatedProperties.kt:6:27:9:9 | Integer | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
 | delegatedProperties.kt:6:27:9:9 | LazyKt | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
-| delegatedProperties.kt:6:27:9:9 | lazy(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodAccess |
+| delegatedProperties.kt:6:27:9:9 | lazy(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodCall |
 | delegatedProperties.kt:6:32:9:9 | ...->... | delegatedProperties.kt:5:5:12:5 | fn | LambdaExpr |
 | delegatedProperties.kt:6:32:9:9 | Function0<Integer> | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
 | delegatedProperties.kt:6:32:9:9 | Integer | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
 | delegatedProperties.kt:6:32:9:9 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:7:13:7:27 | ConsoleKt | delegatedProperties.kt:6:32:9:9 | invoke | TypeAccess |
-| delegatedProperties.kt:7:13:7:27 | println(...) | delegatedProperties.kt:6:32:9:9 | invoke | MethodAccess |
+| delegatedProperties.kt:7:13:7:27 | println(...) | delegatedProperties.kt:6:32:9:9 | invoke | MethodCall |
 | delegatedProperties.kt:7:22:7:25 | "init" | delegatedProperties.kt:6:32:9:9 | invoke | StringLiteral |
 | delegatedProperties.kt:8:13:8:13 | 5 | delegatedProperties.kt:6:32:9:9 | invoke | IntegerLiteral |
 | delegatedProperties.kt:10:9:10:22 | ConsoleKt | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
-| delegatedProperties.kt:10:9:10:22 | println(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodAccess |
-| delegatedProperties.kt:10:17:10:21 | <get-prop1>(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodAccess |
+| delegatedProperties.kt:10:9:10:22 | println(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodCall |
+| delegatedProperties.kt:10:17:10:21 | <get-prop1>(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodCall |
 | delegatedProperties.kt:10:17:10:21 | Object | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
 | delegatedProperties.kt:10:17:10:21 | new (...) | delegatedProperties.kt:5:5:12:5 | fn | ClassInstanceExpr |
 | delegatedProperties.kt:11:9:11:22 | ConsoleKt | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
-| delegatedProperties.kt:11:9:11:22 | println(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodAccess |
-| delegatedProperties.kt:11:17:11:21 | <get-prop1>(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodAccess |
+| delegatedProperties.kt:11:9:11:22 | println(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodCall |
+| delegatedProperties.kt:11:17:11:21 | <get-prop1>(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodCall |
 | delegatedProperties.kt:11:17:11:21 | Object | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
 | delegatedProperties.kt:11:17:11:21 | new (...) | delegatedProperties.kt:5:5:12:5 | fn | ClassInstanceExpr |
 | delegatedProperties.kt:18:5:40:5 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
@@ -70,10 +70,10 @@
 | delegatedProperties.kt:18:12:18:33 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:19:31:19:51 | ...::... | delegatedProperties.kt:19:31:19:51 | <get-varResource1> | PropertyRefExpr |
 | delegatedProperties.kt:19:31:19:51 | ...::... | delegatedProperties.kt:19:31:19:51 | <set-varResource1> | PropertyRefExpr |
-| delegatedProperties.kt:19:31:19:51 | <get-varResource1>(...) | delegatedProperties.kt:19:31:19:51 | get | MethodAccess |
-| delegatedProperties.kt:19:31:19:51 | <get-varResource1>(...) | delegatedProperties.kt:19:31:19:51 | get | MethodAccess |
-| delegatedProperties.kt:19:31:19:51 | <set-varResource1>(...) | delegatedProperties.kt:19:31:19:51 | set | MethodAccess |
-| delegatedProperties.kt:19:31:19:51 | <set-varResource1>(...) | delegatedProperties.kt:19:31:19:51 | set | MethodAccess |
+| delegatedProperties.kt:19:31:19:51 | <get-varResource1>(...) | delegatedProperties.kt:19:31:19:51 | get | MethodCall |
+| delegatedProperties.kt:19:31:19:51 | <get-varResource1>(...) | delegatedProperties.kt:19:31:19:51 | get | MethodCall |
+| delegatedProperties.kt:19:31:19:51 | <set-varResource1>(...) | delegatedProperties.kt:19:31:19:51 | set | MethodCall |
+| delegatedProperties.kt:19:31:19:51 | <set-varResource1>(...) | delegatedProperties.kt:19:31:19:51 | set | MethodCall |
 | delegatedProperties.kt:19:31:19:51 | Integer | delegatedProperties.kt:19:31:19:51 | <get-varResource1> | TypeAccess |
 | delegatedProperties.kt:19:31:19:51 | Integer | delegatedProperties.kt:19:31:19:51 | <set-varResource1> | TypeAccess |
 | delegatedProperties.kt:19:31:19:51 | KMutableProperty0<Integer> | delegatedProperties.kt:19:31:19:51 | <get-varResource1> | TypeAccess |
@@ -85,16 +85,16 @@
 | delegatedProperties.kt:19:31:19:51 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:19:31:19:51 | a0 | delegatedProperties.kt:19:31:19:51 | set | VarAccess |
 | delegatedProperties.kt:19:31:19:51 | a0 | delegatedProperties.kt:19:31:19:51 | set | VarAccess |
-| delegatedProperties.kt:19:31:19:51 | get(...) | delegatedProperties.kt:19:31:19:51 | invoke | MethodAccess |
-| delegatedProperties.kt:19:31:19:51 | get(...) | delegatedProperties.kt:19:31:19:51 | invoke | MethodAccess |
-| delegatedProperties.kt:19:31:19:51 | getValue(...) | delegatedProperties.kt:19:31:19:51 | <get-varResource1> | MethodAccess |
+| delegatedProperties.kt:19:31:19:51 | get(...) | delegatedProperties.kt:19:31:19:51 | invoke | MethodCall |
+| delegatedProperties.kt:19:31:19:51 | get(...) | delegatedProperties.kt:19:31:19:51 | invoke | MethodCall |
+| delegatedProperties.kt:19:31:19:51 | getValue(...) | delegatedProperties.kt:19:31:19:51 | <get-varResource1> | MethodCall |
 | delegatedProperties.kt:19:31:19:51 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:19:31:19:51 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:19:31:19:51 | new (...) | delegatedProperties.kt:19:31:19:51 | get | ClassInstanceExpr |
 | delegatedProperties.kt:19:31:19:51 | new (...) | delegatedProperties.kt:19:31:19:51 | get | ClassInstanceExpr |
 | delegatedProperties.kt:19:31:19:51 | new (...) | delegatedProperties.kt:19:31:19:51 | set | ClassInstanceExpr |
 | delegatedProperties.kt:19:31:19:51 | new (...) | delegatedProperties.kt:19:31:19:51 | set | ClassInstanceExpr |
-| delegatedProperties.kt:19:31:19:51 | setValue(...) | delegatedProperties.kt:19:31:19:51 | <set-varResource1> | MethodAccess |
+| delegatedProperties.kt:19:31:19:51 | setValue(...) | delegatedProperties.kt:19:31:19:51 | <set-varResource1> | MethodCall |
 | delegatedProperties.kt:19:31:19:51 | this | delegatedProperties.kt:19:31:19:51 | invoke | ThisAccess |
 | delegatedProperties.kt:19:31:19:51 | this | delegatedProperties.kt:19:31:19:51 | invoke | ThisAccess |
 | delegatedProperties.kt:19:31:19:51 | varResource1$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
@@ -104,16 +104,16 @@
 | delegatedProperties.kt:19:34:19:51 | new ResourceDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | ClassInstanceExpr |
 | delegatedProperties.kt:19:34:19:51 | value | delegatedProperties.kt:19:31:19:51 | <set-varResource1> | VarAccess |
 | delegatedProperties.kt:20:9:20:29 | ConsoleKt | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
-| delegatedProperties.kt:20:9:20:29 | println(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
-| delegatedProperties.kt:20:17:20:28 | <get-varResource1>(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
+| delegatedProperties.kt:20:9:20:29 | println(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
+| delegatedProperties.kt:20:17:20:28 | <get-varResource1>(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
 | delegatedProperties.kt:20:17:20:28 | Object | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
 | delegatedProperties.kt:20:17:20:28 | new (...) | delegatedProperties.kt:18:5:40:5 | fn | ClassInstanceExpr |
-| delegatedProperties.kt:21:9:21:20 | <set-varResource1>(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
+| delegatedProperties.kt:21:9:21:20 | <set-varResource1>(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
 | delegatedProperties.kt:21:9:21:20 | Object | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
 | delegatedProperties.kt:21:9:21:20 | new (...) | delegatedProperties.kt:18:5:40:5 | fn | ClassInstanceExpr |
 | delegatedProperties.kt:21:24:21:24 | 2 | delegatedProperties.kt:18:5:40:5 | fn | IntegerLiteral |
 | delegatedProperties.kt:23:26:23:31 | ...::... | delegatedProperties.kt:23:26:23:31 | <get-name> | PropertyRefExpr |
-| delegatedProperties.kt:23:26:23:31 | <get-name>(...) | delegatedProperties.kt:23:26:23:31 | get | MethodAccess |
+| delegatedProperties.kt:23:26:23:31 | <get-name>(...) | delegatedProperties.kt:23:26:23:31 | get | MethodCall |
 | delegatedProperties.kt:23:26:23:31 | KProperty0<String> | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
 | delegatedProperties.kt:23:26:23:31 | MapAccessorsKt | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
 | delegatedProperties.kt:23:26:23:31 | Object | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
@@ -121,8 +121,8 @@
 | delegatedProperties.kt:23:26:23:31 | String | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
 | delegatedProperties.kt:23:26:23:31 | String | delegatedProperties.kt:23:26:23:31 | <get-name> | TypeAccess |
 | delegatedProperties.kt:23:26:23:31 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:23:26:23:31 | get(...) | delegatedProperties.kt:23:26:23:31 | invoke | MethodAccess |
-| delegatedProperties.kt:23:26:23:31 | getValue(...) | delegatedProperties.kt:23:26:23:31 | <get-name> | MethodAccess |
+| delegatedProperties.kt:23:26:23:31 | get(...) | delegatedProperties.kt:23:26:23:31 | invoke | MethodCall |
+| delegatedProperties.kt:23:26:23:31 | getValue(...) | delegatedProperties.kt:23:26:23:31 | <get-name> | MethodCall |
 | delegatedProperties.kt:23:26:23:31 | name$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:23:26:23:31 | name$delegate | delegatedProperties.kt:23:26:23:31 | <get-name> | VarAccess |
 | delegatedProperties.kt:23:26:23:31 | new (...) | delegatedProperties.kt:23:26:23:31 | get | ClassInstanceExpr |
@@ -151,23 +151,23 @@
 | delegatedProperties.kt:27:35:27:47 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:27:50:27:71 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
 | delegatedProperties.kt:27:50:27:71 | KProperty<?> | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:27:81:27:88 | getCurValue(...) | delegatedProperties.kt:27:22:27:88 | getValue | MethodAccess |
+| delegatedProperties.kt:27:81:27:88 | getCurValue(...) | delegatedProperties.kt:27:22:27:88 | getValue | MethodCall |
 | delegatedProperties.kt:27:81:27:88 | this | delegatedProperties.kt:27:22:27:88 | getValue | ThisAccess |
 | delegatedProperties.kt:28:22:30:13 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:28:35:28:47 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:28:50:28:71 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
 | delegatedProperties.kt:28:50:28:71 | KProperty<?> | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:28:74:28:83 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:29:17:29:24 | setCurValue(...) | delegatedProperties.kt:28:22:30:13 | setValue | MethodAccess |
+| delegatedProperties.kt:29:17:29:24 | setCurValue(...) | delegatedProperties.kt:28:22:30:13 | setValue | MethodCall |
 | delegatedProperties.kt:29:17:29:24 | this | delegatedProperties.kt:28:22:30:13 | setValue | ThisAccess |
 | delegatedProperties.kt:29:28:29:32 | value | delegatedProperties.kt:28:22:30:13 | setValue | VarAccess |
 | delegatedProperties.kt:33:27:33:47 | ...::... | delegatedProperties.kt:33:27:33:47 | <get-readOnly> | PropertyRefExpr |
-| delegatedProperties.kt:33:27:33:47 | <get-readOnly>(...) | delegatedProperties.kt:33:27:33:47 | get | MethodAccess |
+| delegatedProperties.kt:33:27:33:47 | <get-readOnly>(...) | delegatedProperties.kt:33:27:33:47 | get | MethodCall |
 | delegatedProperties.kt:33:27:33:47 | Integer | delegatedProperties.kt:33:27:33:47 | <get-readOnly> | TypeAccess |
 | delegatedProperties.kt:33:27:33:47 | KProperty0<Integer> | delegatedProperties.kt:33:27:33:47 | <get-readOnly> | TypeAccess |
 | delegatedProperties.kt:33:27:33:47 | Object | delegatedProperties.kt:33:27:33:47 | get | TypeAccess |
-| delegatedProperties.kt:33:27:33:47 | get(...) | delegatedProperties.kt:33:27:33:47 | invoke | MethodAccess |
-| delegatedProperties.kt:33:27:33:47 | getValue(...) | delegatedProperties.kt:33:27:33:47 | <get-readOnly> | MethodAccess |
+| delegatedProperties.kt:33:27:33:47 | get(...) | delegatedProperties.kt:33:27:33:47 | invoke | MethodCall |
+| delegatedProperties.kt:33:27:33:47 | getValue(...) | delegatedProperties.kt:33:27:33:47 | <get-readOnly> | MethodCall |
 | delegatedProperties.kt:33:27:33:47 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:33:27:33:47 | new (...) | delegatedProperties.kt:33:27:33:47 | get | ClassInstanceExpr |
 | delegatedProperties.kt:33:27:33:47 | readOnly$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
@@ -175,13 +175,13 @@
 | delegatedProperties.kt:33:27:33:47 | this | delegatedProperties.kt:33:27:33:47 | invoke | ThisAccess |
 | delegatedProperties.kt:33:30:33:47 | Object | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
 | delegatedProperties.kt:33:30:33:47 | new (...) | delegatedProperties.kt:18:5:40:5 | fn | ClassInstanceExpr |
-| delegatedProperties.kt:33:30:33:47 | resourceDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
+| delegatedProperties.kt:33:30:33:47 | resourceDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
 | delegatedProperties.kt:34:28:34:48 | ...::... | delegatedProperties.kt:34:28:34:48 | <get-readWrite> | PropertyRefExpr |
 | delegatedProperties.kt:34:28:34:48 | ...::... | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | PropertyRefExpr |
-| delegatedProperties.kt:34:28:34:48 | <get-readWrite>(...) | delegatedProperties.kt:34:28:34:48 | get | MethodAccess |
-| delegatedProperties.kt:34:28:34:48 | <get-readWrite>(...) | delegatedProperties.kt:34:28:34:48 | get | MethodAccess |
-| delegatedProperties.kt:34:28:34:48 | <set-readWrite>(...) | delegatedProperties.kt:34:28:34:48 | set | MethodAccess |
-| delegatedProperties.kt:34:28:34:48 | <set-readWrite>(...) | delegatedProperties.kt:34:28:34:48 | set | MethodAccess |
+| delegatedProperties.kt:34:28:34:48 | <get-readWrite>(...) | delegatedProperties.kt:34:28:34:48 | get | MethodCall |
+| delegatedProperties.kt:34:28:34:48 | <get-readWrite>(...) | delegatedProperties.kt:34:28:34:48 | get | MethodCall |
+| delegatedProperties.kt:34:28:34:48 | <set-readWrite>(...) | delegatedProperties.kt:34:28:34:48 | set | MethodCall |
+| delegatedProperties.kt:34:28:34:48 | <set-readWrite>(...) | delegatedProperties.kt:34:28:34:48 | set | MethodCall |
 | delegatedProperties.kt:34:28:34:48 | Integer | delegatedProperties.kt:34:28:34:48 | <get-readWrite> | TypeAccess |
 | delegatedProperties.kt:34:28:34:48 | Integer | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | TypeAccess |
 | delegatedProperties.kt:34:28:34:48 | KMutableProperty0<Integer> | delegatedProperties.kt:34:28:34:48 | <get-readWrite> | TypeAccess |
@@ -193,9 +193,9 @@
 | delegatedProperties.kt:34:28:34:48 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:34:28:34:48 | a0 | delegatedProperties.kt:34:28:34:48 | set | VarAccess |
 | delegatedProperties.kt:34:28:34:48 | a0 | delegatedProperties.kt:34:28:34:48 | set | VarAccess |
-| delegatedProperties.kt:34:28:34:48 | get(...) | delegatedProperties.kt:34:28:34:48 | invoke | MethodAccess |
-| delegatedProperties.kt:34:28:34:48 | get(...) | delegatedProperties.kt:34:28:34:48 | invoke | MethodAccess |
-| delegatedProperties.kt:34:28:34:48 | getValue(...) | delegatedProperties.kt:34:28:34:48 | <get-readWrite> | MethodAccess |
+| delegatedProperties.kt:34:28:34:48 | get(...) | delegatedProperties.kt:34:28:34:48 | invoke | MethodCall |
+| delegatedProperties.kt:34:28:34:48 | get(...) | delegatedProperties.kt:34:28:34:48 | invoke | MethodCall |
+| delegatedProperties.kt:34:28:34:48 | getValue(...) | delegatedProperties.kt:34:28:34:48 | <get-readWrite> | MethodCall |
 | delegatedProperties.kt:34:28:34:48 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:34:28:34:48 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:34:28:34:48 | new (...) | delegatedProperties.kt:34:28:34:48 | get | ClassInstanceExpr |
@@ -205,37 +205,37 @@
 | delegatedProperties.kt:34:28:34:48 | readWrite$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:34:28:34:48 | readWrite$delegate | delegatedProperties.kt:34:28:34:48 | <get-readWrite> | VarAccess |
 | delegatedProperties.kt:34:28:34:48 | readWrite$delegate | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | VarAccess |
-| delegatedProperties.kt:34:28:34:48 | setValue(...) | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | MethodAccess |
+| delegatedProperties.kt:34:28:34:48 | setValue(...) | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | MethodCall |
 | delegatedProperties.kt:34:28:34:48 | this | delegatedProperties.kt:34:28:34:48 | invoke | ThisAccess |
 | delegatedProperties.kt:34:28:34:48 | this | delegatedProperties.kt:34:28:34:48 | invoke | ThisAccess |
 | delegatedProperties.kt:34:31:34:48 | Object | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
 | delegatedProperties.kt:34:31:34:48 | new (...) | delegatedProperties.kt:18:5:40:5 | fn | ClassInstanceExpr |
-| delegatedProperties.kt:34:31:34:48 | resourceDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
+| delegatedProperties.kt:34:31:34:48 | resourceDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
 | delegatedProperties.kt:34:31:34:48 | value | delegatedProperties.kt:34:28:34:48 | <set-readWrite> | VarAccess |
 | delegatedProperties.kt:36:9:36:29 | ConsoleKt | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
-| delegatedProperties.kt:36:9:36:29 | println(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
-| delegatedProperties.kt:36:17:36:28 | getVarResource0(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
+| delegatedProperties.kt:36:9:36:29 | println(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
+| delegatedProperties.kt:36:17:36:28 | getVarResource0(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
 | delegatedProperties.kt:36:17:36:28 | this | delegatedProperties.kt:18:5:40:5 | fn | ThisAccess |
-| delegatedProperties.kt:37:9:37:20 | setVarResource0(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
+| delegatedProperties.kt:37:9:37:20 | setVarResource0(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
 | delegatedProperties.kt:37:9:37:20 | this | delegatedProperties.kt:18:5:40:5 | fn | ThisAccess |
 | delegatedProperties.kt:37:24:37:24 | 3 | delegatedProperties.kt:18:5:40:5 | fn | IntegerLiteral |
 | delegatedProperties.kt:39:31:39:51 | ...::... | delegatedProperties.kt:18:5:40:5 | fn | PropertyRefExpr |
 | delegatedProperties.kt:39:31:39:51 | ...::... | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | PropertyRefExpr |
-| delegatedProperties.kt:39:31:39:51 | <get-varResource2>(...) | delegatedProperties.kt:39:31:39:51 | get | MethodAccess |
-| delegatedProperties.kt:39:31:39:51 | <get-varResource2>(...) | delegatedProperties.kt:39:31:39:51 | get | MethodAccess |
+| delegatedProperties.kt:39:31:39:51 | <get-varResource2>(...) | delegatedProperties.kt:39:31:39:51 | get | MethodCall |
+| delegatedProperties.kt:39:31:39:51 | <get-varResource2>(...) | delegatedProperties.kt:39:31:39:51 | get | MethodCall |
 | delegatedProperties.kt:39:31:39:51 | Integer | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
 | delegatedProperties.kt:39:31:39:51 | Integer | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | TypeAccess |
 | delegatedProperties.kt:39:31:39:51 | KProperty0<Integer> | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
 | delegatedProperties.kt:39:31:39:51 | KProperty0<Integer> | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | TypeAccess |
 | delegatedProperties.kt:39:31:39:51 | Object | delegatedProperties.kt:39:31:39:51 | get | TypeAccess |
 | delegatedProperties.kt:39:31:39:51 | Object | delegatedProperties.kt:39:31:39:51 | get | TypeAccess |
-| delegatedProperties.kt:39:31:39:51 | get(...) | delegatedProperties.kt:39:31:39:51 | invoke | MethodAccess |
-| delegatedProperties.kt:39:31:39:51 | get(...) | delegatedProperties.kt:39:31:39:51 | invoke | MethodAccess |
-| delegatedProperties.kt:39:31:39:51 | getValue(...) | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | MethodAccess |
+| delegatedProperties.kt:39:31:39:51 | get(...) | delegatedProperties.kt:39:31:39:51 | invoke | MethodCall |
+| delegatedProperties.kt:39:31:39:51 | get(...) | delegatedProperties.kt:39:31:39:51 | invoke | MethodCall |
+| delegatedProperties.kt:39:31:39:51 | getValue(...) | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | MethodCall |
 | delegatedProperties.kt:39:31:39:51 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:39:31:39:51 | new (...) | delegatedProperties.kt:39:31:39:51 | get | ClassInstanceExpr |
 | delegatedProperties.kt:39:31:39:51 | new (...) | delegatedProperties.kt:39:31:39:51 | get | ClassInstanceExpr |
-| delegatedProperties.kt:39:31:39:51 | provideDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodAccess |
+| delegatedProperties.kt:39:31:39:51 | provideDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
 | delegatedProperties.kt:39:31:39:51 | this | delegatedProperties.kt:39:31:39:51 | invoke | ThisAccess |
 | delegatedProperties.kt:39:31:39:51 | this | delegatedProperties.kt:39:31:39:51 | invoke | ThisAccess |
 | delegatedProperties.kt:39:31:39:51 | varResource2$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
@@ -261,16 +261,16 @@
 | delegatedProperties.kt:42:27:42:47 | a0 | delegatedProperties.kt:42:27:42:47 | set | VarAccess |
 | delegatedProperties.kt:42:27:42:47 | a1 | delegatedProperties.kt:42:27:42:47 | set | VarAccess |
 | delegatedProperties.kt:42:27:42:47 | a1 | delegatedProperties.kt:42:27:42:47 | set | VarAccess |
-| delegatedProperties.kt:42:27:42:47 | get(...) | delegatedProperties.kt:42:27:42:47 | invoke | MethodAccess |
-| delegatedProperties.kt:42:27:42:47 | get(...) | delegatedProperties.kt:42:27:42:47 | invoke | MethodAccess |
-| delegatedProperties.kt:42:27:42:47 | getValue(...) | delegatedProperties.kt:42:27:42:47 | getVarResource0 | MethodAccess |
-| delegatedProperties.kt:42:27:42:47 | getVarResource0(...) | delegatedProperties.kt:42:27:42:47 | get | MethodAccess |
-| delegatedProperties.kt:42:27:42:47 | getVarResource0(...) | delegatedProperties.kt:42:27:42:47 | get | MethodAccess |
+| delegatedProperties.kt:42:27:42:47 | get(...) | delegatedProperties.kt:42:27:42:47 | invoke | MethodCall |
+| delegatedProperties.kt:42:27:42:47 | get(...) | delegatedProperties.kt:42:27:42:47 | invoke | MethodCall |
+| delegatedProperties.kt:42:27:42:47 | getValue(...) | delegatedProperties.kt:42:27:42:47 | getVarResource0 | MethodCall |
+| delegatedProperties.kt:42:27:42:47 | getVarResource0(...) | delegatedProperties.kt:42:27:42:47 | get | MethodCall |
+| delegatedProperties.kt:42:27:42:47 | getVarResource0(...) | delegatedProperties.kt:42:27:42:47 | get | MethodCall |
 | delegatedProperties.kt:42:27:42:47 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:42:27:42:47 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:42:27:42:47 | setValue(...) | delegatedProperties.kt:42:27:42:47 | setVarResource0 | MethodAccess |
-| delegatedProperties.kt:42:27:42:47 | setVarResource0(...) | delegatedProperties.kt:42:27:42:47 | set | MethodAccess |
-| delegatedProperties.kt:42:27:42:47 | setVarResource0(...) | delegatedProperties.kt:42:27:42:47 | set | MethodAccess |
+| delegatedProperties.kt:42:27:42:47 | setValue(...) | delegatedProperties.kt:42:27:42:47 | setVarResource0 | MethodCall |
+| delegatedProperties.kt:42:27:42:47 | setVarResource0(...) | delegatedProperties.kt:42:27:42:47 | set | MethodCall |
+| delegatedProperties.kt:42:27:42:47 | setVarResource0(...) | delegatedProperties.kt:42:27:42:47 | set | MethodCall |
 | delegatedProperties.kt:42:27:42:47 | this | delegatedProperties.kt:42:27:42:47 | getVarResource0 | ThisAccess |
 | delegatedProperties.kt:42:27:42:47 | this | delegatedProperties.kt:42:27:42:47 | invoke | ThisAccess |
 | delegatedProperties.kt:42:27:42:47 | this | delegatedProperties.kt:42:27:42:47 | invoke | ThisAccess |
@@ -375,16 +375,16 @@
 | delegatedProperties.kt:66:33:66:50 | a1 | delegatedProperties.kt:66:33:66:50 | set | VarAccess |
 | delegatedProperties.kt:66:33:66:50 | a1 | delegatedProperties.kt:66:33:66:50 | set | VarAccess |
 | delegatedProperties.kt:66:33:66:50 | delegatedToMember1$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:66:33:66:50 | get(...) | delegatedProperties.kt:66:33:66:50 | invoke | MethodAccess |
-| delegatedProperties.kt:66:33:66:50 | get(...) | delegatedProperties.kt:66:33:66:50 | invoke | MethodAccess |
-| delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1(...) | delegatedProperties.kt:66:33:66:50 | get | MethodAccess |
-| delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1(...) | delegatedProperties.kt:66:33:66:50 | get | MethodAccess |
-| delegatedProperties.kt:66:33:66:50 | getValue(...) | delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1 | MethodAccess |
+| delegatedProperties.kt:66:33:66:50 | get(...) | delegatedProperties.kt:66:33:66:50 | invoke | MethodCall |
+| delegatedProperties.kt:66:33:66:50 | get(...) | delegatedProperties.kt:66:33:66:50 | invoke | MethodCall |
+| delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1(...) | delegatedProperties.kt:66:33:66:50 | get | MethodCall |
+| delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1(...) | delegatedProperties.kt:66:33:66:50 | get | MethodCall |
+| delegatedProperties.kt:66:33:66:50 | getValue(...) | delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1 | MethodCall |
 | delegatedProperties.kt:66:33:66:50 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:66:33:66:50 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1(...) | delegatedProperties.kt:66:33:66:50 | set | MethodAccess |
-| delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1(...) | delegatedProperties.kt:66:33:66:50 | set | MethodAccess |
-| delegatedProperties.kt:66:33:66:50 | setValue(...) | delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1 | MethodAccess |
+| delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1(...) | delegatedProperties.kt:66:33:66:50 | set | MethodCall |
+| delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1(...) | delegatedProperties.kt:66:33:66:50 | set | MethodCall |
+| delegatedProperties.kt:66:33:66:50 | setValue(...) | delegatedProperties.kt:66:33:66:50 | setDelegatedToMember1 | MethodCall |
 | delegatedProperties.kt:66:33:66:50 | this | delegatedProperties.kt:66:33:66:50 | getDelegatedToMember1 | ThisAccess |
 | delegatedProperties.kt:66:33:66:50 | this | delegatedProperties.kt:66:33:66:50 | invoke | ThisAccess |
 | delegatedProperties.kt:66:33:66:50 | this | delegatedProperties.kt:66:33:66:50 | invoke | ThisAccess |
@@ -401,9 +401,9 @@
 | delegatedProperties.kt:66:36:66:50 | KMutableProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:66:36:66:50 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:66:36:66:50 | a0 | delegatedProperties.kt:66:36:66:50 | set | VarAccess |
-| delegatedProperties.kt:66:36:66:50 | get(...) | delegatedProperties.kt:66:36:66:50 | invoke | MethodAccess |
-| delegatedProperties.kt:66:36:66:50 | getMemberInt(...) | delegatedProperties.kt:66:36:66:50 | get | MethodAccess |
-| delegatedProperties.kt:66:36:66:50 | setMemberInt(...) | delegatedProperties.kt:66:36:66:50 | set | MethodAccess |
+| delegatedProperties.kt:66:36:66:50 | get(...) | delegatedProperties.kt:66:36:66:50 | invoke | MethodCall |
+| delegatedProperties.kt:66:36:66:50 | getMemberInt(...) | delegatedProperties.kt:66:36:66:50 | get | MethodCall |
+| delegatedProperties.kt:66:36:66:50 | setMemberInt(...) | delegatedProperties.kt:66:36:66:50 | set | MethodCall |
 | delegatedProperties.kt:66:36:66:50 | this | delegatedProperties.kt:66:36:66:50 |  | ThisAccess |
 | delegatedProperties.kt:66:36:66:50 | this | delegatedProperties.kt:66:36:66:50 | get | ThisAccess |
 | delegatedProperties.kt:66:36:66:50 | this | delegatedProperties.kt:66:36:66:50 | invoke | ThisAccess |
@@ -439,16 +439,16 @@
 | delegatedProperties.kt:67:33:67:53 | a1 | delegatedProperties.kt:67:33:67:53 | set | VarAccess |
 | delegatedProperties.kt:67:33:67:53 | a1 | delegatedProperties.kt:67:33:67:53 | set | VarAccess |
 | delegatedProperties.kt:67:33:67:53 | delegatedToMember2$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:67:33:67:53 | get(...) | delegatedProperties.kt:67:33:67:53 | invoke | MethodAccess |
-| delegatedProperties.kt:67:33:67:53 | get(...) | delegatedProperties.kt:67:33:67:53 | invoke | MethodAccess |
-| delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2(...) | delegatedProperties.kt:67:33:67:53 | get | MethodAccess |
-| delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2(...) | delegatedProperties.kt:67:33:67:53 | get | MethodAccess |
-| delegatedProperties.kt:67:33:67:53 | getValue(...) | delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2 | MethodAccess |
+| delegatedProperties.kt:67:33:67:53 | get(...) | delegatedProperties.kt:67:33:67:53 | invoke | MethodCall |
+| delegatedProperties.kt:67:33:67:53 | get(...) | delegatedProperties.kt:67:33:67:53 | invoke | MethodCall |
+| delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2(...) | delegatedProperties.kt:67:33:67:53 | get | MethodCall |
+| delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2(...) | delegatedProperties.kt:67:33:67:53 | get | MethodCall |
+| delegatedProperties.kt:67:33:67:53 | getValue(...) | delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2 | MethodCall |
 | delegatedProperties.kt:67:33:67:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:67:33:67:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2(...) | delegatedProperties.kt:67:33:67:53 | set | MethodAccess |
-| delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2(...) | delegatedProperties.kt:67:33:67:53 | set | MethodAccess |
-| delegatedProperties.kt:67:33:67:53 | setValue(...) | delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2 | MethodAccess |
+| delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2(...) | delegatedProperties.kt:67:33:67:53 | set | MethodCall |
+| delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2(...) | delegatedProperties.kt:67:33:67:53 | set | MethodCall |
+| delegatedProperties.kt:67:33:67:53 | setValue(...) | delegatedProperties.kt:67:33:67:53 | setDelegatedToMember2 | MethodCall |
 | delegatedProperties.kt:67:33:67:53 | this | delegatedProperties.kt:67:33:67:53 | getDelegatedToMember2 | ThisAccess |
 | delegatedProperties.kt:67:33:67:53 | this | delegatedProperties.kt:67:33:67:53 | invoke | ThisAccess |
 | delegatedProperties.kt:67:33:67:53 | this | delegatedProperties.kt:67:33:67:53 | invoke | ThisAccess |
@@ -464,9 +464,9 @@
 | delegatedProperties.kt:67:36:67:53 | a0 | delegatedProperties.kt:67:36:67:53 | invoke | VarAccess |
 | delegatedProperties.kt:67:36:67:53 | a0 | delegatedProperties.kt:67:36:67:53 | set | VarAccess |
 | delegatedProperties.kt:67:36:67:53 | a1 | delegatedProperties.kt:67:36:67:53 | set | VarAccess |
-| delegatedProperties.kt:67:36:67:53 | get(...) | delegatedProperties.kt:67:36:67:53 | invoke | MethodAccess |
-| delegatedProperties.kt:67:36:67:53 | getMemberInt(...) | delegatedProperties.kt:67:36:67:53 | get | MethodAccess |
-| delegatedProperties.kt:67:36:67:53 | setMemberInt(...) | delegatedProperties.kt:67:36:67:53 | set | MethodAccess |
+| delegatedProperties.kt:67:36:67:53 | get(...) | delegatedProperties.kt:67:36:67:53 | invoke | MethodCall |
+| delegatedProperties.kt:67:36:67:53 | getMemberInt(...) | delegatedProperties.kt:67:36:67:53 | get | MethodCall |
+| delegatedProperties.kt:67:36:67:53 | setMemberInt(...) | delegatedProperties.kt:67:36:67:53 | set | MethodCall |
 | delegatedProperties.kt:67:36:67:53 | this | delegatedProperties.kt:67:36:67:53 | invoke | ThisAccess |
 | delegatedProperties.kt:69:36:69:56 | ...::... | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1 | PropertyRefExpr |
 | delegatedProperties.kt:69:36:69:56 | ...::... | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | PropertyRefExpr |
@@ -493,16 +493,16 @@
 | delegatedProperties.kt:69:36:69:56 | a1 | delegatedProperties.kt:69:36:69:56 | set | VarAccess |
 | delegatedProperties.kt:69:36:69:56 | a1 | delegatedProperties.kt:69:36:69:56 | set | VarAccess |
 | delegatedProperties.kt:69:36:69:56 | delegatedToExtMember1$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:69:36:69:56 | get(...) | delegatedProperties.kt:69:36:69:56 | invoke | MethodAccess |
-| delegatedProperties.kt:69:36:69:56 | get(...) | delegatedProperties.kt:69:36:69:56 | invoke | MethodAccess |
-| delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1(...) | delegatedProperties.kt:69:36:69:56 | get | MethodAccess |
-| delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1(...) | delegatedProperties.kt:69:36:69:56 | get | MethodAccess |
-| delegatedProperties.kt:69:36:69:56 | getValue(...) | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1 | MethodAccess |
+| delegatedProperties.kt:69:36:69:56 | get(...) | delegatedProperties.kt:69:36:69:56 | invoke | MethodCall |
+| delegatedProperties.kt:69:36:69:56 | get(...) | delegatedProperties.kt:69:36:69:56 | invoke | MethodCall |
+| delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1(...) | delegatedProperties.kt:69:36:69:56 | get | MethodCall |
+| delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1(...) | delegatedProperties.kt:69:36:69:56 | get | MethodCall |
+| delegatedProperties.kt:69:36:69:56 | getValue(...) | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1 | MethodCall |
 | delegatedProperties.kt:69:36:69:56 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:69:36:69:56 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1(...) | delegatedProperties.kt:69:36:69:56 | set | MethodAccess |
-| delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1(...) | delegatedProperties.kt:69:36:69:56 | set | MethodAccess |
-| delegatedProperties.kt:69:36:69:56 | setValue(...) | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | MethodAccess |
+| delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1(...) | delegatedProperties.kt:69:36:69:56 | set | MethodCall |
+| delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1(...) | delegatedProperties.kt:69:36:69:56 | set | MethodCall |
+| delegatedProperties.kt:69:36:69:56 | setValue(...) | delegatedProperties.kt:69:36:69:56 | setDelegatedToExtMember1 | MethodCall |
 | delegatedProperties.kt:69:36:69:56 | this | delegatedProperties.kt:69:36:69:56 | getDelegatedToExtMember1 | ThisAccess |
 | delegatedProperties.kt:69:36:69:56 | this | delegatedProperties.kt:69:36:69:56 | invoke | ThisAccess |
 | delegatedProperties.kt:69:36:69:56 | this | delegatedProperties.kt:69:36:69:56 | invoke | ThisAccess |
@@ -521,9 +521,9 @@
 | delegatedProperties.kt:69:39:69:56 | KMutableProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:69:39:69:56 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:69:39:69:56 | a0 | delegatedProperties.kt:69:39:69:56 | set | VarAccess |
-| delegatedProperties.kt:69:39:69:56 | get(...) | delegatedProperties.kt:69:39:69:56 | invoke | MethodAccess |
-| delegatedProperties.kt:69:39:69:56 | getExtDelegated(...) | delegatedProperties.kt:69:39:69:56 | get | MethodAccess |
-| delegatedProperties.kt:69:39:69:56 | setExtDelegated(...) | delegatedProperties.kt:69:39:69:56 | set | MethodAccess |
+| delegatedProperties.kt:69:39:69:56 | get(...) | delegatedProperties.kt:69:39:69:56 | invoke | MethodCall |
+| delegatedProperties.kt:69:39:69:56 | getExtDelegated(...) | delegatedProperties.kt:69:39:69:56 | get | MethodCall |
+| delegatedProperties.kt:69:39:69:56 | setExtDelegated(...) | delegatedProperties.kt:69:39:69:56 | set | MethodCall |
 | delegatedProperties.kt:69:39:69:56 | this | delegatedProperties.kt:69:39:69:56 |  | ThisAccess |
 | delegatedProperties.kt:69:39:69:56 | this | delegatedProperties.kt:69:39:69:56 | get | ThisAccess |
 | delegatedProperties.kt:69:39:69:56 | this | delegatedProperties.kt:69:39:69:56 | invoke | ThisAccess |
@@ -559,16 +559,16 @@
 | delegatedProperties.kt:70:36:70:59 | a1 | delegatedProperties.kt:70:36:70:59 | set | VarAccess |
 | delegatedProperties.kt:70:36:70:59 | a1 | delegatedProperties.kt:70:36:70:59 | set | VarAccess |
 | delegatedProperties.kt:70:36:70:59 | delegatedToExtMember2$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:70:36:70:59 | get(...) | delegatedProperties.kt:70:36:70:59 | invoke | MethodAccess |
-| delegatedProperties.kt:70:36:70:59 | get(...) | delegatedProperties.kt:70:36:70:59 | invoke | MethodAccess |
-| delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2(...) | delegatedProperties.kt:70:36:70:59 | get | MethodAccess |
-| delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2(...) | delegatedProperties.kt:70:36:70:59 | get | MethodAccess |
-| delegatedProperties.kt:70:36:70:59 | getValue(...) | delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2 | MethodAccess |
+| delegatedProperties.kt:70:36:70:59 | get(...) | delegatedProperties.kt:70:36:70:59 | invoke | MethodCall |
+| delegatedProperties.kt:70:36:70:59 | get(...) | delegatedProperties.kt:70:36:70:59 | invoke | MethodCall |
+| delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2(...) | delegatedProperties.kt:70:36:70:59 | get | MethodCall |
+| delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2(...) | delegatedProperties.kt:70:36:70:59 | get | MethodCall |
+| delegatedProperties.kt:70:36:70:59 | getValue(...) | delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2 | MethodCall |
 | delegatedProperties.kt:70:36:70:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:70:36:70:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2(...) | delegatedProperties.kt:70:36:70:59 | set | MethodAccess |
-| delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2(...) | delegatedProperties.kt:70:36:70:59 | set | MethodAccess |
-| delegatedProperties.kt:70:36:70:59 | setValue(...) | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | MethodAccess |
+| delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2(...) | delegatedProperties.kt:70:36:70:59 | set | MethodCall |
+| delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2(...) | delegatedProperties.kt:70:36:70:59 | set | MethodCall |
+| delegatedProperties.kt:70:36:70:59 | setValue(...) | delegatedProperties.kt:70:36:70:59 | setDelegatedToExtMember2 | MethodCall |
 | delegatedProperties.kt:70:36:70:59 | this | delegatedProperties.kt:70:36:70:59 | getDelegatedToExtMember2 | ThisAccess |
 | delegatedProperties.kt:70:36:70:59 | this | delegatedProperties.kt:70:36:70:59 | invoke | ThisAccess |
 | delegatedProperties.kt:70:36:70:59 | this | delegatedProperties.kt:70:36:70:59 | invoke | ThisAccess |
@@ -586,9 +586,9 @@
 | delegatedProperties.kt:70:39:70:59 | a0 | delegatedProperties.kt:70:39:70:59 | invoke | VarAccess |
 | delegatedProperties.kt:70:39:70:59 | a0 | delegatedProperties.kt:70:39:70:59 | set | VarAccess |
 | delegatedProperties.kt:70:39:70:59 | a1 | delegatedProperties.kt:70:39:70:59 | set | VarAccess |
-| delegatedProperties.kt:70:39:70:59 | get(...) | delegatedProperties.kt:70:39:70:59 | invoke | MethodAccess |
-| delegatedProperties.kt:70:39:70:59 | getExtDelegated(...) | delegatedProperties.kt:70:39:70:59 | get | MethodAccess |
-| delegatedProperties.kt:70:39:70:59 | setExtDelegated(...) | delegatedProperties.kt:70:39:70:59 | set | MethodAccess |
+| delegatedProperties.kt:70:39:70:59 | get(...) | delegatedProperties.kt:70:39:70:59 | invoke | MethodCall |
+| delegatedProperties.kt:70:39:70:59 | getExtDelegated(...) | delegatedProperties.kt:70:39:70:59 | get | MethodCall |
+| delegatedProperties.kt:70:39:70:59 | setExtDelegated(...) | delegatedProperties.kt:70:39:70:59 | set | MethodCall |
 | delegatedProperties.kt:70:39:70:59 | this | delegatedProperties.kt:70:39:70:59 | invoke | ThisAccess |
 | delegatedProperties.kt:72:36:72:56 | ...::... | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | PropertyRefExpr |
 | delegatedProperties.kt:72:36:72:56 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
@@ -602,9 +602,9 @@
 | delegatedProperties.kt:72:36:72:56 | a0 | delegatedProperties.kt:72:36:72:56 | get | VarAccess |
 | delegatedProperties.kt:72:36:72:56 | a0 | delegatedProperties.kt:72:36:72:56 | invoke | VarAccess |
 | delegatedProperties.kt:72:36:72:56 | delegatedToBaseClass1$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:72:36:72:56 | get(...) | delegatedProperties.kt:72:36:72:56 | invoke | MethodAccess |
-| delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1(...) | delegatedProperties.kt:72:36:72:56 | get | MethodAccess |
-| delegatedProperties.kt:72:36:72:56 | getValue(...) | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | MethodAccess |
+| delegatedProperties.kt:72:36:72:56 | get(...) | delegatedProperties.kt:72:36:72:56 | invoke | MethodCall |
+| delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1(...) | delegatedProperties.kt:72:36:72:56 | get | MethodCall |
+| delegatedProperties.kt:72:36:72:56 | getValue(...) | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | MethodCall |
 | delegatedProperties.kt:72:36:72:56 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:72:36:72:56 | this | delegatedProperties.kt:72:36:72:56 | getDelegatedToBaseClass1 | ThisAccess |
 | delegatedProperties.kt:72:36:72:56 | this | delegatedProperties.kt:72:36:72:56 | invoke | ThisAccess |
@@ -617,8 +617,8 @@
 | delegatedProperties.kt:72:39:72:56 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:72:39:72:56 | KProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:72:39:72:56 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:72:39:72:56 | get(...) | delegatedProperties.kt:72:39:72:56 | invoke | MethodAccess |
-| delegatedProperties.kt:72:39:72:56 | getBaseClassInt(...) | delegatedProperties.kt:72:39:72:56 | get | MethodAccess |
+| delegatedProperties.kt:72:39:72:56 | get(...) | delegatedProperties.kt:72:39:72:56 | invoke | MethodCall |
+| delegatedProperties.kt:72:39:72:56 | getBaseClassInt(...) | delegatedProperties.kt:72:39:72:56 | get | MethodCall |
 | delegatedProperties.kt:72:39:72:56 | this | delegatedProperties.kt:72:39:72:56 |  | ThisAccess |
 | delegatedProperties.kt:72:39:72:56 | this | delegatedProperties.kt:72:39:72:56 | get | ThisAccess |
 | delegatedProperties.kt:72:39:72:56 | this | delegatedProperties.kt:72:39:72:56 | invoke | ThisAccess |
@@ -638,9 +638,9 @@
 | delegatedProperties.kt:73:36:73:56 | a0 | delegatedProperties.kt:73:36:73:56 | get | VarAccess |
 | delegatedProperties.kt:73:36:73:56 | a0 | delegatedProperties.kt:73:36:73:56 | invoke | VarAccess |
 | delegatedProperties.kt:73:36:73:56 | delegatedToBaseClass2$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:73:36:73:56 | get(...) | delegatedProperties.kt:73:36:73:56 | invoke | MethodAccess |
-| delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2(...) | delegatedProperties.kt:73:36:73:56 | get | MethodAccess |
-| delegatedProperties.kt:73:36:73:56 | getValue(...) | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | MethodAccess |
+| delegatedProperties.kt:73:36:73:56 | get(...) | delegatedProperties.kt:73:36:73:56 | invoke | MethodCall |
+| delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2(...) | delegatedProperties.kt:73:36:73:56 | get | MethodCall |
+| delegatedProperties.kt:73:36:73:56 | getValue(...) | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | MethodCall |
 | delegatedProperties.kt:73:36:73:56 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:73:36:73:56 | this | delegatedProperties.kt:73:36:73:56 | getDelegatedToBaseClass2 | ThisAccess |
 | delegatedProperties.kt:73:36:73:56 | this | delegatedProperties.kt:73:36:73:56 | invoke | ThisAccess |
@@ -651,8 +651,8 @@
 | delegatedProperties.kt:73:39:73:56 | KProperty1<Base,Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:73:39:73:56 | a0 | delegatedProperties.kt:73:39:73:56 | get | VarAccess |
 | delegatedProperties.kt:73:39:73:56 | a0 | delegatedProperties.kt:73:39:73:56 | invoke | VarAccess |
-| delegatedProperties.kt:73:39:73:56 | get(...) | delegatedProperties.kt:73:39:73:56 | invoke | MethodAccess |
-| delegatedProperties.kt:73:39:73:56 | getBaseClassInt(...) | delegatedProperties.kt:73:39:73:56 | get | MethodAccess |
+| delegatedProperties.kt:73:39:73:56 | get(...) | delegatedProperties.kt:73:39:73:56 | invoke | MethodCall |
+| delegatedProperties.kt:73:39:73:56 | getBaseClassInt(...) | delegatedProperties.kt:73:39:73:56 | get | MethodCall |
 | delegatedProperties.kt:73:39:73:56 | this | delegatedProperties.kt:73:39:73:56 | invoke | ThisAccess |
 | delegatedProperties.kt:75:39:75:78 | ...::... | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | PropertyRefExpr |
 | delegatedProperties.kt:75:39:75:78 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
@@ -666,24 +666,24 @@
 | delegatedProperties.kt:75:39:75:78 | a0 | delegatedProperties.kt:75:39:75:78 | get | VarAccess |
 | delegatedProperties.kt:75:39:75:78 | a0 | delegatedProperties.kt:75:39:75:78 | invoke | VarAccess |
 | delegatedProperties.kt:75:39:75:78 | delegatedToAnotherClass1$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:75:39:75:78 | get(...) | delegatedProperties.kt:75:39:75:78 | invoke | MethodAccess |
-| delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1(...) | delegatedProperties.kt:75:39:75:78 | get | MethodAccess |
-| delegatedProperties.kt:75:39:75:78 | getValue(...) | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | MethodAccess |
+| delegatedProperties.kt:75:39:75:78 | get(...) | delegatedProperties.kt:75:39:75:78 | invoke | MethodCall |
+| delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1(...) | delegatedProperties.kt:75:39:75:78 | get | MethodCall |
+| delegatedProperties.kt:75:39:75:78 | getValue(...) | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | MethodCall |
 | delegatedProperties.kt:75:39:75:78 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:75:39:75:78 | this | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | ThisAccess |
 | delegatedProperties.kt:75:39:75:78 | this | delegatedProperties.kt:75:39:75:78 | invoke | ThisAccess |
 | delegatedProperties.kt:75:39:75:78 | this.delegatedToAnotherClass1$delegate | delegatedProperties.kt:75:39:75:78 | getDelegatedToAnotherClass1 | VarAccess |
 | delegatedProperties.kt:75:42:75:61 | MyClass | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:75:42:75:61 | MyClass.this | delegatedProperties.kt:65:1:85:1 | MyClass | ThisAccess |
-| delegatedProperties.kt:75:42:75:61 | getAnotherClassInstance(...) | delegatedProperties.kt:65:1:85:1 | MyClass | MethodAccess |
+| delegatedProperties.kt:75:42:75:61 | getAnotherClassInstance(...) | delegatedProperties.kt:65:1:85:1 | MyClass | MethodCall |
 | delegatedProperties.kt:75:42:75:78 | ...::... | delegatedProperties.kt:65:1:85:1 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:75:42:75:78 | ...=... | delegatedProperties.kt:75:42:75:78 |  | AssignExpr |
 | delegatedProperties.kt:75:42:75:78 | <dispatchReceiver> | delegatedProperties.kt:75:42:75:78 |  | VarAccess |
 | delegatedProperties.kt:75:42:75:78 | ClassWithDelegate | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:75:42:75:78 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:75:42:75:78 | KProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
-| delegatedProperties.kt:75:42:75:78 | get(...) | delegatedProperties.kt:75:42:75:78 | invoke | MethodAccess |
-| delegatedProperties.kt:75:42:75:78 | getAnotherClassInt(...) | delegatedProperties.kt:75:42:75:78 | get | MethodAccess |
+| delegatedProperties.kt:75:42:75:78 | get(...) | delegatedProperties.kt:75:42:75:78 | invoke | MethodCall |
+| delegatedProperties.kt:75:42:75:78 | getAnotherClassInt(...) | delegatedProperties.kt:75:42:75:78 | get | MethodCall |
 | delegatedProperties.kt:75:42:75:78 | this | delegatedProperties.kt:75:42:75:78 |  | ThisAccess |
 | delegatedProperties.kt:75:42:75:78 | this | delegatedProperties.kt:75:42:75:78 | get | ThisAccess |
 | delegatedProperties.kt:75:42:75:78 | this | delegatedProperties.kt:75:42:75:78 | invoke | ThisAccess |
@@ -714,16 +714,16 @@
 | delegatedProperties.kt:77:34:77:49 | a1 | delegatedProperties.kt:77:34:77:49 | set | VarAccess |
 | delegatedProperties.kt:77:34:77:49 | a1 | delegatedProperties.kt:77:34:77:49 | set | VarAccess |
 | delegatedProperties.kt:77:34:77:49 | delegatedToTopLevel$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
-| delegatedProperties.kt:77:34:77:49 | get(...) | delegatedProperties.kt:77:34:77:49 | invoke | MethodAccess |
-| delegatedProperties.kt:77:34:77:49 | get(...) | delegatedProperties.kt:77:34:77:49 | invoke | MethodAccess |
-| delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel(...) | delegatedProperties.kt:77:34:77:49 | get | MethodAccess |
-| delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel(...) | delegatedProperties.kt:77:34:77:49 | get | MethodAccess |
-| delegatedProperties.kt:77:34:77:49 | getValue(...) | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel | MethodAccess |
+| delegatedProperties.kt:77:34:77:49 | get(...) | delegatedProperties.kt:77:34:77:49 | invoke | MethodCall |
+| delegatedProperties.kt:77:34:77:49 | get(...) | delegatedProperties.kt:77:34:77:49 | invoke | MethodCall |
+| delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel(...) | delegatedProperties.kt:77:34:77:49 | get | MethodCall |
+| delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel(...) | delegatedProperties.kt:77:34:77:49 | get | MethodCall |
+| delegatedProperties.kt:77:34:77:49 | getValue(...) | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel | MethodCall |
 | delegatedProperties.kt:77:34:77:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:77:34:77:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel(...) | delegatedProperties.kt:77:34:77:49 | set | MethodAccess |
-| delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel(...) | delegatedProperties.kt:77:34:77:49 | set | MethodAccess |
-| delegatedProperties.kt:77:34:77:49 | setValue(...) | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | MethodAccess |
+| delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel(...) | delegatedProperties.kt:77:34:77:49 | set | MethodCall |
+| delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel(...) | delegatedProperties.kt:77:34:77:49 | set | MethodCall |
+| delegatedProperties.kt:77:34:77:49 | setValue(...) | delegatedProperties.kt:77:34:77:49 | setDelegatedToTopLevel | MethodCall |
 | delegatedProperties.kt:77:34:77:49 | this | delegatedProperties.kt:77:34:77:49 | getDelegatedToTopLevel | ThisAccess |
 | delegatedProperties.kt:77:34:77:49 | this | delegatedProperties.kt:77:34:77:49 | invoke | ThisAccess |
 | delegatedProperties.kt:77:34:77:49 | this | delegatedProperties.kt:77:34:77:49 | invoke | ThisAccess |
@@ -737,9 +737,9 @@
 | delegatedProperties.kt:77:37:77:49 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:77:37:77:49 | KMutableProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:77:37:77:49 | a0 | delegatedProperties.kt:77:37:77:49 | set | VarAccess |
-| delegatedProperties.kt:77:37:77:49 | get(...) | delegatedProperties.kt:77:37:77:49 | invoke | MethodAccess |
-| delegatedProperties.kt:77:37:77:49 | getTopLevelInt(...) | delegatedProperties.kt:77:37:77:49 | get | MethodAccess |
-| delegatedProperties.kt:77:37:77:49 | setTopLevelInt(...) | delegatedProperties.kt:77:37:77:49 | set | MethodAccess |
+| delegatedProperties.kt:77:37:77:49 | get(...) | delegatedProperties.kt:77:37:77:49 | invoke | MethodCall |
+| delegatedProperties.kt:77:37:77:49 | getTopLevelInt(...) | delegatedProperties.kt:77:37:77:49 | get | MethodCall |
+| delegatedProperties.kt:77:37:77:49 | setTopLevelInt(...) | delegatedProperties.kt:77:37:77:49 | set | MethodCall |
 | delegatedProperties.kt:77:37:77:49 | this | delegatedProperties.kt:77:37:77:49 | invoke | ThisAccess |
 | delegatedProperties.kt:79:18:79:38 | ...::... | delegatedProperties.kt:79:18:79:38 | getMax | PropertyRefExpr |
 | delegatedProperties.kt:79:18:79:38 | ...=... | delegatedProperties.kt:65:1:85:1 | MyClass | KtInitializerAssignExpr |
@@ -752,9 +752,9 @@
 | delegatedProperties.kt:79:18:79:38 | PropertyReferenceDelegatesKt | delegatedProperties.kt:79:18:79:38 | getMax | TypeAccess |
 | delegatedProperties.kt:79:18:79:38 | a0 | delegatedProperties.kt:79:18:79:38 | get | VarAccess |
 | delegatedProperties.kt:79:18:79:38 | a0 | delegatedProperties.kt:79:18:79:38 | invoke | VarAccess |
-| delegatedProperties.kt:79:18:79:38 | get(...) | delegatedProperties.kt:79:18:79:38 | invoke | MethodAccess |
-| delegatedProperties.kt:79:18:79:38 | getMax(...) | delegatedProperties.kt:79:18:79:38 | get | MethodAccess |
-| delegatedProperties.kt:79:18:79:38 | getValue(...) | delegatedProperties.kt:79:18:79:38 | getMax | MethodAccess |
+| delegatedProperties.kt:79:18:79:38 | get(...) | delegatedProperties.kt:79:18:79:38 | invoke | MethodCall |
+| delegatedProperties.kt:79:18:79:38 | getMax(...) | delegatedProperties.kt:79:18:79:38 | get | MethodCall |
+| delegatedProperties.kt:79:18:79:38 | getValue(...) | delegatedProperties.kt:79:18:79:38 | getMax | MethodCall |
 | delegatedProperties.kt:79:18:79:38 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:79:18:79:38 | max$delegate | delegatedProperties.kt:65:1:85:1 | MyClass | VarAccess |
 | delegatedProperties.kt:79:18:79:38 | this | delegatedProperties.kt:79:18:79:38 | getMax | ThisAccess |
@@ -764,15 +764,15 @@
 | delegatedProperties.kt:79:21:79:38 | Integer | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:79:21:79:38 | KProperty0<Integer> | delegatedProperties.kt:65:1:85:1 | MyClass | TypeAccess |
 | delegatedProperties.kt:79:21:79:38 | MAX_VALUE | delegatedProperties.kt:79:21:79:38 | get | VarAccess |
-| delegatedProperties.kt:79:21:79:38 | get(...) | delegatedProperties.kt:79:21:79:38 | invoke | MethodAccess |
+| delegatedProperties.kt:79:21:79:38 | get(...) | delegatedProperties.kt:79:21:79:38 | invoke | MethodCall |
 | delegatedProperties.kt:79:21:79:38 | this | delegatedProperties.kt:79:21:79:38 | invoke | ThisAccess |
 | delegatedProperties.kt:81:5:84:5 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:82:37:82:54 | ...::... | delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3> | PropertyRefExpr |
 | delegatedProperties.kt:82:37:82:54 | ...::... | delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3> | PropertyRefExpr |
-| delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3>(...) | delegatedProperties.kt:82:37:82:54 | get | MethodAccess |
-| delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3>(...) | delegatedProperties.kt:82:37:82:54 | get | MethodAccess |
-| delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3>(...) | delegatedProperties.kt:82:37:82:54 | set | MethodAccess |
-| delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3>(...) | delegatedProperties.kt:82:37:82:54 | set | MethodAccess |
+| delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3>(...) | delegatedProperties.kt:82:37:82:54 | get | MethodCall |
+| delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3>(...) | delegatedProperties.kt:82:37:82:54 | get | MethodCall |
+| delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3>(...) | delegatedProperties.kt:82:37:82:54 | set | MethodCall |
+| delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3>(...) | delegatedProperties.kt:82:37:82:54 | set | MethodCall |
 | delegatedProperties.kt:82:37:82:54 | Integer | delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3> | TypeAccess |
 | delegatedProperties.kt:82:37:82:54 | Integer | delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3> | TypeAccess |
 | delegatedProperties.kt:82:37:82:54 | Integer | delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3> | TypeAccess |
@@ -791,16 +791,16 @@
 | delegatedProperties.kt:82:37:82:54 | delegatedToMember3$delegate | delegatedProperties.kt:81:5:84:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:82:37:82:54 | delegatedToMember3$delegate | delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3> | VarAccess |
 | delegatedProperties.kt:82:37:82:54 | delegatedToMember3$delegate | delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3> | VarAccess |
-| delegatedProperties.kt:82:37:82:54 | get(...) | delegatedProperties.kt:82:37:82:54 | invoke | MethodAccess |
-| delegatedProperties.kt:82:37:82:54 | get(...) | delegatedProperties.kt:82:37:82:54 | invoke | MethodAccess |
-| delegatedProperties.kt:82:37:82:54 | getValue(...) | delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3> | MethodAccess |
+| delegatedProperties.kt:82:37:82:54 | get(...) | delegatedProperties.kt:82:37:82:54 | invoke | MethodCall |
+| delegatedProperties.kt:82:37:82:54 | get(...) | delegatedProperties.kt:82:37:82:54 | invoke | MethodCall |
+| delegatedProperties.kt:82:37:82:54 | getValue(...) | delegatedProperties.kt:82:37:82:54 | <get-delegatedToMember3> | MethodCall |
 | delegatedProperties.kt:82:37:82:54 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:82:37:82:54 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:82:37:82:54 | new (...) | delegatedProperties.kt:82:37:82:54 | get | ClassInstanceExpr |
 | delegatedProperties.kt:82:37:82:54 | new (...) | delegatedProperties.kt:82:37:82:54 | get | ClassInstanceExpr |
 | delegatedProperties.kt:82:37:82:54 | new (...) | delegatedProperties.kt:82:37:82:54 | set | ClassInstanceExpr |
 | delegatedProperties.kt:82:37:82:54 | new (...) | delegatedProperties.kt:82:37:82:54 | set | ClassInstanceExpr |
-| delegatedProperties.kt:82:37:82:54 | setValue(...) | delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3> | MethodAccess |
+| delegatedProperties.kt:82:37:82:54 | setValue(...) | delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3> | MethodCall |
 | delegatedProperties.kt:82:37:82:54 | this | delegatedProperties.kt:82:37:82:54 | invoke | ThisAccess |
 | delegatedProperties.kt:82:37:82:54 | this | delegatedProperties.kt:82:37:82:54 | invoke | ThisAccess |
 | delegatedProperties.kt:82:40:82:43 | this | delegatedProperties.kt:81:5:84:5 | fn | ThisAccess |
@@ -811,9 +811,9 @@
 | delegatedProperties.kt:82:40:82:54 | KMutableProperty0<Integer> | delegatedProperties.kt:81:5:84:5 | fn | TypeAccess |
 | delegatedProperties.kt:82:40:82:54 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:82:40:82:54 | a0 | delegatedProperties.kt:82:40:82:54 | set | VarAccess |
-| delegatedProperties.kt:82:40:82:54 | get(...) | delegatedProperties.kt:82:40:82:54 | invoke | MethodAccess |
-| delegatedProperties.kt:82:40:82:54 | getMemberInt(...) | delegatedProperties.kt:82:40:82:54 | get | MethodAccess |
-| delegatedProperties.kt:82:40:82:54 | setMemberInt(...) | delegatedProperties.kt:82:40:82:54 | set | MethodAccess |
+| delegatedProperties.kt:82:40:82:54 | get(...) | delegatedProperties.kt:82:40:82:54 | invoke | MethodCall |
+| delegatedProperties.kt:82:40:82:54 | getMemberInt(...) | delegatedProperties.kt:82:40:82:54 | get | MethodCall |
+| delegatedProperties.kt:82:40:82:54 | setMemberInt(...) | delegatedProperties.kt:82:40:82:54 | set | MethodCall |
 | delegatedProperties.kt:82:40:82:54 | this | delegatedProperties.kt:82:40:82:54 |  | ThisAccess |
 | delegatedProperties.kt:82:40:82:54 | this | delegatedProperties.kt:82:40:82:54 | get | ThisAccess |
 | delegatedProperties.kt:82:40:82:54 | this | delegatedProperties.kt:82:40:82:54 | invoke | ThisAccess |
@@ -822,7 +822,7 @@
 | delegatedProperties.kt:82:40:82:54 | this.<dispatchReceiver> | delegatedProperties.kt:82:40:82:54 | get | VarAccess |
 | delegatedProperties.kt:82:40:82:54 | this.<dispatchReceiver> | delegatedProperties.kt:82:40:82:54 | set | VarAccess |
 | delegatedProperties.kt:82:40:82:54 | value | delegatedProperties.kt:82:37:82:54 | <set-delegatedToMember3> | VarAccess |
-| delegatedProperties.kt:83:9:83:12 | fn(...) | delegatedProperties.kt:81:5:84:5 | fn | MethodAccess |
+| delegatedProperties.kt:83:9:83:12 | fn(...) | delegatedProperties.kt:81:5:84:5 | fn | MethodCall |
 | delegatedProperties.kt:83:9:83:12 | this | delegatedProperties.kt:81:5:84:5 | fn | ThisAccess |
 | delegatedProperties.kt:87:1:87:46 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:87:1:87:46 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
@@ -860,16 +860,16 @@
 | delegatedProperties.kt:87:31:87:46 | a0 | delegatedProperties.kt:87:31:87:46 | set | VarAccess |
 | delegatedProperties.kt:87:31:87:46 | a1 | delegatedProperties.kt:87:31:87:46 | set | VarAccess |
 | delegatedProperties.kt:87:31:87:46 | a1 | delegatedProperties.kt:87:31:87:46 | set | VarAccess |
-| delegatedProperties.kt:87:31:87:46 | get(...) | delegatedProperties.kt:87:31:87:46 | invoke | MethodAccess |
-| delegatedProperties.kt:87:31:87:46 | get(...) | delegatedProperties.kt:87:31:87:46 | invoke | MethodAccess |
-| delegatedProperties.kt:87:31:87:46 | getExtDelegated(...) | delegatedProperties.kt:87:31:87:46 | get | MethodAccess |
-| delegatedProperties.kt:87:31:87:46 | getExtDelegated(...) | delegatedProperties.kt:87:31:87:46 | get | MethodAccess |
-| delegatedProperties.kt:87:31:87:46 | getValue(...) | delegatedProperties.kt:87:31:87:46 | getExtDelegated | MethodAccess |
+| delegatedProperties.kt:87:31:87:46 | get(...) | delegatedProperties.kt:87:31:87:46 | invoke | MethodCall |
+| delegatedProperties.kt:87:31:87:46 | get(...) | delegatedProperties.kt:87:31:87:46 | invoke | MethodCall |
+| delegatedProperties.kt:87:31:87:46 | getExtDelegated(...) | delegatedProperties.kt:87:31:87:46 | get | MethodCall |
+| delegatedProperties.kt:87:31:87:46 | getExtDelegated(...) | delegatedProperties.kt:87:31:87:46 | get | MethodCall |
+| delegatedProperties.kt:87:31:87:46 | getValue(...) | delegatedProperties.kt:87:31:87:46 | getExtDelegated | MethodCall |
 | delegatedProperties.kt:87:31:87:46 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:87:31:87:46 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:87:31:87:46 | setExtDelegated(...) | delegatedProperties.kt:87:31:87:46 | set | MethodAccess |
-| delegatedProperties.kt:87:31:87:46 | setExtDelegated(...) | delegatedProperties.kt:87:31:87:46 | set | MethodAccess |
-| delegatedProperties.kt:87:31:87:46 | setValue(...) | delegatedProperties.kt:87:31:87:46 | setExtDelegated | MethodAccess |
+| delegatedProperties.kt:87:31:87:46 | setExtDelegated(...) | delegatedProperties.kt:87:31:87:46 | set | MethodCall |
+| delegatedProperties.kt:87:31:87:46 | setExtDelegated(...) | delegatedProperties.kt:87:31:87:46 | set | MethodCall |
+| delegatedProperties.kt:87:31:87:46 | setValue(...) | delegatedProperties.kt:87:31:87:46 | setExtDelegated | MethodCall |
 | delegatedProperties.kt:87:31:87:46 | this | delegatedProperties.kt:87:31:87:46 | invoke | ThisAccess |
 | delegatedProperties.kt:87:31:87:46 | this | delegatedProperties.kt:87:31:87:46 | invoke | ThisAccess |
 | delegatedProperties.kt:87:34:87:46 | ...::... | delegatedProperties.kt:0:0:0:0 | <clinit> | PropertyRefExpr |
@@ -879,9 +879,9 @@
 | delegatedProperties.kt:87:34:87:46 | Integer | delegatedProperties.kt:0:0:0:0 | <clinit> | TypeAccess |
 | delegatedProperties.kt:87:34:87:46 | KMutableProperty0<Integer> | delegatedProperties.kt:0:0:0:0 | <clinit> | TypeAccess |
 | delegatedProperties.kt:87:34:87:46 | a0 | delegatedProperties.kt:87:34:87:46 | set | VarAccess |
-| delegatedProperties.kt:87:34:87:46 | get(...) | delegatedProperties.kt:87:34:87:46 | invoke | MethodAccess |
-| delegatedProperties.kt:87:34:87:46 | getTopLevelInt(...) | delegatedProperties.kt:87:34:87:46 | get | MethodAccess |
-| delegatedProperties.kt:87:34:87:46 | setTopLevelInt(...) | delegatedProperties.kt:87:34:87:46 | set | MethodAccess |
+| delegatedProperties.kt:87:34:87:46 | get(...) | delegatedProperties.kt:87:34:87:46 | invoke | MethodCall |
+| delegatedProperties.kt:87:34:87:46 | getTopLevelInt(...) | delegatedProperties.kt:87:34:87:46 | get | MethodCall |
+| delegatedProperties.kt:87:34:87:46 | setTopLevelInt(...) | delegatedProperties.kt:87:34:87:46 | set | MethodCall |
 | delegatedProperties.kt:87:34:87:46 | this | delegatedProperties.kt:87:34:87:46 | invoke | ThisAccess |
 | exprs.kt:0:0:0:0 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | Color | file://:0:0:0:0 | <none> | TypeAccess |
@@ -987,16 +987,16 @@
 | exprs.kt:30:21:30:21 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:31:9:31:11 | i21 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:31:15:31:15 | x | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:31:15:31:25 | contains(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:31:15:31:25 | contains(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:31:20:31:20 | x | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:31:20:31:25 | rangeTo(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:31:20:31:25 | rangeTo(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:31:25:31:25 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:32:9:32:11 | i22 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:32:15:32:15 | x | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:32:15:32:26 | !... | exprs.kt:4:1:142:1 | topLevelMethod | LogNotExpr |
-| exprs.kt:32:15:32:26 | contains(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:32:15:32:26 | contains(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:32:21:32:21 | x | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:32:21:32:26 | rangeTo(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:32:21:32:26 | rangeTo(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:32:26:32:26 | y | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:34:9:34:11 | by1 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:34:15:34:17 | 1.0 | exprs.kt:4:1:142:1 | topLevelMethod | DoubleLiteral |
@@ -1018,40 +1018,40 @@
 | exprs.kt:38:21:38:23 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:39:9:39:11 | by6 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:39:15:39:17 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:39:15:39:17 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:39:15:39:17 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:39:15:39:24 | ... (value equals) ... | exprs.kt:4:1:142:1 | topLevelMethod | ValueEQExpr |
 | exprs.kt:39:22:39:24 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:39:22:39:24 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:39:22:39:24 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:40:9:40:11 | by7 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:40:15:40:17 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:40:15:40:17 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:40:15:40:17 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:40:15:40:24 | ... (value not-equals) ... | exprs.kt:4:1:142:1 | topLevelMethod | ValueNEExpr |
 | exprs.kt:40:22:40:24 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:40:22:40:24 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:40:22:40:24 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:41:9:41:11 | by8 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:41:15:41:17 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:41:15:41:17 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:41:15:41:17 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:41:15:41:23 | ... < ... | exprs.kt:4:1:142:1 | topLevelMethod | LTExpr |
 | exprs.kt:41:21:41:23 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:41:21:41:23 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:41:21:41:23 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:42:9:42:11 | by9 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:42:15:42:17 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:42:15:42:17 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:42:15:42:17 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:42:15:42:24 | ... <= ... | exprs.kt:4:1:142:1 | topLevelMethod | LEExpr |
 | exprs.kt:42:22:42:24 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:42:22:42:24 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:42:22:42:24 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:43:9:43:12 | by10 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:43:16:43:18 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:43:16:43:18 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:43:16:43:18 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:43:16:43:24 | ... > ... | exprs.kt:4:1:142:1 | topLevelMethod | GTExpr |
 | exprs.kt:43:22:43:24 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:43:22:43:24 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:43:22:43:24 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:44:9:44:12 | by11 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:44:16:44:18 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:44:16:44:18 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:44:16:44:18 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:44:16:44:25 | ... >= ... | exprs.kt:4:1:142:1 | topLevelMethod | GEExpr |
 | exprs.kt:44:23:44:25 | byy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:44:23:44:25 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:44:23:44:25 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:45:9:45:12 | by12 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:45:16:45:18 | byx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:45:16:45:26 | ... == ... | exprs.kt:4:1:142:1 | topLevelMethod | EQExpr |
@@ -1091,40 +1091,40 @@
 | exprs.kt:55:14:55:20 | ... % ... | exprs.kt:4:1:142:1 | topLevelMethod | RemExpr |
 | exprs.kt:55:19:55:20 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:56:9:56:10 | s6 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:56:14:56:15 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:56:14:56:15 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:56:14:56:15 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:56:14:56:21 | ... (value equals) ... | exprs.kt:4:1:142:1 | topLevelMethod | ValueEQExpr |
-| exprs.kt:56:20:56:21 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:56:20:56:21 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:56:20:56:21 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:57:9:57:10 | s7 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:57:14:57:15 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:57:14:57:15 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:57:14:57:15 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:57:14:57:21 | ... (value not-equals) ... | exprs.kt:4:1:142:1 | topLevelMethod | ValueNEExpr |
-| exprs.kt:57:20:57:21 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:57:20:57:21 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:57:20:57:21 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:58:9:58:10 | s8 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:58:14:58:15 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:58:14:58:15 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:58:14:58:15 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:58:14:58:20 | ... < ... | exprs.kt:4:1:142:1 | topLevelMethod | LTExpr |
-| exprs.kt:58:19:58:20 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:58:19:58:20 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:58:19:58:20 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:59:9:59:10 | s9 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:59:14:59:15 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:59:14:59:15 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:59:14:59:15 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:59:14:59:21 | ... <= ... | exprs.kt:4:1:142:1 | topLevelMethod | LEExpr |
-| exprs.kt:59:20:59:21 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:59:20:59:21 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:59:20:59:21 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:60:9:60:11 | s10 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:60:15:60:16 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:60:15:60:16 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:60:15:60:16 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:60:15:60:21 | ... > ... | exprs.kt:4:1:142:1 | topLevelMethod | GTExpr |
-| exprs.kt:60:20:60:21 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:60:20:60:21 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:60:20:60:21 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:61:9:61:11 | s11 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:61:15:61:16 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:61:15:61:16 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:61:15:61:16 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:61:15:61:22 | ... >= ... | exprs.kt:4:1:142:1 | topLevelMethod | GEExpr |
-| exprs.kt:61:21:61:22 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:61:21:61:22 | intValue(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:61:21:61:22 | sy | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:62:9:62:11 | s12 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:62:15:62:16 | sx | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
@@ -1378,7 +1378,7 @@
 | exprs.kt:133:43:133:47 | " bar " | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:133:50:133:53 | str2 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:133:50:133:60 | Intrinsics | exprs.kt:4:1:142:1 | topLevelMethod | TypeAccess |
-| exprs.kt:133:50:133:60 | stringPlus(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:133:50:133:60 | stringPlus(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:133:57:133:60 | str1 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:133:62:133:65 | " baz" | exprs.kt:4:1:142:1 | topLevelMethod | StringLiteral |
 | exprs.kt:134:9:134:12 | str6 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
@@ -1396,7 +1396,7 @@
 | exprs.kt:138:9:138:18 | <Stmt> | exprs.kt:4:1:142:1 | topLevelMethod | StmtExpr |
 | exprs.kt:138:9:138:18 | <implicit coercion to unit> | exprs.kt:4:1:142:1 | topLevelMethod | ImplicitCoercionToUnitExpr |
 | exprs.kt:138:9:138:18 | Unit | exprs.kt:4:1:142:1 | topLevelMethod | TypeAccess |
-| exprs.kt:138:9:138:18 | dec(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodAccess |
+| exprs.kt:138:9:138:18 | dec(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
 | exprs.kt:138:9:138:18 | tmp0 | exprs.kt:4:1:142:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:138:9:138:18 | tmp0 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:138:9:138:18 | tmp0 | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
@@ -1458,7 +1458,7 @@
 | exprs.kt:165:9:165:18 | Polygon | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:166:9:166:9 | r | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:166:13:166:13 | p | exprs.kt:165:1:172:1 | foo | VarAccess |
-| exprs.kt:166:13:166:25 | getBounds(...) | exprs.kt:165:1:172:1 | foo | MethodAccess |
+| exprs.kt:166:13:166:25 | getBounds(...) | exprs.kt:165:1:172:1 | foo | MethodCall |
 | exprs.kt:167:5:171:5 | when ... | exprs.kt:165:1:172:1 | foo | WhenExpr |
 | exprs.kt:167:8:167:8 | r | exprs.kt:165:1:172:1 | foo | VarAccess |
 | exprs.kt:167:8:167:16 | ... (value not-equals) ... | exprs.kt:165:1:172:1 | foo | ValueNEExpr |
@@ -1563,10 +1563,10 @@
 | exprs.kt:196:13:196:49 | a3 | exprs.kt:195:16:197:9 |  | VarAccess |
 | exprs.kt:196:13:196:49 | this | exprs.kt:196:13:196:49 | getA3 | ThisAccess |
 | exprs.kt:196:13:196:49 | this.a3 | exprs.kt:196:13:196:49 | getA3 | VarAccess |
-| exprs.kt:196:31:196:32 | getA1(...) | exprs.kt:195:16:197:9 |  | MethodAccess |
+| exprs.kt:196:31:196:32 | getA1(...) | exprs.kt:195:16:197:9 |  | MethodCall |
 | exprs.kt:196:31:196:32 | this | exprs.kt:195:16:197:9 |  | ThisAccess |
 | exprs.kt:196:31:196:37 | ... + ... | exprs.kt:195:16:197:9 |  | AddExpr |
-| exprs.kt:196:31:196:49 | toString(...) | exprs.kt:195:16:197:9 |  | MethodAccess |
+| exprs.kt:196:31:196:49 | toString(...) | exprs.kt:195:16:197:9 |  | MethodCall |
 | exprs.kt:196:36:196:37 | a2 | exprs.kt:195:16:197:9 |  | VarAccess |
 | exprs.kt:201:1:203:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:201:22:201:28 | Object | file://:0:0:0:0 | <none> | TypeAccess |
@@ -1579,16 +1579,16 @@
 | exprs.kt:208:13:208:13 | a | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:208:17:208:18 | aa | exprs.kt:206:5:217:5 | x | VarAccess |
 | exprs.kt:208:17:208:29 | String | exprs.kt:206:5:217:5 | x | TypeAccess |
-| exprs.kt:208:17:208:29 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodAccess |
+| exprs.kt:208:17:208:29 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodCall |
 | exprs.kt:209:13:209:14 | b0 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:209:19:209:19 | s | exprs.kt:206:5:217:5 | x | VarAccess |
 | exprs.kt:209:19:209:27 | Intrinsics | exprs.kt:206:5:217:5 | x | TypeAccess |
-| exprs.kt:209:19:209:27 | stringPlus(...) | exprs.kt:206:5:217:5 | x | MethodAccess |
+| exprs.kt:209:19:209:27 | stringPlus(...) | exprs.kt:206:5:217:5 | x | MethodCall |
 | exprs.kt:209:26:209:26 | 5 | exprs.kt:206:5:217:5 | x | IntegerLiteral |
 | exprs.kt:210:13:210:14 | b1 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:210:19:210:19 | s | exprs.kt:206:5:217:5 | x | VarAccess |
 | exprs.kt:210:19:210:23 | Intrinsics | exprs.kt:206:5:217:5 | x | TypeAccess |
-| exprs.kt:210:19:210:23 | stringPlus(...) | exprs.kt:206:5:217:5 | x | MethodAccess |
+| exprs.kt:210:19:210:23 | stringPlus(...) | exprs.kt:206:5:217:5 | x | MethodCall |
 | exprs.kt:210:23:210:23 | 5 | exprs.kt:206:5:217:5 | x | IntegerLiteral |
 | exprs.kt:211:13:211:14 | b2 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:211:19:211:19 | s | exprs.kt:206:5:217:5 | x | VarAccess |
@@ -1602,21 +1602,21 @@
 | exprs.kt:212:25:212:25 | 5 | exprs.kt:206:5:217:5 | x | IntegerLiteral |
 | exprs.kt:213:13:213:14 | c0 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:213:18:213:36 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
-| exprs.kt:213:18:213:36 | values(...) | exprs.kt:206:5:217:5 | x | MethodAccess |
+| exprs.kt:213:18:213:36 | values(...) | exprs.kt:206:5:217:5 | x | MethodCall |
 | exprs.kt:214:13:214:14 | c1 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:214:24:214:31 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
-| exprs.kt:214:24:214:31 | values(...) | exprs.kt:206:5:217:5 | x | MethodAccess |
+| exprs.kt:214:24:214:31 | values(...) | exprs.kt:206:5:217:5 | x | MethodCall |
 | exprs.kt:215:13:215:14 | d0 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:215:18:215:44 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
-| exprs.kt:215:18:215:44 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodAccess |
+| exprs.kt:215:18:215:44 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodCall |
 | exprs.kt:215:38:215:42 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
 | exprs.kt:216:13:216:14 | d1 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:216:24:216:39 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
-| exprs.kt:216:24:216:39 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodAccess |
+| exprs.kt:216:24:216:39 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodCall |
 | exprs.kt:216:33:216:37 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
 | exprs.kt:220:1:222:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:221:5:221:10 | StandardKt | exprs.kt:220:1:222:1 | todo | TypeAccess |
-| exprs.kt:221:5:221:10 | TODO(...) | exprs.kt:220:1:222:1 | todo | MethodAccess |
+| exprs.kt:221:5:221:10 | TODO(...) | exprs.kt:220:1:222:1 | todo | MethodCall |
 | exprs.kt:225:1:227:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:226:9:226:9 | x | exprs.kt:225:1:227:1 | fnClassRef | LocalVariableDeclExpr |
 | exprs.kt:226:13:226:29 | SomeClass1 | exprs.kt:225:1:227:1 | fnClassRef | TypeAccess |
@@ -1764,12 +1764,12 @@
 | exprs.kt:281:5:281:23 | <implicit coercion to unit> | exprs.kt:280:1:283:1 | callToEnumValues | ImplicitCoercionToUnitExpr |
 | exprs.kt:281:5:281:23 | Color | exprs.kt:280:1:283:1 | callToEnumValues | TypeAccess |
 | exprs.kt:281:5:281:23 | Unit | exprs.kt:280:1:283:1 | callToEnumValues | TypeAccess |
-| exprs.kt:281:5:281:23 | values(...) | exprs.kt:280:1:283:1 | callToEnumValues | MethodAccess |
+| exprs.kt:281:5:281:23 | values(...) | exprs.kt:280:1:283:1 | callToEnumValues | MethodCall |
 | exprs.kt:282:5:282:26 | <implicit coercion to unit> | exprs.kt:280:1:283:1 | callToEnumValues | ImplicitCoercionToUnitExpr |
 | exprs.kt:282:5:282:26 | Color | exprs.kt:280:1:283:1 | callToEnumValues | TypeAccess |
 | exprs.kt:282:5:282:26 | ExprsKt | exprs.kt:280:1:283:1 | callToEnumValues | TypeAccess |
 | exprs.kt:282:5:282:26 | Unit | exprs.kt:280:1:283:1 | callToEnumValues | TypeAccess |
-| exprs.kt:282:5:282:26 | getEnumValues(...) | exprs.kt:280:1:283:1 | callToEnumValues | MethodAccess |
+| exprs.kt:282:5:282:26 | getEnumValues(...) | exprs.kt:280:1:283:1 | callToEnumValues | MethodCall |
 | exprs.kt:285:1:346:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:285:16:285:21 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:285:24:285:32 | double | file://:0:0:0:0 | <none> | TypeAccess |
@@ -1803,14 +1803,14 @@
 | exprs.kt:292:5:292:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:292:5:292:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:292:5:292:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:292:5:292:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:292:5:292:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:292:5:292:8 | tmp0 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:292:5:292:8 | tmp0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:292:5:292:8 | tmp0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:293:5:293:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:293:5:293:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:293:5:293:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:293:5:293:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:293:5:293:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:293:7:293:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:293:7:293:8 | i0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:293:7:293:8 | i0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
@@ -1821,32 +1821,32 @@
 | exprs.kt:294:5:294:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:294:5:294:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:294:5:294:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:294:5:294:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:294:5:294:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:294:5:294:8 | tmp1 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:294:5:294:8 | tmp1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:294:5:294:8 | tmp1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:295:5:295:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:295:5:295:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:295:5:295:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:295:5:295:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:295:5:295:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:295:7:295:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:295:7:295:8 | i0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:295:7:295:8 | i0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:295:7:295:8 | i0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:296:5:296:6 | i0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:296:5:296:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:296:5:296:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:296:8:296:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:296:8:296:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:297:5:297:6 | i0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:297:5:297:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:297:5:297:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:297:8:297:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:297:8:297:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:298:5:298:6 | i1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:298:5:298:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:298:5:298:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:298:8:298:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:298:8:298:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:299:5:299:6 | i1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:299:5:299:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:299:5:299:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:299:8:299:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:299:8:299:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:300:5:300:5 | i | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
@@ -1871,14 +1871,14 @@
 | exprs.kt:306:5:306:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:306:5:306:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:306:5:306:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:306:5:306:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:306:5:306:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:306:5:306:8 | tmp2 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:306:5:306:8 | tmp2 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:306:5:306:8 | tmp2 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:307:5:307:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:307:5:307:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:307:5:307:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:307:5:307:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:307:5:307:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:307:7:307:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:307:7:307:8 | b0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:307:7:307:8 | b0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
@@ -1889,32 +1889,32 @@
 | exprs.kt:308:5:308:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:308:5:308:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:308:5:308:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:308:5:308:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:308:5:308:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:308:5:308:8 | tmp3 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:308:5:308:8 | tmp3 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:308:5:308:8 | tmp3 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:309:5:309:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:309:5:309:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:309:5:309:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:309:5:309:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:309:5:309:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:309:7:309:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:309:7:309:8 | b0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:309:7:309:8 | b0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:309:7:309:8 | b0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:310:5:310:6 | b0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:310:5:310:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:310:5:310:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:310:8:310:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:310:8:310:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:311:5:311:6 | b0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:311:5:311:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:311:5:311:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:311:8:311:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:311:8:311:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:312:5:312:6 | b1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:312:5:312:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:312:5:312:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:312:8:312:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:312:8:312:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:313:5:313:6 | b1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:313:5:313:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:313:5:313:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:313:8:313:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:313:8:313:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:314:5:314:5 | b | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
@@ -1939,14 +1939,14 @@
 | exprs.kt:320:5:320:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:320:5:320:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:320:5:320:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:320:5:320:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:320:5:320:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:320:5:320:8 | tmp4 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:320:5:320:8 | tmp4 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:320:5:320:8 | tmp4 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:321:5:321:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:321:5:321:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:321:5:321:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:321:5:321:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:321:5:321:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:321:7:321:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:321:7:321:8 | s0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:321:7:321:8 | s0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
@@ -1957,32 +1957,32 @@
 | exprs.kt:322:5:322:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:322:5:322:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:322:5:322:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:322:5:322:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:322:5:322:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:322:5:322:8 | tmp5 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:322:5:322:8 | tmp5 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:322:5:322:8 | tmp5 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:323:5:323:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:323:5:323:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:323:5:323:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:323:5:323:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:323:5:323:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:323:7:323:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:323:7:323:8 | s0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:323:7:323:8 | s0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:323:7:323:8 | s0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:324:5:324:6 | s0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:324:5:324:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:324:5:324:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:324:8:324:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:324:8:324:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:325:5:325:6 | s0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:325:5:325:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:325:5:325:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:325:8:325:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:325:8:325:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:326:5:326:6 | s1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:326:5:326:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:326:5:326:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:326:8:326:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:326:8:326:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:327:5:327:6 | s1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:327:5:327:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:327:5:327:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:327:8:327:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:327:8:327:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:328:5:328:5 | s | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
@@ -2007,14 +2007,14 @@
 | exprs.kt:334:5:334:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:334:5:334:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:334:5:334:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:334:5:334:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:334:5:334:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:334:5:334:8 | tmp6 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:334:5:334:8 | tmp6 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:334:5:334:8 | tmp6 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:335:5:335:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:335:5:335:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:335:5:335:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:335:5:335:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:335:5:335:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:335:7:335:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:335:7:335:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:335:7:335:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
@@ -2025,32 +2025,32 @@
 | exprs.kt:336:5:336:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:336:5:336:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:336:5:336:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:336:5:336:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:336:5:336:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:336:5:336:8 | tmp7 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:336:5:336:8 | tmp7 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:336:5:336:8 | tmp7 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:337:5:337:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:337:5:337:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:337:5:337:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:337:5:337:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:337:5:337:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:337:7:337:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:337:7:337:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:337:7:337:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:337:7:337:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:338:5:338:6 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:338:5:338:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:338:5:338:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:338:8:338:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:338:8:338:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:339:5:339:6 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:339:5:339:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:339:5:339:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:339:8:339:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:339:8:339:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:340:5:340:6 | l1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:340:5:340:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:340:5:340:12 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:340:8:340:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:340:8:340:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:341:5:341:6 | l1 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:341:5:341:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodAccess |
+| exprs.kt:341:5:341:12 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:341:8:341:12 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:341:8:341:12 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:342:5:342:5 | l | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
@@ -2071,7 +2071,7 @@
 | funcExprs.kt:1:42:1:42 | f | funcExprs.kt:1:1:1:46 | functionExpression0a | VarAccess |
 | funcExprs.kt:1:42:1:44 | <implicit coercion to unit> | funcExprs.kt:1:1:1:46 | functionExpression0a | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:1:42:1:44 | Unit | funcExprs.kt:1:1:1:46 | functionExpression0a | TypeAccess |
-| funcExprs.kt:1:42:1:44 | invoke(...) | funcExprs.kt:1:1:1:46 | functionExpression0a | MethodAccess |
+| funcExprs.kt:1:42:1:44 | invoke(...) | funcExprs.kt:1:1:1:46 | functionExpression0a | MethodCall |
 | funcExprs.kt:2:1:2:47 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:2:26:2:38 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
 | funcExprs.kt:2:26:2:38 | Function0<? extends Object> | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2079,7 +2079,7 @@
 | funcExprs.kt:2:43:2:43 | f | funcExprs.kt:2:1:2:47 | functionExpression0b | VarAccess |
 | funcExprs.kt:2:43:2:45 | <implicit coercion to unit> | funcExprs.kt:2:1:2:47 | functionExpression0b | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:2:43:2:45 | Unit | funcExprs.kt:2:1:2:47 | functionExpression0b | TypeAccess |
-| funcExprs.kt:2:43:2:45 | invoke(...) | funcExprs.kt:2:1:2:47 | functionExpression0b | MethodAccess |
+| funcExprs.kt:2:43:2:45 | invoke(...) | funcExprs.kt:2:1:2:47 | functionExpression0b | MethodCall |
 | funcExprs.kt:3:1:3:46 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:3:26:3:37 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
 | funcExprs.kt:3:26:3:37 | Function0<? extends Object> | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2087,7 +2087,7 @@
 | funcExprs.kt:3:42:3:42 | f | funcExprs.kt:3:1:3:46 | functionExpression0c | VarAccess |
 | funcExprs.kt:3:42:3:44 | <implicit coercion to unit> | funcExprs.kt:3:1:3:46 | functionExpression0c | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:3:42:3:44 | Unit | funcExprs.kt:3:1:3:46 | functionExpression0c | TypeAccess |
-| funcExprs.kt:3:42:3:44 | invoke(...) | funcExprs.kt:3:1:3:46 | functionExpression0c | MethodAccess |
+| funcExprs.kt:3:42:3:44 | invoke(...) | funcExprs.kt:3:1:3:46 | functionExpression0c | MethodCall |
 | funcExprs.kt:4:1:4:58 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:4:26:4:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:4:34:4:48 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
@@ -2097,7 +2097,7 @@
 | funcExprs.kt:4:53:4:53 | f | funcExprs.kt:4:1:4:58 | functionExpression1a | VarAccess |
 | funcExprs.kt:4:53:4:56 | <implicit coercion to unit> | funcExprs.kt:4:1:4:58 | functionExpression1a | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:4:53:4:56 | Unit | funcExprs.kt:4:1:4:58 | functionExpression1a | TypeAccess |
-| funcExprs.kt:4:53:4:56 | invoke(...) | funcExprs.kt:4:1:4:58 | functionExpression1a | MethodAccess |
+| funcExprs.kt:4:53:4:56 | invoke(...) | funcExprs.kt:4:1:4:58 | functionExpression1a | MethodCall |
 | funcExprs.kt:4:55:4:55 | x | funcExprs.kt:4:1:4:58 | functionExpression1a | VarAccess |
 | funcExprs.kt:5:1:5:60 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:5:26:5:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2108,7 +2108,7 @@
 | funcExprs.kt:5:55:5:55 | f | funcExprs.kt:5:1:5:60 | functionExpression1b | VarAccess |
 | funcExprs.kt:5:55:5:58 | <implicit coercion to unit> | funcExprs.kt:5:1:5:60 | functionExpression1b | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:5:55:5:58 | Unit | funcExprs.kt:5:1:5:60 | functionExpression1b | TypeAccess |
-| funcExprs.kt:5:55:5:58 | invoke(...) | funcExprs.kt:5:1:5:60 | functionExpression1b | MethodAccess |
+| funcExprs.kt:5:55:5:58 | invoke(...) | funcExprs.kt:5:1:5:60 | functionExpression1b | MethodCall |
 | funcExprs.kt:5:57:5:57 | x | funcExprs.kt:5:1:5:60 | functionExpression1b | VarAccess |
 | funcExprs.kt:6:1:6:78 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:6:26:6:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2121,7 +2121,7 @@
 | funcExprs.kt:6:62:6:62 | f | funcExprs.kt:6:1:6:78 | functionExpression1c | VarAccess |
 | funcExprs.kt:6:62:6:76 | <implicit coercion to unit> | funcExprs.kt:6:1:6:78 | functionExpression1c | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:6:62:6:76 | Unit | funcExprs.kt:6:1:6:78 | functionExpression1c | TypeAccess |
-| funcExprs.kt:6:62:6:76 | invoke(...) | funcExprs.kt:6:1:6:78 | functionExpression1c | MethodAccess |
+| funcExprs.kt:6:62:6:76 | invoke(...) | funcExprs.kt:6:1:6:78 | functionExpression1c | MethodCall |
 | funcExprs.kt:6:64:6:72 | FuncRef | funcExprs.kt:6:1:6:78 | functionExpression1c | TypeAccess |
 | funcExprs.kt:6:64:6:72 | new FuncRef(...) | funcExprs.kt:6:1:6:78 | functionExpression1c | ClassInstanceExpr |
 | funcExprs.kt:6:75:6:75 | x | funcExprs.kt:6:1:6:78 | functionExpression1c | VarAccess |
@@ -2136,7 +2136,7 @@
 | funcExprs.kt:7:57:7:57 | f | funcExprs.kt:7:1:7:65 | functionExpression2 | VarAccess |
 | funcExprs.kt:7:57:7:63 | <implicit coercion to unit> | funcExprs.kt:7:1:7:65 | functionExpression2 | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:7:57:7:63 | Unit | funcExprs.kt:7:1:7:65 | functionExpression2 | TypeAccess |
-| funcExprs.kt:7:57:7:63 | invoke(...) | funcExprs.kt:7:1:7:65 | functionExpression2 | MethodAccess |
+| funcExprs.kt:7:57:7:63 | invoke(...) | funcExprs.kt:7:1:7:65 | functionExpression2 | MethodCall |
 | funcExprs.kt:7:59:7:59 | x | funcExprs.kt:7:1:7:65 | functionExpression2 | VarAccess |
 | funcExprs.kt:7:62:7:62 | x | funcExprs.kt:7:1:7:65 | functionExpression2 | VarAccess |
 | funcExprs.kt:8:1:8:63 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2151,7 +2151,7 @@
 | funcExprs.kt:8:58:8:58 | f | funcExprs.kt:8:1:8:63 | functionExpression3 | VarAccess |
 | funcExprs.kt:8:58:8:61 | <implicit coercion to unit> | funcExprs.kt:8:1:8:63 | functionExpression3 | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:8:58:8:61 | Unit | funcExprs.kt:8:1:8:63 | functionExpression3 | TypeAccess |
-| funcExprs.kt:8:58:8:61 | invoke(...) | funcExprs.kt:8:1:8:63 | functionExpression3 | MethodAccess |
+| funcExprs.kt:8:58:8:61 | invoke(...) | funcExprs.kt:8:1:8:63 | functionExpression3 | MethodCall |
 | funcExprs.kt:8:60:8:60 | x | funcExprs.kt:8:1:8:63 | functionExpression3 | VarAccess |
 | funcExprs.kt:9:1:9:74 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:9:25:9:30 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2164,10 +2164,10 @@
 | funcExprs.kt:9:33:9:61 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:9:33:9:61 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:9:66:9:66 | f | funcExprs.kt:9:1:9:74 | functionExpression4 | VarAccess |
-| funcExprs.kt:9:66:9:69 | invoke(...) | funcExprs.kt:9:1:9:74 | functionExpression4 | MethodAccess |
+| funcExprs.kt:9:66:9:69 | invoke(...) | funcExprs.kt:9:1:9:74 | functionExpression4 | MethodCall |
 | funcExprs.kt:9:66:9:72 | <implicit coercion to unit> | funcExprs.kt:9:1:9:74 | functionExpression4 | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:9:66:9:72 | Unit | funcExprs.kt:9:1:9:74 | functionExpression4 | TypeAccess |
-| funcExprs.kt:9:66:9:72 | invoke(...) | funcExprs.kt:9:1:9:74 | functionExpression4 | MethodAccess |
+| funcExprs.kt:9:66:9:72 | invoke(...) | funcExprs.kt:9:1:9:74 | functionExpression4 | MethodCall |
 | funcExprs.kt:9:68:9:68 | x | funcExprs.kt:9:1:9:74 | functionExpression4 | VarAccess |
 | funcExprs.kt:9:71:9:71 | x | funcExprs.kt:9:1:9:74 | functionExpression4 | VarAccess |
 | funcExprs.kt:11:1:13:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2219,7 +2219,7 @@
 | funcExprs.kt:11:34:11:154 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:11:34:11:154 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:12:5:12:5 | f | funcExprs.kt:11:1:13:1 | functionExpression22 | VarAccess |
-| funcExprs.kt:12:5:12:50 | invoke(...) | funcExprs.kt:11:1:13:1 | functionExpression22 | MethodAccess |
+| funcExprs.kt:12:5:12:50 | invoke(...) | funcExprs.kt:11:1:13:1 | functionExpression22 | MethodCall |
 | funcExprs.kt:12:7:12:7 | x | funcExprs.kt:11:1:13:1 | functionExpression22 | VarAccess |
 | funcExprs.kt:12:9:12:9 | x | funcExprs.kt:11:1:13:1 | functionExpression22 | VarAccess |
 | funcExprs.kt:12:11:12:11 | x | funcExprs.kt:11:1:13:1 | functionExpression22 | VarAccess |
@@ -2297,7 +2297,7 @@
 | funcExprs.kt:15:5:15:52 | <implicit coercion to unit> | funcExprs.kt:14:1:16:1 | functionExpression23 | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:15:5:15:52 | Object | funcExprs.kt:14:1:16:1 | functionExpression23 | TypeAccess |
 | funcExprs.kt:15:5:15:52 | Unit | funcExprs.kt:14:1:16:1 | functionExpression23 | TypeAccess |
-| funcExprs.kt:15:5:15:52 | invoke(...) | funcExprs.kt:14:1:16:1 | functionExpression23 | MethodAccess |
+| funcExprs.kt:15:5:15:52 | invoke(...) | funcExprs.kt:14:1:16:1 | functionExpression23 | MethodCall |
 | funcExprs.kt:15:5:15:52 | new Object[] | funcExprs.kt:14:1:16:1 | functionExpression23 | ArrayCreationExpr |
 | funcExprs.kt:15:5:15:52 | {...} | funcExprs.kt:14:1:16:1 | functionExpression23 | ArrayInit |
 | funcExprs.kt:15:7:15:7 | x | funcExprs.kt:14:1:16:1 | functionExpression23 | VarAccess |
@@ -2380,7 +2380,7 @@
 | funcExprs.kt:18:5:18:62 | <implicit coercion to unit> | funcExprs.kt:17:1:19:1 | functionExpression23c | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:18:5:18:62 | Object | funcExprs.kt:17:1:19:1 | functionExpression23c | TypeAccess |
 | funcExprs.kt:18:5:18:62 | Unit | funcExprs.kt:17:1:19:1 | functionExpression23c | TypeAccess |
-| funcExprs.kt:18:5:18:62 | invoke(...) | funcExprs.kt:17:1:19:1 | functionExpression23c | MethodAccess |
+| funcExprs.kt:18:5:18:62 | invoke(...) | funcExprs.kt:17:1:19:1 | functionExpression23c | MethodCall |
 | funcExprs.kt:18:5:18:62 | new Object[] | funcExprs.kt:17:1:19:1 | functionExpression23c | ArrayCreationExpr |
 | funcExprs.kt:18:5:18:62 | {...} | funcExprs.kt:17:1:19:1 | functionExpression23c | ArrayInit |
 | funcExprs.kt:18:7:18:15 | FuncRef | funcExprs.kt:17:1:19:1 | functionExpression23c | TypeAccess |
@@ -2410,28 +2410,28 @@
 | funcExprs.kt:18:61:18:61 | x | funcExprs.kt:17:1:19:1 | functionExpression23c | VarAccess |
 | funcExprs.kt:21:1:52:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:22:5:22:33 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:22:5:22:33 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:22:5:22:33 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:22:26:22:33 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:22:26:22:33 | Function0<Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:22:26:22:33 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:22:26:22:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:22:31:22:31 | 5 | funcExprs.kt:22:26:22:33 | invoke | IntegerLiteral |
 | funcExprs.kt:23:5:23:33 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:23:5:23:33 | functionExpression0b(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:23:5:23:33 | functionExpression0b(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:23:26:23:33 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:23:26:23:33 | Function0<Object> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:23:26:23:33 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:23:26:23:33 | Object | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:23:31:23:31 | 5 | funcExprs.kt:23:26:23:33 | invoke | IntegerLiteral |
 | funcExprs.kt:24:5:24:33 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:24:5:24:33 | functionExpression0c(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:24:5:24:33 | functionExpression0c(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:24:26:24:33 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:24:26:24:33 | Function0<Object> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:24:26:24:33 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:24:26:24:33 | Object | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:24:31:24:31 | 5 | funcExprs.kt:24:26:24:33 | invoke | IntegerLiteral |
 | funcExprs.kt:25:5:25:38 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:25:5:25:38 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:25:5:25:38 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:25:26:25:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:25:29:25:38 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:25:29:25:38 | Function1<Integer,Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2441,7 +2441,7 @@
 | funcExprs.kt:25:31:25:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:25:36:25:36 | 5 | funcExprs.kt:25:29:25:38 | invoke | IntegerLiteral |
 | funcExprs.kt:26:5:26:34 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:26:5:26:34 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:26:5:26:34 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:26:26:26:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:26:29:26:34 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:26:29:26:34 | Function1<Integer,Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2451,7 +2451,7 @@
 | funcExprs.kt:26:29:26:34 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:26:31:26:32 | it | funcExprs.kt:26:29:26:34 | invoke | VarAccess |
 | funcExprs.kt:27:5:27:43 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:27:5:27:43 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:27:5:27:43 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:27:26:27:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:27:29:27:42 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:27:29:27:42 | Function1<Integer,Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2461,12 +2461,12 @@
 | funcExprs.kt:27:33:27:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:27:42:27:42 | 5 | funcExprs.kt:27:29:27:42 | invoke | IntegerLiteral |
 | funcExprs.kt:28:5:28:39 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:28:5:28:39 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:28:5:28:39 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:28:26:28:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:28:29:28:38 | MyLambda | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:28:29:28:38 | new MyLambda(...) | funcExprs.kt:21:1:52:1 | call | ClassInstanceExpr |
 | funcExprs.kt:29:5:29:37 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:29:5:29:37 | functionExpression1b(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:29:5:29:37 | functionExpression1b(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:29:26:29:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:29:29:29:37 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:29:29:29:37 | Function1<Object,Object> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2476,7 +2476,7 @@
 | funcExprs.kt:29:31:29:31 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:29:36:29:36 | a | funcExprs.kt:29:29:29:37 | invoke | VarAccess |
 | funcExprs.kt:30:5:30:51 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:30:5:30:51 | functionExpression2(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:30:5:30:51 | functionExpression2(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:30:25:30:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:30:28:30:50 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:30:28:30:50 | Function2<Integer,Integer,Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2488,7 +2488,7 @@
 | funcExprs.kt:30:40:30:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:30:50:30:50 | 5 | funcExprs.kt:30:28:30:50 | invoke | IntegerLiteral |
 | funcExprs.kt:31:5:31:40 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:31:5:31:40 | functionExpression2(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:31:5:31:40 | functionExpression2(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:31:25:31:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:31:28:31:40 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:31:28:31:40 | Function2<Integer,Integer,Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2500,7 +2500,7 @@
 | funcExprs.kt:31:33:31:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:31:38:31:38 | 5 | funcExprs.kt:31:28:31:40 | invoke | IntegerLiteral |
 | funcExprs.kt:32:5:32:44 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:32:5:32:44 | functionExpression3(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:32:5:32:44 | functionExpression3(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:32:25:32:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:32:28:32:44 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:32:28:32:44 | Function2<Integer,Integer,Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2514,7 +2514,7 @@
 | funcExprs.kt:32:35:32:42 | ... + ... | funcExprs.kt:32:28:32:44 | invoke | AddExpr |
 | funcExprs.kt:32:42:32:42 | a | funcExprs.kt:32:28:32:44 | invoke | VarAccess |
 | funcExprs.kt:33:5:33:51 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:33:5:33:51 | functionExpression4(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:33:5:33:51 | functionExpression4(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:33:25:33:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:33:28:33:51 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:33:28:33:51 | Double | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2534,7 +2534,7 @@
 | funcExprs.kt:33:39:33:39 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:33:44:33:46 | 5.0 | funcExprs.kt:33:37:33:47 | invoke | DoubleLiteral |
 | funcExprs.kt:35:5:35:112 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:35:5:35:112 | functionExpression22(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:35:5:35:112 | functionExpression22(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:35:26:35:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:35:29:35:112 | ...->... | funcExprs.kt:21:1:52:1 | call | LambdaExpr |
 | funcExprs.kt:35:29:35:112 | Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -2588,7 +2588,7 @@
 | funcExprs.kt:35:111:35:111 | <implicit coercion to unit> | funcExprs.kt:35:29:35:112 | invoke | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:35:111:35:111 | Unit | funcExprs.kt:35:29:35:112 | invoke | TypeAccess |
 | funcExprs.kt:36:5:36:117 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:36:5:36:117 | functionExpression23(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:36:5:36:117 | functionExpression23(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:36:26:36:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:36:29:36:117 | 0 | funcExprs.kt:36:29:36:117 | invoke | IntegerLiteral |
 | funcExprs.kt:36:29:36:117 | 1 | funcExprs.kt:36:29:36:117 | invoke | IntegerLiteral |
@@ -2709,7 +2709,7 @@
 | funcExprs.kt:36:29:36:117 | int | funcExprs.kt:36:29:36:117 | invoke | TypeAccess |
 | funcExprs.kt:36:29:36:117 | int | funcExprs.kt:36:29:36:117 | invoke | TypeAccess |
 | funcExprs.kt:36:29:36:117 | int | funcExprs.kt:36:29:36:117 | invoke | TypeAccess |
-| funcExprs.kt:36:29:36:117 | invoke(...) | funcExprs.kt:36:29:36:117 | invoke | MethodAccess |
+| funcExprs.kt:36:29:36:117 | invoke(...) | funcExprs.kt:36:29:36:117 | invoke | MethodCall |
 | funcExprs.kt:36:29:36:117 | this | funcExprs.kt:36:29:36:117 | invoke | ThisAccess |
 | funcExprs.kt:36:30:36:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:36:33:36:34 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2736,7 +2736,7 @@
 | funcExprs.kt:36:108:36:110 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:36:115:36:116 | "" | funcExprs.kt:36:29:36:117 | invoke | StringLiteral |
 | funcExprs.kt:38:5:38:39 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:38:5:38:39 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:38:5:38:39 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:38:26:38:34 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:38:26:38:34 | new FuncRef(...) | funcExprs.kt:21:1:52:1 | call | ClassInstanceExpr |
 | funcExprs.kt:38:26:38:38 | 0 | funcExprs.kt:38:26:38:38 |  | IntegerLiteral |
@@ -2746,13 +2746,13 @@
 | funcExprs.kt:38:26:38:38 | FuncRef | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:38:26:38:38 | Function0<Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:38:26:38:38 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:38:26:38:38 | f0(...) | funcExprs.kt:38:26:38:38 | invoke | MethodAccess |
+| funcExprs.kt:38:26:38:38 | f0(...) | funcExprs.kt:38:26:38:38 | invoke | MethodCall |
 | funcExprs.kt:38:26:38:38 | this | funcExprs.kt:38:26:38:38 |  | ThisAccess |
 | funcExprs.kt:38:26:38:38 | this | funcExprs.kt:38:26:38:38 | invoke | ThisAccess |
 | funcExprs.kt:38:26:38:38 | this.<dispatchReceiver> | funcExprs.kt:38:26:38:38 |  | VarAccess |
 | funcExprs.kt:38:26:38:38 | this.<dispatchReceiver> | funcExprs.kt:38:26:38:38 | invoke | VarAccess |
 | funcExprs.kt:39:5:39:37 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:39:5:39:37 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:39:5:39:37 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:39:26:39:32 | Companion | funcExprs.kt:21:1:52:1 | call | VarAccess |
 | funcExprs.kt:39:26:39:36 | 0 | funcExprs.kt:39:26:39:36 |  | IntegerLiteral |
 | funcExprs.kt:39:26:39:36 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
@@ -2761,13 +2761,13 @@
 | funcExprs.kt:39:26:39:36 | Companion | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:39:26:39:36 | Function0<Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:39:26:39:36 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:39:26:39:36 | f0(...) | funcExprs.kt:39:26:39:36 | invoke | MethodAccess |
+| funcExprs.kt:39:26:39:36 | f0(...) | funcExprs.kt:39:26:39:36 | invoke | MethodCall |
 | funcExprs.kt:39:26:39:36 | this | funcExprs.kt:39:26:39:36 |  | ThisAccess |
 | funcExprs.kt:39:26:39:36 | this | funcExprs.kt:39:26:39:36 | invoke | ThisAccess |
 | funcExprs.kt:39:26:39:36 | this.<dispatchReceiver> | funcExprs.kt:39:26:39:36 |  | VarAccess |
 | funcExprs.kt:39:26:39:36 | this.<dispatchReceiver> | funcExprs.kt:39:26:39:36 | invoke | VarAccess |
 | funcExprs.kt:40:5:40:42 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:40:5:40:42 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:40:5:40:42 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:40:26:40:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:40:29:40:37 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:40:29:40:37 | new FuncRef(...) | funcExprs.kt:21:1:52:1 | call | ClassInstanceExpr |
@@ -2780,13 +2780,13 @@
 | funcExprs.kt:40:29:40:41 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:40:29:40:41 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:40:29:40:41 | a0 | funcExprs.kt:40:29:40:41 | invoke | VarAccess |
-| funcExprs.kt:40:29:40:41 | f1(...) | funcExprs.kt:40:29:40:41 | invoke | MethodAccess |
+| funcExprs.kt:40:29:40:41 | f1(...) | funcExprs.kt:40:29:40:41 | invoke | MethodCall |
 | funcExprs.kt:40:29:40:41 | this | funcExprs.kt:40:29:40:41 |  | ThisAccess |
 | funcExprs.kt:40:29:40:41 | this | funcExprs.kt:40:29:40:41 | invoke | ThisAccess |
 | funcExprs.kt:40:29:40:41 | this.<dispatchReceiver> | funcExprs.kt:40:29:40:41 |  | VarAccess |
 | funcExprs.kt:40:29:40:41 | this.<dispatchReceiver> | funcExprs.kt:40:29:40:41 | invoke | VarAccess |
 | funcExprs.kt:41:5:41:40 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:41:5:41:40 | functionExpression1c(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:41:5:41:40 | functionExpression1c(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:41:26:41:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:41:29:41:39 | 2 | funcExprs.kt:41:29:41:39 |  | IntegerLiteral |
 | funcExprs.kt:41:29:41:39 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
@@ -2796,9 +2796,9 @@
 | funcExprs.kt:41:29:41:39 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:41:29:41:39 | a0 | funcExprs.kt:41:29:41:39 | invoke | VarAccess |
 | funcExprs.kt:41:29:41:39 | a1 | funcExprs.kt:41:29:41:39 | invoke | VarAccess |
-| funcExprs.kt:41:29:41:39 | f1(...) | funcExprs.kt:41:29:41:39 | invoke | MethodAccess |
+| funcExprs.kt:41:29:41:39 | f1(...) | funcExprs.kt:41:29:41:39 | invoke | MethodCall |
 | funcExprs.kt:42:5:42:34 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:42:5:42:34 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:42:5:42:34 | functionExpression1a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:42:26:42:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:42:29:42:29 | 3 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:42:29:42:33 | 1 | funcExprs.kt:42:29:42:33 |  | IntegerLiteral |
@@ -2810,14 +2810,14 @@
 | funcExprs.kt:42:29:42:33 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:42:29:42:33 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:42:29:42:33 | a0 | funcExprs.kt:42:29:42:33 | invoke | VarAccess |
-| funcExprs.kt:42:29:42:33 | f3(...) | funcExprs.kt:42:29:42:33 | invoke | MethodAccess |
+| funcExprs.kt:42:29:42:33 | f3(...) | funcExprs.kt:42:29:42:33 | invoke | MethodCall |
 | funcExprs.kt:42:29:42:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:42:29:42:33 | this | funcExprs.kt:42:29:42:33 |  | ThisAccess |
 | funcExprs.kt:42:29:42:33 | this | funcExprs.kt:42:29:42:33 | invoke | ThisAccess |
 | funcExprs.kt:42:29:42:33 | this.<extensionReceiver> | funcExprs.kt:42:29:42:33 |  | VarAccess |
 | funcExprs.kt:42:29:42:33 | this.<extensionReceiver> | funcExprs.kt:42:29:42:33 | invoke | VarAccess |
 | funcExprs.kt:43:5:43:35 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:43:5:43:35 | functionExpression3(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:43:5:43:35 | functionExpression3(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:43:25:43:25 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:43:28:43:34 | 2 | funcExprs.kt:43:28:43:34 |  | IntegerLiteral |
 | funcExprs.kt:43:28:43:34 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
@@ -2828,9 +2828,9 @@
 | funcExprs.kt:43:28:43:34 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:43:28:43:34 | a0 | funcExprs.kt:43:28:43:34 | invoke | VarAccess |
 | funcExprs.kt:43:28:43:34 | a1 | funcExprs.kt:43:28:43:34 | invoke | VarAccess |
-| funcExprs.kt:43:28:43:34 | f3(...) | funcExprs.kt:43:28:43:34 | invoke | MethodAccess |
+| funcExprs.kt:43:28:43:34 | f3(...) | funcExprs.kt:43:28:43:34 | invoke | MethodCall |
 | funcExprs.kt:44:5:44:43 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:44:5:44:43 | functionExpression22(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:44:5:44:43 | functionExpression22(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:44:26:44:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:44:29:44:37 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:44:29:44:37 | new FuncRef(...) | funcExprs.kt:21:1:52:1 | call | ClassInstanceExpr |
@@ -2885,13 +2885,13 @@
 | funcExprs.kt:44:29:44:42 | a19 | funcExprs.kt:44:29:44:42 | invoke | VarAccess |
 | funcExprs.kt:44:29:44:42 | a20 | funcExprs.kt:44:29:44:42 | invoke | VarAccess |
 | funcExprs.kt:44:29:44:42 | a21 | funcExprs.kt:44:29:44:42 | invoke | VarAccess |
-| funcExprs.kt:44:29:44:42 | f22(...) | funcExprs.kt:44:29:44:42 | invoke | MethodAccess |
+| funcExprs.kt:44:29:44:42 | f22(...) | funcExprs.kt:44:29:44:42 | invoke | MethodCall |
 | funcExprs.kt:44:29:44:42 | this | funcExprs.kt:44:29:44:42 |  | ThisAccess |
 | funcExprs.kt:44:29:44:42 | this | funcExprs.kt:44:29:44:42 | invoke | ThisAccess |
 | funcExprs.kt:44:29:44:42 | this.<dispatchReceiver> | funcExprs.kt:44:29:44:42 |  | VarAccess |
 | funcExprs.kt:44:29:44:42 | this.<dispatchReceiver> | funcExprs.kt:44:29:44:42 | invoke | VarAccess |
 | funcExprs.kt:45:5:45:43 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:45:5:45:43 | functionExpression23(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:45:5:45:43 | functionExpression23(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:45:26:45:26 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:45:29:45:37 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:45:29:45:37 | new FuncRef(...) | funcExprs.kt:21:1:52:1 | call | ClassInstanceExpr |
@@ -2994,7 +2994,7 @@
 | funcExprs.kt:45:29:45:42 | a0 | funcExprs.kt:45:29:45:42 | invoke | VarAccess |
 | funcExprs.kt:45:29:45:42 | a0 | funcExprs.kt:45:29:45:42 | invoke | VarAccess |
 | funcExprs.kt:45:29:45:42 | a0 | funcExprs.kt:45:29:45:42 | invoke | VarAccess |
-| funcExprs.kt:45:29:45:42 | f23(...) | funcExprs.kt:45:29:45:42 | invoke | MethodAccess |
+| funcExprs.kt:45:29:45:42 | f23(...) | funcExprs.kt:45:29:45:42 | invoke | MethodCall |
 | funcExprs.kt:45:29:45:42 | int | funcExprs.kt:45:29:45:42 | invoke | TypeAccess |
 | funcExprs.kt:45:29:45:42 | int | funcExprs.kt:45:29:45:42 | invoke | TypeAccess |
 | funcExprs.kt:45:29:45:42 | int | funcExprs.kt:45:29:45:42 | invoke | TypeAccess |
@@ -3023,7 +3023,7 @@
 | funcExprs.kt:45:29:45:42 | this.<dispatchReceiver> | funcExprs.kt:45:29:45:42 |  | VarAccess |
 | funcExprs.kt:45:29:45:42 | this.<dispatchReceiver> | funcExprs.kt:45:29:45:42 | invoke | VarAccess |
 | funcExprs.kt:46:5:46:42 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:46:5:46:42 | functionExpression23c(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:46:5:46:42 | functionExpression23c(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:46:27:46:27 | 5 | funcExprs.kt:21:1:52:1 | call | IntegerLiteral |
 | funcExprs.kt:46:30:46:41 | 0 | funcExprs.kt:46:30:46:41 | invoke | IntegerLiteral |
 | funcExprs.kt:46:30:46:41 | 1 | funcExprs.kt:46:30:46:41 | invoke | IntegerLiteral |
@@ -3126,7 +3126,7 @@
 | funcExprs.kt:46:30:46:41 | a0 | funcExprs.kt:46:30:46:41 | invoke | VarAccess |
 | funcExprs.kt:46:30:46:41 | a0 | funcExprs.kt:46:30:46:41 | invoke | VarAccess |
 | funcExprs.kt:46:30:46:41 | a0 | funcExprs.kt:46:30:46:41 | invoke | VarAccess |
-| funcExprs.kt:46:30:46:41 | f23(...) | funcExprs.kt:46:30:46:41 | invoke | MethodAccess |
+| funcExprs.kt:46:30:46:41 | f23(...) | funcExprs.kt:46:30:46:41 | invoke | MethodCall |
 | funcExprs.kt:46:30:46:41 | int | funcExprs.kt:46:30:46:41 | invoke | TypeAccess |
 | funcExprs.kt:46:30:46:41 | int | funcExprs.kt:46:30:46:41 | invoke | TypeAccess |
 | funcExprs.kt:46:30:46:41 | int | funcExprs.kt:46:30:46:41 | invoke | TypeAccess |
@@ -3153,17 +3153,17 @@
 | funcExprs.kt:48:5:48:24 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:48:24:48:24 | 5 | funcExprs.kt:48:5:48:24 | local | IntegerLiteral |
 | funcExprs.kt:49:5:49:33 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:49:5:49:33 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:49:5:49:33 | functionExpression0a(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:49:26:49:32 | 0 | funcExprs.kt:49:26:49:32 |  | IntegerLiteral |
 | funcExprs.kt:49:26:49:32 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
 | funcExprs.kt:49:26:49:32 | Function0<Integer> | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:49:26:49:32 | Integer | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:49:26:49:32 | Object | funcExprs.kt:49:26:49:32 | invoke | TypeAccess |
-| funcExprs.kt:49:26:49:32 | local(...) | funcExprs.kt:49:26:49:32 | invoke | MethodAccess |
+| funcExprs.kt:49:26:49:32 | local(...) | funcExprs.kt:49:26:49:32 | invoke | MethodCall |
 | funcExprs.kt:49:26:49:32 | new (...) | funcExprs.kt:49:26:49:32 | invoke | ClassInstanceExpr |
 | funcExprs.kt:51:5:51:17 | FuncExprsKt | funcExprs.kt:21:1:52:1 | call | TypeAccess |
 | funcExprs.kt:51:5:51:17 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
-| funcExprs.kt:51:5:51:17 | fn(...) | funcExprs.kt:21:1:52:1 | call | MethodAccess |
+| funcExprs.kt:51:5:51:17 | fn(...) | funcExprs.kt:21:1:52:1 | call | MethodCall |
 | funcExprs.kt:51:8:51:16 | 0 | funcExprs.kt:51:8:51:16 |  | IntegerLiteral |
 | funcExprs.kt:51:8:51:16 | ...::... | funcExprs.kt:21:1:52:1 | call | MemberRefExpr |
 | funcExprs.kt:51:8:51:16 | FuncRef | funcExprs.kt:21:1:52:1 | call | TypeAccess |
@@ -3237,7 +3237,7 @@
 | funcExprs.kt:70:122:70:129 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:70:134:70:135 | "" | funcExprs.kt:69:5:70:135 | f23 | StringLiteral |
 | funcExprs.kt:74:5:76:5 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| funcExprs.kt:75:9:75:22 | fn(...) | funcExprs.kt:74:5:76:5 | call | MethodAccess |
+| funcExprs.kt:75:9:75:22 | fn(...) | funcExprs.kt:74:5:76:5 | call | MethodCall |
 | funcExprs.kt:75:9:75:22 | this | funcExprs.kt:74:5:76:5 | call | ThisAccess |
 | funcExprs.kt:75:12:75:22 | ...->... | funcExprs.kt:74:5:76:5 | call | LambdaExpr |
 | funcExprs.kt:75:12:75:22 | Function1<Generic<Generic<Integer>>,String> | funcExprs.kt:74:5:76:5 | call | TypeAccess |
@@ -3266,9 +3266,9 @@
 | funcExprs.kt:83:31:83:51 | String | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
 | funcExprs.kt:83:33:83:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:83:38:83:38 | i | funcExprs.kt:83:31:83:51 | invoke | VarAccess |
-| funcExprs.kt:83:38:83:49 | toString(...) | funcExprs.kt:83:31:83:51 | invoke | MethodAccess |
+| funcExprs.kt:83:38:83:49 | toString(...) | funcExprs.kt:83:31:83:51 | invoke | MethodCall |
 | funcExprs.kt:84:5:84:6 | l1 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
-| funcExprs.kt:84:5:84:16 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodAccess |
+| funcExprs.kt:84:5:84:16 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodCall |
 | funcExprs.kt:84:8:84:16 | <implicit coercion to unit> | funcExprs.kt:82:9:96:1 | fn | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:84:8:84:16 | Unit | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
 | funcExprs.kt:84:15:84:15 | 5 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
@@ -3280,9 +3280,9 @@
 | funcExprs.kt:86:39:86:59 | String | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
 | funcExprs.kt:86:41:86:41 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:86:46:86:46 | i | funcExprs.kt:86:39:86:59 | invoke | VarAccess |
-| funcExprs.kt:86:46:86:57 | toString(...) | funcExprs.kt:86:39:86:59 | invoke | MethodAccess |
+| funcExprs.kt:86:46:86:57 | toString(...) | funcExprs.kt:86:39:86:59 | invoke | MethodCall |
 | funcExprs.kt:87:5:87:6 | l2 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
-| funcExprs.kt:87:5:87:16 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodAccess |
+| funcExprs.kt:87:5:87:16 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodCall |
 | funcExprs.kt:87:8:87:16 | <implicit coercion to unit> | funcExprs.kt:82:9:96:1 | fn | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:87:8:87:16 | Unit | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
 | funcExprs.kt:87:15:87:15 | 5 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
@@ -3406,7 +3406,7 @@
 | funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
 | funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
 | funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
-| funcExprs.kt:90:15:90:69 | invoke(...) | funcExprs.kt:90:15:90:69 | invoke | MethodAccess |
+| funcExprs.kt:90:15:90:69 | invoke(...) | funcExprs.kt:90:15:90:69 | invoke | MethodCall |
 | funcExprs.kt:90:15:90:69 | this | funcExprs.kt:90:15:90:69 | invoke | ThisAccess |
 | funcExprs.kt:90:17:90:17 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:90:19:90:19 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -3435,7 +3435,7 @@
 | funcExprs.kt:91:5:91:6 | l3 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
 | funcExprs.kt:91:5:91:60 | 23 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
 | funcExprs.kt:91:5:91:60 | Object | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
-| funcExprs.kt:91:5:91:60 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodAccess |
+| funcExprs.kt:91:5:91:60 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodCall |
 | funcExprs.kt:91:5:91:60 | new Object[] | funcExprs.kt:82:9:96:1 | fn | ArrayCreationExpr |
 | funcExprs.kt:91:5:91:60 | {...} | funcExprs.kt:82:9:96:1 | fn | ArrayInit |
 | funcExprs.kt:91:8:91:60 | <implicit coercion to unit> | funcExprs.kt:82:9:96:1 | fn | ImplicitCoercionToUnitExpr |
@@ -3514,7 +3514,7 @@
 | funcExprs.kt:94:59:94:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:94:65:94:66 | "" | funcExprs.kt:94:15:94:67 | invoke | StringLiteral |
 | funcExprs.kt:95:5:95:6 | l4 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
-| funcExprs.kt:95:5:95:58 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodAccess |
+| funcExprs.kt:95:5:95:58 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodCall |
 | funcExprs.kt:95:8:95:58 | <implicit coercion to unit> | funcExprs.kt:82:9:96:1 | fn | ImplicitCoercionToUnitExpr |
 | funcExprs.kt:95:8:95:58 | Unit | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
 | funcExprs.kt:95:15:95:15 | 1 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
@@ -3555,13 +3555,13 @@
 | kFunctionInvoke.kt:8:44:8:47 | String | kFunctionInvoke.kt:7:1:10:1 | useRef | TypeAccess |
 | kFunctionInvoke.kt:8:44:8:47 | Unit | kFunctionInvoke.kt:7:1:10:1 | useRef | TypeAccess |
 | kFunctionInvoke.kt:8:44:8:47 | a0 | kFunctionInvoke.kt:8:44:8:47 | invoke | VarAccess |
-| kFunctionInvoke.kt:8:44:8:47 | f(...) | kFunctionInvoke.kt:8:44:8:47 | invoke | MethodAccess |
+| kFunctionInvoke.kt:8:44:8:47 | f(...) | kFunctionInvoke.kt:8:44:8:47 | invoke | MethodCall |
 | kFunctionInvoke.kt:8:44:8:47 | this | kFunctionInvoke.kt:8:44:8:47 |  | ThisAccess |
 | kFunctionInvoke.kt:8:44:8:47 | this | kFunctionInvoke.kt:8:44:8:47 | invoke | ThisAccess |
 | kFunctionInvoke.kt:8:44:8:47 | this.<dispatchReceiver> | kFunctionInvoke.kt:8:44:8:47 |  | VarAccess |
 | kFunctionInvoke.kt:8:44:8:47 | this.<dispatchReceiver> | kFunctionInvoke.kt:8:44:8:47 | invoke | VarAccess |
 | kFunctionInvoke.kt:9:5:9:10 | toCall | kFunctionInvoke.kt:7:1:10:1 | useRef | VarAccess |
-| kFunctionInvoke.kt:9:5:9:13 | invoke(...) | kFunctionInvoke.kt:7:1:10:1 | useRef | MethodAccess |
+| kFunctionInvoke.kt:9:5:9:13 | invoke(...) | kFunctionInvoke.kt:7:1:10:1 | useRef | MethodCall |
 | kFunctionInvoke.kt:9:12:9:12 | s | kFunctionInvoke.kt:7:1:10:1 | useRef | VarAccess |
 | localFunctionCalls.kt:3:1:12:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | localFunctionCalls.kt:4:9:4:9 | x | localFunctionCalls.kt:3:1:12:1 | x | LocalVariableDeclExpr |
@@ -3578,7 +3578,7 @@
 | localFunctionCalls.kt:7:5:7:17 | Object | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
 | localFunctionCalls.kt:7:5:7:17 | String | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
 | localFunctionCalls.kt:7:5:7:17 | Unit | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
-| localFunctionCalls.kt:7:5:7:17 | a(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodAccess |
+| localFunctionCalls.kt:7:5:7:17 | a(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodCall |
 | localFunctionCalls.kt:7:5:7:17 | new (...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:7:15:7:16 | 42 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:8:5:8:5 | x | localFunctionCalls.kt:3:1:12:1 | x | VarAccess |
@@ -3594,7 +3594,7 @@
 | localFunctionCalls.kt:10:5:10:13 | new C1<Integer>(...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:10:5:10:20 | Integer | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
 | localFunctionCalls.kt:10:5:10:20 | Object | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
-| localFunctionCalls.kt:10:5:10:20 | f1(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodAccess |
+| localFunctionCalls.kt:10:5:10:20 | f1(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodCall |
 | localFunctionCalls.kt:10:5:10:20 | new (...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:10:15:10:20 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:12:1 | x | ImplicitCoercionToUnitExpr |
 | localFunctionCalls.kt:10:15:10:20 | Unit | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
@@ -3604,7 +3604,7 @@
 | localFunctionCalls.kt:11:5:11:13 | new C1<Integer>(...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:11:5:11:20 | Integer | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
 | localFunctionCalls.kt:11:5:11:20 | Object | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
-| localFunctionCalls.kt:11:5:11:20 | f1(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodAccess |
+| localFunctionCalls.kt:11:5:11:20 | f1(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodCall |
 | localFunctionCalls.kt:11:5:11:20 | new (...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:11:15:11:20 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:12:1 | x | ImplicitCoercionToUnitExpr |
 | localFunctionCalls.kt:11:15:11:20 | Unit | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
@@ -3624,7 +3624,7 @@
 | samConversion.kt:2:18:2:45 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:2:18:2:45 | i | samConversion.kt:2:18:2:45 | accept | VarAccess |
 | samConversion.kt:2:18:2:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:2:18:2:45 | invoke(...) | samConversion.kt:2:18:2:45 | accept | MethodAccess |
+| samConversion.kt:2:18:2:45 | invoke(...) | samConversion.kt:2:18:2:45 | accept | MethodCall |
 | samConversion.kt:2:18:2:45 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:2:18:2:45 | this | samConversion.kt:2:18:2:45 |  | ThisAccess |
 | samConversion.kt:2:18:2:45 | this.<fn> | samConversion.kt:2:18:2:45 |  | VarAccess |
@@ -3654,7 +3654,7 @@
 | samConversion.kt:4:14:4:42 | i | samConversion.kt:4:14:4:42 | fn1 | VarAccess |
 | samConversion.kt:4:14:4:42 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:4:14:4:42 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:4:14:4:42 | invoke(...) | samConversion.kt:4:14:4:42 | fn1 | MethodAccess |
+| samConversion.kt:4:14:4:42 | invoke(...) | samConversion.kt:4:14:4:42 | fn1 | MethodCall |
 | samConversion.kt:4:14:4:42 | j | samConversion.kt:4:14:4:42 | fn1 | VarAccess |
 | samConversion.kt:4:14:4:42 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:4:14:4:42 | this | samConversion.kt:4:14:4:42 |  | ThisAccess |
@@ -3683,7 +3683,7 @@
 | samConversion.kt:5:14:5:32 | i | samConversion.kt:5:14:5:32 | fn1 | VarAccess |
 | samConversion.kt:5:14:5:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:5:14:5:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:5:14:5:32 | invoke(...) | samConversion.kt:5:14:5:32 | fn1 | MethodAccess |
+| samConversion.kt:5:14:5:32 | invoke(...) | samConversion.kt:5:14:5:32 | fn1 | MethodCall |
 | samConversion.kt:5:14:5:32 | j | samConversion.kt:5:14:5:32 | fn1 | VarAccess |
 | samConversion.kt:5:14:5:32 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:5:14:5:32 | this | samConversion.kt:5:14:5:32 |  | ThisAccess |
@@ -3697,7 +3697,7 @@
 | samConversion.kt:5:27:5:31 | Unit | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:5:27:5:31 | a0 | samConversion.kt:5:27:5:31 | invoke | VarAccess |
 | samConversion.kt:5:27:5:31 | a1 | samConversion.kt:5:27:5:31 | invoke | VarAccess |
-| samConversion.kt:5:27:5:31 | fn2(...) | samConversion.kt:5:27:5:31 | invoke | MethodAccess |
+| samConversion.kt:5:27:5:31 | fn2(...) | samConversion.kt:5:27:5:31 | invoke | MethodCall |
 | samConversion.kt:7:9:7:9 | i | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
 | samConversion.kt:7:13:7:46 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:7:13:7:46 | ...=... | samConversion.kt:7:13:7:46 |  | AssignExpr |
@@ -3713,7 +3713,7 @@
 | samConversion.kt:7:13:7:46 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:7:13:7:46 | i | samConversion.kt:7:13:7:46 | ext | VarAccess |
 | samConversion.kt:7:13:7:46 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:7:13:7:46 | invoke(...) | samConversion.kt:7:13:7:46 | ext | MethodAccess |
+| samConversion.kt:7:13:7:46 | invoke(...) | samConversion.kt:7:13:7:46 | ext | MethodCall |
 | samConversion.kt:7:13:7:46 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:7:13:7:46 | this | samConversion.kt:7:13:7:46 |  | ThisAccess |
 | samConversion.kt:7:13:7:46 | this | samConversion.kt:7:13:7:46 | ext | ExtensionReceiverAccess |
@@ -3742,7 +3742,7 @@
 | samConversion.kt:9:13:13:6 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:9:13:13:6 | i | samConversion.kt:9:13:13:6 | accept | VarAccess |
 | samConversion.kt:9:13:13:6 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:9:13:13:6 | invoke(...) | samConversion.kt:9:13:13:6 | accept | MethodAccess |
+| samConversion.kt:9:13:13:6 | invoke(...) | samConversion.kt:9:13:13:6 | accept | MethodCall |
 | samConversion.kt:9:13:13:6 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:9:13:13:6 | this | samConversion.kt:9:13:13:6 |  | ThisAccess |
 | samConversion.kt:9:13:13:6 | this.<fn> | samConversion.kt:9:13:13:6 |  | VarAccess |
@@ -3931,7 +3931,7 @@
 | samConversion.kt:41:13:41:16 | a0 | samConversion.kt:41:13:41:16 | invoke | VarAccess |
 | samConversion.kt:41:13:41:16 | a0 | samConversion.kt:41:13:41:16 | invoke | VarAccess |
 | samConversion.kt:41:13:41:16 | a0 | samConversion.kt:41:13:41:16 | invoke | VarAccess |
-| samConversion.kt:41:13:41:16 | ff(...) | samConversion.kt:41:13:41:16 | invoke | MethodAccess |
+| samConversion.kt:41:13:41:16 | ff(...) | samConversion.kt:41:13:41:16 | invoke | MethodCall |
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
@@ -4013,7 +4013,7 @@
 | samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:42:13:42:32 | invoke(...) | samConversion.kt:42:13:42:32 | accept | MethodAccess |
+| samConversion.kt:42:13:42:32 | invoke(...) | samConversion.kt:42:13:42:32 | accept | MethodCall |
 | samConversion.kt:42:13:42:32 | new (...) | samConversion.kt:40:1:47:1 | fn | ClassInstanceExpr |
 | samConversion.kt:42:13:42:32 | new Object[] | samConversion.kt:42:13:42:32 | accept | ArrayCreationExpr |
 | samConversion.kt:42:13:42:32 | this | samConversion.kt:42:13:42:32 |  | ThisAccess |
@@ -4078,7 +4078,7 @@
 | samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:43:13:45:68 | invoke(...) | samConversion.kt:43:13:45:68 | accept | MethodAccess |
+| samConversion.kt:43:13:45:68 | invoke(...) | samConversion.kt:43:13:45:68 | accept | MethodCall |
 | samConversion.kt:43:13:45:68 | new (...) | samConversion.kt:40:1:47:1 | fn | ClassInstanceExpr |
 | samConversion.kt:43:13:45:68 | new Object[] | samConversion.kt:43:13:45:68 | accept | ArrayCreationExpr |
 | samConversion.kt:43:13:45:68 | this | samConversion.kt:43:13:45:68 |  | ThisAccess |
@@ -4203,7 +4203,7 @@
 | samConversion.kt:43:31:45:68 | int | samConversion.kt:43:31:45:68 | invoke | TypeAccess |
 | samConversion.kt:43:31:45:68 | int | samConversion.kt:43:31:45:68 | invoke | TypeAccess |
 | samConversion.kt:43:31:45:68 | int | samConversion.kt:43:31:45:68 | invoke | TypeAccess |
-| samConversion.kt:43:31:45:68 | invoke(...) | samConversion.kt:43:31:45:68 | invoke | MethodAccess |
+| samConversion.kt:43:31:45:68 | invoke(...) | samConversion.kt:43:31:45:68 | invoke | MethodCall |
 | samConversion.kt:43:31:45:68 | this | samConversion.kt:43:31:45:68 | invoke | ThisAccess |
 | samConversion.kt:43:32:43:38 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:43:41:43:47 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -4244,7 +4244,7 @@
 | samConversion.kt:46:13:46:44 | SomePredicate<Integer> | samConversion.kt:40:1:47:1 | fn | TypeAccess |
 | samConversion.kt:46:13:46:44 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:46:13:46:44 | i | samConversion.kt:46:13:46:44 | fn | VarAccess |
-| samConversion.kt:46:13:46:44 | invoke(...) | samConversion.kt:46:13:46:44 | fn | MethodAccess |
+| samConversion.kt:46:13:46:44 | invoke(...) | samConversion.kt:46:13:46:44 | fn | MethodCall |
 | samConversion.kt:46:13:46:44 | new (...) | samConversion.kt:40:1:47:1 | fn | ClassInstanceExpr |
 | samConversion.kt:46:13:46:44 | this | samConversion.kt:46:13:46:44 |  | ThisAccess |
 | samConversion.kt:46:13:46:44 | this.<fn> | samConversion.kt:46:13:46:44 |  | VarAccess |
@@ -4276,7 +4276,7 @@
 | samConversion.kt:58:14:58:45 | i | samConversion.kt:58:14:58:45 | fn1 | VarAccess |
 | samConversion.kt:58:14:58:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:58:14:58:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:58:14:58:45 | invoke(...) | samConversion.kt:58:14:58:45 | fn1 | MethodAccess |
+| samConversion.kt:58:14:58:45 | invoke(...) | samConversion.kt:58:14:58:45 | fn1 | MethodCall |
 | samConversion.kt:58:14:58:45 | j | samConversion.kt:58:14:58:45 | fn1 | VarAccess |
 | samConversion.kt:58:14:58:45 | new (...) | samConversion.kt:57:9:60:1 | test | ClassInstanceExpr |
 | samConversion.kt:58:14:58:45 | this | samConversion.kt:58:14:58:45 |  | ThisAccess |
@@ -4291,7 +4291,7 @@
 | samConversion.kt:58:35:58:35 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:58:40:58:43 | INSTANCE | samConversion.kt:58:30:58:45 | invoke | VarAccess |
 | samConversion.kt:59:5:59:6 | i0 | samConversion.kt:57:9:60:1 | test | VarAccess |
-| samConversion.kt:59:5:59:15 | fn1(...) | samConversion.kt:57:9:60:1 | test | MethodAccess |
+| samConversion.kt:59:5:59:15 | fn1(...) | samConversion.kt:57:9:60:1 | test | MethodCall |
 | samConversion.kt:59:12:59:12 | 1 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
 | samConversion.kt:59:14:59:14 | 2 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
 | samConversion.kt:63:5:63:13 | ...=... | samConversion.kt:62:1:64:1 | PropertyRefsTest | KtInitializerAssignExpr |
@@ -4316,7 +4316,7 @@
 | samConversion.kt:75:17:75:33 | IntGetter | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
 | samConversion.kt:75:17:75:33 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:75:17:75:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:75:17:75:33 | invoke(...) | samConversion.kt:75:17:75:33 | f | MethodAccess |
+| samConversion.kt:75:17:75:33 | invoke(...) | samConversion.kt:75:17:75:33 | f | MethodCall |
 | samConversion.kt:75:17:75:33 | new (...) | samConversion.kt:74:1:77:1 | propertyRefsTest | ClassInstanceExpr |
 | samConversion.kt:75:17:75:33 | this | samConversion.kt:75:17:75:33 |  | ThisAccess |
 | samConversion.kt:75:17:75:33 | this.<fn> | samConversion.kt:75:17:75:33 |  | VarAccess |
@@ -4327,8 +4327,8 @@
 | samConversion.kt:75:27:75:32 | Integer | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
 | samConversion.kt:75:27:75:32 | KProperty0<Integer> | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
 | samConversion.kt:75:27:75:32 | PropertyRefsTest | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:75:27:75:32 | get(...) | samConversion.kt:75:27:75:32 | invoke | MethodAccess |
-| samConversion.kt:75:27:75:32 | getX(...) | samConversion.kt:75:27:75:32 | get | MethodAccess |
+| samConversion.kt:75:27:75:32 | get(...) | samConversion.kt:75:27:75:32 | invoke | MethodCall |
+| samConversion.kt:75:27:75:32 | getX(...) | samConversion.kt:75:27:75:32 | get | MethodCall |
 | samConversion.kt:75:27:75:32 | this | samConversion.kt:75:27:75:32 |  | ThisAccess |
 | samConversion.kt:75:27:75:32 | this | samConversion.kt:75:27:75:32 | get | ThisAccess |
 | samConversion.kt:75:27:75:32 | this | samConversion.kt:75:27:75:32 | invoke | ThisAccess |
@@ -4346,7 +4346,7 @@
 | samConversion.kt:76:17:76:55 | PropertyRefsTest | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:76:17:76:55 | PropertyRefsTest | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:76:17:76:55 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:76:17:76:55 | invoke(...) | samConversion.kt:76:17:76:55 | f | MethodAccess |
+| samConversion.kt:76:17:76:55 | invoke(...) | samConversion.kt:76:17:76:55 | f | MethodCall |
 | samConversion.kt:76:17:76:55 | new (...) | samConversion.kt:74:1:77:1 | propertyRefsTest | ClassInstanceExpr |
 | samConversion.kt:76:17:76:55 | prt | samConversion.kt:76:17:76:55 | f | VarAccess |
 | samConversion.kt:76:17:76:55 | this | samConversion.kt:76:17:76:55 |  | ThisAccess |
@@ -4357,8 +4357,8 @@
 | samConversion.kt:76:36:76:54 | PropertyRefsTest | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
 | samConversion.kt:76:36:76:54 | a0 | samConversion.kt:76:36:76:54 | get | VarAccess |
 | samConversion.kt:76:36:76:54 | a0 | samConversion.kt:76:36:76:54 | invoke | VarAccess |
-| samConversion.kt:76:36:76:54 | get(...) | samConversion.kt:76:36:76:54 | invoke | MethodAccess |
-| samConversion.kt:76:36:76:54 | getX(...) | samConversion.kt:76:36:76:54 | get | MethodAccess |
+| samConversion.kt:76:36:76:54 | get(...) | samConversion.kt:76:36:76:54 | invoke | MethodCall |
+| samConversion.kt:76:36:76:54 | getX(...) | samConversion.kt:76:36:76:54 | get | MethodCall |
 | samConversion.kt:76:36:76:54 | this | samConversion.kt:76:36:76:54 | invoke | ThisAccess |
 | whenExpr.kt:1:1:9:1 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | whenExpr.kt:1:14:1:19 | int | file://:0:0:0:0 | <none> | TypeAccess |

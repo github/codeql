@@ -756,7 +756,7 @@ test.cpp:
 #   92|         valnum = r92_1, r92_3, r93_2
 #   92|     m92_4(int)        = Store[x]                 : &:r92_3, r92_2
 #   92|         valnum = m92_4, m92_6, m93_4, r92_2, r92_5, r93_3
-#   92|     r92_5(int)        = CopyValue                : r92_2
+#   92|     r92_5(int)        = Load[x]                  : &:r92_3, m92_4
 #   92|         valnum = m92_4, m92_6, m93_4, r92_2, r92_5, r93_3
 #   92|     m92_6(int)        = Store[x]                 : &:r92_1, r92_5
 #   92|         valnum = m92_4, m92_6, m93_4, r92_2, r92_5, r93_3

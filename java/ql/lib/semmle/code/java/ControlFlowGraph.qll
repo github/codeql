@@ -43,7 +43,7 @@
  *
  * An important goal of the CFG is to get the order of side-effects correct.
  * Most expressions can have side-effects and must therefore be modeled in the
- * CFG in AST post-order. For example, a `MethodAccess` evaluates its arguments
+ * CFG in AST post-order. For example, a `MethodCall` evaluates its arguments
  * before the call. Most statements don't have side-effects, but merely affect
  * the control-flow and some could therefore be excluded from the CFG. However,
  * as a design choice, all statements are included in the CFG and generally
@@ -190,7 +190,7 @@ private module ControlFlowGraphImpl {
   /**
    * Bind `t` to an unchecked exception that may occur in a precondition check.
    */
-  private predicate uncheckedExceptionFromMethod(MethodAccess ma, ThrowableType t) {
+  private predicate uncheckedExceptionFromMethod(MethodCall ma, ThrowableType t) {
     conditionCheckArgument(ma, _, _) and
     (t instanceof TypeError or t instanceof TypeRuntimeException)
   }
@@ -349,8 +349,8 @@ private module ControlFlowGraphImpl {
       forall(Parameter p | p = this.getAParameter() | exists(p.getAnAccess()))
     }
 
-    /** Gets a `MethodAccess` that calls this method. */
-    MethodAccess getAnAccess() { result.getMethod().getAPossibleImplementation() = this }
+    /** Gets a `MethodCall` that calls this method. */
+    MethodCall getAnAccess() { result.getMethod().getAPossibleImplementation() = this }
   }
 
   /** Holds if a call to `m` indicates that `m` is expected to return. */
@@ -390,9 +390,9 @@ private module ControlFlowGraphImpl {
   }
 
   /**
-   * Gets a `MethodAccess` that always throws an exception or calls `exit`.
+   * Gets a `MethodCall` that always throws an exception or calls `exit`.
    */
-  private MethodAccess nonReturningMethodAccess() {
+  private MethodCall nonReturningMethodCall() {
     result.getMethod().getSourceDeclaration() = nonReturningMethod() or
     result = likelyNonReturningMethod().getAnAccess()
   }
@@ -422,7 +422,7 @@ private module ControlFlowGraphImpl {
    * Gets an expression that always throws an exception or calls `exit`.
    */
   private Expr nonReturningExpr() {
-    result = nonReturningMethodAccess()
+    result = nonReturningMethodCall()
     or
     result.(StmtExpr).getStmt() = nonReturningStmt()
     or
@@ -473,7 +473,7 @@ private module ControlFlowGraphImpl {
       or
       this instanceof ClassExpr
       or
-      this instanceof RValue
+      this instanceof VarRead
       or
       this instanceof Call // includes both expressions and statements
       or
@@ -554,7 +554,7 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(LocalVariableDeclExpr).getInit()
       or
-      index = 0 and result = this.(RValue).getQualifier() and not result instanceof TypeAccess
+      index = 0 and result = this.(VarRead).getQualifier() and not result instanceof TypeAccess
       or
       exists(Call e | e = this |
         index = -1 and result = e.getQualifier() and not result instanceof TypeAccess
@@ -588,7 +588,7 @@ private module ControlFlowGraphImpl {
       not this instanceof BooleanLiteral and
       not this instanceof ReturnStmt and
       not this instanceof ThrowStmt and
-      not this = nonReturningMethodAccess()
+      not this = nonReturningMethodCall()
     }
   }
 

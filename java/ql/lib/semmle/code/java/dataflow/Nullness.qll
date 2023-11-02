@@ -106,7 +106,7 @@ predicate dereference(Expr e) {
   or
   exists(FieldAccess fa, Field f | fa.getQualifier() = e and fa.getField() = f and not f.isStatic())
   or
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     ma.getQualifier() = e and ma.getMethod() = m and not m.isStatic()
   )
   or
@@ -149,10 +149,10 @@ private ControlFlowNode ensureNotNull(SsaVariable v) {
   or
   exists(AssertNotNullMethod m | result = m.getACheck(v.getAUse()))
   or
-  exists(AssertThatMethod m, MethodAccess ma |
+  exists(AssertThatMethod m, MethodCall ma |
     result = m.getACheck(v.getAUse()) and ma.getControlFlowNode() = result
   |
-    ma.getAnArgument().(MethodAccess).getMethod().getName() = "notNullValue"
+    ma.getAnArgument().(MethodCall).getMethod().getName() = "notNullValue"
   )
 }
 
@@ -195,7 +195,7 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
     not exists(TryStmt try | try.getFinally() = e.getEnclosingStmt().getEnclosingStmt*()) and
     (
       e = any(ConditionalExpr c).getCondition().getAChildExpr*() or
-      not exists(MethodAccess ma | ma.getAnArgument().getAChildExpr*() = e)
+      not exists(MethodCall ma | ma.getAnArgument().getAChildExpr*() = e)
     ) and
     // Don't use a guard as reason if there is a null assignment.
     not v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = nullExpr()
@@ -250,7 +250,7 @@ private Expr nonEmptyExpr() {
       // ...it is guarded by a condition...
       cond.controls(result.getBasicBlock(), branch) and
       // ...and it isn't modified in the scope of the condition...
-      forall(MethodAccess ma, Method m |
+      forall(MethodCall ma, Method m |
         m = ma.getMethod() and
         ma.getQualifier() = v.getSourceVariable().getAnAccess() and
         cond.controls(ma.getBasicBlock(), branch)
@@ -260,12 +260,12 @@ private Expr nonEmptyExpr() {
       cond.getCondition() = c
     |
       // ...and the condition proves that it is non-empty, either by using the `isEmpty` method...
-      c.(MethodAccess).getMethod().hasName("isEmpty") and
+      c.(MethodCall).getMethod().hasName("isEmpty") and
       branch = false and
-      c.(MethodAccess).getQualifier() = v.getAUse()
+      c.(MethodCall).getQualifier() = v.getAUse()
       or
       // ...or a check on its `size`.
-      exists(MethodAccess size |
+      exists(MethodCall size |
         c = integerGuard(size, branch, 0, false) and
         size.getMethod().hasName("size") and
         size.getQualifier() = v.getAUse()
@@ -485,7 +485,7 @@ private predicate correlatedConditions(
       inverted = branch1.booleanXor(branch2)
     )
     or
-    exists(SsaVariable v, RValue rv1, RValue rv2, int k, boolean branch1, boolean branch2 |
+    exists(SsaVariable v, VarRead rv1, VarRead rv2, int k, boolean branch1, boolean branch2 |
       rv1 = v.getAUse() and
       rv2 = v.getAUse() and
       cond1.getCondition() = integerGuard(rv1, branch1, k, true) and

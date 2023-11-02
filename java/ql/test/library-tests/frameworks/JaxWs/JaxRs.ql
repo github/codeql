@@ -123,7 +123,7 @@ module JaxRsTest implements TestSig {
     )
     or
     tag = "MessageBodyReaderReadFromCall" and
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof MessageBodyReaderReadFrom and
       ma.getLocation() = location and
       element = ma.toString() and
@@ -131,7 +131,7 @@ module JaxRsTest implements TestSig {
     )
     or
     tag = "MessageBodyReaderReadCall" and
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof MessageBodyReaderRead and
       ma.getLocation() = location and
       element = ma.toString() and

@@ -32,19 +32,19 @@ delegatedProperties.kt:
 #   87|           2: [Method] get
 #   87|             5: [BlockStmt] { ... }
 #   87|               0: [ReturnStmt] return ...
-#   87|                 0: [MethodAccess] getTopLevelInt(...)
+#   87|                 0: [MethodCall] getTopLevelInt(...)
 #   87|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   87|           3: [Method] invoke
 #   87|             5: [BlockStmt] { ... }
 #   87|               0: [ReturnStmt] return ...
-#   87|                 0: [MethodAccess] get(...)
+#   87|                 0: [MethodCall] get(...)
 #   87|                   -1: [ThisAccess] this
 #   87|           4: [Method] set
 #-----|             4: (Parameters)
 #   87|               0: [Parameter] a0
 #   87|             5: [BlockStmt] { ... }
 #   87|               0: [ReturnStmt] return ...
-#   87|                 0: [MethodAccess] setTopLevelInt(...)
+#   87|                 0: [MethodCall] setTopLevelInt(...)
 #   87|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                   0: [VarAccess] a0
 #   87|         -3: [TypeAccess] KMutableProperty0<Integer>
@@ -56,7 +56,7 @@ delegatedProperties.kt:
 #   87|           0: [TypeAccess] MyClass
 #   87|       5: [BlockStmt] { ... }
 #   87|         0: [ReturnStmt] return ...
-#   87|           0: [MethodAccess] getValue(...)
+#   87|           0: [MethodCall] getValue(...)
 #   87|             -2: [TypeAccess] Integer
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
@@ -72,7 +72,7 @@ delegatedProperties.kt:
 #   87|                     0: [Parameter] a0
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
-#   87|                       0: [MethodAccess] getExtDelegated(...)
+#   87|                       0: [MethodCall] getExtDelegated(...)
 #   87|                         -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                         0: [VarAccess] a0
 #   87|                 3: [Method] invoke
@@ -80,7 +80,7 @@ delegatedProperties.kt:
 #   87|                     0: [Parameter] a0
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
-#   87|                       0: [MethodAccess] get(...)
+#   87|                       0: [MethodCall] get(...)
 #   87|                         -1: [ThisAccess] this
 #   87|                         0: [VarAccess] a0
 #   87|                 4: [Method] set
@@ -89,7 +89,7 @@ delegatedProperties.kt:
 #   87|                     1: [Parameter] a1
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
-#   87|                       0: [MethodAccess] setExtDelegated(...)
+#   87|                       0: [MethodCall] setExtDelegated(...)
 #   87|                         -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                         0: [VarAccess] a0
 #   87|                         1: [VarAccess] a1
@@ -105,7 +105,7 @@ delegatedProperties.kt:
 #   87|           0: [TypeAccess] int
 #   87|       5: [BlockStmt] { ... }
 #   87|         0: [ReturnStmt] return ...
-#   87|           0: [MethodAccess] setValue(...)
+#   87|           0: [MethodCall] setValue(...)
 #   87|             -2: [TypeAccess] Integer
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
@@ -121,7 +121,7 @@ delegatedProperties.kt:
 #   87|                     0: [Parameter] a0
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
-#   87|                       0: [MethodAccess] getExtDelegated(...)
+#   87|                       0: [MethodCall] getExtDelegated(...)
 #   87|                         -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                         0: [VarAccess] a0
 #   87|                 3: [Method] invoke
@@ -129,7 +129,7 @@ delegatedProperties.kt:
 #   87|                     0: [Parameter] a0
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
-#   87|                       0: [MethodAccess] get(...)
+#   87|                       0: [MethodCall] get(...)
 #   87|                         -1: [ThisAccess] this
 #   87|                         0: [VarAccess] a0
 #   87|                 4: [Method] set
@@ -138,7 +138,7 @@ delegatedProperties.kt:
 #   87|                     1: [Parameter] a1
 #   87|                   5: [BlockStmt] { ... }
 #   87|                     0: [ReturnStmt] return ...
-#   87|                       0: [MethodAccess] setExtDelegated(...)
+#   87|                       0: [MethodCall] setExtDelegated(...)
 #   87|                         -1: [TypeAccess] DelegatedPropertiesKt
 #   87|                         0: [VarAccess] a0
 #   87|                         1: [VarAccess] a1
@@ -157,7 +157,7 @@ delegatedProperties.kt:
 #    6|         0: [BlockStmt] { ... }
 #    6|           0: [LocalVariableDeclStmt] var ...;
 #    6|             1: [LocalVariableDeclExpr] prop1$delegate
-#    6|               0: [MethodAccess] lazy(...)
+#    6|               0: [MethodCall] lazy(...)
 #    6|                 -2: [TypeAccess] Integer
 #    6|                 -1: [TypeAccess] LazyKt
 #    6|                 0: [LambdaExpr] ...->...
@@ -169,7 +169,7 @@ delegatedProperties.kt:
 #    6|                       3: [TypeAccess] int
 #    7|                       5: [BlockStmt] { ... }
 #    7|                         0: [ExprStmt] <Expr>;
-#    7|                           0: [MethodAccess] println(...)
+#    7|                           0: [MethodCall] println(...)
 #    7|                             -1: [TypeAccess] ConsoleKt
 #    7|                             0: [StringLiteral] "init"
 #    8|                         1: [ReturnStmt] return ...
@@ -185,7 +185,7 @@ delegatedProperties.kt:
 #    6|                 3: [TypeAccess] int
 #    6|                 5: [BlockStmt] { ... }
 #    6|                   0: [ReturnStmt] return ...
-#    6|                     0: [MethodAccess] getValue(...)
+#    6|                     0: [MethodCall] getValue(...)
 #    6|                       -2: [TypeAccess] Integer
 #    6|                       -1: [TypeAccess] LazyKt
 #    6|                       0: [VarAccess] prop1$delegate
@@ -198,26 +198,26 @@ delegatedProperties.kt:
 #    6|                           2: [Method] get
 #    6|                             5: [BlockStmt] { ... }
 #    6|                               0: [ReturnStmt] return ...
-#    6|                                 0: [MethodAccess] <get-prop1>(...)
+#    6|                                 0: [MethodCall] <get-prop1>(...)
 #    6|                                   -1: [ClassInstanceExpr] new (...)
 #    6|                                     -3: [TypeAccess] Object
 #    6|                           3: [Method] invoke
 #    6|                             5: [BlockStmt] { ... }
 #    6|                               0: [ReturnStmt] return ...
-#    6|                                 0: [MethodAccess] get(...)
+#    6|                                 0: [MethodCall] get(...)
 #    6|                                   -1: [ThisAccess] this
 #    6|                         -3: [TypeAccess] KProperty0<Integer>
 #    6|                           0: [TypeAccess] Integer
 #   10|         1: [ExprStmt] <Expr>;
-#   10|           0: [MethodAccess] println(...)
+#   10|           0: [MethodCall] println(...)
 #   10|             -1: [TypeAccess] ConsoleKt
-#   10|             0: [MethodAccess] <get-prop1>(...)
+#   10|             0: [MethodCall] <get-prop1>(...)
 #   10|               -1: [ClassInstanceExpr] new (...)
 #   10|                 -3: [TypeAccess] Object
 #   11|         2: [ExprStmt] <Expr>;
-#   11|           0: [MethodAccess] println(...)
+#   11|           0: [MethodCall] println(...)
 #   11|             -1: [TypeAccess] ConsoleKt
-#   11|             0: [MethodAccess] <get-prop1>(...)
+#   11|             0: [MethodCall] <get-prop1>(...)
 #   11|               -1: [ClassInstanceExpr] new (...)
 #   11|                 -3: [TypeAccess] Object
 #   15|   3: [Class] Resource
@@ -256,7 +256,7 @@ delegatedProperties.kt:
 #   19|                 3: [TypeAccess] int
 #   19|                 5: [BlockStmt] { ... }
 #   19|                   0: [ReturnStmt] return ...
-#   19|                     0: [MethodAccess] getValue(...)
+#   19|                     0: [MethodCall] getValue(...)
 #   19|                       -1: [VarAccess] varResource1$delegate
 #    0|                       0: [NullLiteral] null
 #   19|                       1: [PropertyRefExpr] ...::...
@@ -267,20 +267,20 @@ delegatedProperties.kt:
 #   19|                           2: [Method] get
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
-#   19|                                 0: [MethodAccess] <get-varResource1>(...)
+#   19|                                 0: [MethodCall] <get-varResource1>(...)
 #   19|                                   -1: [ClassInstanceExpr] new (...)
 #   19|                                     -3: [TypeAccess] Object
 #   19|                           3: [Method] invoke
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
-#   19|                                 0: [MethodAccess] get(...)
+#   19|                                 0: [MethodCall] get(...)
 #   19|                                   -1: [ThisAccess] this
 #   19|                           4: [Method] set
 #-----|                             4: (Parameters)
 #   19|                               0: [Parameter] a0
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
-#   19|                                 0: [MethodAccess] <set-varResource1>(...)
+#   19|                                 0: [MethodCall] <set-varResource1>(...)
 #   19|                                   -1: [ClassInstanceExpr] new (...)
 #   19|                                     -3: [TypeAccess] Object
 #   19|                                   0: [VarAccess] a0
@@ -298,7 +298,7 @@ delegatedProperties.kt:
 #   19|                     0: [TypeAccess] int
 #   19|                 5: [BlockStmt] { ... }
 #   19|                   0: [ReturnStmt] return ...
-#   19|                     0: [MethodAccess] setValue(...)
+#   19|                     0: [MethodCall] setValue(...)
 #   19|                       -1: [VarAccess] varResource1$delegate
 #    0|                       0: [NullLiteral] null
 #   19|                       1: [PropertyRefExpr] ...::...
@@ -309,20 +309,20 @@ delegatedProperties.kt:
 #   19|                           2: [Method] get
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
-#   19|                                 0: [MethodAccess] <get-varResource1>(...)
+#   19|                                 0: [MethodCall] <get-varResource1>(...)
 #   19|                                   -1: [ClassInstanceExpr] new (...)
 #   19|                                     -3: [TypeAccess] Object
 #   19|                           3: [Method] invoke
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
-#   19|                                 0: [MethodAccess] get(...)
+#   19|                                 0: [MethodCall] get(...)
 #   19|                                   -1: [ThisAccess] this
 #   19|                           4: [Method] set
 #-----|                             4: (Parameters)
 #   19|                               0: [Parameter] a0
 #   19|                             5: [BlockStmt] { ... }
 #   19|                               0: [ReturnStmt] return ...
-#   19|                                 0: [MethodAccess] <set-varResource1>(...)
+#   19|                                 0: [MethodCall] <set-varResource1>(...)
 #   19|                                   -1: [ClassInstanceExpr] new (...)
 #   19|                                     -3: [TypeAccess] Object
 #   19|                                   0: [VarAccess] a0
@@ -330,13 +330,13 @@ delegatedProperties.kt:
 #   19|                           0: [TypeAccess] Integer
 #   19|                       2: [VarAccess] value
 #   20|         1: [ExprStmt] <Expr>;
-#   20|           0: [MethodAccess] println(...)
+#   20|           0: [MethodCall] println(...)
 #   20|             -1: [TypeAccess] ConsoleKt
-#   20|             0: [MethodAccess] <get-varResource1>(...)
+#   20|             0: [MethodCall] <get-varResource1>(...)
 #   20|               -1: [ClassInstanceExpr] new (...)
 #   20|                 -3: [TypeAccess] Object
 #   21|         2: [ExprStmt] <Expr>;
-#   21|           0: [MethodAccess] <set-varResource1>(...)
+#   21|           0: [MethodCall] <set-varResource1>(...)
 #   21|             -1: [ClassInstanceExpr] new (...)
 #   21|               -3: [TypeAccess] Object
 #   21|             0: [IntegerLiteral] 2
@@ -353,7 +353,7 @@ delegatedProperties.kt:
 #   23|                 3: [TypeAccess] String
 #   23|                 5: [BlockStmt] { ... }
 #   23|                   0: [ReturnStmt] return ...
-#   23|                     0: [MethodAccess] getValue(...)
+#   23|                     0: [MethodCall] getValue(...)
 #   23|                       -3: [TypeAccess] String
 #   23|                       -2: [TypeAccess] Object
 #   23|                       -1: [TypeAccess] MapAccessorsKt
@@ -367,13 +367,13 @@ delegatedProperties.kt:
 #   23|                           2: [Method] get
 #   23|                             5: [BlockStmt] { ... }
 #   23|                               0: [ReturnStmt] return ...
-#   23|                                 0: [MethodAccess] <get-name>(...)
+#   23|                                 0: [MethodCall] <get-name>(...)
 #   23|                                   -1: [ClassInstanceExpr] new (...)
 #   23|                                     -3: [TypeAccess] Object
 #   23|                           3: [Method] invoke
 #   23|                             5: [BlockStmt] { ... }
 #   23|                               0: [ReturnStmt] return ...
-#   23|                                 0: [MethodAccess] get(...)
+#   23|                                 0: [MethodCall] get(...)
 #   23|                                   -1: [ThisAccess] this
 #   23|                         -3: [TypeAccess] KProperty0<String>
 #   23|                           0: [TypeAccess] String
@@ -429,7 +429,7 @@ delegatedProperties.kt:
 #   27|                                   0: [WildcardTypeAccess] ? ...
 #   27|                             5: [BlockStmt] { ... }
 #   27|                               0: [ReturnStmt] return ...
-#   27|                                 0: [MethodAccess] getCurValue(...)
+#   27|                                 0: [MethodCall] getCurValue(...)
 #   27|                                   -1: [ThisAccess] this
 #   28|                           6: [Method] setValue
 #   28|                             3: [TypeAccess] Unit
@@ -443,7 +443,7 @@ delegatedProperties.kt:
 #   28|                                 0: [TypeAccess] int
 #   28|                             5: [BlockStmt] { ... }
 #   29|                               0: [ExprStmt] <Expr>;
-#   29|                                 0: [MethodAccess] setCurValue(...)
+#   29|                                 0: [MethodCall] setCurValue(...)
 #   29|                                   -1: [ThisAccess] this
 #   29|                                   0: [VarAccess] value
 #   25|                       1: [ExprStmt] <Expr>;
@@ -452,7 +452,7 @@ delegatedProperties.kt:
 #   33|         5: [BlockStmt] { ... }
 #   33|           0: [LocalVariableDeclStmt] var ...;
 #   33|             1: [LocalVariableDeclExpr] readOnly$delegate
-#   33|               0: [MethodAccess] resourceDelegate(...)
+#   33|               0: [MethodCall] resourceDelegate(...)
 #   33|                 -1: [ClassInstanceExpr] new (...)
 #   33|                   -3: [TypeAccess] Object
 #   33|           1: [LocalTypeDeclStmt] class ...
@@ -464,7 +464,7 @@ delegatedProperties.kt:
 #   33|                 3: [TypeAccess] int
 #   33|                 5: [BlockStmt] { ... }
 #   33|                   0: [ReturnStmt] return ...
-#   33|                     0: [MethodAccess] getValue(...)
+#   33|                     0: [MethodCall] getValue(...)
 #   33|                       -1: [VarAccess] readOnly$delegate
 #    0|                       0: [NullLiteral] null
 #   33|                       1: [PropertyRefExpr] ...::...
@@ -475,20 +475,20 @@ delegatedProperties.kt:
 #   33|                           2: [Method] get
 #   33|                             5: [BlockStmt] { ... }
 #   33|                               0: [ReturnStmt] return ...
-#   33|                                 0: [MethodAccess] <get-readOnly>(...)
+#   33|                                 0: [MethodCall] <get-readOnly>(...)
 #   33|                                   -1: [ClassInstanceExpr] new (...)
 #   33|                                     -3: [TypeAccess] Object
 #   33|                           3: [Method] invoke
 #   33|                             5: [BlockStmt] { ... }
 #   33|                               0: [ReturnStmt] return ...
-#   33|                                 0: [MethodAccess] get(...)
+#   33|                                 0: [MethodCall] get(...)
 #   33|                                   -1: [ThisAccess] this
 #   33|                         -3: [TypeAccess] KProperty0<Integer>
 #   33|                           0: [TypeAccess] Integer
 #   34|         6: [BlockStmt] { ... }
 #   34|           0: [LocalVariableDeclStmt] var ...;
 #   34|             1: [LocalVariableDeclExpr] readWrite$delegate
-#   34|               0: [MethodAccess] resourceDelegate(...)
+#   34|               0: [MethodCall] resourceDelegate(...)
 #   34|                 -1: [ClassInstanceExpr] new (...)
 #   34|                   -3: [TypeAccess] Object
 #   34|           1: [LocalTypeDeclStmt] class ...
@@ -500,7 +500,7 @@ delegatedProperties.kt:
 #   34|                 3: [TypeAccess] int
 #   34|                 5: [BlockStmt] { ... }
 #   34|                   0: [ReturnStmt] return ...
-#   34|                     0: [MethodAccess] getValue(...)
+#   34|                     0: [MethodCall] getValue(...)
 #   34|                       -1: [VarAccess] readWrite$delegate
 #    0|                       0: [NullLiteral] null
 #   34|                       1: [PropertyRefExpr] ...::...
@@ -511,20 +511,20 @@ delegatedProperties.kt:
 #   34|                           2: [Method] get
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
-#   34|                                 0: [MethodAccess] <get-readWrite>(...)
+#   34|                                 0: [MethodCall] <get-readWrite>(...)
 #   34|                                   -1: [ClassInstanceExpr] new (...)
 #   34|                                     -3: [TypeAccess] Object
 #   34|                           3: [Method] invoke
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
-#   34|                                 0: [MethodAccess] get(...)
+#   34|                                 0: [MethodCall] get(...)
 #   34|                                   -1: [ThisAccess] this
 #   34|                           4: [Method] set
 #-----|                             4: (Parameters)
 #   34|                               0: [Parameter] a0
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
-#   34|                                 0: [MethodAccess] <set-readWrite>(...)
+#   34|                                 0: [MethodCall] <set-readWrite>(...)
 #   34|                                   -1: [ClassInstanceExpr] new (...)
 #   34|                                     -3: [TypeAccess] Object
 #   34|                                   0: [VarAccess] a0
@@ -542,7 +542,7 @@ delegatedProperties.kt:
 #   34|                     0: [TypeAccess] int
 #   34|                 5: [BlockStmt] { ... }
 #   34|                   0: [ReturnStmt] return ...
-#   34|                     0: [MethodAccess] setValue(...)
+#   34|                     0: [MethodCall] setValue(...)
 #   34|                       -1: [VarAccess] readWrite$delegate
 #    0|                       0: [NullLiteral] null
 #   34|                       1: [PropertyRefExpr] ...::...
@@ -553,20 +553,20 @@ delegatedProperties.kt:
 #   34|                           2: [Method] get
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
-#   34|                                 0: [MethodAccess] <get-readWrite>(...)
+#   34|                                 0: [MethodCall] <get-readWrite>(...)
 #   34|                                   -1: [ClassInstanceExpr] new (...)
 #   34|                                     -3: [TypeAccess] Object
 #   34|                           3: [Method] invoke
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
-#   34|                                 0: [MethodAccess] get(...)
+#   34|                                 0: [MethodCall] get(...)
 #   34|                                   -1: [ThisAccess] this
 #   34|                           4: [Method] set
 #-----|                             4: (Parameters)
 #   34|                               0: [Parameter] a0
 #   34|                             5: [BlockStmt] { ... }
 #   34|                               0: [ReturnStmt] return ...
-#   34|                                 0: [MethodAccess] <set-readWrite>(...)
+#   34|                                 0: [MethodCall] <set-readWrite>(...)
 #   34|                                   -1: [ClassInstanceExpr] new (...)
 #   34|                                     -3: [TypeAccess] Object
 #   34|                                   0: [VarAccess] a0
@@ -574,18 +574,18 @@ delegatedProperties.kt:
 #   34|                           0: [TypeAccess] Integer
 #   34|                       2: [VarAccess] value
 #   36|         7: [ExprStmt] <Expr>;
-#   36|           0: [MethodAccess] println(...)
+#   36|           0: [MethodCall] println(...)
 #   36|             -1: [TypeAccess] ConsoleKt
-#   36|             0: [MethodAccess] getVarResource0(...)
+#   36|             0: [MethodCall] getVarResource0(...)
 #   36|               -1: [ThisAccess] this
 #   37|         8: [ExprStmt] <Expr>;
-#   37|           0: [MethodAccess] setVarResource0(...)
+#   37|           0: [MethodCall] setVarResource0(...)
 #   37|             -1: [ThisAccess] this
 #   37|             0: [IntegerLiteral] 3
 #   39|         9: [BlockStmt] { ... }
 #   39|           0: [LocalVariableDeclStmt] var ...;
 #   39|             1: [LocalVariableDeclExpr] varResource2$delegate
-#   39|               0: [MethodAccess] provideDelegate(...)
+#   39|               0: [MethodCall] provideDelegate(...)
 #   39|                 -1: [ClassInstanceExpr] new DelegateProvider(...)
 #   39|                   -3: [TypeAccess] DelegateProvider
 #    1|                 0: [NullLiteral] null
@@ -597,13 +597,13 @@ delegatedProperties.kt:
 #   39|                     2: [Method] get
 #   39|                       5: [BlockStmt] { ... }
 #   39|                         0: [ReturnStmt] return ...
-#   39|                           0: [MethodAccess] <get-varResource2>(...)
+#   39|                           0: [MethodCall] <get-varResource2>(...)
 #   39|                             -1: [ClassInstanceExpr] new (...)
 #   39|                               -3: [TypeAccess] Object
 #   39|                     3: [Method] invoke
 #   39|                       5: [BlockStmt] { ... }
 #   39|                         0: [ReturnStmt] return ...
-#   39|                           0: [MethodAccess] get(...)
+#   39|                           0: [MethodCall] get(...)
 #   39|                             -1: [ThisAccess] this
 #   39|                   -3: [TypeAccess] KProperty0<Integer>
 #   39|                     0: [TypeAccess] Integer
@@ -616,7 +616,7 @@ delegatedProperties.kt:
 #   39|                 3: [TypeAccess] int
 #   39|                 5: [BlockStmt] { ... }
 #   39|                   0: [ReturnStmt] return ...
-#   39|                     0: [MethodAccess] getValue(...)
+#   39|                     0: [MethodCall] getValue(...)
 #   39|                       -1: [VarAccess] varResource2$delegate
 #    0|                       0: [NullLiteral] null
 #   39|                       1: [PropertyRefExpr] ...::...
@@ -627,13 +627,13 @@ delegatedProperties.kt:
 #   39|                           2: [Method] get
 #   39|                             5: [BlockStmt] { ... }
 #   39|                               0: [ReturnStmt] return ...
-#   39|                                 0: [MethodAccess] <get-varResource2>(...)
+#   39|                                 0: [MethodCall] <get-varResource2>(...)
 #   39|                                   -1: [ClassInstanceExpr] new (...)
 #   39|                                     -3: [TypeAccess] Object
 #   39|                           3: [Method] invoke
 #   39|                             5: [BlockStmt] { ... }
 #   39|                               0: [ReturnStmt] return ...
-#   39|                                 0: [MethodAccess] get(...)
+#   39|                                 0: [MethodCall] get(...)
 #   39|                                   -1: [ThisAccess] this
 #   39|                         -3: [TypeAccess] KProperty0<Integer>
 #   39|                           0: [TypeAccess] Integer
@@ -645,7 +645,7 @@ delegatedProperties.kt:
 #   42|       3: [TypeAccess] int
 #   42|       5: [BlockStmt] { ... }
 #   42|         0: [ReturnStmt] return ...
-#   42|           0: [MethodAccess] getValue(...)
+#   42|           0: [MethodCall] getValue(...)
 #   42|             -1: [VarAccess] this.varResource0$delegate
 #   42|               -1: [ThisAccess] this
 #    1|             0: [ThisAccess] this
@@ -659,14 +659,14 @@ delegatedProperties.kt:
 #   42|                     0: [Parameter] a0
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodAccess] getVarResource0(...)
+#   42|                       0: [MethodCall] getVarResource0(...)
 #   42|                         -1: [VarAccess] a0
 #   42|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   42|                     0: [Parameter] a0
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodAccess] get(...)
+#   42|                       0: [MethodCall] get(...)
 #   42|                         -1: [ThisAccess] this
 #   42|                         0: [VarAccess] a0
 #   42|                 4: [Method] set
@@ -675,7 +675,7 @@ delegatedProperties.kt:
 #   42|                     1: [Parameter] a1
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodAccess] setVarResource0(...)
+#   42|                       0: [MethodCall] setVarResource0(...)
 #   42|                         -1: [VarAccess] a0
 #   42|                         0: [VarAccess] a1
 #   42|               -3: [TypeAccess] KMutableProperty1<Owner,Integer>
@@ -688,7 +688,7 @@ delegatedProperties.kt:
 #   42|           0: [TypeAccess] int
 #   42|       5: [BlockStmt] { ... }
 #   42|         0: [ReturnStmt] return ...
-#   42|           0: [MethodAccess] setValue(...)
+#   42|           0: [MethodCall] setValue(...)
 #   42|             -1: [VarAccess] this.varResource0$delegate
 #   42|               -1: [ThisAccess] this
 #    1|             0: [ThisAccess] this
@@ -702,14 +702,14 @@ delegatedProperties.kt:
 #   42|                     0: [Parameter] a0
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodAccess] getVarResource0(...)
+#   42|                       0: [MethodCall] getVarResource0(...)
 #   42|                         -1: [VarAccess] a0
 #   42|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   42|                     0: [Parameter] a0
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodAccess] get(...)
+#   42|                       0: [MethodCall] get(...)
 #   42|                         -1: [ThisAccess] this
 #   42|                         0: [VarAccess] a0
 #   42|                 4: [Method] set
@@ -718,7 +718,7 @@ delegatedProperties.kt:
 #   42|                     1: [Parameter] a1
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodAccess] setVarResource0(...)
+#   42|                       0: [MethodCall] setVarResource0(...)
 #   42|                         -1: [VarAccess] a0
 #   42|                         0: [VarAccess] a1
 #   42|               -3: [TypeAccess] KMutableProperty1<Owner,Integer>
@@ -902,20 +902,20 @@ delegatedProperties.kt:
 #   66|           3: [Method] get
 #   66|             5: [BlockStmt] { ... }
 #   66|               0: [ReturnStmt] return ...
-#   66|                 0: [MethodAccess] getMemberInt(...)
+#   66|                 0: [MethodCall] getMemberInt(...)
 #   66|                   -1: [VarAccess] this.<dispatchReceiver>
 #   66|                     -1: [ThisAccess] this
 #   66|           4: [Method] invoke
 #   66|             5: [BlockStmt] { ... }
 #   66|               0: [ReturnStmt] return ...
-#   66|                 0: [MethodAccess] get(...)
+#   66|                 0: [MethodCall] get(...)
 #   66|                   -1: [ThisAccess] this
 #   66|           5: [Method] set
 #-----|             4: (Parameters)
 #   66|               0: [Parameter] a0
 #   66|             5: [BlockStmt] { ... }
 #   66|               0: [ReturnStmt] return ...
-#   66|                 0: [MethodAccess] setMemberInt(...)
+#   66|                 0: [MethodCall] setMemberInt(...)
 #   66|                   -1: [VarAccess] this.<dispatchReceiver>
 #   66|                     -1: [ThisAccess] this
 #   66|                   0: [VarAccess] a0
@@ -927,7 +927,7 @@ delegatedProperties.kt:
 #   66|       3: [TypeAccess] int
 #   66|       5: [BlockStmt] { ... }
 #   66|         0: [ReturnStmt] return ...
-#   66|           0: [MethodAccess] getValue(...)
+#   66|           0: [MethodCall] getValue(...)
 #   66|             -2: [TypeAccess] Integer
 #   66|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   66|             0: [VarAccess] this.delegatedToMember1$delegate
@@ -943,14 +943,14 @@ delegatedProperties.kt:
 #   66|                     0: [Parameter] a0
 #   66|                   5: [BlockStmt] { ... }
 #   66|                     0: [ReturnStmt] return ...
-#   66|                       0: [MethodAccess] getDelegatedToMember1(...)
+#   66|                       0: [MethodCall] getDelegatedToMember1(...)
 #   66|                         -1: [VarAccess] a0
 #   66|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   66|                     0: [Parameter] a0
 #   66|                   5: [BlockStmt] { ... }
 #   66|                     0: [ReturnStmt] return ...
-#   66|                       0: [MethodAccess] get(...)
+#   66|                       0: [MethodCall] get(...)
 #   66|                         -1: [ThisAccess] this
 #   66|                         0: [VarAccess] a0
 #   66|                 4: [Method] set
@@ -959,7 +959,7 @@ delegatedProperties.kt:
 #   66|                     1: [Parameter] a1
 #   66|                   5: [BlockStmt] { ... }
 #   66|                     0: [ReturnStmt] return ...
-#   66|                       0: [MethodAccess] setDelegatedToMember1(...)
+#   66|                       0: [MethodCall] setDelegatedToMember1(...)
 #   66|                         -1: [VarAccess] a0
 #   66|                         0: [VarAccess] a1
 #   66|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -972,7 +972,7 @@ delegatedProperties.kt:
 #   66|           0: [TypeAccess] int
 #   66|       5: [BlockStmt] { ... }
 #   66|         0: [ReturnStmt] return ...
-#   66|           0: [MethodAccess] setValue(...)
+#   66|           0: [MethodCall] setValue(...)
 #   66|             -2: [TypeAccess] Integer
 #   66|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   66|             0: [VarAccess] this.delegatedToMember1$delegate
@@ -988,14 +988,14 @@ delegatedProperties.kt:
 #   66|                     0: [Parameter] a0
 #   66|                   5: [BlockStmt] { ... }
 #   66|                     0: [ReturnStmt] return ...
-#   66|                       0: [MethodAccess] getDelegatedToMember1(...)
+#   66|                       0: [MethodCall] getDelegatedToMember1(...)
 #   66|                         -1: [VarAccess] a0
 #   66|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   66|                     0: [Parameter] a0
 #   66|                   5: [BlockStmt] { ... }
 #   66|                     0: [ReturnStmt] return ...
-#   66|                       0: [MethodAccess] get(...)
+#   66|                       0: [MethodCall] get(...)
 #   66|                         -1: [ThisAccess] this
 #   66|                         0: [VarAccess] a0
 #   66|                 4: [Method] set
@@ -1004,7 +1004,7 @@ delegatedProperties.kt:
 #   66|                     1: [Parameter] a1
 #   66|                   5: [BlockStmt] { ... }
 #   66|                     0: [ReturnStmt] return ...
-#   66|                       0: [MethodAccess] setDelegatedToMember1(...)
+#   66|                       0: [MethodCall] setDelegatedToMember1(...)
 #   66|                         -1: [VarAccess] a0
 #   66|                         0: [VarAccess] a1
 #   66|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1025,14 +1025,14 @@ delegatedProperties.kt:
 #   67|               0: [Parameter] a0
 #   67|             5: [BlockStmt] { ... }
 #   67|               0: [ReturnStmt] return ...
-#   67|                 0: [MethodAccess] getMemberInt(...)
+#   67|                 0: [MethodCall] getMemberInt(...)
 #   67|                   -1: [VarAccess] a0
 #   67|           3: [Method] invoke
 #-----|             4: (Parameters)
 #   67|               0: [Parameter] a0
 #   67|             5: [BlockStmt] { ... }
 #   67|               0: [ReturnStmt] return ...
-#   67|                 0: [MethodAccess] get(...)
+#   67|                 0: [MethodCall] get(...)
 #   67|                   -1: [ThisAccess] this
 #   67|                   0: [VarAccess] a0
 #   67|           4: [Method] set
@@ -1041,7 +1041,7 @@ delegatedProperties.kt:
 #   67|               1: [Parameter] a1
 #   67|             5: [BlockStmt] { ... }
 #   67|               0: [ReturnStmt] return ...
-#   67|                 0: [MethodAccess] setMemberInt(...)
+#   67|                 0: [MethodCall] setMemberInt(...)
 #   67|                   -1: [VarAccess] a0
 #   67|                   0: [VarAccess] a1
 #   67|         -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1051,7 +1051,7 @@ delegatedProperties.kt:
 #   67|       3: [TypeAccess] int
 #   67|       5: [BlockStmt] { ... }
 #   67|         0: [ReturnStmt] return ...
-#   67|           0: [MethodAccess] getValue(...)
+#   67|           0: [MethodCall] getValue(...)
 #   67|             -3: [TypeAccess] Integer
 #   67|             -2: [TypeAccess] MyClass
 #   67|             -1: [TypeAccess] PropertyReferenceDelegatesKt
@@ -1068,14 +1068,14 @@ delegatedProperties.kt:
 #   67|                     0: [Parameter] a0
 #   67|                   5: [BlockStmt] { ... }
 #   67|                     0: [ReturnStmt] return ...
-#   67|                       0: [MethodAccess] getDelegatedToMember2(...)
+#   67|                       0: [MethodCall] getDelegatedToMember2(...)
 #   67|                         -1: [VarAccess] a0
 #   67|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   67|                     0: [Parameter] a0
 #   67|                   5: [BlockStmt] { ... }
 #   67|                     0: [ReturnStmt] return ...
-#   67|                       0: [MethodAccess] get(...)
+#   67|                       0: [MethodCall] get(...)
 #   67|                         -1: [ThisAccess] this
 #   67|                         0: [VarAccess] a0
 #   67|                 4: [Method] set
@@ -1084,7 +1084,7 @@ delegatedProperties.kt:
 #   67|                     1: [Parameter] a1
 #   67|                   5: [BlockStmt] { ... }
 #   67|                     0: [ReturnStmt] return ...
-#   67|                       0: [MethodAccess] setDelegatedToMember2(...)
+#   67|                       0: [MethodCall] setDelegatedToMember2(...)
 #   67|                         -1: [VarAccess] a0
 #   67|                         0: [VarAccess] a1
 #   67|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1097,7 +1097,7 @@ delegatedProperties.kt:
 #   67|           0: [TypeAccess] int
 #   67|       5: [BlockStmt] { ... }
 #   67|         0: [ReturnStmt] return ...
-#   67|           0: [MethodAccess] setValue(...)
+#   67|           0: [MethodCall] setValue(...)
 #   67|             -3: [TypeAccess] Integer
 #   67|             -2: [TypeAccess] MyClass
 #   67|             -1: [TypeAccess] PropertyReferenceDelegatesKt
@@ -1114,14 +1114,14 @@ delegatedProperties.kt:
 #   67|                     0: [Parameter] a0
 #   67|                   5: [BlockStmt] { ... }
 #   67|                     0: [ReturnStmt] return ...
-#   67|                       0: [MethodAccess] getDelegatedToMember2(...)
+#   67|                       0: [MethodCall] getDelegatedToMember2(...)
 #   67|                         -1: [VarAccess] a0
 #   67|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   67|                     0: [Parameter] a0
 #   67|                   5: [BlockStmt] { ... }
 #   67|                     0: [ReturnStmt] return ...
-#   67|                       0: [MethodAccess] get(...)
+#   67|                       0: [MethodCall] get(...)
 #   67|                         -1: [ThisAccess] this
 #   67|                         0: [VarAccess] a0
 #   67|                 4: [Method] set
@@ -1130,7 +1130,7 @@ delegatedProperties.kt:
 #   67|                     1: [Parameter] a1
 #   67|                   5: [BlockStmt] { ... }
 #   67|                     0: [ReturnStmt] return ...
-#   67|                       0: [MethodAccess] setDelegatedToMember2(...)
+#   67|                       0: [MethodCall] setDelegatedToMember2(...)
 #   67|                         -1: [VarAccess] a0
 #   67|                         0: [VarAccess] a1
 #   67|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1157,21 +1157,21 @@ delegatedProperties.kt:
 #   69|           3: [Method] get
 #   69|             5: [BlockStmt] { ... }
 #   69|               0: [ReturnStmt] return ...
-#   69|                 0: [MethodAccess] getExtDelegated(...)
+#   69|                 0: [MethodCall] getExtDelegated(...)
 #   69|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   69|                   0: [VarAccess] this.<extensionReceiver>
 #   69|                     -1: [ThisAccess] this
 #   69|           4: [Method] invoke
 #   69|             5: [BlockStmt] { ... }
 #   69|               0: [ReturnStmt] return ...
-#   69|                 0: [MethodAccess] get(...)
+#   69|                 0: [MethodCall] get(...)
 #   69|                   -1: [ThisAccess] this
 #   69|           5: [Method] set
 #-----|             4: (Parameters)
 #   69|               0: [Parameter] a0
 #   69|             5: [BlockStmt] { ... }
 #   69|               0: [ReturnStmt] return ...
-#   69|                 0: [MethodAccess] setExtDelegated(...)
+#   69|                 0: [MethodCall] setExtDelegated(...)
 #   69|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   69|                   0: [VarAccess] this.<extensionReceiver>
 #   69|                     -1: [ThisAccess] this
@@ -1184,7 +1184,7 @@ delegatedProperties.kt:
 #   69|       3: [TypeAccess] int
 #   69|       5: [BlockStmt] { ... }
 #   69|         0: [ReturnStmt] return ...
-#   69|           0: [MethodAccess] getValue(...)
+#   69|           0: [MethodCall] getValue(...)
 #   69|             -2: [TypeAccess] Integer
 #   69|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   69|             0: [VarAccess] this.delegatedToExtMember1$delegate
@@ -1200,14 +1200,14 @@ delegatedProperties.kt:
 #   69|                     0: [Parameter] a0
 #   69|                   5: [BlockStmt] { ... }
 #   69|                     0: [ReturnStmt] return ...
-#   69|                       0: [MethodAccess] getDelegatedToExtMember1(...)
+#   69|                       0: [MethodCall] getDelegatedToExtMember1(...)
 #   69|                         -1: [VarAccess] a0
 #   69|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   69|                     0: [Parameter] a0
 #   69|                   5: [BlockStmt] { ... }
 #   69|                     0: [ReturnStmt] return ...
-#   69|                       0: [MethodAccess] get(...)
+#   69|                       0: [MethodCall] get(...)
 #   69|                         -1: [ThisAccess] this
 #   69|                         0: [VarAccess] a0
 #   69|                 4: [Method] set
@@ -1216,7 +1216,7 @@ delegatedProperties.kt:
 #   69|                     1: [Parameter] a1
 #   69|                   5: [BlockStmt] { ... }
 #   69|                     0: [ReturnStmt] return ...
-#   69|                       0: [MethodAccess] setDelegatedToExtMember1(...)
+#   69|                       0: [MethodCall] setDelegatedToExtMember1(...)
 #   69|                         -1: [VarAccess] a0
 #   69|                         0: [VarAccess] a1
 #   69|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1229,7 +1229,7 @@ delegatedProperties.kt:
 #   69|           0: [TypeAccess] int
 #   69|       5: [BlockStmt] { ... }
 #   69|         0: [ReturnStmt] return ...
-#   69|           0: [MethodAccess] setValue(...)
+#   69|           0: [MethodCall] setValue(...)
 #   69|             -2: [TypeAccess] Integer
 #   69|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   69|             0: [VarAccess] this.delegatedToExtMember1$delegate
@@ -1245,14 +1245,14 @@ delegatedProperties.kt:
 #   69|                     0: [Parameter] a0
 #   69|                   5: [BlockStmt] { ... }
 #   69|                     0: [ReturnStmt] return ...
-#   69|                       0: [MethodAccess] getDelegatedToExtMember1(...)
+#   69|                       0: [MethodCall] getDelegatedToExtMember1(...)
 #   69|                         -1: [VarAccess] a0
 #   69|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   69|                     0: [Parameter] a0
 #   69|                   5: [BlockStmt] { ... }
 #   69|                     0: [ReturnStmt] return ...
-#   69|                       0: [MethodAccess] get(...)
+#   69|                       0: [MethodCall] get(...)
 #   69|                         -1: [ThisAccess] this
 #   69|                         0: [VarAccess] a0
 #   69|                 4: [Method] set
@@ -1261,7 +1261,7 @@ delegatedProperties.kt:
 #   69|                     1: [Parameter] a1
 #   69|                   5: [BlockStmt] { ... }
 #   69|                     0: [ReturnStmt] return ...
-#   69|                       0: [MethodAccess] setDelegatedToExtMember1(...)
+#   69|                       0: [MethodCall] setDelegatedToExtMember1(...)
 #   69|                         -1: [VarAccess] a0
 #   69|                         0: [VarAccess] a1
 #   69|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1282,7 +1282,7 @@ delegatedProperties.kt:
 #   70|               0: [Parameter] a0
 #   70|             5: [BlockStmt] { ... }
 #   70|               0: [ReturnStmt] return ...
-#   70|                 0: [MethodAccess] getExtDelegated(...)
+#   70|                 0: [MethodCall] getExtDelegated(...)
 #   70|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   70|                   0: [VarAccess] a0
 #   70|           3: [Method] invoke
@@ -1290,7 +1290,7 @@ delegatedProperties.kt:
 #   70|               0: [Parameter] a0
 #   70|             5: [BlockStmt] { ... }
 #   70|               0: [ReturnStmt] return ...
-#   70|                 0: [MethodAccess] get(...)
+#   70|                 0: [MethodCall] get(...)
 #   70|                   -1: [ThisAccess] this
 #   70|                   0: [VarAccess] a0
 #   70|           4: [Method] set
@@ -1299,7 +1299,7 @@ delegatedProperties.kt:
 #   70|               1: [Parameter] a1
 #   70|             5: [BlockStmt] { ... }
 #   70|               0: [ReturnStmt] return ...
-#   70|                 0: [MethodAccess] setExtDelegated(...)
+#   70|                 0: [MethodCall] setExtDelegated(...)
 #   70|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   70|                   0: [VarAccess] a0
 #   70|                   1: [VarAccess] a1
@@ -1310,7 +1310,7 @@ delegatedProperties.kt:
 #   70|       3: [TypeAccess] int
 #   70|       5: [BlockStmt] { ... }
 #   70|         0: [ReturnStmt] return ...
-#   70|           0: [MethodAccess] getValue(...)
+#   70|           0: [MethodCall] getValue(...)
 #   70|             -3: [TypeAccess] Integer
 #   70|             -2: [TypeAccess] MyClass
 #   70|             -1: [TypeAccess] PropertyReferenceDelegatesKt
@@ -1327,14 +1327,14 @@ delegatedProperties.kt:
 #   70|                     0: [Parameter] a0
 #   70|                   5: [BlockStmt] { ... }
 #   70|                     0: [ReturnStmt] return ...
-#   70|                       0: [MethodAccess] getDelegatedToExtMember2(...)
+#   70|                       0: [MethodCall] getDelegatedToExtMember2(...)
 #   70|                         -1: [VarAccess] a0
 #   70|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   70|                     0: [Parameter] a0
 #   70|                   5: [BlockStmt] { ... }
 #   70|                     0: [ReturnStmt] return ...
-#   70|                       0: [MethodAccess] get(...)
+#   70|                       0: [MethodCall] get(...)
 #   70|                         -1: [ThisAccess] this
 #   70|                         0: [VarAccess] a0
 #   70|                 4: [Method] set
@@ -1343,7 +1343,7 @@ delegatedProperties.kt:
 #   70|                     1: [Parameter] a1
 #   70|                   5: [BlockStmt] { ... }
 #   70|                     0: [ReturnStmt] return ...
-#   70|                       0: [MethodAccess] setDelegatedToExtMember2(...)
+#   70|                       0: [MethodCall] setDelegatedToExtMember2(...)
 #   70|                         -1: [VarAccess] a0
 #   70|                         0: [VarAccess] a1
 #   70|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1356,7 +1356,7 @@ delegatedProperties.kt:
 #   70|           0: [TypeAccess] int
 #   70|       5: [BlockStmt] { ... }
 #   70|         0: [ReturnStmt] return ...
-#   70|           0: [MethodAccess] setValue(...)
+#   70|           0: [MethodCall] setValue(...)
 #   70|             -3: [TypeAccess] Integer
 #   70|             -2: [TypeAccess] MyClass
 #   70|             -1: [TypeAccess] PropertyReferenceDelegatesKt
@@ -1373,14 +1373,14 @@ delegatedProperties.kt:
 #   70|                     0: [Parameter] a0
 #   70|                   5: [BlockStmt] { ... }
 #   70|                     0: [ReturnStmt] return ...
-#   70|                       0: [MethodAccess] getDelegatedToExtMember2(...)
+#   70|                       0: [MethodCall] getDelegatedToExtMember2(...)
 #   70|                         -1: [VarAccess] a0
 #   70|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   70|                     0: [Parameter] a0
 #   70|                   5: [BlockStmt] { ... }
 #   70|                     0: [ReturnStmt] return ...
-#   70|                       0: [MethodAccess] get(...)
+#   70|                       0: [MethodCall] get(...)
 #   70|                         -1: [ThisAccess] this
 #   70|                         0: [VarAccess] a0
 #   70|                 4: [Method] set
@@ -1389,7 +1389,7 @@ delegatedProperties.kt:
 #   70|                     1: [Parameter] a1
 #   70|                   5: [BlockStmt] { ... }
 #   70|                     0: [ReturnStmt] return ...
-#   70|                       0: [MethodAccess] setDelegatedToExtMember2(...)
+#   70|                       0: [MethodCall] setDelegatedToExtMember2(...)
 #   70|                         -1: [VarAccess] a0
 #   70|                         0: [VarAccess] a1
 #   70|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1416,13 +1416,13 @@ delegatedProperties.kt:
 #   72|           3: [Method] get
 #   72|             5: [BlockStmt] { ... }
 #   72|               0: [ReturnStmt] return ...
-#   72|                 0: [MethodAccess] getBaseClassInt(...)
+#   72|                 0: [MethodCall] getBaseClassInt(...)
 #   72|                   -1: [VarAccess] this.<dispatchReceiver>
 #   72|                     -1: [ThisAccess] this
 #   72|           4: [Method] invoke
 #   72|             5: [BlockStmt] { ... }
 #   72|               0: [ReturnStmt] return ...
-#   72|                 0: [MethodAccess] get(...)
+#   72|                 0: [MethodCall] get(...)
 #   72|                   -1: [ThisAccess] this
 #   72|         -3: [TypeAccess] KProperty0<Integer>
 #   72|           0: [TypeAccess] Integer
@@ -1432,7 +1432,7 @@ delegatedProperties.kt:
 #   72|       3: [TypeAccess] int
 #   72|       5: [BlockStmt] { ... }
 #   72|         0: [ReturnStmt] return ...
-#   72|           0: [MethodAccess] getValue(...)
+#   72|           0: [MethodCall] getValue(...)
 #   72|             -2: [TypeAccess] Integer
 #   72|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   72|             0: [VarAccess] this.delegatedToBaseClass1$delegate
@@ -1448,14 +1448,14 @@ delegatedProperties.kt:
 #   72|                     0: [Parameter] a0
 #   72|                   5: [BlockStmt] { ... }
 #   72|                     0: [ReturnStmt] return ...
-#   72|                       0: [MethodAccess] getDelegatedToBaseClass1(...)
+#   72|                       0: [MethodCall] getDelegatedToBaseClass1(...)
 #   72|                         -1: [VarAccess] a0
 #   72|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   72|                     0: [Parameter] a0
 #   72|                   5: [BlockStmt] { ... }
 #   72|                     0: [ReturnStmt] return ...
-#   72|                       0: [MethodAccess] get(...)
+#   72|                       0: [MethodCall] get(...)
 #   72|                         -1: [ThisAccess] this
 #   72|                         0: [VarAccess] a0
 #   72|               -3: [TypeAccess] KProperty1<MyClass,Integer>
@@ -1475,14 +1475,14 @@ delegatedProperties.kt:
 #   73|               0: [Parameter] a0
 #   73|             5: [BlockStmt] { ... }
 #   73|               0: [ReturnStmt] return ...
-#   73|                 0: [MethodAccess] getBaseClassInt(...)
+#   73|                 0: [MethodCall] getBaseClassInt(...)
 #   73|                   -1: [VarAccess] a0
 #   73|           3: [Method] invoke
 #-----|             4: (Parameters)
 #   73|               0: [Parameter] a0
 #   73|             5: [BlockStmt] { ... }
 #   73|               0: [ReturnStmt] return ...
-#   73|                 0: [MethodAccess] get(...)
+#   73|                 0: [MethodCall] get(...)
 #   73|                   -1: [ThisAccess] this
 #   73|                   0: [VarAccess] a0
 #   73|         -3: [TypeAccess] KProperty1<Base,Integer>
@@ -1492,7 +1492,7 @@ delegatedProperties.kt:
 #   73|       3: [TypeAccess] int
 #   73|       5: [BlockStmt] { ... }
 #   73|         0: [ReturnStmt] return ...
-#   73|           0: [MethodAccess] getValue(...)
+#   73|           0: [MethodCall] getValue(...)
 #   73|             -3: [TypeAccess] Integer
 #   73|             -2: [TypeAccess] Base
 #   73|             -1: [TypeAccess] PropertyReferenceDelegatesKt
@@ -1509,14 +1509,14 @@ delegatedProperties.kt:
 #   73|                     0: [Parameter] a0
 #   73|                   5: [BlockStmt] { ... }
 #   73|                     0: [ReturnStmt] return ...
-#   73|                       0: [MethodAccess] getDelegatedToBaseClass2(...)
+#   73|                       0: [MethodCall] getDelegatedToBaseClass2(...)
 #   73|                         -1: [VarAccess] a0
 #   73|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   73|                     0: [Parameter] a0
 #   73|                   5: [BlockStmt] { ... }
 #   73|                     0: [ReturnStmt] return ...
-#   73|                       0: [MethodAccess] get(...)
+#   73|                       0: [MethodCall] get(...)
 #   73|                         -1: [ThisAccess] this
 #   73|                         0: [VarAccess] a0
 #   73|               -3: [TypeAccess] KProperty1<MyClass,Integer>
@@ -1542,24 +1542,24 @@ delegatedProperties.kt:
 #   75|           3: [Method] get
 #   75|             5: [BlockStmt] { ... }
 #   75|               0: [ReturnStmt] return ...
-#   75|                 0: [MethodAccess] getAnotherClassInt(...)
+#   75|                 0: [MethodCall] getAnotherClassInt(...)
 #   75|                   -1: [VarAccess] this.<dispatchReceiver>
 #   75|                     -1: [ThisAccess] this
 #   75|           4: [Method] invoke
 #   75|             5: [BlockStmt] { ... }
 #   75|               0: [ReturnStmt] return ...
-#   75|                 0: [MethodAccess] get(...)
+#   75|                 0: [MethodCall] get(...)
 #   75|                   -1: [ThisAccess] this
 #   75|         -3: [TypeAccess] KProperty0<Integer>
 #   75|           0: [TypeAccess] Integer
-#   75|         0: [MethodAccess] getAnotherClassInstance(...)
+#   75|         0: [MethodCall] getAnotherClassInstance(...)
 #   75|           -1: [ThisAccess] MyClass.this
 #   75|             0: [TypeAccess] MyClass
 #   75|     24: [Method] getDelegatedToAnotherClass1
 #   75|       3: [TypeAccess] int
 #   75|       5: [BlockStmt] { ... }
 #   75|         0: [ReturnStmt] return ...
-#   75|           0: [MethodAccess] getValue(...)
+#   75|           0: [MethodCall] getValue(...)
 #   75|             -2: [TypeAccess] Integer
 #   75|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   75|             0: [VarAccess] this.delegatedToAnotherClass1$delegate
@@ -1575,14 +1575,14 @@ delegatedProperties.kt:
 #   75|                     0: [Parameter] a0
 #   75|                   5: [BlockStmt] { ... }
 #   75|                     0: [ReturnStmt] return ...
-#   75|                       0: [MethodAccess] getDelegatedToAnotherClass1(...)
+#   75|                       0: [MethodCall] getDelegatedToAnotherClass1(...)
 #   75|                         -1: [VarAccess] a0
 #   75|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   75|                     0: [Parameter] a0
 #   75|                   5: [BlockStmt] { ... }
 #   75|                     0: [ReturnStmt] return ...
-#   75|                       0: [MethodAccess] get(...)
+#   75|                       0: [MethodCall] get(...)
 #   75|                         -1: [ThisAccess] this
 #   75|                         0: [VarAccess] a0
 #   75|               -3: [TypeAccess] KProperty1<MyClass,Integer>
@@ -1599,19 +1599,19 @@ delegatedProperties.kt:
 #   77|           2: [Method] get
 #   77|             5: [BlockStmt] { ... }
 #   77|               0: [ReturnStmt] return ...
-#   77|                 0: [MethodAccess] getTopLevelInt(...)
+#   77|                 0: [MethodCall] getTopLevelInt(...)
 #   77|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   77|           3: [Method] invoke
 #   77|             5: [BlockStmt] { ... }
 #   77|               0: [ReturnStmt] return ...
-#   77|                 0: [MethodAccess] get(...)
+#   77|                 0: [MethodCall] get(...)
 #   77|                   -1: [ThisAccess] this
 #   77|           4: [Method] set
 #-----|             4: (Parameters)
 #   77|               0: [Parameter] a0
 #   77|             5: [BlockStmt] { ... }
 #   77|               0: [ReturnStmt] return ...
-#   77|                 0: [MethodAccess] setTopLevelInt(...)
+#   77|                 0: [MethodCall] setTopLevelInt(...)
 #   77|                   -1: [TypeAccess] DelegatedPropertiesKt
 #   77|                   0: [VarAccess] a0
 #   77|         -3: [TypeAccess] KMutableProperty0<Integer>
@@ -1620,7 +1620,7 @@ delegatedProperties.kt:
 #   77|       3: [TypeAccess] int
 #   77|       5: [BlockStmt] { ... }
 #   77|         0: [ReturnStmt] return ...
-#   77|           0: [MethodAccess] getValue(...)
+#   77|           0: [MethodCall] getValue(...)
 #   77|             -2: [TypeAccess] Integer
 #   77|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   77|             0: [VarAccess] this.delegatedToTopLevel$delegate
@@ -1636,14 +1636,14 @@ delegatedProperties.kt:
 #   77|                     0: [Parameter] a0
 #   77|                   5: [BlockStmt] { ... }
 #   77|                     0: [ReturnStmt] return ...
-#   77|                       0: [MethodAccess] getDelegatedToTopLevel(...)
+#   77|                       0: [MethodCall] getDelegatedToTopLevel(...)
 #   77|                         -1: [VarAccess] a0
 #   77|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   77|                     0: [Parameter] a0
 #   77|                   5: [BlockStmt] { ... }
 #   77|                     0: [ReturnStmt] return ...
-#   77|                       0: [MethodAccess] get(...)
+#   77|                       0: [MethodCall] get(...)
 #   77|                         -1: [ThisAccess] this
 #   77|                         0: [VarAccess] a0
 #   77|                 4: [Method] set
@@ -1652,7 +1652,7 @@ delegatedProperties.kt:
 #   77|                     1: [Parameter] a1
 #   77|                   5: [BlockStmt] { ... }
 #   77|                     0: [ReturnStmt] return ...
-#   77|                       0: [MethodAccess] setDelegatedToTopLevel(...)
+#   77|                       0: [MethodCall] setDelegatedToTopLevel(...)
 #   77|                         -1: [VarAccess] a0
 #   77|                         0: [VarAccess] a1
 #   77|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1665,7 +1665,7 @@ delegatedProperties.kt:
 #   77|           0: [TypeAccess] int
 #   77|       5: [BlockStmt] { ... }
 #   77|         0: [ReturnStmt] return ...
-#   77|           0: [MethodAccess] setValue(...)
+#   77|           0: [MethodCall] setValue(...)
 #   77|             -2: [TypeAccess] Integer
 #   77|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   77|             0: [VarAccess] this.delegatedToTopLevel$delegate
@@ -1681,14 +1681,14 @@ delegatedProperties.kt:
 #   77|                     0: [Parameter] a0
 #   77|                   5: [BlockStmt] { ... }
 #   77|                     0: [ReturnStmt] return ...
-#   77|                       0: [MethodAccess] getDelegatedToTopLevel(...)
+#   77|                       0: [MethodCall] getDelegatedToTopLevel(...)
 #   77|                         -1: [VarAccess] a0
 #   77|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   77|                     0: [Parameter] a0
 #   77|                   5: [BlockStmt] { ... }
 #   77|                     0: [ReturnStmt] return ...
-#   77|                       0: [MethodAccess] get(...)
+#   77|                       0: [MethodCall] get(...)
 #   77|                         -1: [ThisAccess] this
 #   77|                         0: [VarAccess] a0
 #   77|                 4: [Method] set
@@ -1697,7 +1697,7 @@ delegatedProperties.kt:
 #   77|                     1: [Parameter] a1
 #   77|                   5: [BlockStmt] { ... }
 #   77|                     0: [ReturnStmt] return ...
-#   77|                       0: [MethodAccess] setDelegatedToTopLevel(...)
+#   77|                       0: [MethodCall] setDelegatedToTopLevel(...)
 #   77|                         -1: [VarAccess] a0
 #   77|                         0: [VarAccess] a1
 #   77|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
@@ -1719,7 +1719,7 @@ delegatedProperties.kt:
 #   79|           3: [Method] invoke
 #   79|             5: [BlockStmt] { ... }
 #   79|               0: [ReturnStmt] return ...
-#   79|                 0: [MethodAccess] get(...)
+#   79|                 0: [MethodCall] get(...)
 #   79|                   -1: [ThisAccess] this
 #   79|         -3: [TypeAccess] KProperty0<Integer>
 #   79|           0: [TypeAccess] Integer
@@ -1727,7 +1727,7 @@ delegatedProperties.kt:
 #   79|       3: [TypeAccess] int
 #   79|       5: [BlockStmt] { ... }
 #   79|         0: [ReturnStmt] return ...
-#   79|           0: [MethodAccess] getValue(...)
+#   79|           0: [MethodCall] getValue(...)
 #   79|             -2: [TypeAccess] Integer
 #   79|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   79|             0: [VarAccess] this.max$delegate
@@ -1743,14 +1743,14 @@ delegatedProperties.kt:
 #   79|                     0: [Parameter] a0
 #   79|                   5: [BlockStmt] { ... }
 #   79|                     0: [ReturnStmt] return ...
-#   79|                       0: [MethodAccess] getMax(...)
+#   79|                       0: [MethodCall] getMax(...)
 #   79|                         -1: [VarAccess] a0
 #   79|                 3: [Method] invoke
 #-----|                   4: (Parameters)
 #   79|                     0: [Parameter] a0
 #   79|                   5: [BlockStmt] { ... }
 #   79|                     0: [ReturnStmt] return ...
-#   79|                       0: [MethodAccess] get(...)
+#   79|                       0: [MethodCall] get(...)
 #   79|                         -1: [ThisAccess] this
 #   79|                         0: [VarAccess] a0
 #   79|               -3: [TypeAccess] KProperty1<MyClass,Integer>
@@ -1779,20 +1779,20 @@ delegatedProperties.kt:
 #   82|                   3: [Method] get
 #   82|                     5: [BlockStmt] { ... }
 #   82|                       0: [ReturnStmt] return ...
-#   82|                         0: [MethodAccess] getMemberInt(...)
+#   82|                         0: [MethodCall] getMemberInt(...)
 #   82|                           -1: [VarAccess] this.<dispatchReceiver>
 #   82|                             -1: [ThisAccess] this
 #   82|                   4: [Method] invoke
 #   82|                     5: [BlockStmt] { ... }
 #   82|                       0: [ReturnStmt] return ...
-#   82|                         0: [MethodAccess] get(...)
+#   82|                         0: [MethodCall] get(...)
 #   82|                           -1: [ThisAccess] this
 #   82|                   5: [Method] set
 #-----|                     4: (Parameters)
 #   82|                       0: [Parameter] a0
 #   82|                     5: [BlockStmt] { ... }
 #   82|                       0: [ReturnStmt] return ...
-#   82|                         0: [MethodAccess] setMemberInt(...)
+#   82|                         0: [MethodCall] setMemberInt(...)
 #   82|                           -1: [VarAccess] this.<dispatchReceiver>
 #   82|                             -1: [ThisAccess] this
 #   82|                           0: [VarAccess] a0
@@ -1808,7 +1808,7 @@ delegatedProperties.kt:
 #   82|                 3: [TypeAccess] int
 #   82|                 5: [BlockStmt] { ... }
 #   82|                   0: [ReturnStmt] return ...
-#   82|                     0: [MethodAccess] getValue(...)
+#   82|                     0: [MethodCall] getValue(...)
 #   82|                       -2: [TypeAccess] Integer
 #   82|                       -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   82|                       0: [VarAccess] delegatedToMember3$delegate
@@ -1821,20 +1821,20 @@ delegatedProperties.kt:
 #   82|                           2: [Method] get
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
-#   82|                                 0: [MethodAccess] <get-delegatedToMember3>(...)
+#   82|                                 0: [MethodCall] <get-delegatedToMember3>(...)
 #   82|                                   -1: [ClassInstanceExpr] new (...)
 #   82|                                     -3: [TypeAccess] Object
 #   82|                           3: [Method] invoke
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
-#   82|                                 0: [MethodAccess] get(...)
+#   82|                                 0: [MethodCall] get(...)
 #   82|                                   -1: [ThisAccess] this
 #   82|                           4: [Method] set
 #-----|                             4: (Parameters)
 #   82|                               0: [Parameter] a0
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
-#   82|                                 0: [MethodAccess] <set-delegatedToMember3>(...)
+#   82|                                 0: [MethodCall] <set-delegatedToMember3>(...)
 #   82|                                   -1: [ClassInstanceExpr] new (...)
 #   82|                                     -3: [TypeAccess] Object
 #   82|                                   0: [VarAccess] a0
@@ -1852,7 +1852,7 @@ delegatedProperties.kt:
 #   82|                     0: [TypeAccess] int
 #   82|                 5: [BlockStmt] { ... }
 #   82|                   0: [ReturnStmt] return ...
-#   82|                     0: [MethodAccess] setValue(...)
+#   82|                     0: [MethodCall] setValue(...)
 #   82|                       -2: [TypeAccess] Integer
 #   82|                       -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   82|                       0: [VarAccess] delegatedToMember3$delegate
@@ -1865,20 +1865,20 @@ delegatedProperties.kt:
 #   82|                           2: [Method] get
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
-#   82|                                 0: [MethodAccess] <get-delegatedToMember3>(...)
+#   82|                                 0: [MethodCall] <get-delegatedToMember3>(...)
 #   82|                                   -1: [ClassInstanceExpr] new (...)
 #   82|                                     -3: [TypeAccess] Object
 #   82|                           3: [Method] invoke
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
-#   82|                                 0: [MethodAccess] get(...)
+#   82|                                 0: [MethodCall] get(...)
 #   82|                                   -1: [ThisAccess] this
 #   82|                           4: [Method] set
 #-----|                             4: (Parameters)
 #   82|                               0: [Parameter] a0
 #   82|                             5: [BlockStmt] { ... }
 #   82|                               0: [ReturnStmt] return ...
-#   82|                                 0: [MethodAccess] <set-delegatedToMember3>(...)
+#   82|                                 0: [MethodCall] <set-delegatedToMember3>(...)
 #   82|                                   -1: [ClassInstanceExpr] new (...)
 #   82|                                     -3: [TypeAccess] Object
 #   82|                                   0: [VarAccess] a0
@@ -1886,7 +1886,7 @@ delegatedProperties.kt:
 #   82|                           0: [TypeAccess] Integer
 #   82|                       3: [VarAccess] value
 #   83|         1: [ExprStmt] <Expr>;
-#   83|           0: [MethodAccess] fn(...)
+#   83|           0: [MethodCall] fn(...)
 #   83|             -1: [ThisAccess] this
 exprs.kt:
 #    0| [CompilationUnit] exprs
@@ -2018,16 +2018,16 @@ exprs.kt:
 #   30|               1: [VarAccess] y
 #   31|         20: [LocalVariableDeclStmt] var ...;
 #   31|           1: [LocalVariableDeclExpr] i21
-#   31|             0: [MethodAccess] contains(...)
-#   31|               -1: [MethodAccess] rangeTo(...)
+#   31|             0: [MethodCall] contains(...)
+#   31|               -1: [MethodCall] rangeTo(...)
 #   31|                 -1: [VarAccess] x
 #   31|                 0: [VarAccess] y
 #   31|               0: [VarAccess] x
 #   32|         21: [LocalVariableDeclStmt] var ...;
 #   32|           1: [LocalVariableDeclExpr] i22
 #   32|             0: [LogNotExpr] !...
-#   32|               0: [MethodAccess] contains(...)
-#   32|                 -1: [MethodAccess] rangeTo(...)
+#   32|               0: [MethodCall] contains(...)
+#   32|                 -1: [MethodCall] rangeTo(...)
 #   32|                   -1: [VarAccess] x
 #   32|                   0: [VarAccess] y
 #   32|                 0: [VarAccess] x
@@ -2057,44 +2057,44 @@ exprs.kt:
 #   39|         27: [LocalVariableDeclStmt] var ...;
 #   39|           1: [LocalVariableDeclExpr] by6
 #   39|             0: [ValueEQExpr] ... (value equals) ...
-#   39|               0: [MethodAccess] intValue(...)
+#   39|               0: [MethodCall] intValue(...)
 #   39|                 -1: [VarAccess] byx
-#   39|               1: [MethodAccess] intValue(...)
+#   39|               1: [MethodCall] intValue(...)
 #   39|                 -1: [VarAccess] byy
 #   40|         28: [LocalVariableDeclStmt] var ...;
 #   40|           1: [LocalVariableDeclExpr] by7
 #   40|             0: [ValueNEExpr] ... (value not-equals) ...
-#   40|               0: [MethodAccess] intValue(...)
+#   40|               0: [MethodCall] intValue(...)
 #   40|                 -1: [VarAccess] byx
-#   40|               1: [MethodAccess] intValue(...)
+#   40|               1: [MethodCall] intValue(...)
 #   40|                 -1: [VarAccess] byy
 #   41|         29: [LocalVariableDeclStmt] var ...;
 #   41|           1: [LocalVariableDeclExpr] by8
 #   41|             0: [LTExpr] ... < ...
-#   41|               0: [MethodAccess] intValue(...)
+#   41|               0: [MethodCall] intValue(...)
 #   41|                 -1: [VarAccess] byx
-#   41|               1: [MethodAccess] intValue(...)
+#   41|               1: [MethodCall] intValue(...)
 #   41|                 -1: [VarAccess] byy
 #   42|         30: [LocalVariableDeclStmt] var ...;
 #   42|           1: [LocalVariableDeclExpr] by9
 #   42|             0: [LEExpr] ... <= ...
-#   42|               0: [MethodAccess] intValue(...)
+#   42|               0: [MethodCall] intValue(...)
 #   42|                 -1: [VarAccess] byx
-#   42|               1: [MethodAccess] intValue(...)
+#   42|               1: [MethodCall] intValue(...)
 #   42|                 -1: [VarAccess] byy
 #   43|         31: [LocalVariableDeclStmt] var ...;
 #   43|           1: [LocalVariableDeclExpr] by10
 #   43|             0: [GTExpr] ... > ...
-#   43|               0: [MethodAccess] intValue(...)
+#   43|               0: [MethodCall] intValue(...)
 #   43|                 -1: [VarAccess] byx
-#   43|               1: [MethodAccess] intValue(...)
+#   43|               1: [MethodCall] intValue(...)
 #   43|                 -1: [VarAccess] byy
 #   44|         32: [LocalVariableDeclStmt] var ...;
 #   44|           1: [LocalVariableDeclExpr] by11
 #   44|             0: [GEExpr] ... >= ...
-#   44|               0: [MethodAccess] intValue(...)
+#   44|               0: [MethodCall] intValue(...)
 #   44|                 -1: [VarAccess] byx
-#   44|               1: [MethodAccess] intValue(...)
+#   44|               1: [MethodCall] intValue(...)
 #   44|                 -1: [VarAccess] byy
 #   45|         33: [LocalVariableDeclStmt] var ...;
 #   45|           1: [LocalVariableDeclExpr] by12
@@ -2147,44 +2147,44 @@ exprs.kt:
 #   56|         43: [LocalVariableDeclStmt] var ...;
 #   56|           1: [LocalVariableDeclExpr] s6
 #   56|             0: [ValueEQExpr] ... (value equals) ...
-#   56|               0: [MethodAccess] intValue(...)
+#   56|               0: [MethodCall] intValue(...)
 #   56|                 -1: [VarAccess] sx
-#   56|               1: [MethodAccess] intValue(...)
+#   56|               1: [MethodCall] intValue(...)
 #   56|                 -1: [VarAccess] sy
 #   57|         44: [LocalVariableDeclStmt] var ...;
 #   57|           1: [LocalVariableDeclExpr] s7
 #   57|             0: [ValueNEExpr] ... (value not-equals) ...
-#   57|               0: [MethodAccess] intValue(...)
+#   57|               0: [MethodCall] intValue(...)
 #   57|                 -1: [VarAccess] sx
-#   57|               1: [MethodAccess] intValue(...)
+#   57|               1: [MethodCall] intValue(...)
 #   57|                 -1: [VarAccess] sy
 #   58|         45: [LocalVariableDeclStmt] var ...;
 #   58|           1: [LocalVariableDeclExpr] s8
 #   58|             0: [LTExpr] ... < ...
-#   58|               0: [MethodAccess] intValue(...)
+#   58|               0: [MethodCall] intValue(...)
 #   58|                 -1: [VarAccess] sx
-#   58|               1: [MethodAccess] intValue(...)
+#   58|               1: [MethodCall] intValue(...)
 #   58|                 -1: [VarAccess] sy
 #   59|         46: [LocalVariableDeclStmt] var ...;
 #   59|           1: [LocalVariableDeclExpr] s9
 #   59|             0: [LEExpr] ... <= ...
-#   59|               0: [MethodAccess] intValue(...)
+#   59|               0: [MethodCall] intValue(...)
 #   59|                 -1: [VarAccess] sx
-#   59|               1: [MethodAccess] intValue(...)
+#   59|               1: [MethodCall] intValue(...)
 #   59|                 -1: [VarAccess] sy
 #   60|         47: [LocalVariableDeclStmt] var ...;
 #   60|           1: [LocalVariableDeclExpr] s10
 #   60|             0: [GTExpr] ... > ...
-#   60|               0: [MethodAccess] intValue(...)
+#   60|               0: [MethodCall] intValue(...)
 #   60|                 -1: [VarAccess] sx
-#   60|               1: [MethodAccess] intValue(...)
+#   60|               1: [MethodCall] intValue(...)
 #   60|                 -1: [VarAccess] sy
 #   61|         48: [LocalVariableDeclStmt] var ...;
 #   61|           1: [LocalVariableDeclExpr] s11
 #   61|             0: [GEExpr] ... >= ...
-#   61|               0: [MethodAccess] intValue(...)
+#   61|               0: [MethodCall] intValue(...)
 #   61|                 -1: [VarAccess] sx
-#   61|               1: [MethodAccess] intValue(...)
+#   61|               1: [MethodCall] intValue(...)
 #   61|                 -1: [VarAccess] sy
 #   62|         49: [LocalVariableDeclStmt] var ...;
 #   62|           1: [LocalVariableDeclExpr] s12
@@ -2503,7 +2503,7 @@ exprs.kt:
 #  133|                 0: [VarAccess] str1
 #  133|                 1: [VarAccess] str2
 #  133|               2: [StringLiteral] " bar "
-#  133|               3: [MethodAccess] stringPlus(...)
+#  133|               3: [MethodCall] stringPlus(...)
 #  133|                 -1: [TypeAccess] Intrinsics
 #  133|                 0: [VarAccess] str2
 #  133|                 1: [VarAccess] str1
@@ -2532,7 +2532,7 @@ exprs.kt:
 #  138|                     1: [ExprStmt] <Expr>;
 #  138|                       0: [AssignExpr] ...=...
 #  138|                         0: [VarAccess] variable
-#  138|                         1: [MethodAccess] dec(...)
+#  138|                         1: [MethodCall] dec(...)
 #  138|                           -1: [VarAccess] tmp0
 #  138|                     2: [ExprStmt] <Expr>;
 #  138|                       0: [VarAccess] tmp0
@@ -2615,7 +2615,7 @@ exprs.kt:
 #  165|       5: [BlockStmt] { ... }
 #  166|         0: [LocalVariableDeclStmt] var ...;
 #  166|           1: [LocalVariableDeclExpr] r
-#  166|             0: [MethodAccess] getBounds(...)
+#  166|             0: [MethodCall] getBounds(...)
 #  166|               -1: [VarAccess] p
 #  167|         1: [ExprStmt] <Expr>;
 #  167|           0: [WhenExpr] when ...
@@ -2663,7 +2663,7 @@ exprs.kt:
 #  220|       3: [TypeAccess] Unit
 #  220|       5: [BlockStmt] { ... }
 #  221|         0: [ExprStmt] <Expr>;
-#  221|           0: [MethodAccess] TODO(...)
+#  221|           0: [MethodCall] TODO(...)
 #  221|             -1: [TypeAccess] StandardKt
 #  225|     8: [Method] fnClassRef
 #  225|       3: [TypeAccess] Unit
@@ -2877,12 +2877,12 @@ exprs.kt:
 #  281|         0: [ExprStmt] <Expr>;
 #  281|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  281|             0: [TypeAccess] Unit
-#  281|             1: [MethodAccess] values(...)
+#  281|             1: [MethodCall] values(...)
 #  281|               -1: [TypeAccess] Color
 #  282|         1: [ExprStmt] <Expr>;
 #  282|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  282|             0: [TypeAccess] Unit
-#  282|             1: [MethodAccess] getEnumValues(...)
+#  282|             1: [MethodCall] getEnumValues(...)
 #  282|               -2: [TypeAccess] Color
 #  282|               -1: [TypeAccess] ExprsKt
 #  285|     14: [Method] unaryExprs
@@ -2938,7 +2938,7 @@ exprs.kt:
 #  292|                 1: [ExprStmt] <Expr>;
 #  292|                   0: [AssignExpr] ...=...
 #  292|                     0: [VarAccess] i0
-#  292|                     1: [MethodAccess] inc(...)
+#  292|                     1: [MethodCall] inc(...)
 #  292|                       -1: [VarAccess] tmp0
 #  292|                 2: [ExprStmt] <Expr>;
 #  292|                   0: [VarAccess] tmp0
@@ -2950,7 +2950,7 @@ exprs.kt:
 #  293|                 0: [ExprStmt] <Expr>;
 #  293|                   0: [AssignExpr] ...=...
 #  293|                     0: [VarAccess] i0
-#  293|                     1: [MethodAccess] inc(...)
+#  293|                     1: [MethodCall] inc(...)
 #  293|                       -1: [VarAccess] i0
 #  293|                 1: [ExprStmt] <Expr>;
 #  293|                   0: [VarAccess] i0
@@ -2965,7 +2965,7 @@ exprs.kt:
 #  294|                 1: [ExprStmt] <Expr>;
 #  294|                   0: [AssignExpr] ...=...
 #  294|                     0: [VarAccess] i0
-#  294|                     1: [MethodAccess] dec(...)
+#  294|                     1: [MethodCall] dec(...)
 #  294|                       -1: [VarAccess] tmp1
 #  294|                 2: [ExprStmt] <Expr>;
 #  294|                   0: [VarAccess] tmp1
@@ -2977,29 +2977,29 @@ exprs.kt:
 #  295|                 0: [ExprStmt] <Expr>;
 #  295|                   0: [AssignExpr] ...=...
 #  295|                     0: [VarAccess] i0
-#  295|                     1: [MethodAccess] dec(...)
+#  295|                     1: [MethodCall] dec(...)
 #  295|                       -1: [VarAccess] i0
 #  295|                 1: [ExprStmt] <Expr>;
 #  295|                   0: [VarAccess] i0
 #  296|         10: [ExprStmt] <Expr>;
 #  296|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  296|             0: [TypeAccess] Unit
-#  296|             1: [MethodAccess] inc(...)
+#  296|             1: [MethodCall] inc(...)
 #  296|               -1: [VarAccess] i0
 #  297|         11: [ExprStmt] <Expr>;
 #  297|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  297|             0: [TypeAccess] Unit
-#  297|             1: [MethodAccess] dec(...)
+#  297|             1: [MethodCall] dec(...)
 #  297|               -1: [VarAccess] i0
 #  298|         12: [ExprStmt] <Expr>;
 #  298|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  298|             0: [TypeAccess] Unit
-#  298|             1: [MethodAccess] inc(...)
+#  298|             1: [MethodCall] inc(...)
 #  298|               -1: [VarAccess] i1
 #  299|         13: [ExprStmt] <Expr>;
 #  299|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  299|             0: [TypeAccess] Unit
-#  299|             1: [MethodAccess] dec(...)
+#  299|             1: [MethodCall] dec(...)
 #  299|               -1: [VarAccess] i1
 #  300|         14: [ExprStmt] <Expr>;
 #  300|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -3033,7 +3033,7 @@ exprs.kt:
 #  306|                 1: [ExprStmt] <Expr>;
 #  306|                   0: [AssignExpr] ...=...
 #  306|                     0: [VarAccess] b0
-#  306|                     1: [MethodAccess] inc(...)
+#  306|                     1: [MethodCall] inc(...)
 #  306|                       -1: [VarAccess] tmp2
 #  306|                 2: [ExprStmt] <Expr>;
 #  306|                   0: [VarAccess] tmp2
@@ -3045,7 +3045,7 @@ exprs.kt:
 #  307|                 0: [ExprStmt] <Expr>;
 #  307|                   0: [AssignExpr] ...=...
 #  307|                     0: [VarAccess] b0
-#  307|                     1: [MethodAccess] inc(...)
+#  307|                     1: [MethodCall] inc(...)
 #  307|                       -1: [VarAccess] b0
 #  307|                 1: [ExprStmt] <Expr>;
 #  307|                   0: [VarAccess] b0
@@ -3060,7 +3060,7 @@ exprs.kt:
 #  308|                 1: [ExprStmt] <Expr>;
 #  308|                   0: [AssignExpr] ...=...
 #  308|                     0: [VarAccess] b0
-#  308|                     1: [MethodAccess] dec(...)
+#  308|                     1: [MethodCall] dec(...)
 #  308|                       -1: [VarAccess] tmp3
 #  308|                 2: [ExprStmt] <Expr>;
 #  308|                   0: [VarAccess] tmp3
@@ -3072,29 +3072,29 @@ exprs.kt:
 #  309|                 0: [ExprStmt] <Expr>;
 #  309|                   0: [AssignExpr] ...=...
 #  309|                     0: [VarAccess] b0
-#  309|                     1: [MethodAccess] dec(...)
+#  309|                     1: [MethodCall] dec(...)
 #  309|                       -1: [VarAccess] b0
 #  309|                 1: [ExprStmt] <Expr>;
 #  309|                   0: [VarAccess] b0
 #  310|         23: [ExprStmt] <Expr>;
 #  310|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  310|             0: [TypeAccess] Unit
-#  310|             1: [MethodAccess] inc(...)
+#  310|             1: [MethodCall] inc(...)
 #  310|               -1: [VarAccess] b0
 #  311|         24: [ExprStmt] <Expr>;
 #  311|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  311|             0: [TypeAccess] Unit
-#  311|             1: [MethodAccess] dec(...)
+#  311|             1: [MethodCall] dec(...)
 #  311|               -1: [VarAccess] b0
 #  312|         25: [ExprStmt] <Expr>;
 #  312|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  312|             0: [TypeAccess] Unit
-#  312|             1: [MethodAccess] inc(...)
+#  312|             1: [MethodCall] inc(...)
 #  312|               -1: [VarAccess] b1
 #  313|         26: [ExprStmt] <Expr>;
 #  313|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  313|             0: [TypeAccess] Unit
-#  313|             1: [MethodAccess] dec(...)
+#  313|             1: [MethodCall] dec(...)
 #  313|               -1: [VarAccess] b1
 #  314|         27: [ExprStmt] <Expr>;
 #  314|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -3128,7 +3128,7 @@ exprs.kt:
 #  320|                 1: [ExprStmt] <Expr>;
 #  320|                   0: [AssignExpr] ...=...
 #  320|                     0: [VarAccess] s0
-#  320|                     1: [MethodAccess] inc(...)
+#  320|                     1: [MethodCall] inc(...)
 #  320|                       -1: [VarAccess] tmp4
 #  320|                 2: [ExprStmt] <Expr>;
 #  320|                   0: [VarAccess] tmp4
@@ -3140,7 +3140,7 @@ exprs.kt:
 #  321|                 0: [ExprStmt] <Expr>;
 #  321|                   0: [AssignExpr] ...=...
 #  321|                     0: [VarAccess] s0
-#  321|                     1: [MethodAccess] inc(...)
+#  321|                     1: [MethodCall] inc(...)
 #  321|                       -1: [VarAccess] s0
 #  321|                 1: [ExprStmt] <Expr>;
 #  321|                   0: [VarAccess] s0
@@ -3155,7 +3155,7 @@ exprs.kt:
 #  322|                 1: [ExprStmt] <Expr>;
 #  322|                   0: [AssignExpr] ...=...
 #  322|                     0: [VarAccess] s0
-#  322|                     1: [MethodAccess] dec(...)
+#  322|                     1: [MethodCall] dec(...)
 #  322|                       -1: [VarAccess] tmp5
 #  322|                 2: [ExprStmt] <Expr>;
 #  322|                   0: [VarAccess] tmp5
@@ -3167,29 +3167,29 @@ exprs.kt:
 #  323|                 0: [ExprStmt] <Expr>;
 #  323|                   0: [AssignExpr] ...=...
 #  323|                     0: [VarAccess] s0
-#  323|                     1: [MethodAccess] dec(...)
+#  323|                     1: [MethodCall] dec(...)
 #  323|                       -1: [VarAccess] s0
 #  323|                 1: [ExprStmt] <Expr>;
 #  323|                   0: [VarAccess] s0
 #  324|         36: [ExprStmt] <Expr>;
 #  324|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  324|             0: [TypeAccess] Unit
-#  324|             1: [MethodAccess] inc(...)
+#  324|             1: [MethodCall] inc(...)
 #  324|               -1: [VarAccess] s0
 #  325|         37: [ExprStmt] <Expr>;
 #  325|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  325|             0: [TypeAccess] Unit
-#  325|             1: [MethodAccess] dec(...)
+#  325|             1: [MethodCall] dec(...)
 #  325|               -1: [VarAccess] s0
 #  326|         38: [ExprStmt] <Expr>;
 #  326|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  326|             0: [TypeAccess] Unit
-#  326|             1: [MethodAccess] inc(...)
+#  326|             1: [MethodCall] inc(...)
 #  326|               -1: [VarAccess] s1
 #  327|         39: [ExprStmt] <Expr>;
 #  327|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  327|             0: [TypeAccess] Unit
-#  327|             1: [MethodAccess] dec(...)
+#  327|             1: [MethodCall] dec(...)
 #  327|               -1: [VarAccess] s1
 #  328|         40: [ExprStmt] <Expr>;
 #  328|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -3223,7 +3223,7 @@ exprs.kt:
 #  334|                 1: [ExprStmt] <Expr>;
 #  334|                   0: [AssignExpr] ...=...
 #  334|                     0: [VarAccess] l0
-#  334|                     1: [MethodAccess] inc(...)
+#  334|                     1: [MethodCall] inc(...)
 #  334|                       -1: [VarAccess] tmp6
 #  334|                 2: [ExprStmt] <Expr>;
 #  334|                   0: [VarAccess] tmp6
@@ -3235,7 +3235,7 @@ exprs.kt:
 #  335|                 0: [ExprStmt] <Expr>;
 #  335|                   0: [AssignExpr] ...=...
 #  335|                     0: [VarAccess] l0
-#  335|                     1: [MethodAccess] inc(...)
+#  335|                     1: [MethodCall] inc(...)
 #  335|                       -1: [VarAccess] l0
 #  335|                 1: [ExprStmt] <Expr>;
 #  335|                   0: [VarAccess] l0
@@ -3250,7 +3250,7 @@ exprs.kt:
 #  336|                 1: [ExprStmt] <Expr>;
 #  336|                   0: [AssignExpr] ...=...
 #  336|                     0: [VarAccess] l0
-#  336|                     1: [MethodAccess] dec(...)
+#  336|                     1: [MethodCall] dec(...)
 #  336|                       -1: [VarAccess] tmp7
 #  336|                 2: [ExprStmt] <Expr>;
 #  336|                   0: [VarAccess] tmp7
@@ -3262,29 +3262,29 @@ exprs.kt:
 #  337|                 0: [ExprStmt] <Expr>;
 #  337|                   0: [AssignExpr] ...=...
 #  337|                     0: [VarAccess] l0
-#  337|                     1: [MethodAccess] dec(...)
+#  337|                     1: [MethodCall] dec(...)
 #  337|                       -1: [VarAccess] l0
 #  337|                 1: [ExprStmt] <Expr>;
 #  337|                   0: [VarAccess] l0
 #  338|         49: [ExprStmt] <Expr>;
 #  338|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  338|             0: [TypeAccess] Unit
-#  338|             1: [MethodAccess] inc(...)
+#  338|             1: [MethodCall] inc(...)
 #  338|               -1: [VarAccess] l0
 #  339|         50: [ExprStmt] <Expr>;
 #  339|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  339|             0: [TypeAccess] Unit
-#  339|             1: [MethodAccess] dec(...)
+#  339|             1: [MethodCall] dec(...)
 #  339|               -1: [VarAccess] l0
 #  340|         51: [ExprStmt] <Expr>;
 #  340|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  340|             0: [TypeAccess] Unit
-#  340|             1: [MethodAccess] inc(...)
+#  340|             1: [MethodCall] inc(...)
 #  340|               -1: [VarAccess] l1
 #  341|         52: [ExprStmt] <Expr>;
 #  341|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  341|             0: [TypeAccess] Unit
-#  341|             1: [MethodAccess] dec(...)
+#  341|             1: [MethodCall] dec(...)
 #  341|               -1: [VarAccess] l1
 #  342|         53: [ExprStmt] <Expr>;
 #  342|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -3469,9 +3469,9 @@ exprs.kt:
 #  196|                             0: [VarAccess] a3
 #  196|                   2: [FieldDeclaration] String a3;
 #  196|                     -1: [TypeAccess] String
-#  196|                     0: [MethodAccess] toString(...)
+#  196|                     0: [MethodCall] toString(...)
 #  196|                       -1: [AddExpr] ... + ...
-#  196|                         0: [MethodAccess] getA1(...)
+#  196|                         0: [MethodCall] getA1(...)
 #  196|                           -1: [ThisAccess] this
 #  196|                         1: [VarAccess] a2
 #  196|                   3: [Method] getA3
@@ -3498,18 +3498,18 @@ exprs.kt:
 #  206|       5: [BlockStmt] { ... }
 #  208|         0: [LocalVariableDeclStmt] var ...;
 #  208|           1: [LocalVariableDeclExpr] a
-#  208|             0: [MethodAccess] valueOf(...)
+#  208|             0: [MethodCall] valueOf(...)
 #  208|               -1: [TypeAccess] String
 #  208|               0: [VarAccess] aa
 #  209|         1: [LocalVariableDeclStmt] var ...;
 #  209|           1: [LocalVariableDeclExpr] b0
-#  209|             0: [MethodAccess] stringPlus(...)
+#  209|             0: [MethodCall] stringPlus(...)
 #  209|               -1: [TypeAccess] Intrinsics
 #  209|               0: [VarAccess] s
 #  209|               1: [IntegerLiteral] 5
 #  210|         2: [LocalVariableDeclStmt] var ...;
 #  210|           1: [LocalVariableDeclExpr] b1
-#  210|             0: [MethodAccess] stringPlus(...)
+#  210|             0: [MethodCall] stringPlus(...)
 #  210|               -1: [TypeAccess] Intrinsics
 #  210|               0: [VarAccess] s
 #  210|               1: [IntegerLiteral] 5
@@ -3527,20 +3527,20 @@ exprs.kt:
 #  212|               1: [IntegerLiteral] 5
 #  213|         5: [LocalVariableDeclStmt] var ...;
 #  213|           1: [LocalVariableDeclExpr] c0
-#  213|             0: [MethodAccess] values(...)
+#  213|             0: [MethodCall] values(...)
 #  213|               -1: [TypeAccess] Color
 #  214|         6: [LocalVariableDeclStmt] var ...;
 #  214|           1: [LocalVariableDeclExpr] c1
-#  214|             0: [MethodAccess] values(...)
+#  214|             0: [MethodCall] values(...)
 #  214|               -1: [TypeAccess] Color
 #  215|         7: [LocalVariableDeclStmt] var ...;
 #  215|           1: [LocalVariableDeclExpr] d0
-#  215|             0: [MethodAccess] valueOf(...)
+#  215|             0: [MethodCall] valueOf(...)
 #  215|               -1: [TypeAccess] Color
 #  215|               0: [StringLiteral] "GREEN"
 #  216|         8: [LocalVariableDeclStmt] var ...;
 #  216|           1: [LocalVariableDeclExpr] d1
-#  216|             0: [MethodAccess] valueOf(...)
+#  216|             0: [MethodCall] valueOf(...)
 #  216|               -1: [TypeAccess] Color
 #  216|               0: [StringLiteral] "GREEN"
 #  224|   11: [Class] SomeClass1
@@ -3561,7 +3561,7 @@ funcExprs.kt:
 #    1|         0: [ExprStmt] <Expr>;
 #    1|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    1|             0: [TypeAccess] Unit
-#    1|             1: [MethodAccess] invoke(...)
+#    1|             1: [MethodCall] invoke(...)
 #    1|               -1: [VarAccess] f
 #    2|     2: [Method] functionExpression0b
 #    2|       3: [TypeAccess] Unit
@@ -3574,7 +3574,7 @@ funcExprs.kt:
 #    2|         0: [ExprStmt] <Expr>;
 #    2|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    2|             0: [TypeAccess] Unit
-#    2|             1: [MethodAccess] invoke(...)
+#    2|             1: [MethodCall] invoke(...)
 #    2|               -1: [VarAccess] f
 #    3|     3: [Method] functionExpression0c
 #    3|       3: [TypeAccess] Unit
@@ -3587,7 +3587,7 @@ funcExprs.kt:
 #    3|         0: [ExprStmt] <Expr>;
 #    3|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    3|             0: [TypeAccess] Unit
-#    3|             1: [MethodAccess] invoke(...)
+#    3|             1: [MethodCall] invoke(...)
 #    3|               -1: [VarAccess] f
 #    4|     4: [Method] functionExpression1a
 #    4|       3: [TypeAccess] Unit
@@ -3603,7 +3603,7 @@ funcExprs.kt:
 #    4|         0: [ExprStmt] <Expr>;
 #    4|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    4|             0: [TypeAccess] Unit
-#    4|             1: [MethodAccess] invoke(...)
+#    4|             1: [MethodCall] invoke(...)
 #    4|               -1: [VarAccess] f
 #    4|               0: [VarAccess] x
 #    5|     5: [Method] functionExpression1b
@@ -3620,7 +3620,7 @@ funcExprs.kt:
 #    5|         0: [ExprStmt] <Expr>;
 #    5|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    5|             0: [TypeAccess] Unit
-#    5|             1: [MethodAccess] invoke(...)
+#    5|             1: [MethodCall] invoke(...)
 #    5|               -1: [VarAccess] f
 #    5|               0: [VarAccess] x
 #    6|     6: [Method] functionExpression1c
@@ -3639,7 +3639,7 @@ funcExprs.kt:
 #    6|         0: [ExprStmt] <Expr>;
 #    6|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    6|             0: [TypeAccess] Unit
-#    6|             1: [MethodAccess] invoke(...)
+#    6|             1: [MethodCall] invoke(...)
 #    6|               -1: [VarAccess] f
 #    6|               0: [ClassInstanceExpr] new FuncRef(...)
 #    6|                 -3: [TypeAccess] FuncRef
@@ -3660,7 +3660,7 @@ funcExprs.kt:
 #    7|         0: [ExprStmt] <Expr>;
 #    7|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    7|             0: [TypeAccess] Unit
-#    7|             1: [MethodAccess] invoke(...)
+#    7|             1: [MethodCall] invoke(...)
 #    7|               -1: [VarAccess] f
 #    7|               0: [VarAccess] x
 #    7|               1: [VarAccess] x
@@ -3680,7 +3680,7 @@ funcExprs.kt:
 #    8|         0: [ExprStmt] <Expr>;
 #    8|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    8|             0: [TypeAccess] Unit
-#    8|             1: [MethodAccess] invoke(...)
+#    8|             1: [MethodCall] invoke(...)
 #    8|               -1: [VarAccess] f
 #    8|               0: [VarAccess] x
 #    8|               1: [VarAccess] x
@@ -3702,8 +3702,8 @@ funcExprs.kt:
 #    9|         0: [ExprStmt] <Expr>;
 #    9|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    9|             0: [TypeAccess] Unit
-#    9|             1: [MethodAccess] invoke(...)
-#    9|               -1: [MethodAccess] invoke(...)
+#    9|             1: [MethodCall] invoke(...)
+#    9|               -1: [MethodCall] invoke(...)
 #    9|                 -1: [VarAccess] f
 #    9|                 0: [VarAccess] x
 #    9|               0: [VarAccess] x
@@ -3761,7 +3761,7 @@ funcExprs.kt:
 #   11|             22: [TypeAccess] Unit
 #   11|       5: [BlockStmt] { ... }
 #   12|         0: [ExprStmt] <Expr>;
-#   12|           0: [MethodAccess] invoke(...)
+#   12|           0: [MethodCall] invoke(...)
 #   12|             -1: [VarAccess] f
 #   12|             0: [VarAccess] x
 #   12|             1: [VarAccess] x
@@ -3843,7 +3843,7 @@ funcExprs.kt:
 #   15|         0: [ExprStmt] <Expr>;
 #   15|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   15|             0: [TypeAccess] Unit
-#   15|             1: [MethodAccess] invoke(...)
+#   15|             1: [MethodCall] invoke(...)
 #   15|               -1: [VarAccess] f
 #   15|               0: [ArrayCreationExpr] new Object[]
 #   15|                 -2: [ArrayInit] {...}
@@ -3932,7 +3932,7 @@ funcExprs.kt:
 #   18|         0: [ExprStmt] <Expr>;
 #   18|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   18|             0: [TypeAccess] Unit
-#   18|             1: [MethodAccess] invoke(...)
+#   18|             1: [MethodCall] invoke(...)
 #   18|               -1: [VarAccess] f
 #   18|               0: [ArrayCreationExpr] new Object[]
 #   18|                 -2: [ArrayInit] {...}
@@ -3967,7 +3967,7 @@ funcExprs.kt:
 #   21|       3: [TypeAccess] Unit
 #   21|       5: [BlockStmt] { ... }
 #   22|         0: [ExprStmt] <Expr>;
-#   22|           0: [MethodAccess] functionExpression0a(...)
+#   22|           0: [MethodCall] functionExpression0a(...)
 #   22|             -1: [TypeAccess] FuncExprsKt
 #   22|             0: [LambdaExpr] ...->...
 #   22|               -4: [AnonymousClass] new Function0<Integer>(...) { ... }
@@ -3982,7 +3982,7 @@ funcExprs.kt:
 #   22|               -3: [TypeAccess] Function0<Integer>
 #   22|                 0: [TypeAccess] Integer
 #   23|         1: [ExprStmt] <Expr>;
-#   23|           0: [MethodAccess] functionExpression0b(...)
+#   23|           0: [MethodCall] functionExpression0b(...)
 #   23|             -1: [TypeAccess] FuncExprsKt
 #   23|             0: [LambdaExpr] ...->...
 #   23|               -4: [AnonymousClass] new Function0<Object>(...) { ... }
@@ -3997,7 +3997,7 @@ funcExprs.kt:
 #   23|               -3: [TypeAccess] Function0<Object>
 #   23|                 0: [TypeAccess] Object
 #   24|         2: [ExprStmt] <Expr>;
-#   24|           0: [MethodAccess] functionExpression0c(...)
+#   24|           0: [MethodCall] functionExpression0c(...)
 #   24|             -1: [TypeAccess] FuncExprsKt
 #   24|             0: [LambdaExpr] ...->...
 #   24|               -4: [AnonymousClass] new Function0<Object>(...) { ... }
@@ -4012,7 +4012,7 @@ funcExprs.kt:
 #   24|               -3: [TypeAccess] Function0<Object>
 #   24|                 0: [TypeAccess] Object
 #   25|         3: [ExprStmt] <Expr>;
-#   25|           0: [MethodAccess] functionExpression1a(...)
+#   25|           0: [MethodCall] functionExpression1a(...)
 #   25|             -1: [TypeAccess] FuncExprsKt
 #   25|             0: [IntegerLiteral] 5
 #   25|             1: [LambdaExpr] ...->...
@@ -4032,7 +4032,7 @@ funcExprs.kt:
 #   25|                 0: [TypeAccess] Integer
 #   25|                 1: [TypeAccess] Integer
 #   26|         4: [ExprStmt] <Expr>;
-#   26|           0: [MethodAccess] functionExpression1a(...)
+#   26|           0: [MethodCall] functionExpression1a(...)
 #   26|             -1: [TypeAccess] FuncExprsKt
 #   26|             0: [IntegerLiteral] 5
 #   26|             1: [LambdaExpr] ...->...
@@ -4052,7 +4052,7 @@ funcExprs.kt:
 #   26|                 0: [TypeAccess] Integer
 #   26|                 1: [TypeAccess] Integer
 #   27|         5: [ExprStmt] <Expr>;
-#   27|           0: [MethodAccess] functionExpression1a(...)
+#   27|           0: [MethodCall] functionExpression1a(...)
 #   27|             -1: [TypeAccess] FuncExprsKt
 #   27|             0: [IntegerLiteral] 5
 #   27|             1: [LambdaExpr] ...->...
@@ -4072,13 +4072,13 @@ funcExprs.kt:
 #   27|                 0: [TypeAccess] Integer
 #   27|                 1: [TypeAccess] Integer
 #   28|         6: [ExprStmt] <Expr>;
-#   28|           0: [MethodAccess] functionExpression1a(...)
+#   28|           0: [MethodCall] functionExpression1a(...)
 #   28|             -1: [TypeAccess] FuncExprsKt
 #   28|             0: [IntegerLiteral] 5
 #   28|             1: [ClassInstanceExpr] new MyLambda(...)
 #   28|               -3: [TypeAccess] MyLambda
 #   29|         7: [ExprStmt] <Expr>;
-#   29|           0: [MethodAccess] functionExpression1b(...)
+#   29|           0: [MethodCall] functionExpression1b(...)
 #   29|             -1: [TypeAccess] FuncExprsKt
 #   29|             0: [IntegerLiteral] 5
 #   29|             1: [LambdaExpr] ...->...
@@ -4098,7 +4098,7 @@ funcExprs.kt:
 #   29|                 0: [TypeAccess] Object
 #   29|                 1: [TypeAccess] Object
 #   30|         8: [ExprStmt] <Expr>;
-#   30|           0: [MethodAccess] functionExpression2(...)
+#   30|           0: [MethodCall] functionExpression2(...)
 #   30|             -1: [TypeAccess] FuncExprsKt
 #   30|             0: [IntegerLiteral] 5
 #   30|             1: [LambdaExpr] ...->...
@@ -4121,7 +4121,7 @@ funcExprs.kt:
 #   30|                 1: [TypeAccess] Integer
 #   30|                 2: [TypeAccess] Integer
 #   31|         9: [ExprStmt] <Expr>;
-#   31|           0: [MethodAccess] functionExpression2(...)
+#   31|           0: [MethodCall] functionExpression2(...)
 #   31|             -1: [TypeAccess] FuncExprsKt
 #   31|             0: [IntegerLiteral] 5
 #   31|             1: [LambdaExpr] ...->...
@@ -4144,7 +4144,7 @@ funcExprs.kt:
 #   31|                 1: [TypeAccess] Integer
 #   31|                 2: [TypeAccess] Integer
 #   32|         10: [ExprStmt] <Expr>;
-#   32|           0: [MethodAccess] functionExpression3(...)
+#   32|           0: [MethodCall] functionExpression3(...)
 #   32|             -1: [TypeAccess] FuncExprsKt
 #   32|             0: [IntegerLiteral] 5
 #   32|             1: [LambdaExpr] ...->...
@@ -4169,7 +4169,7 @@ funcExprs.kt:
 #   32|                 1: [TypeAccess] Integer
 #   32|                 2: [TypeAccess] Integer
 #   33|         11: [ExprStmt] <Expr>;
-#   33|           0: [MethodAccess] functionExpression4(...)
+#   33|           0: [MethodCall] functionExpression4(...)
 #   33|             -1: [TypeAccess] FuncExprsKt
 #   33|             0: [IntegerLiteral] 5
 #   33|             1: [LambdaExpr] ...->...
@@ -4208,7 +4208,7 @@ funcExprs.kt:
 #   33|                   0: [TypeAccess] Integer
 #   33|                   1: [TypeAccess] Double
 #   35|         12: [ExprStmt] <Expr>;
-#   35|           0: [MethodAccess] functionExpression22(...)
+#   35|           0: [MethodCall] functionExpression22(...)
 #   35|             -1: [TypeAccess] FuncExprsKt
 #   35|             0: [IntegerLiteral] 5
 #   35|             1: [LambdaExpr] ...->...
@@ -4293,7 +4293,7 @@ funcExprs.kt:
 #   35|                 21: [TypeAccess] Integer
 #   35|                 22: [TypeAccess] Unit
 #   36|         13: [ExprStmt] <Expr>;
-#   36|           0: [MethodAccess] functionExpression23(...)
+#   36|           0: [MethodCall] functionExpression23(...)
 #   36|             -1: [TypeAccess] FuncExprsKt
 #   36|             0: [IntegerLiteral] 5
 #   36|             1: [LambdaExpr] ...->...
@@ -4306,7 +4306,7 @@ funcExprs.kt:
 #   36|                     0: [Parameter] a0
 #   36|                   5: [BlockStmt] { ... }
 #   36|                     0: [ReturnStmt] return ...
-#   36|                       0: [MethodAccess] invoke(...)
+#   36|                       0: [MethodCall] invoke(...)
 #   36|                         -1: [ThisAccess] this
 #   36|                         0: [CastExpr] (...)...
 #   36|                           0: [TypeAccess] int
@@ -4478,7 +4478,7 @@ funcExprs.kt:
 #   36|               -3: [TypeAccess] FunctionN<String>
 #   36|                 0: [TypeAccess] String
 #   38|         14: [ExprStmt] <Expr>;
-#   38|           0: [MethodAccess] functionExpression0a(...)
+#   38|           0: [MethodCall] functionExpression0a(...)
 #   38|             -1: [TypeAccess] FuncExprsKt
 #   38|             0: [MemberRefExpr] ...::...
 #   38|               -4: [AnonymousClass] new Function0<Integer>(...) { ... }
@@ -4498,7 +4498,7 @@ funcExprs.kt:
 #   38|                 3: [Method] invoke
 #   38|                   5: [BlockStmt] { ... }
 #   38|                     0: [ReturnStmt] return ...
-#   38|                       0: [MethodAccess] f0(...)
+#   38|                       0: [MethodCall] f0(...)
 #   38|                         -1: [VarAccess] this.<dispatchReceiver>
 #   38|                           -1: [ThisAccess] this
 #   38|               -3: [TypeAccess] Function0<Integer>
@@ -4506,7 +4506,7 @@ funcExprs.kt:
 #   38|               0: [ClassInstanceExpr] new FuncRef(...)
 #   38|                 -3: [TypeAccess] FuncRef
 #   39|         15: [ExprStmt] <Expr>;
-#   39|           0: [MethodAccess] functionExpression0a(...)
+#   39|           0: [MethodCall] functionExpression0a(...)
 #   39|             -1: [TypeAccess] FuncExprsKt
 #   39|             0: [MemberRefExpr] ...::...
 #   39|               -4: [AnonymousClass] new Function0<Integer>(...) { ... }
@@ -4526,14 +4526,14 @@ funcExprs.kt:
 #   39|                 3: [Method] invoke
 #   39|                   5: [BlockStmt] { ... }
 #   39|                     0: [ReturnStmt] return ...
-#   39|                       0: [MethodAccess] f0(...)
+#   39|                       0: [MethodCall] f0(...)
 #   39|                         -1: [VarAccess] this.<dispatchReceiver>
 #   39|                           -1: [ThisAccess] this
 #   39|               -3: [TypeAccess] Function0<Integer>
 #   39|                 0: [TypeAccess] Integer
 #   39|               0: [VarAccess] Companion
 #   40|         16: [ExprStmt] <Expr>;
-#   40|           0: [MethodAccess] functionExpression1a(...)
+#   40|           0: [MethodCall] functionExpression1a(...)
 #   40|             -1: [TypeAccess] FuncExprsKt
 #   40|             0: [IntegerLiteral] 5
 #   40|             1: [MemberRefExpr] ...::...
@@ -4556,7 +4556,7 @@ funcExprs.kt:
 #   40|                     0: [Parameter] a0
 #   40|                   5: [BlockStmt] { ... }
 #   40|                     0: [ReturnStmt] return ...
-#   40|                       0: [MethodAccess] f1(...)
+#   40|                       0: [MethodCall] f1(...)
 #   40|                         -1: [VarAccess] this.<dispatchReceiver>
 #   40|                           -1: [ThisAccess] this
 #   40|                         0: [VarAccess] a0
@@ -4566,7 +4566,7 @@ funcExprs.kt:
 #   40|               0: [ClassInstanceExpr] new FuncRef(...)
 #   40|                 -3: [TypeAccess] FuncRef
 #   41|         17: [ExprStmt] <Expr>;
-#   41|           0: [MethodAccess] functionExpression1c(...)
+#   41|           0: [MethodCall] functionExpression1c(...)
 #   41|             -1: [TypeAccess] FuncExprsKt
 #   41|             0: [IntegerLiteral] 5
 #   41|             1: [MemberRefExpr] ...::...
@@ -4581,7 +4581,7 @@ funcExprs.kt:
 #   41|                     1: [Parameter] a1
 #   41|                   5: [BlockStmt] { ... }
 #   41|                     0: [ReturnStmt] return ...
-#   41|                       0: [MethodAccess] f1(...)
+#   41|                       0: [MethodCall] f1(...)
 #   41|                         -1: [VarAccess] a0
 #   41|                         0: [VarAccess] a1
 #   41|               -3: [TypeAccess] Function2<FuncRef,Integer,Integer>
@@ -4589,7 +4589,7 @@ funcExprs.kt:
 #   41|                 1: [TypeAccess] Integer
 #   41|                 2: [TypeAccess] Integer
 #   42|         18: [ExprStmt] <Expr>;
-#   42|           0: [MethodAccess] functionExpression1a(...)
+#   42|           0: [MethodCall] functionExpression1a(...)
 #   42|             -1: [TypeAccess] FuncExprsKt
 #   42|             0: [IntegerLiteral] 5
 #   42|             1: [MemberRefExpr] ...::...
@@ -4612,7 +4612,7 @@ funcExprs.kt:
 #   42|                     0: [Parameter] a0
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodAccess] f3(...)
+#   42|                       0: [MethodCall] f3(...)
 #   42|                         -1: [TypeAccess] FuncExprsKt
 #   42|                         0: [VarAccess] this.<extensionReceiver>
 #   42|                           -1: [ThisAccess] this
@@ -4622,7 +4622,7 @@ funcExprs.kt:
 #   42|                 1: [TypeAccess] Integer
 #   42|               0: [IntegerLiteral] 3
 #   43|         19: [ExprStmt] <Expr>;
-#   43|           0: [MethodAccess] functionExpression3(...)
+#   43|           0: [MethodCall] functionExpression3(...)
 #   43|             -1: [TypeAccess] FuncExprsKt
 #   43|             0: [IntegerLiteral] 5
 #   43|             1: [MemberRefExpr] ...::...
@@ -4637,7 +4637,7 @@ funcExprs.kt:
 #   43|                     1: [Parameter] a1
 #   43|                   5: [BlockStmt] { ... }
 #   43|                     0: [ReturnStmt] return ...
-#   43|                       0: [MethodAccess] f3(...)
+#   43|                       0: [MethodCall] f3(...)
 #   43|                         -1: [TypeAccess] FuncExprsKt
 #   43|                         0: [VarAccess] a0
 #   43|                         1: [VarAccess] a1
@@ -4646,7 +4646,7 @@ funcExprs.kt:
 #   43|                 1: [TypeAccess] Integer
 #   43|                 2: [TypeAccess] Integer
 #   44|         20: [ExprStmt] <Expr>;
-#   44|           0: [MethodAccess] functionExpression22(...)
+#   44|           0: [MethodCall] functionExpression22(...)
 #   44|             -1: [TypeAccess] FuncExprsKt
 #   44|             0: [IntegerLiteral] 5
 #   44|             1: [MemberRefExpr] ...::...
@@ -4690,7 +4690,7 @@ funcExprs.kt:
 #   44|                     21: [Parameter] a21
 #   44|                   5: [BlockStmt] { ... }
 #   44|                     0: [ReturnStmt] return ...
-#   44|                       0: [MethodAccess] f22(...)
+#   44|                       0: [MethodCall] f22(...)
 #   44|                         -1: [VarAccess] this.<dispatchReceiver>
 #   44|                           -1: [ThisAccess] this
 #   44|                         0: [VarAccess] a0
@@ -4742,7 +4742,7 @@ funcExprs.kt:
 #   44|               0: [ClassInstanceExpr] new FuncRef(...)
 #   44|                 -3: [TypeAccess] FuncRef
 #   45|         21: [ExprStmt] <Expr>;
-#   45|           0: [MethodAccess] functionExpression23(...)
+#   45|           0: [MethodCall] functionExpression23(...)
 #   45|             -1: [TypeAccess] FuncExprsKt
 #   45|             0: [IntegerLiteral] 5
 #   45|             1: [MemberRefExpr] ...::...
@@ -4765,7 +4765,7 @@ funcExprs.kt:
 #   45|                     0: [Parameter] a0
 #   45|                   5: [BlockStmt] { ... }
 #   45|                     0: [ReturnStmt] return ...
-#   45|                       0: [MethodAccess] f23(...)
+#   45|                       0: [MethodCall] f23(...)
 #   45|                         -1: [VarAccess] this.<dispatchReceiver>
 #   45|                           -1: [ThisAccess] this
 #   45|                         0: [CastExpr] (...)...
@@ -4888,7 +4888,7 @@ funcExprs.kt:
 #   45|               0: [ClassInstanceExpr] new FuncRef(...)
 #   45|                 -3: [TypeAccess] FuncRef
 #   46|         22: [ExprStmt] <Expr>;
-#   46|           0: [MethodAccess] functionExpression23c(...)
+#   46|           0: [MethodCall] functionExpression23c(...)
 #   46|             -1: [TypeAccess] FuncExprsKt
 #   46|             0: [IntegerLiteral] 5
 #   46|             1: [MemberRefExpr] ...::...
@@ -4902,7 +4902,7 @@ funcExprs.kt:
 #   46|                     0: [Parameter] a0
 #   46|                   5: [BlockStmt] { ... }
 #   46|                     0: [ReturnStmt] return ...
-#   46|                       0: [MethodAccess] f23(...)
+#   46|                       0: [MethodCall] f23(...)
 #   46|                         -1: [CastExpr] (...)...
 #   46|                           0: [TypeAccess] FuncRef
 #   46|                           1: [ArrayAccess] ...[...]
@@ -5036,7 +5036,7 @@ funcExprs.kt:
 #   48|                 0: [ReturnStmt] return ...
 #   48|                   0: [IntegerLiteral] 5
 #   49|         24: [ExprStmt] <Expr>;
-#   49|           0: [MethodAccess] functionExpression0a(...)
+#   49|           0: [MethodCall] functionExpression0a(...)
 #   49|             -1: [TypeAccess] FuncExprsKt
 #   49|             0: [MemberRefExpr] ...::...
 #   49|               -4: [AnonymousClass] new Function0<Integer>(...) { ... }
@@ -5047,13 +5047,13 @@ funcExprs.kt:
 #   49|                 2: [Method] invoke
 #   49|                   5: [BlockStmt] { ... }
 #   49|                     0: [ReturnStmt] return ...
-#   49|                       0: [MethodAccess] local(...)
+#   49|                       0: [MethodCall] local(...)
 #   49|                         -1: [ClassInstanceExpr] new (...)
 #   49|                           -3: [TypeAccess] Object
 #   49|               -3: [TypeAccess] Function0<Integer>
 #   49|                 0: [TypeAccess] Integer
 #   51|         25: [ExprStmt] <Expr>;
-#   51|           0: [MethodAccess] fn(...)
+#   51|           0: [MethodCall] fn(...)
 #   51|             -2: [TypeAccess] FuncRef
 #   51|             -1: [TypeAccess] FuncExprsKt
 #   51|             0: [MemberRefExpr] ...::...
@@ -5106,7 +5106,7 @@ funcExprs.kt:
 #   83|                       0: [TypeAccess] int
 #   83|                   5: [BlockStmt] { ... }
 #   83|                     0: [ReturnStmt] return ...
-#   83|                       0: [MethodAccess] toString(...)
+#   83|                       0: [MethodCall] toString(...)
 #   83|                         -1: [VarAccess] i
 #   83|               -3: [TypeAccess] Function1<Integer,String>
 #   83|                 0: [TypeAccess] Integer
@@ -5114,7 +5114,7 @@ funcExprs.kt:
 #   84|         1: [ExprStmt] <Expr>;
 #   84|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   84|             0: [TypeAccess] Unit
-#   84|             1: [MethodAccess] invoke(...)
+#   84|             1: [MethodCall] invoke(...)
 #   84|               -1: [VarAccess] l1
 #   84|               0: [IntegerLiteral] 5
 #   86|         2: [LocalVariableDeclStmt] var ...;
@@ -5131,7 +5131,7 @@ funcExprs.kt:
 #   86|                       0: [TypeAccess] int
 #   86|                   5: [BlockStmt] { ... }
 #   86|                     0: [ReturnStmt] return ...
-#   86|                       0: [MethodAccess] toString(...)
+#   86|                       0: [MethodCall] toString(...)
 #   86|                         -1: [VarAccess] i
 #   86|               -3: [TypeAccess] Function1<Integer,String>
 #   86|                 0: [TypeAccess] Integer
@@ -5139,7 +5139,7 @@ funcExprs.kt:
 #   87|         3: [ExprStmt] <Expr>;
 #   87|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   87|             0: [TypeAccess] Unit
-#   87|             1: [MethodAccess] invoke(...)
+#   87|             1: [MethodCall] invoke(...)
 #   87|               -1: [VarAccess] l2
 #   87|               0: [IntegerLiteral] 5
 #   89|         4: [LocalVariableDeclStmt] var ...;
@@ -5154,7 +5154,7 @@ funcExprs.kt:
 #   90|                     0: [Parameter] a0
 #   90|                   5: [BlockStmt] { ... }
 #   90|                     0: [ReturnStmt] return ...
-#   90|                       0: [MethodAccess] invoke(...)
+#   90|                       0: [MethodCall] invoke(...)
 #   90|                         -1: [ThisAccess] this
 #   90|                         0: [CastExpr] (...)...
 #   90|                           0: [TypeAccess] int
@@ -5328,7 +5328,7 @@ funcExprs.kt:
 #   91|         5: [ExprStmt] <Expr>;
 #   91|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   91|             0: [TypeAccess] Unit
-#   91|             1: [MethodAccess] invoke(...)
+#   91|             1: [MethodCall] invoke(...)
 #   91|               -1: [VarAccess] l3
 #   91|               0: [ArrayCreationExpr] new Object[]
 #   91|                 -2: [ArrayInit] {...}
@@ -5441,7 +5441,7 @@ funcExprs.kt:
 #   95|         7: [ExprStmt] <Expr>;
 #   95|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   95|             0: [TypeAccess] Unit
-#   95|             1: [MethodAccess] invoke(...)
+#   95|             1: [MethodCall] invoke(...)
 #   95|               -1: [VarAccess] l4
 #   95|               0: [IntegerLiteral] 1
 #   95|               1: [IntegerLiteral] 2
@@ -5615,7 +5615,7 @@ funcExprs.kt:
 #   74|       3: [TypeAccess] Unit
 #   74|       5: [BlockStmt] { ... }
 #   75|         0: [ExprStmt] <Expr>;
-#   75|           0: [MethodAccess] fn(...)
+#   75|           0: [MethodCall] fn(...)
 #   75|             -1: [ThisAccess] this
 #   75|             0: [LambdaExpr] ...->...
 #   75|               -4: [AnonymousClass] new Function1<Generic<Generic<Integer>>,String>(...) { ... }
@@ -5688,7 +5688,7 @@ kFunctionInvoke.kt:
 #    8|                     0: [Parameter] a0
 #    8|                   5: [BlockStmt] { ... }
 #    8|                     0: [ReturnStmt] return ...
-#    8|                       0: [MethodAccess] f(...)
+#    8|                       0: [MethodCall] f(...)
 #    8|                         -1: [VarAccess] this.<dispatchReceiver>
 #    8|                           -1: [ThisAccess] this
 #    8|                         0: [VarAccess] a0
@@ -5697,7 +5697,7 @@ kFunctionInvoke.kt:
 #    8|                 1: [TypeAccess] Unit
 #    8|               0: [VarAccess] a
 #    9|         1: [ExprStmt] <Expr>;
-#    9|           0: [MethodAccess] invoke(...)
+#    9|           0: [MethodCall] invoke(...)
 #    9|             -1: [VarAccess] toCall
 #    9|             0: [VarAccess] s
 #    3|   2: [Class] A
@@ -5744,7 +5744,7 @@ localFunctionCalls.kt:
 #    7|         3: [ExprStmt] <Expr>;
 #    7|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    7|             0: [TypeAccess] Unit
-#    7|             1: [MethodAccess] a(...)
+#    7|             1: [MethodCall] a(...)
 #    7|               -2: [TypeAccess] String
 #    7|               -1: [ClassInstanceExpr] new (...)
 #    7|                 -3: [TypeAccess] Object
@@ -5774,7 +5774,7 @@ localFunctionCalls.kt:
 #   10|         6: [ExprStmt] <Expr>;
 #   10|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   10|             0: [TypeAccess] Unit
-#   10|             1: [MethodAccess] f1(...)
+#   10|             1: [MethodCall] f1(...)
 #   10|               -2: [TypeAccess] Integer
 #   10|               -1: [ClassInstanceExpr] new (...)
 #   10|                 -3: [TypeAccess] Object
@@ -5785,7 +5785,7 @@ localFunctionCalls.kt:
 #   11|         7: [ExprStmt] <Expr>;
 #   11|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   11|             0: [TypeAccess] Unit
-#   11|             1: [MethodAccess] f1(...)
+#   11|             1: [MethodCall] f1(...)
 #   11|               -2: [TypeAccess] Integer
 #   11|               -1: [ClassInstanceExpr] new (...)
 #   11|                 -3: [TypeAccess] Object
@@ -5836,7 +5836,7 @@ samConversion.kt:
 #    2|                         0: [TypeAccess] int
 #    2|                     5: [BlockStmt] { ... }
 #    2|                       0: [ReturnStmt] return ...
-#    2|                         0: [MethodAccess] invoke(...)
+#    2|                         0: [MethodCall] invoke(...)
 #    2|                           -1: [VarAccess] <fn>
 #    2|                           0: [VarAccess] i
 #    2|                 -3: [TypeAccess] IntPredicate
@@ -5890,7 +5890,7 @@ samConversion.kt:
 #    4|                         0: [TypeAccess] int
 #    4|                     5: [BlockStmt] { ... }
 #    4|                       0: [ReturnStmt] return ...
-#    4|                         0: [MethodAccess] invoke(...)
+#    4|                         0: [MethodCall] invoke(...)
 #    4|                           -1: [VarAccess] <fn>
 #    4|                           0: [VarAccess] i
 #    4|                           1: [VarAccess] j
@@ -5944,7 +5944,7 @@ samConversion.kt:
 #    5|                         0: [TypeAccess] int
 #    5|                     5: [BlockStmt] { ... }
 #    5|                       0: [ReturnStmt] return ...
-#    5|                         0: [MethodAccess] invoke(...)
+#    5|                         0: [MethodCall] invoke(...)
 #    5|                           -1: [VarAccess] <fn>
 #    5|                           0: [VarAccess] i
 #    5|                           1: [VarAccess] j
@@ -5961,7 +5961,7 @@ samConversion.kt:
 #    5|                         1: [Parameter] a1
 #    5|                       5: [BlockStmt] { ... }
 #    5|                         0: [ReturnStmt] return ...
-#    5|                           0: [MethodAccess] fn2(...)
+#    5|                           0: [MethodCall] fn2(...)
 #    5|                             -1: [TypeAccess] SamConversionKt
 #    5|                             0: [VarAccess] a0
 #    5|                             1: [VarAccess] a1
@@ -5999,7 +5999,7 @@ samConversion.kt:
 #    7|                         0: [TypeAccess] int
 #    7|                     5: [BlockStmt] { ... }
 #    7|                       0: [ReturnStmt] return ...
-#    7|                         0: [MethodAccess] invoke(...)
+#    7|                         0: [MethodCall] invoke(...)
 #    7|                           -1: [VarAccess] <fn>
 #    7|                           0: [ExtensionReceiverAccess] this
 #    7|                           1: [VarAccess] i
@@ -6052,7 +6052,7 @@ samConversion.kt:
 #    9|                         0: [TypeAccess] int
 #    9|                     5: [BlockStmt] { ... }
 #    9|                       0: [ReturnStmt] return ...
-#    9|                         0: [MethodAccess] invoke(...)
+#    9|                         0: [MethodCall] invoke(...)
 #    9|                           -1: [VarAccess] <fn>
 #    9|                           0: [VarAccess] i
 #    9|                 -3: [TypeAccess] IntPredicate
@@ -6182,7 +6182,7 @@ samConversion.kt:
 #   41|                     0: [Parameter] a0
 #   41|                   5: [BlockStmt] { ... }
 #   41|                     0: [ReturnStmt] return ...
-#   41|                       0: [MethodAccess] ff(...)
+#   41|                       0: [MethodCall] ff(...)
 #   41|                         -1: [TypeAccess] SamConversionKt
 #   41|                         0: [CastExpr] (...)...
 #   41|                           0: [TypeAccess] int
@@ -6371,7 +6371,7 @@ samConversion.kt:
 #   42|                         0: [TypeAccess] int
 #   42|                     5: [BlockStmt] { ... }
 #   42|                       0: [ReturnStmt] return ...
-#   42|                         0: [MethodAccess] invoke(...)
+#   42|                         0: [MethodCall] invoke(...)
 #   42|                           -1: [VarAccess] <fn>
 #   42|                           0: [ArrayCreationExpr] new Object[]
 #   42|                             -2: [ArrayInit] {...}
@@ -6472,7 +6472,7 @@ samConversion.kt:
 #   43|                         0: [TypeAccess] int
 #   43|                     5: [BlockStmt] { ... }
 #   43|                       0: [ReturnStmt] return ...
-#   43|                         0: [MethodAccess] invoke(...)
+#   43|                         0: [MethodCall] invoke(...)
 #   43|                           -1: [VarAccess] <fn>
 #   43|                           0: [ArrayCreationExpr] new Object[]
 #   43|                             -2: [ArrayInit] {...}
@@ -6512,7 +6512,7 @@ samConversion.kt:
 #   43|                         0: [Parameter] a0
 #   43|                       5: [BlockStmt] { ... }
 #   43|                         0: [ReturnStmt] return ...
-#   43|                           0: [MethodAccess] invoke(...)
+#   43|                           0: [MethodCall] invoke(...)
 #   43|                             -1: [ThisAccess] this
 #   43|                             0: [CastExpr] (...)...
 #   43|                               0: [TypeAccess] int
@@ -6711,7 +6711,7 @@ samConversion.kt:
 #   46|                         0: [TypeAccess] Integer
 #   46|                     5: [BlockStmt] { ... }
 #   46|                       0: [ReturnStmt] return ...
-#   46|                         0: [MethodAccess] invoke(...)
+#   46|                         0: [MethodCall] invoke(...)
 #   46|                           -1: [VarAccess] <fn>
 #   46|                           0: [VarAccess] i
 #   46|                 -3: [TypeAccess] SomePredicate<Integer>
@@ -6765,7 +6765,7 @@ samConversion.kt:
 #   58|                         0: [TypeAccess] int
 #   58|                     5: [BlockStmt] { ... }
 #   58|                       0: [ReturnStmt] return ...
-#   58|                         0: [MethodAccess] invoke(...)
+#   58|                         0: [MethodCall] invoke(...)
 #   58|                           -1: [VarAccess] <fn>
 #   58|                           0: [VarAccess] i
 #   58|                           1: [VarAccess] j
@@ -6790,7 +6790,7 @@ samConversion.kt:
 #   58|                     1: [TypeAccess] Integer
 #   58|                     2: [TypeAccess] Unit
 #   59|         1: [ExprStmt] <Expr>;
-#   59|           0: [MethodAccess] fn1(...)
+#   59|           0: [MethodCall] fn1(...)
 #   59|             -1: [VarAccess] i0
 #   59|             0: [IntegerLiteral] 1
 #   59|             1: [IntegerLiteral] 2
@@ -6823,7 +6823,7 @@ samConversion.kt:
 #   75|                     3: [TypeAccess] int
 #   75|                     5: [BlockStmt] { ... }
 #   75|                       0: [ReturnStmt] return ...
-#   75|                         0: [MethodAccess] invoke(...)
+#   75|                         0: [MethodCall] invoke(...)
 #   75|                           -1: [VarAccess] <fn>
 #   75|                 -3: [TypeAccess] IntGetter
 #   75|                 0: [PropertyRefExpr] ...::...
@@ -6843,13 +6843,13 @@ samConversion.kt:
 #   75|                     3: [Method] get
 #   75|                       5: [BlockStmt] { ... }
 #   75|                         0: [ReturnStmt] return ...
-#   75|                           0: [MethodAccess] getX(...)
+#   75|                           0: [MethodCall] getX(...)
 #   75|                             -1: [VarAccess] this.<dispatchReceiver>
 #   75|                               -1: [ThisAccess] this
 #   75|                     4: [Method] invoke
 #   75|                       5: [BlockStmt] { ... }
 #   75|                         0: [ReturnStmt] return ...
-#   75|                           0: [MethodAccess] get(...)
+#   75|                           0: [MethodCall] get(...)
 #   75|                             -1: [ThisAccess] this
 #   75|                   -3: [TypeAccess] KProperty0<Integer>
 #   75|                     0: [TypeAccess] Integer
@@ -6881,7 +6881,7 @@ samConversion.kt:
 #   76|                         0: [TypeAccess] PropertyRefsTest
 #   76|                     5: [BlockStmt] { ... }
 #   76|                       0: [ReturnStmt] return ...
-#   76|                         0: [MethodAccess] invoke(...)
+#   76|                         0: [MethodCall] invoke(...)
 #   76|                           -1: [VarAccess] <fn>
 #   76|                           0: [VarAccess] prt
 #   76|                 -3: [TypeAccess] PropertyRefsGetter
@@ -6895,14 +6895,14 @@ samConversion.kt:
 #   76|                         0: [Parameter] a0
 #   76|                       5: [BlockStmt] { ... }
 #   76|                         0: [ReturnStmt] return ...
-#   76|                           0: [MethodAccess] getX(...)
+#   76|                           0: [MethodCall] getX(...)
 #   76|                             -1: [VarAccess] a0
 #   76|                     3: [Method] invoke
 #-----|                       4: (Parameters)
 #   76|                         0: [Parameter] a0
 #   76|                       5: [BlockStmt] { ... }
 #   76|                         0: [ReturnStmt] return ...
-#   76|                           0: [MethodAccess] get(...)
+#   76|                           0: [MethodCall] get(...)
 #   76|                             -1: [ThisAccess] this
 #   76|                             0: [VarAccess] a0
 #   76|                   -3: [TypeAccess] KProperty1<PropertyRefsTest,Integer>

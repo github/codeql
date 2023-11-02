@@ -6,6 +6,7 @@ namespace Microsoft
     {
         namespace Mvc
         {
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public class AutoValidateAntiforgeryTokenAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IFilterFactory, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
             {
                 public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata CreateInstance(System.IServiceProvider serviceProvider) => throw null;
@@ -130,6 +131,7 @@ namespace Microsoft
                     public string ViewName { get => throw null; }
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public class IgnoreAntiforgeryTokenAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ViewFeatures.IAntiforgeryPolicy, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
             {
                 public IgnoreAntiforgeryTokenAttribute() => throw null;
@@ -165,6 +167,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelperOptions HtmlHelperOptions { get => throw null; set { } }
                 public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ViewEngines.IViewEngine> ViewEngines { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
             public class PageRemoteAttribute : Microsoft.AspNetCore.Mvc.RemoteAttributeBase
             {
                 public PageRemoteAttribute() => throw null;
@@ -184,6 +187,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Mvc.ViewEngines.IViewEngine ViewEngine { get => throw null; set { } }
                 public string ViewName { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
             public class RemoteAttribute : Microsoft.AspNetCore.Mvc.RemoteAttributeBase
             {
                 protected RemoteAttribute() => throw null;
@@ -193,6 +197,7 @@ namespace Microsoft
                 protected override string GetUrl(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ClientModelValidationContext context) => throw null;
                 protected string RouteName { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
             public abstract class RemoteAttributeBase : System.ComponentModel.DataAnnotations.ValidationAttribute, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IClientModelValidator
             {
                 public string AdditionalFields { get => throw null; set { } }
@@ -608,17 +613,20 @@ namespace Microsoft
                     public System.IO.TextWriter Writer { get => throw null; set { } }
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public class SkipStatusCodePagesAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IResourceFilter, Microsoft.AspNetCore.Http.Metadata.ISkipStatusCodePagesMetadata
             {
                 public SkipStatusCodePagesAttribute() => throw null;
                 public void OnResourceExecuted(Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext context) => throw null;
                 public void OnResourceExecuting(Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext context) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)128, Inherited = true, AllowMultiple = false)]
             public sealed class TempDataAttribute : System.Attribute
             {
                 public TempDataAttribute() => throw null;
                 public string Key { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public class ValidateAntiForgeryTokenAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IFilterFactory, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
             {
                 public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata CreateInstance(System.IServiceProvider serviceProvider) => throw null;
@@ -648,6 +656,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary ViewData { get => throw null; }
                 public Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine ViewEngine { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = true)]
             public class ViewComponentAttribute : System.Attribute
             {
                 public ViewComponentAttribute() => throw null;
@@ -762,6 +771,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary ViewData { get => throw null; }
                     public System.IO.TextWriter Writer { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
                 public class ViewComponentContextAttribute : System.Attribute
                 {
                     public ViewComponentContextAttribute() => throw null;
@@ -811,6 +821,7 @@ namespace Microsoft
                     public string ViewName { get => throw null; set { } }
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, Inherited = true, AllowMultiple = false)]
             public sealed class ViewDataAttribute : System.Attribute
             {
                 public ViewDataAttribute() => throw null;
@@ -1212,6 +1223,7 @@ namespace Microsoft
                     public virtual Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult FindView(Microsoft.AspNetCore.Mvc.ActionContext actionContext, Microsoft.AspNetCore.Mvc.PartialViewResult viewResult) => throw null;
                     protected Microsoft.Extensions.Logging.ILogger Logger { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
                 public class SaveTempDataAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IFilterFactory, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
                 {
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata CreateInstance(System.IServiceProvider serviceProvider) => throw null;
@@ -1288,6 +1300,7 @@ namespace Microsoft
                     public ViewComponentResultExecutor(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions> mvcHelperOptions, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, System.Text.Encodings.Web.HtmlEncoder htmlEncoder, Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider modelMetadataProvider, Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataDictionaryFactory tempDataDictionaryFactory, Microsoft.AspNetCore.Mvc.Infrastructure.IHttpResponseStreamWriterFactory writerFactory) => throw null;
                     public virtual System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Mvc.ActionContext context, Microsoft.AspNetCore.Mvc.ViewComponentResult result) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
                 public class ViewContextAttribute : System.Attribute
                 {
                     public ViewContextAttribute() => throw null;
@@ -1334,6 +1347,7 @@ namespace Microsoft
                     public ViewDataDictionary(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary source, object model) : base(default(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary)) => throw null;
                     public TModel Model { get => throw null; set { } }
                 }
+                [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
                 public class ViewDataDictionaryAttribute : System.Attribute
                 {
                     public ViewDataDictionaryAttribute() => throw null;

@@ -86,7 +86,7 @@ class ReflectiveAccessAnnotation extends Annotation {
  */
 abstract class NonReflectiveAnnotation extends Annotation { }
 
-library class StandardNonReflectiveAnnotation extends NonReflectiveAnnotation {
+class StandardNonReflectiveAnnotation extends NonReflectiveAnnotation {
   StandardNonReflectiveAnnotation() {
     this.getType()
         .hasQualifiedName("java.lang", ["Override", "Deprecated", "SuppressWarnings", "SafeVarargs"])

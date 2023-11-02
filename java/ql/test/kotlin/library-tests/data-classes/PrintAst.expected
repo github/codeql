@@ -65,7 +65,7 @@ dc.kt:
 #    0|               1: [VarAccess] p0.strs
 #    0|                 -1: [VarAccess] p0
 #    0|         2: [ReturnStmt] return ...
-#    0|           0: [MethodAccess] copy(...)
+#    0|           0: [MethodCall] copy(...)
 #    0|             -1: [VarAccess] p0
 #    0|             0: [VarAccess] p1
 #    0|             1: [VarAccess] p2
@@ -123,7 +123,7 @@ dc.kt:
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [LocalVariableDeclStmt] var ...;
 #    0|           1: [LocalVariableDeclExpr] result
-#    0|             0: [MethodAccess] hashCode(...)
+#    0|             0: [MethodCall] hashCode(...)
 #    0|               -1: [TypeAccess] Arrays
 #    0|               0: [VarAccess] this.bytes
 #    0|                 -1: [ThisAccess] this
@@ -134,7 +134,7 @@ dc.kt:
 #    0|               0: [MulExpr] ... * ...
 #    0|                 0: [VarAccess] result
 #    0|                 1: [IntegerLiteral] 31
-#    0|               1: [MethodAccess] hashCode(...)
+#    0|               1: [MethodCall] hashCode(...)
 #    0|                 -1: [TypeAccess] Arrays
 #    0|                 0: [VarAccess] this.strs
 #    0|                   -1: [ThisAccess] this
@@ -147,13 +147,13 @@ dc.kt:
 #    0|           0: [StringTemplateExpr] "..."
 #    0|             0: [StringLiteral] "ProtoMapValue("
 #    0|             1: [StringLiteral] "bytes="
-#    0|             2: [MethodAccess] toString(...)
+#    0|             2: [MethodCall] toString(...)
 #    0|               -1: [TypeAccess] Arrays
 #    0|               0: [VarAccess] this.bytes
 #    0|                 -1: [ThisAccess] this
 #    0|             3: [StringLiteral] ", "
 #    0|             4: [StringLiteral] "strs="
-#    0|             5: [MethodAccess] toString(...)
+#    0|             5: [MethodCall] toString(...)
 #    0|               -1: [TypeAccess] Arrays
 #    0|               0: [VarAccess] this.strs
 #    0|                 -1: [ThisAccess] this

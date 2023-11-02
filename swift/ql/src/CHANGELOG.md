@@ -1,3 +1,21 @@
+## 0.3.1
+
+### Minor Analysis Improvements
+
+* Added more new logging sinks to the `swift/cleartext-logging` query.
+* Added sinks for the GRDB database library to the `swift/hardcoded-key` query.
+* Added sqlite3 and SQLite.swift sinks and flow summaries for the `swift/hardcoded-key` query.
+* Added sqlite3 and SQLite.swift sinks and flow summaries for the `swift/cleartext-storage-database` query.
+
+## 0.3.0
+
+### Minor Analysis Improvements
+
+* Adder barriers for numeric type values to the injection-like queries, to reduce false positive results where the user input that can be injected is constrainted to a numerical value. The queries updated by this change are: "Predicate built from user-controlled sources" (`swift/predicate-injection`), "Database query built from user-controlled sources" (`swift/sql-injection`), "Uncontrolled format string" (`swift/uncontrolled-format-string`), "JavaScript Injection" (`swift/unsafe-js-eval`) and "Regular expression injection" (`swift/regex-injection`).
+* Added additional taint steps to the `swift/cleartext-transmission`, `swift/cleartext-logging` and `swift/cleartext-storage-preferences` queries to identify data within sensitive containers. This is similar to an existing additional taint step in the `swift/cleartext-storage-database` query.
+* Added new logging sinks to the `swift/cleartext-logging` query.
+* Added sqlite3 and SQLite.swift path injection sinks for the `swift/path-injection` query.
+
 ## 0.2.5
 
 No user-facing changes.

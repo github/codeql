@@ -1,3 +1,20 @@
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `isWeak` predicate from the `CryptographicOperation` class.
+* Deleted the deprecated `getStringOrSymbol` and `isStringOrSymbol` predicates from the `ConstantValue` class.
+* Deleted the deprecated `getAPI` from the `IOOrFileMethodCall` class.
+* Deleted the deprecated `codeql.ruby.security.performance` folder, use `codeql.ruby.security.regexp` instead.
+* GraphQL enums are no longer considered remote flow sources.
+
+## 0.8.0
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
 ## 0.7.5
 
 No user-facing changes.

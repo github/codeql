@@ -12,11 +12,13 @@
 
 private import ModulusAnalysisSpecific::Private
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
 private import ConstantAnalysis
 private import RangeUtils
-private import RangeAnalysisStage
+private import codeql.rangeanalysis.RangeAnalysis
+private import RangeAnalysisImpl
 
-module ModulusAnalysis<DeltaSig D, BoundSig<D> Bounds, UtilSig<D> U> {
+module ModulusAnalysis<DeltaSig D, BoundSig<SemLocation, Sem, D> Bounds, UtilSig<Sem, D> U> {
   pragma[nomagic]
   private predicate valueFlowStepSsaEqFlowCond(
     SemSsaReadPosition pos, SemSsaVariable v, SemExpr e, int delta

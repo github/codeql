@@ -42,6 +42,7 @@ import semmle.go.frameworks.Encoding
 import semmle.go.frameworks.Fiber
 import semmle.go.frameworks.Gin
 import semmle.go.frameworks.Glog
+import semmle.go.frameworks.GoKit
 import semmle.go.frameworks.GoMicro
 import semmle.go.frameworks.GoRestfulHttp
 import semmle.go.frameworks.Gqlgen

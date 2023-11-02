@@ -40,7 +40,8 @@ private class StringSummaries extends SummaryModelCsv {
         ";StringProtocol;true;addingPercentEncoding(withAllowedCharacter:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;addingPercentEscapes(using:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;appending(_:);;;Argument[-1..0];ReturnValue;taint",
-        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[-1..0];ReturnValue;taint", //-1..
+        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[-1..0];ReturnValue;taint",
+        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
         ";StringProtocol;true;applyingTransform(_:reverse:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;cString(using:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;capitalized(with:);;;Argument[-1];ReturnValue;taint",
@@ -111,10 +112,7 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;init(validatingPlatformString:);;;Argument[0].CollectionElement;ReturnValue.OptionalSome;taint",
         ";String;true;localizedStringWithFormat(_:_:);;;Argument[0];ReturnValue;taint",
         ";String;true;localizedStringWithFormat(_:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
-        ";String;true;write(_:);;;Argument[0];Argument[-1];taint",
-        ";String;true;write(to:);;;Argument[-1];Argument[0];taint",
         ";String;true;insert(contentsOf:at:);;;Argument[0];Argument[-1];taint",
-        ";String;true;replaceSubrange(_:with:);;;Argument[1];Argument[-1];taint",
         ";String;true;max();;;Argument[-1];ReturnValue;taint",
         ";String;true;max(by:);;;Argument[-1];ReturnValue;taint",
         ";String;true;min();;;Argument[-1];ReturnValue;taint",
@@ -125,7 +123,12 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;randomElement(using:);;;Argument[-1];ReturnValue;taint",
         ";String;true;enumerated();;;Argument[-1];ReturnValue;taint",
         ";String;true;encode(to:);;;Argument[-1];Argument[0];taint",
+        ";String;true;decodeCString(_:as:repairingInvalidCodeUnits:);;;Argument[0];ReturnValue.TupleElement[0];taint",
+        ";String;true;decodeCString(_:as:repairingInvalidCodeUnits:);;;Argument[0].CollectionElement;ReturnValue.TupleElement[0];taint",
         ";LosslessStringConvertible;true;init(_:);;;Argument[0];ReturnValue;taint",
+        ";Substring;true;withUTF8(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
+        ";Substring;true;withUTF8(_:);;;Argument[0].Parameter[0].CollectionElement;Argument[-1];taint",
+        ";Substring;true;withUTF8(_:);;;Argument[0].ReturnValue;ReturnValue;value",
       ]
   }
 }
@@ -138,23 +141,26 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   StringFieldsInheritTaint() {
-    this.getField()
-        .hasQualifiedName(["String", "StringProtocol"],
+    exists(FieldDecl fieldDecl, Decl declaringDecl, TypeDecl namedTypeDecl |
+      (
+        namedTypeDecl.getFullName() = ["String", "StringProtocol"] and
+        fieldDecl.getName() =
           [
             "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "dataValue",
             "identifierValue", "capitalized", "localizedCapitalized", "localizedLowercase",
             "localizedUppercase", "decomposedStringWithCanonicalMapping",
             "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
             "precomposedStringWithCompatibilityMapping", "removingPercentEncoding"
-          ])
-    or
-    exists(FieldDecl fieldDecl, Decl declaringDecl, TypeDecl namedTypeDecl |
-      (
+          ]
+        or
         namedTypeDecl.getFullName() = "CustomStringConvertible" and
         fieldDecl.getName() = "description"
         or
         namedTypeDecl.getFullName() = "CustomDebugStringConvertible" and
         fieldDecl.getName() = "debugDescription"
+        or
+        namedTypeDecl.getFullName() = "Substring" and
+        fieldDecl.getName() = "base"
       ) and
       declaringDecl.getAMember() = fieldDecl and
       declaringDecl.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*() and
