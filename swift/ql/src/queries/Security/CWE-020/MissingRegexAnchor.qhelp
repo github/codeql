@@ -46,10 +46,12 @@
 
 		<p>
 
-			The check with the regular expression match is, however, easy to bypass. For example
-			by embedding <code>http://www.example.com/</code> in the query
-			string component: <code>http://evil-example.net/?x=http://www.example.com/</code>.
-			Address these shortcomings by using anchors in the regular expression instead:
+			However, this regular expression check can be easily bypassed,
+			and a malicious actor could embed 
+			<code>http://www.example.com/</code> in the query
+			string component of a malicious site. For example,  
+			<code>http://evil-example.net/?x=http://www.example.com/</code>.
+			Instead, you should use anchors in the regular expression check:
 
 		</p>
 
@@ -57,12 +59,12 @@
 
 		<p>
 
-			A related mistake is to write a regular expression with
-			multiple alternatives, but to only include an anchor for one of the
-			alternatives. As an example, the regular expression
-			<code>/^www\.example\.com|beta\.example\.com/</code> will match the host
-			<code>evil.beta.example.com</code> because the regular expression is parsed
-			as <code>/(^www\.example\.com)|(beta\.example\.com)/</code>
+			If you need to write a regular expression to match
+			multiple hosts, you should include an anchor for all of the
+			alternatives. For example, the regular expression
+			<code>/^www\.example\.com|beta\.example\.com/</code> will only match the host
+			<code>evil.beta.example.com</code>, because the regular expression is parsed
+			as <code>/(^www\.example\.com)|(beta\.example\.com)/</code>.
 
 		</p>
 	</example>
