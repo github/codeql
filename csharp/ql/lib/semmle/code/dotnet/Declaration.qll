@@ -8,14 +8,6 @@ private import semmle.code.csharp.commons.QualifiedName
 
 /** A declaration. */
 class Declaration extends NamedElement, @dotnet_declaration {
-  override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string dqualifier, string dname |
-      this.getDeclaringType().hasQualifiedName(dqualifier, dname) and
-      qualifier = getQualifiedName(dqualifier, dname)
-    ) and
-    name = this.getName()
-  }
-
   /** Gets the name of this declaration, without additional decoration such as `<...>`. */
   string getUndecoratedName() { none() }
 

@@ -75,8 +75,6 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
    * Holds if this local variable or parameter is `scoped`.
    */
   predicate isScoped() { scoped_annotation(this, _) }
-
-  override predicate hasQualifiedName(string qualifier, string name) { none() }
 }
 
 /**
