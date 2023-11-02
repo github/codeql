@@ -62,7 +62,7 @@
 			If you need to write a regular expression to match
 			multiple hosts, you should include an anchor for all of the
 			alternatives. For example, the regular expression
-			<code>/^www\.example\.com|beta\.example\.com/</code> will only match the host
+			<code>/^www\.example\.com|beta\.example\.com/</code> will match the host
 			<code>evil.beta.example.com</code>, because the regular expression is parsed
 			as <code>/(^www\.example\.com)|(beta\.example\.com)/</code>.
 
