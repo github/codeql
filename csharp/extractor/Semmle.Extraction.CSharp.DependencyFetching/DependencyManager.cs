@@ -127,7 +127,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseReference(filename);
             }
 
-            RemoveUnnecessaryNugetPackages();
+            RemoveNugetAnalyzerReferences();
             ResolveConflicts();
 
             // Output the findings
@@ -160,23 +160,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 succeededProjects + failedProjects,
                 failedProjects,
                 DateTime.Now - startTime);
-        }
-
-        private void RemoveUnnecessaryNugetPackages()
-        {
-            RemoveNugetAnalyzerReferences();
-            RemoveRuntimeNugetPackageReferences();
-
-            if (fileContent.IsNewProjectStructureUsed
-                && !fileContent.UseAspNetCoreDlls)
-            {
-                // This might have been restored by the CLI even though the project isn't an asp.net core one.
-                RemoveNugetPackageReference("microsoft.aspnetcore.app.ref");
-            }
-
-            // TODO: There could be multiple `microsoft.netframework.referenceassemblies` packages,
-            // we could keep the newest one, but this is covered by the conflict resolution logic
-            // (if the file names match)
         }
 
         private void RemoveNugetAnalyzerReferences()
@@ -280,52 +263,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspNetCoreRuntime}");
                 dllPaths.Add(aspNetCoreRuntime);
-            }
-        }
-
-        private void RemoveRuntimeNugetPackageReferences()
-        {
-            var runtimePackagePrefixes = new[]
-            {
-                "microsoft.netcore.app.runtime",
-                "microsoft.aspnetcore.app.runtime",
-                "microsoft.windowsdesktop.app.runtime",
-
-                // legacy runtime packages:
-                "runtime.linux-x64.microsoft.netcore.app",
-                "runtime.osx-x64.microsoft.netcore.app",
-                "runtime.win-x64.microsoft.netcore.app",
-
-                // Internal implementation packages not meant for direct consumption:
-                "runtime."
-            };
-            RemoveNugetPackageReference(runtimePackagePrefixes);
-        }
-
-        private void RemoveNugetPackageReference(params string[] packagePrefixes)
-        {
-            if (!options.UseNuGet)
-            {
-                return;
-            }
-
-            var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
-            if (packageFolder == null)
-            {
-                return;
-            }
-
-            var packagePathPrefixes = packagePrefixes.Select(p => Path.Combine(packageFolder, p.ToLowerInvariant()));
-
-            foreach (var filename in usedReferences.Keys)
-            {
-                var lowerFilename = filename.ToLowerInvariant();
-
-                if (packagePathPrefixes.Any(prefix => lowerFilename.StartsWith(prefix)))
-                {
-                    usedReferences.Remove(filename);
-                    progressMonitor.RemovedReference(filename);
-                }
             }
         }
 
