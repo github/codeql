@@ -31,6 +31,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDotNet dotnet;
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
+        private readonly TemporaryDirectory missingPackageDirectory;
         private readonly TemporaryDirectory tempWorkingDirectory;
         private readonly bool cleanupTempWorkingDirectory;
 
@@ -51,6 +52,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.sourceDir = new DirectoryInfo(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "missingpackages"));
+
             tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
 
             try
@@ -106,7 +109,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 // TODO: Rename the dllDirNames var - it's not only dirs anymore.
                 dllDirNames.AddRange(paths);
-                DownloadMissingPackages(allNonBinaryFiles);
+                DownloadMissingPackages(allNonBinaryFiles, dllDirNames);
             }
 
             // Find DLLs in the .Net / Asp.Net Framework
@@ -429,7 +432,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// with this source tree. Use a SHA1 of the directory name.
         /// </summary>
         /// <returns>The full path of the temp directory.</returns>
-        private static string ComputeTempDirectory(string srcDir)
+        private static string ComputeTempDirectory(string srcDir, string packages = "packages")
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
             var sha = SHA1.HashData(bytes);
@@ -437,7 +440,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(Path.GetTempPath(), "GitHub", "packages", sb.ToString());
+            return Path.Combine(Path.GetTempPath(), "GitHub", packages, sb.ToString());
         }
 
         /// <summary>
@@ -660,7 +663,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             assets = assetFiles;
         }
 
-        private void DownloadMissingPackages(List<FileInfo> allFiles)
+        private void DownloadMissingPackages(List<FileInfo> allFiles, List<string> dllDirNames)
         {
             var nugetConfigs = allFiles.SelectFileNamesByName("nuget.config").ToArray();
             string? nugetConfig = null;
@@ -701,13 +704,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     return;
                 }
 
-                success = RestoreProject(tempDir.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, pathToNugetConfig: nugetConfig);
+                dotnet.RestoreProjectToDirectory(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, pathToNugetConfig: nugetConfig);
                 // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
                 if (!success)
                 {
                     progressMonitor.FailedToRestoreNugetPackage(package);
                 }
             });
+
+            dllDirNames.Add(missingPackageDirectory.DirInfo.FullName);
         }
 
         private void AnalyseSolutions(IEnumerable<string> solutions)
@@ -732,6 +737,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             try
             {
                 packageDirectory?.Dispose();
+                missingPackageDirectory?.Dispose();
             }
             catch (Exception exc)
             {
