@@ -17,9 +17,7 @@ private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
  * and would be considered a barrier to SQL injection.
  */
 private class ODBCExecutionFunction extends SqlExecutionFunction {
-  ODBCExecutionFunction() {
-    this.hasGlobalName(["SQLExecDirect", "SQLPrepare"])
-  }
+  ODBCExecutionFunction() { this.hasGlobalName(["SQLExecDirect", "SQLPrepare"]) }
 
   override predicate hasSqlArgument(FunctionInput input) { input.isParameterDeref(1) }
 }
