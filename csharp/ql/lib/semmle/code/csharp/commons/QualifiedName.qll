@@ -67,10 +67,6 @@ module QualifiedName<QualifiedNameInputSig Input> {
   predicate hasQualifiedName(Declaration d, string qualifier, string name) {
     d =
       any(ValueOrRefType vort |
-        vort instanceof VoidType and
-        qualifier = "System" and
-        name = "Void"
-        or
         vort =
           any(ArrayType at |
             exists(Type elementType, string name0 |
@@ -80,9 +76,6 @@ module QualifiedName<QualifiedNameInputSig Input> {
           )
         or
         hasQualifiedName(vort.(TupleType).getUnderlyingType(), qualifier, name)
-        or
-        qualifier = "System" and
-        name = "Nullable<" + getFullName(vort.(NullableType).getUnderlyingType()) + ">"
         or
         vort =
           any(UnboundGenericType ugt |
@@ -112,10 +105,8 @@ module QualifiedName<QualifiedNameInputSig Input> {
             )
           )
         or
-        not vort instanceof VoidType and
         not vort instanceof ArrayType and
         not vort instanceof TupleType and
-        not vort instanceof NullableType and
         not vort instanceof UnboundGenericType and
         not vort instanceof ConstructedType and
         (
