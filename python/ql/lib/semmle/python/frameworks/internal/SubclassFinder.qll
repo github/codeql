@@ -113,7 +113,8 @@ module NotExposed {
 
   predicate isAllowedModule(Module mod) {
     // don't include anything found in site-packages
-    exists(mod.getFile().getRelativePath())
+    exists(mod.getFile().getRelativePath()) and
+    not mod.getFile().getRelativePath().regexpMatch("(?i)(^|/)examples?/.*")
   }
 
   predicate isTestCode(AstNode ast) {
