@@ -25,8 +25,8 @@ protocol NSMutableCopying {
 
 class NSString : NSObject, NSCopying, NSMutableCopying {
   struct EncodingConversionOptions : OptionSet { let rawValue: Int }
-
   struct CompareOptions : OptionSet { let rawValue: Int }
+  struct EnumerationOptions : OptionSet { let rawValue: Int }
 
   init(characters: UnsafePointer<unichar>, length: Int) {}
   init(charactersNoCopy characters: UnsafeMutablePointer<unichar>, length: Int, freeWhenDone freeBuffer: Bool) {}
@@ -83,6 +83,7 @@ class NSString : NSObject, NSCopying, NSMutableCopying {
   func folding(options: NSString.CompareOptions = [], locale: Locale?) -> String { return "" }
   func applyingTransform(_ transform: StringTransform, reverse: Bool) -> String? { return "" }
   func enumerateLines(_ block: @escaping (String, UnsafeMutablePointer<ObjCBool>) -> Void) { }
+  func enumerateSubstrings(in range: NSRange, options opts: NSString.EnumerationOptions = [], using block: @escaping (String?, NSRange, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void) { }
   func replacingOccurrences(of target: String, with replacement: String) -> String { return "" }
   func replacingOccurrences(of target: String, with replacement: String, options: NSString.CompareOptions = [], range searchRange: NSRange) -> String { return "" }
   func propertyList() -> Any { return 0 }
@@ -136,8 +137,7 @@ class NSMutableString : NSString {
   func setString(_ aString: String) {}
 }
 
-class NSArray : NSObject {
-}
+class NSArray : NSObject { }
 
 struct _NSRange {
   init(location: Int, length: Int) {}
@@ -484,4 +484,14 @@ func taintThroughData() {
   sink(arg: data1) // $ tainted=482
   let str2 = NSString(data: data1, encoding: 0)!
   sink(arg: str2) // $ tainted=482
+}
+
+func moreTests() {
+  let myTainted = sourceNSString()
+  let myRange = NSRange(location:0, length: 128)
+
+  sink(arg: myTainted.enumerateSubstrings(in: myRange, options: [], using: {
+    substring, substringRange, enclosingRange, stop in
+    sink(arg: substring!) // $ MISSING: tainted=
+  }))
 }
