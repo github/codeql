@@ -10,11 +10,11 @@ Microsoft.Extensions.Configuration,,,83,,,,,,,,,,,,,,80,3
 Microsoft.Extensions.DependencyInjection,,,62,,,,,,,,,,,,,,62,
 Microsoft.Extensions.DependencyModel,,,12,,,,,,,,,,,,,,12,
 Microsoft.Extensions.FileProviders,,,16,,,,,,,,,,,,,,16,
-Microsoft.Extensions.FileSystemGlobbing,,,15,,,,,,,,,,,,,,13,2
+Microsoft.Extensions.FileSystemGlobbing,,,16,,,,,,,,,,,,,,14,2
 Microsoft.Extensions.Hosting,,,17,,,,,,,,,,,,,,16,1
 Microsoft.Extensions.Http,,,10,,,,,,,,,,,,,,10,
-Microsoft.Extensions.Logging,,,37,,,,,,,,,,,,,,37,
-Microsoft.Extensions.Options,,,8,,,,,,,,,,,,,,8,
+Microsoft.Extensions.Logging,,,38,,,,,,,,,,,,,,38,
+Microsoft.Extensions.Options,,,16,,,,,,,,,,,,,,16,
 Microsoft.Extensions.Primitives,,,63,,,,,,,,,,,,,,63,
 Microsoft.Interop,,,27,,,,,,,,,,,,,,27,
 Microsoft.NET.Build.Tasks,,,1,,,,,,,,,,,,,,1,
@@ -24,5 +24,5 @@ Microsoft.Win32,,,8,,,,,,,,,,,,,,8,
 MySql.Data.MySqlClient,48,,,,,,,,,,,48,,,,,,
 Newtonsoft.Json,,,91,,,,,,,,,,,,,,73,18
 ServiceStack,194,,7,27,,,,,75,,,92,,,,,7,
-System,65,25,12149,,8,8,9,,,4,3,33,1,17,3,4,10163,1986
+System,65,25,12738,,8,8,9,,,4,3,33,1,17,3,4,10730,2008
 Windows.Security.Cryptography.Core,1,,,,,,,1,,,,,,,,,,
