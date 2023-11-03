@@ -129,6 +129,9 @@ extensions:
     - Member[protocol].Member[openai_api_protocol].Member[ErrorResponse]
   - - pydantic.BaseModel~Subclass
     - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[LogProbs]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
     - Member[protocol].Member[openai_api_protocol].Member[ModelCard]
   - - pydantic.BaseModel~Subclass
     - fastchat
@@ -211,6 +214,9 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - fastchat
     - Member[serve].Member[openai_api_server].Member[HTTPAuthorizationCredentials]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[LogProbs]
   - - pydantic.BaseModel~Subclass
     - fastchat
     - Member[serve].Member[openai_api_server].Member[ModelCard]

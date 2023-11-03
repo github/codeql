@@ -79,6 +79,15 @@ extensions:
   - - io.StringIO~Subclass
     - benchmarks
     - Member[bm].Member[utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - benchmarks
+    - Member[io].Member[csv].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - benchmarks
+    - Member[io].Member[csv].Member[StringIO]
+  - - io.StringIO~Subclass
+    - benchmarks
+    - Member[io].Member[excel].Member[BytesIO]
   - - pickle~Alias
     - benchmarks
     - Member[utils].Member[pickle]

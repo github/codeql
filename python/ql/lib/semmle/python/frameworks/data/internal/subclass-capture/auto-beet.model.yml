@@ -15,6 +15,9 @@ extensions:
     - Member[PackFilterConfig]
   - - pydantic.BaseModel~Subclass
     - beet
+    - Member[PackLoadUrl]
+  - - pydantic.BaseModel~Subclass
+    - beet
     - Member[PackMatchOption]
   - - pydantic.BaseModel~Subclass
     - beet
@@ -145,6 +148,12 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - beet
     - Member[toolchain].Member[config].Member[PackFilterConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[config].Member[PackLoadUrl]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[config].Member[PackOverlayConfig]
   - - pydantic.BaseModel~Subclass
     - beet
     - Member[toolchain].Member[config].Member[PackageablePath]
