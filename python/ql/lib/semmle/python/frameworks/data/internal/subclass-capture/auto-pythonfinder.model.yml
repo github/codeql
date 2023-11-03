@@ -1,0 +1,72 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[Finder]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[SystemPath]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[cli].Member[Finder]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[PythonVersion]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[SystemPath]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[common].Member[FinderBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[mixins].Member[PathEntry]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[mixins].Member[PythonVersion]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[path].Member[FinderBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[path].Member[PathEntry]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[path].Member[PythonFinder]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[path].Member[SystemPath]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[python].Member[FinderBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[python].Member[PathEntry]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[python].Member[PythonFinder]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[python].Member[PythonVersion]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[models].Member[python].Member[VersionMap]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[pythonfinder].Member[FinderBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[pythonfinder].Member[Finder]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[pythonfinder].Member[PathEntry]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[pythonfinder].Member[PythonVersion]
+  - - pydantic.BaseModel~Subclass
+    - pythonfinder
+    - Member[pythonfinder].Member[SystemPath]

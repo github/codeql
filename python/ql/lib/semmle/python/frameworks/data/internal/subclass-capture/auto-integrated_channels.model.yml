@@ -1,0 +1,489 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[serializers].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[blackboard].Member[serializers].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[blackboard].Member[serializers].Member[BlackboardGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[blackboard].Member[views].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[blackboard].Member[views].Member[BlackboardGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[canvas].Member[serializers].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[canvas].Member[views].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[cornerstone].Member[serializers].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[cornerstone].Member[views].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[degreed2].Member[serializers].Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[degreed2].Member[views].Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[degreed].Member[serializers].Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[degreed].Member[views].Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[BlackboardLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[CanvasLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[ContentMetadataItemTransmission]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[CornerstoneLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[Degreed2LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[DegreedLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[GenericLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[MoodleLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[serializers].Member[SapSuccessFactorsLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[ContentMetadataItemTransmission]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[moodle].Member[serializers].Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[moodle].Member[views].Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[sap_success_factors].Member[serializers].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[sap_success_factors].Member[views].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[admin].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[admin].Member[BlackboardGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[admin].Member[BlackboardLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[models].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[models].Member[BlackboardGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[models].Member[BlackboardLearnerAssessmentDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[models].Member[BlackboardLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[models].Member[ConfigurationModel]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[models].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[models].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[views].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[canvas].Member[admin].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[canvas].Member[admin].Member[CanvasLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[canvas].Member[models].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[canvas].Member[models].Member[CanvasLearnerAssessmentDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[canvas].Member[models].Member[CanvasLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[canvas].Member[models].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[canvas].Member[models].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[canvas].Member[views].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[admin].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[admin].Member[CornerstoneGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[admin].Member[CornerstoneLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[models].Member[ConfigurationModel]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[models].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[models].Member[CornerstoneGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[models].Member[CornerstoneLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[models].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[models].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[views].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed2].Member[admin].Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed2].Member[admin].Member[Degreed2LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed2].Member[models].Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed2].Member[models].Member[Degreed2LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed2].Member[models].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed2].Member[models].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed].Member[admin].Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed].Member[admin].Member[DegreedGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed].Member[admin].Member[DegreedLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed].Member[models].Member[ConfigurationModel]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed].Member[models].Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed].Member[models].Member[DegreedGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed].Member[models].Member[DegreedLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed].Member[models].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[degreed].Member[models].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[admin].Member[ApiResponseRecord]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[admin].Member[ContentMetadataItemTransmission]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[exporters].Member[learner_data].Member[DataSharingConsent]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[exporters].Member[learner_data].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_csod_foreign_keys].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_csod_foreign_keys].Member[CornerstoneLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[BlackboardLearnerAssessmentDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[BlackboardLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[CanvasLearnerAssessmentDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[CanvasLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[ContentMetadataItemTransmission]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[CornerstoneLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[Degreed2LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[DegreedLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[GenericEnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[GenericLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[MoodleLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[management].Member[commands].Member[backfill_missing_foreign_keys].Member[SapSuccessFactorsLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[ApiResponseRecord]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[ContentMetadataItemTransmission]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[EnterpriseCustomerCatalog]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[GenericEnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[GenericLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[OrphanedContentTransmissions]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[SoftDeletionModel]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[tasks].Member[ContentMetadataItemTransmission]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[integrated_channel].Member[tasks].Member[OrphanedContentTransmissions]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[moodle].Member[admin].Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[moodle].Member[admin].Member[MoodleLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[moodle].Member[models].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[moodle].Member[models].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[moodle].Member[models].Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[moodle].Member[models].Member[MoodleLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[admin].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[admin].Member[SAPSuccessFactorsGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[admin].Member[SapSuccessFactorsLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[exporters].Member[learner_data].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[exporters].Member[learner_data].Member[PendingEnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[models].Member[ConfigurationModel]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[models].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[models].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[models].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[models].Member[SAPSuccessFactorsGlobalConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[models].Member[SapSuccessFactorsLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[transmitters].Member[learner_data].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[admin].Member[XAPILRSConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[management].Member[commands].Member[send_course_completions].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[management].Member[commands].Member[send_course_completions].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[management].Member[commands].Member[send_course_completions].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[management].Member[commands].Member[send_course_completions].Member[XAPILRSConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[management].Member[commands].Member[send_course_completions].Member[XAPILearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[management].Member[commands].Member[send_course_enrollments].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[management].Member[commands].Member[send_course_enrollments].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[management].Member[commands].Member[send_course_enrollments].Member[XAPILRSConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[management].Member[commands].Member[send_course_enrollments].Member[XAPILearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[models].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[models].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[models].Member[XAPILRSConfiguration]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[xapi].Member[models].Member[XAPILearnerDataTransmissionAudit]

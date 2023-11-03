@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - menuinst
+    - Member[_schema].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - menuinst
+    - Member[_schema].Member[BasePlatformSpecific]
+  - - pydantic.BaseModel~Subclass
+    - menuinst
+    - Member[_schema].Member[Linux]
+  - - pydantic.BaseModel~Subclass
+    - menuinst
+    - Member[_schema].Member[MacOS]
+  - - pydantic.BaseModel~Subclass
+    - menuinst
+    - Member[_schema].Member[MenuInstSchema]
+  - - pydantic.BaseModel~Subclass
+    - menuinst
+    - Member[_schema].Member[MenuItem]
+  - - pydantic.BaseModel~Subclass
+    - menuinst
+    - Member[_schema].Member[Platforms]
+  - - pydantic.BaseModel~Subclass
+    - menuinst
+    - Member[_schema].Member[Windows]
+  - - xml.etree.ElementTree~Subclass
+    - menuinst
+    - Member[platforms].Member[linux].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - menuinst
+    - Member[utils].Member[XMLTree]

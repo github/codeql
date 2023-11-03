@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - neat
+    - Member[utilities].Member[compute_gc].Member[pickle]
+  - - pickle~Alias
+    - neat
+    - Member[utilities].Member[repickle].Member[pickle]

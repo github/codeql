@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - management
+    - Member[commands].Member[create_groups].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - management
+    - Member[commands].Member[create_groups].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - management
+    - Member[commands].Member[create_groups].Member[Permission]

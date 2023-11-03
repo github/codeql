@@ -1,0 +1,285 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[badge].Member[views].Member[DetailBadgeView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[badge].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[badge].Member[views].Member[ListBadgeView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[badge].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[ArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[DayArchiveView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[DayBlogView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[ListBlogView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[MonthArchiveView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[MonthBlogView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[TodayArchiveView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[TodayBlogView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[YearArchiveView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[blog].Member[views].Member[YearBlogView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[comments].Member[views].Member[ListCommentView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[comments].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[faq].Member[views].Member[ListFAQView]
+  - - Django.Views.View~Subclass
+    - nano
+    - Member[faq].Member[views].Member[ListView]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[activation].Member[admin].Member[Key]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[activation].Member[models].Member[Key]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[activation].Member[views].Member[Key]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[badge].Member[admin].Member[Badge]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[badge].Member[models].Member[Badge]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[badge].Member[templatetags].Member[badge_tags].Member[Badge]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[badge].Member[views].Member[Badge]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[blog].Member[admin].Member[Entry]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[blog].Member[models].Member[Entry]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[blog].Member[tools].Member[_Entry]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[blog].Member[views].Member[Entry]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[chunk].Member[admin].Member[Chunk]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[chunk].Member[models].Member[Chunk]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[admin].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[forms].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[forms].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[models].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[models].Member[GenericForeignKeyAbstractModel]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[models].Member[UnorderedTreeMixin]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[templatetags].Member[comments_tags].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[templatetags].Member[comments_tags].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[templatetags].Member[comments_tags].Member[GenericForeignKeyAbstractModel]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[templatetags].Member[comments_tags].Member[UnorderedTreeMixin]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[views].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[comments].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[countries].Member[admin].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[countries].Member[models].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[faq].Member[admin].Member[QA]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[faq].Member[models].Member[QA]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[faq].Member[views].Member[QA]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[link].Member[models].Member[Link]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[admin].Member[MarkType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[admin].Member[Mark]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[managers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[models].Member[GenericForeignKeyAbstractModel]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[models].Member[MarkType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[models].Member[Mark]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[models].Member[MarkedMixin]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[templatetags].Member[nano_mark_tags].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[templatetags].Member[nano_mark_tags].Member[MarkType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[templatetags].Member[nano_mark_tags].Member[Mark]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[views].Member[MarkType]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[mark].Member[views].Member[Mark]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[privmsg].Member[admin].Member[PM]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[privmsg].Member[forms].Member[AbstractText]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[privmsg].Member[forms].Member[PM]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[privmsg].Member[models].Member[AbstractText]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[privmsg].Member[models].Member[PM]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[privmsg].Member[views].Member[PM]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[tools].Member[models].Member[AbstractText]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[tools].Member[models].Member[GenericForeignKeyAbstractModel]
+  - - Django.db.models.Model~Subclass
+    - nano
+    - Member[tools].Member[models].Member[UnorderedTreeMixin]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[activation].Member[forms].Member[ActivationForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[activation].Member[views].Member[ActivationForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[comments].Member[forms].Member[CommentDetailsForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[comments].Member[forms].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[comments].Member[views].Member[CommentDetailsForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[comments].Member[views].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[privmsg].Member[forms].Member[PMForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[privmsg].Member[views].Member[PMForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[user].Member[forms].Member[PasswordChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[user].Member[forms].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[user].Member[forms].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[user].Member[views].Member[PasswordChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[user].Member[views].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - nano
+    - Member[user].Member[views].Member[SignupForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - nano
+    - Member[activation].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - nano
+    - Member[comments].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - nano
+    - Member[mark].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - nano
+    - Member[privmsg].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - nano
+    - Member[user].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - nano
+    - Member[mark].Member[views].Member[HttpResponse]

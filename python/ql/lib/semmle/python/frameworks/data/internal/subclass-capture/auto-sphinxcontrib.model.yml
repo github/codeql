@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - sphinxcontrib
+    - Member[httpexample].Member[parsers].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - sphinxcontrib
+    - Member[httpexample].Member[parsers].Member[HTTPRequest]
+  - - io.StringIO~Subclass
+    - sphinxcontrib
+    - Member[httpexample].Member[parsers].Member[BytesIO]
+  - - xml.etree.ElementTree~Subclass
+    - sphinxcontrib
+    - Member[issuetracker].Member[resolvers].Member[etree]

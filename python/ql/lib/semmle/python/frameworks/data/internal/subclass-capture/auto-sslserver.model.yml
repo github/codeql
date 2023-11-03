@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - sslserver
+    - Member[management].Member[commands].Member[runsslserver].Member[SecureHTTPServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - sslserver
+    - Member[management].Member[commands].Member[runsslserver].Member[ThreadedWSGIServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - sslserver
+    - Member[management].Member[commands].Member[runsslserver].Member[WSGIServer]

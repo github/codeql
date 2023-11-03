@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - api_client
+    - Member[enterprise].Member[indicators_of_compromise].Member[Response]
+  - - requests.models.Response~Subclass
+    - api_client
+    - Member[protocol].Member[Response]
+  - - requests.models.Response~Subclass
+    - api_client
+    - Member[session].Member[Response]

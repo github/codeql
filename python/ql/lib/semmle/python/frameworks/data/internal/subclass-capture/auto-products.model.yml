@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - products
+    - Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - products
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - products
+    - Member[views].Member[ProductsListView]
+  - - Django.Views.View~Subclass
+    - products
+    - Member[views].Member[SearchView]
+  - - Django.Views.View~Subclass
+    - products
+    - Member[views].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[admin].Member[ProductCategory]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[admin].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[models].Member[GeneralProduct]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[models].Member[ProductCategory]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[models].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[serializers].Member[ProductCategory]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[serializers].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[translation].Member[ProductCategory]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[translation].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[views].Member[ProductCategory]
+  - - Django.db.models.Model~Subclass
+    - products
+    - Member[views].Member[Product]

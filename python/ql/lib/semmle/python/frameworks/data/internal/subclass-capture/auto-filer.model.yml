@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[fileadmin].Member[EasyThumbnail]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[Thumbnail]
+  - - django.db.models.FileField~Subclass
+    - filer
+    - Member[fields].Member[multistorage_file].Member[MultiStorageFileField]
+  - - django.db.models.FileField~Subclass
+    - filer
+    - Member[models].Member[MultiStorageFileField]
+  - - django.db.models.FileField~Subclass
+    - filer
+    - Member[models].Member[filemodels].Member[MultiStorageFileField]

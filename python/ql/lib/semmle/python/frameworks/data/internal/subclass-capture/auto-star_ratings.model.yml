@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - star_ratings
+    - Member[admin].Member[UserRating]
+  - - Django.db.models.Model~Subclass
+    - star_ratings
+    - Member[forms].Member[UserRating]
+  - - Django.db.models.Model~Subclass
+    - star_ratings
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - star_ratings
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - star_ratings
+    - Member[models].Member[UserRating]
+  - - Django.db.models.Model~Subclass
+    - star_ratings
+    - Member[templatetags].Member[ratings].Member[UserRating]
+  - - Django.db.models.Model~Subclass
+    - star_ratings
+    - Member[views].Member[ContentType]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_database
+    - Member[_abc_async_database].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_database
+    - Member[database].Member[Engine]
+  - - sqlalchemy.orm.Session~Subclass
+    - sqlalchemy_database
+    - Member[database].Member[Session]

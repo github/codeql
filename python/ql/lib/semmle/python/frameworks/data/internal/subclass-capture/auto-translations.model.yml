@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - translations
+    - Member[management].Member[commands].Member[synctranslations].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - translations
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - translations
+    - Member[utils].Member[ContentType]

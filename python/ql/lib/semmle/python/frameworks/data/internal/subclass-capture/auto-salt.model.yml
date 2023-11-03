@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado_websockets].Member[AllEventsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado_websockets].Member[FormattedEventsHandler]

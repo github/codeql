@@ -1,0 +1,111 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[CourseBaseViewSet]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[CourseRelationshipView]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[CourseTermRelationshipView]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[CourseTermViewSet]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[CourseViewSet]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[GradeRelationshipView]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[GradeViewSet]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[InstructorRelationshipView]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[InstructorViewSet]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[ModelViewSet]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[NonModelViewSet]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[PersonRelationshipView]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[PersonViewSet]
+  - - Django.Views.View~Subclass
+    - myapp
+    - Member[views].Member[RelationshipView]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[models].Member[CommonModel]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[models].Member[CourseTerm]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[models].Member[Course]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[models].Member[Grade]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[models].Member[Instructor]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[models].Member[NonModel]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[models].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[models].Member[Student]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[serializers].Member[CourseTerm]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[serializers].Member[Course]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[serializers].Member[Grade]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[serializers].Member[Instructor]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[serializers].Member[NonModel]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[serializers].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[views].Member[CourseTerm]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[views].Member[Course]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[views].Member[Grade]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[views].Member[Instructor]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[views].Member[NonModel]
+  - - Django.db.models.Model~Subclass
+    - myapp
+    - Member[views].Member[Person]
+  - - rest_framework.response.Response~Subclass
+    - myapp
+    - Member[views].Member[Response]

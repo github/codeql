@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - nonebug
+    - Member[mixin].Member[call_api].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebug
+    - Member[mixin].Member[call_api].Member[fake].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebug
+    - Member[mixin].Member[call_api].Member[model].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebug
+    - Member[mixin].Member[process].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebug
+    - Member[mixin].Member[process].Member[model].Member[Event]

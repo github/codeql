@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - afsapi
+    - Member[api].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - afsapi
+    - Member[utils].Member[ET]

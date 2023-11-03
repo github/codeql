@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - datapane
+    - Member[common].Member[df_processor].Member[StringIO]
+  - - lxml.etree~Alias
+    - datapane
+    - Member[client].Member[api].Member[report].Member[etree]
+  - - lxml.etree~Alias
+    - datapane
+    - Member[common].Member[report].Member[etree]
+  - - pickle~Alias
+    - datapane
+    - Member[client].Member[api].Member[dp_object].Member[pickle]
+  - - pickle~Alias
+    - datapane
+    - Member[client].Member[files].Member[pickle]
+  - - requests.models.Response~Subclass
+    - datapane
+    - Member[client].Member[api].Member[common].Member[Response]

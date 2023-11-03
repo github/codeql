@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - covid19
+    - Member[views].Member[Covid19]
+  - - Django.Views.View~Subclass
+    - covid19
+    - Member[views].Member[TemplateView]
+  - - pickle~Alias
+    - covid19
+    - Member[google_sheet].Member[pickle]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - rasa
+    - Member[core].Member[channels].Member[telegram].Member[InlineKeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - rasa
+    - Member[core].Member[channels].Member[telegram].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - rasa
+    - Member[core].Member[channels].Member[telegram].Member[KeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - rasa
+    - Member[core].Member[channels].Member[telegram].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - rasa
+    - Member[core].Member[channels].Member[telegram].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - rasa
+    - Member[core].Member[channels].Member[telegram].Member[Update]

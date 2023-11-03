@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - conda_build
+    - Member[bdist_conda].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_build
+    - Member[conda_interface].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_build
+    - Member[skeletons].Member[pypi].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_build
+    - Member[utils].Member[StringIO]

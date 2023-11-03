@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_mate
+    - Member[crud].Member[deleting].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_mate
+    - Member[crud].Member[inserting].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_mate
+    - Member[crud].Member[selecting].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_mate
+    - Member[crud].Member[updating].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_mate
+    - Member[engine_creator].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_mate
+    - Member[io].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_mate
+    - Member[orm].Member[extended_declarative_base].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_mate
+    - Member[pt].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlalchemy_mate
+    - Member[utils].Member[Engine]
+  - - sqlalchemy.orm.Session~Subclass
+    - sqlalchemy_mate
+    - Member[orm].Member[extended_declarative_base].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sqlalchemy_mate
+    - Member[pt].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sqlalchemy_mate
+    - Member[utils].Member[Session]

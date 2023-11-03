@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - antsibull_core
+    - Member[venv].Member[StdLogger]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[app_context].Member[AppContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[app_context].Member[LibContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[config].Member[AppContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[config].Member[LibContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[schemas].Member[config].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[schemas].Member[config].Member[LogEmitterModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[schemas].Member[config].Member[LogFiltersModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[schemas].Member[config].Member[LogOutputModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[schemas].Member[config].Member[LoggingModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[schemas].Member[context].Member[AppContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[schemas].Member[context].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[schemas].Member[context].Member[LibContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_core
+    - Member[schemas].Member[context].Member[LoggingModel]

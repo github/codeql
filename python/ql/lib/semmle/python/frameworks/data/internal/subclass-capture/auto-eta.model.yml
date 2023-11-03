@@ -1,0 +1,57 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - eta
+    - Member[core].Member[utils].Member[_ETAStringIO]
+  - - io.StringIO~Subclass
+    - eta
+    - Member[core].Member[utils].Member[_StringIO]
+  - - lxml.etree~Alias
+    - eta
+    - Member[tensorflow].Member[models].Member[research].Member[object_detection].Member[dataset_tools].Member[create_pascal_tf_record].Member[etree]
+  - - lxml.etree~Alias
+    - eta
+    - Member[tensorflow].Member[models].Member[research].Member[object_detection].Member[dataset_tools].Member[create_pet_tf_record].Member[etree]
+  - - pickle~Alias
+    - eta
+    - Member[core].Member[serial].Member[_pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[darkflow].Member[darkflow].Member[net].Member[flow].Member[pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[darkflow].Member[darkflow].Member[net].Member[yolo].Member[data].Member[pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[darkflow].Member[darkflow].Member[net].Member[yolo].Member[misc].Member[pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[darkflow].Member[darkflow].Member[net].Member[yolo].Member[train].Member[pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[darkflow].Member[darkflow].Member[net].Member[yolov2].Member[data].Member[pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[darkflow].Member[darkflow].Member[net].Member[yolov2].Member[train].Member[pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[darkflow].Member[darkflow].Member[utils].Member[process].Member[pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[models].Member[official].Member[nlp].Member[xlnet].Member[run_squad].Member[pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[models].Member[official].Member[nlp].Member[xlnet].Member[squad_utils].Member[pickle]
+  - - pickle~Alias
+    - eta
+    - Member[tensorflow].Member[models].Member[official].Member[recommendation].Member[data_preprocessing].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - eta
+    - Member[tensorflow].Member[darkflow].Member[darkflow].Member[utils].Member[pascal_voc_clean_xml].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - eta
+    - Member[tensorflow].Member[models].Member[research].Member[slim].Member[datasets].Member[process_bounding_boxes].Member[ET]

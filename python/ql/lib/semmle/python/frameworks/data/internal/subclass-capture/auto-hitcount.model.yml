@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[managers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[templatetags].Member[hitcount_tags].Member[ContentType]

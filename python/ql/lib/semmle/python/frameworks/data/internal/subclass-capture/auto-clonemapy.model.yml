@@ -1,0 +1,99 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - clonemapy
+    - Member[agency].Member[AgencyHandler]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[ACLMessage]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[Address]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[Agencies]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[AgencyInfoFull]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[AgencyInfo]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[AgentInfo]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[AgentSpec]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[Agents]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[CloneMAP]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[Communication]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[DFConfig]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[Edge]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[Graph]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[ImageGroupConfig]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[ImageGroupInfo]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[ImageGroupSpec]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[ImageGroups]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[LogMessage]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[LoggerConfig]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[MASConfig]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[MASInfoShort]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[MASInfo]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[MASSpec]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[MASs]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[MQTTConfig]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[Node]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[Service]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[Status]
+  - - pydantic.BaseModel~Subclass
+    - clonemapy
+    - Member[datamodels].Member[TimeSeriesData]

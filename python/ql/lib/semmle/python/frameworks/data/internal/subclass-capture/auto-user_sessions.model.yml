@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - user_sessions
+    - Member[urls].Member[SessionDeleteView]
+  - - Django.Views.View~Subclass
+    - user_sessions
+    - Member[views].Member[BaseDetailView]
+  - - Django.Views.View~Subclass
+    - user_sessions
+    - Member[views].Member[SessionDeleteView]

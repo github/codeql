@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - languages
+    - Member[urls].Member[ArticleViewSet]
+  - - Django.Views.View~Subclass
+    - languages
+    - Member[urls].Member[CollectionViewSet]
+  - - Django.Views.View~Subclass
+    - languages
+    - Member[urls].Member[TaskViewSet]
+  - - Django.Views.View~Subclass
+    - languages
+    - Member[views].Member[ArticleViewSet]
+  - - Django.Views.View~Subclass
+    - languages
+    - Member[views].Member[CollectionViewSet]
+  - - Django.Views.View~Subclass
+    - languages
+    - Member[views].Member[TaskViewSet]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[admin].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[models].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[models].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[models].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[resources].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[serializers].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[serializers].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[serializers].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[views].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[views].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - languages
+    - Member[views].Member[Task]
+  - - rest_framework.response.Response~Subclass
+    - languages
+    - Member[views].Member[Response]

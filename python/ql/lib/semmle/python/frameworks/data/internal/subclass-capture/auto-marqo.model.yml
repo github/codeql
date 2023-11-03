@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - marqo
+    - Member[client].Member[BulkSearchBody]
+  - - pydantic.BaseModel~Subclass
+    - marqo
+    - Member[client].Member[BulkSearchQuery]
+  - - pydantic.BaseModel~Subclass
+    - marqo
+    - Member[index].Member[CreateIndexSettings]
+  - - pydantic.BaseModel~Subclass
+    - marqo
+    - Member[models].Member[create_index_settings].Member[CreateIndexSettings]
+  - - pydantic.BaseModel~Subclass
+    - marqo
+    - Member[models].Member[search_models].Member[BaseMarqoModel]
+  - - pydantic.BaseModel~Subclass
+    - marqo
+    - Member[models].Member[search_models].Member[BulkSearchBody]
+  - - pydantic.BaseModel~Subclass
+    - marqo
+    - Member[models].Member[search_models].Member[BulkSearchQuery]
+  - - pydantic.BaseModel~Subclass
+    - marqo
+    - Member[models].Member[search_models].Member[SearchBody]
+  - - requests.models.Response~Subclass
+    - marqo
+    - Member[errors].Member[Response]

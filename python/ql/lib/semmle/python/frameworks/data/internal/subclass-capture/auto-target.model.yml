@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - target
+    - Member[cmd].Member[CpuHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - target
+    - Member[cmd].Member[DiskHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - target
+    - Member[cmd].Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - target
+    - Member[cmd].Member[MemoryHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - target
+    - Member[cmd].Member[SleepHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - target
+    - Member[cmd].Member[SleepyHandler]

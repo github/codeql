@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - edx_toggles
+    - Member[toggles].Member[state].Member[internal].Member[report].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - edx_toggles
+    - Member[toggles].Member[state].Member[internal].Member[report].Member[Switch]

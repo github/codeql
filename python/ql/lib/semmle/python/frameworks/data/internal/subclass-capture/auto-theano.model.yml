@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - theano
+    - Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - theano
+    - Member[configparser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - theano
+    - Member[gof].Member[cmodule].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - theano
+    - Member[gof].Member[cmodule].Member[StringIO]
+  - - io.StringIO~Subclass
+    - theano
+    - Member[gof].Member[optdb].Member[StringIO]
+  - - io.StringIO~Subclass
+    - theano
+    - Member[gpuarray].Member[nnet].Member[StringIO]
+  - - io.StringIO~Subclass
+    - theano
+    - Member[misc].Member[hooks].Member[check_whitespace].Member[StringIO]
+  - - io.StringIO~Subclass
+    - theano
+    - Member[misc].Member[pkl_utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - theano
+    - Member[tensor].Member[opt].Member[StringIO]

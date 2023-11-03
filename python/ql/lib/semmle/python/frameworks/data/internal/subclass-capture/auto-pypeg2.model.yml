@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - pypeg2
+    - Member[xmlast].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pypeg2
+    - Member[xmlast].Member[etree]

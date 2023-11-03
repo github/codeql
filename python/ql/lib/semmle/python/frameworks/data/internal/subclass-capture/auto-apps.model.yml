@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[import_data].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[import_data].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[views].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[views].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[views].Member[Task]

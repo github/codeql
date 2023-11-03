@@ -1,0 +1,66 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - micropy
+    - Member[pyd].Member[abc].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - micropy
+    - Member[pyd].Member[abc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - micropy
+    - Member[pyd].Member[pydevice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - micropy
+    - Member[pyd].Member[pydevice].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[MicropyStubPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[MicropythonStubsPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[RepositoryInfo]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[StubPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[manifest].Member[RepositoryInfo]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[manifest].Member[StubPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[package].Member[StubPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[repo].Member[RepositoryInfo]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[repo_package].Member[StubPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[repositories].Member[MicropyStubPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[repositories].Member[MicropythonStubsPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[repositories].Member[micropy].Member[MicropyStubPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[repositories].Member[micropy].Member[StubPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[repositories].Member[micropython].Member[MicropythonStubsPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[repositories].Member[micropython].Member[StubPackage]
+  - - pydantic.BaseModel~Subclass
+    - micropy
+    - Member[stubs].Member[repository_info].Member[RepositoryInfo]

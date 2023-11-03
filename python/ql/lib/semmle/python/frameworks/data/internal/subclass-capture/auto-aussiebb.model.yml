@@ -1,0 +1,117 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[AccountContact]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[AussieBBOutage]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[FetchService]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[GetServicesResponse]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[MFAMethod]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[OrderDetailResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[OrderResponse]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[VOIPDetails]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[VOIPDevice]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[asyncio].Member[AccountContact]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[asyncio].Member[FetchService]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[asyncio].Member[GetServicesResponse]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[asyncio].Member[MFAMethod]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[asyncio].Member[OrderDetailResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[asyncio].Member[VOIPDetails]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[asyncio].Member[VOIPDevice]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[APIResponseLinks]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[AccountContact]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[Address]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[AussieBBConfigFile]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[AussieBBOutage]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[BaseService]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[ConfigUser]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[FetchDetails]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[FetchService]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[FetchSubscriptionDict]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[FetchSubscription]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[GetServicesResponse]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[MFAMethod]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[NBNDetails]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[NBNService]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[OrderDetailResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[OrderResponse]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[OutageRecord]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[VOIPDetails]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[VOIPDevice]
+  - - pydantic.BaseModel~Subclass
+    - aussiebb
+    - Member[types].Member[VOIPService]

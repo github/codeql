@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - moulinrouge
+    - Member[Flask]
+  - - flask.Response~Subclass
+    - moulinrouge
+    - Member[Response]
+  - - pickle~Alias
+    - moulinrouge
+    - Member[pickle]

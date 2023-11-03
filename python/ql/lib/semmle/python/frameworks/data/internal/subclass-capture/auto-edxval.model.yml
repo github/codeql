@@ -1,0 +1,69 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[admin].Member[ThirdPartyTranscriptCredentialsState]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[admin].Member[TranscriptPreference]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[admin].Member[VideoImage]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[admin].Member[VideoTranscript]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[api].Member[ThirdPartyTranscriptCredentialsState]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[api].Member[TranscriptPreference]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[api].Member[VideoImage]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[api].Member[VideoTranscript]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[models].Member[ThirdPartyTranscriptCredentialsState]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[models].Member[TranscriptPreference]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[models].Member[VideoImage]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[models].Member[VideoTranscript]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[pacts].Member[middleware].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[pacts].Member[utils].Member[VideoImage]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[pacts].Member[utils].Member[VideoTranscript]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[serializers].Member[TranscriptPreference]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[serializers].Member[VideoImage]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[serializers].Member[VideoTranscript]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[views].Member[VideoImage]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[views].Member[VideoTranscript]

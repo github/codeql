@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[config_manager].Member[ConfigFile]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[CelerySettings]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[GunicornSettings]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[GxItProxySettings]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[ReportsSettings]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[TusdSettings]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[ConfigFile]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[GalaxyCeleryBeatService]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[GalaxyCeleryService]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[GalaxyGunicornService]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[GalaxyGxItProxyService]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[GalaxyReportsService]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[GalaxyStandaloneService]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[GalaxyTUSDService]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[GalaxyUnicornHerderService]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[ServiceList]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[state].Member[Service]
+  - - xml.etree.ElementTree~Subclass
+    - gravity
+    - Member[config_manager].Member[elementtree]

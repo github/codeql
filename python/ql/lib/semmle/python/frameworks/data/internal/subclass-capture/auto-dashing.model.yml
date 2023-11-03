@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - dashing
+    - Member[widgets].Member[GraphWidget]
+  - - Django.Views.View~Subclass
+    - dashing
+    - Member[widgets].Member[KnobWidget]
+  - - Django.Views.View~Subclass
+    - dashing
+    - Member[widgets].Member[ListWidget]
+  - - Django.Views.View~Subclass
+    - dashing
+    - Member[widgets].Member[MapWidget]
+  - - Django.Views.View~Subclass
+    - dashing
+    - Member[widgets].Member[NumberWidget]
+  - - Django.Views.View~Subclass
+    - dashing
+    - Member[widgets].Member[View]
+  - - Django.Views.View~Subclass
+    - dashing
+    - Member[widgets].Member[Widget]

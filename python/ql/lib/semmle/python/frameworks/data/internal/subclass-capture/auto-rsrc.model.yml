@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - rsrc
+    - Member[framework].Member[django].Member[MethodView]
+  - - django.http.response.HttpResponse~Subclass
+    - rsrc
+    - Member[framework].Member[django].Member[HttpResponse]
+  - - flask.MethodView~Subclass
+    - rsrc
+    - Member[framework].Member[flask].Member[MethodView]
+  - - sqlalchemy.orm.Session~Subclass
+    - rsrc
+    - Member[contrib].Member[db].Member[sqla].Member[view].Member[Session]

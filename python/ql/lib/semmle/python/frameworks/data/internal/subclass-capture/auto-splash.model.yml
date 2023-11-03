@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - splash
+    - Member[admin].Member[SplashConfig]
+  - - Django.db.models.Model~Subclass
+    - splash
+    - Member[middleware].Member[SplashConfig]
+  - - Django.db.models.Model~Subclass
+    - splash
+    - Member[models].Member[ConfigurationModel]
+  - - Django.db.models.Model~Subclass
+    - splash
+    - Member[models].Member[SplashConfig]

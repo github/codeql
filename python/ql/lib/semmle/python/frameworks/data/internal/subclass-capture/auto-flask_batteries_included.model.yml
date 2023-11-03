@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - flask_batteries_included
+    - Member[blueprint_debug].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - flask_batteries_included
+    - Member[blueprint_monitoring].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - flask_batteries_included
+    - Member[helpers].Member[apispec].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - flask_batteries_included
+    - Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_batteries_included
+    - Member[blueprint_monitoring].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_batteries_included
+    - Member[config].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_batteries_included
+    - Member[helpers].Member[error_handler].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_batteries_included
+    - Member[helpers].Member[etags].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_batteries_included
+    - Member[helpers].Member[metrics].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_batteries_included
+    - Member[helpers].Member[request_id].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_batteries_included
+    - Member[sqldb].Member[Flask]
+  - - flask.Response~Subclass
+    - flask_batteries_included
+    - Member[blueprint_debug].Member[Response]
+  - - flask.Response~Subclass
+    - flask_batteries_included
+    - Member[blueprint_monitoring].Member[Response]
+  - - flask.Response~Subclass
+    - flask_batteries_included
+    - Member[helpers].Member[error_handler].Member[Response]
+  - - flask.Response~Subclass
+    - flask_batteries_included
+    - Member[helpers].Member[metrics].Member[FlaskResponse]
+  - - flask.Response~Subclass
+    - flask_batteries_included
+    - Member[helpers].Member[routes].Member[Response]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - nbgitpuller
+    - Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgitpuller
+    - Member[handlers].Member[LegacyGitSyncRedirectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgitpuller
+    - Member[handlers].Member[LegacyInteractRedirectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgitpuller
+    - Member[handlers].Member[SyncHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgitpuller
+    - Member[handlers].Member[UIHandler]

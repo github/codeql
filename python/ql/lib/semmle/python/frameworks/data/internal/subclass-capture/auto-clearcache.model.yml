@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - clearcache
+    - Member[urls].Member[ClearCacheAdminView]
+  - - Django.Views.View~Subclass
+    - clearcache
+    - Member[views].Member[ClearCacheAdminView]
+  - - Django.Views.View~Subclass
+    - clearcache
+    - Member[views].Member[FormView]
+  - - django.forms.BaseForm~Subclass
+    - clearcache
+    - Member[forms].Member[ClearCacheForm]
+  - - django.forms.BaseForm~Subclass
+    - clearcache
+    - Member[views].Member[ClearCacheForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - clearcache
+    - Member[views].Member[HttpResponseRedirect]

@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - disqus
+    - Member[management].Member[commands].Member[disqus_export].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - disqus
+    - Member[templatetags].Member[disqus_tags].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - disqus
+    - Member[wxr_feed].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - disqus
+    - Member[wxr_feed].Member[Site]

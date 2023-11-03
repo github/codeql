@@ -1,0 +1,330 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[AnalysisInputRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[AnalysisListRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[AnalysisStatusRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[AnalysisSubmissionRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[AuthLoginRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[AuthLogoutRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[AuthRefreshRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[DetectedIssuesRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[GroupCreationRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[GroupListRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[GroupOperationRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[GroupStatusRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[ProjectCreationRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[ProjectDeleteRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[ProjectListRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[ProjectStatusRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[ProjectUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[VersionRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[analysis_input].Member[AnalysisInputRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[analysis_list].Member[AnalysisListRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[analysis_status].Member[AnalysisStatusRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[analysis_submission].Member[AnalysisSubmissionRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[auth_login].Member[AuthLoginRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[auth_logout].Member[AuthLogoutRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[auth_refresh].Member[AuthRefreshRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[detected_issues].Member[DetectedIssuesRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[group_creation].Member[GroupCreationRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[group_list].Member[GroupListRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[group_operation].Member[GroupOperationRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[group_status].Member[GroupStatusRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[project_creation].Member[ProjectCreationRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[project_deletion].Member[ProjectDeleteRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[project_list].Member[ProjectListRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[project_status].Member[ProjectStatusRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[project_update].Member[ProjectUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[request].Member[version].Member[VersionRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[AnalysisInputResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[AnalysisListResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[AnalysisStatusResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[AnalysisSubmissionResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[Analysis]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[AuthLoginResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[AuthLogoutResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[AuthRefreshResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[DetectedIssuesResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[GroupCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[GroupListResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[GroupOperationResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[GroupStatistics]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[GroupStatusResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[IssueReport]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[Issue]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[ProjectCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[ProjectDeletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[ProjectListResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[ProjectStatusResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[ProjectUpdateResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[SourceLocation]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[SourceMap]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[VersionResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[VulnerabilityStatistics]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis].Member[AnalysisShort]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis].Member[Analysis]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis].Member[VulnerabilityStatistics]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis_input].Member[AnalysisInputResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis_input].Member[AnalysisSubmissionRequest]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis_list].Member[AnalysisListResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis_list].Member[AnalysisShort]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis_status].Member[AnalysisShort]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis_status].Member[AnalysisStatusResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis_submission].Member[AnalysisShort]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[analysis_submission].Member[AnalysisSubmissionResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[auth_login].Member[AuthLoginResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[auth_logout].Member[AuthLogoutResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[auth_refresh].Member[AuthRefreshResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[detected_issues].Member[DetectedIssuesResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[detected_issues].Member[IssueReport]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[detected_issues].Member[Issue]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group].Member[GroupStatistics]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group].Member[VulnerabilityStatistics]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group_creation].Member[GroupCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group_creation].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group_list].Member[GroupListResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group_list].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group_operation].Member[GroupOperationResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group_operation].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group_status].Member[GroupStatusResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[group_status].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[issue].Member[IssueDescription]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[issue].Member[Issue]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[issue].Member[LineLocation]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[issue].Member[SourceLocation]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[issue].Member[SourceMapLocation]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[issue].Member[SourceMap]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project].Member[Project]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project].Member[ShortProject]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project_creation].Member[ProjectCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project_creation].Member[Project]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project_deletion].Member[ProjectDeletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project_list].Member[ProjectListResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project_list].Member[ShortProject]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project_status].Member[ProjectStatusResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project_status].Member[Project]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project_update].Member[ProjectUpdateResponse]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[project_update].Member[Project]
+  - - pydantic.BaseModel~Subclass
+    - mythx_models
+    - Member[response].Member[version].Member[VersionResponse]

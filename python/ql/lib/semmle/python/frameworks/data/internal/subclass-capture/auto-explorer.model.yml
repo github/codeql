@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[utils].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[SafeLoginView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[auth].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[auth].Member[SafeLoginView]

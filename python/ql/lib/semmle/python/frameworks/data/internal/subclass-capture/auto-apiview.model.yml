@@ -1,0 +1,81 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[fields].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[fields].Member[FloatField]
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[fields].Member[IntegerField]
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[fields].Member[LatitudeField]
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[fields].Member[LongitudeField]
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[fields].Member[MobileField]
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[fields].Member[PairCharField]
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[fields].Member[SplitCharField]
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[fields].Member[TimestampField]
+  - - Django.Forms.Field~Subclass
+    - apiview
+    - Member[views].Member[models].Member[JSONFormField]
+  - - Django.Views.View~Subclass
+    - apiview
+    - Member[views].Member[base].Member[DjangoView]
+  - - Django.Views.View~Subclass
+    - apiview
+    - Member[views].Member[rest_framework].Member[APIView]
+  - - Django.db.models.Model~Subclass
+    - apiview
+    - Member[admintools].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - apiview
+    - Member[filters].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - apiview
+    - Member[model].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - apiview
+    - Member[model].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - apiview
+    - Member[model].Member[Permission]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - apiview
+    - Member[admintools].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - apiview
+    - Member[admintools].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - apiview
+    - Member[view].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - apiview
+    - Member[views].Member[models].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - apiview
+    - Member[logger].Member[ManualCallerLogger]
+  - - pickle~Alias
+    - apiview
+    - Member[consumers].Member[pickle]
+  - - rest_framework.response.Response~Subclass
+    - apiview
+    - Member[view].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - apiview
+    - Member[views].Member[rest_framework].Member[Response]

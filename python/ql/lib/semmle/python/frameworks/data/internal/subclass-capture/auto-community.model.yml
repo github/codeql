@@ -1,0 +1,72 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - community
+    - Member[services].Member[stack_service].Member[ClientSession]
+  - - flask.Flask~Subclass
+    - community
+    - Member[app].Member[Flask]
+  - - flask.Response~Subclass
+    - community
+    - Member[app].Member[Response]
+  - - sqlalchemy.engine.Connection~Subclass
+    - community
+    - Member[database].Member[utils].Member[Connection]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[database].Member[events].Member[annotation_dump_logger].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[database].Member[schema_migrations].Member[alembic].Member[utils].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[database].Member[schema_migrations].Member[alembic].Member[versions].Member[migration_2019_08_30_add_unique_id_to_entitysynonyms_d45a0bf21e89].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[database].Member[schema_migrations].Member[alembic].Member[versions].Member[migration_2019_10_25_add_column_for_synonym_foreign_key_a813c6c15a4c].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[database].Member[schema_migrations].Member[alembic].Member[versions].Member[migration_2020_05_06_add_in_training_data_column_af3596f6982f].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[database].Member[service].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[database].Member[utils].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[local].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[server].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[services].Member[db_migration_service].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[services].Member[evaluation_service].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[services].Member[event_consumers].Member[event_consumer].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[services].Member[event_service].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[services].Member[integrated_version_control].Member[git_service].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[services].Member[intent_service].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[services].Member[model_service].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[sql_migrations].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - community
+    - Member[telemetry].Member[Session]

@@ -1,0 +1,69 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - pytraccar
+    - Member[client].Member[Logger]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[GeofenceModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[PositionModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[ReportsEventeModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[ServerModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[client].Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[client].Member[GeofenceModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[client].Member[PositionModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[client].Member[ReportsEventeModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[client].Member[ServerModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[GeofenceModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[PositionModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[ReportsEventeModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[ServerModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[device].Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[geofence].Member[GeofenceModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[position].Member[PositionModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[reports_event].Member[ReportsEventeModel]
+  - - pydantic.BaseModel~Subclass
+    - pytraccar
+    - Member[models].Member[server].Member[ServerModel]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - faraday_agent_dispatcher
+    - Member[cli].Member[main].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - faraday_agent_dispatcher
+    - Member[executor_helper].Member[ClientSession]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_agent_dispatcher
+    - Member[static].Member[executors].Member[official].Member[gvm_openvas].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_agent_dispatcher
+    - Member[static].Member[executors].Member[official].Member[openvas_legacy].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_agent_dispatcher
+    - Member[static].Member[executors].Member[official].Member[qualys].Member[ET]

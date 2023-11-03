@@ -1,0 +1,180 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[fields].Member[CharFieldStripped]
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[fields].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[fields].Member[ChoiceAndCharField]
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[fields].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[fields].Member[CommaSeparatedIntegerListField]
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[fields].Member[CommaSeparatedListField]
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[fields].Member[DecimalField]
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[fields].Member[MultiValueField]
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[fields].Member[MultipleDecimalField]
+  - - Django.Forms.Field~Subclass
+    - django_core
+    - Member[forms].Member[mixins].Member[query].Member[CharFieldStripped]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[ApiFormView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[request].Member[ApiFormView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[request].Member[BaseFormView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[FormView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[JSONHybridCreateView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[JSONHybridDeleteView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[JSONHybridFormView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[JSONHybridTemplateView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[JSONHybridUpdateView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - django_core
+    - Member[views].Member[response].Member[View]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[admin].Member[TokenAuthorization]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[auth].Member[views].Member[TokenAuthorization]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[AbstractSafeDeleteModelMixin]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[AbstractTokenModel]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[AbstractUrlLinkModelMixin]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[managers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[base].Member[AbstractBaseModel]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[base].Member[AbstractDateTimeTrackingModelMixin]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[crud].Member[AbstractSafeDeleteModelMixin]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[crud].Member[ReadOnlyModelMixin]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[dates].Member[AbstractDateTimeTrackingModelMixin]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[dates].Member[AbstractExpiresModelMixin]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[generic].Member[AbstractGenericObject]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[generic].Member[AbstractNullableGenericObject]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[http].Member[AbstractHttpStatusModelMixin]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[tokens].Member[AbstractTokenModel]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[db].Member[models].Member[mixins].Member[urls].Member[AbstractUrlLinkModelMixin]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[models].Member[AbstractBaseModel]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[models].Member[AbstractTokenModel]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[models].Member[TokenAuthorization]
+  - - Django.db.models.Model~Subclass
+    - django_core
+    - Member[views].Member[mixins].Member[generic].Member[ContentType]
+  - - django.forms.BaseForm~Subclass
+    - django_core
+    - Member[forms].Member[mixins].Member[audit].Member[AddFormAuditMixin]
+  - - django.forms.BaseForm~Subclass
+    - django_core
+    - Member[forms].Member[mixins].Member[audit].Member[EditFormAuditMixin]
+  - - django.forms.BaseForm~Subclass
+    - django_core
+    - Member[forms].Member[mixins].Member[common].Member[DeleteFormMixin]
+  - - django.forms.BaseForm~Subclass
+    - django_core
+    - Member[forms].Member[mixins].Member[common].Member[PrefixFormMixin]
+  - - django.forms.BaseForm~Subclass
+    - django_core
+    - Member[forms].Member[mixins].Member[paging].Member[PagingFormMixin]
+  - - django.forms.BaseForm~Subclass
+    - django_core
+    - Member[forms].Member[mixins].Member[query].Member[Form]
+  - - django.forms.BaseForm~Subclass
+    - django_core
+    - Member[forms].Member[mixins].Member[query].Member[QueryFormMixin]
+  - - django.forms.BaseForm~Subclass
+    - django_core
+    - Member[forms].Member[mixins].Member[users].Member[UserAuthorizationRequiredForm]
+  - - django.forms.BaseForm~Subclass
+    - django_core
+    - Member[views].Member[response].Member[Form]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_core
+    - Member[views].Member[response].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - django_core
+    - Member[views].Member[JSONResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_core
+    - Member[views].Member[response].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_core
+    - Member[views].Member[response].Member[JSONResponse]

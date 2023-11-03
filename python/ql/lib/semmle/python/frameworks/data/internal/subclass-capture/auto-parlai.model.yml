@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - parlai
+    - Member[chat_service].Member[services].Member[websocket].Member[sockets].Member[MessageSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - parlai
+    - Member[chat_service].Member[services].Member[websocket].Member[sockets].Member[WebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - parlai
+    - Member[chat_service].Member[services].Member[websocket].Member[websocket_manager].Member[MessageSocketHandler]

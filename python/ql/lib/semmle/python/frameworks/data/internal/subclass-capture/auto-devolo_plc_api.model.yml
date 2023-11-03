@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - devolo_plc_api
+    - Member[clients].Member[protobuf].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - devolo_plc_api
+    - Member[device].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - devolo_plc_api
+    - Member[device_api].Member[deviceapi].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - devolo_plc_api
+    - Member[plcnet_api].Member[plcnetapi].Member[AsyncClient]
+  - - io.StringIO~Subclass
+    - devolo_plc_api
+    - Member[helpers].Member[BytesIO]

@@ -1,0 +1,69 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[label].Member[ClassificationLabel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[label].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[label].Member[Seq2seqLabel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[label].Member[SequenceLabel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[labels].Member[ClassificationLabel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[labels].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[labels].Member[Seq2seqLabel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[labels].Member[SequenceLabel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[menu].Member[Option]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[AWSMixin]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[AmazonComprehendEntityRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[AmazonComprehendPIIEntityRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[AmazonComprehendRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[AmazonComprehendSentimentRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[AmazonRekognitionLabelDetectionRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[CustomRESTRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[GCPEntitiesRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[GCPImageLabelDetectionRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[GCPSpeechToTextRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[models].Member[RequestModel]
+  - - pydantic.BaseModel~Subclass
+    - auto_labeling_pipeline
+    - Member[pipeline].Member[RequestModel]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - wdb_server
+    - Member[BaseWebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - wdb_server
+    - Member[SyncWebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - wdb_server
+    - Member[WebSocketHandler]

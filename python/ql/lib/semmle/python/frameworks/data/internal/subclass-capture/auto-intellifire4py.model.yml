@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[IntelliFireFireplace]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[IntelliFireFireplaces]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[IntelliFireLocationDetails]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[IntelliFireLocations]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[cloud_api].Member[IntelliFireFireplace]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[cloud_api].Member[IntelliFireFireplaces]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[cloud_api].Member[IntelliFirePollData]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[control].Member[IntelliFirePollData]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[local_api].Member[IntelliFirePollData]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[model].Member[IntelliFireFireplace]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[model].Member[IntelliFireFireplaces]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[model].Member[IntelliFireLocationDetails]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[model].Member[IntelliFireLocations]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[model].Member[IntelliFirePollData]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[model].Member[UDPResponse]
+  - - pydantic.BaseModel~Subclass
+    - intellifire4py
+    - Member[read].Member[IntelliFirePollData]

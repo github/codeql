@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - orders
+    - Member[views].Member[CanceledTemplateView]
+  - - Django.Views.View~Subclass
+    - orders
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - orders
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - orders
+    - Member[views].Member[OrderCreateView]
+  - - Django.Views.View~Subclass
+    - orders
+    - Member[views].Member[OrderListView]
+  - - Django.Views.View~Subclass
+    - orders
+    - Member[views].Member[SuccessTemplateView]
+  - - Django.Views.View~Subclass
+    - orders
+    - Member[views].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - orders
+    - Member[forms].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - orders
+    - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - orders
+    - Member[serializers].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - orders
+    - Member[views].Member[Order]
+  - - django.forms.BaseForm~Subclass
+    - orders
+    - Member[forms].Member[OrderForm]
+  - - django.forms.BaseForm~Subclass
+    - orders
+    - Member[views].Member[OrderForm]
+  - - django.http.request.HttpRequest~Subclass
+    - orders
+    - Member[services].Member[HttpRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - orders
+    - Member[views].Member[HttpResponseRedirect]

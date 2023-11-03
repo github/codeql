@@ -1,0 +1,207 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - wagtail_localize
+    - Member[views].Member[report].Member[ContentTypeModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - wagtail_localize
+    - Member[views].Member[report].Member[ModelChoiceField]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[helpers].Member[InspectView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[options].Member[TranslatableChooseParentView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[options].Member[TranslatableCreateView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[options].Member[TranslatableDeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[options].Member[TranslatableEditView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[options].Member[TranslatableHistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[options].Member[TranslatableIndexView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[options].Member[TranslatableInspectView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[ChooseParentView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[HistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[InspectView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[TranslatableChooseParentView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[TranslatableCreateView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[TranslatableDeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[TranslatableEditView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[TranslatableHistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[TranslatableIndexView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[TranslatableInspectView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[wagtail_hooks].Member[JavaScriptCatalog]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[fields].Member[ClusterableModel]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[fields].Member[MP_Node]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[fields].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[fields].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[locales].Member[forms].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[locales].Member[utils].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[locales].Member[views].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[locales].Member[wagtail_hooks].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[helpers].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[helpers].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[helpers].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[options].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[ClusterableModel]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[PageLogEntry]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[operations].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[segments].Member[extract].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[segments].Member[extract].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[segments].Member[types].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[synctree].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[synctree].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[convert].Member[PageLogEntry]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[convert].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[convert].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[AbstractDocument]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[AbstractImage]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[report].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[submit_translations].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[submit_translations].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[submit_translations].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[update_translations].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[wagtail_hooks].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[wagtail_hooks].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[wagtail_hooks].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[wagtail_hooks].Member[TranslatableMixin]
+  - - django.http.response.HttpResponse~Subclass
+    - wagtail_localize
+    - Member[views].Member[convert].Member[TemplateResponse]

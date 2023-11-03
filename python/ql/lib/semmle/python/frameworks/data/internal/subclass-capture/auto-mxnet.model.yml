@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - mxnet
+    - Member[evaluation].Member[ijb].Member[pickle]
+  - - pickle~Alias
+    - mxnet
+    - Member[evaluation].Member[verification].Member[pickle]

@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - magnus
+    - Member[pickler].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[datastore].Member[BranchLog]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[datastore].Member[CodeIdentity]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[datastore].Member[DataCatalog]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[datastore].Member[RunLog]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[datastore].Member[StepAttempt]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[datastore].Member[StepLog]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[executor].Member[DataCatalog]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[executor].Member[StepLog]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[nodes].Member[StepAttempt]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[tasks].Member[BaseTaskType]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[tasks].Member[ContainerTaskType]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[tasks].Member[NotebookTaskType]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[tasks].Member[PythonLambdaTaskType]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[tasks].Member[PythonTaskType]
+  - - pydantic.BaseModel~Subclass
+    - magnus
+    - Member[tasks].Member[ShellTaskType]

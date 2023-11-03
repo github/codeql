@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[FilterView]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[cron].Member[User]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[example].Member[admin].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[example].Member[models].Member[Comment]

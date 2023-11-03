@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - dbus_fast
+    - Member[aio].Member[proxy_object].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - dbus_fast
+    - Member[glib].Member[proxy_object].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - dbus_fast
+    - Member[introspection].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - dbus_fast
+    - Member[message_bus].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - dbus_fast
+    - Member[proxy_object].Member[ET]

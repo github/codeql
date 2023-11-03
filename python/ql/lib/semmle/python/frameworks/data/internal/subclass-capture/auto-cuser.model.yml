@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[admin].Member[CUser]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[admin].Member[StockGroup]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[compat].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[forms].Member[CUser]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[middleware].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[models].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[models].Member[AbstractCUser]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[models].Member[BaseGroup]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[models].Member[CUser]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cuser
+    - Member[models].Member[PermissionsMixin]

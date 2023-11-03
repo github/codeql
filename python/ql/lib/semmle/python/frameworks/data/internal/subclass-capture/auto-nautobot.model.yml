@@ -1,0 +1,279 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - nautobot
+    - Member[apps].Member[forms].Member[MultiMatchModelMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - nautobot
+    - Member[apps].Member[forms].Member[NumericArrayField]
+  - - Django.Forms.Field~Subclass
+    - nautobot
+    - Member[core].Member[forms].Member[MultiMatchModelMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - nautobot
+    - Member[core].Member[forms].Member[NumericArrayField]
+  - - Django.Forms.Field~Subclass
+    - nautobot
+    - Member[core].Member[forms].Member[fields].Member[MultiMatchModelMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - nautobot
+    - Member[core].Member[forms].Member[fields].Member[NumericArrayField]
+  - - Django.Forms.Field~Subclass
+    - nautobot
+    - Member[dcim].Member[forms].Member[NumericArrayField]
+  - - Django.Forms.Field~Subclass
+    - nautobot
+    - Member[dcim].Member[forms].Member[TimeZoneFormField]
+  - - Django.Forms.Field~Subclass
+    - nautobot
+    - Member[ipam].Member[forms].Member[NumericArrayField]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[urls].Member[NautobotSpectacularRedocView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[urls].Member[NautobotSpectacularSwaggerView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[urls].Member[SpectacularAPIView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[urls].Member[SpectacularJSONAPIView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[urls].Member[SpectacularYAMLAPIView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[views].Member[GraphQLView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[views].Member[NautobotSpectacularRedocView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[views].Member[NautobotSpectacularSwaggerView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[views].Member[SpectacularRedocView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[views].Member[SpectacularSwaggerView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[urls].Member[CustomGraphQLView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[views].Member[CustomGraphQLView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[views].Member[GraphQLView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[core].Member[views]Member[CustomGraphQLView]
+  - - Django.Views.View~Subclass
+    - nautobot
+    - Member[extras].Member[api].Member[views].Member[GraphQLView]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[circuits].Member[signals].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[admin].Member[Association]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[admin].Member[CrontabSchedule]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[admin].Member[IntervalSchedule]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[admin].Member[Nonce]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[admin].Member[PeriodicTask]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[admin].Member[SolarSchedule]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[admin].Member[UserSocialAuth]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[api].Member[serializers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[authentication].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[graphql].Member[schema].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[graphql].Member[types].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[management].Member[commands].Member[refresh_content_type_cache].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[models].Member[fields].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[models].Member[name_color_content_types].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[tables].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[utils].Member[lookup].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[utils].Member[lookup].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[utils].Member[permissions].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[utils].Member[requests].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[views].Member[generic].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[views].Member[mixins].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[core].Member[views].Member[renderers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[dcim].Member[api].Member[serializers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[dcim].Member[factory].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[dcim].Member[form_mixins].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[dcim].Member[homepage].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[dcim].Member[models].Member[locations].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[dcim].Member[signals].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[dcim].Member[utils].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[dcim].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[api].Member[customfields].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[api].Member[relationships].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[api].Member[serializers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[api].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[datasources].Member[git].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[datasources].Member[utils].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[factory].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[filters].Member[mixins].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[management].Member[commands].Member[fix_custom_fields].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[models].Member[change_logging].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[models].Member[customfields].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[models].Member[groups].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[models].Member[jobs].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[models].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[models].Member[relationships].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[models].Member[roles].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[models].Member[statuses].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[models].Member[tags].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[querysets].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[signals].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[tasks].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[templatetags].Member[computed_fields].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[templatetags].Member[custom_links].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[templatetags].Member[job_buttons].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[utils].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[extras].Member[webhooks].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[users].Member[admin].Member[AdminGroup]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[users].Member[admin].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[users].Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[users].Member[api].Member[serializers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[users].Member[api].Member[serializers].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[users].Member[api].Member[views].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - nautobot
+    - Member[users].Member[models].Member[AdminGroup]
+  - - django.forms.BaseForm~Subclass
+    - nautobot
+    - Member[core].Member[admin].Member[ConstanceForm]
+  - - rest_framework.exceptions.APIException~Subclass
+    - nautobot
+    - Member[extras].Member[api].Member[relationships].Member[ValidationError]

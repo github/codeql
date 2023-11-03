@@ -1,0 +1,87 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[credential_storage].Member[StoredCredential]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[credential_storage].Member[models].Member[StoredCredential]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[docgen].Member[models].Member[APIChangeLogEntry]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[docgen].Member[models].Member[StoredHandlerRequest]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[docgen].Member[models].Member[StoredHandlerResponse]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[docgen].Member[models].Member[StoredHttpParam]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[docgen].Member[server_declaration].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[ops].Member[controllers].Member[ErrorReport]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[ops].Member[controllers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[ops].Member[models].Member[ErrorReport]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[ops].Member[models].Member[EventLog]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[apps].Member[ops].Member[tasks].Member[EventLog]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[auth_backends].Member[User]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[controllers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[emitters].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[forms].Member[User]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[models].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - services
+    - Member[payload].Member[BaseModel]
+  - - django.forms.BaseForm~Subclass
+    - services
+    - Member[forms].Member[BaseUserForm]
+  - - django.forms.BaseForm~Subclass
+    - services
+    - Member[forms].Member[ExtModelForm]
+  - - django.forms.BaseForm~Subclass
+    - services
+    - Member[forms].Member[ModelForm]
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - services
+    - Member[controller].Member[HttpResponseNotAllowed]
+  - - django.http.response.HttpResponse~Subclass
+    - services
+    - Member[controller].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - services
+    - Member[emitters].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - services
+    - Member[view].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - services
+    - Member[views].Member[HttpResponse]
+  - - pickle~Alias
+    - services
+    - Member[emitters].Member[pickle]

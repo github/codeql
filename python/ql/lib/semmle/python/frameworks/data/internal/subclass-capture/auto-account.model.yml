@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - account
+    - Member[urls].Member[InviteUserView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[InviteUserView]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[admin].Member[SignupCodeExtended]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[compat].Member[User]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[forms].Member[SignupCodeExtended]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[forms].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[SignupCodeExtended]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[views].Member[SignupCodeExtended]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[forms].Member[SignupCodeForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[views].Member[SignupCodeForm]

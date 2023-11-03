@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[create_queue_permissions].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[create_queue_permissions].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[serializers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[ContentType]
+  - - django.http.request.HttpRequest~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[WSGIRequest]

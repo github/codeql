@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - nvgpu
+    - Member[webapp].Member[GpuClusterStatusHTML]
+  - - flask.MethodView~Subclass
+    - nvgpu
+    - Member[webapp].Member[GpuClusterStatus]
+  - - flask.MethodView~Subclass
+    - nvgpu
+    - Member[webapp].Member[GpuStatus]
+  - - flask.MethodView~Subclass
+    - nvgpu
+    - Member[webapp].Member[Resource]

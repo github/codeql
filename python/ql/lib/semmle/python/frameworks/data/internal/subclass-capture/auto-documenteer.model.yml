@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[conf].Member[_toml].Member[ConfigRoot]
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[conf].Member[_toml].Member[IntersphinxModel]
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[conf].Member[_toml].Member[LinkCheckModel]
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[conf].Member[_toml].Member[OpenApiDocsModel]
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[conf].Member[_toml].Member[OpenApiGeneratorModel]
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[conf].Member[_toml].Member[ProjectModel]
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[conf].Member[_toml].Member[PythonPackageModel]
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[conf].Member[_toml].Member[SphinxModel]
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[conf].Member[_toml].Member[ThemeModel]
+  - - pydantic.BaseModel~Subclass
+    - documenteer
+    - Member[ext].Member[githubbibcache].Member[BibRepo]

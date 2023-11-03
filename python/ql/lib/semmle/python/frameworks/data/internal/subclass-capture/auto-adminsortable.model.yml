@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - adminsortable
+    - Member[admin].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - adminsortable
+    - Member[models].Member[ContentType]

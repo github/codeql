@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - xmlsig
+    - Member[signature_context].Member[etree]
+  - - lxml.etree~Alias
+    - xmlsig
+    - Member[template].Member[etree]
+  - - lxml.etree~Alias
+    - xmlsig
+    - Member[utils].Member[etree]

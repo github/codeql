@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[admin].Member[TeamSubmission]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[models].Member[TeamSubmission]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[serializers].Member[TeamSubmission]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[team_api].Member[TeamSubmission]

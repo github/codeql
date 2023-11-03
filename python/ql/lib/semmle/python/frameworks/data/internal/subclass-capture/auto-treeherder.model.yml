@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[auth].Member[backends].Member[User]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[refdata].Member[User]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[serializers].Member[User]

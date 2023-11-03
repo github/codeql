@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - select2_gm2m
+    - Member[forms].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - select2_gm2m
+    - Member[urls].Member[Group]

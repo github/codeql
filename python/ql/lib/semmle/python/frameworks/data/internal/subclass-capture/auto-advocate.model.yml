@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPConnection~Subclass
+    - advocate
+    - Member[connection].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - advocate
+    - Member[connection].Member[HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - advocate
+    - Member[connection].Member[ValidatingHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - advocate
+    - Member[connection].Member[ValidatingHTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - advocate
+    - Member[connectionpool].Member[ValidatingHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - advocate
+    - Member[connectionpool].Member[ValidatingHTTPSConnection]

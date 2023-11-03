@@ -1,0 +1,126 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - models
+    - Member[EmailField]
+  - - Django.Forms.Field~Subclass
+    - models
+    - Member[FileField]
+  - - Django.Forms.Field~Subclass
+    - models
+    - Member[ImageField]
+  - - Django.Forms.Field~Subclass
+    - models
+    - Member[SpatialLocationFormField]
+  - - Django.Forms.Field~Subclass
+    - models
+    - Member[URLField]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[AbstractEmailForm]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[AbstractEmailStreamForm]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[AbstractFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[AbstractForm]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[AbstractStreamForm]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Activity]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[AffiliationRecommendation]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[ClosingFormMixin]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Country]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[CustomPermissions]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Domain]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Enrollment]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[EntityBase]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[GenderRecommendation]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Group]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Identity]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Individual]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[MP_Node]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[MergeRecommendation]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Model]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Operation]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Organization]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Person]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[RecommenderExclusionTerm]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[ScheduledTask]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[SessionFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[SubmissionRevision]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Team]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Tenant]
+  - - Django.db.models.Model~Subclass
+    - models
+    - Member[Transaction]
+  - - django.forms.BaseForm~Subclass
+    - models
+    - Member[Form]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - models
+    - Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - models
+    - Member[TemplateResponse]

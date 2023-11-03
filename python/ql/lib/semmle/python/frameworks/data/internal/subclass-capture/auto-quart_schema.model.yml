@@ -1,0 +1,102 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[APIKeySecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[HttpSecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[License]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[OAuth2SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[OpenIdSecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[extension].Member[APIKeySecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[extension].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[extension].Member[HttpSecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[extension].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[extension].Member[OAuth2SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[extension].Member[OpenIdSecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[extension].Member[SecuritySchemeBase]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[extension].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[extension].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[APIKeySecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[HttpSecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[OAuth2SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[OpenIdSecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[SecuritySchemeBase]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - quart_schema
+    - Member[openapi].Member[Tag]

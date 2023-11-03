@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - ipyparallel
+    - Member[engine].Member[nanny].Member[pickle]
+  - - pickle~Alias
+    - ipyparallel
+    - Member[serialize].Member[serialize].Member[_stdlib_pickle]
+  - - pickle~Alias
+    - ipyparallel
+    - Member[serialize].Member[serialize].Member[cPickle]
+  - - pickle~Alias
+    - ipyparallel
+    - Member[serialize].Member[serialize].Member[pickle]
+  - - tornado.web.RequestHandler~Subclass
+    - ipyparallel
+    - Member[nbextension].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - ipyparallel
+    - Member[nbextension].Member[handlers].Member[ClusterActionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - ipyparallel
+    - Member[nbextension].Member[handlers].Member[ClusterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - ipyparallel
+    - Member[nbextension].Member[handlers].Member[ClusterListHandler]
+  - - xml.etree.ElementTree~Subclass
+    - ipyparallel
+    - Member[cluster].Member[_winhpcjob].Member[ET]

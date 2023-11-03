@@ -1,0 +1,147 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[DocumentAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[DocumentFeatureAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[DocumentFeaturesAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[DocumentTableAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[DocumentTablesAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[DocumentUserAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[DocumentUsersAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[HealthcheckAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[SearchAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[SearchDashboardAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[SearchDashboardFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[SearchFeatureAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[SearchFeatureFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[SearchTableAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[SearchTableFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[SearchUserAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[base].Member[BaseFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[base].Member[Resource]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[dashboard].Member[BaseFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[dashboard].Member[Resource]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[dashboard].Member[SearchDashboardAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[dashboard].Member[SearchDashboardFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document].Member[BaseDocumentAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document].Member[BaseDocumentsAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document].Member[DocumentFeatureAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document].Member[DocumentFeaturesAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document].Member[DocumentTableAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document].Member[DocumentTablesAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document].Member[DocumentUserAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document].Member[DocumentUsersAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document].Member[Resource]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document_update].Member[DocumentAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[document_update].Member[Resource]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[feature].Member[BaseFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[feature].Member[Resource]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[feature].Member[SearchFeatureAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[feature].Member[SearchFeatureFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[healthcheck].Member[HealthcheckAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[healthcheck].Member[Resource]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[search].Member[Resource]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[search].Member[SearchAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[table].Member[BaseFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[table].Member[Resource]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[table].Member[SearchTableAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[table].Member[SearchTableFilterAPI]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[user].Member[Resource]
+  - - flask.MethodView~Subclass
+    - search_service
+    - Member[api].Member[user].Member[SearchUserAPI]

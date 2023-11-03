@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - pushnotif
+    - Member[urls].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - pushnotif
+    - Member[views].Member[GroupProfile]
+  - - Django.db.models.Model~Subclass
+    - pushnotif
+    - Member[views].Member[matrix]
+  - - django.http.request.HttpRequest~Subclass
+    - pushnotif
+    - Member[views].Member[HttpRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - pushnotif
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - pushnotif
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - pushnotif
+    - Member[views].Member[TemplateResponse]

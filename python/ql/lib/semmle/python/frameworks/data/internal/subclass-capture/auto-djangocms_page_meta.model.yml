@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[admin].Member[GenericMetaAttribute]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[admin].Member[PageMeta]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[admin].Member[TitleMeta]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[cms_toolbars].Member[PageMeta]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[cms_toolbars].Member[TitleMeta]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[forms].Member[GenericMetaAttribute]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[forms].Member[TitleMeta]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[models].Member[GenericMetaAttribute]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[models].Member[PageExtension]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[models].Member[PageMeta]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[models].Member[TitleExtension]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[models].Member[TitleMeta]
+  - - Django.db.models.Model~Subclass
+    - djangocms_page_meta
+    - Member[models].Member[Title]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_page_meta
+    - Member[admin].Member[GenericAttributeInlineForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_page_meta
+    - Member[admin].Member[TitleMetaAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_page_meta
+    - Member[forms].Member[GenericAttributeInlineForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_page_meta
+    - Member[forms].Member[TitleMetaAdminForm]

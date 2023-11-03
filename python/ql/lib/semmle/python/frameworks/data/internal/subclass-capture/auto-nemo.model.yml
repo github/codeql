@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[bert_service].Member[Resource]
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[bert_service].Member[SentenceBertResource]
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[combo_retrieval_server].Member[ComboRetrievalResource]
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[combo_retrieval_server].Member[Resource]
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[dynamic_retrieval_server].Member[DynamicRetrievalResource]
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[dynamic_retrieval_server].Member[FaissRetrievalResource]
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[static_retrieval_server].Member[FaissRetrievalResource]
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[static_retrieval_server].Member[Resource]
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[text_generation_server].Member[MegatronGenerate]
+  - - flask.MethodView~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[text_generation_server].Member[Resource]

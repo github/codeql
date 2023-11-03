@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - binary_database_files
+    - Member[management].Member[commands].Member[database_files_cleanup].Member[File]
+  - - Django.db.models.Model~Subclass
+    - binary_database_files
+    - Member[management].Member[commands].Member[database_files_dump].Member[File]
+  - - Django.db.models.Model~Subclass
+    - binary_database_files
+    - Member[management].Member[commands].Member[database_files_rehash].Member[File]
+  - - Django.db.models.Model~Subclass
+    - binary_database_files
+    - Member[models].Member[File]
+  - - Django.db.models.Model~Subclass
+    - binary_database_files
+    - Member[views].Member[File]
+  - - django.db.models.FileField~Subclass
+    - binary_database_files
+    - Member[management].Member[commands].Member[database_files_cleanup].Member[FileField]
+  - - django.db.models.FileField~Subclass
+    - binary_database_files
+    - Member[management].Member[commands].Member[database_files_cleanup].Member[ImageField]
+  - - django.db.models.FileField~Subclass
+    - binary_database_files
+    - Member[management].Member[commands].Member[database_files_load].Member[FileField]
+  - - django.db.models.FileField~Subclass
+    - binary_database_files
+    - Member[management].Member[commands].Member[database_files_load].Member[ImageField]
+  - - django.http.response.HttpResponse~Subclass
+    - binary_database_files
+    - Member[views].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - binary_database_files
+    - Member[storage].Member[BytesIO]

@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[example].Member[urls].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[core].Member[admin].Member[CustomUser]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[core].Member[models].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[core].Member[models].Member[CustomUser]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[main].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[posts].Member[admin].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[posts].Member[views].Member[Group]

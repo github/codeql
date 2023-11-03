@@ -1,0 +1,138 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - category
+    - Member[api].Member[CategoryViewSet]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[api].Member[TagViewSet]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[CategoryCreateView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[CategoryDetailView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[CategoryListView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[CategoryUpdateView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[CategoryViewSet]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[TagCreateView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[TagDetailView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[TagListView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[TagUpdateView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[urls].Member[TagViewSet]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[CategoryCreateView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[CategoryDetailView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[CategoryListView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[CategoryUpdateView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[TagCreateView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[TagDetailView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[TagListView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[TagUpdateView]
+  - - Django.Views.View~Subclass
+    - category
+    - Member[views].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[admin].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[admin].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[api].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[api].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[forms].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[forms].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[models].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[sitemap].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[sitemap].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[views].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - category
+    - Member[views].Member[Tag]
+  - - django.forms.BaseForm~Subclass
+    - category
+    - Member[forms].Member[CategoryAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - category
+    - Member[forms].Member[CategoryCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - category
+    - Member[forms].Member[CategoryUpdateForm]
+  - - django.forms.BaseForm~Subclass
+    - category
+    - Member[forms].Member[TagCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - category
+    - Member[views].Member[CategoryCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - category
+    - Member[views].Member[CategoryUpdateForm]
+  - - django.forms.BaseForm~Subclass
+    - category
+    - Member[views].Member[TagCreateForm]

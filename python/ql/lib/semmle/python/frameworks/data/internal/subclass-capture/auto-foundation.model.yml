@@ -1,0 +1,114 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[AppTemplateView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[AppView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[View]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[auth].Member[ToggleSuperuser]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[auth].Member[View]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[base].Member[AppTemplateView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[base].Member[AppView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[base].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[base].Member[View]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[AddView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[DisplayView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[EditView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[list].Member[ListView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[object].Member[AddView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[object].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[object].Member[DisplayView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[object].Member[EditView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[forms].Member[views].Member[object].Member[ProcessFormView]
+  - - Django.Views.View~Subclass
+    - foundation
+    - Member[rest].Member[views].Member[ControllerAPIView]
+  - - Django.db.models.Model~Subclass
+    - foundation
+    - Member[auth].Member[backends].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - foundation
+    - Member[models].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - foundation
+    - Member[models].Member[base].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - foundation
+    - Member[templatetags].Member[extratags].Member[Model]
+  - - django.forms.BaseForm~Subclass
+    - foundation
+    - Member[forms].Member[FormSetModelForm]
+  - - django.forms.BaseForm~Subclass
+    - foundation
+    - Member[forms].Member[Form]
+  - - django.forms.BaseForm~Subclass
+    - foundation
+    - Member[forms].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - foundation
+    - Member[forms].Member[forms].Member[Form]
+  - - django.forms.BaseForm~Subclass
+    - foundation
+    - Member[forms].Member[models].Member[FormSetModelForm]
+  - - django.forms.BaseForm~Subclass
+    - foundation
+    - Member[forms].Member[models].Member[ModelForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - foundation
+    - Member[backend].Member[views].Member[auth].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - foundation
+    - Member[utils].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - foundation
+    - Member[template].Member[response].Member[TemplateResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - foundation
+    - Member[rest].Member[views].Member[JsonResponse]

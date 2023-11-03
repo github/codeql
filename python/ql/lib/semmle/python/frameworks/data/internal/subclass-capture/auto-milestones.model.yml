@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[admin].Member[CourseContentMilestone]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[admin].Member[CourseMilestone]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[admin].Member[MilestoneRelationshipType]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[admin].Member[Milestone]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[admin].Member[UserMilestone]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[models].Member[CourseContentMilestone]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[models].Member[CourseMilestone]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[models].Member[MilestoneRelationshipType]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[models].Member[Milestone]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - milestones
+    - Member[models].Member[UserMilestone]

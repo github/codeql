@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterlab_code_formatter
+    - Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterlab_code_formatter
+    - Member[handlers].Member[FormatAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterlab_code_formatter
+    - Member[handlers].Member[FormattersAPIHandler]

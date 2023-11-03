@@ -1,0 +1,216 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[admin].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[admin].Member[PasswordReset]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[auth_backends].Member[User]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[context_processors].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[PasswordReset]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[User]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[middleware].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[models].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[models].Member[PasswordReset]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[User]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[admin].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[forms].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[models].Member[SignupCodeResult]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[models].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[stats].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[views].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[waitinglist].Member[admin].Member[WaitingListEntry]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[waitinglist].Member[forms].Member[WaitingListEntry]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[waitinglist].Member[models].Member[WaitingListEntry]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[apps].Member[waitinglist].Member[stats].Member[WaitingListEntry]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[core].Member[context_processors].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[eventlog].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[backends].Member[base].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[engine].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[hooks].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[models].Member[ContentType]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[AccountForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[AddEmailForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[ChangeLanguageForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[ChangePasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[ChangeTimezoneForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[GroupForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[OpenIDSignupForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[ResetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[ResetPasswordKeyForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[SetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[forms].Member[UserForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[openid_consumer].Member[OpenIDSignupForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[AddEmailForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[ChangeLanguageForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[ChangePasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[ChangeTimezoneForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[ResetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[ResetPasswordKeyForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[SetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[forms].Member[BaseSignupForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[forms].Member[GroupForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[forms].Member[InviteUserForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[forms].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[views].Member[InviteUserForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[views].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[waitinglist].Member[forms].Member[WaitingListEntryForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[waitinglist].Member[templatetags].Member[waitinglist_tags].Member[WaitingListEntryForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[apps].Member[waitinglist].Member[views].Member[WaitingListEntryForm]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[middleware].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[openid_consumer].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - pinax
+    - Member[apps].Member[account].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - pinax
+    - Member[apps].Member[signup_codes].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - pinax
+    - Member[apps].Member[waitinglist].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseServerError~Subclass
+    - pinax
+    - Member[views].Member[HttpResponseServerError]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - ProgettiHWSW
+    - Member[ProgettiHWSWAPI].Member[etree]
+  - - lxml.etree~Alias
+    - ProgettiHWSW
+    - Member[analog].Member[etree]
+  - - lxml.etree~Alias
+    - ProgettiHWSW
+    - Member[input].Member[etree]
+  - - lxml.etree~Alias
+    - ProgettiHWSW
+    - Member[relay].Member[etree]
+  - - lxml.etree~Alias
+    - ProgettiHWSW
+    - Member[temperature].Member[etree]

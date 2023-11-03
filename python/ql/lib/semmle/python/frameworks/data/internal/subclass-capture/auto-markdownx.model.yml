@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - markdownx
+    - Member[urls].Member[ImageUploadView]
+  - - Django.Views.View~Subclass
+    - markdownx
+    - Member[urls].Member[MarkdownifyView]
+  - - Django.Views.View~Subclass
+    - markdownx
+    - Member[views].Member[BaseFormView]
+  - - Django.Views.View~Subclass
+    - markdownx
+    - Member[views].Member[ImageUploadView]
+  - - Django.Views.View~Subclass
+    - markdownx
+    - Member[views].Member[MarkdownifyView]
+  - - Django.Views.View~Subclass
+    - markdownx
+    - Member[views].Member[View]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - oidc_provider
+    - Member[views].Member[EndSessionView]
+  - - Django.Views.View~Subclass
+    - oidc_provider
+    - Member[views].Member[LogoutView]

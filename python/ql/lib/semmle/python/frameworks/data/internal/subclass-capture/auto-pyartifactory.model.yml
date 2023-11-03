@@ -1,0 +1,312 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[AccessTokenModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[AccessTokenModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[ApiKeyModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[ArtifactFileInfoResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[ArtifactFolderInfoResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[ArtifactPropertiesResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[ArtifactStatsResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[AuthModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[BaseUserModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[LocalRepositoryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[LocalRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[NewUser]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[PasswordModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[PermissionV2]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[Permission]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[RemoteRepositoryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[RemoteRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[SimpleGroup]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[SimplePermission]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[SimpleRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[SimpleUser]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[UserResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[VirtualRepositoryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[VirtualRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[ArtifactFileInfoResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[ArtifactFolderInfoResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[ArtifactInfoResponseBase]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[ArtifactListEntryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[ArtifactListFileResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[ArtifactListFolderResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[ArtifactListResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[ArtifactPropertiesResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[ArtifactStatsResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[Checksums]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[Child]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[artifact].Member[OriginalChecksums]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[auth].Member[AccessTokenModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[auth].Member[ApiKeyModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[auth].Member[AuthModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[auth].Member[PasswordModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[group].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[group].Member[SimpleGroup]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[permission].Member[BasePermissionV2]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[permission].Member[BuildV2]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[permission].Member[PermissionV2]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[permission].Member[Permission]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[permission].Member[PrincipalsPermissionV2]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[permission].Member[PrincipalsPermission]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[permission].Member[ReleaseBundleV2]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[permission].Member[RepoV2]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[permission].Member[SimplePermission]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[BaseRepositoryModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[ContentSynchronisation]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[LocalRepositoryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[LocalRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[RemoteRepositoryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[RemoteRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[SimpleRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[Statistics]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[VirtualRepositoryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[repository].Member[VirtualRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[user].Member[BaseUserModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[user].Member[NewUser]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[user].Member[SimpleUser]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[user].Member[UserResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[models].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[artifact].Member[ArtifactFileInfoResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[artifact].Member[ArtifactFolderInfoResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[artifact].Member[ArtifactListResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[artifact].Member[ArtifactPropertiesResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[artifact].Member[ArtifactStatsResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[artifactory].Member[AuthModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[group].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[object].Member[AuthModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[permission].Member[AuthModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[permission].Member[PermissionV2]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[permission].Member[Permission]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[permission].Member[SimplePermission]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[repository].Member[LocalRepositoryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[repository].Member[LocalRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[repository].Member[RemoteRepositoryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[repository].Member[RemoteRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[repository].Member[SimpleRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[repository].Member[VirtualRepositoryResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[repository].Member[VirtualRepository]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[security].Member[AccessTokenModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[security].Member[ApiKeyModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[security].Member[PasswordModel]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[user].Member[NewUser]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[user].Member[SimpleUser]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[user].Member[UserResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyartifactory
+    - Member[objects].Member[user].Member[User]
+  - - requests.models.Response~Subclass
+    - pyartifactory
+    - Member[objects].Member[artifact].Member[Response]
+  - - requests.models.Response~Subclass
+    - pyartifactory
+    - Member[objects].Member[group].Member[Response]
+  - - requests.models.Response~Subclass
+    - pyartifactory
+    - Member[objects].Member[object].Member[Response]
+  - - requests.models.Response~Subclass
+    - pyartifactory
+    - Member[objects].Member[permission].Member[Response]
+  - - requests.models.Response~Subclass
+    - pyartifactory
+    - Member[objects].Member[repository].Member[Response]
+  - - requests.models.Response~Subclass
+    - pyartifactory
+    - Member[objects].Member[user].Member[Response]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[ClientConnection]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[WebSocketEventBroadcaster]

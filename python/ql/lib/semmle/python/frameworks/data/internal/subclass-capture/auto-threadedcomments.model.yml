@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - threadedcomments
+    - Member[admin].Member[ThreadedComment]
+  - - Django.db.models.Model~Subclass
+    - threadedcomments
+    - Member[forms].Member[ThreadedComment]
+  - - Django.db.models.Model~Subclass
+    - threadedcomments
+    - Member[management].Member[commands].Member[migrate_threaded_comments].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - threadedcomments
+    - Member[management].Member[commands].Member[migrate_threaded_comments].Member[ThreadedComment]
+  - - Django.db.models.Model~Subclass
+    - threadedcomments
+    - Member[models].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - threadedcomments
+    - Member[models].Member[ThreadedComment]
+  - - django.forms.BaseForm~Subclass
+    - threadedcomments
+    - Member[forms].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - threadedcomments
+    - Member[forms].Member[ThreadedCommentForm]

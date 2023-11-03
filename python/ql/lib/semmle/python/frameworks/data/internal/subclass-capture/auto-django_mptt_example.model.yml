@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_mptt_example
+    - Member[admin].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - django_mptt_example
+    - Member[models].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - django_mptt_example
+    - Member[models].Member[MPTTModel]

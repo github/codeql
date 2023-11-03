@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - amundsen_application
+    - Member[IssueAPI]
+  - - flask.MethodView~Subclass
+    - amundsen_application
+    - Member[IssuesAPI]
+  - - flask.MethodView~Subclass
+    - amundsen_application
+    - Member[api].Member[issue].Member[issue].Member[IssueAPI]
+  - - flask.MethodView~Subclass
+    - amundsen_application
+    - Member[api].Member[issue].Member[issue].Member[IssuesAPI]
+  - - flask.MethodView~Subclass
+    - amundsen_application
+    - Member[api].Member[issue].Member[issue].Member[Resource]

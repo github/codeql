@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[RawWebSocketTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[WebSocketTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[rawwebsocket].Member[RawWebSocketTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[websocket].Member[WebSocketTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[websocket].Member[SockJSWebSocketHandler]

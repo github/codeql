@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - polymorphic
+    - Member[contrib].Member[extra_views].Member[PolymorphicFormSetView]
+  - - Django.Views.View~Subclass
+    - polymorphic
+    - Member[contrib].Member[extra_views].Member[PolymorphicInlineFormSetView]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[admin].Member[generic].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[admin].Member[parentadmin].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[contrib].Member[guardian].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[formsets].Member[generic].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[formsets].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[query].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[query_translate].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[utils].Member[ContentType]
+  - - django.http.response.HttpResponse~Subclass
+    - polymorphic
+    - Member[admin].Member[parentadmin].Member[TemplateResponse]

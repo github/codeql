@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pyshexc
+    - Member[parser].Member[ShExDocLexer].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyshexc
+    - Member[parser].Member[ShExDocParser].Member[StringIO]

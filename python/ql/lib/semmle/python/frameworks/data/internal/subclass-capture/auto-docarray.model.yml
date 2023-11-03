@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[storage].Member[qdrant].Member[backend].Member[CreateCollection]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[storage].Member[qdrant].Member[backend].Member[HnswConfigDiff]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[storage].Member[qdrant].Member[backend].Member[PointStruct]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[storage].Member[qdrant].Member[backend].Member[PointsList]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[storage].Member[qdrant].Member[backend].Member[VectorParams]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[storage].Member[qdrant].Member[getsetdel].Member[PointIdsList]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[storage].Member[qdrant].Member[getsetdel].Member[PointStruct]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[storage].Member[qdrant].Member[getsetdel].Member[VectorParams]

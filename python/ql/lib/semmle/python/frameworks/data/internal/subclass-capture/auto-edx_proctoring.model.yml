@@ -1,0 +1,114 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[admin].Member[ProctoredExamReviewPolicy]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[admin].Member[ProctoredExamSoftwareSecureReviewHistory]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[admin].Member[ProctoredExamSoftwareSecureReview]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[admin].Member[ProctoredExamStudentAttempt]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[admin].Member[ProctoredExam]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[api].Member[ProctoredExamReviewPolicy]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[api].Member[ProctoredExamSoftwareSecureReview]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[api].Member[ProctoredExamStudentAllowance]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[api].Member[ProctoredExamStudentAttempt]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[api].Member[ProctoredExam]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[management].Member[commands].Member[set_is_attempt_active].Member[ProctoredExamSoftwareSecureReviewHistory]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[management].Member[commands].Member[set_is_attempt_active].Member[ProctoredExamSoftwareSecureReview]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[management].Member[commands].Member[set_is_attempt_active].Member[ProctoredExamStudentAttempt]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[management].Member[commands].Member[update_attempt_status_from_review].Member[ProctoredExamSoftwareSecureReview]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[management].Member[commands].Member[update_attempts_for_exam].Member[ProctoredExamStudentAttempt]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[ProctoredExamReviewPolicyHistory]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[ProctoredExamReviewPolicy]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[ProctoredExamSoftwareSecureComment]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[ProctoredExamSoftwareSecureReviewHistory]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[ProctoredExamSoftwareSecureReview]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[ProctoredExamStudentAllowanceHistory]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[ProctoredExamStudentAllowance]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[ProctoredExamStudentAttempt]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[ProctoredExam]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[serializers].Member[ProctoredExamReviewPolicy]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[serializers].Member[ProctoredExamStudentAllowance]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[serializers].Member[ProctoredExamStudentAttempt]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[serializers].Member[ProctoredExam]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[utils].Member[ProctoredExamStudentAttempt]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamSoftwareSecureComment]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamSoftwareSecureReview]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamStudentAllowanceHistory]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamStudentAllowance]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamStudentAttempt]
+  - - Django.db.models.Model~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExam]

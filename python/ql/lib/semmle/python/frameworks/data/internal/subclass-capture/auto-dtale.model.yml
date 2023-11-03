@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - dtale
+    - Member[cli].Member[clickutils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dtale
+    - Member[cli].Member[clickutils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dtale
+    - Member[dash_application].Member[charts].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dtale
+    - Member[dash_application].Member[charts].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dtale
+    - Member[datasets].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dtale
+    - Member[utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dtale
+    - Member[utils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dtale
+    - Member[views].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dtale
+    - Member[views].Member[StringIO]

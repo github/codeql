@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[datasets].Member[api_wrappers].Member[cocoeval_mp].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[engine].Member[optimizers].Member[layer_decay_optimizer_constructor].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[cityscapes_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[coco_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[coco_panoptic_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[crowdhuman_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[dump_proposals_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[lvis_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[mot_challenge_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[openimages_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[semseg_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[voc_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[youtube_vis_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[models].Member[backbones].Member[detectors_resnet].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[models].Member[backbones].Member[pvt].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[models].Member[backbones].Member[swin].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[utils].Member[benchmark].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmdet
+    - Member[utils].Member[memory].Member[MMLogger]

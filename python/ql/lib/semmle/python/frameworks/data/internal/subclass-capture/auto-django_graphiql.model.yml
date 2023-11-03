@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_graphiql
+    - Member[urls].Member[GraphiQL]
+  - - Django.Views.View~Subclass
+    - django_graphiql
+    - Member[views].Member[GraphiQL]
+  - - Django.Views.View~Subclass
+    - django_graphiql
+    - Member[views].Member[TemplateView]

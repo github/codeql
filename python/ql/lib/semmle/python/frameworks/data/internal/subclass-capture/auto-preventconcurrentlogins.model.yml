@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - preventconcurrentlogins
+    - Member[middleware].Member[Visitor]
+  - - Django.db.models.Model~Subclass
+    - preventconcurrentlogins
+    - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - preventconcurrentlogins
+    - Member[models].Member[Visitor]

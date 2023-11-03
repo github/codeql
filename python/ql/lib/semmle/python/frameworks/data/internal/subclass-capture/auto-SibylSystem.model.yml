@@ -1,0 +1,87 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[BanRes]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[BanResult]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[Ban]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[GeneralInfo]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[PermissionResponse]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[ReportResponse]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[StatsResult]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[TokenValidation]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[Token]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[bans].Member[BanRes]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[bans].Member[BanResult]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[bans].Member[Ban]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[bans].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[error].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[general_info].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[general_info].Member[GeneralInfoResult]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[general_info].Member[GeneralInfo]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[permission].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[permission].Member[PermissionResponse]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[report].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[report].Member[ReportResponse]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[stats].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[stats].Member[SibylStats]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[stats].Member[StatsResult]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[token].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[token].Member[TokenValidation]
+  - - pydantic.BaseModel~Subclass
+    - SibylSystem
+    - Member[types].Member[token].Member[Token]

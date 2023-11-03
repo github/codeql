@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - favorites
+    - Member[views].Member[AddToFavoriteView]
+  - - Django.Views.View~Subclass
+    - favorites
+    - Member[views].Member[DeleteFavoriteView]
+  - - Django.Views.View~Subclass
+    - favorites
+    - Member[views].Member[FavoriteListView]
+  - - Django.Views.View~Subclass
+    - favorites
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - favorites
+    - Member[views].Member[RemoveFromFavoriteView]
+  - - Django.Views.View~Subclass
+    - favorites
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - favorites
+    - Member[views].Member[Product]

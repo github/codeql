@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - table
+    - Member[urls].Member[FeedDataView]
+  - - Django.Views.View~Subclass
+    - table
+    - Member[views].Member[BaseListView]
+  - - Django.Views.View~Subclass
+    - table
+    - Member[views].Member[FeedDataView]

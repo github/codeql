@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[BlackboardLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[CanvasLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[ContentMetadataItemTransmission]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[CornerstoneLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[Degreed2LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[DegreedLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[GenericLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[MoodleLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[serializers].Member[SapSuccessFactorsLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[views].Member[ContentMetadataItemTransmission]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[views].Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - logs
+    - Member[views].Member[LearnerDataTransmissionAudit]

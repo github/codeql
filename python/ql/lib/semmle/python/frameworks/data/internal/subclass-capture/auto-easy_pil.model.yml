@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - easy_pil
+    - Member[aio_editor].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - easy_pil
+    - Member[editor].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - easy_pil
+    - Member[types].Member[workspace].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - easy_pil
+    - Member[utils].Member[BytesIO]

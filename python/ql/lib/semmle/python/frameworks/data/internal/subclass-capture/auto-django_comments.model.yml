@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_comments
+    - Member[abstracts].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_comments
+    - Member[abstracts].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - django_comments
+    - Member[forms].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_comments
+    - Member[managers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_comments
+    - Member[templatetags].Member[comments].Member[ContentType]

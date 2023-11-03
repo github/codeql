@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[__main__].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[__main__].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[__main__].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[DataModelField]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[JsonSchemaObject]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[MediaObject]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[ParameterObject]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[ReferenceObject]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[RequestBodyObject]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[ResponseObject]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[visitors].Member[imports].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[visitors].Member[imports].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[visitors].Member[imports].Member[Reference]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.Application~Subclass
+    - snowflake
+    - Member[server].Member[SnowflakeApplication]
+  - - tornado.web.Application~Subclass
+    - snowflake
+    - Member[server]Member[SnowflakeApplication]
+  - - tornado.web.RequestHandler~Subclass
+    - snowflake
+    - Member[server].Member[IDHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - snowflake
+    - Member[server].Member[StatsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - snowflake
+    - Member[server]Member[IDHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - snowflake
+    - Member[server]Member[StatsHandler]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_otp
+    - Member[views].Member[LoginView]
+  - - django.http.response.HttpResponse~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_hotp].Member[admin].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_totp].Member[admin].Member[TemplateResponse]

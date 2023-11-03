@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - gitignore
+    - Member[client].Member[github_client].Member[Client]
+  - - logging.Logger~Subclass
+    - gitignore
+    - Member[client].Member[github_client].Member[Logger]
+  - - pydantic.BaseModel~Subclass
+    - gitignore
+    - Member[client].Member[github_client].Member[GitignoreFile]
+  - - pydantic.BaseModel~Subclass
+    - gitignore
+    - Member[main].Member[GitignoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - gitignore
+    - Member[type_adapters].Member[GitignoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - gitignore
+    - Member[type_adapters].Member[GitignoreFile]

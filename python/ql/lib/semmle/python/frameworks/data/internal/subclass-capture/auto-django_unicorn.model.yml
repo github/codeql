@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponse~Subclass
+    - django_unicorn
+    - Member[components].Member[unicorn_template_response].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_unicorn
+    - Member[components].Member[unicorn_template_response].Member[UnicornTemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_unicorn
+    - Member[components].Member[unicorn_view].Member[UnicornTemplateResponse]

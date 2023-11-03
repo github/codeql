@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - ariadne_django
+    - Member[views].Member[GraphQLAsyncView]
+  - - Django.Views.View~Subclass
+    - ariadne_django
+    - Member[views].Member[GraphQLView]
+  - - Django.Views.View~Subclass
+    - ariadne_django
+    - Member[views].Member[async_graphql].Member[BaseGraphQLView]
+  - - Django.Views.View~Subclass
+    - ariadne_django
+    - Member[views].Member[async_graphql].Member[GraphQLAsyncView]
+  - - Django.Views.View~Subclass
+    - ariadne_django
+    - Member[views].Member[base].Member[BaseGraphQLView]
+  - - Django.Views.View~Subclass
+    - ariadne_django
+    - Member[views].Member[base].Member[View]
+  - - Django.Views.View~Subclass
+    - ariadne_django
+    - Member[views].Member[graphql].Member[BaseGraphQLView]
+  - - Django.Views.View~Subclass
+    - ariadne_django
+    - Member[views].Member[graphql].Member[GraphQLView]
+  - - django.http.request.HttpRequest~Subclass
+    - ariadne_django
+    - Member[views].Member[async_graphql].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - ariadne_django
+    - Member[views].Member[base].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - ariadne_django
+    - Member[views].Member[graphql].Member[HttpRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - ariadne_django
+    - Member[views].Member[async_graphql].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - ariadne_django
+    - Member[views].Member[graphql].Member[HttpResponseBadRequest]
+  - - django.http.response.JsonResponse~Subclass
+    - ariadne_django
+    - Member[views].Member[async_graphql].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - ariadne_django
+    - Member[views].Member[graphql].Member[JsonResponse]

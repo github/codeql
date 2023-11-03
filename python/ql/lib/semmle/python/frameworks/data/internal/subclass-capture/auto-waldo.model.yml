@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - waldo
+    - Member[locate].Member[load].Member[etree]
+  - - lxml.etree~Alias
+    - waldo
+    - Member[uniprot].Member[load].Member[etree]

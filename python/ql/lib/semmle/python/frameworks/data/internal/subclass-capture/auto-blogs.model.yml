@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - blogs
+    - Member[models].Member[Blog]
+  - - Django.db.models.Model~Subclass
+    - blogs
+    - Member[models].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - blogs
+    - Member[models].Member[User]

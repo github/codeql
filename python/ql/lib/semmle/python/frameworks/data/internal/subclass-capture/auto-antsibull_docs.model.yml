@@ -1,0 +1,453 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[cli].Member[doc_commands].Member[plugin].Member[CollectionLinks]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[collection_config].Member[CollectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[collection_links].Member[CollectionEditOnGitHub]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[collection_links].Member[CollectionLinks]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[collection_links].Member[Communication]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[collection_links].Member[IRCChannel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[collection_links].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[collection_links].Member[MailingList]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[collection_links].Member[MatrixRoom]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[docs_parsing].Member[CollectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[lint_plugin_docs].Member[CollectionLinks]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[AnsibleDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[BecomePluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[CachePluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[CallbackPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[CliConfPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[ConnectionPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[FilterPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[HttpApiPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[InventoryPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[LookupPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[ModulePluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[NetConfPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[ShellPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[StrategyPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[ansible_doc].Member[VarsPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[collection_config].Member[CollectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[collection_links].Member[CollectionEditOnGitHub]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[collection_links].Member[CollectionLinks]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[collection_links].Member[Communication]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[collection_links].Member[IRCChannel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[collection_links].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[collection_links].Member[MailingList]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[collection_links].Member[MatrixRoom]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[BecomeSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[CacheSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[CallbackDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[CallbackSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[CliConfSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ConnectionSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[HttpApiSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[InventorySchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[LookupSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ModuleDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ModuleSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[NetConfSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[PluginDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[PluginExamplesSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[PluginMetadataSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[PluginReturnSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[PluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[PositionalDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[PositionalSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[RoleSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ShellSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[StrategySchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[VarsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[AnsibleDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[BecomePluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[CachePluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[CallbackPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[CliConfPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[ConnectionPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[FilterPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[GenericPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[HttpApiPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[InventoryPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[LookupPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[ModulePluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[NetConfPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[PositionalPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[RolePluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[ShellPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[StrategyPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[ansible_doc].Member[VarsPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[AttributeSchemaActionGroup]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[AttributeSchemaBase]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[AttributeSchemaPlatform]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[AttributeSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[DeprecationSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[DocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[OptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[SeeAlsoLinkSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[SeeAlsoModSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[SeeAlsoPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[base].Member[SeeAlsoRefSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[callback].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[callback].Member[CallbackDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[callback].Member[CallbackSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[callback].Member[InnerCallbackDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[callback].Member[InnerDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[callback].Member[PluginExamplesSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[callback].Member[PluginMetadataSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[callback].Member[PluginReturnSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[DocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[InnerModuleOptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[ModuleDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[ModuleOptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[ModuleSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[OptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[OuterModuleDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[PluginExamplesSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[PluginMetadataSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[module].Member[PluginReturnSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[DeprecationSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[DocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[InnerDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[InnerReturnSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[OptionCliSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[OptionEnvSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[OptionIniSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[OptionKeywordSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[OptionVarsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[OptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[OuterReturnSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[PluginDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[PluginExamplesSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[PluginMetadataSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[PluginOptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[PluginReturnSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[PluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[plugin].Member[ReturnSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[positional].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[positional].Member[InnerDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[positional].Member[InnerPositionalDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[positional].Member[PluginExamplesSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[positional].Member[PluginMetadataSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[positional].Member[PluginReturnSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[positional].Member[PositionalDocSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[positional].Member[PositionalSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[AttributeSchemaActionGroup]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[AttributeSchemaPlatform]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[AttributeSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[DeprecationSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[InnerRoleOptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[OptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[RoleEntrypointSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[RoleOptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[RoleSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[SeeAlsoLinkSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[SeeAlsoModSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[docs].Member[role].Member[SeeAlsoRefSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[write_docs].Member[collections].Member[CollectionLinks]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[write_docs].Member[plugin_stubs].Member[CollectionLinks]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[write_docs].Member[plugins].Member[CollectionLinks]

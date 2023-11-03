@@ -1,0 +1,1065 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - controller
+    - Member[controller].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - controller
+    - Member[events].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - controller
+    - Member[onboarding].Member[ClientSession]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AMLRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ActionMenuFetchResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ActionMenuModulesResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AdminConfig]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AdminMediationDeny]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AdminModules]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AdminReset]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AdminShutdown]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AdminStatusLiveliness]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AdminStatusReadiness]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AdminStatus]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AttachDecoratorData1JWS]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AttachDecoratorDataJWSHeader]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AttachDecoratorDataJWS]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AttachDecoratorData]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AttachDecorator]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AttachmentDef]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[AttributeMimeTypesResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[BasicMessageModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ClaimFormat]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ClearPendingRevocationsRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ConnRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ConnectionInvitation]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ConnectionList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ConnectionMetadataSetRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ConnectionMetadata]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ConnectionModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ConnectionStaticRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ConnectionStaticResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Constraints]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Context1]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Context]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CreateInvitationRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CreateWalletRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CreateWalletResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CreateWalletTokenRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CreateWalletTokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredAttrSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredDefValuePrimary]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredDefValueRevocation]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredDefValue]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredInfoList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredRevIndyRecordsResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredRevRecordDetailsResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredRevRecordResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredRevokedResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialDefinitionGetResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialDefinitionId]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialDefinitionSendRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialDefinitionSendResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialDefinition]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialDefinitionsCreatedResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialOffer]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialPreview]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialProposal]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[CredentialStatusOptions]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Credential]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIDCreateOptions]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIDCreate]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIDEndpointWithType]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIDEndpoint]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIDList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIDResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIDXRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DID]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIFField]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIFHolder]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIFOptions]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIFPresSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIFProofProposal]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[DIFProofRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Date]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Disclose]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Disclosures]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Doc]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[EndorserInfo]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[EndpointsResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[FieldIdItem]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Filter]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Generated]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[GetDIDEndpointResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[GetDIDVerkeyResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[GetNymRoleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[HolderModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyAttrValue]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyCredAbstract]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyCredInfo]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyCredPrecis]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyCredRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyCredential]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyEQProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyGEProofPred]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyGEProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyKeyCorrectnessProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyNonRevocProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyNonRevocationInterval]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyPresAttrSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyPresPredSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyPresPreview]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyPresSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyPrimaryProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofIdentifier]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofProofAggregatedProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofProofProofsProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofReqAttrSpecNonRevoked]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofReqAttrSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofReqPredSpecNonRevoked]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofReqPredSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofRequestNonRevoked]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofRequestedProofPredicate]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofRequestedProofRevealedAttrGroup]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofRequestedProofRevealedAttr]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProofRequestedProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyRequestedCredsRequestedAttr]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyRequestedCredsRequestedPred]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyRevRegDefValuePublicKeysAccumKey]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyRevRegDefValuePublicKeys]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyRevRegDefValue]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyRevRegDef]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyRevRegEntryValue]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IndyRevRegEntry]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[InputDescriptors]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IntroModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[InvitationCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[InvitationMessage]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[InvitationRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[InvitationResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IssueCredentialModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IssuerCredRevRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[IssuerRevRegRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[KeylistQueryFilterRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[KeylistQueryPaginate]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[KeylistQuery]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[KeylistUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[KeylistUpdateRule]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[KeylistUpdate]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Keylist]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[LDProofVCDetailOptions]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[LDProofVCDetail]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[LedgerConfigInstance]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[LedgerConfigList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[LedgerModulesResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[LinkedDataProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MediationCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MediationDeny]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MediationGrant]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MediationIdMatchInfo]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MediationList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MediationRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MenuFormParam]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MenuForm]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MenuJson]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MenuOption]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Menu]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[MultitenantModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[OobRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[PerformRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[PingRequestResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[PingRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[PresentationDefinition]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[PresentationProposal]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[PresentationRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ProfileSettings]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ProtocolDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[PublishRevocations]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[PurgeItem]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Queries]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[QueryItem]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Query]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RawEncoded]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ReceiveInvitationRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RecipientKey]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RemoveWalletRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ResolutionResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RevRegCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RevRegId]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RevRegIssuedResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RevRegResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RevRegUpdateTailsFileUri]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RevRegWalletUpdatedResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RevRegsCreated]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RevocationModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RevokeRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RouteRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RoutingKey2]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RoutingKey3]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[RoutingKey]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Rrid2cridItem]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SchemaGetResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SchemaId1]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SchemaId]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SchemaInputDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SchemaSendRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SchemaSendResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SchemasCreatedResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SchemasInputDescriptorFilter]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SendMenu]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SendMessage]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[ServiceDecorator]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SignRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SignResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SignatureOptions]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SignedDoc]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[SubmissionRequirements]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TAAAccept]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TAAAcceptance]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TAAInfo]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TAARecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TAAResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TailsDeleteResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TransactionJobs]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TransactionList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TransactionRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TxnOrCredentialDefinitionSendResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TxnOrPublishRevocationsResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TxnOrRegisterLedgerNymResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TxnOrRevRegResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[TxnOrSchemaSendResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[Type]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[UpdateProfileSettings]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[UpdateWalletRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialBoundOfferRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialConnFreeOfferRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialCreate]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialExchangeListResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialExchange]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialFreeOfferRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialIssueRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialProblemReportRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialProposalRequestMand]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialProposalRequestOpt]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10CredentialStoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10DiscoveryExchangeListResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10DiscoveryRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10PresentProofModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10PresentationCreateRequestRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10PresentationExchangeList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10PresentationExchange]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10PresentationProblemReportRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10PresentationProposalRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10PresentationSendRequestRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V10PresentationSendRequestToProposal]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredAttrSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredBoundOfferRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredExFree]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredExRecordByFormat]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredExRecordDetail]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredExRecordIndy]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredExRecordLDProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredExRecordListResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredExRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredFilterIndy]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredFilterLDProof]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredFilter]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredFormat]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredIssueProblemReportRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredIssueRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredIssue]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredOfferConnFreeRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredOfferRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredOffer]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredPreview]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredProposal]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredRequestFree]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredRequestRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20CredStoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20DiscoveryExchangeListResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20DiscoveryExchangeResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20DiscoveryRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20IssueCredSchemaCore]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20IssueCredentialModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresCreateRequestRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresExRecordByFormat]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresExRecordList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresExRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresFormat]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresProblemReportRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresProposalByFormat]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresProposalRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresProposal]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresRequestByFormat]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresSendRequestRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresSpecByFormatRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20Pres]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresentProofModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[V20PresentationSendRequestToProposal]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[VCRecordList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[VCRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[VerifyRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[VerifyResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[W3CCredentialsListRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[WalletList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[WalletModuleResponse]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[WalletRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[models].Member[WriteLedgerRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[AdminConfig]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[ConnRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[ConnectionList]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[CredAttrSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[CredentialDefinitionSendRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[CredentialDefinitionSendResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[CredentialPreview]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[Credential]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[DIDCreateOptions]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[DIDCreate]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[DIDResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[DIFOptions]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[DIFProofRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[IndyCredPrecis]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[IndyPresSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[IndyProofReqAttrSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[IndyProofReqPredSpec]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[IndyProofRequestNonRevoked]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[IndyProofRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[InvitationCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[InvitationMessage]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[InvitationRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[InvitationResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[LDProofVCDetailOptions]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[LDProofVCDetail]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[MediationRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[OobRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[PingRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[PresentationDefinition]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[ReceiveInvitationRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[SchemaSendRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[SchemaSendResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[TAAAccept]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[TAAResult]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V10CredentialExchange]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V10CredentialFreeOfferRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V10PresentationExchange]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V10PresentationSendRequestRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20CredExRecordDetail]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20CredExRecordIndy]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20CredExRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20CredFilterIndy]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20CredFilter]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20CredOfferRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20CredPreview]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20PresExRecord]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20PresRequestByFormat]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20PresSendRequestRequest]
+  - - pydantic.BaseModel~Subclass
+    - controller
+    - Member[protocols].Member[V20PresSpecByFormatRequest]

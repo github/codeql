@@ -1,0 +1,96 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[urls].Member[CategoryCreateView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[urls].Member[CategoryDetailView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[urls].Member[CategoryListView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[urls].Member[CategoryUpdateView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[urls].Member[TagCreateView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[urls].Member[TagDetailView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[urls].Member[TagListView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[urls].Member[TagUpdateView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[CategoryCreateView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[CategoryDetailView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[CategoryListView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[CategoryUpdateView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[TagCreateView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[TagDetailView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[TagListView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[TagUpdateView]
+  - - Django.Views.View~Subclass
+    - oldcategory
+    - Member[views].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - oldcategory
+    - Member[admin].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - oldcategory
+    - Member[admin].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - oldcategory
+    - Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - oldcategory
+    - Member[models].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - oldcategory
+    - Member[sitemap].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - oldcategory
+    - Member[sitemap].Member[Tag]
+  - - django.forms.BaseForm~Subclass
+    - oldcategory
+    - Member[forms].Member[CategoryAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - oldcategory
+    - Member[forms].Member[CategoryCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - oldcategory
+    - Member[forms].Member[CategoryUpdateForm]
+  - - django.forms.BaseForm~Subclass
+    - oldcategory
+    - Member[forms].Member[TagCreateForm]

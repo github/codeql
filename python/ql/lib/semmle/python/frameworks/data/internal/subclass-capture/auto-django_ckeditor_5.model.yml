@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.forms.BaseForm~Subclass
+    - django_ckeditor_5
+    - Member[forms].Member[UploadFileForm]
+  - - django.forms.BaseForm~Subclass
+    - django_ckeditor_5
+    - Member[views].Member[UploadFileForm]
+  - - django.http.response.JsonResponse~Subclass
+    - django_ckeditor_5
+    - Member[views].Member[JsonResponse]

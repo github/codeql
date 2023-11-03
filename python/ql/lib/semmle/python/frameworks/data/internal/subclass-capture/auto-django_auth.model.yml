@@ -1,0 +1,87 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[urls].Member[APIUserLoginView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[urls].Member[APIUserLogoutView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[urls].Member[APIUserRegisterView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[urls].Member[APIVerificationCodeView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[APIUserLoginView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[APIUserLogoutView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[APIUserRegisterView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[APIVerificationCodeView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[View]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[api].Member[APIUserLoginView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[api].Member[APIUserLogoutView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[api].Member[APIUserRegisterView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[api].Member[APIVerificationCodeView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[api].Member[View]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[user].Member[UserHomeIndexView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[user].Member[UserLoginView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[user].Member[UserLogoutView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[user].Member[UserRegisterView]
+  - - Django.Views.View~Subclass
+    - django_auth
+    - Member[views].Member[user].Member[View]
+  - - Django.db.models.Model~Subclass
+    - django_auth
+    - Member[admin].Member[User]
+  - - Django.db.models.Model~Subclass
+    - django_auth
+    - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - django_auth
+    - Member[models].Member[_User]
+  - - Django.db.models.Model~Subclass
+    - django_auth
+    - Member[views].Member[User]
+  - - Django.db.models.Model~Subclass
+    - django_auth
+    - Member[views].Member[api].Member[User]
+  - - django.http.response.HttpResponse~Subclass
+    - django_auth
+    - Member[views].Member[user].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - django_auth
+    - Member[views].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - django_auth
+    - Member[views].Member[api].Member[JsonResponse]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - bootstrap_modal_forms
+    - Member[generic].Member[BSModalLoginView]
+  - - Django.Views.View~Subclass
+    - bootstrap_modal_forms
+    - Member[generic].Member[LoginView]

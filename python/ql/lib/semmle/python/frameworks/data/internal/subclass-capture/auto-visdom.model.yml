@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[SocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[VisSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[base_handlers].Member[BaseWebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[AnySocketHandlerOrWrapper]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[AnySocketWrapper]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[BaseWebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[SocketHandlerOrWrapper]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[SocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[SocketWrapper]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[VisSocketHandlerOrWrapper]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[VisSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[VisSocketWrapper]

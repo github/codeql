@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - graphene_file_upload
+    - Member[django].Member[FileUploadGraphQLView]
+  - - Django.Views.View~Subclass
+    - graphene_file_upload
+    - Member[django].Member[GraphQLView]
+  - - Django.Views.View~Subclass
+    - graphene_file_upload
+    - Member[django]Member[FileUploadGraphQLView]

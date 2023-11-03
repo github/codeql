@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - push_notifications
+    - Member[fields].Member[HexadecimalField]
+  - - Django.Views.View~Subclass
+    - push_notifications
+    - Member[django_rest_api].Member[APNSDeviceViewSet]
+  - - Django.Views.View~Subclass
+    - push_notifications
+    - Member[django_rest_api].Member[GCMDeviceViewSet]
+  - - Django.db.models.Model~Subclass
+    - push_notifications
+    - Member[admin].Member[APNSDevice]
+  - - Django.db.models.Model~Subclass
+    - push_notifications
+    - Member[admin].Member[GCMDevice]
+  - - Django.db.models.Model~Subclass
+    - push_notifications
+    - Member[api].Member[APNSDevice]
+  - - Django.db.models.Model~Subclass
+    - push_notifications
+    - Member[api].Member[GCMDevice]
+  - - Django.db.models.Model~Subclass
+    - push_notifications
+    - Member[django_rest_api].Member[APNSDevice]
+  - - Django.db.models.Model~Subclass
+    - push_notifications
+    - Member[django_rest_api].Member[GCMDevice]
+  - - Django.db.models.Model~Subclass
+    - push_notifications
+    - Member[models].Member[APNSDevice]
+  - - Django.db.models.Model~Subclass
+    - push_notifications
+    - Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - push_notifications
+    - Member[models].Member[GCMDevice]

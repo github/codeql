@@ -1,0 +1,57 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - djwto
+    - Member[views].Member[BlackListTokenView]
+  - - Django.Views.View~Subclass
+    - djwto
+    - Member[views].Member[GetTokensView]
+  - - Django.Views.View~Subclass
+    - djwto
+    - Member[views].Member[RefreshAccessView]
+  - - Django.Views.View~Subclass
+    - djwto
+    - Member[views].Member[UpdateRefreshView]
+  - - Django.Views.View~Subclass
+    - djwto
+    - Member[views].Member[ValidateTokensView]
+  - - Django.Views.View~Subclass
+    - djwto
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - djwto
+    - Member[authentication].Member[User]
+  - - Django.db.models.Model~Subclass
+    - djwto
+    - Member[management].Member[commands].Member[delete_tokens].Member[JWTBlacklist]
+  - - Django.db.models.Model~Subclass
+    - djwto
+    - Member[models].Member[JWTBlacklist]
+  - - Django.db.models.Model~Subclass
+    - djwto
+    - Member[tokens].Member[User]
+  - - django.forms.BaseForm~Subclass
+    - djwto
+    - Member[authentication].Member[AuthenticationForm]
+  - - django.http.request.HttpRequest~Subclass
+    - djwto
+    - Member[authentication].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - djwto
+    - Member[authentication].Member[THttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - djwto
+    - Member[tokens].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - djwto
+    - Member[views].Member[HttpRequest]
+  - - django.http.response.JsonResponse~Subclass
+    - djwto
+    - Member[authentication].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - djwto
+    - Member[views].Member[JsonResponse]

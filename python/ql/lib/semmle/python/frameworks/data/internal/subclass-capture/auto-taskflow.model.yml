@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - taskflow
+    - Member[rest].Member[resources].Member[Resource]
+  - - flask.MethodView~Subclass
+    - taskflow
+    - Member[rest].Member[resources].Member[TaskListResource]
+  - - flask.MethodView~Subclass
+    - taskflow
+    - Member[rest].Member[resources].Member[TaskResource]
+  - - flask.MethodView~Subclass
+    - taskflow
+    - Member[rest].Member[resources].Member[WorkflowListResource]
+  - - flask.MethodView~Subclass
+    - taskflow
+    - Member[rest].Member[resources].Member[WorkflowResource]

@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[ResourceDetail]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[ResourceList]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[ResourceRelationship]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[api].Member[ResourceList]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[api].Member[ResourceRelationship]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[data_layers].Member[base].Member[Resource]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[resource].Member[MethodView]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[resource].Member[ResourceDetail]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[resource].Member[ResourceList]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[resource].Member[ResourceRelationship]
+  - - flask.MethodView~Subclass
+    - flask_combo_jsonapi
+    - Member[resource].Member[Resource]
+  - - sqlalchemy.orm.Session~Subclass
+    - flask_combo_jsonapi
+    - Member[data_layers].Member[alchemy].Member[SessionType]

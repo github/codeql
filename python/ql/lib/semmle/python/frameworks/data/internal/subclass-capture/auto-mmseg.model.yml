@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - mmseg
+    - Member[evaluation].Member[metrics].Member[citys_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmseg
+    - Member[evaluation].Member[metrics].Member[depth_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmseg
+    - Member[evaluation].Member[metrics].Member[iou_metric].Member[MMLogger]

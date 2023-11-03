@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[ApiDiffHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[AuthMainDifftoolHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[BaseGitDiffHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[CheckpointDifftoolHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[ExtensionApiDiffHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[GitDiffHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[GitDifftoolHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[IsGitHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[MainDifftoolHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nb_server_extension].Member[NbdimeHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[ApiCloseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[ApiDiffHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[ApiMergeHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[ApiMergeStoreHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[MainDiffHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[MainDifftoolHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[MainMergeHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[MainMergetoolHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbdime
+    - Member[webapp].Member[nbdimeserver].Member[NbdimeHandler]

@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - flask_security
+    - Member[webauthn].Member[PublicKeyCredentialDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - flask_security
+    - Member[webauthn].Member[VerifiedAuthentication]
+  - - pydantic.BaseModel~Subclass
+    - flask_security
+    - Member[webauthn].Member[VerifiedRegistration]
+  - - pydantic.BaseModel~Subclass
+    - flask_security
+    - Member[webauthn_util].Member[AuthenticatorSelectionCriteria]

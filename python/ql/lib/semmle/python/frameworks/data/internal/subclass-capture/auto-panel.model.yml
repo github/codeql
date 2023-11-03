@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[WebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[jupyter_executor].Member[PanelExecutor]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[jupyter_executor].Member[WSHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[jupyter_server_extension].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[jupyter_server_extension].Member[PanelJupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[jupyter_server_extension].Member[PanelWSProxy]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[jupyter_server_extension].Member[WSHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[server].Member[AutoloadJsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[server].Member[BkAutoloadJsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[server].Member[BkDocHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[server].Member[BkRootHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[server].Member[DocHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[server].Member[RootHandler]

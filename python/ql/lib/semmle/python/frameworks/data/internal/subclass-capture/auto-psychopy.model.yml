@@ -1,0 +1,57 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - psychopy
+    - Member[experiment].Member[_experiment].Member[IndentingBuffer]
+  - - io.StringIO~Subclass
+    - psychopy
+    - Member[experiment].Member[exports].Member[IndentingBuffer]
+  - - io.StringIO~Subclass
+    - psychopy
+    - Member[experiment].Member[py2js].Member[StringIO]
+  - - io.StringIO~Subclass
+    - psychopy
+    - Member[sound].Member[backend_pyo].Member[StringIO]
+  - - io.StringIO~Subclass
+    - psychopy
+    - Member[visual].Member[stim3d].Member[StringIO]
+  - - pickle~Alias
+    - psychopy
+    - Member[app].Member[builder].Member[dialogs].Member[dlgsConditions].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[app].Member[coder].Member[coder].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[app].Member[coder].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[compatibility].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[data].Member[base].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[data].Member[experiment].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[data].Member[staircase].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[data].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[monitors].Member[calibTools].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[monitors].Member[pickle]
+  - - pickle~Alias
+    - psychopy
+    - Member[tools].Member[filetools].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - psychopy
+    - Member[experiment].Member[_experiment].Member[xml]

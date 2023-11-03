@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - wagtailmedia
+    - Member[forms].Member[CollectionChoiceField]
+  - - Django.Views.View~Subclass
+    - wagtailmedia
+    - Member[api].Member[views].Member[BaseAPIViewSet]
+  - - Django.Views.View~Subclass
+    - wagtailmedia
+    - Member[api].Member[views].Member[MediaAPIViewSet]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[models].Member[CollectionMember]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[models].Member[ReferenceIndex]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[views].Member[media].Member[Page]
+  - - django.forms.BaseForm~Subclass
+    - wagtailmedia
+    - Member[forms].Member[BaseCollectionMemberForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtailmedia
+    - Member[forms].Member[BaseMediaForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtailmedia
+    - Member[views].Member[chooser].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtailmedia
+    - Member[views].Member[media].Member[SearchForm]

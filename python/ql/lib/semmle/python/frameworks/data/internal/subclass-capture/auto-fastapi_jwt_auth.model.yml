@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_jwt_auth
+    - Member[auth_config].Member[LoadConfig]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_jwt_auth
+    - Member[config].Member[LoadConfig]
+  - - starlette.websockets.WebSocket~Subclass
+    - fastapi_jwt_auth
+    - Member[auth_jwt].Member[WebSocket]

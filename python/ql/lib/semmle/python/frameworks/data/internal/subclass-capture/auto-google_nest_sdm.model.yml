@@ -1,0 +1,183 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - google_nest_sdm
+    - Member[google_nest].Member[ClientSession]
+  - - pickle~Alias
+    - google_nest_sdm
+    - Member[google_nest].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[CameraClipPreviewTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[CameraEventImageTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[CameraImageTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[CameraLiveStreamTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[CameraMotionTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[CameraPersonTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[CameraSoundTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[EventImage]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[RtspStream]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[Stream]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[camera_traits].Member[WebRtcStream]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device].Member[DeviceTraits]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device].Member[EventMessage]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device].Member[ParentRelation]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device].Member[TraitModel]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_manager].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_manager].Member[EventMessage]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_manager].Member[ParentRelation]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_manager].Member[RelationUpdate]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_manager].Member[Structure]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_traits].Member[CommandModel]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_traits].Member[ConnectivityTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_traits].Member[FanTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_traits].Member[HumidityTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_traits].Member[InfoTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[device_traits].Member[TemperatureTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[doorbell_traits].Member[DoorbellChimeEvent]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[doorbell_traits].Member[DoorbellChimeTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[event].Member[CameraClipPreviewEvent]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[event].Member[CameraMotionEvent]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[event].Member[CameraPersonEvent]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[event].Member[CameraSoundEvent]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[event].Member[DoorbellChimeEvent]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[event].Member[EventMessage]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[event].Member[ImageEventBase]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[event].Member[RelationUpdate]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[event_media].Member[EventMediaModelItem]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[google_nest].Member[CameraLiveStreamTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[google_nest].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[google_nest].Member[EventMessage]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[google_nest].Member[Structure]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[google_nest].Member[ThermostatEcoTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[google_nest].Member[ThermostatModeTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[google_nest].Member[ThermostatTemperatureSetpointTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[model].Member[TraitModel]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[structure].Member[InfoTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[structure].Member[RoomInfoTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[structure].Member[StructureTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[structure].Member[Structure]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[structure].Member[TraitModel]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[thermostat_traits].Member[ThermostatEcoTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[thermostat_traits].Member[ThermostatHeatCoolTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[thermostat_traits].Member[ThermostatHvacTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[thermostat_traits].Member[ThermostatModeTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[thermostat_traits].Member[ThermostatTemperatureSetpointTrait]
+  - - pydantic.BaseModel~Subclass
+    - google_nest_sdm
+    - Member[traits].Member[CommandModel]

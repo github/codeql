@@ -1,0 +1,144 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_orders].Member[ListCreateAPIView]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_orders].Member[OrderListCreateAPIView]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_products].Member[ListAPIView]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_products].Member[ProductCategoryListAPIView]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_products].Member[ProductViewSet]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_products].Member[ReadOnlyModelViewSet]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_users].Member[ContactCreateAPIView]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_users].Member[CreateAPIView]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_users].Member[MailingCreateAPIView]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_users].Member[ModelViewSet]
+  - - Django.Views.View~Subclass
+    - api
+    - Member[views_users].Member[ReviewViewSet]
+  - - Django.db.models.Model~Subclass
+    - api
+    - Member[views_orders].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - api
+    - Member[views_products].Member[ProductCategory]
+  - - Django.db.models.Model~Subclass
+    - api
+    - Member[views_products].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - api
+    - Member[views_users].Member[Review]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[Linkedin].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[Linkedin].Member[Post]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[Linkedin].Member[Video]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[Linkedin]Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[Linkedin]Member[Post]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[Linkedin]Member[Video]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[core].Member[db].Member[SQLModel]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[core].Member[dependencies].Member[HTTPAuthorizationCredentials]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[core].Member[dependencies].Member[HTTPBasicCredentials]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[main].Member[Post]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[alert].Member[AlertEnrichment]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[alert].Member[Alert]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[alert].Member[SQLModel]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[provider].Member[Provider]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[provider].Member[SQLModel]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[tenant].Member[SQLModel]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[tenant].Member[TenantApiKey]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[tenant].Member[TenantInstallation]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[tenant].Member[Tenant]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[workflow].Member[SQLModel]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[workflow].Member[WorkflowExecutionLog]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[workflow].Member[WorkflowExecution]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[db].Member[workflow].Member[Workflow]
+  - - sqlalchemy.orm.Session~Subclass
+    - api
+    - Member[core].Member[db].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - api
+    - Member[core].Member[dependencies].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - api
+    - Member[routes].Member[alerts].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - api
+    - Member[routes].Member[providers].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - api
+    - Member[routes].Member[settings].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - api
+    - Member[routes].Member[tenant].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - api
+    - Member[routes].Member[workflows].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - api
+    - Member[utils].Member[tenant_utils].Member[Session]

@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[admin].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[admin].Member[XtdComment]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[api].Member[frontend].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[api].Member[serializers].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[api].Member[serializers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[api].Member[serializers].Member[XtdComment]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[api].Member[views].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[api].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[management].Member[commands].Member[initialize_nested_count].Member[XtdComment]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[models].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[models].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[models].Member[XtdComment]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[moderation].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[templatetags].Member[comments_xtd].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[templatetags].Member[comments_xtd].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[utils].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[views].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[views].Member[ContentType]
+  - - django.forms.BaseForm~Subclass
+    - django_comments_xtd
+    - Member[api].Member[frontend].Member[CommentSecurityForm]
+  - - django.forms.BaseForm~Subclass
+    - django_comments_xtd
+    - Member[api].Member[serializers].Member[CommentSecurityForm]
+  - - django.forms.BaseForm~Subclass
+    - django_comments_xtd
+    - Member[forms].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - django_comments_xtd
+    - Member[forms].Member[XtdCommentForm]

@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[manager].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[edit].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[flowmon].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[lock].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[retrieve].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[rpc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[session].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[subscribe].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[third_party].Member[alu].Member[rpc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[third_party].Member[h3c].Member[rpc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[third_party].Member[hpcomware].Member[rpc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[third_party].Member[huawei].Member[rpc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[third_party].Member[iosxe].Member[rpc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[third_party].Member[juniper].Member[rpc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[third_party].Member[nexus].Member[rpc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[third_party].Member[sros].Member[rpc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[operations].Member[util].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[transport].Member[session].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ncclient
+    - Member[xml_].Member[StringIO]

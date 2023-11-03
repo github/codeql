@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - viktor
+    - Member[crons].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - viktor
+    - Member[app].Member[Flask]
+  - - io.StringIO~Subclass
+    - viktor
+    - Member[core].Member[linguistics].Member[StringIO]
+  - - lxml.etree~Alias
+    - viktor
+    - Member[core].Member[linguistics].Member[etree]
+  - - lxml.etree~Alias
+    - viktor
+    - Member[core].Member[text_cleaner].Member[etree]
+  - - sqlalchemy.orm.Session~Subclass
+    - viktor
+    - Member[core].Member[user_changes].Member[Session]

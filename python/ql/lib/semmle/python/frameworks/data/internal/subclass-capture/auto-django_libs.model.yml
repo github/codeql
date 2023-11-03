@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_libs
+    - Member[decorators].Member[User]
+  - - Django.db.models.Model~Subclass
+    - django_libs
+    - Member[templatetags].Member[libs_tags].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_libs
+    - Member[templatetags].Member[libs_tags].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - django_libs
+    - Member[utils].Member[email].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - django_libs
+    - Member[utils_email].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - django_libs
+    - Member[views].Member[Comment]

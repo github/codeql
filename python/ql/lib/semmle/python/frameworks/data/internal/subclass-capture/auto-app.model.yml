@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[adapters].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[profile].Member[admin].Member[User]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[User]
+  - - fastapi.APIRouter~Subclass
+    - app
+    - Member[routes].Member[detection].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - app
+    - Member[routes].Member[kie].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - app
+    - Member[routes].Member[ocr].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - app
+    - Member[routes].Member[recognition].Member[APIRouter]
+  - - flask.Response~Subclass
+    - app
+    - Member[decorators].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - app
+    - Member[controllers].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - app
+    - Member[routes].Member[detection].Member[DetectionOut]
+  - - pydantic.BaseModel~Subclass
+    - app
+    - Member[routes].Member[kie].Member[OCROut]
+  - - pydantic.BaseModel~Subclass
+    - app
+    - Member[routes].Member[ocr].Member[OCROut]
+  - - pydantic.BaseModel~Subclass
+    - app
+    - Member[routes].Member[recognition].Member[RecognitionOut]
+  - - pydantic.BaseModel~Subclass
+    - app
+    - Member[schemas].Member[DetectionOut]
+  - - pydantic.BaseModel~Subclass
+    - app
+    - Member[schemas].Member[OCROut]
+  - - pydantic.BaseModel~Subclass
+    - app
+    - Member[schemas].Member[RecognitionOut]

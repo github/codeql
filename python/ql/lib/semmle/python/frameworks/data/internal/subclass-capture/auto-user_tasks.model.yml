@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[admin].Member[UserTaskArtifact]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[admin].Member[UserTaskStatus]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[models].Member[UserTaskArtifact]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[models].Member[UserTaskStatus]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[serializers].Member[UserTaskArtifact]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[serializers].Member[UserTaskStatus]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[signals].Member[UserTaskStatus]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[tasks].Member[UserTaskStatus]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[views].Member[UserTaskArtifact]
+  - - Django.db.models.Model~Subclass
+    - user_tasks
+    - Member[views].Member[UserTaskStatus]

@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[users].Member[urls].Member[Login]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[users].Member[urls].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[Login]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[ProcessFormView]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[management].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[management].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[management].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[perms].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[Group]

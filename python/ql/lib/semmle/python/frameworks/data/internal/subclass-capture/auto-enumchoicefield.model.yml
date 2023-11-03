@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - enumchoicefield
+    - Member[fields].Member[EnumField]
+  - - Django.Forms.Field~Subclass
+    - enumchoicefield
+    - Member[forms].Member[EnumField]
+  - - Django.Forms.Field~Subclass
+    - enumchoicefield
+    - Member[forms].Member[Field]

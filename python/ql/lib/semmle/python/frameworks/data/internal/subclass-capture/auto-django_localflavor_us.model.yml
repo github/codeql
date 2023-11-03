@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - django_localflavor_us
+    - Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - django_localflavor_us
+    - Member[forms].Member[Field]
+  - - Django.Forms.Field~Subclass
+    - django_localflavor_us
+    - Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - django_localflavor_us
+    - Member[forms].Member[USPhoneNumberField]
+  - - Django.Forms.Field~Subclass
+    - django_localflavor_us
+    - Member[forms].Member[USSocialSecurityNumberField]
+  - - Django.Forms.Field~Subclass
+    - django_localflavor_us
+    - Member[forms].Member[USStateField]
+  - - Django.Forms.Field~Subclass
+    - django_localflavor_us
+    - Member[forms].Member[USZipCodeField]

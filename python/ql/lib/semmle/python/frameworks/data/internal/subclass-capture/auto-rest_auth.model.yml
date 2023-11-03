@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - rest_auth
+    - Member[registration].Member[views].Member[ConfirmEmailView]
+  - - Django.db.models.Model~Subclass
+    - rest_auth
+    - Member[models].Member[DefaultTokenModel]
+  - - Django.db.models.Model~Subclass
+    - rest_auth
+    - Member[registration].Member[serializers].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - rest_auth
+    - Member[registration].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - rest_auth
+    - Member[social_serializers].Member[SocialToken]

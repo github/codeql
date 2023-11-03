@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - pykoplenti
+    - Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - pykoplenti
+    - Member[cli].Member[ClientSession]
+  - - pydantic.BaseModel~Subclass
+    - pykoplenti
+    - Member[EventData]
+  - - pydantic.BaseModel~Subclass
+    - pykoplenti
+    - Member[MeData]
+  - - pydantic.BaseModel~Subclass
+    - pykoplenti
+    - Member[ModuleData]
+  - - pydantic.BaseModel~Subclass
+    - pykoplenti
+    - Member[ProcessData]
+  - - pydantic.BaseModel~Subclass
+    - pykoplenti
+    - Member[SettingsData]
+  - - pydantic.BaseModel~Subclass
+    - pykoplenti
+    - Member[VersionData]

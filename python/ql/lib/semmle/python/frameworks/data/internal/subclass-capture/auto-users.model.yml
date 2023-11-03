@@ -1,0 +1,255 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - users
+    - Member[forms].Member[CaptchaField]
+  - - Django.Forms.Field~Subclass
+    - users
+    - Member[forms].Member[ReCaptchaField]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[urls].Member[ActivateView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[urls].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[urls].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[urls].Member[PasswordResetCompleteView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[urls].Member[PasswordResetConfirmView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[urls].Member[PasswordResetDoneView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[urls].Member[PasswordResetView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[urls].Member[ProfileView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[urls].Member[RegisterView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[ActivateView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[ContactFormView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[EmailVerificationView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[MailingView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[ProfileView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[RegisterView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[ReviewDeleteView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[ReviewUpdateView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[ReviewView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[UserLoginView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[UserProfileView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[UserRegistrationView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[admin].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[admin].Member[EmailVerification]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[admin].Member[Mailing]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[admin].Member[Review]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[admin].Member[StarRating]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[admin].Member[User]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[forms].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[forms].Member[Mailing]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[forms].Member[Review]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[forms].Member[StarRating]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[forms].Member[User]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[management].Member[commands].Member[csu].Member[User]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[models].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[models].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[models].Member[CustomUser]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[models].Member[EmailVerification]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[models].Member[Mailing]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[models].Member[Review]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[models].Member[StarRating]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[serializers].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[serializers].Member[Mailing]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[serializers].Member[Review]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[serializers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[services].Member[EmailVerification]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[services].Member[User]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[services].Member[random_password].Member[User]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[tasks].Member[Mailing]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[views].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[views].Member[EmailVerification]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[views].Member[Mailing]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[views].Member[Review]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[views].Member[StarRating]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[views].Member[User]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[ContactForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[MailingForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[RecoverPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[ReviewsForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[UserLoginForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[UserProfileForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[UserRegisterForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[forms].Member[UserRegistrationForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[templatetags].Member[contact_tags].Member[MailingForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[views].Member[ContactForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[views].Member[MailingForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[views].Member[RecoverPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[views].Member[ReviewsForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[views].Member[UserLoginForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[views].Member[UserProfileForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[views].Member[UserRegisterForm]
+  - - django.forms.BaseForm~Subclass
+    - users
+    - Member[views].Member[UserRegistrationForm]

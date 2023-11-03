@@ -1,0 +1,657 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillAbstract]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillActionRelatedEntity]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillAction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillDocumentLink]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillDocument]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillIdentifier]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillSource]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillSponsorship]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillTitle]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillVersionLink]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[BillVersion]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[Bill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[Division]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[EventAgendaItem]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[EventAgendaMedia]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[EventDocument]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[EventLocation]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[EventMedia]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[EventParticipant]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[EventRelatedEntity]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[ImportObjects]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[Jurisdiction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[LegislativeSession]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[Membership]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[Organization]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[PersonIdentifier]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[PersonLink]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[PersonName]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[PersonOffice]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[PersonSource]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[PersonVote]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[RelatedBill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[RunPlan]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[ScrapeObjects]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[ScrapeReport]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[SearchableBill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[SessionDataQualityReport]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[VoteCount]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[VoteEvent]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[VoteSource]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[base].Member[IdentifierBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[base].Member[LinkBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[base].Member[MimetypeLinkBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[base].Member[OCDBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[base].Member[RelatedBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[base].Member[RelatedEntityBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillAbstract]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillActionRelatedEntity]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillAction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillDocumentLink]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillDocument]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillIdentifier]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillSource]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillSponsorship]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillTitle]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillVersionLink]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[BillVersion]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[Bill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[LegislativeSession]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[LinkBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[MimetypeLinkBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[OCDBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[Organization]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[RelatedBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[RelatedBill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[RelatedEntityBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[bill].Member[SearchableBill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[division].Member[Division]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[Bill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[EventAgendaItem]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[EventAgendaMedia]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[EventDocument]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[EventLocation]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[EventMediaBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[EventMedia]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[EventParticipant]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[EventRelatedEntity]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[Jurisdiction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[OCDBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[RelatedBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[RelatedEntityBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[event].Member[VoteEvent]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[jurisdiction].Member[Division]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[jurisdiction].Member[Jurisdiction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[jurisdiction].Member[LegislativeSession]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[jurisdiction].Member[OCDBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[jurisdiction].Member[RelatedBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[Division]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[IdentifierBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[Jurisdiction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[LinkBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[Membership]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[OCDBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[Organization]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[PersonIdentifier]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[PersonLink]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[PersonName]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[PersonOffice]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[PersonSource]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[people_orgs].Member[RelatedBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[reports].Member[ImportObjects]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[reports].Member[Jurisdiction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[reports].Member[LegislativeSession]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[reports].Member[RunPlan]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[reports].Member[ScrapeObjects]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[reports].Member[ScrapeReport]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[reports].Member[SessionDataQualityReport]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[BillAction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[Bill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[LegislativeSession]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[LinkBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[OCDBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[Organization]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[PersonVote]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[RelatedBase]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[VoteCount]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[VoteEvent]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[data].Member[models].Member[vote].Member[VoteSource]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[_types].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[base].Member[Bill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[base].Member[LegislativeSession]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[base].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[base].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillAbstract]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillActionRelatedEntity]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillAction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillDocumentLink]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillDocument]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillIdentifier]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillSource]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillSponsorship]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillTitle]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillVersionLink]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[BillVersion]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[Bill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[bills].Member[RelatedBill]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[computed_fields].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[events].Member[EventAgendaItem]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[events].Member[EventAgendaMedia]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[events].Member[EventDocument]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[events].Member[EventLocation]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[events].Member[EventMedia]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[events].Member[EventParticipant]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[events].Member[EventRelatedEntity]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[events].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[jurisdiction].Member[Jurisdiction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[jurisdiction].Member[LegislativeSession]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[jurisdiction].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[organizations].Member[Organization]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[vote_events].Member[BillAction]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[vote_events].Member[PersonVote]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[vote_events].Member[VoteCount]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[vote_events].Member[VoteEvent]
+  - - Django.db.models.Model~Subclass
+    - openstates
+    - Member[importers].Member[vote_events].Member[VoteSource]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[committees].Member[Committee]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[committees].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[committees].Member[ScrapeCommittee]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[convert_us].Member[Committee]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[convert_us].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[convert_us].Member[Membership]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[convert_us].Member[Office]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[convert_us].Member[OtherIdentifier]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[convert_us].Member[Party]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[convert_us].Member[PersonIdBlock]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[convert_us].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[convert_us].Member[Role]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[people].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[people].Member[Party]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[people].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[cli].Member[people].Member[Role]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[Committee]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[ScrapeCommittee]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[ScrapePerson]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[committees].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[committees].Member[Committee]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[committees].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[committees].Member[Membership]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[committees].Member[OtherName]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[committees].Member[ScrapeCommittee]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[common].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[common].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[common].Member[OtherIdentifier]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[common].Member[OtherName]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[common].Member[TimeScoped]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[Office]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[OtherIdentifier]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[OtherName]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[Party]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[PersonIdBlock]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[Role]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[ScrapeOffice]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[ScrapePerson]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[models].Member[people].Member[TimeScoped]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[general].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[images].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[lint_people].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[merge].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[merge].Member[Office]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[merge].Member[OtherIdentifier]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[merge].Member[OtherName]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[merge].Member[Party]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[merge].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[merge].Member[Role]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[retire].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - openstates
+    - Member[utils].Member[people].Member[to_database].Member[Person]

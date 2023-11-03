@@ -1,0 +1,129 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[api].Member[views].Member[FileViewSet]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[api].Member[views].Member[HostViewSet]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[api].Member[views].Member[LabelViewSet]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[api].Member[views].Member[PlayViewSet]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[api].Member[views].Member[PlaybookViewSet]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[api].Member[views].Member[RecordViewSet]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[api].Member[views].Member[ResultViewSet]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[api].Member[views].Member[TaskViewSet]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[server].Member[urls].Member[APIIndex]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[server].Member[urls].Member[APIView]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[server].Member[urls].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[views].Member[Distributed]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[views].Member[File]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[views].Member[HostIndex]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[views].Member[Host]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[views].Member[Index]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[views].Member[Playbook]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[views].Member[Record]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[views].Member[Result]
+  - - Django.Views.View~Subclass
+    - ara
+    - Member[ui].Member[views].Member[TaskIndex]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[Base]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[Duration]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[FileContent]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[File]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[Host]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[Label]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[Play]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[Playbook]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[Record]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[Result]
+  - - Django.db.models.Model~Subclass
+    - ara
+    - Member[api].Member[models].Member[Task]
+  - - django.forms.BaseForm~Subclass
+    - ara
+    - Member[ui].Member[forms].Member[HostSearchForm]
+  - - django.forms.BaseForm~Subclass
+    - ara
+    - Member[ui].Member[forms].Member[PlaybookSearchForm]
+  - - django.forms.BaseForm~Subclass
+    - ara
+    - Member[ui].Member[forms].Member[ResultSearchForm]
+  - - django.forms.BaseForm~Subclass
+    - ara
+    - Member[ui].Member[forms].Member[TaskSearchForm]
+  - - rest_framework.response.Response~Subclass
+    - ara
+    - Member[server].Member[urls].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - ara
+    - Member[ui].Member[pagination].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - ara
+    - Member[ui].Member[views].Member[Response]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - ara
+    - Member[clients].Member[offline].Member[ThreadedWSGIServer]

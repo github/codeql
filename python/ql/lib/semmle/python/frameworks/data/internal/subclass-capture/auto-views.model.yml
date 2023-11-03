@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - views
+    - Member[ModelMultipleChoiceField]
+  - - Django.Views.View~Subclass
+    - views
+    - Member[IndexView]
+  - - Django.Views.View~Subclass
+    - views
+    - Member[IntegratedChannelHealthCheckView]
+  - - Django.Views.View~Subclass
+    - views
+    - Member[IntegratedChannelsBaseViewSet]
+  - - Django.Views.View~Subclass
+    - views
+    - Member[LoginView]
+  - - Django.db.models.Model~Subclass
+    - views
+    - Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - views
+    - Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - views
+    - Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - views
+    - Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - views
+    - Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - views
+    - Member[EnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - views
+    - Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - views
+    - Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - views
+    - Member[TModel]
+  - - django.http.response.HttpResponse~Subclass
+    - views
+    - Member[HttpResponse]
+  - - rest_framework.response.Response~Subclass
+    - views
+    - Member[Response]

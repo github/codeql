@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[accounts].Member[User]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[invitations].Member[User]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[tasks].Member[User]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[clean_service].Member[TemporaryUpload]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[notify].Member[User]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[tasks].Member[TemporaryUpload]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[ws].Member[middleware].Member[Token]
+  - - rest_framework.exceptions.APIException~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[accounts].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[sites].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[subscription].Member[ValidationError]

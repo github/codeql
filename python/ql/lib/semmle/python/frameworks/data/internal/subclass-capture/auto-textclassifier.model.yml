@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - textclassifier
+    - Member[admin].Member[TrainingData]
+  - - Django.db.models.Model~Subclass
+    - textclassifier
+    - Member[classifier].Member[TrainingData]
+  - - Django.db.models.Model~Subclass
+    - textclassifier
+    - Member[models].Member[TrainingData]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - airflow
+    - Member[www].Member[app].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - airflow
+    - Member[www].Member[app].Member[Flask]
+  - - flask.Response~Subclass
+    - airflow
+    - Member[www].Member[app].Member[Response]
+  - - markupsafe.Markup~Subclass
+    - airflow
+    - Member[www].Member[app].Member[Markup]
+  - - pickle~Alias
+    - airflow
+    - Member[models].Member[pickle]

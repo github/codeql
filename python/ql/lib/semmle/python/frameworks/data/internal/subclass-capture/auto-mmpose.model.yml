@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - mmpose
+    - Member[evaluation].Member[metrics].Member[coco_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmpose
+    - Member[evaluation].Member[metrics].Member[hand_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmpose
+    - Member[evaluation].Member[metrics].Member[keypoint_2d_metrics].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmpose
+    - Member[evaluation].Member[metrics].Member[keypoint_3d_metrics].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmpose
+    - Member[evaluation].Member[metrics].Member[posetrack18_metric].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmpose
+    - Member[evaluation].Member[metrics].Member[simple_keypoint_3d_metrics].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmpose
+    - Member[models].Member[utils].Member[check_and_update_config].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmpose
+    - Member[utils].Member[logger].Member[MMLogger]

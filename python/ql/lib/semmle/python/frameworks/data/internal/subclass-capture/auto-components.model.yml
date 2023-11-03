@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - components
+    - Member[urls].Member[ComponentView]
+  - - Django.Views.View~Subclass
+    - components
+    - Member[views].Member[ComponentView]
+  - - Django.Views.View~Subclass
+    - components
+    - Member[views].Member[View]
+  - - django.forms.BaseForm~Subclass
+    - components
+    - Member[forms].Member[BForm]
+  - - django.forms.BaseForm~Subclass
+    - components
+    - Member[forms].Member[BModelForm]
+  - - django.forms.BaseForm~Subclass
+    - components
+    - Member[views].Member[BForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - components
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - components
+    - Member[views].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - components
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - components
+    - Member[views].Member[HttpResponse]

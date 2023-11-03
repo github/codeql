@@ -1,0 +1,84 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - quickstart
+    - Member[urls].Member[GraphQLView]
+  - - Django.Views.View~Subclass
+    - quickstart
+    - Member[views].Member[ManufacturerViewSet]
+  - - Django.Views.View~Subclass
+    - quickstart
+    - Member[views].Member[ModelViewSet]
+  - - Django.Views.View~Subclass
+    - quickstart
+    - Member[views].Member[ShoeColorViewSet]
+  - - Django.Views.View~Subclass
+    - quickstart
+    - Member[views].Member[ShoeTypeViewSet]
+  - - Django.Views.View~Subclass
+    - quickstart
+    - Member[views].Member[ShoeViewSet]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[admin].Member[Manufacturer]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[admin].Member[ShoeColor]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[admin].Member[ShoeType]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[admin].Member[Shoe]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[management].Member[commands].Member[bootstrap_data].Member[ShoeColor]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[management].Member[commands].Member[bootstrap_data].Member[ShoeType]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[models].Member[Manufacturer]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[models].Member[ShoeColor]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[models].Member[ShoeType]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[models].Member[Shoe]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[serializers].Member[Manufacturer]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[serializers].Member[ShoeColor]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[serializers].Member[ShoeType]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[serializers].Member[Shoe]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[views].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[views].Member[Manufacturer]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[views].Member[ShoeColor]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[views].Member[ShoeType]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[views].Member[Shoe]
+  - - Django.db.models.Model~Subclass
+    - quickstart
+    - Member[views].Member[User]

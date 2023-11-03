@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
+    - Member[DatabaseCredentials]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
+    - Member[SqlAlchemyConnector]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
+    - Member[credentials].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
+    - Member[credentials].Member[DatabaseCredentials]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
+    - Member[database].Member[CredentialsBlock]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
+    - Member[database].Member[DatabaseBlock]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
+    - Member[database].Member[DatabaseCredentials]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
+    - Member[database].Member[SqlAlchemyConnector]

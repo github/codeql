@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - des
+    - Member[admin].Member[DynamicEmailConfiguration]
+  - - Django.db.models.Model~Subclass
+    - des
+    - Member[forms].Member[DynamicEmailConfiguration]
+  - - Django.db.models.Model~Subclass
+    - des
+    - Member[models].Member[DynamicEmailConfiguration]
+  - - django.forms.BaseForm~Subclass
+    - des
+    - Member[admin].Member[DynamicEmailConfigurationForm]
+  - - django.forms.BaseForm~Subclass
+    - des
+    - Member[forms].Member[DynamicEmailConfigurationForm]
+  - - django.forms.BaseForm~Subclass
+    - des
+    - Member[forms].Member[ModelForm]

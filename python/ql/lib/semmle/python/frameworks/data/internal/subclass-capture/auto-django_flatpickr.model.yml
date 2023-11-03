@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - django_flatpickr
+    - Member[_base].Member[FlatpickrOptions]
+  - - pydantic.BaseModel~Subclass
+    - django_flatpickr
+    - Member[_base].Member[WidgetConfig]
+  - - pydantic.BaseModel~Subclass
+    - django_flatpickr
+    - Member[_config].Member[FlatpickrOptions]
+  - - pydantic.BaseModel~Subclass
+    - django_flatpickr
+    - Member[_config].Member[WidgetConfig]
+  - - pydantic.BaseModel~Subclass
+    - django_flatpickr
+    - Member[_media].Member[FlatpickrOptions]
+  - - pydantic.BaseModel~Subclass
+    - django_flatpickr
+    - Member[schemas].Member[FlatpickrOptions]
+  - - pydantic.BaseModel~Subclass
+    - django_flatpickr
+    - Member[settings].Member[FlatpickrOptions]

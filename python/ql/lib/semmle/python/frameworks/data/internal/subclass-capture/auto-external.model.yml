@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - external
+    - Member[stylegan2].Member[dnnlib].Member[submission].Member[submit].Member[pickle]
+  - - pickle~Alias
+    - external
+    - Member[stylegan2].Member[dnnlib].Member[util].Member[pickle]
+  - - pickle~Alias
+    - external
+    - Member[stylegan2].Member[pretrained_networks].Member[pickle]
+  - - pickle~Alias
+    - external
+    - Member[stylegan2].Member[training].Member[misc].Member[pickle]

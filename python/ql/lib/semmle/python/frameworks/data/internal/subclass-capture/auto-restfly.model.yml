@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - restfly
+    - Member[endpoint].Member[Response]
+  - - requests.models.Response~Subclass
+    - restfly
+    - Member[session].Member[Response]
+  - - requests.models.Response~Subclass
+    - restfly
+    - Member[utils].Member[Response]

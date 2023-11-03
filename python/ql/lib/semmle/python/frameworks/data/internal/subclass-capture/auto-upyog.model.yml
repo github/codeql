@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - upyog
+    - Member[StringIO]
+  - - io.StringIO~Subclass
+    - upyog
+    - Member[_compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - upyog
+    - Member[_compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - upyog
+    - Member[util].Member[profile].Member[StringIO]
+  - - io.StringIO~Subclass
+    - upyog
+    - Member[util].Member[template].Member[StringIO]

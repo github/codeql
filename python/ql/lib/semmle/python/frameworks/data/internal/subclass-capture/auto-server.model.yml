@@ -1,0 +1,87 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - server
+    - Member[apps].Member[botrequest].Member[urls].Member[HomePage]
+  - - Django.Views.View~Subclass
+    - server
+    - Member[apps].Member[botrequest].Member[views].Member[HomePage]
+  - - Django.Views.View~Subclass
+    - server
+    - Member[apps].Member[botrequest].Member[views].Member[TemplateView]
+  - - io.StringIO~Subclass
+    - server
+    - Member[contrib].Member[gis].Member[shortcuts].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[core].Member[files].Member[base].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[core].Member[files].Member[base].Member[StringIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[core].Member[handlers].Member[wsgi].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[core].Member[mail].Member[message].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[core].Member[mail].Member[message].Member[StringIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[core].Member[serializers].Member[base].Member[StringIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[core].Member[serializers].Member[pyyaml].Member[StringIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[db].Member[backends].Member[base].Member[creation].Member[StringIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[http].Member[request].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[utils].Member[feedgenerator].Member[StringIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[utils].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[utils].Member[six].Member[StringIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[utils].Member[text].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - server
+    - Member[utils].Member[translation].Member[template].Member[StringIO]
+  - - pickle~Alias
+    - server
+    - Member[contrib].Member[sessions].Member[serializers].Member[pickle]
+  - - pickle~Alias
+    - server
+    - Member[core].Member[cache].Member[backends].Member[db].Member[pickle]
+  - - pickle~Alias
+    - server
+    - Member[core].Member[cache].Member[backends].Member[filebased].Member[pickle]
+  - - pickle~Alias
+    - server
+    - Member[core].Member[cache].Member[backends].Member[locmem].Member[pickle]
+  - - pickle~Alias
+    - server
+    - Member[core].Member[cache].Member[backends].Member[memcached].Member[pickle]
+  - - urllib.parse.SplitResult~Subclass
+    - server
+    - Member[utils].Member[http].Member[SplitResult]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - server
+    - Member[core].Member[management].Member[commands].Member[runserver].Member[WSGIServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - server
+    - Member[core].Member[servers].Member[basehttp].Member[ThreadedWSGIServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - server
+    - Member[core].Member[servers].Member[basehttp].Member[WSGIServer]

@@ -1,0 +1,99 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[data_export].Member[api].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[data_import].Member[api].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[data_manager].Member[actions].Member[basic].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[data_manager].Member[api].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[data_manager].Member[serializers].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[io_storages].Member[api].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[labels_manager].Member[serializers].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[ml].Member[api].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[ml].Member[models].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[organizations].Member[functions].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[projects].Member[api].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[projects].Member[serializers].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[projects].Member[views].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[tasks].Member[api].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[tasks].Member[functions].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[tasks].Member[management].Member[commands].Member[calculate_stats].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[tasks].Member[serializers].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[users].Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[users].Member[admin].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[users].Member[api].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[users].Member[models].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[users].Member[models].Member[PermissionsMixin]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[users].Member[models].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[users].Member[views].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[webhooks].Member[models].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - label_studio
+    - Member[webhooks].Member[serializers_for_hooks].Member[Project]
+  - - django.http.response.FileResponse~Subclass
+    - label_studio
+    - Member[core].Member[utils].Member[static_serve].Member[RangedFileResponse]
+  - - django.http.response.FileResponse~Subclass
+    - label_studio
+    - Member[core].Member[views].Member[RangedFileResponse]
+  - - django.http.response.FileResponse~Subclass
+    - label_studio
+    - Member[data_export].Member[api].Member[RangedFileResponse]
+  - - django.http.response.FileResponse~Subclass
+    - label_studio
+    - Member[data_import].Member[api].Member[RangedFileResponse]
+  - - rest_framework.response.Response~Subclass
+    - label_studio
+    - Member[core].Member[utils].Member[common].Member[Response]

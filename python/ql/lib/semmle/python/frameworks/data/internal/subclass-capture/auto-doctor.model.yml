@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - doctor
+    - Member[views].Member[HealthCheckView]
+  - - Django.Views.View~Subclass
+    - doctor
+    - Member[views].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - doctor
+    - Member[services].Member[email].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - doctor
+    - Member[views].Member[Site]
+  - - django.http.response.HttpResponse~Subclass
+    - doctor
+    - Member[views].Member[HttpResponse]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - object_detection
+    - Member[dataset_tools].Member[create_pascal_tf_record].Member[etree]
+  - - lxml.etree~Alias
+    - object_detection
+    - Member[dataset_tools].Member[create_pet_tf_record].Member[etree]

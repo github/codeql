@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - celery_utils
+    - Member[admin].Member[FailedTask]
+  - - Django.db.models.Model~Subclass
+    - celery_utils
+    - Member[management].Member[commands].Member[cleanup_resolved_tasks].Member[FailedTask]
+  - - Django.db.models.Model~Subclass
+    - celery_utils
+    - Member[management].Member[commands].Member[reapply_tasks].Member[FailedTask]
+  - - Django.db.models.Model~Subclass
+    - celery_utils
+    - Member[models].Member[FailedTask]
+  - - Django.db.models.Model~Subclass
+    - celery_utils
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - celery_utils
+    - Member[persist_on_failure].Member[FailedTask]

@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - app_demo
+    - Member[admin].Member[Collaborator]
+  - - Django.db.models.Model~Subclass
+    - app_demo
+    - Member[admin].Member[OtherImage]
+  - - Django.db.models.Model~Subclass
+    - app_demo
+    - Member[admin].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - app_demo
+    - Member[forms].Member[OtherImage]
+  - - Django.db.models.Model~Subclass
+    - app_demo
+    - Member[models].Member[Collaborator]
+  - - Django.db.models.Model~Subclass
+    - app_demo
+    - Member[models].Member[OtherImage]
+  - - Django.db.models.Model~Subclass
+    - app_demo
+    - Member[models].Member[Post]
+  - - django.db.models.FileField~Subclass
+    - app_demo
+    - Member[models].Member[OptimizedImageField]
+  - - django.forms.BaseForm~Subclass
+    - app_demo
+    - Member[admin].Member[CropImageAxisForm]
+  - - django.forms.BaseForm~Subclass
+    - app_demo
+    - Member[forms].Member[CropImageAxisForm]

@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[admin].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[forms].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[forms].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[managers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[permissions].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[permissions].Member[DjangoPermission]

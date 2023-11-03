@@ -1,0 +1,183 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[BasicDIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[DIDCommService]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[DIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[Service]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[VerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[BasicDIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[DIDDocumentRoot]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[DIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[builder].Member[DIDCommService]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[builder].Member[DIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[builder].Member[Service]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[builder].Member[VerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[BaseDIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[BasicDIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[DIDCommV1Service]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[DIDCommV2Service]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[DIDDocumentRoot]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[DIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[IndexedResource]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[NonconformantDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[Service]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[UnknownService]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[UnknownVerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[doc].Member[VerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[generic].Member[BasicDIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[generic].Member[DIDDocumentRoot]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[generic].Member[GenericBasicDIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[generic].Member[GenericDIDDocumentRoot]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[generic].Member[Service]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[doc].Member[generic].Member[VerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[resource].Member[IndexedResource]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[resource].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[service].Member[DIDCommService]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[service].Member[DIDCommV1Service]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[service].Member[DIDCommV2ServiceEndpoint]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[service].Member[DIDCommV2Service]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[service].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[service].Member[Service]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[service].Member[UnknownService]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[Bls1238G1Key2020]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[Bls1238G2Key2020]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[EcdsaSecp256k1RecoveryMethod2020]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[EcdsaSecp256k1VerificationKey2019]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[Ed25519VerificationKey2018]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[Ed25519VerificationKey2020]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[GpgVerifcationKey2020]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[JsonWebKey2020]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[Multikey]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[OpenPgpVerificationKey2019]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[RsaVerificationKey2018]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[SchnorrSecp256k1VerificationKey2019]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[UnknownVerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[UnsupportedVerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[VerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[X25519KeyAgreementKey2019]
+  - - pydantic.BaseModel~Subclass
+    - pydid
+    - Member[verification_method].Member[X25519KeyAgreementKey2020]

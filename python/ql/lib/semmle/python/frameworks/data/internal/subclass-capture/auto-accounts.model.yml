@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - accounts
+    - Member[admin].Member[VerifiedUser]
+  - - Django.db.models.Model~Subclass
+    - accounts
+    - Member[models].Member[EmailAbstractUser]
+  - - Django.db.models.Model~Subclass
+    - accounts
+    - Member[models].Member[MyUser]
+  - - Django.db.models.Model~Subclass
+    - accounts
+    - Member[models].Member[VerifiedUser]

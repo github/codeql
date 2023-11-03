@@ -1,0 +1,72 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[authentication].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[schema].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[tokens].Member[AbstractBaseUser]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[routers].Member[blacklist].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[routers].Member[verify].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[AuthUserSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[ModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenBlacklistInputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenObtainInputSchemaBase]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenObtainPairInputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenObtainPairOutputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenObtainSlidingInputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenObtainSlidingOutputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenRefreshInputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenRefreshOutputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenRefreshSlidingInputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenRefreshSlidingOutputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema].Member[TokenVerifyInputSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[schema_control].Member[NinjaJWTSettings]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[settings].Member[NinjaJWTSettings]
+  - - pydantic.BaseModel~Subclass
+    - ninja_jwt
+    - Member[settings].Member[Schema]

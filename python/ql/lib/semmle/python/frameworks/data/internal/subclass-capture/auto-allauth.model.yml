@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[adapter].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[utils].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[views].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[views].Member[Site]

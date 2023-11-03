@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.JsonResponse~Subclass
+    - iam
+    - Member[contrib].Member[django].Member[dispatcher].Member[dispatchers].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - iam
+    - Member[contrib].Member[django].Member[middlewares].Member[IAMAuthFailedResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - iam
+    - Member[contrib].Member[django].Member[response].Member[IAMAuthFailedResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - iam
+    - Member[contrib].Member[django].Member[response].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - iam
+    - Member[contrib].Member[tastypie].Member[authorization].Member[IAMAuthFailedResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - iam
+    - Member[contrib].Member[tastypie].Member[shortcuts].Member[IAMAuthFailedResponse]

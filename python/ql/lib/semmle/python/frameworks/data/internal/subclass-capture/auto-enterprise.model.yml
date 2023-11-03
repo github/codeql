@@ -1,0 +1,399 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[UpdateRoleAssignmentsWithCustomersConfig]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[AdminNotification]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[BulkCatalogQueryUpdateCommandConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseCustomerCatalog]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseCustomerIdentityProvider]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseCustomerReportingConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[EnrollmentNotificationEmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[EnterpriseCatalogQuery]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[PendingEnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[PendingEnterpriseCustomerAdminUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[filters].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[utils].Member[EnterpriseCustomerCatalog]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[utils].Member[EnterpriseCustomerInviteKey]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[utils].Member[EnterpriseCustomerReportingConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[utils].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[utils].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[serializers].Member[AdminNotificationRead]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[serializers].Member[AdminNotification]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[serializers].Member[EnterpriseCustomerIdentityProvider]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[serializers].Member[EnterpriseCustomerReportingConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[serializers].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[serializers].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[analytics_summary].Member[ChatGPTResponse]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[analytics_summary].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_sso_configuration].Member[EnterpriseCustomerSsoConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_sso_configuration].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_sso_configuration].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[config].Member[models].Member[ConfigurationModel]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[config].Member[models].Member[UpdateRoleAssignmentsWithCustomersConfig]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[forms].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[forms].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[backfill_learner_role_assignments].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[bulk_update_catalog_query_id].Member[BulkCatalogQueryUpdateCommandConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[bulk_update_catalog_query_id].Member[EnterpriseCatalogQuery]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[bulk_update_catalog_query_id].Member[EnterpriseCustomerCatalog]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[create_enterprise_course_enrollments].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[create_enterprise_course_enrollments].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[create_enterprise_course_enrollments].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[create_enterprise_course_enrollments].Member[EnterpriseEnrollmentSource]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[create_missing_dsc_records].Member[DataSharingConsent]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[create_missing_dsc_records].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[create_missing_dsc_records].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[email_drip_for_missing_dsc_records].Member[DataSharingConsent]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[email_drip_for_missing_dsc_records].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[fix_dsc_records].Member[DataSharingConsent]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[migrate_enterprise_catalogs].Member[EnterpriseCustomerCatalog]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[revert_enrollment_objects].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[revert_enrollment_objects].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[save_enterprise_customer_users].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[EnterpriseCustomerCatalog]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[unlink_enterprise_customer_learners].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[unlink_enterprise_customer_learners].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[unlink_enterprise_customer_learners].Member[PendingEnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[BlackboardLearnerAssessmentDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[BlackboardLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[CanvasLearnerAssessmentDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[CanvasLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[ContentMetadataItemTransmission]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[CornerstoneLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[Degreed2LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[DegreedLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[GenericEnterpriseCustomerPluginConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[GenericLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[MoodleLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_config_last_errored_at].Member[SapSuccessFactorsLearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_role_assignments_with_customers].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[update_role_assignments_with_customers].Member[UpdateRoleAssignmentsWithCustomersConfig]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[AdminNotificationFilter]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[AdminNotificationRead]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[AdminNotification]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[BulkCatalogQueryUpdateCommandConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[ChatGPTResponse]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[ConfigurationModel]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnrollmentNotificationEmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCatalogQuery]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCourseEntitlement]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCustomerBrandingConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCustomerCatalog]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCustomerIdentityProvider]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCustomerInviteKey]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCustomerReportingConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCustomerSsoConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCustomerType]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseEnrollmentSource]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseFulfillmentSource]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[LearnerCreditEnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[LicensedEnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[PendingEnrollment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[PendingEnterpriseCustomerAdminUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[PendingEnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[SoftDeletableModel]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[signals].Member[BlackboardEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[signals].Member[CanvasEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[signals].Member[CornerstoneEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[signals].Member[Degreed2EnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[signals].Member[DegreedEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[signals].Member[MoodleEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[signals].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[tpa_pipeline].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[tpa_pipeline].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[tpa_pipeline].Member[UserSocialAuth]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[utils].Member[UserSocialAuth]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[views].Member[DataSharingConsent]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[views].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[views].Member[EnterpriseCustomerCatalog]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[views].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[views].Member[EnterpriseEnrollmentSource]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[EnterpriseFeatureUserRoleAssignmentForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[SystemWideEnterpriseUserRoleAssignmentForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseFeatureUserRoleAssignmentForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[SystemWideEnterpriseUserRoleAssignmentForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[UserRoleAssignmentAdminForm]

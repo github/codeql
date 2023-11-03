@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - moto
+    - Member[server].Member[Flask]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - moto
+    - Member[packages].Member[httpretty].Member[compat].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - moto
+    - Member[packages].Member[httpretty].Member[core].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - moto
+    - Member[packages].Member[httpretty].Member[core].Member[HTTPrettyRequest]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - moto
+    - Member[s3].Member[responses].Member[HTTPrettyRequest]
+  - - io.StringIO~Subclass
+    - moto
+    - Member[core].Member[models].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moto
+    - Member[core].Member[models].Member[MockRawResponse]
+  - - io.StringIO~Subclass
+    - moto
+    - Member[packages].Member[httpretty].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - moto
+    - Member[packages].Member[httpretty].Member[core].Member[FakeSockFile]
+  - - io.StringIO~Subclass
+    - moto
+    - Member[packages].Member[httpretty].Member[core].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - moto
+    - Member[ec2].Member[responses].Member[launch_templates].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - moto
+    - Member[polly].Member[models].Member[ET]

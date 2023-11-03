@@ -1,0 +1,102 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - postman
+    - Member[fields].Member[BasicCommaSeparatedUserField]
+  - - Django.Forms.Field~Subclass
+    - postman
+    - Member[fields].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - postman
+    - Member[fields].Member[CommaSeparatedUserField]
+  - - Django.Forms.Field~Subclass
+    - postman
+    - Member[forms].Member[CommaSeparatedUserField]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[admin].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[admin].Member[PendingMessage]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[api].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[context_processors].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[fields].Member[User]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[forms].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[forms].Member[User]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[management].Member[commands].Member[postman_checkup].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[management].Member[commands].Member[postman_cleanup].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[models].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[models].Member[PendingMessage]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[templatetags].Member[postman_tags].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[utils].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[views].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - postman
+    - Member[views].Member[User]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[admin].Member[MessageAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[admin].Member[PendingMessageAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[forms].Member[AnonymousWriteForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[forms].Member[BaseReplyForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[forms].Member[BaseWriteForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[forms].Member[FullReplyForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[forms].Member[QuickReplyForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[forms].Member[WriteForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[views].Member[AnonymousWriteForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[views].Member[FullReplyForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[views].Member[QuickReplyForm]
+  - - django.forms.BaseForm~Subclass
+    - postman
+    - Member[views].Member[WriteForm]

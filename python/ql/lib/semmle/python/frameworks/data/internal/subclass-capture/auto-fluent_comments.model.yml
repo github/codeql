@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - fluent_comments
+    - Member[forms].Member[captcha].Member[CaptchaField]
+  - - Django.Forms.Field~Subclass
+    - fluent_comments
+    - Member[forms].Member[recaptcha].Member[ReCaptchaField]
+  - - Django.db.models.Model~Subclass
+    - fluent_comments
+    - Member[models].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - fluent_comments
+    - Member[models].Member[FluentComment]
+  - - Django.db.models.Model~Subclass
+    - fluent_comments
+    - Member[utils].Member[ContentType]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[AbstractCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[CompactCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[CompactLabelsCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[DefaultCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[base].Member[AbstractCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[base].Member[base_class]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[captcha].Member[CompactCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[captcha].Member[CompactLabelsCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[captcha].Member[DefaultCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[compact].Member[AbstractCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[compact].Member[CompactCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[compact].Member[CompactLabelsCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[default].Member[AbstractCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[default].Member[DefaultCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[recaptcha].Member[CompactCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[recaptcha].Member[CompactLabelsCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - fluent_comments
+    - Member[forms].Member[recaptcha].Member[DefaultCommentForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - fluent_comments
+    - Member[views].Member[CommentPostBadRequest]

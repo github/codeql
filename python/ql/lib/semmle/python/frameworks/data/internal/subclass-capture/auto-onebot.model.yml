@@ -1,0 +1,339 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[collator].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[FriendAddNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[FriendRecallNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[FriendRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[GroupAdminNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[GroupBanNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[GroupDecreaseNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[GroupIncreaseNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[GroupMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[GroupRecallNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[GroupRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[GroupUploadNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[HeartbeatMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[HonorNotifyEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[LifecycleMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[LuckyKingNotifyEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[MetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[NoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[NotifyEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[PokeNotifyEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[PrivateMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[RequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[adapter].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[adapter].Member[LifecycleMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[bot].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[bot].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[FriendAddNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[FriendRecallNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[FriendRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[GroupAdminNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[GroupBanNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[GroupDecreaseNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[GroupIncreaseNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[GroupMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[GroupRecallNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[GroupRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[GroupUploadNoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[HeartbeatMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[HonorNotifyEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[LifecycleMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[LuckyKingNotifyEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[MetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[NoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[NotifyEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[PokeNotifyEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[PrivateMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[RequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[helpers].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[BaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[BotEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[ChannelCreateEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[ChannelDeleteEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[ChannelMemberDecreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[ChannelMemberIncreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[ChannelMessageDeleteEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[ChannelMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[ConnectMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[FriendDecreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[FriendIncreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[GroupMemberDecreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[GroupMemberIncreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[GroupMessageDeleteEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[GroupMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[GuildMemberDecreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[GuildMemberIncreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[HeartbeatMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[MetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[NoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[PrivateMessageDeleteEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[PrivateMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[RequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[StatusUpdateMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[adapter].Member[BotEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[adapter].Member[ConnectMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[adapter].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[adapter].Member[MetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[adapter].Member[StatusUpdateMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[bot].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[bot].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[BaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[BotEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[ChannelCreateEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[ChannelDeleteEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[ChannelMemberDecreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[ChannelMemberIncreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[ChannelMessageDeleteEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[ChannelMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[ConnectMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[FriendDecreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[FriendIncreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[GroupMemberDecreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[GroupMemberIncreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[GroupMessageDeleteEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[GroupMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[GuildMemberDecreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[GuildMemberIncreaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[HeartbeatMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[MetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[NoticeEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[PrivateMessageDeleteEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[PrivateMessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[RequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[StatusUpdateMetaEvent]

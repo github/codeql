@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[urls].Member[AuthorizationView]
+  - - Django.db.models.Model~Subclass
+    - drf_social_oauth2
+    - Member[management].Member[commands].Member[createapp].Member[Application]
+  - - Django.db.models.Model~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[AccessToken]
+  - - Django.db.models.Model~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[Application]
+  - - Django.db.models.Model~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[RefreshToken]

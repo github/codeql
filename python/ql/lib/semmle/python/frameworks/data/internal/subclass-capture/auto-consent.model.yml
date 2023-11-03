@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - consent
+    - Member[admin].Member[DataSharingConsentTextOverrides]
+  - - Django.db.models.Model~Subclass
+    - consent
+    - Member[admin].Member[DataSharingConsent]
+  - - Django.db.models.Model~Subclass
+    - consent
+    - Member[mixins].Member[EnterpriseCourseEnrollment]
+  - - Django.db.models.Model~Subclass
+    - consent
+    - Member[models].Member[Consent]
+  - - Django.db.models.Model~Subclass
+    - consent
+    - Member[models].Member[DataSharingConsentTextOverrides]
+  - - Django.db.models.Model~Subclass
+    - consent
+    - Member[models].Member[DataSharingConsent]
+  - - Django.db.models.Model~Subclass
+    - consent
+    - Member[models].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - consent
+    - Member[models].Member[TimeStampedModel]

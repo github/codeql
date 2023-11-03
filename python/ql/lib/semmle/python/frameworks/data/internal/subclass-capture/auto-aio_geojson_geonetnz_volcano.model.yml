@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - aio_geojson_geonetnz_volcano
+    - Member[feed].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - aio_geojson_geonetnz_volcano
+    - Member[feed_manager].Member[ClientSession]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - sample
+    - Member[config].Member[SiteIndexView]
+  - - Django.Views.View~Subclass
+    - sample
+    - Member[views].Member[SiteIndexView]
+  - - Django.Views.View~Subclass
+    - sample
+    - Member[views].Member[TemplateView]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_nyt
+    - Member[management].Member[commands].Member[notifymail].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - django_nyt
+    - Member[models].Member[ContentType]

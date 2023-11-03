@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - data
+    - Member[urls].Member[OpenDataView]
+  - - Django.Views.View~Subclass
+    - data
+    - Member[urls].Member[ProtectedDataView]
+  - - Django.Views.View~Subclass
+    - data
+    - Member[views].Member[OpenDataView]
+  - - Django.Views.View~Subclass
+    - data
+    - Member[views].Member[ProtectedDataView]
+  - - Django.Views.View~Subclass
+    - data
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponse~Subclass
+    - data
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - data
+    - Member[views].Member[JsonResponse]

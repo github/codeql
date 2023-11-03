@@ -1,0 +1,150 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - shop
+    - Member[cascade].Member[auth].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - shop
+    - Member[forms].Member[wizards].Member[HTMLFormField]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[urls].Member[auth].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[urls].Member[auth].Member[PasswordChangeView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[OriginalLoginView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[OriginalPasswordChangeView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[PasswordChangeView]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[admin].Member[product].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[admin].Member[product].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[cascade].Member[catalog].Member[SortableInlineCascadeElement]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[forms].Member[auth].Member[EmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[management].Member[commands].Member[shop].Member[CascadeClipboard]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[management].Member[commands].Member[shop].Member[StaticPlaceholder]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[commodity].Member[CommodityTranslation]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[commodity].Member[TranslatedFieldsModel]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[notification].Member[EmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[order].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[related].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[patches].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[serializers].Member[auth].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[serializers].Member[catalog].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[templatetags].Member[shop_search_tags].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[transition].Member[EmailTemplate]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[cascade].Member[catalog].Member[EntangledModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[cascade].Member[catalog].Member[ProductGalleryForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[cascade].Member[order].Member[AddendumForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[cascade].Member[order].Member[Bootstrap3Form]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[auth].Member[Bootstrap3ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[auth].Member[RegisterUserForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[base].Member[Bootstrap3Form]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[base].Member[Bootstrap3ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[base].Member[DialogForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[base].Member[DialogModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[AcceptConditionForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[AddressForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[BillingAddressForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[CustomerForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[DialogForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[DialogModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[ExtraAnnotationForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[GuestForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[PaymentMethodForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[ShippingAddressForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[checkout].Member[ShippingMethodForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[urls].Member[auth].Member[RegisterUserForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[urls].Member[rest_api].Member[BillingAddressForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[urls].Member[rest_api].Member[ShippingAddressForm]

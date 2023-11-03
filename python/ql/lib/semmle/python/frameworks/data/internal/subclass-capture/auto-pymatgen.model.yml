@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pymatgen
+    - Member[analysis].Member[phase_diagram].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pymatgen
+    - Member[core].Member[structure].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pymatgen
+    - Member[io].Member[cif].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pymatgen
+    - Member[io].Member[lammps].Member[data].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pymatgen
+    - Member[io].Member[lammps].Member[outputs].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pymatgen
+    - Member[io].Member[vasp].Member[outputs].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pymatgen
+    - Member[io].Member[xyz].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pymatgen
+    - Member[util].Member[provenance].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - pymatgen
+    - Member[io].Member[exciting].Member[inputs].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - pymatgen
+    - Member[io].Member[vasp].Member[outputs].Member[ET]

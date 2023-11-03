@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - clearml
+    - Member[binding].Member[matplotlib_bind].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - clearml
+    - Member[debugging].Member[log].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - clearml
+    - Member[storage].Member[helper].Member[StringIO]
+  - - io.StringIO~Subclass
+    - clearml
+    - Member[utilities].Member[lowlevel].Member[astor_unparse].Member[StringIO]

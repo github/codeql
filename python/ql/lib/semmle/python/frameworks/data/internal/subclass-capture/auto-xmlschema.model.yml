@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - xmlschema
+    - Member[documents].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - xmlschema
+    - Member[resources].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - xmlschema
+    - Member[resources].Member[PyElementTree]

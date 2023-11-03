@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - markupsafe.Markup~Subclass
+    - crystal
+    - Member[crystal_html].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - crystal
+    - Member[renderer].Member[Markup]
+  - - xml.etree.ElementTree~Subclass
+    - crystal
+    - Member[deduplicate_toc].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - crystal
+    - Member[renderer].Member[etree]

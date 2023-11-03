@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_extensions
+    - Member[management].Member[commands].Member[dumpscript].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_extensions
+    - Member[management].Member[commands].Member[export_emails].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - django_extensions
+    - Member[management].Member[commands].Member[update_permissions].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_extensions
+    - Member[management].Member[commands].Member[update_permissions].Member[Permission]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - django_extensions
+    - Member[management].Member[commands].Member[runserver_plus].Member[_WSGIRequestHandler]

@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[application].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[application].Member[MemoryRepo]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[core].Member[log].Member[adapter].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[defaults].Member[MemoryRepo]

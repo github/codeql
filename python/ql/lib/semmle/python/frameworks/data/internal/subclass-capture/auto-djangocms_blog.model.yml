@@ -1,0 +1,93 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[urls].Member[AuthorEntriesView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[urls].Member[CategoryEntriesView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[urls].Member[PostArchiveView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[urls].Member[PostDetailView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[urls].Member[PostListView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[urls].Member[TaggedListView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[views].Member[AuthorEntriesView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[views].Member[CategoryEntriesView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[views].Member[PostArchiveView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[views].Member[PostDetailView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[views].Member[PostListView]
+  - - Django.Views.View~Subclass
+    - djangocms_blog
+    - Member[views].Member[TaggedListView]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[admin].Member[BlogCategory]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[admin].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[cms_plugins].Member[BlogCategory]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[cms_plugins].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[feeds].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[feeds].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[models].Member[BlogCategory]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[models].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[models].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[sitemaps].Member[sitemap].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[views].Member[BlogCategory]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[views].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[views].Member[User]

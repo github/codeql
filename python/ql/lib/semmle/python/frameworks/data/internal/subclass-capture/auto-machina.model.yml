@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[forms].Member[TreeNodeChoiceField]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[views].Member[BaseDetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[views].Member[TopicSubscribeView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[views].Member[TopicUnsubscribeView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[BaseDetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[PostApproveView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[PostDisapproveView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[ProcessFormView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[TopicLockView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[TopicMoveView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[TopicUnlockView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[TopicUpdateToAnnounceView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[TopicUpdateToNormalTopicView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[TopicUpdateToStickyTopicView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[TopicUpdateTypeBaseView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[views].Member[BaseDetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[views].Member[MarkTopicsReadView]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[abstract_models].Member[MPTTModel]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_permission].Member[abstract_models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_permission].Member[shortcuts].Member[Group]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum_search].Member[forms].Member[FacetedSearchForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum_search].Member[forms].Member[SearchForm]

@@ -1,0 +1,9 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - united_states_of_browsers
+    - Member[usb_server].Member[usb_server].Member[Flask]

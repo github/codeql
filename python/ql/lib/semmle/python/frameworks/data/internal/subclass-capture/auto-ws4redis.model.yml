@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - ws4redis
+    - Member[wsgi_server].Member[WSGIRequest]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - ws4redis
+    - Member[django_runserver].Member[WSGIServer]

@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[CILogonLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[LogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[OAuthCallbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[OAuthLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[OAuthLogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[cilogon].Member[CILogonLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[cilogon].Member[OAuthLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[globus].Member[GlobusLogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[globus].Member[OAuthLogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[mediawiki].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[mediawiki].Member[MWCallbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[mediawiki].Member[MWLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[mediawiki].Member[OAuthCallbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[oauth2].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[oauth2].Member[LogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[oauth2].Member[OAuthCallbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[oauth2].Member[OAuthLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - oauthenticator
+    - Member[oauth2].Member[OAuthLogoutHandler]

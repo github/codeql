@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[jsglib].Member[loader].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[jsglib].Member[logger].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser].Member[jsgLexer].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser].Member[jsgParserLexer].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser].Member[jsgParserParser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser].Member[jsgParser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser_impl].Member[jsg_arrayexpr_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser_impl].Member[jsg_builtinvaluetype_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser_impl].Member[jsg_doc_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser_impl].Member[jsg_ebnf_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser_impl].Member[jsg_lexerruleblock_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser_impl].Member[jsg_objectexpr_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser_impl].Member[jsg_pairdef_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[parser_impl].Member[jsg_valuetype_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyjsg
+    - Member[validate_json].Member[StringIO]

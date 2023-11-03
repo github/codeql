@@ -1,0 +1,150 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[backends].Member[application].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[command].Member[authenticate_second_factor].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[command].Member[authenticate_user].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[serializers].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[serializers].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[utils].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[views].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[views].Member[base].Member[AbstractUser]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[activate_mfa_method].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[authenticate_second_factor].Member[InvalidCodeError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[authenticate_second_factor].Member[InvalidTokenError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[authenticate_user].Member[UnauthenticatedError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[create_mfa_method].Member[MFAMethodAlreadyActiveError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[deactivate_mfa_method].Member[DeactivationOfPrimaryMFAMethodError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[deactivate_mfa_method].Member[MFANotEnabledError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[remove_backup_code].Member[InvalidCodeError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[remove_backup_code].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[replace_mfa_method_backup_codes].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[set_primary_mfa_method].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[command].Member[set_primary_mfa_method].Member[MFAPrimaryMethodInactiveError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[CodeInvalidOrExpiredError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[DeactivationOfPrimaryMFAMethodError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[InvalidCodeError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[InvalidTokenError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[MFAMethodAlreadyActiveError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[MFANotEnabledError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[MFAPrimaryMethodInactiveError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[MFASourceFieldDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[MFAValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[OTPCodeMissingError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[UnauthenticatedError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[exceptions].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[models].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[query].Member[get_mfa_config_by_name].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[responses].Member[MFAValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[serializers].Member[CodeInvalidOrExpiredError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[serializers].Member[MFAMethodAlreadyActiveError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[serializers].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[serializers].Member[MFANotEnabledError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[serializers].Member[OTPCodeMissingError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[views].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[views].Member[MFASourceFieldDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[views].Member[MFAValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAMethodDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFASourceFieldDoesNotExistError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAValidationError]

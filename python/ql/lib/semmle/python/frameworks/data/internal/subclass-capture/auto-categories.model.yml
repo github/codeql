@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[admin].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[base].Member[CategoryBase]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[base].Member[MPTTModel]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[genericcollection].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[management].Member[commands].Member[import_categories].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[models].Member[CategoryBase]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[templatetags].Member[category_tags].Member[CategoryBase]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[templatetags].Member[category_tags].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[urls].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[views].Member[Category]

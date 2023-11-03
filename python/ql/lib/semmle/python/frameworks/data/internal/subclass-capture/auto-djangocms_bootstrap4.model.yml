@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.forms.BaseForm~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_link].Member[cms_plugins].Member[Bootstrap4LinkForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_link].Member[forms].Member[Bootstrap4LinkForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_link].Member[forms].Member[LinkForm]

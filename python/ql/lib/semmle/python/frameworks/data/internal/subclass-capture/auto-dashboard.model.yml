@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - dashboard
+    - Member[models].Member[classmarker]
+  - - Django.db.models.Model~Subclass
+    - dashboard
+    - Member[views].Member[MatrixCertificate]
+  - - Django.db.models.Model~Subclass
+    - dashboard
+    - Member[views].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - dashboard
+    - Member[views].Member[classmarker]
+  - - Django.db.models.Model~Subclass
+    - dashboard
+    - Member[views].Member[matrix]
+  - - django.http.response.HttpResponse~Subclass
+    - dashboard
+    - Member[views].Member[HttpResponse]

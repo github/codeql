@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - timetable
+    - Member[Flask]
+  - - flask.Response~Subclass
+    - timetable
+    - Member[views].Member[Response]
+  - - flask.Response~Subclass
+    - timetable
+    - Member[views].Member[event].Member[Response]
+  - - flask.Response~Subclass
+    - timetable
+    - Member[views].Member[note].Member[Response]
+  - - flask.Response~Subclass
+    - timetable
+    - Member[views].Member[user].Member[Response]

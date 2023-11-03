@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - kfserving
+    - Member[handlers].Member[http].Member[ExplainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kfserving
+    - Member[handlers].Member[http].Member[HTTPHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kfserving
+    - Member[handlers].Member[http].Member[PredictHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kfserving
+    - Member[kfserver].Member[ExplainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kfserving
+    - Member[kfserver].Member[HealthHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kfserving
+    - Member[kfserver].Member[ListHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kfserving
+    - Member[kfserver].Member[LivenessHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kfserving
+    - Member[kfserver].Member[PredictHandler]

@@ -1,0 +1,174 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - backend
+    - Member[components].Member[forms].Member[date_input].Member[DateInputField]
+  - - Django.Views.View~Subclass
+    - backend
+    - Member[components].Member[urls].Member[ComponentView]
+  - - Django.Views.View~Subclass
+    - backend
+    - Member[components].Member[urls].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - backend
+    - Member[components].Member[views].Member[ComponentView]
+  - - Django.Views.View~Subclass
+    - backend
+    - Member[components].Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - backend
+    - Member[components].Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - backend
+    - Member[components].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - backend
+    - Member[urls].Member[TemplateView]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[AccordionForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[ButtonsForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[CheckboxesForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[DateInputForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[DetailsForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[FieldsetForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[FileUploadForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[InsetForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[PanelForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[RadiosForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[SelectForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[TabsForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[TagForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[TextInputForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[TextareaForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[WarningForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[accordion].Member[AccordionForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[buttons].Member[ButtonsForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[checkboxes].Member[CheckboxesForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[date_input].Member[DateInputForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[details].Member[DetailsForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[fieldset].Member[FieldsetForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[file_upload].Member[FileUploadForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[inset].Member[InsetForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[panel].Member[PanelForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[radios].Member[RadiosForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[select].Member[SelectForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[tabs].Member[TabsForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[tag].Member[TagForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[text_input].Member[TextInputForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[textarea].Member[TextareaForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[forms].Member[warning].Member[WarningForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[AccordionForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[ButtonsForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[CheckboxesForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[DateInputForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[DetailsForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[FieldsetForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[FileUploadForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[InsetForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[PanelForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[RadiosForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[SelectForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[TabsForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[TagForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[TextInputForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[TextareaForm]
+  - - django.forms.BaseForm~Subclass
+    - backend
+    - Member[components].Member[views].Member[WarningForm]

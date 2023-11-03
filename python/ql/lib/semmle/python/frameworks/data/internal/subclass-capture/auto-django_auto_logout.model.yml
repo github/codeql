@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - django_auto_logout
+    - Member[middleware].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django_auto_logout
+    - Member[utils].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - django_auto_logout
+    - Member[middleware].Member[HttpResponse]

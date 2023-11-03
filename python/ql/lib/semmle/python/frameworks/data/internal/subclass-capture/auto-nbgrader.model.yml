@@ -1,0 +1,168 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[assignment_list].Member[handlers].Member[AssignmentActionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[assignment_list].Member[handlers].Member[AssignmentListHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[assignment_list].Member[handlers].Member[BaseAssignmentHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[assignment_list].Member[handlers].Member[CourseListHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[assignment_list].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[assignment_list].Member[handlers].Member[NbGraderVersionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[course_list].Member[handlers].Member[CourseListHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[course_list].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[course_list].Member[handlers].Member[NbGraderVersionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[AssignHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[AssignmentCollectionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[AssignmentHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[AutogradeHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[BaseApiHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[CollectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[CommentCollectionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[CommentHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[FlagSubmissionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[GenerateAllFeedbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[GenerateFeedbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[GradeCollectionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[GradeHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[NotebookCollectionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[ReleaseAllFeedbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[ReleaseFeedbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[ReleaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[StatusHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[StudentCollectionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[StudentHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[StudentNotebookSubmissionCollectionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[StudentSubmissionCollectionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[SubmissionCollectionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[SubmissionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[SubmittedNotebookCollectionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[apihandlers].Member[UnReleaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[base].Member[BaseApiHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[base].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[base].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[GradebookAssignmentsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[GradebookNotebookSubmissionsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[GradebookNotebooksHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[ManageAssignmentsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[ManageStudentNotebookSubmissionsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[ManageStudentsAssignmentsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[ManageStudentsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[ManageSubmissionsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[SubmissionFilesHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[SubmissionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[SubmissionNavigationHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[formgrader].Member[handlers].Member[Template404]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[validate_assignment].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[validate_assignment].Member[handlers].Member[NbGraderVersionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nbgrader
+    - Member[server_extensions].Member[validate_assignment].Member[handlers].Member[ValidateAssignmentHandler]

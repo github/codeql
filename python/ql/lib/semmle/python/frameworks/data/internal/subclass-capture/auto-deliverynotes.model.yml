@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[admin].Member[Notes]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[forms].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[forms].Member[Notes]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[forms].Member[Orglogo]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[models].Member[Notes]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[templatetags].Member[deliverynotes_tags].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[templatetags].Member[deliverynotes_tags].Member[Notes]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[views].Member[Notes]
+  - - Django.db.models.Model~Subclass
+    - deliverynotes
+    - Member[views].Member[Orglogo]
+  - - django.forms.BaseForm~Subclass
+    - deliverynotes
+    - Member[forms].Member[DeliveryNotesForm]
+  - - django.forms.BaseForm~Subclass
+    - deliverynotes
+    - Member[templatetags].Member[deliverynotes_tags].Member[DeliveryNotesForm]
+  - - django.forms.BaseForm~Subclass
+    - deliverynotes
+    - Member[views].Member[DeliveryNotesForm]
+  - - django.http.response.HttpResponse~Subclass
+    - deliverynotes
+    - Member[views].Member[HttpResponse]

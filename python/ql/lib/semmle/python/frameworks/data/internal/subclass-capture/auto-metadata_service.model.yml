@@ -1,0 +1,288 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[BadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[ColumnBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[ColumnDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[ColumnLineageAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[DashboardBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[DashboardDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[DashboardDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[DashboardTagAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[FeatureBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[FeatureDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[FeatureDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[FeatureGenerationCodeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[FeatureLineageAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[FeatureOwnerAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[FeatureSampleAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[FeatureStatsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[FeatureTagAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[HealthcheckAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[Neo4jDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[PopularResourcesAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[PopularTablesAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[StatisticsMetricsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TableBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TableDashboardAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TableDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TableDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TableLineageAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TableOwnerAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TableTagAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TagAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TypeMetadataBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[TypeMetadataDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[UserDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[UserFollowAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[UserFollowsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[UserOwnAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[UserOwnsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[UserReadsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[BaseAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[badge].Member[BadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[badge].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[column].Member[ColumnBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[column].Member[ColumnDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[column].Member[ColumnLineageAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[column].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[dashboard].Member[BaseAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[dashboard].Member[DashboardBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[dashboard].Member[DashboardDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[dashboard].Member[DashboardDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[dashboard].Member[DashboardTagAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[dashboard].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[FeatureBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[FeatureDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[FeatureDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[FeatureGenerationCodeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[FeatureLineageAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[FeatureOwnerAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[FeatureSampleAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[FeatureStatsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[FeatureTagAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[feature].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[healthcheck].Member[HealthcheckAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[healthcheck].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[popular_resources].Member[PopularResourcesAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[popular_resources].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[popular_tables].Member[PopularTablesAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[popular_tables].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[system].Member[Neo4jDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[system].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[system].Member[StatisticsMetricsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[table].Member[BaseAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[table].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[table].Member[TableBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[table].Member[TableDashboardAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[table].Member[TableDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[table].Member[TableDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[table].Member[TableLineageAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[table].Member[TableOwnerAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[table].Member[TableTagAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[tag].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[tag].Member[TagAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[type_metadata].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[type_metadata].Member[TypeMetadataBadgeAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[type_metadata].Member[TypeMetadataDescriptionAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[user].Member[BaseAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[user].Member[Resource]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[user].Member[UserDetailAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[user].Member[UserFollowAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[user].Member[UserFollowsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[user].Member[UserOwnAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[user].Member[UserOwnsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api].Member[user].Member[UserReadsAPI]
+  - - flask.MethodView~Subclass
+    - metadata_service
+    - Member[api]Member[BaseAPI]

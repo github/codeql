@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[urls].Member[BlogCreateView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[urls].Member[BlogDeleteView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[urls].Member[BlogDetailView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[urls].Member[BlogListView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[urls].Member[BlogUpdateView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[BlogCreateView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[BlogDeleteView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[BlogDetailView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[BlogListView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[BlogUpdateView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - blog
+    - Member[admin].Member[Blog]
+  - - Django.db.models.Model~Subclass
+    - blog
+    - Member[models].Member[Blog]
+  - - Django.db.models.Model~Subclass
+    - blog
+    - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - blog
+    - Member[services].Member[Blog]
+  - - Django.db.models.Model~Subclass
+    - blog
+    - Member[views].Member[Blog]

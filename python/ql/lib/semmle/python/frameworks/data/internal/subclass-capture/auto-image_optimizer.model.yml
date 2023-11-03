@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.db.models.FileField~Subclass
+    - image_optimizer
+    - Member[fields].Member[ImageField]
+  - - django.db.models.FileField~Subclass
+    - image_optimizer
+    - Member[fields].Member[OptimizedImageField]
+  - - io.StringIO~Subclass
+    - image_optimizer
+    - Member[utils].Member[BytesIO]

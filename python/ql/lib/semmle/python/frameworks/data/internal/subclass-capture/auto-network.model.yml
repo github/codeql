@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - network
+    - Member[gena].Member[subscription].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - network
+    - Member[soap].Member[request].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - network
+    - Member[soap].Member[response].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - network
+    - Member[ssdp].Member[device].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - network
+    - Member[ssdp].Member[service].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - network
+    - Member[ssdp].Member[xml].Member[ET]

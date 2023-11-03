@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[client].Member[ElementTree]
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[easy_client].Member[et]
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[etimport].Member[ElementTree]
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[ext].Member[wsdl2py].Member[et]
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[serializers].Member[primitive].Member[ElementTree]
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[service].Member[ElementTree]
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[soap].Member[ElementTree]
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[util].Member[ElementTree]
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[wsgi_soap].Member[ElementTree]
+  - - lxml.etree~Alias
+    - soaplib
+    - Member[xml].Member[ElementTree]

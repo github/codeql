@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - form_wizard_example
+    - Member[urls].Member[SongLyricsWizard]
+  - - Django.Views.View~Subclass
+    - form_wizard_example
+    - Member[views].Member[SessionWizardView]
+  - - Django.Views.View~Subclass
+    - form_wizard_example
+    - Member[views].Member[SongLyricsWizard]

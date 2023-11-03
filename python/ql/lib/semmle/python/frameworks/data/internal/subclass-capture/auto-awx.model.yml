@@ -1,0 +1,132 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - awx
+    - Member[api].Member[generics].Member[LoggedLoginView]
+  - - Django.Views.View~Subclass
+    - awx
+    - Member[api].Member[generics].Member[LoggedLogoutView]
+  - - Django.Views.View~Subclass
+    - awx
+    - Member[api].Member[urls].Member[oauth2_root].Member[TokenView]
+  - - Django.Views.View~Subclass
+    - awx
+    - Member[api].Member[urls].Member[urls].Member[LoggedLoginView]
+  - - Django.Views.View~Subclass
+    - awx
+    - Member[api].Member[urls].Member[urls].Member[LoggedLogoutView]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[filters].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[serializers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[serializers].Member[OAuth2Application]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[serializers].Member[RefreshToken]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[serializers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[views].Member[inventory].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[views].Member[inventory].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[views].Member[organization].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[api].Member[views].Member[organization].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[consumers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[dispatch].Member[reaper].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[management].Member[commands].Member[cleanup_tokens].Member[RefreshToken]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[management].Member[commands].Member[create_oauth2_token].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[management].Member[commands].Member[create_preload_data].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[management].Member[commands].Member[expire_sessions].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[management].Member[commands].Member[regenerate_secret_key].Member[OAuth2Application]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[management].Member[commands].Member[revoke_oauth2_tokens].Member[RefreshToken]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[management].Member[commands].Member[revoke_oauth2_tokens].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[management].Member[commands].Member[update_password].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[middleware].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[models].Member[Grant]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[models].Member[OAuth2Application]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[models].Member[RefreshToken]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[models].Member[TowerScheduleState]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[models].Member[ha].Member[TowerScheduleState]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[models].Member[oauth].Member[OAuth2Application]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[scheduler].Member[task_manager].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[tasks].Member[system].Member[TowerScheduleState]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[tasks].Member[system].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[utils].Member[named_url_graph].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[main].Member[utils].Member[polymorphic].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[sso].Member[backends].Member[User]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[sso].Member[common].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - awx
+    - Member[sso].Member[models].Member[User]
+  - - rest_framework.exceptions.APIException~Subclass
+    - awx
+    - Member[main].Member[validators].Member[RestValidationError]

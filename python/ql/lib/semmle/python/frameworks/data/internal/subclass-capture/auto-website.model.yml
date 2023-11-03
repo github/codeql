@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[ArticleIndexPage]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[ArticlePage]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[CoderedArticleIndexPage]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[CoderedArticlePage]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[CoderedEmail]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[CoderedFormField]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[CoderedWebPage]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[CupcakesIndexPage]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[CupcakesPage]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[FormConfirmEmail]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[FormPageField]
+  - - Django.db.models.Model~Subclass
+    - website
+    - Member[models].Member[WebPage]

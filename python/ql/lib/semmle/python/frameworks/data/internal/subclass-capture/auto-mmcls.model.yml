@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - mmcls
+    - Member[datasets].Member[custom].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmcls
+    - Member[datasets].Member[imagenet].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmcls
+    - Member[engine].Member[hooks].Member[ema_hook].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmcls
+    - Member[evaluation].Member[metrics].Member[multi_label].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmcls
+    - Member[models].Member[backbones].Member[timm_backbone].Member[MMLogger]

@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[urls].Member[PollDetailView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[urls].Member[PollListView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[urls].Member[PollVoteView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[views].Member[PollDetailView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[views].Member[PollListView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[views].Member[PollVoteView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[views].Member[RedirectView]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[admin].Member[Vote]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[models].Member[Vote]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[views].Member[Vote]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - cgi.FieldStorage~Subclass
+    - wheezy
+    - Member[http].Member[parse].Member[FieldStorage]
+  - - http.client.HTTPConnection~Subclass
+    - wheezy
+    - Member[core].Member[httpclient].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - wheezy
+    - Member[core].Member[httpclient].Member[HTTPSConnection]
+  - - io.StringIO~Subclass
+    - wheezy
+    - Member[core].Member[gzip].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - wheezy
+    - Member[http].Member[functional].Member[BytesIO]

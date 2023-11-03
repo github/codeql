@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - main
+    - Member[apps].Member[auth].Member[forms].Member[User]
+  - - Django.db.models.Model~Subclass
+    - main
+    - Member[apps].Member[auth].Member[views].Member[User]
+  - - Django.db.models.Model~Subclass
+    - main
+    - Member[controllers].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - main
+    - Member[controllers].Member[BlogPost]
+  - - Django.db.models.Model~Subclass
+    - main
+    - Member[models].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - main
+    - Member[models].Member[BlogPost]
+  - - flask.Flask~Subclass
+    - main
+    - Member[Flask]
+  - - flask.Response~Subclass
+    - main
+    - Member[Response]

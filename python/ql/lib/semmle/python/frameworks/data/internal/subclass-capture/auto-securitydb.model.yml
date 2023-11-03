@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - securitydb
+    - Member[forms].Member[ModelChoiceField]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[forms].Member[EventTypeCombo]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[forms].Member[EventTypeForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[forms].Member[IncidentTargetForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[forms].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[forms].Member[SearchFiltersForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[forms].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[forms].Member[SecureFeatureForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[forms].Member[SourceTypeForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[models].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[views].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[views].Member[SearchFiltersForm]
+  - - django.forms.BaseForm~Subclass
+    - securitydb
+    - Member[views].Member[SecureFeatureForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - securitydb
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - securitydb
+    - Member[views].Member[HttpResponse]

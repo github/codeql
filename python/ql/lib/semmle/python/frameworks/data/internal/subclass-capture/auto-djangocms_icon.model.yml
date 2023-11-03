@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - djangocms_icon
+    - Member[fields].Member[IconField]
+  - - Django.Forms.Field~Subclass
+    - djangocms_icon
+    - Member[forms].Member[IconField]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_icon
+    - Member[cms_plugins].Member[IconForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_icon
+    - Member[forms].Member[IconForm]

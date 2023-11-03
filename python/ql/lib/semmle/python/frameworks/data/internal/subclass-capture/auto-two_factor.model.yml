@@ -1,0 +1,114 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[urls].Member[PhoneSetupView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[views].Member[IdempotentSessionWizardView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[views].Member[PhoneSetupView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[urls].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[urls].Member[SetupView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[SetupView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[IdempotentSessionWizardView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[SetupView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[utils].Member[IdempotentSessionWizardView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[utils].Member[SessionWizardView]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[forms].Member[TOTPDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[email].Member[method].Member[EmailDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[admin].Member[PhoneDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[forms].Member[PhoneDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[method].Member[PhoneDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[models].Member[PhoneDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[models].Member[ThrottlingMixin]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[views].Member[PhoneDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[admin].Member[WebauthnDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[forms].Member[WebauthnDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[method].Member[WebauthnDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[models].Member[ThrottlingMixin]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[models].Member[WebauthnDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[StaticDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[StaticToken]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[views].Member[utils].Member[ManagementForm]
+  - - django.http.response.HttpResponse~Subclass
+    - two_factor
+    - Member[gateways].Member[twilio].Member[views].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - two_factor
+    - Member[views].Member[mixins].Member[TemplateResponse]
+  - - pydantic.BaseModel~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[forms].Member[PublicKeyCredentialRpEntity]
+  - - pydantic.BaseModel~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[forms].Member[PublicKeyCredentialUserEntity]
+  - - pydantic.BaseModel~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[utils].Member[AuthenticatorSelectionCriteria]
+  - - pydantic.BaseModel~Subclass
+    - two_factor
+    - Member[plugins].Member[webauthn].Member[utils].Member[PublicKeyCredentialDescriptor]

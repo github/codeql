@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - threaded_multihost
+    - Member[sites].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - threaded_multihost
+    - Member[threadlocals].Member[Site]

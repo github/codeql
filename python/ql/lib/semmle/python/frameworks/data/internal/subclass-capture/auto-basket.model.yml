@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - basket
+    - Member[views].Member[BasketAddView]
+  - - Django.Views.View~Subclass
+    - basket
+    - Member[views].Member[BasketRemoveView]
+  - - Django.Views.View~Subclass
+    - basket
+    - Member[views].Member[CouponView]
+  - - Django.Views.View~Subclass
+    - basket
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - basket
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - basket
+    - Member[admin].Member[Coupon]
+  - - Django.db.models.Model~Subclass
+    - basket
+    - Member[basket].Member[Coupon]
+  - - Django.db.models.Model~Subclass
+    - basket
+    - Member[basket].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - basket
+    - Member[models].Member[Coupon]
+  - - Django.db.models.Model~Subclass
+    - basket
+    - Member[services].Member[Coupon]
+  - - Django.db.models.Model~Subclass
+    - basket
+    - Member[views].Member[Product]
+  - - django.forms.BaseForm~Subclass
+    - basket
+    - Member[forms].Member[CouponForm]
+  - - django.forms.BaseForm~Subclass
+    - basket
+    - Member[views].Member[CouponForm]
+  - - django.http.request.HttpRequest~Subclass
+    - basket
+    - Member[services].Member[HttpRequest]

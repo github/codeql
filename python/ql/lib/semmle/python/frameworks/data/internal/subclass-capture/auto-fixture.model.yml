@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - fixture
+    - Member[examples].Member[django_example].Member[blog].Member[models].Member[User]
+  - - io.StringIO~Subclass
+    - fixture
+    - Member[docs].Member[StringIO]

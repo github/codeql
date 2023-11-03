@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django
+    - Member[polls].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - django
+    - Member[polls].Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - django
+    - Member[polls].Member[views].Member[ResultsView]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[polls].Member[admin].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[polls].Member[admin].Member[Question]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[polls].Member[models].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[polls].Member[models].Member[Question]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[polls].Member[views].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[polls].Member[views].Member[Question]
+  - - django.http.request.HttpRequest~Subclass
+    - django
+    - Member[polls].Member[views].Member[HttpRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django
+    - Member[polls].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - django
+    - Member[app].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django
+    - Member[polls].Member[views].Member[HttpResponse]

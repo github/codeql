@@ -1,0 +1,204 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[ClientCreateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[ClientDeleteView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[ClientListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[ClientUpdateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[ContactsTemplateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[HomePageView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingClientListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingLogsListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingMessageCreateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingMessageDeleteView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingMessageListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingMessageUpdateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingSettingsCreateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingSettingsDeleteView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingSettingsListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[urls].Member[MailingSettingsUpdateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[ClientCreateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[ClientDeleteView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[ClientListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[ClientUpdateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[ContactsTemplateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[HomePageView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingClientListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingLogsListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingMessageCreateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingMessageDeleteView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingMessageListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingMessageUpdateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingSettingsCreateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingSettingsDeleteView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingSettingsListView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[MailingSettingsUpdateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - mailing
+    - Member[views].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[admin].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[admin].Member[MailingClient]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[admin].Member[MailingLog]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[admin].Member[MailingMessage]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[admin].Member[MailingSettings]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[forms].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[forms].Member[MailingMessage]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[forms].Member[MailingSettings]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[models].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[models].Member[MailingClient]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[models].Member[MailingLog]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[models].Member[MailingMessage]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[models].Member[MailingSettings]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[services].Member[send_mails].Member[MailingLog]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[services].Member[send_mails].Member[MailingSettings]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[views].Member[Blog]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[views].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[views].Member[MailingClient]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[views].Member[MailingLog]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[views].Member[MailingMessage]
+  - - Django.db.models.Model~Subclass
+    - mailing
+    - Member[views].Member[MailingSettings]
+  - - django.forms.BaseForm~Subclass
+    - mailing
+    - Member[forms].Member[ClientForm]
+  - - django.forms.BaseForm~Subclass
+    - mailing
+    - Member[forms].Member[MailingMessageForm]
+  - - django.forms.BaseForm~Subclass
+    - mailing
+    - Member[forms].Member[MailingSettingsForManagerForm]
+  - - django.forms.BaseForm~Subclass
+    - mailing
+    - Member[forms].Member[MailingSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - mailing
+    - Member[views].Member[ClientForm]
+  - - django.forms.BaseForm~Subclass
+    - mailing
+    - Member[views].Member[MailingMessageForm]
+  - - django.forms.BaseForm~Subclass
+    - mailing
+    - Member[views].Member[MailingSettingsForManagerForm]
+  - - django.forms.BaseForm~Subclass
+    - mailing
+    - Member[views].Member[MailingSettingsForm]

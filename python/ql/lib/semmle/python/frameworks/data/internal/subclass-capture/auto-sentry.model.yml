@@ -1,0 +1,93 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[models].Member[FilterValue]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[models].Member[GroupedMessage]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[models].Member[MessageBase]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[models].Member[MessageCountByMinute]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[models].Member[MessageFilterValue]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[models].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[plugins].Member[sentry_redmine].Member[models].Member[GroupedMessage]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[plugins].Member[sentry_redmine].Member[models].Member[RedmineIssue]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[search_indexes].Member[GroupedMessage]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[web].Member[feeds].Member[GroupedMessage]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[web].Member[feeds].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[web].Member[views].Member[GroupedMessage]
+  - - Django.db.models.Model~Subclass
+    - sentry
+    - Member[web].Member[views].Member[Message]
+  - - django.forms.BaseForm~Subclass
+    - sentry
+    - Member[plugins].Member[sentry_redmine].Member[models].Member[RedmineIssueForm]
+  - - django.http.request.HttpRequest~Subclass
+    - sentry
+    - Member[client].Member[base].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - sentry
+    - Member[utils].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - sentry
+    - Member[utils].Member[MockDjangoRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - sentry
+    - Member[utils]Member[MockDjangoRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - sentry
+    - Member[web].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - sentry
+    - Member[web].Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseGone~Subclass
+    - sentry
+    - Member[web].Member[views].Member[HttpResponseGone]
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - sentry
+    - Member[web].Member[views].Member[HttpResponseNotAllowed]
+  - - django.http.response.HttpResponseNotModified~Subclass
+    - sentry
+    - Member[web].Member[views].Member[HttpResponseNotModified]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - sentry
+    - Member[plugins].Member[sentry_redmine].Member[models].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - sentry
+    - Member[web].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - sentry
+    - Member[web].Member[feeds].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - sentry
+    - Member[web].Member[views].Member[HttpResponse]
+  - - pickle~Alias
+    - sentry
+    - Member[utils].Member[compat].Member[pickle]
+  - - pickle~Alias
+    - sentry
+    - Member[web].Member[views].Member[pickle]

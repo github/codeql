@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - organizations
+    - Member[admin].Member[OrganizationCourse]
+  - - Django.db.models.Model~Subclass
+    - organizations
+    - Member[admin].Member[Organization]
+  - - Django.db.models.Model~Subclass
+    - organizations
+    - Member[models].Member[OrganizationCourse]
+  - - Django.db.models.Model~Subclass
+    - organizations
+    - Member[models].Member[Organization]
+  - - Django.db.models.Model~Subclass
+    - organizations
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - organizations
+    - Member[v0].Member[views].Member[Organization]

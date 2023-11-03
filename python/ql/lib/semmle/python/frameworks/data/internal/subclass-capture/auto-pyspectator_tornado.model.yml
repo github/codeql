@@ -1,0 +1,69 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.Application~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[Application]
+  - - tornado.web.Application~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[WebApplication]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[AboutPageHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[ApiCpuLoadStats]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[ApiCpuLoad]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[ApiDisk]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[ApiMemAvailable]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[ApiMemUsedPercentStats]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[ApiMemUsedPercent]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[ApiNifBytesRecv]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[ApiNifBytesSent]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[AuthLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[MonitorCpuHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[MonitorDiskHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[MonitorGeneralHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[MonitorMemoryHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[MonitorNetworkHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[NativeRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[PageNotFoundHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - pyspectator_tornado
+    - Member[web_app].Member[UserProfileHandler]

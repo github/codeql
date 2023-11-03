@@ -1,0 +1,195 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - zinnia
+    - Member[admin].Member[forms].Member[TreeNodeChoiceField]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[archives].Member[EntryDay]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[archives].Member[EntryIndex]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[archives].Member[EntryMonth]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[archives].Member[EntryToday]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[archives].Member[EntryWeek]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[archives].Member[EntryYear]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[authors].Member[AuthorDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[categories].Member[CategoryDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[entries].Member[EntryDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[tags].Member[TagDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[BaseArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[BaseDayArchiveView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[BaseMonthArchiveView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[BaseTodayArchiveView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[BaseWeekArchiveView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[BaseYearArchiveView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[EntryDay]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[EntryIndex]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[EntryMonth]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[EntryToday]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[EntryWeek]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[archives].Member[EntryYear]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[authors].Member[AuthorDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[authors].Member[BaseListView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[categories].Member[BaseListView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[categories].Member[CategoryDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[entries].Member[BaseDateDetailView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[entries].Member[EntryDateDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[entries].Member[EntryDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[mixins].Member[entry_protection].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[tags].Member[BaseListView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[tags].Member[TagDetail]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[admin].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[admin].Member[entry].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[admin].Member[filters].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[admin].Member[forms].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[comparison].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[feeds].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[feeds].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[management].Member[commands].Member[spam_cleanup].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[managers].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models].Member[category].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models].Member[category].Member[MPTTModel]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[moderator].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[ping].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[sitemaps].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[templatetags].Member[zinnia].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[templatetags].Member[zinnia].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[templatetags].Member[zinnia].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[url_shortener].Member[backends].Member[default].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[views].Member[capabilities].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[views].Member[categories].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[views].Member[quick_entry].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[views].Member[sitemap].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[views].Member[trackback].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[views].Member[trackback].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[xmlrpc].Member[metaweblog].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[xmlrpc].Member[metaweblog].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[xmlrpc].Member[pingback].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[xmlrpc].Member[pingback].Member[Site]

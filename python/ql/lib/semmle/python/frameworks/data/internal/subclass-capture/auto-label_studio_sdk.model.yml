@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - label_studio_sdk
+    - Member[utils].Member[etree]
+  - - pydantic.BaseModel~Subclass
+    - label_studio_sdk
+    - Member[client].Member[ClientCredentials]
+  - - pydantic.BaseModel~Subclass
+    - label_studio_sdk
+    - Member[users].Member[OrgMembership]
+  - - pydantic.BaseModel~Subclass
+    - label_studio_sdk
+    - Member[users].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - label_studio_sdk
+    - Member[workspaces].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - label_studio_sdk
+    - Member[workspaces].Member[Workspace]
+  - - requests.models.Response~Subclass
+    - label_studio_sdk
+    - Member[project].Member[Response]

@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[data_access].Member[dynamodb].Member[DynamoDBBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[data_access].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[models].Member[abstract].Member[DynamoDBBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[models].Member[token].Member[TokenPairOutput]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[models].Member[user].Member[DynamoDBBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[models].Member[user].Member[UserLoginInput]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[models].Member[user].Member[UserRegisterInput]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[models].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[routes].Member[token].Member[UserLoginInput]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[routes].Member[token].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[routes].Member[user].Member[UserRegisterInput]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[services].Member[token].Member[TokenPairOutput]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[services].Member[token].Member[UserLoginInput]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[services].Member[token].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[services].Member[user].Member[UserRegisterInput]
+  - - pydantic.BaseModel~Subclass
+    - chalicelib
+    - Member[services].Member[user].Member[User]

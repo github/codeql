@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[BaseImageView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[BasePixelOperation]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[BaseRegionView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[BaseTileView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[BoundsView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[ListPalettes]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[ListTileSources]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[MetadataView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[PixelView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[RegionPixelView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[RegionWorldView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[ThumbnailView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[TileDebugView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[TileView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[ValidateCOGView]
+  - - flask.MethodView~Subclass
+    - localtileserver
+    - Member[web].Member[rest].Member[View]

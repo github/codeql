@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - shopping_cart
+    - Member[views].Member[ShoppingCartListDetailView]
+  - - Django.Views.View~Subclass
+    - shopping_cart
+    - Member[views].Member[ShoppingCartListView]
+  - - Django.Views.View~Subclass
+    - shopping_cart
+    - Member[views].Member[ShoppingCartView]
+  - - Django.Views.View~Subclass
+    - shopping_cart
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - shopping_cart
+    - Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponse~Subclass
+    - shopping_cart
+    - Member[views].Member[HttpResponse]

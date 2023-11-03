@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[admin].Member[JavaScriptCatalog]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[utils].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[views].Member[Site]
+  - - django.db.models.FileField~Subclass
+    - newsletter
+    - Member[fields].Member[ParentClass]
+  - - django.db.models.FileField~Subclass
+    - newsletter
+    - Member[fields].Member[ThumbnailerImageField]
+  - - django.http.response.HttpResponse~Subclass
+    - newsletter
+    - Member[views].Member[SimpleTemplateResponse]

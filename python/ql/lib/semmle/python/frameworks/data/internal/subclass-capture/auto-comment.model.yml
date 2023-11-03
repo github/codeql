@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[JavaScriptCatalog]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[managers].Member[comments].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[managers].Member[followers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[comments].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[followers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_migrate].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_migrate].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_migrate].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[utils].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[validators].Member[ContentType]

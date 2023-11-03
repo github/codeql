@@ -1,0 +1,129 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[QCSAuthConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[QCSAuthServer]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[QCSClientConfigurationSecretsCredentials]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[QCSClientConfigurationSecrets]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[QCSClientConfigurationSettingsApplicationsCLI]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[QCSClientConfigurationSettingsApplications]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[QCSClientConfigurationSettingsProfile]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[QCSClientConfigurationSettings]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[TokenPayload]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[QCSAuthServer]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[QCSClientConfigurationSecretsCredentials]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[QCSClientConfigurationSecrets]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[QCSClientConfigurationSettingsApplicationsCLI]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[QCSClientConfigurationSettingsApplications]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[QCSClientConfigurationSettingsProfile]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[QCSClientConfigurationSettings]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[TokenPayload]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[configuration].Member[QCSAuthServer]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[configuration].Member[QCSClientConfigurationSecretsCredentials]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[configuration].Member[QCSClientConfigurationSecrets]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[configuration].Member[QCSClientConfigurationSettingsProfile]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[configuration].Member[QCSClientConfigurationSettings]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[environment].Member[EnvironmentModel]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[environment].Member[_EnvironmentBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[file].Member[QCSClientConfigurationFile]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[file].Member[_EnvironmentBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[secrets].Member[QCSClientConfigurationFile]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[secrets].Member[QCSClientConfigurationSecretsCredentials]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[secrets].Member[QCSClientConfigurationSecrets]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[secrets].Member[TokenPayload]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[settings].Member[EnvironmentModel]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[settings].Member[QCSAuthServer]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[settings].Member[QCSClientConfigurationFile]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[settings].Member[QCSClientConfigurationSettingsApplicationsCLI]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[settings].Member[QCSClientConfigurationSettingsApplicationsPyquil]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[settings].Member[QCSClientConfigurationSettingsApplications]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[settings].Member[QCSClientConfigurationSettingsProfile]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[_configuration].Member[settings].Member[QCSClientConfigurationSettings]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[auth].Member[QCSAuthConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[auth].Member[TokenPayload]
+  - - pydantic.BaseModel~Subclass
+    - qcs_api_client
+    - Member[client].Member[client].Member[QCSAuthConfiguration]

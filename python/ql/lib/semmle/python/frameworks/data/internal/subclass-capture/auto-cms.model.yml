@@ -1,0 +1,216 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - cms
+    - Member[wizards].Member[urls].Member[WizardCreateView]
+  - - Django.Views.View~Subclass
+    - cms
+    - Member[wizards].Member[views].Member[SessionWizardView]
+  - - Django.Views.View~Subclass
+    - cms
+    - Member[wizards].Member[views].Member[WizardCreateView]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PageUserGroup]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[TreeNode]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[permissionadmin].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[placeholderadmin].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[placeholderadmin].Member[PlaceholderReference]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[useradmin].Member[PageUserGroup]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[useradmin].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[api].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[api].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_plugins].Member[AliasPluginModel]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_plugins].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_plugins].Member[PlaceholderReference]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_toolbars].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[forms].Member[utils].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[forms].Member[widgets].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[management].Member[commands].Member[subcommands].Member[copy].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[management].Member[commands].Member[subcommands].Member[list].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[management].Member[commands].Member[subcommands].Member[publisher_publish].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[management].Member[commands].Member[subcommands].Member[tree].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[management].Member[commands].Member[subcommands].Member[tree].Member[TreeNode]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[management].Member[commands].Member[subcommands].Member[uninstall].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[AliasPluginModel]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[MP_Node]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[PageUserGroup]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[PlaceholderReference]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[TreeNode]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[aliaspluginmodel].Member[AliasPluginModel]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[aliaspluginmodel].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[managers].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[pagemodel].Member[MP_Node]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[pagemodel].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[pagemodel].Member[TreeNode]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[permissionmodels].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[permissionmodels].Member[PageUserGroup]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[permissionmodels].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[placeholderpluginmodel].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[placeholderpluginmodel].Member[PlaceholderReference]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[pluginmodel].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[pluginmodel].Member[MP_Node]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[static_placeholder].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[plugin_base].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[plugin_rendering].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[signals].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[signals].Member[PageUserGroup]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[signals].Member[permissions].Member[PageUserGroup]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[templatetags].Member[cms_tags].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[templatetags].Member[cms_tags].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[utils].Member[check].Member[AliasPluginModel]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[utils].Member[mail].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[utils].Member[permissions].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[utils].Member[plugins].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[views].Member[TreeNode]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[SimpleTemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
+    - Member[admin].Member[placeholderadmin].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
+    - Member[page_rendering].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
+    - Member[wizards].Member[views].Member[SimpleTemplateResponse]

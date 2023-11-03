@@ -1,0 +1,90 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[embeds].Member[EntangledField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[jumbotron].Member[CascadeImageField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[AdminImageFormField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[CascadeImageField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[image].Member[CascadeImageField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[image].Member[EntangledField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[AdminImageFormField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[HTMLFormField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[link].Member[forms].Member[PhoneNumberField]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[admin].Member[CascadePage]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[admin].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[secondary_menu].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[forms].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[cms_toolbars].Member[CascadePage]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[generic].Member[mixins].Member[CascadePage]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[link].Member[forms].Member[FilerFileModel]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[link].Member[forms].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[link].Member[plugin_base].Member[FilerFileModel]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[CascadePage]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[PageExtension]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[sphinx].Member[link_plugin].Member[Page]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[EntangledModelForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[PluginExtraFieldsForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[forms].Member[EntangledModelForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[admin].Member[EntangledModelForm]
+  - - django.http.response.HttpResponse~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[cms_plugins].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cmsplugin_cascade
+    - Member[segmentation].Member[mixins].Member[TemplateResponse]

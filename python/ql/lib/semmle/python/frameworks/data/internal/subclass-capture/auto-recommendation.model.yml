@@ -1,0 +1,186 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[AbstractGoToItem]
+  - - Django.Views.View~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[RecommendationAPI]
+  - - Django.Views.View~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[UserItemsAPI]
+  - - Django.Views.View~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[UserRecommendationAPI]
+  - - Django.Views.View~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[UsersAPI]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[Inventory]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[User]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[backends].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[core].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[core].Member[User]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[diversity].Member[models].Member[Genre]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[diversity].Member[models].Member[ItemGenre]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[diversity].Member[models].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[diversity].Member[rerankers].Member[Genre]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[diversity].Member[rerankers].Member[ItemGenre]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[filter_none].Member[filters].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[filters].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[filters].Member[Region]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[models].Member[ItemLocale]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[models].Member[ItemRegion]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[models].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[models].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[models].Member[Region]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[models].Member[UserLocale]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[models].Member[UserRegion]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[language].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[Genre]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[Inventory]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[ItemGenre]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[ItemLocale]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[ItemRegion]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[Region]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[UserLocale]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[UserRegion]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[management].Member[commands].Member[fill].Member[User]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[models].Member[Inventory]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[models].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[models].Member[Matrix]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[settings].Member[wsgi].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[settings].Member[wsgi].Member[User]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[simple_logging].Member[decorators].Member[LogEntry]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[simple_logging].Member[filters].Member[LogEntry]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[simple_logging].Member[models].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[simple_logging].Member[models].Member[LogEntry]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[simple_logging].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[wsgi].Member[Genre]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[wsgi].Member[ItemGenre]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[wsgi].Member[Item]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[wsgi].Member[Locale]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[wsgi].Member[Region]
+  - - Django.db.models.Model~Subclass
+    - recommendation
+    - Member[wsgi].Member[User]
+  - - django.http.response.HttpResponse~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[APIResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[JSONResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - recommendation
+    - Member[api].Member[views].Member[XMLResponse]

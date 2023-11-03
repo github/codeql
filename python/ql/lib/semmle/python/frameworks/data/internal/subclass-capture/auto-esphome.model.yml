@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeAceEditorHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeCleanHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeCleanMqttHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeCommandWebSocket]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeCompileHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeLogsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeRenameHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeRunHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeUpdateAllHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeUploadHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeValidateHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeVscodeHandler]

@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - yolink
+    - Member[auth_mgr].Member[ClientSession]
+  - - pydantic.BaseModel~Subclass
+    - yolink
+    - Member[client].Member[BRDP]
+  - - pydantic.BaseModel~Subclass
+    - yolink
+    - Member[device].Member[BRDP]
+  - - pydantic.BaseModel~Subclass
+    - yolink
+    - Member[device].Member[YoLinkDeviceMode]
+  - - pydantic.BaseModel~Subclass
+    - yolink
+    - Member[home_manager].Member[BRDP]
+  - - pydantic.BaseModel~Subclass
+    - yolink
+    - Member[home_manager].Member[YoLinkDeviceMode]
+  - - pydantic.BaseModel~Subclass
+    - yolink
+    - Member[model].Member[BRDP]
+  - - pydantic.BaseModel~Subclass
+    - yolink
+    - Member[mqtt_client].Member[BRDP]
+  - - pydantic.BaseModel~Subclass
+    - yolink
+    - Member[thermostat_request_builder].Member[ThermostatState]

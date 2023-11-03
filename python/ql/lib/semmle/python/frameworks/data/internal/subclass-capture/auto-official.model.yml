@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - official
+    - Member[nlp].Member[xlnet].Member[run_squad].Member[pickle]
+  - - pickle~Alias
+    - official
+    - Member[nlp].Member[xlnet].Member[squad_utils].Member[pickle]
+  - - pickle~Alias
+    - official
+    - Member[recommendation].Member[data_preprocessing].Member[pickle]

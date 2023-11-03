@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - admin_view_permission
+    - Member[management].Member[commands].Member[fix_proxy_permissions].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - admin_view_permission
+    - Member[management].Member[commands].Member[fix_proxy_permissions].Member[Permission]

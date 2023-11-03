@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_messages
+    - Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - django_messages
+    - Member[admin].Member[User]
+  - - Django.db.models.Model~Subclass
+    - django_messages
+    - Member[fields].Member[User]
+  - - Django.db.models.Model~Subclass
+    - django_messages
+    - Member[urls].Member[User]
+  - - Django.db.models.Model~Subclass
+    - django_messages
+    - Member[views].Member[User]

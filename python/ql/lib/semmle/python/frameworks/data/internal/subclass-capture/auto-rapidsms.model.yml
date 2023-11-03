@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - rapidsms
+    - Member[contrib].Member[messaging].Member[forms].Member[AutoCompleteSelectMultipleField]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[backends].Member[http].Member[views].Member[BaseHttpBackendView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[backends].Member[http].Member[views].Member[GenericHttpBackendView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[backends].Member[http].Member[views].Member[ProcessFormView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[views].Member[BaseHttpBackendView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[views].Member[KannelBackendView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[backends].Member[vumi].Member[views].Member[BaseHttpBackendView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[backends].Member[vumi].Member[views].Member[VumiBackendView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[views].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[views].Member[RapidSMSLoginView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[views].Member[RapidSMSLogoutView]

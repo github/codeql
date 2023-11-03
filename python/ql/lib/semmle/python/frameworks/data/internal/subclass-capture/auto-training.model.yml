@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - training
+    - Member[urls].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - training
+    - Member[urls].Member[TemplateView]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - regression_model
+    - Member[config].Member[core].Member[AppConfig]
+  - - pydantic.BaseModel~Subclass
+    - regression_model
+    - Member[config].Member[core].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - regression_model
+    - Member[config].Member[core].Member[ModelConfig]
+  - - pydantic.BaseModel~Subclass
+    - regression_model
+    - Member[processing].Member[validation].Member[HouseDataInputSchema]
+  - - pydantic.BaseModel~Subclass
+    - regression_model
+    - Member[processing].Member[validation].Member[MultipleHouseDataInputs]

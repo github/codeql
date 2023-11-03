@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - clickhouse_driver.client.Client~Subclass
+    - init
+    - Member[ch_client]
+  - - io.StringIO~Subclass
+    - init
+    - Member[StringIO]
+  - - pickle~Alias
+    - init
+    - Member[pickle]

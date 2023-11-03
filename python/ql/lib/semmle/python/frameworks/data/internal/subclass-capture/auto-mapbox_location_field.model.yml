@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - mapbox_location_field
+    - Member[spatial].Member[forms].Member[PointField]
+  - - Django.Forms.Field~Subclass
+    - mapbox_location_field
+    - Member[spatial].Member[forms].Member[SpatialLocationField]
+  - - Django.Forms.Field~Subclass
+    - mapbox_location_field
+    - Member[spatial].Member[models].Member[SpatialLocationFormField]

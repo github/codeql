@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[client].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[crypto].Member[mtproto].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[file_id].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[future_salt].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[future_salts].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[gzip_packed].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[message].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[msg_container].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[primitives].Member[bool].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[primitives].Member[bytes].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[primitives].Member[double].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[primitives].Member[int].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[primitives].Member[string].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[primitives].Member[vector].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[raw].Member[core].Member[tl_object].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[session].Member[auth].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyrogram
+    - Member[session].Member[session].Member[BytesIO]

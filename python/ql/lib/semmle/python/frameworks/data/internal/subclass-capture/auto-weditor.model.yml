@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[PythonShellHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[shell].Member[PythonShellHandler]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - authtools
+    - Member[admin].Member[User]
+  - - Django.db.models.Model~Subclass
+    - authtools
+    - Member[models].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - authtools
+    - Member[models].Member[AbstractEmailUser]
+  - - Django.db.models.Model~Subclass
+    - authtools
+    - Member[models].Member[AbstractNamedUser]
+  - - Django.db.models.Model~Subclass
+    - authtools
+    - Member[models].Member[PermissionsMixin]
+  - - Django.db.models.Model~Subclass
+    - authtools
+    - Member[models].Member[User]

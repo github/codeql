@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[BaseResource]
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[CalcJobNode]
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[Computer]
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[Group]
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[Node]
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[ProcessNode]
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[QueryBuilder]
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[Resource]
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[ServerInfo]
+  - - flask.MethodView~Subclass
+    - aiida
+    - Member[restapi].Member[resources].Member[User]

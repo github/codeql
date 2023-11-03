@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - hvad
+    - Member[views].Member[TranslatableBaseCreateView]
+  - - Django.Views.View~Subclass
+    - hvad
+    - Member[views].Member[TranslatableBaseDeleteView]
+  - - Django.Views.View~Subclass
+    - hvad
+    - Member[views].Member[TranslatableBaseUpdateView]
+  - - Django.Views.View~Subclass
+    - hvad
+    - Member[views].Member[TranslatableCreateView]
+  - - Django.Views.View~Subclass
+    - hvad
+    - Member[views].Member[TranslatableDeleteView]
+  - - Django.Views.View~Subclass
+    - hvad
+    - Member[views].Member[TranslatableUpdateView]

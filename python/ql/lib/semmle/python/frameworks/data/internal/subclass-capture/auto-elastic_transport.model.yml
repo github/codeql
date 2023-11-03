@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPConnection~Subclass
+    - elastic_transport
+    - Member[_node].Member[_urllib3_chain_certs].Member[HTTPSConnection]
+  - - urllib3.PoolManager~Subclass
+    - elastic_transport
+    - Member[_node].Member[_http_requests].Member[HTTPSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - elastic_transport
+    - Member[_node].Member[_http_urllib3].Member[HTTPSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - elastic_transport
+    - Member[_node].Member[_urllib3_chain_certs].Member[HTTPSConnectionPool]

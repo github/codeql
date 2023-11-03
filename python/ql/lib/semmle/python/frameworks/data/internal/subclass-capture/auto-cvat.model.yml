@@ -1,0 +1,96 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[engine].Member[urls].Member[SpectacularAPIView]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[engine].Member[urls].Member[SpectacularRedocView]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[engine].Member[urls].Member[SpectacularSwaggerView]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[urls].Member[ConfirmEmailViewEx]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[urls].Member[LoginViewEx]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[urls].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[urls].Member[PasswordChangeView]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[urls].Member[PasswordResetConfirmView]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[urls].Member[PasswordResetView]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[urls].Member[RegisterViewEx]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[views].Member[ConfirmEmailViewEx]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[views].Member[ConfirmEmailView]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[views].Member[LoginViewEx]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[views].Member[RegisterViewEx]
+  - - Django.Views.View~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[views].Member[RegisterView]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[engine].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[engine].Member[serializers].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[engine].Member[serializers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[engine].Member[signals].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[engine].Member[views].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[events].Member[handlers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[events].Member[signals].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[admin].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[signals].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[iam].Member[signals].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[organizations].Member[serializers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - cvat
+    - Member[apps].Member[webhooks].Member[models].Member[User]
+  - - rest_framework.exceptions.APIException~Subclass
+    - cvat
+    - Member[apps].Member[engine].Member[task].Member[ValidationError]

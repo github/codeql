@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - pretext
+    - Member[utils].Member[SimpleHTTPRequestHandler]
+  - - lxml.etree~Alias
+    - pretext
+    - Member[codechat].Member[ET]
+  - - lxml.etree~Alias
+    - pretext
+    - Member[project].Member[ET]
+  - - lxml.etree~Alias
+    - pretext
+    - Member[utils].Member[ET]
+  - - pickle~Alias
+    - pretext
+    - Member[project].Member[pickle]

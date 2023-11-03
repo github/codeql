@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - azureml_inference_server_http
+    - Member[server].Member[aml_blueprint].Member[AMLInferenceBlueprint]
+  - - flask.Blueprint~Subclass
+    - azureml_inference_server_http
+    - Member[server].Member[aml_blueprint].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - azureml_inference_server_http
+    - Member[server].Member[routes].Member[AMLInferenceBlueprint]
+  - - flask.Flask~Subclass
+    - azureml_inference_server_http
+    - Member[server].Member[create_app].Member[Flask]
+  - - flask.Response~Subclass
+    - azureml_inference_server_http
+    - Member[api].Member[aml_response].Member[AMLResponse]
+  - - flask.Response~Subclass
+    - azureml_inference_server_http
+    - Member[api].Member[aml_response].Member[Response]
+  - - flask.Response~Subclass
+    - azureml_inference_server_http
+    - Member[server].Member[create_app].Member[AMLResponse]
+  - - flask.Response~Subclass
+    - azureml_inference_server_http
+    - Member[server].Member[routes].Member[AMLResponse]
+  - - flask.Response~Subclass
+    - azureml_inference_server_http
+    - Member[server].Member[routes].Member[ErrorResponse]
+  - - flask.Response~Subclass
+    - azureml_inference_server_http
+    - Member[server].Member[routes].Member[Response]

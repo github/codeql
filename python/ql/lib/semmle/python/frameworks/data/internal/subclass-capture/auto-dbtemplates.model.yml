@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
+    - Member[loader].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
+    - Member[management].Member[commands].Member[create_error_templates].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
+    - Member[management].Member[commands].Member[sync_templates].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
+    - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
+    - Member[utils].Member[cache].Member[Site]

@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - markdownlit
+    - Member[extensions].Member[align].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - markdownlit
+    - Member[extensions].Member[align].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - markdownlit
+    - Member[extensions].Member[arrow].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - markdownlit
+    - Member[extensions].Member[at_sign].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - markdownlit
+    - Member[extensions].Member[at_sign].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - markdownlit
+    - Member[extensions].Member[color].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - markdownlit
+    - Member[extensions].Member[color].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - markdownlit
+    - Member[extensions].Member[double_dash].Member[etree]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - statici18n
+    - Member[management].Member[commands].Member[compilejsi18n].Member[JSONCatalog]
+  - - Django.Views.View~Subclass
+    - statici18n
+    - Member[management].Member[commands].Member[compilejsi18n].Member[JavaScriptCatalog]

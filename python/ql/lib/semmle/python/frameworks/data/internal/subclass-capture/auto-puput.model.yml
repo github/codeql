@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[feeds].Member[BlogPage]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[feeds].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[management].Member[commands].Member[puput_initial_data].Member[BlogPage]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[management].Member[commands].Member[puput_initial_data].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[management].Member[commands].Member[puput_initial_data].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[management].Member[commands].Member[puput_initial_data].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[models].Member[BlogPage]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[models].Member[EntryPage]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[routes].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[templatetags].Member[puput_tags].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[views].Member[EntryPage]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[views].Member[Site]

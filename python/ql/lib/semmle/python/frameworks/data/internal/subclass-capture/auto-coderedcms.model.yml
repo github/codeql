@@ -1,0 +1,339 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[blocks].Member[PhoneNumberField]
+  - - Django.Views.View~Subclass
+    - coderedcms
+    - Member[forms].Member[CoderedSubmissionsListView]
+  - - Django.Views.View~Subclass
+    - coderedcms
+    - Member[forms].Member[WagtailSubmissionsListView]
+  - - Django.Views.View~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedSubmissionsListView]
+  - - Django.Views.View~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedSubmissionsListView]
+  - - Django.Views.View~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[wagtail_hooks].Member[FormIndexView]
+  - - Django.Views.View~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[wagtail_hooks].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[wagtail_hooks].Member[InstanceSpecificView]
+  - - Django.Views.View~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[wagtail_hooks].Member[SetStatusView]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[api].Member[mailchimp].Member[LayoutSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[api].Member[mailchimp].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[forms].Member[AbstractFormField]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[forms].Member[CoderedFormField]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[forms].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[importexport].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[importexport].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[AbstractImage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[Accordion]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[AnalyticsSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[BaseEvent]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[BaseOccurrence]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[BaseSiteSetting]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[Carousel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[Classifier]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[ClusterableModel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedArticleIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedArticlePage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedEmail]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedEventIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedEventOccurrence]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedEventPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedLocationIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedLocationPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedSessionFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedWebPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[FilmStrip]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[FormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[LayoutSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[Orderable]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[SessionFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[AbstractImage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[BaseEvent]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[BaseOccurrence]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedArticleIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedArticlePage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedEventIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedEventOccurrence]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedEventPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedLocationIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedLocationPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedSessionFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedWebPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[FormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[LayoutSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[Orderable]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[SessionFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[Accordion]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[Carousel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[Classifier]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[ClusterableModel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[CoderedEmail]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[FilmStrip]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[Orderable]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[wagtailsettings_models].Member[AnalyticsSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[wagtailsettings_models].Member[BaseSiteSetting]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[wagtailsettings_models].Member[ClusterableModel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[wagtailsettings_models].Member[LayoutSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[wagtailsettings_models].Member[Orderable]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[ArticleIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[ArticlePage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[CoderedArticleIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[CoderedArticlePage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[CoderedEmail]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[CoderedFormField]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[CoderedWebPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[FormConfirmEmail]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[FormPageField]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[WebPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[ArticleIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[ArticlePage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[CoderedArticleIndexPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[CoderedArticlePage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[CoderedEmail]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[CoderedFormField]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[CoderedWebPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[FormConfirmEmail]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[FormPageField]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[WebPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[templatetags].Member[coderedcms_tags].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[templatetags].Member[coderedcms_tags].Member[LayoutSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[views].Member[CoderedPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[views].Member[LayoutSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[views].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[AbstractEmailForm]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[AbstractEmailStreamForm]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[AbstractFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[AbstractForm]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[AbstractStreamForm]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[SessionFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[wagtail_hooks].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[wagtail_hooks].Member[SessionFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_hooks].Member[ContentType]
+  - - django.http.response.HttpResponse~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[TemplateResponse]

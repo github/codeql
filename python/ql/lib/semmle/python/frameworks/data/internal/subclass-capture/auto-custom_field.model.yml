@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - custom_field
+    - Member[custom_field].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - custom_field
+    - Member[models].Member[ContentType]

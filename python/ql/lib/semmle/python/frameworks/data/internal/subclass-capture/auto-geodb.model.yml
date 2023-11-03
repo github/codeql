@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - geodb
+    - Member[geo_calc].Member[matrix]
+  - - Django.db.models.Model~Subclass
+    - geodb
+    - Member[geoapi].Member[matrix]
+  - - Django.db.models.Model~Subclass
+    - geodb
+    - Member[views].Member[matrix]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - geodb
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - geodb
+    - Member[geo_calc].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - geodb
+    - Member[geoapi].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - geodb
+    - Member[views].Member[HttpResponse]
+  - - pickle~Alias
+    - geodb
+    - Member[geo_calc].Member[pickle]

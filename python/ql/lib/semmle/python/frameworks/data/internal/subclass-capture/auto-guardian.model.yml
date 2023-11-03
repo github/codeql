@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[compat].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[compat].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[core].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[ctypes].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[managers].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[shortcuts].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[shortcuts].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[shortcuts].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[templatetags].Member[guardian_tags].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[utils].Member[Group]

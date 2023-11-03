@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[BSModalCreateView]
+  - - Django.Views.View~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[EventListView]
+  - - Django.Views.View~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[EventModalCreateView]
+  - - Django.Views.View~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[FilterView]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[forms].Member[BSModalModelForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[forms].Member[CustomInputTemplateToDoForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[forms].Member[EventModalModelForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[BaseForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[CustomInputTemplateToDoForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[EventModalModelForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[HttpResponse]

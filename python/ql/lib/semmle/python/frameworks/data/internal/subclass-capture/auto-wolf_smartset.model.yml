@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - wolf_smartset
+    - Member[create_session].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - wolf_smartset
+    - Member[token_auth].Member[AsyncClient]

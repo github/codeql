@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[actions].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[drf].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[feeds].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[feeds].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[managers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[templatetags].Member[activity_tags].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[views].Member[ContentType]

@@ -1,0 +1,90 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[basket].Member[views].Member[BasketView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[basket].Member[views].Member[ModelFormSetView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[basket].Member[views].Member[SavedView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[catalogue].Member[views].Member[AttributeOptionGroupListView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[catalogue].Member[views].Member[CategoryListView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[catalogue].Member[views].Member[OptionListView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[catalogue].Member[views].Member[ProductListView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[catalogue].Member[views].Member[SingleTableView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[users].Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[users].Member[views].Member[SingleTableView]
+  - - Django.Views.View~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[views].Member[LoginView]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractCategory]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[MP_Node]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[checkout].Member[mixins].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[communication].Member[utils].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[customer].Member[abstract_models].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[partners].Member[forms].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[partners].Member[views].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[utils].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[core].Member[compat].Member[User]
+  - - django.forms.BaseForm~Subclass
+    - oscar
+    - Member[apps].Member[search].Member[forms].Member[BrowseCategoryForm]
+  - - django.forms.BaseForm~Subclass
+    - oscar
+    - Member[apps].Member[search].Member[forms].Member[FacetedSearchForm]
+  - - django.forms.BaseForm~Subclass
+    - oscar
+    - Member[apps].Member[search].Member[forms].Member[SearchForm]
+  - - django.http.response.HttpResponse~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[ranges].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[reports].Member[views].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - oscar
+    - Member[apps].Member[dashboard].Member[views].Member[TemplateResponse]

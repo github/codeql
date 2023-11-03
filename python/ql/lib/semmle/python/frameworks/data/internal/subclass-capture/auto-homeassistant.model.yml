@@ -1,0 +1,420 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[StaticState]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[climate].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[climate].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[climate].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[climate].Member[StaticState]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[coordinator].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[entity].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[entity].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[bsblan].Member[entity].Member[StaticState]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[elgato].Member[coordinator].Member[BatteryInfo]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[elgato].Member[coordinator].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[elgato].Member[coordinator].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[elgato].Member[coordinator].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[config_flow].Member[CloudDevice]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[config_flow].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[config_flow].Member[Notification]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[config_flow].Member[Simple]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[config_flow].Member[Sound]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[coordinator].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[notify].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[notify].Member[Notification]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[notify].Member[Simple]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[notify].Member[Sound]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[number].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[select].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[sensor].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[services].Member[Chart]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[services].Member[Goal]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[services].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[services].Member[Notification]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[services].Member[Simple]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[services].Member[Sound]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[lametric].Member[switch].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[notion].Member[BridgeAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[notion].Member[Bridge]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[notion].Member[ListenerAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[notion].Member[Listener]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[notion].Member[SensorAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[notion].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[notion].Member[UserPreferencesResponse]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[notion].Member[UserPreferences]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[open_meteo].Member[Forecast]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[open_meteo].Member[diagnostics].Member[Forecast]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[open_meteo].Member[weather].Member[OpenMeteoForecast]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[pvoutput].Member[coordinator].Member[Status]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[pvoutput].Member[sensor].Member[Status]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[pvoutput].Member[sensor].Member[System]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[radio_browser].Member[media_source].Member[Station]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[rdw].Member[Vehicle]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[rdw].Member[binary_sensor].Member[Vehicle]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[rdw].Member[diagnostics].Member[Vehicle]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[rdw].Member[sensor].Member[Vehicle]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[tailscale].Member[TailscaleDevice]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[tailscale].Member[binary_sensor].Member[TailscaleDevice]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[tailscale].Member[coordinator].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[tailscale].Member[sensor].Member[TailscaleDevice]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[binary_sensor].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[binary_sensor].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[binary_sensor].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[binary_sensor].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[binary_sensor].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[binary_sensor].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[binary_sensor].Member[UOSDisk]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[button].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[button].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[camera].Member[CameraChannel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[camera].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[camera].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[camera].Member[UFPCamera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[config_flow].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[data].Member[Bootstrap]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[data].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[data].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[data].Member[Liveview]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[data].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[data].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[Chime]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[entity].Member[Viewer]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[light].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[light].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[light].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[lock].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[lock].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[lock].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[media_player].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[media_player].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[media_player].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[media_source].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[media_source].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[migrate].Member[Bootstrap]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[migrate].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[migrate].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[models].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[models].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[models].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[number].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[number].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[number].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[number].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[number].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[select].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[select].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[select].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[select].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[select].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[select].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[select].Member[Viewer]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[sensor].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[sensor].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[sensor].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[sensor].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[sensor].Member[ProtectDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[sensor].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[sensor].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[services].Member[Chime]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[switch].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[switch].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[switch].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[switch].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[text].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[text].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[text].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[utils].Member[Bootstrap]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[utils].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[utils].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[views].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[unifiprotect].Member[views].Member[Event]

@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - signals
+    - Member[CloudStorage]
+  - - Django.db.models.Model~Subclass
+    - signals
+    - Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - signals
+    - Member[Issue]
+  - - Django.db.models.Model~Subclass
+    - signals
+    - Member[Job]
+  - - Django.db.models.Model~Subclass
+    - signals
+    - Member[Label]
+  - - Django.db.models.Model~Subclass
+    - signals
+    - Member[Organization]
+  - - Django.db.models.Model~Subclass
+    - signals
+    - Member[Project]
+  - - Django.db.models.Model~Subclass
+    - signals
+    - Member[Task]
+  - - Django.db.models.Model~Subclass
+    - signals
+    - Member[User]

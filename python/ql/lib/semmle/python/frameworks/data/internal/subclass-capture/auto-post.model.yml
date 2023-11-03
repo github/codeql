@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[management].Member[commands].Member[create_initial_data].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[management].Member[commands].Member[create_initial_data].Member[User]
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[models].Member[User]

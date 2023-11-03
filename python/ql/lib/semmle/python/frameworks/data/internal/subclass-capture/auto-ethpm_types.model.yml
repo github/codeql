@@ -1,0 +1,219 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[ASTNode]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[Bytecode]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[Checksum]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[Compiler]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[ContractInstance]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[PCMapItem]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[PCMap]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[PackageManifest]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[PackageMeta]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[SourceMapItem]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[SourceMap]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[ABIType]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[ConstructorABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[ErrorABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[EventABIType]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[EventABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[FallbackABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[ReceiveABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[StructABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[abi].Member[UnprocessedABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[ast].Member[ASTNode]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[ast].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[ast].Member[SourceMapItem]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[base].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[ASTNode]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[Bytecode]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[ConstructorABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[ContractInstance]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[ErrorABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[EventABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[FallbackABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[LinkDependency]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[LinkReference]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[PCMap]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[ReceiveABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[SourceMap]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[contract_type].Member[StructABI]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[manifest].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[manifest].Member[Compiler]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[manifest].Member[ContractInstance]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[manifest].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[manifest].Member[PackageManifest]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[manifest].Member[PackageMeta]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[manifest].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[ASTNode]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[Checksum]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[Closure]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[Compiler]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[Content]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[ContractSource]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[Function]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[PCMap]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[SourceStatement]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[source].Member[Statement]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[sourcemap].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[sourcemap].Member[PCMapItem]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[sourcemap].Member[PCMap]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[sourcemap].Member[SourceMapItem]
+  - - pydantic.BaseModel~Subclass
+    - ethpm_types
+    - Member[sourcemap].Member[SourceMap]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[limit_to_usergroups].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[management].Member[commands].Member[permission_info].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[permissions].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[permissions].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[playwright].Member[utils].Member[User]

@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_private_chat
+    - Member[admin].Member[Dialog]
+  - - Django.db.models.Model~Subclass
+    - django_private_chat
+    - Member[admin].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - django_private_chat
+    - Member[models].Member[Dialog]
+  - - Django.db.models.Model~Subclass
+    - django_private_chat
+    - Member[models].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - django_private_chat
+    - Member[models].Member[SoftDeletableModel]
+  - - Django.db.models.Model~Subclass
+    - django_private_chat
+    - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - django_private_chat
+    - Member[utils].Member[Dialog]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - export
+    - Member[pack_cfg].Member[MMLogger]
+  - - rest_framework.response.Response~Subclass
+    - export
+    - Member[Response]

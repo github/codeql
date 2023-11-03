@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - flexx
+    - Member[app].Member[_tornadoserver].Member[WSHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - flexx
+    - Member[app].Member[_tornadoserver].Member[WebSocketHandler]

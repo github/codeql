@@ -1,0 +1,1257 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[OrderDeletePaymentView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[payment].Member[BaseDeleteView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[payment].Member[OrderDeletePaymentView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[admin].Member[urls].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[admin].Member[urls].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[admin].Member[views].Member[auth].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[admin].Member[views].Member[auth].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[customer_information].Member[views].Member[CustomPasswordChangeView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[customer_information].Member[views].Member[PasswordChangeView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[registration].Member[urls].Member[ActivationView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[registration].Member[urls].Member[CompanyRegistrationView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[registration].Member[views].Member[ActivationView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[registration].Member[views].Member[CompanyRegistrationView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[registration].Member[views].Member[RegistrationNoActivationView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[registration].Member[views].Member[RegistrationWithActivationView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[checkout].Member[checkout_method].Member[RegisterPhase]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[front].Member[checkout].Member[checkout_method].Member[RegistrationNoActivationView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[simple_cms].Member[admin_module].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[simple_cms].Member[admin_module].Member[views].Member[PageDeleteView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[tasks].Member[admin_module].Member[views].Member[TaskSetStatusView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[tasks].Member[admin_module].Member[views].Member[edit].Member[BaseDetailView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[tasks].Member[admin_module].Member[views].Member[edit].Member[TaskSetStatusView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[xtheme].Member[admin_module].Member[views].Member[SnippetDeleteView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[xtheme].Member[admin_module].Member[views].Member[_snippet].Member[BaseDeleteView]
+  - - Django.Views.View~Subclass
+    - shuup
+    - Member[xtheme].Member[admin_module].Member[views].Member[_snippet].Member[SnippetDeleteView]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[forms].Member[widgets].Member[File]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[forms].Member[widgets].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[forms].Member[widgets].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[form_parts].Member[AttributeChoiceOption]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[forms].Member[AttributeChoiceOption]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[forms].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[object_selector].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[views].Member[edit].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[views].Member[list].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[form_parts].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[forms].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[forms].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[forms].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[object_selector].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[views].Member[copy].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[views].Member[copy].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[views].Member[delete].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[views].Member[edit].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[views].Member[list].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[media].Member[utils].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[media].Member[views].Member[File]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[media].Member[views].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[media].Member[views].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[json_order_creator].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[json_order_creator].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[json_order_creator].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[toolbar].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[detail].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[edit].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[edit].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[list].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[shipment].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[status].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[permission_groups].Member[PermissionGroup]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[permission_groups].Member[object_selector].Member[PermissionGroup]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[permission_groups].Member[views].Member[edit].Member[PermissionGroup]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[permission_groups].Member[views].Member[list].Member[PermissionGroup]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[product_types].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[product_types].Member[object_selector].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[product_types].Member[views].Member[delete].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[product_types].Member[views].Member[edit].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[product_types].Member[views].Member[edit].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[product_types].Member[views].Member[list].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[ProductMedia]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[package_forms].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[package_forms].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[mass_actions].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[object_selector].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[object_selector].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[signal_handlers].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[validators].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[copy].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[delete].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit_cross_sell].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit_media].Member[File]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit_media].Member[ProductMedia]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit_media].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit_media].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit_parent].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[list].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[mass_edit].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[mass_edit].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[weight_based_pricing].Member[_form_part].Member[WeightBasedPriceRange]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[users].Member[views].Member[list].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[users].Member[views].Member[permissions].Member[PermissionGroup]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[signal_handling].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[signal_handling].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[signal_handling].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[utils].Member[permissions].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[utils].Member[picotable].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[utils].Member[picotable].Member[ProductMedia]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[utils].Member[product].Member[ProductAttribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[utils].Member[product].Member[ProductMedia]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[utils].Member[product].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[utils].Member[product].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[views].Member[select].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[views].Member[select].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[admin].Member[views].Member[select].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[BasketCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_basket].Member[BasketCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_basket_conditions].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_basket_effects].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_basket_effects].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_basket_effects].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_catalog].Member[CatalogCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[sections].Member[BasketCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[sections].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[views].Member[_edit].Member[BasketCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[views].Member[_edit].Member[CatalogCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[views].Member[_list].Member[BasketCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[views].Member[_list].Member[CatalogCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[management].Member[commands].Member[rebuild_campaign_caches].Member[BasketCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[management].Member[commands].Member[rebuild_campaign_caches].Member[CatalogCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[BasketCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[Campaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[CatalogCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[basket_conditions].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[basket_conditions].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[basket_conditions].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[basket_line_effects].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[basket_line_effects].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[basket_line_effects].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[cache].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[campaigns].Member[BasketCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[campaigns].Member[Campaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[campaigns].Member[CatalogCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[campaigns].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[campaigns].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[catalog_filters].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[catalog_filters].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[catalog_filters].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[catalog_filters].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[models].Member[matching].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[modules].Member[BasketCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[modules].Member[CatalogCampaign]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[modules].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[signal_handlers].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[signal_handlers].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[utils].Member[matcher].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[utils].Member[matcher].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[utils].Member[matcher].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[campaigns].Member[utils].Member[matcher].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[basket].Member[commands].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[basket].Member[commands].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[basket].Member[objects].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[basket].Member[update_methods].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[catalog].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[catalog].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[catalog].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[management].Member[commands].Member[reindex_product_catalog].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[management].Member[commands].Member[shuup_fix_order_status_identifiers].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[management].Member[commands].Member[shuup_init].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[AttributeChoiceOption]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[ProductAttribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[ProductMedia]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[WeightBasedPriceRange]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_attributes].Member[AppliedAttribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_attributes].Member[AttributeChoiceOption]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_attributes].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_attributes].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_categories].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_categories].Member[MPTTModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_categories].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_orders].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_orders].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_orders].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_orders].Member[User]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_product_media].Member[ProductMedia]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_product_media].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_product_shops].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_product_shops].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_product_variation].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_products].Member[AppliedAttribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_products].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_products].Member[ProductAttribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_products].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_products].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_products].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_service_base].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_service_behavior].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_service_behavior].Member[WeightBasedPriceRange]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_units].Member[SalesUnitTranslation]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[models].Member[_units].Member[TranslatedFieldsModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[order_creator].Member[_creator].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[order_creator].Member[_source].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[order_creator].Member[_source].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[order_creator].Member[_validators].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[pricing].Member[_discounts].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[pricing].Member[_discounts].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[pricing].Member[_module].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[pricing].Member[default_pricing].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[signal_handlers].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[signal_handlers].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[signal_handlers].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[suppliers].Member[base].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[suppliers].Member[base].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[telemetry].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[utils].Member[price_cache].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[utils].Member[product_caching_object].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[utils].Member[product_statistics].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[core].Member[utils].Member[product_subscription].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[customer_group_pricing].Member[module].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[default_importer].Member[importers].Member[product].Member[ProductMedia]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[default_importer].Member[importers].Member[product].Member[ProductType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[default_importer].Member[importers].Member[product].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[default_importer].Member[importers].Member[product].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[default_reports].Member[forms].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[discounts].Member[admin].Member[views].Member[_edit].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[discounts].Member[modules].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[discounts].Member[signal_handlers].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[discounts].Member[signal_handlers].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[discounts].Member[utils].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[carousel].Member[admin_module].Member[forms].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[carousel].Member[admin_module].Member[forms].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[carousel].Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[carousel].Member[models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[carousel].Member[models].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[saved_carts].Member[views].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[saved_carts].Member[views].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[simple_search].Member[forms].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[simple_search].Member[views].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[checkout].Member[confirm].Member[OrderStatus]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[forms].Member[product_list_modifiers].Member[Attribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[forms].Member[product_list_modifiers].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[forms].Member[product_list_modifiers].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[forms].Member[product_list_supplier_modifier].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[forms].Member[widget].Member[File]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[signal_handlers].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[signal_handlers].Member[ProductMedia]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[signal_handlers].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[template_helpers].Member[general].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[template_helpers].Member[product].Member[ProductAttribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[template_helpers].Member[product].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[utils].Member[product].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[utils].Member[product].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[utils].Member[sorts_and_filters].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[utils].Member[urls].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[utils].Member[urls].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[utils].Member[urls].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[utils].Member[views].Member[ProductAttribute]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[utils].Member[views].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[views].Member[category].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[views].Member[product].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[front].Member[views].Member[product].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[admin_module].Member[forms].Member[GDPRCookieCategory]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[admin_module].Member[forms].Member[GDPRSettings]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[admin_module].Member[views].Member[GDPRCookieCategory]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[admin_module].Member[views].Member[GDPRSettings]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[models].Member[GDPRCookieCategory]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[models].Member[GDPRSettings]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[models].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[models].Member[Version]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[resources].Member[GDPRCookieCategory]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[resources].Member[GDPRSettings]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[serializers].Member[GDPRCookieCategory]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[signal_handlers].Member[GDPRSettings]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[utils].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[views].Member[GDPRCookieCategory]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[gdpr].Member[views].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[importer].Member[_mapper].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[importer].Member[importing].Member[session].Member[TranslatedFieldsModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[admin_module].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[admin_module].Member[form_parts].Member[PageOpenGraph]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[admin_module].Member[views].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[models].Member[MPTTModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[models].Member[PageOpenGraph]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[models].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[plugins].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[template_helpers].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_cms].Member[views].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_supplier].Member[admin_module].Member[forms].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_supplier].Member[admin_module].Member[views].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_supplier].Member[module].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_supplier].Member[signal_handlers].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_supplier].Member[signal_handlers].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_supplier].Member[tasks].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_supplier].Member[tasks].Member[ShopProduct]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[simple_supplier].Member[utils].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[tasks].Member[admin_module].Member[TaskType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[tasks].Member[admin_module].Member[views].Member[edit].Member[TaskType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[tasks].Member[admin_module].Member[views].Member[list].Member[TaskType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[tasks].Member[models].Member[TaskType]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[tasks].Member[models].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[utils].Member[filer].Member[File]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[utils].Member[filer].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[utils].Member[filer].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[xtheme].Member[plugins].Member[category_links].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[xtheme].Member[plugins].Member[image].Member[File]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[xtheme].Member[plugins].Member[products].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - shuup
+    - Member[xtheme].Member[plugins].Member[products_async].Member[Product]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[forms].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[forms].Member[_base].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[forms].Member[_base].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[form_parts].Member[AttributeForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[forms].Member[AttributeChoiceOptionForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[forms].Member[AttributeForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[forms].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[attributes].Member[forms].Member[TranslatableModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[form_parts].Member[CategoryBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[forms].Member[CategoryBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[categories].Member[forms].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[contact_groups].Member[views].Member[forms].Member[ContactGroupBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[contact_groups].Member[views].Member[forms].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[labels].Member[views].Member[LabelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[labels].Member[views].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[status].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[views].Member[status].Member[OrderStatusForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[product_types].Member[views].Member[edit].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[product_types].Member[views].Member[edit].Member[ProductTypeForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[BaseProductMediaForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[ProductBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[ProductImageMediaForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[ProductMediaForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[ShopProductForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[BaseProductMediaForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[ProductBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[ProductImageMediaForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[ProductMediaForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[forms].Member[base_forms].Member[ShopProductForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit].Member[ProductBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit].Member[ShopProductForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit_media].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[products].Member[views].Member[edit_media].Member[ProductMediaForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[sales_units].Member[views].Member[edit].Member[DisplayUnitForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[sales_units].Member[views].Member[edit].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[sales_units].Member[views].Member[edit].Member[SalesUnitForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[service_providers].Member[forms].Member[CustomCarrierForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[service_providers].Member[forms].Member[CustomPaymentProcessorForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[service_providers].Member[forms].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[service_providers].Member[wizard_form_defs].Member[ManualPaymentWizardForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[service_providers].Member[wizard_form_defs].Member[ManualShippingWizardForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[service_providers].Member[wizard_forms].Member[ManualPaymentWizardForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[service_providers].Member[wizard_forms].Member[ManualShippingWizardForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[service_providers].Member[wizard_forms].Member[ServiceWizardForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[service_providers].Member[wizard_forms].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[base_form_part].Member[PaymentMethodForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[base_form_part].Member[ShippingMethodForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[behavior_form_part].Member[TranslatableModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[forms].Member[BaseMethodForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[forms].Member[FixedCostBehaviorComponentForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[forms].Member[PaymentMethodForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[forms].Member[ShippingMethodForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[forms].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[forms].Member[WaivingCostBehaviorComponentForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[weight_based_pricing].Member[_form_part].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[services].Member[weight_based_pricing].Member[_form_part].Member[WeightBasedPriceRangeForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[shops].Member[forms].Member[ShopBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[shops].Member[forms].Member[ShopWizardForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[shops].Member[forms].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[shops].Member[views].Member[edit].Member[ShopBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[shops].Member[views].Member[wizard].Member[ShopWizardForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[suppliers].Member[form_parts].Member[SupplierBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[suppliers].Member[forms].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[suppliers].Member[forms].Member[SupplierBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[taxes].Member[views].Member[edit].Member[CustomerTaxGroupForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[taxes].Member[views].Member[edit].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[taxes].Member[views].Member[edit].Member[TaxClassForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[taxes].Member[views].Member[edit].Member[TaxForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[admin].Member[utils].Member[views].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[form_parts].Member[BasketCampaignForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[form_parts].Member[CatalogCampaignForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[form_sets].Member[TranslatableModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[BasketCampaignForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[CatalogCampaignForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_base].Member[BaseCampaignForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_base].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_basket].Member[BaseCampaignForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_basket].Member[BasketCampaignForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_catalog].Member[BaseCampaignForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[campaigns].Member[admin_module].Member[forms].Member[_catalog].Member[CatalogCampaignForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[carousel].Member[admin_module].Member[forms].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[carousel].Member[admin_module].Member[forms].Member[SlideForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[registration].Member[forms].Member[PersonRegistrationForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[front].Member[apps].Member[registration].Member[forms].Member[RegistrationForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[gdpr].Member[admin_module].Member[forms].Member[GDPRCookieCategoryForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[gdpr].Member[admin_module].Member[forms].Member[GDPRSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[gdpr].Member[admin_module].Member[forms].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[simple_cms].Member[admin_module].Member[form_parts].Member[CMSOpenGraphForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[simple_cms].Member[admin_module].Member[form_parts].Member[ShuupAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[simple_cms].Member[admin_module].Member[views].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[simple_cms].Member[admin_module].Member[views].Member[PageForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[tasks].Member[admin_module].Member[views].Member[edit].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[tasks].Member[admin_module].Member[views].Member[edit].Member[TaskTypeForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[utils].Member[multilanguage_model_form].Member[MultiLanguageModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shuup
+    - Member[utils].Member[multilanguage_model_form].Member[TranslatableModelForm]
+  - - django.http.request.HttpRequest~Subclass
+    - shuup
+    - Member[core].Member[utils].Member[context_cache].Member[WSGIRequest]
+  - - io.StringIO~Subclass
+    - shuup
+    - Member[addons].Member[admin_module].Member[views].Member[reload].Member[StringIO]
+  - - io.StringIO~Subclass
+    - shuup
+    - Member[admin].Member[modules].Member[orders].Member[mass_actions].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - shuup
+    - Member[reports].Member[writer].Member[BytesIO]

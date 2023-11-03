@@ -1,0 +1,723 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[authenticate].Member[AuthCallbackRequestHandler]
+  - - httpx.Client~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[manager].Member[SignedSession]
+  - - httpx.Client~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[xal].Member[SignedSession]
+  - - httpx.Client~Subclass
+    - xbox
+    - Member[webapi].Member[common].Member[signed_session].Member[SignedSession]
+  - - httpx.Client~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[authenticate].Member[SignedSession]
+  - - httpx.Client~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[change_gamertag].Member[SignedSession]
+  - - httpx.Client~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[friends].Member[SignedSession]
+  - - httpx.Client~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[search].Member[SignedSession]
+  - - httpx.Client~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[xal].Member[SignedSession]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[Achievement360ProgressResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[Achievement360Response]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[AchievementResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[RecentProgressResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[Achievement360ProgressResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[Achievement360Response]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[Achievement360]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[AchievementResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[Achievement]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[MediaAsset]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[PagingInfo]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[Progression]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[RecentProgressResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[Requirement]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[Reward]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[Title360]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[TitleAssociation]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[achievements].Member[models].Member[Title]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[CatalogResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[CatalogSearchResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[AllowedPlatform]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[AlternateId]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[Application]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[AvailabilityProperties]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[Availability]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[CatalogResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[CatalogSearchResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[CatalogSearchResult]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[ClientConditions]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[Conditions]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[ContentRating]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[DisplaySkuAvailability]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[FrameworkDependency]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[FulfillmentData]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[HardwareProperties]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[LegalText]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[LicensingData]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[LocalizedProperty]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[MarketProperty]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[OrderManagementData]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[PIFilter]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[Package]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[PascalCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[PlatformDependency]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[Price]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[ProductProperties]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[Product]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[SatisfyingEntitlementKey]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[SearchProduct]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[SearchTitle]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[SkuLocalizedProperty]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[SkuMarketProperty]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[SkuProperties]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[Sku]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[UsageData]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[ValidationData]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[catalog].Member[models].Member[Video]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[CqsChannelListResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[CqsScheduleResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[models].Member[CqsChannelListResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[models].Member[CqsScheduleResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[models].Member[Genre]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[models].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[models].Member[ListChannel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[models].Member[ParentSeries]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[models].Member[PascalCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[models].Member[Program]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[cqs].Member[models].Member[ScheduleChannel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[gameclips].Member[GameclipsResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[gameclips].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[gameclips].Member[models].Member[GameClipUri]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[gameclips].Member[models].Member[GameClip]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[gameclips].Member[models].Member[GameclipsResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[gameclips].Member[models].Member[PagingInfo]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[gameclips].Member[models].Member[Thumbnail]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[lists].Member[ListMetadata]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[lists].Member[ListsResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[lists].Member[models].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[lists].Member[models].Member[ListItem]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[lists].Member[models].Member[ListMetadata]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[lists].Member[models].Member[ListsResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[lists].Member[models].Member[PascalCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[mediahub].Member[MediahubGameclips]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[mediahub].Member[MediahubScreenshots]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[mediahub].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[mediahub].Member[models].Member[ContentLocator]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[mediahub].Member[models].Member[ContentSegment]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[mediahub].Member[models].Member[GameclipContent]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[mediahub].Member[models].Member[MediahubGameclips]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[mediahub].Member[models].Member[MediahubScreenshots]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[mediahub].Member[models].Member[ScreenshotContent]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[ConversationResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[InboxResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[SendMessageResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[ContentPayload]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[Content]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[ConversationResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[Conversation]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[InboxResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[Part]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[Primary]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[SafetySettings]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[message].Member[models].Member[SendMessageResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[PeopleResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[PeopleSummaryResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[Avatar]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[Detail]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[Follower]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[FriendFinderState]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[LinkedAccount]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[MultiplayerSummary]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[PascalCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[PeopleResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[PeopleSummaryResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[PreferredColor]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[PresenceDetail]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[RecentPlayer]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[RecommendationSummary]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[Recommendation]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[SocialManager]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[Suggestion]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[people].Member[models].Member[TitlePresence]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[presence].Member[PresenceBatchResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[presence].Member[PresenceItem]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[presence].Member[models].Member[ActivityRecord]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[presence].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[presence].Member[models].Member[DeviceRecord]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[presence].Member[models].Member[LastSeen]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[presence].Member[models].Member[PresenceBatchResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[presence].Member[models].Member[PresenceItem]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[presence].Member[models].Member[TitleRecord]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[profile].Member[ProfileResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[profile].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[profile].Member[models].Member[ProfileResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[profile].Member[models].Member[ProfileUser]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[profile].Member[models].Member[Setting]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[screenshots].Member[ScreenshotResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[screenshots].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[screenshots].Member[models].Member[PagingInfo]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[screenshots].Member[models].Member[ScreenshotResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[screenshots].Member[models].Member[ScreenshotUri]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[screenshots].Member[models].Member[Screenshot]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[screenshots].Member[models].Member[Thumbnail]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[CommandResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[InstalledPackagesList]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[OperationStatusResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[SmartglassConsoleList]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[SmartglassConsoleStatus]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[StorageDevicesList]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[CommandDestination]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[CommandResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[InstalledPackage]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[InstalledPackagesList]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[OpStatusNode]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[OperationStatusResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[SmartglassApiStatus]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[SmartglassConsoleList]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[SmartglassConsoleStatus]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[SmartglassConsole]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[StorageDevice]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[smartglass].Member[models].Member[StorageDevicesList]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[TitleHubResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[Achievement]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[Attribute]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[Availability]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[Detail]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[GamePass]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[PascalCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[Stats]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[TitleHistory]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[TitleHubResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[titlehub].Member[models].Member[Title]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[usersearch].Member[UserSearchResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[usersearch].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[usersearch].Member[models].Member[UserDetail]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[usersearch].Member[models].Member[UserResult]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[usersearch].Member[models].Member[UserSearchResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[userstats].Member[UserStatsResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[userstats].Member[models].Member[GroupProperties]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[userstats].Member[models].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[userstats].Member[models].Member[LowerCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[userstats].Member[models].Member[PascalCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[userstats].Member[models].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[userstats].Member[models].Member[StatListsCollectionItem]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[userstats].Member[models].Member[Stat]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[api].Member[provider].Member[userstats].Member[models].Member[UserStatsResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[manager].Member[OAuth2TokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[manager].Member[XAUResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[manager].Member[XSTSResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[OAuth2TokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[PascalCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[SignaturePolicy]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[SisuAuthenticationResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[SisuAuthorizationResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[TitleEndpointCertificate]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[TitleEndpoint]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[TitleEndpointsResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[XADDisplayClaims]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[XADResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[XATDisplayClaims]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[XATResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[XAUDisplayClaims]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[XAUResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[XSTSDisplayClaims]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[XSTSResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[models].Member[XTokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[xal].Member[OAuth2TokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[xal].Member[SisuAuthenticationResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[xal].Member[SisuAuthorizationResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[xal].Member[TitleEndpointsResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[xal].Member[XADResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[authentication].Member[xal].Member[XSTSResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[common].Member[models].Member[CamelCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[common].Member[models].Member[LowerCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[common].Member[models].Member[PascalCaseModel]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[common].Member[request_signer].Member[SignaturePolicy]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[authenticate].Member[OAuth2TokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[change_gamertag].Member[OAuth2TokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[friends].Member[OAuth2TokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[xal].Member[SisuAuthorizationResponse]
+  - - pydantic.BaseModel~Subclass
+    - xbox
+    - Member[webapi].Member[scripts].Member[xal].Member[XALStore]

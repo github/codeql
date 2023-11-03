@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - django_rest
+    - Member[deserializers].Member[base].Member[BaseDeserializer]
+  - - Django.Forms.Field~Subclass
+    - django_rest
+    - Member[deserializers].Member[base].Member[Field]
+  - - Django.Views.View~Subclass
+    - django_rest
+    - Member[decorators].Member[View]
+  - - Django.Views.View~Subclass
+    - django_rest
+    - Member[decorators].Member[utils].Member[View]
+  - - django.http.response.JsonResponse~Subclass
+    - django_rest
+    - Member[decorators].Member[utils].Member[JsonResponse]

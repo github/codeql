@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pansi
+    - Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pansi
+    - Member[net].Member[BytesIO]
+  - - urllib3.PoolManager~Subclass
+    - pansi
+    - Member[net].Member[HTTP]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - solara
+    - Member[server].Member[jupyter].Member[cdn_handler].Member[CdnHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - solara
+    - Member[server].Member[jupyter].Member[cdn_handler].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - solara
+    - Member[server].Member[jupyter].Member[server_extension].Member[CdnHandler]

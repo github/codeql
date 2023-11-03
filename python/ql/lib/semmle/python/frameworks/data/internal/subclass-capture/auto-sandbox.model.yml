@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - sandbox
+    - Member[apps].Member[checkout].Member[views].Member[PaymentDetailsView]
+  - - Django.db.models.Model~Subclass
+    - sandbox
+    - Member[apps].Member[user].Member[models].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - sandbox
+    - Member[apps].Member[user].Member[models].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - sandbox
+    - Member[apps].Member[user].Member[models].Member[CustomUserModel]
+  - - Django.db.models.Model~Subclass
+    - sandbox
+    - Member[apps].Member[user].Member[models].Member[ExtendedOscarUserModel]
+  - - Django.db.models.Model~Subclass
+    - sandbox
+    - Member[apps].Member[user].Member[models].Member[ExtendedUserModel]

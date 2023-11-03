@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - yang
+    - Member[verifiers].Member[base_verifier].Member[Logger]
+  - - lxml.etree~Alias
+    - yang
+    - Member[connector].Member[netconf].Member[et]
+  - - lxml.etree~Alias
+    - yang
+    - Member[ncdiff].Member[composer].Member[etree]
+  - - lxml.etree~Alias
+    - yang
+    - Member[ncdiff].Member[config].Member[etree]
+  - - lxml.etree~Alias
+    - yang
+    - Member[ncdiff].Member[device].Member[etree]
+  - - lxml.etree~Alias
+    - yang
+    - Member[ncdiff].Member[etree]
+  - - lxml.etree~Alias
+    - yang
+    - Member[ncdiff].Member[gnmi].Member[etree]
+  - - lxml.etree~Alias
+    - yang
+    - Member[ncdiff].Member[model].Member[etree]
+  - - lxml.etree~Alias
+    - yang
+    - Member[ncdiff].Member[netconf].Member[etree]
+  - - lxml.etree~Alias
+    - yang
+    - Member[ncdiff].Member[restconf].Member[etree]
+  - - requests.models.Response~Subclass
+    - yang
+    - Member[ncdiff].Member[config].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - yang
+    - Member[ncdiff].Member[composer].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - yang
+    - Member[ncdiff].Member[gnmi].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - yang
+    - Member[ncdiff].Member[plugins].Member[cxml].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - yang
+    - Member[ncdiff].Member[plugins].Member[pyimport].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - yang
+    - Member[ncdiff].Member[restconf].Member[ElementTree]

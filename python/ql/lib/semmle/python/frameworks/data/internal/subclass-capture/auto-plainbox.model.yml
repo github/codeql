@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - plainbox
+    - Member[impl].Member[highlevel].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - plainbox
+    - Member[vendor].Member[rpyc].Member[core].Member[brine].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - plainbox
+    - Member[vendor].Member[rpyc].Member[lib].Member[compat].Member[BytesIO]
+  - - pickle~Alias
+    - plainbox
+    - Member[vendor].Member[rpyc].Member[core].Member[netref].Member[pickle]
+  - - pickle~Alias
+    - plainbox
+    - Member[vendor].Member[rpyc].Member[core].Member[protocol].Member[pickle]
+  - - pickle~Alias
+    - plainbox
+    - Member[vendor].Member[rpyc].Member[lib].Member[compat].Member[pickle]
+  - - pickle~Alias
+    - plainbox
+    - Member[vendor].Member[rpyc].Member[utils].Member[classic].Member[pickle]

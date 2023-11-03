@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - aldryn_search
+    - Member[receivers].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - aldryn_search
+    - Member[search_indexes].Member[Title]
+  - - django.forms.BaseForm~Subclass
+    - aldryn_search
+    - Member[views].Member[ModelSearchForm]

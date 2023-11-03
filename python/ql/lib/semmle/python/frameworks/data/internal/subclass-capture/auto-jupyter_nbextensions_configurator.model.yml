@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_nbextensions_configurator
+    - Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_nbextensions_configurator
+    - Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_nbextensions_configurator
+    - Member[NBExtensionHandlerJSON]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_nbextensions_configurator
+    - Member[NBExtensionHandlerPage]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_nbextensions_configurator
+    - Member[RenderExtensionHandler]

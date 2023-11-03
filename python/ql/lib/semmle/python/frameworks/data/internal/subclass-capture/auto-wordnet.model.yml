@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - wordnet
+    - Member[nn_words].Member[pickle]
+  - - pickle~Alias
+    - wordnet
+    - Member[pickle]
+  - - pickle~Alias
+    - wordnet
+    - Member[tf_idf_generator].Member[pickle]
+  - - pickle~Alias
+    - wordnet
+    - Member[word_net].Member[pickle]
