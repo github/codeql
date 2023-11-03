@@ -542,8 +542,14 @@ class Pattern extends Expr {
     (this instanceof LocalVariableDeclExpr or this instanceof RecordPatternExpr)
   }
 
+  /**
+   * Gets this pattern cast to a binding pattern.
+   */
   LocalVariableDeclExpr asBindingPattern() { result = this }
 
+  /**
+   * Gets this pattern cast to a record pattern.
+   */
   RecordPatternExpr asRecordPattern() { result = this }
 }
 

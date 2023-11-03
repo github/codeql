@@ -2556,5 +2556,8 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
 
   override string getAPrimaryQlClass() { result = "RecordPatternExpr" }
 
+  /**
+   * Gets the `i`th subpattern of this record pattern.
+   */
   Pattern getSubPattern(int i) { result.isNthChildOf(this, i) }
 }
