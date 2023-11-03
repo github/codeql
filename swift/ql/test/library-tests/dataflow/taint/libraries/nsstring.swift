@@ -275,8 +275,8 @@ func taintThroughInterpolatedStrings() {
   sink(arg: sourceNSString().replacingOccurrences(of: "a", with: "b", range: NSRange(location: 0, length: 10))) // $ tainted=275
   sink(arg: harmless.replacingOccurrences(of: "a", with: sourceString(), range: NSRange(location: 0, length: 10))) // $ tainted=276
   sink(arg: NSString.path(withComponents: ["a", "b", "c"]))
-  sink(arg: NSString.path(withComponents: sourceStringArray())) // $ tainted=278
-  sink(arg: NSString.path(withComponents: ["a", sourceString(), "c"])) // $ MISSING: tainted=
+  sink(arg: NSString.path(withComponents: sourceStringArray())) // $ MISSING: tainted=278
+  sink(arg: NSString.path(withComponents: ["a", sourceString(), "c"])) // $ tainted=279
   sink(arg: NSString.string(withCString: sourceCString())) // $ tainted=280
   sink(arg: NSString.string(withCString: sourceCString(), length: 128)) // $ tainted=281
   sink(arg: NSString.string(withContentsOfFile: sourceString())) // $ tainted=282
@@ -306,8 +306,8 @@ func taintThroughInterpolatedStrings() {
 
   sink(arg: harmless.strings(byAppendingPaths: [""]))
   sink(arg: harmless.strings(byAppendingPaths: [""])[0])
-  sink(arg: harmless.strings(byAppendingPaths: [sourceString()])) // $ MISSING: tainted=
-  sink(arg: harmless.strings(byAppendingPaths: [sourceString()])[0]) // $ MISSING: tainted=
+  sink(arg: harmless.strings(byAppendingPaths: [sourceString()])) // $ tainted=309
+  sink(arg: harmless.strings(byAppendingPaths: [sourceString()])[0]) // $ tainted=310
   sink(arg: sourceNSString().strings(byAppendingPaths: [""])) // $ tainted=311
   sink(arg: sourceNSString().strings(byAppendingPaths: [""])[0]) // $ tainted=312
 
