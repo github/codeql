@@ -12,8 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
-    <!-- The below causes DB-CHECK errors: -->
-    <!-- <PackageReference Include="NUnit" Version="3.10.1" /> -->
+    <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="Avalara.AvaTax" Version="21.10.0" />
   </ItemGroup>
 </Project>
