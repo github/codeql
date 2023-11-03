@@ -63,13 +63,19 @@ class Endpoint extends DataFlow::MethodNode {
   bindingset[this]
   string getParameterTypes() {
     // For now, return the names of postional parameters. We don't always have type information, so we can't return type names.
-    // We don't yet handle keyword params, splat params or block params.
+    // We don't yet handle splat params or block params.
     result =
       "(" +
-        concat(DataFlow::ParameterNode p, int i |
-          p = this.asCallable().getParameter(i)
+        concat(string key, string value |
+          value = any(int i | i.toString() = key | this.asCallable().getParameter(i)).getName()
+          or
+          exists(DataFlow::ParameterNode param |
+            param = this.asCallable().getKeywordParameter(key)
+          |
+            value = key + ":"
+          )
         |
-          p.getName(), "," order by i
+          value, "," order by key
         ) + ")"
   }
 
