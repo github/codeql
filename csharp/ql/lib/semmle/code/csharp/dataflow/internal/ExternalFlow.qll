@@ -87,27 +87,45 @@
  */
 
 import csharp
-private import ExternalFlowExtensions as Extensions
-private import internal.AccessPathSyntax
-private import internal.DataFlowDispatch
-private import internal.DataFlowPrivate
-private import internal.DataFlowPublic
-private import internal.FlowSummaryImpl::Public
-private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImplSpecific
+private import AccessPathSyntax
+private import DataFlowDispatch
+private import DataFlowPrivate
+private import DataFlowPublic
+private import FlowSummaryImpl::Public
+private import FlowSummaryImpl::Private::External
+private import FlowSummaryImplSpecific
 private import codeql.mad.ModelValidation as SharedModelVal
 
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel = Extensions::sourceModel/9;
+/**
+ * Holds if a source model exists for the given parameters.
+ */
+extensible predicate sourceModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance
+);
 
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel = Extensions::sinkModel/9;
+/**
+ * Holds if a sink model exists for the given parameters.
+ */
+extensible predicate sinkModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string kind, string provenance
+);
 
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel = Extensions::summaryModel/10;
+/**
+ * Holds if a summary model exists for the given parameters.
+ */
+extensible predicate summaryModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance
+);
 
-/** Holds if a neutral model exists for the given parameters. */
-predicate neutralModel = Extensions::neutralModel/6;
+/**
+ * Holds if a neutral model exists for the given parameters.
+ */
+extensible predicate neutralModel(
+  string namespace, string type, string name, string signature, string kind, string provenance
+);
 
 private predicate relevantNamespace(string namespace) {
   sourceModel(namespace, _, _, _, _, _, _, _, _) or
