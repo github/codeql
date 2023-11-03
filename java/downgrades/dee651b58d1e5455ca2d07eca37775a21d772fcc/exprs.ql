@@ -35,7 +35,7 @@ predicate hasNewParent(Expr e, ExprParent newParent, int newIndex) {
 }
 
 from Expr e, int oldKind, int newKind, Type typeid, ExprParent parent, int index
-where exprs(e, kind, typeid, _, _) and
+where exprs(e, oldKind, typeid, _, _) and
 hasNewParent(e, parent, index) and
 (if oldKind = 89 /* record pattern */ then newKind = 74 /* error expression */ else oldKind = newKind)
 select e, newKind, typeid, parent, index
