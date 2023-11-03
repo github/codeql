@@ -30,6 +30,7 @@ import com.semmle.js.extractor.FileExtractor;
 import com.semmle.js.extractor.FileExtractor.FileType;
 import com.semmle.js.extractor.VirtualSourceRoot;
 import com.semmle.util.data.StringUtil;
+import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.files.FileUtil;
 import com.semmle.util.files.FileUtil8;
@@ -443,8 +444,12 @@ public class AutoBuildTests {
 
   /** Hide {@code p} on using {@link DosFileAttributeView} if available; otherwise do nothing. */
   private void hide(Path p) throws IOException {
+    try {
     DosFileAttributeView attrs = Files.getFileAttributeView(p, DosFileAttributeView.class);
     if (attrs != null) attrs.setHidden(true);
+    } catch (IOException e) {
+      Exceptions.ignore(e, "On Linux within the bazel sandbox, we get a DosFileAttributeView that then throws an exception upon use");
+    }
   }
 
   @Test
