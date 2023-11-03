@@ -1,9 +1,10 @@
 load("@//:common.bzl", "codeql_fat_jar", "codeql_java_project")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 
-codeql_java_project(
-    name = "extractor",
-    deps = [
+java_library(
+    name = "deps",
+    visibility = [":__subpackages__"],
+    exports = [
         "@//extractor:html",
         "@//extractor:yaml",
         "@//resources/lib/java:commons-compress",
@@ -11,11 +12,17 @@ codeql_java_project(
         "@//resources/lib/java:jericho-html",
         "@//resources/lib/java:slf4j-api",
         "@//resources/lib/java:snakeyaml",
-        "@//resources/lib/java/DO_NOT_DISTRIBUTE:junit",
         "@//third_party:jackson",
         "@//third_party:logback",
         "@//util-java7",
         "@//util-java8",
+    ],
+)
+
+codeql_java_project(
+    name = "extractor",
+    deps = [
+        ":deps",
     ],
 )
 
