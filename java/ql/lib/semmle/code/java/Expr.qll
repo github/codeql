@@ -1563,7 +1563,7 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
   /**
    * Gets the pattern of an `x instanceof T pattern` expression, if any.
    */
-  Pattern getPattern() { result.isNthChildOf(this, 2) }
+  PatternExpr getPattern() { result.isNthChildOf(this, 2) }
 
   /**
    * Holds if this `instanceof` expression uses pattern matching.
@@ -2559,5 +2559,5 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
   /**
    * Gets the `i`th subpattern of this record pattern.
    */
-  Pattern getSubPattern(int i) { result.isNthChildOf(this, i) }
+  PatternExpr getSubPattern(int i) { result.isNthChildOf(this, i) }
 }

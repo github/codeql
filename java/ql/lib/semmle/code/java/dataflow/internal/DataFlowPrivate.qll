@@ -267,7 +267,7 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
     node2.asExpr() = get
   )
   or
-  exists(RecordPatternExpr rpe, Pattern subPattern, int i |
+  exists(RecordPatternExpr rpe, PatternExpr subPattern, int i |
     node1.asExpr() = rpe and
     subPattern = rpe.getSubPattern(i) and
     node2.asExpr() = subPattern and

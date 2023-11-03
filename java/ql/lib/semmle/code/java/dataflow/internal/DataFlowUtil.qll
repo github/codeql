@@ -204,7 +204,7 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
     upd.getDefiningExpr().(AssignOp) = node1.asExpr() or
-    upd.getDefiningExpr().(Pattern).asBindingPattern() = node1.asExpr()
+    upd.getDefiningExpr().(PatternExpr).asBindingPattern() = node1.asExpr()
   |
     node2.asExpr() = upd.getAFirstUse() and
     not capturedVariableRead(node2)

@@ -504,7 +504,7 @@ class SwitchCase extends Stmt, @case {
  */
 class ConstCase extends SwitchCase {
   ConstCase() {
-    exists(Expr e | e.getParent() = this and e.getIndex() >= 0 and not e instanceof Pattern) and
+    exists(Expr e | e.getParent() = this and e.getIndex() >= 0 and not e instanceof PatternExpr) and
     // For backward compatibility, we don't include `case null, default:` here, on the assumption
     // this will come as a surprise to CodeQL that predates that statement's validity.
     not isNullDefaultCase(this)
@@ -532,12 +532,12 @@ class ConstCase extends SwitchCase {
  *
  * Note binding patterns are represented as `LocalVariableDeclExpr`s.
  */
-class Pattern extends Expr {
-  Pattern() {
+class PatternExpr extends Expr {
+  PatternExpr() {
     (
       this.getParent() instanceof SwitchCase or
       this.getParent() instanceof InstanceOfExpr or
-      this.getParent() instanceof Pattern
+      this.getParent() instanceof PatternExpr
     ) and
     (this instanceof LocalVariableDeclExpr or this instanceof RecordPatternExpr)
   }
@@ -555,12 +555,12 @@ class Pattern extends Expr {
 
 /** A pattern case of a `switch` statement */
 class PatternCase extends SwitchCase {
-  Pattern pattern;
+  PatternExpr pattern;
 
   PatternCase() { pattern.isNthChildOf(this, 0) }
 
   /** Gets this case's pattern. */
-  Pattern getPattern() { result.isNthChildOf(this, 0) }
+  PatternExpr getPattern() { result = pattern }
 
   /** Gets the guard applicable to this pattern case, if any. */
   Expr getGuard() { result.isNthChildOf(this, -3) }
