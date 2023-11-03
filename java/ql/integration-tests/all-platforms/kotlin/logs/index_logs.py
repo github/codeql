@@ -36,6 +36,9 @@ with open('logs.csv', 'w', newline='') as f_out:
                     if msg.startswith('Peak memory: '):
                         # Peak memory information varies from run to run, so just ignore it
                         continue
+                    if msg.startswith('Will write TRAP file ') or msg.startswith('Finished writing TRAP file '):
+                        # These vary between machines etc, and aren't very interesting, so just ignore them
+                        continue
                     write_line(j['origin'], j['kind'], msg)
 
 runSuccessfully(["codeql", "database", "index-files", "--language=csv", "--include=logs.csv", "test-db"])

@@ -106,6 +106,8 @@ signature module Semantic {
 
   class ShiftRightUnsignedExpr extends BinaryExpr;
 
+  default predicate isAssignOp(BinaryExpr bin) { none() }
+
   class RelationalExpr extends Expr {
     Expr getLesserOperand();
 
@@ -126,9 +128,15 @@ signature module Semantic {
 
   class NegateExpr extends UnaryExpr;
 
-  class AddOneExpr extends UnaryExpr;
+  class PreIncExpr extends UnaryExpr;
 
-  class SubOneExpr extends UnaryExpr;
+  class PreDecExpr extends UnaryExpr;
+
+  class PostIncExpr extends UnaryExpr;
+
+  class PostDecExpr extends UnaryExpr;
+
+  class CopyValueExpr extends UnaryExpr;
 
   class ConditionalExpr extends Expr {
     Expr getBranchExpr(boolean branch);
@@ -144,11 +152,15 @@ signature module Semantic {
     Expr asExpr();
 
     predicate directlyControls(BasicBlock controlled, boolean branch);
+
+    predicate isEquality(Expr e1, Expr e2, boolean polarity);
   }
 
   predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2);
 
   predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
+
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
 
   class Type;
 
@@ -168,7 +180,9 @@ signature module Semantic {
 
   class SsaPhiNode extends SsaVariable;
 
-  class SsaExplicitUpdate extends SsaVariable;
+  class SsaExplicitUpdate extends SsaVariable {
+    Expr getDefiningExpr();
+  }
 
   class SsaReadPosition {
     predicate hasReadOfVar(SsaVariable v);
@@ -216,7 +230,7 @@ signature module SignAnalysisSig<Semantic Sem> {
 signature module ModulusAnalysisSig<Semantic Sem> {
   class ModBound;
 
-  predicate semExprModulus(Sem::Expr e, ModBound b, int val, int mod);
+  predicate exprModulus(Sem::Expr e, ModBound b, int val, int mod);
 }
 
 signature module DeltaSig {
@@ -241,14 +255,6 @@ signature module DeltaSig {
 
 signature module LangSig<Semantic Sem, DeltaSig D> {
   /**
-   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadCopy(Sem::Expr e);
-
-  /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
   predicate hasConstantBound(Sem::Expr e, D::Delta bound, boolean upper);
@@ -265,40 +271,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
    * removed once we have the new implementation matching the old results exactly.
    */
   predicate ignoreExprBound(Sem::Expr e);
-
-  /**
-   * Ignore any inferred zero lower bound on this expression.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreZeroLowerBound(Sem::Expr e);
-
-  /**
-   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadArithmeticExpr(Sem::Expr e);
-
-  /**
-   * Holds if the specified variable should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadAssignment(Sem::SsaVariable v);
-
-  /**
-   * Adds additional results to `ssaRead()` that are specific to Java.
-   *
-   * This predicate handles propagation of offsets for post-increment and post-decrement expressions
-   * in exactly the same way as the old Java implementation. Once the new implementation matches the
-   * old one, we should remove this predicate and propagate deltas for all similar patterns, whether
-   * or not they come from a post-increment/decrement expression.
-   */
-  Sem::Expr specificSsaRead(Sem::SsaVariable v, D::Delta delta);
 
   /**
    * Holds if the value of `dest` is known to be `src + delta`.
@@ -327,8 +299,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
 }
 
 signature module UtilSig<Semantic Sem, DeltaSig DeltaParam> {
-  Sem::Expr semSsaRead(Sem::SsaVariable v, DeltaParam::Delta delta);
-
   Sem::Guard semEqFlowCond(
     Sem::SsaVariable v, Sem::Expr e, DeltaParam::Delta delta, boolean isEq, boolean testIsTrue
   );
@@ -379,7 +349,7 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
   class SemZeroBound extends SemBound;
 
   class SemSsaBound extends SemBound {
-    Sem::SsaVariable getAVariable();
+    Sem::SsaVariable getVariable();
   }
 }
 
@@ -390,7 +360,7 @@ signature module OverflowSig<Semantic Sem, DeltaSig D> {
 module RangeStage<
   LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
   OverflowSig<Sem, D> OverflowParam, LangSig<Sem, D> LangParam, SignAnalysisSig<Sem> SignAnalysis,
-  ModulusAnalysisSig<Sem> ModulusAnalysis, UtilSig<Sem, D> UtilParam>
+  ModulusAnalysisSig<Sem> ModulusAnalysisParam, UtilSig<Sem, D> UtilParam>
 {
   private import Bounds
   private import LangParam
@@ -398,7 +368,8 @@ module RangeStage<
   private import D
   private import OverflowParam
   private import SignAnalysis
-  private import ModulusAnalysis
+  private import ModulusAnalysisParam
+  private import internal.RangeUtils::MakeUtils<Sem, D>
 
   /**
    * An expression that does conversion, boxing, or unboxing
@@ -512,11 +483,11 @@ module RangeStage<
   private predicate boundCondition(
     Sem::RelationalExpr comp, Sem::SsaVariable v, Sem::Expr e, D::Delta delta, boolean upper
   ) {
-    comp.getLesserOperand() = semSsaRead(v, delta) and
+    comp.getLesserOperand() = ssaRead(v, delta) and
     e = comp.getGreaterOperand() and
     upper = true
     or
-    comp.getGreaterOperand() = semSsaRead(v, delta) and
+    comp.getGreaterOperand() = ssaRead(v, delta) and
     e = comp.getLesserOperand() and
     upper = false
     or
@@ -524,7 +495,7 @@ module RangeStage<
       // (v - d) - e < c
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
-      sub.getLeftOperand() = semSsaRead(v, d) and
+      sub.getLeftOperand() = ssaRead(v, d) and
       sub.getRightOperand() = e and
       upper = true and
       delta = D::fromFloat(D::toFloat(d) + c.getIntValue())
@@ -532,7 +503,7 @@ module RangeStage<
       // (v - d) - e > c
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
-      sub.getLeftOperand() = semSsaRead(v, d) and
+      sub.getLeftOperand() = ssaRead(v, d) and
       sub.getRightOperand() = e and
       upper = false and
       delta = D::fromFloat(D::toFloat(d) + c.getIntValue())
@@ -541,7 +512,7 @@ module RangeStage<
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = semSsaRead(v, d) and
+      sub.getRightOperand() = ssaRead(v, d) and
       upper = false and
       delta = D::fromFloat(D::toFloat(d) - c.getIntValue())
       or
@@ -549,7 +520,7 @@ module RangeStage<
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = semSsaRead(v, d) and
+      sub.getRightOperand() = ssaRead(v, d) and
       upper = true and
       delta = D::fromFloat(D::toFloat(d) - c.getIntValue())
     )
@@ -570,8 +541,8 @@ module RangeStage<
       // strict then the strengthening amount is instead `k - 1` modulo `mod`:
       // `x < y` means `0 <= y - x - 1 =(mod) k - 1` so `k - 1 <= y - x - 1` and
       // thus `k - 1 < y - x` with `0 <= k - 1 < mod`.
-      semExprModulus(comp.getLesserOperand(), b, v1, mod1) and
-      semExprModulus(comp.getGreaterOperand(), b, v2, mod2) and
+      exprModulus(comp.getLesserOperand(), b, v1, mod1) and
+      exprModulus(comp.getGreaterOperand(), b, v2, mod2) and
       mod = mod1.gcd(mod2) and
       mod != 1 and
       (testIsTrue = true or testIsTrue = false) and
@@ -667,7 +638,7 @@ module RangeStage<
     Sem::SsaVariable v1, Sem::SsaVariable v2, float delta
   ) {
     exists(Sem::Guard guardEq, D::Delta d1, D::Delta d2, boolean eqIsTrue |
-      guardEq = semEqFlowCond(v1, semSsaRead(v2, d1), d2, true, eqIsTrue) and
+      guardEq = semEqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
       delta = D::toFloat(d2) - D::toFloat(d1) and
       guardEq.directlyControls(result, eqIsTrue)
     )
@@ -950,7 +921,7 @@ module RangeStage<
       or
       boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason)
       or
-      b.(SemSsaBound).getAVariable() = inp and
+      b.(SemSsaBound).getVariable() = inp and
       d = D::fromFloat(0) and
       (upper = true or upper = false) and
       fromBackEdge0 = false and
@@ -1000,7 +971,7 @@ module RangeStage<
     Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, boolean upper
   ) {
     exists(D::Delta d, SemSsaBound phibound |
-      phibound.getAVariable() = phi and
+      phibound.getVariable() = phi and
       boundedPhiInp(phi, inp, edge, phibound, d, upper, _, _, _) and
       (
         upper = true and D::toFloat(d) <= 0
@@ -1091,9 +1062,7 @@ module RangeStage<
     or
     upper = false and
     b = D::fromInt(0) and
-    semPositive(e.(Sem::BitAndExpr).getAnOperand()) and
-    // REVIEW: We let the language opt out here to preserve original results.
-    not ignoreZeroLowerBound(e)
+    semPositive(e.(Sem::BitAndExpr).getAnOperand())
   }
 
   /**
@@ -1188,12 +1157,12 @@ module RangeStage<
     positively = false and
     (
       expr instanceof Sem::NegateExpr or
-      expr instanceof Sem::SubOneExpr or
+      expr instanceof Sem::PreDecExpr or
       getTrackedType(expr.(Sem::DivExpr)) instanceof Sem::FloatingPointType
     )
     or
     positively = true and
-    expr instanceof Sem::AddOneExpr
+    expr instanceof Sem::PreIncExpr
   }
 
   /**

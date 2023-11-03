@@ -411,6 +411,9 @@ class CapturedDecl(Decl):
 
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
+    variables: list[VarDecl] | child | synth | desc("""
+        These are the variables introduced by this capture in the closure's scope, not the captured ones.
+    """)
     closure_body: "ClosureExpr" | child
 
 class CollectionExpr(Expr):

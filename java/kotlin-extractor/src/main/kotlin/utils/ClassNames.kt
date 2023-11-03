@@ -3,6 +3,7 @@ package com.github.codeql
 import com.github.codeql.utils.getJvmName
 import com.github.codeql.utils.versions.*
 import com.intellij.openapi.vfs.StandardFileSystems
+import org.jetbrains.kotlin.fir.java.JavaBinarySourceElement
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.load.kotlin.VirtualFileKotlinClass
@@ -79,6 +80,9 @@ fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
             when(element) {
                 is BinaryJavaClass -> return element.virtualFile
             }
+        }
+        is JavaBinarySourceElement -> {
+            return cSource.javaClass.virtualFile
         }
         is KotlinJvmBinarySourceElement -> {
             val binaryClass = cSource.binaryClass
