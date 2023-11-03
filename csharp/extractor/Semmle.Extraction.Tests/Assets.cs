@@ -52,9 +52,11 @@ namespace Semmle.Extraction.Tests
             // Verify
             Assert.True(success);
             Assert.Equal(2, dependencies.Required.Count());
+
+            var normalizedPaths = dependencies.Required.Select(FixExpectedPathOnWindows);
             // Required references
-            Assert.Contains("microsoft.netframework.referenceassemblies/1.0.3", dependencies.Required);
-            Assert.Contains("microsoft.netframework.referenceassemblies.net48/1.0.3", dependencies.Required);
+            Assert.Contains("microsoft.netframework.referenceassemblies/1.0.3", normalizedPaths);
+            Assert.Contains("microsoft.netframework.referenceassemblies.net48/1.0.3", normalizedPaths);
             // Used packages
             Assert.Contains("microsoft.netframework.referenceassemblies", dependencies.UsedPackages);
             Assert.Contains("microsoft.netframework.referenceassemblies.net48", dependencies.UsedPackages);
