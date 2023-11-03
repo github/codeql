@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Interop.Analyzers", "ConvertToGeneratedDllImportAnalyzer", "Initialize", "(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ConvertToGeneratedDllImportAnalyzer", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ConvertToGeneratedDllImportFixer", "GetFixAllProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ConvertToGeneratedDllImportFixer", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ConvertToGeneratedDllImportFixer", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "GeneratedDllImportAnalyzer", "Initialize", "(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "GeneratedDllImportAnalyzer", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ManualTypeMarshallingAnalyzer", "Initialize", "(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ManualTypeMarshallingAnalyzer", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
