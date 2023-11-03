@@ -293,4 +293,52 @@ func taintThroughData() {
 	let pointerTainted44 = UnsafeMutableRawBufferPointer.allocate(byteCount: 0, alignment: 0)
 	dataTainted44.copyBytes(to: pointerTainted44)
 	sink(arg: pointerTainted44) // $ tainted=292
+
+	let dataTainted45 = source() as! Data
+	let result45 = dataTainted45.withContiguousStorageIfAvailable({
+		buffer in
+
+		sink(arg: buffer) // $ tainted=297
+		sink(arg: buffer[0]) // $ tainted=297
+
+		return source() as! Int
+	})
+	sink(arg: result45!) // $ tainted=304
+
+	var data46 = Data(0)
+	let result46 = data46.withContiguousMutableStorageIfAvailable({
+		buffer in
+
+		buffer[0] = source() as! UInt8
+		sink(arg: buffer)
+		sink(arg: buffer[0]) // $ MISSING: tainted=312
+
+		return source() as! Int
+	})
+	sink(arg: result46!) // $ tainted=316
+	sink(arg: data46) // $ MISSING: tainted=312
+
+	let dataTainted47 = source() as! Data
+	let result47 = dataTainted47.withUnsafeBytes({
+		buffer in
+
+		sink(arg: buffer) // $ tainted=321
+		sink(arg: buffer[0]) // $ tainted=321
+
+		return source() as! Int
+	})
+	sink(arg: result47) // $ tainted=328
+
+	var data48 = Data(0)
+	let result48 = data48.withUnsafeMutableBytes({
+		buffer in
+
+		buffer[0] = source() as! UInt8
+		sink(arg: buffer)
+		sink(arg: buffer[0]) // $ MISSING: tainted=336
+
+		return source() as! Int
+	})
+	sink(arg: result48) // $ tainted=340
+	sink(arg: data48) // $ MISSING: tainted=336
 }
