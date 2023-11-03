@@ -4965,6 +4965,8 @@ summary
 | System.Data.SqlTypes;SqlBinary;false;ToSqlGuid;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Data.SqlTypes;SqlBinary;false;WriteXml;(System.Xml.XmlWriter);;Argument[this];Argument[0];taint;df-generated |
 | System.Data.SqlTypes;SqlBinary;false;get_Value;();;Argument[this];ReturnValue;taint;df-generated |
+| System.Data.SqlTypes;SqlBinary;false;op_Addition;(System.Data.SqlTypes.SqlBinary,System.Data.SqlTypes.SqlBinary);;Argument[0];ReturnValue;taint;df-generated |
+| System.Data.SqlTypes;SqlBinary;false;op_Addition;(System.Data.SqlTypes.SqlBinary,System.Data.SqlTypes.SqlBinary);;Argument[1];ReturnValue;taint;df-generated |
 | System.Data.SqlTypes;SqlBytes;false;Read;(System.Int64,System.Byte[],System.Int32,System.Int32);;Argument[this];Argument[1].Element;taint;df-generated |
 | System.Data.SqlTypes;SqlBytes;false;ReadXml;(System.Xml.XmlReader);;Argument[0];Argument[this];taint;df-generated |
 | System.Data.SqlTypes;SqlBytes;false;SqlBytes;(System.Byte[]);;Argument[0].Element;Argument[this];taint;df-generated |
@@ -4984,6 +4986,7 @@ summary
 | System.Data.SqlTypes;SqlDecimal;false;Floor;(System.Data.SqlTypes.SqlDecimal);;Argument[0];ReturnValue;taint;df-generated |
 | System.Data.SqlTypes;SqlDecimal;false;Round;(System.Data.SqlTypes.SqlDecimal,System.Int32);;Argument[0];ReturnValue;taint;df-generated |
 | System.Data.SqlTypes;SqlDecimal;false;Truncate;(System.Data.SqlTypes.SqlDecimal,System.Int32);;Argument[0];ReturnValue;taint;df-generated |
+| System.Data.SqlTypes;SqlDecimal;false;op_UnaryNegation;(System.Data.SqlTypes.SqlDecimal);;Argument[0];ReturnValue;taint;df-generated |
 | System.Data.SqlTypes;SqlGuid;false;SqlGuid;(System.Byte[]);;Argument[0].Element;Argument[this];taint;df-generated |
 | System.Data.SqlTypes;SqlGuid;false;ToByteArray;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Data.SqlTypes;SqlGuid;false;ToSqlBinary;();;Argument[this];ReturnValue;taint;df-generated |
@@ -5001,6 +5004,8 @@ summary
 | System.Data.SqlTypes;SqlString;false;WriteXml;(System.Xml.XmlWriter);;Argument[this];Argument[0];taint;df-generated |
 | System.Data.SqlTypes;SqlString;false;get_CompareInfo;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Data.SqlTypes;SqlString;false;get_Value;();;Argument[this];ReturnValue;taint;df-generated |
+| System.Data.SqlTypes;SqlString;false;op_Addition;(System.Data.SqlTypes.SqlString,System.Data.SqlTypes.SqlString);;Argument[0];ReturnValue;taint;df-generated |
+| System.Data.SqlTypes;SqlString;false;op_Addition;(System.Data.SqlTypes.SqlString,System.Data.SqlTypes.SqlString);;Argument[1];ReturnValue;taint;df-generated |
 | System.Data.SqlTypes;SqlXml;false;SqlXml;(System.IO.Stream);;Argument[0];Argument[this];taint;df-generated |
 | System.Data;Constraint;false;SetDataSet;(System.Data.DataSet);;Argument[0];Argument[this];taint;df-generated |
 | System.Data;Constraint;false;ToString;();;Argument[this];ReturnValue;taint;df-generated |
@@ -9263,6 +9268,11 @@ summary
 | System.Numerics;Matrix4x4;false;Negate;(System.Numerics.Matrix4x4);;Argument[0];ReturnValue;taint;df-generated |
 | System.Numerics;Matrix4x4;false;Subtract;(System.Numerics.Matrix4x4,System.Numerics.Matrix4x4);;Argument[0];ReturnValue;taint;df-generated |
 | System.Numerics;Matrix4x4;false;Transpose;(System.Numerics.Matrix4x4);;Argument[0];ReturnValue;taint;df-generated |
+| System.Numerics;Matrix4x4;false;op_Addition;(System.Numerics.Matrix4x4,System.Numerics.Matrix4x4);;Argument[0];ReturnValue;taint;df-generated |
+| System.Numerics;Matrix4x4;false;op_Multiply;(System.Numerics.Matrix4x4,System.Numerics.Matrix4x4);;Argument[0];ReturnValue;taint;df-generated |
+| System.Numerics;Matrix4x4;false;op_Multiply;(System.Numerics.Matrix4x4,System.Single);;Argument[0];ReturnValue;taint;df-generated |
+| System.Numerics;Matrix4x4;false;op_Subtraction;(System.Numerics.Matrix4x4,System.Numerics.Matrix4x4);;Argument[0];ReturnValue;taint;df-generated |
+| System.Numerics;Matrix4x4;false;op_UnaryNegation;(System.Numerics.Matrix4x4);;Argument[0];ReturnValue;taint;df-generated |
 | System.Numerics;Plane;false;Normalize;(System.Numerics.Plane);;Argument[0];ReturnValue;taint;df-generated |
 | System.Numerics;Plane;false;Plane;(System.Numerics.Vector3,System.Single);;Argument[0];Argument[this];taint;df-generated |
 | System.Numerics;Plane;false;ToString;();;Argument[this];ReturnValue;taint;df-generated |
@@ -10170,14 +10180,17 @@ summary
 | System.Runtime.InteropServices;SequenceMarshal;false;TryGetReadOnlySequenceSegment<>;(System.Buffers.ReadOnlySequence<T>,System.Buffers.ReadOnlySequenceSegment<T>,System.Int32,System.Buffers.ReadOnlySequenceSegment<T>,System.Int32);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector64;false;Abs<>;(System.Runtime.Intrinsics.Vector64<T>);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector64;false;WithElement<>;(System.Runtime.Intrinsics.Vector64<T>,System.Int32,T);;Argument[0];ReturnValue;taint;df-generated |
+| System.Runtime.Intrinsics;Vector64<>;false;op_UnaryPlus;(System.Runtime.Intrinsics.Vector64<>);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector128;false;Abs<>;(System.Runtime.Intrinsics.Vector128<T>);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector128;false;WithElement<>;(System.Runtime.Intrinsics.Vector128<T>,System.Int32,T);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector128;false;WithLower<>;(System.Runtime.Intrinsics.Vector128<T>,System.Runtime.Intrinsics.Vector64<T>);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector128;false;WithUpper<>;(System.Runtime.Intrinsics.Vector128<T>,System.Runtime.Intrinsics.Vector64<T>);;Argument[0];ReturnValue;taint;df-generated |
+| System.Runtime.Intrinsics;Vector128<>;false;op_UnaryPlus;(System.Runtime.Intrinsics.Vector128<>);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector256;false;Abs<>;(System.Runtime.Intrinsics.Vector256<T>);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector256;false;WithElement<>;(System.Runtime.Intrinsics.Vector256<T>,System.Int32,T);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector256;false;WithLower<>;(System.Runtime.Intrinsics.Vector256<T>,System.Runtime.Intrinsics.Vector128<T>);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Intrinsics;Vector256;false;WithUpper<>;(System.Runtime.Intrinsics.Vector256<T>,System.Runtime.Intrinsics.Vector128<T>);;Argument[0];ReturnValue;taint;df-generated |
+| System.Runtime.Intrinsics;Vector256<>;false;op_UnaryPlus;(System.Runtime.Intrinsics.Vector256<>);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Loader;AssemblyDependencyResolver;false;ResolveAssemblyToPath;(System.Reflection.AssemblyName);;Argument[0];ReturnValue;taint;df-generated |
 | System.Runtime.Loader;AssemblyDependencyResolver;false;ResolveAssemblyToPath;(System.Reflection.AssemblyName);;Argument[this];ReturnValue;taint;df-generated |
 | System.Runtime.Loader;AssemblyDependencyResolver;false;ResolveUnmanagedDllToPath;(System.String);;Argument[0];ReturnValue;taint;df-generated |
@@ -12198,6 +12211,8 @@ summary
 | System.Xml.Linq;XNamespace;false;GetName;(System.String);;Argument[this];ReturnValue;taint;df-generated |
 | System.Xml.Linq;XNamespace;false;ToString;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Xml.Linq;XNamespace;false;get_NamespaceName;();;Argument[this];ReturnValue;taint;df-generated |
+| System.Xml.Linq;XNamespace;false;op_Addition;(System.Xml.Linq.XNamespace,System.String);;Argument[0];ReturnValue;taint;df-generated |
+| System.Xml.Linq;XNamespace;false;op_Addition;(System.Xml.Linq.XNamespace,System.String);;Argument[1];ReturnValue;taint;df-generated |
 | System.Xml.Linq;XNode;false;AddAfterSelf;(System.Object);;Argument[this];Argument[0];taint;df-generated |
 | System.Xml.Linq;XNode;false;AddBeforeSelf;(System.Object);;Argument[this];Argument[0];taint;df-generated |
 | System.Xml.Linq;XNode;false;Ancestors;();;Argument[this];ReturnValue;taint;df-generated |
@@ -14450,6 +14465,7 @@ summary
 | System;StringNormalizationExtensions;false;Normalize;(System.String,System.Text.NormalizationForm);;Argument[0];ReturnValue;taint;df-generated |
 | System;TimeOnly;false;ToString;(System.IFormatProvider);;Argument[0];ReturnValue;taint;df-generated |
 | System;TimeOnly;false;ToString;(System.String,System.IFormatProvider);;Argument[1];ReturnValue;taint;df-generated |
+| System;TimeSpan;false;op_UnaryPlus;(System.TimeSpan);;Argument[0];ReturnValue;taint;df-generated |
 | System;TimeZone;true;ToLocalTime;(System.DateTime);;Argument[0];ReturnValue;taint;df-generated |
 | System;TimeZone;true;ToUniversalTime;(System.DateTime);;Argument[0];ReturnValue;taint;df-generated |
 | System;TimeZoneInfo+AdjustmentRule;false;CreateAdjustmentRule;(System.DateTime,System.DateTime,System.TimeSpan,System.TimeZoneInfo+TransitionTime,System.TimeZoneInfo+TransitionTime);;Argument[0];ReturnValue;taint;df-generated |

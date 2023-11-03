@@ -328,10 +328,17 @@ class UnboundCallable extends Callable {
   }
 }
 
+private predicate hasName(Declaration d, string name) {
+  d.(Operator).getFunctionName() = name
+  or
+  not d instanceof Operator and
+  d.hasName(name)
+}
+
 pragma[nomagic]
 private predicate callableSpecInfo(Callable c, string namespace, string type, string name) {
   c.getDeclaringType().hasQualifiedName(namespace, type) and
-  c.getName() = name
+  hasName(c, name)
 }
 
 pragma[nomagic]
@@ -344,7 +351,7 @@ private predicate subtypeSpecCandidate(string name, UnboundValueOrRefType t) {
 
 pragma[nomagic]
 private predicate callableInfo(Callable c, string name, UnboundValueOrRefType decl) {
-  name = c.getName() and
+  hasName(c, name) and
   decl = c.getDeclaringType()
 }
 
@@ -405,7 +412,7 @@ private Element interpretElement0(
         subtypes = true and result.(UnboundCallable).overridesOrImplementsUnbound(m)
       ) and
       m.getDeclaringType() = t and
-      m.hasName(name)
+      hasName(m, name)
     |
       signature = ""
       or
