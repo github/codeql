@@ -48,7 +48,9 @@ predicate gapInChildren(Element e, int i) {
   // is able.
   not e instanceof Annotation and
   // Pattern case statements legitimately have a TypeAccess (-2) and a pattern (0) but not a rule (-1)
-  not (i = -1 and e instanceof PatternCase and not e.(PatternCase).isRule())
+  not (i = -1 and e instanceof PatternCase and not e.(PatternCase).isRule()) and
+  // Instanceof with a record pattern is not expected to have a type access in position 1
+  not (i = 1 and e.(InstanceOfExpr).getPattern() instanceof RecordPatternExpr)
 }
 
 predicate lateFirstChild(Element e, int i) {

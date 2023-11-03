@@ -1578,11 +1578,23 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
    */
   LocalVariableDeclExpr getLocalVariableDeclExpr() { result = this.getPattern().asBindingPattern() }
 
-  /** Gets the access to the type on the right-hand side of the `instanceof` operator. */
+  /**
+   * Gets the access to the type on the right-hand side of the `instanceof` operator.
+   *
+   * This does not match record patterns, which have a record pattern (use `getPattern`) not a type access.
+   */
   Expr getTypeName() { result.isNthChildOf(this, 1) }
 
-  /** Gets the type this `instanceof` expression checks for. */
-  RefType getCheckedType() { result = this.getTypeName().getType() }
+  /**
+   * Gets the type this `instanceof` expression checks for.
+   *
+   * For a match against a record pattern, this is the type of the outermost record type.
+   */
+  RefType getCheckedType() {
+    result = this.getTypeName().getType()
+    or
+    result = this.getPattern().asRecordPattern().getType()
+  }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...instanceof..." }
