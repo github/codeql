@@ -462,7 +462,7 @@ func taintFromUInt8Array() {
   let r2 = String(unsafeUninitializedCapacity: 256, initializingUTF8With: {
     (buffer: UnsafeMutableBufferPointer<UInt8>) -> Int in
       sink(arg: buffer[0])
-      sink(arg: taintedUInt8Values[0]) // $ MISSING: tainted=450
+      sink(arg: taintedUInt8Values[0]) // $ tainted=450
       let _ = buffer.initialize(from: taintedUInt8Values)
       sink(arg: buffer[0]) // $ MISSING: tainted=450
       return 256
