@@ -18,10 +18,16 @@ extensions:
     - Member[provider].Member[CallTreeNode]
   - - pydantic.BaseModel~Subclass
     - ape_geth
+    - Member[provider].Member[EvmTraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
     - Member[provider].Member[GethDev]
   - - pydantic.BaseModel~Subclass
     - ape_geth
     - Member[provider].Member[Geth]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[ParityTraceList]
   - - pydantic.BaseModel~Subclass
     - ape_geth
     - Member[provider].Member[ReceiptAPI]

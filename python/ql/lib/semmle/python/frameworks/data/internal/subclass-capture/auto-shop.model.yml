@@ -162,6 +162,12 @@ extensions:
     - Member[management].Member[commands].Member[shop].Member[StaticPlaceholder]
   - - Django.db.models.Model~Subclass
     - shop
+    - Member[management].Member[utils].Member[CascadeElement]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[management].Member[utils].Member[Text]
+  - - Django.db.models.Model~Subclass
+    - shop
     - Member[models].Member[NotificationAttachment]
   - - Django.db.models.Model~Subclass
     - shop

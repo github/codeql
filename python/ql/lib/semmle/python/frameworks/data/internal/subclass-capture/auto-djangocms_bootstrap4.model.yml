@@ -48,7 +48,16 @@ extensions:
     - Member[contrib].Member[bootstrap4_card].Member[models].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_carousel].Member[cms_plugins].Member[Bootstrap4CarouselSlide]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
     - Member[contrib].Member[bootstrap4_carousel].Member[cms_plugins].Member[Bootstrap4Carousel]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_carousel].Member[models].Member[AbstractLink]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_carousel].Member[models].Member[Bootstrap4CarouselSlide]
   - - Django.db.models.Model~Subclass
     - djangocms_bootstrap4
     - Member[contrib].Member[bootstrap4_carousel].Member[models].Member[Bootstrap4Carousel]
@@ -129,6 +138,18 @@ extensions:
     - Member[contrib].Member[bootstrap4_jumbotron].Member[models].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_link].Member[cms_plugins].Member[Bootstrap4Link]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_link].Member[forms].Member[Bootstrap4Link]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_link].Member[models].Member[AbstractLink]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_link].Member[models].Member[Bootstrap4Link]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
     - Member[contrib].Member[bootstrap4_listgroup].Member[cms_plugins].Member[Bootstrap4ListGroupItem]
   - - Django.db.models.Model~Subclass
     - djangocms_bootstrap4
@@ -157,6 +178,15 @@ extensions:
   - - Django.db.models.Model~Subclass
     - djangocms_bootstrap4
     - Member[contrib].Member[bootstrap4_media].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_picture].Member[cms_plugins].Member[Bootstrap4Picture]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_picture].Member[models].Member[AbstractPicture]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_picture].Member[models].Member[Bootstrap4Picture]
   - - Django.db.models.Model~Subclass
     - djangocms_bootstrap4
     - Member[contrib].Member[bootstrap4_tabs].Member[cms_plugins].Member[Bootstrap4TabItem]

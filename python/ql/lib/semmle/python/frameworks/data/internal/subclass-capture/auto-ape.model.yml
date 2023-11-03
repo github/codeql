@@ -114,6 +114,9 @@ extensions:
     - Member[api].Member[compiler].Member[ContractType]
   - - pydantic.BaseModel~Subclass
     - ape
+    - Member[api].Member[compiler].Member[EvmTraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - ape
     - Member[api].Member[compiler].Member[SourceTraceback]
   - - pydantic.BaseModel~Subclass
     - ape
@@ -241,6 +244,12 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - ape
     - Member[api].Member[providers].Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[EvmCallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[EvmTraceFrame]
   - - pydantic.BaseModel~Subclass
     - ape
     - Member[api].Member[providers].Member[LogFilter]

@@ -339,6 +339,9 @@ extensions:
     - Member[clipboard].Member[utils].Member[PlaceholderReference]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
+    - Member[clipboard].Member[utils].Member[Text]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
     - Member[cms_toolbars].Member[CascadePage]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade

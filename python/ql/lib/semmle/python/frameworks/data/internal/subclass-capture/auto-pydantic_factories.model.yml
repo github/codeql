@@ -6,4 +6,7 @@ extensions:
   data:
   - - pydantic.BaseModel~Subclass
     - pydantic_factories
+    - Member[extensions].Member[beanie_odm].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_factories
     - Member[extensions].Member[ormar_orm].Member[Model]
