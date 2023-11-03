@@ -66,7 +66,6 @@
 import java
 private import SSA
 private import RangeUtils
-private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.security.RandomDataSource
 private import SignAnalysis
@@ -80,7 +79,6 @@ module Sem implements Semantic {
   private import java as J
   private import SSA as SSA
   private import RangeUtils as RU
-  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SsaReadPos
   private import semmle.code.java.controlflow.internal.GuardsLogic as GL
 
   class Expr = J::Expr;
@@ -213,6 +211,12 @@ module Sem implements Semantic {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
 
+  private predicate id(BasicBlock x, BasicBlock y) { x = y }
+
+  private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
+
+  int getBlockId1(BasicBlock bb) { idOf(bb, result) }
+
   final private class FinalGuard = GL::Guard;
 
   class Guard extends FinalGuard {
@@ -243,29 +247,12 @@ module Sem implements Semantic {
     Expr getAUse() { result = super.getAUse() }
   }
 
-  class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiNode { }
+  class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiNode {
+    predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb) { super.hasInputFromBlock(inp, bb) }
+  }
 
   class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate {
     Expr getDefiningExpr() { result = super.getDefiningExpr() }
-  }
-
-  final private class FinalSsaReadPosition = SsaReadPos::SsaReadPosition;
-
-  class SsaReadPosition extends FinalSsaReadPosition {
-    predicate hasReadOfVar(SsaVariable v) { super.hasReadOfVar(v) }
-  }
-
-  class SsaReadPositionPhiInputEdge extends SsaReadPosition instanceof SsaReadPos::SsaReadPositionPhiInputEdge
-  {
-    BasicBlock getOrigBlock() { result = super.getOrigBlock() }
-
-    BasicBlock getPhiBlock() { result = super.getPhiBlock() }
-
-    predicate phiInput(SsaPhiNode phi, SsaVariable inp) { super.phiInput(phi, inp) }
-  }
-
-  class SsaReadPositionBlock extends SsaReadPosition instanceof SsaReadPos::SsaReadPositionBlock {
-    BasicBlock getBlock() { result = super.getBlock() }
   }
 
   predicate conversionCannotOverflow = safeCast/2;
@@ -384,7 +371,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 
 module Utils implements UtilSig<Sem, IntDelta> {
   private import RangeUtils as RU
-  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SsaReadPos
 
   Sem::Guard semEqFlowCond(
     Sem::SsaVariable v, Sem::Expr e, int delta, boolean isEq, boolean testIsTrue
@@ -403,14 +389,6 @@ module Utils implements UtilSig<Sem, IntDelta> {
   }
 
   Sem::Type getTrackedType(Sem::Expr e) { result = e.getType() }
-
-  predicate rankedPhiInput(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int r
-  ) {
-    SsaReadPos::rankedPhiInput(phi, inp, edge, r)
-  }
-
-  predicate maxPhiInputRank(Sem::SsaPhiNode phi, int rix) { SsaReadPos::maxPhiInputRank(phi, rix) }
 }
 
 module Bounds implements BoundSig<Location, Sem, IntDelta> {

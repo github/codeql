@@ -198,75 +198,15 @@ module SemanticExprConfig {
     result = v.asOperand().getUse().getBlock()
   }
 
-  private newtype TReadPosition =
-    TReadPositionBlock(IR::IRBlock block) or
-    TReadPositionPhiInputEdge(IR::IRBlock pred, IR::IRBlock succ) {
-      exists(IR::PhiInputOperand input |
-        pred = input.getPredecessorBlock() and
-        succ = input.getUse().getBlock()
-      )
-    }
-
-  class SsaReadPosition extends TReadPosition {
-    string toString() { none() }
-
-    Location getLocation() { none() }
-
-    predicate hasRead(SsaVariable v) { none() }
-  }
-
-  private class SsaReadPositionBlock extends SsaReadPosition, TReadPositionBlock {
-    IR::IRBlock block;
-
-    SsaReadPositionBlock() { this = TReadPositionBlock(block) }
-
-    final override string toString() { result = block.toString() }
-
-    final override Location getLocation() { result = block.getLocation() }
-
-    final override predicate hasRead(SsaVariable v) {
-      exists(IR::Operand operand | operand.getDef() = v.asInstruction() |
-        not operand instanceof IR::PhiInputOperand and
-        operand.getUse().getBlock() = block
-      )
-    }
-  }
-
-  private class SsaReadPositionPhiInputEdge extends SsaReadPosition, TReadPositionPhiInputEdge {
-    IR::IRBlock pred;
-    IR::IRBlock succ;
-
-    SsaReadPositionPhiInputEdge() { this = TReadPositionPhiInputEdge(pred, succ) }
-
-    final override string toString() { result = pred.toString() + "->" + succ.toString() }
-
-    final override Location getLocation() { result = succ.getLocation() }
-
-    final override predicate hasRead(SsaVariable v) {
-      exists(IR::PhiInputOperand operand | operand.getDef() = v.asInstruction() |
-        operand.getPredecessorBlock() = pred and
-        operand.getUse().getBlock() = succ
-      )
-    }
-  }
-
-  predicate hasReadOfSsaVariable(SsaReadPosition pos, SsaVariable v) { pos.hasRead(v) }
-
-  predicate readBlock(SsaReadPosition pos, BasicBlock block) { pos = TReadPositionBlock(block) }
-
-  predicate phiInputEdge(SsaReadPosition pos, BasicBlock origBlock, BasicBlock phiBlock) {
-    pos = TReadPositionPhiInputEdge(origBlock, phiBlock)
-  }
-
-  predicate phiInput(SsaReadPosition pos, SsaVariable phi, SsaVariable input) {
+  /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+  predicate phiInputFromBlock(SsaVariable phi, SsaVariable inp, BasicBlock bb) {
     exists(IR::PhiInputOperand operand |
-      pos = TReadPositionPhiInputEdge(operand.getPredecessorBlock(), operand.getUse().getBlock())
-    |
+      bb = operand.getPredecessorBlock() and
       phi.asInstruction() = operand.getUse() and
       (
-        input.asInstruction() = operand.getDef()
+        inp.asInstruction() = operand.getDef()
         or
-        input.asOperand() = operand
+        inp.asOperand() = operand
       )
     )
   }

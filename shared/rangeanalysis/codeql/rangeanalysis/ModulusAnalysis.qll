@@ -21,7 +21,7 @@ module ModulusAnalysis<
 
   bindingset[pos, v]
   pragma[inline_late]
-  private predicate hasReadOfVarInlineLate(Sem::SsaReadPosition pos, Sem::SsaVariable v) {
+  private predicate hasReadOfVarInlineLate(SsaReadPosition pos, Sem::SsaVariable v) {
     pos.hasReadOfVar(v)
   }
 
@@ -29,9 +29,7 @@ module ModulusAnalysis<
    * Holds if `e + delta` equals `v` at `pos`.
    */
   pragma[nomagic]
-  private predicate valueFlowStepSsa(
-    Sem::SsaVariable v, Sem::SsaReadPosition pos, Sem::Expr e, int delta
-  ) {
+  private predicate valueFlowStepSsa(Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, int delta) {
     U::semSsaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
     or
     exists(Sem::Guard guard, boolean testIsTrue |
@@ -105,7 +103,7 @@ module ModulusAnalysis<
   /**
    * Holds if a guard ensures that `v` at `pos` is congruent with `val` modulo `mod`.
    */
-  private predicate moduloGuardedRead(Sem::SsaVariable v, Sem::SsaReadPosition pos, int val, int mod) {
+  private predicate moduloGuardedRead(Sem::SsaVariable v, SsaReadPosition pos, int val, int mod) {
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = moduloCheck(v, val, mod, testIsTrue) and
@@ -148,7 +146,7 @@ module ModulusAnalysis<
    * Holds if `inp` is an input to `phi` and equals `phi` modulo `mod` along `edge`.
    */
   private predicate phiSelfModulus(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int mod
+    Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, int mod
   ) {
     exists(Bounds::SemSsaBound phibound, int v, int m |
       edge.phiInput(phi, inp) and
@@ -163,7 +161,7 @@ module ModulusAnalysis<
    * Holds if `b + val` modulo `mod` is a candidate congruence class for `phi`.
    */
   private predicate phiModulusInit(Sem::SsaPhiNode phi, Bounds::SemBound b, int val, int mod) {
-    exists(Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge |
+    exists(Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge |
       edge.phiInput(phi, inp) and
       ssaModulus(inp, edge, b, val, mod)
     )
@@ -181,7 +179,7 @@ module ModulusAnalysis<
     rix = 0 and
     phiModulusInit(phi, b, val, mod)
     or
-    exists(Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int v1, int m1 |
+    exists(Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, int v1, int m1 |
       mod != 1 and
       val = remainder(v1, mod)
     |
@@ -192,7 +190,7 @@ module ModulusAnalysis<
       // equals `v2` modulo `mod`. The largest value of `mod` that satisfies
       // this is the greatest common divisor of `m1`, `m2`, and `v1 - v2`.
       exists(int v2, int m2 |
-        U::rankedPhiInput(phi, inp, edge, rix) and
+        rankedPhiInput(phi, inp, edge, rix) and
         phiModulusRankStep(phi, b, v1, m1, rix - 1) and
         ssaModulus(inp, edge, b, v2, m2) and
         mod = m1.gcd(m2).gcd(v1 - v2)
@@ -202,7 +200,7 @@ module ModulusAnalysis<
       // preceding potential congruence class `b + v1` mod `m1`. The result will be
       // the congruence class modulo the greatest common divisor of `m1` and `m2`.
       exists(int m2 |
-        U::rankedPhiInput(phi, inp, edge, rix) and
+        rankedPhiInput(phi, inp, edge, rix) and
         phiModulusRankStep(phi, b, v1, m1, rix - 1) and
         phiSelfModulus(phi, inp, edge, m2) and
         mod = m1.gcd(m2)
@@ -215,7 +213,7 @@ module ModulusAnalysis<
    */
   private predicate phiModulus(Sem::SsaPhiNode phi, Bounds::SemBound b, int val, int mod) {
     exists(int r |
-      U::maxPhiInputRank(phi, r) and
+      maxPhiInputRank(phi, r) and
       phiModulusRankStep(phi, b, val, mod, r)
     )
   }
@@ -224,7 +222,7 @@ module ModulusAnalysis<
    * Holds if `v` at `pos` is equal to `b + val` modulo `mod`.
    */
   private predicate ssaModulus(
-    Sem::SsaVariable v, Sem::SsaReadPosition pos, Bounds::SemBound b, int val, int mod
+    Sem::SsaVariable v, SsaReadPosition pos, Bounds::SemBound b, int val, int mod
   ) {
     phiModulus(v, b, val, mod) and pos.hasReadOfVar(v)
     or
@@ -254,7 +252,7 @@ module ModulusAnalysis<
     val = 0 and
     b instanceof Bounds::SemZeroBound
     or
-    exists(Sem::SsaVariable v, Sem::SsaReadPositionBlock bb |
+    exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
       ssaModulus(v, bb, b, val, mod) and
       e = v.getAUse() and
       bb.getBlock() = e.getBasicBlock()
