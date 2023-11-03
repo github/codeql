@@ -86,7 +86,7 @@ class Converter:
         extensionTemplate = """extensions:
 {0}"""
         for entry in extensions:
-            with open(self.extDir + "/generated/" + entry + self.modelFileExtension, "w") as f:
+            with open(self.extDir + "/" + entry + self.modelFileExtension, "w") as f:
                 f.write(extensionTemplate.format(extensions[entry]))
 
     def run(self):
