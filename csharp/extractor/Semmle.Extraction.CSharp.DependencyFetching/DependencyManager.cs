@@ -104,8 +104,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var dependencies = Assets.GetCompilationDependencies(progressMonitor, assets1.Union(assets2));
 
                 var paths = dependencies
+                    .Required
                     .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
                     .ToList();
+
+                // TODO: Log all packages that are not used as a dependency.
 
                 dllPaths.AddRange(paths);
                 DownloadMissingPackages(allNonBinaryFiles, dllPaths);

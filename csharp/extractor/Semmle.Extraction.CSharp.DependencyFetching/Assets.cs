@@ -21,25 +21,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             "netstandard.library.ref"
         };
 
-
         internal Assets(ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
-        }
-
-        /// <summary>
-        /// In most cases paths in asset files point to dll's or the empty _._ file, which
-        /// is sometimes there to avoid the directory being empty.
-        /// That is, if the path specifically adds a .dll we use that, otherwise we as a fallback
-        /// add the entire directory (which should be fine in case of _._ as well).
-        /// </summary>
-        private static string ParseFilePath(string path)
-        {
-            if (path.EndsWith(".dll"))
-            {
-                return path;
-            }
-            return Path.GetDirectoryName(path) ?? path;
         }
 
         /// <summary>
@@ -62,10 +46,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Gets the package dependencies from the assets file.
+        /// Add the package dependencies from the assets file to dependencies.
         /// 
-        /// Parse a part of the JSon assets file and returns the paths
-        /// to the dependencies required for compilation.
+        /// Parse a part of the JSon assets file and add the paths
+        /// to the dependencies required for compilation (and collect
+        /// information about used packages).
         ///
         /// Example:
         /// {
@@ -88,12 +73,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///   }
         /// }
         /// 
-        /// Returns {
-        ///   "castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll",
-        ///   "json.net/1.0.33/lib/netstandard2.0/Json.Net.dll"
-        /// }
+        /// Returns dependencies
+        ///   Required = {
+        ///     "castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll",
+        ///     "json.net/1.0.33/lib/netstandard2.0/Json.Net.dll"
+        ///   }
+        ///   UsedPackages = {
+        ///     "castle.core",
+        ///     "json.net"
+        ///   }
         /// </summary>
-        private IEnumerable<string> GetPackageDependencies(JObject json)
+        private Dependencies AddPackageDependencies(JObject json, Dependencies dependencies)
         {
             // If there are more than one framework we need to pick just one.
             // To ensure stability we pick one based on the lexicographic order of
@@ -108,49 +98,41 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (references is null)
             {
                 progressMonitor.LogDebug("No references found in the targets section in the assets file.");
-                return Array.Empty<string>();
+                return dependencies;
             }
 
             // Find all the compile dependencies for each reference and
             // create the relative path to the dependency.
-            var dependencies = references
-                .SelectMany(r =>
+            return references
+                .Aggregate(dependencies, (deps, r) =>
                 {
                     var info = r.Value;
                     var name = r.Key.ToLowerInvariant();
                     if (info.Type != "package")
                     {
-                        return Array.Empty<string>();
+                        return deps;
                     }
 
                     // If this is a .NET framework reference then include everything.
                     return netFrameworks.Any(framework => name.StartsWith(framework))
-                        ? new[] { name }
+                        ? deps.Add(name, "")
                         : info
                             .Compile
-                            .Select(p => Path.Combine(name, ParseFilePath(p.Key)));
-                })
-                .ToList();
-
-            return dependencies;
+                            .Aggregate(deps, (d, p) => d.Add(name, p.Key));
+                });
         }
 
         /// <summary>
-        /// Parse `json` as project.assets.json content and populate `dependencies` with the
-        /// relative paths to the dependencies required for compilation.
+        /// Parse `json` as project.assets.json content and add relative paths to the dependencies
+        /// (together with used package information) required for compilation.
         /// </summary>
         /// <returns>True if parsing succeeds, otherwise false.</returns>
-        public bool TryParse(string json, out IEnumerable<string> dependencies)
+        public bool TryParse(string json, Dependencies dependencies)
         {
-            dependencies = Array.Empty<string>();
-
             try
             {
                 var obj = JObject.Parse(json);
-                var packages = GetPackageDependencies(obj);
-
-                dependencies = packages.ToList();
-
+                AddPackageDependencies(obj, dependencies);
                 return true;
             }
             catch (Exception e)
@@ -160,13 +142,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public static IEnumerable<string> GetCompilationDependencies(ProgressMonitor progressMonitor, IEnumerable<string> assets)
+        public static Dependencies GetCompilationDependencies(ProgressMonitor progressMonitor, IEnumerable<string> assets)
         {
             var parser = new Assets(progressMonitor);
-            return assets.SelectMany(asset =>
+            return assets.Aggregate(new Dependencies(), (dependencies, asset) =>
             {
                 var json = File.ReadAllText(asset);
-                return parser.TryParse(json, out var dependencies) ? dependencies : Array.Empty<string>();
+                parser.TryParse(json, dependencies);
+                return dependencies;
             });
         }
     }
