@@ -310,13 +310,13 @@ func taintThroughData() {
 		buffer in
 
 		buffer[0] = source() as! UInt8
-		sink(arg: buffer)
-		sink(arg: buffer[0]) // $ MISSING: tainted=312
+		sink(arg: buffer) // $ tainted=312
+		sink(arg: buffer[0]) // $ tainted=312
 
 		return source() as! Int
 	})
 	sink(arg: result46!) // $ tainted=316
-	sink(arg: data46) // $ MISSING: tainted=312
+	sink(arg: data46) // $ tainted=312
 
 	let dataTainted47 = source() as! Data
 	let result47 = dataTainted47.withUnsafeBytes({
@@ -334,11 +334,11 @@ func taintThroughData() {
 		buffer in
 
 		buffer[0] = source() as! UInt8
-		sink(arg: buffer)
-		sink(arg: buffer[0]) // $ MISSING: tainted=336
+		sink(arg: buffer) // $ tainted=336
+		sink(arg: buffer[0]) // $ tainted=336
 
 		return source() as! Int
 	})
 	sink(arg: result48) // $ tainted=340
-	sink(arg: data48) // $ MISSING: tainted=336
+	sink(arg: data48) // $ tainted=336
 }
