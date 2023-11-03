@@ -78,6 +78,8 @@ module Sem implements Semantic {
 
   predicate guardDirectlyControlsSsaRead = semGuardDirectlyControlsSsaRead/3;
 
+  predicate guardControlsSsaRead = semGuardControlsSsaRead/3;
+
   class Type = SemType;
 
   class IntegerType = SemIntegerType;
@@ -169,8 +171,8 @@ module AllBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
 private module ModulusAnalysisInstantiated implements ModulusAnalysisSig<Sem> {
   class ModBound = AllBounds::SemBound;
 
-  private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.ModulusAnalysis as MA
-  import MA::ModulusAnalysis<FloatDelta, AllBounds, Util>
+  private import codeql.rangeanalysis.ModulusAnalysis as MA
+  import MA::ModulusAnalysis<SemLocation, Sem, FloatDelta, AllBounds, Util>
 }
 
 module Util = RangeUtil<FloatDelta, CppLangImplConstant>;
