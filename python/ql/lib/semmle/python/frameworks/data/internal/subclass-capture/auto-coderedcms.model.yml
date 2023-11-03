@@ -6,7 +6,43 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - coderedcms
+    - Member[blocks].Member[stream_form_blocks].Member[CoderedDateField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[blocks].Member[stream_form_blocks].Member[CoderedDateTimeField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[blocks].Member[stream_form_blocks].Member[CoderedTimeField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[blocks].Member[stream_form_blocks].Member[SecureFileField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[forms].Member[CoderedDateField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[forms].Member[CoderedDateTimeField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[forms].Member[CoderedTimeField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[forms].Member[SecureFileField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
     - Member[wagtail_flexible_forms].Member[blocks].Member[PhoneNumberField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[EmailField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[FileField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[ImageField]
+  - - Django.Forms.Field~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[URLField]
   - - Django.Views.View~Subclass
     - coderedcms
     - Member[forms].Member[CoderedSubmissionsListView]
@@ -39,6 +75,9 @@ extensions:
     - Member[api].Member[mailchimp].Member[Site]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[blocks].Member[base_blocks].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[forms].Member[AbstractFormField]
   - - Django.db.models.Model~Subclass
     - coderedcms
@@ -57,6 +96,9 @@ extensions:
     - Member[models].Member[AbstractImage]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[AccordionPanel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[Accordion]
   - - Django.db.models.Model~Subclass
     - coderedcms
@@ -72,7 +114,13 @@ extensions:
     - Member[models].Member[BaseSiteSetting]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[CarouselSlide]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[Carousel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[ClassifierTerm]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[Classifier]
@@ -99,6 +147,12 @@ extensions:
     - Member[models].Member[CoderedEventPage]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[CoderedFormMixin]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedFormPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[CoderedLocationIndexPage]
   - - Django.db.models.Model~Subclass
     - coderedcms
@@ -111,10 +165,28 @@ extensions:
     - Member[models].Member[CoderedSessionFormSubmission]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[CoderedStreamFormPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[CoderedSubmissionRevision]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[CoderedWebPage]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[ContentWall]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[FilmPanel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[FilmStrip]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[FooterOrderable]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[Footer]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[FormSubmission]
@@ -123,16 +195,34 @@ extensions:
     - Member[models].Member[LayoutSettings]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[MailchimpSubscriberIntegration]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[NavbarOrderable]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[Navbar]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[Orderable]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[Page]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[ReusableContent]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[SessionFormSubmission]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[SubmissionRevision]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[integration_models].Member[MailchimpSubscriberIntegration]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[page_models].Member[AbstractImage]
@@ -142,6 +232,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[page_models].Member[BaseOccurrence]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[ClassifierTerm]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[page_models].Member[CoderedArticleIndexPage]
@@ -159,6 +252,12 @@ extensions:
     - Member[models].Member[page_models].Member[CoderedEventPage]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[page_models].Member[CoderedFormMixin]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedFormPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[page_models].Member[CoderedLocationIndexPage]
   - - Django.db.models.Model~Subclass
     - coderedcms
@@ -169,6 +268,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[page_models].Member[CoderedSessionFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedStreamFormPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[CoderedSubmissionRevision]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[page_models].Member[CoderedWebPage]
@@ -192,10 +297,22 @@ extensions:
     - Member[models].Member[page_models].Member[Site]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[page_models].Member[SubmissionRevision]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[AccordionPanel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[snippet_models].Member[Accordion]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[snippet_models].Member[CarouselSlide]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[snippet_models].Member[Carousel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[ClassifierTerm]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[snippet_models].Member[Classifier]
@@ -207,10 +324,25 @@ extensions:
     - Member[models].Member[snippet_models].Member[CoderedEmail]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[snippet_models].Member[ContentWall]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[FilmPanel]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[snippet_models].Member[FilmStrip]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[snippet_models].Member[Footer]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[Navbar]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[snippet_models].Member[Orderable]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[snippet_models].Member[ReusableContent]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[wagtailsettings_models].Member[AnalyticsSettings]
@@ -222,7 +354,19 @@ extensions:
     - Member[models].Member[wagtailsettings_models].Member[ClusterableModel]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[models].Member[wagtailsettings_models].Member[FooterOrderable]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[wagtailsettings_models].Member[Footer]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[models].Member[wagtailsettings_models].Member[LayoutSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[wagtailsettings_models].Member[NavbarOrderable]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[models].Member[wagtailsettings_models].Member[Navbar]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[models].Member[wagtailsettings_models].Member[Orderable]
@@ -246,6 +390,9 @@ extensions:
     - Member[project_template].Member[basic].Member[website].Member[models].Member[CoderedFormField]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[CoderedFormPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[project_template].Member[basic].Member[website].Member[models].Member[CoderedWebPage]
   - - Django.db.models.Model~Subclass
     - coderedcms
@@ -253,6 +400,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[project_template].Member[basic].Member[website].Member[models].Member[FormPageField]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[project_template].Member[basic].Member[website].Member[models].Member[FormPage]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[project_template].Member[basic].Member[website].Member[models].Member[WebPage]
@@ -276,6 +426,9 @@ extensions:
     - Member[project_template].Member[sass].Member[website].Member[models].Member[CoderedFormField]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[CoderedFormPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[project_template].Member[sass].Member[website].Member[models].Member[CoderedWebPage]
   - - Django.db.models.Model~Subclass
     - coderedcms
@@ -285,13 +438,25 @@ extensions:
     - Member[project_template].Member[sass].Member[website].Member[models].Member[FormPageField]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[project_template].Member[sass].Member[website].Member[models].Member[FormPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[project_template].Member[sass].Member[website].Member[models].Member[WebPage]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[templatetags].Member[coderedcms_tags].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[templatetags].Member[coderedcms_tags].Member[Footer]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[templatetags].Member[coderedcms_tags].Member[Image]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[templatetags].Member[coderedcms_tags].Member[LayoutSettings]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[templatetags].Member[coderedcms_tags].Member[Navbar]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[views].Member[CoderedPage]
@@ -321,10 +486,19 @@ extensions:
     - Member[wagtail_flexible_forms].Member[models].Member[AbstractStreamForm]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[ClosingFormMixin]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[wagtail_flexible_forms].Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
     - Member[wagtail_flexible_forms].Member[models].Member[SessionFormSubmission]
+  - - Django.db.models.Model~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[SubmissionRevision]
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[wagtail_flexible_forms].Member[wagtail_hooks].Member[Page]
@@ -334,6 +508,60 @@ extensions:
   - - Django.db.models.Model~Subclass
     - coderedcms
     - Member[wagtail_hooks].Member[ContentType]
+  - - django.forms.BaseForm~Subclass
+    - coderedcms
+    - Member[forms].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - coderedcms
+    - Member[importexport].Member[ImportPagesFromCSVFileForm]
+  - - django.forms.BaseForm~Subclass
+    - coderedcms
+    - Member[models].Member[WagtailAdminFormPageForm]
+  - - django.forms.BaseForm~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[WagtailAdminFormPageForm]
+  - - django.forms.BaseForm~Subclass
+    - coderedcms
+    - Member[templatetags].Member[coderedcms_tags].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - coderedcms
+    - Member[views].Member[ImportPagesFromCSVFileForm]
+  - - django.forms.BaseForm~Subclass
+    - coderedcms
+    - Member[views].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[Form]
+  - - django.http.response.HttpResponsePermanentRedirect~Subclass
+    - coderedcms
+    - Member[views].Member[HttpResponsePermanentRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - coderedcms
+    - Member[models].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - coderedcms
+    - Member[wagtail_flexible_forms].Member[models].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - coderedcms
+    - Member[forms].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - coderedcms
+    - Member[views].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - coderedcms
     - Member[wagtail_flexible_forms].Member[models].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - coderedcms
+    - Member[wagtail_hooks].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - coderedcms
+    - Member[models].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - coderedcms
+    - Member[models].Member[page_models].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - coderedcms
+    - Member[views].Member[JsonResponse]

@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[jsnapy].Member[check].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[jsnapy].Member[operator].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[jsnapy].Member[snap].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[console].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[decorators].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[device].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[factory].Member[cfgtable].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[factory].Member[cmdtable].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[factory].Member[optable].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[factory].Member[table].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[factory].Member[to_json].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[factory].Member[view].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[facts].Member[domain].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[jxml].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[rpcmeta].Member[etree]
+  - - lxml.etree~Alias
+    - jnpr
+    - Member[junos].Member[utils].Member[config].Member[etree]

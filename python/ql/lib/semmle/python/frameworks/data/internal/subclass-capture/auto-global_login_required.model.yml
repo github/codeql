@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - global_login_required
+    - Member[urls].Member[View]
+  - - Django.Views.View~Subclass
+    - global_login_required
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponse~Subclass
+    - global_login_required
+    - Member[urls].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - global_login_required
+    - Member[views].Member[HttpResponse]

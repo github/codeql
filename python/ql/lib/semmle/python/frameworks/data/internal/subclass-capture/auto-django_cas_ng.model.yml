@@ -4,6 +4,27 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - django_cas_ng
+    - Member[views].Member[CallbackView]
+  - - Django.Views.View~Subclass
+    - django_cas_ng
+    - Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - django_cas_ng
+    - Member[views].Member[LogoutView]
+  - - Django.db.models.Model~Subclass
+    - django_cas_ng
+    - Member[models].Member[ProxyGrantingTicket]
+  - - Django.db.models.Model~Subclass
+    - django_cas_ng
+    - Member[models].Member[SessionTicket]
   - - Django.db.models.Model~Subclass
     - django_cas_ng
     - Member[utils].Member[User]
+  - - django.http.request.HttpRequest~Subclass
+    - django_cas_ng
+    - Member[models].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django_cas_ng
+    - Member[utils].Member[HttpRequest]

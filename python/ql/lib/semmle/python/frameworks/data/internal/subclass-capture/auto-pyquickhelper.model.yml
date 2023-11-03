@@ -1,0 +1,132 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - pyquickhelper
+    - Member[server].Member[documentation_server].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - pyquickhelper
+    - Member[server].Member[documentation_server].Member[DocumentationHandler]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[filehelper].Member[anyfhelper].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[filehelper].Member[anyfhelper].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[filehelper].Member[compression_helper].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[filehelper].Member[encrypted_backup].Member[StreamIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[filehelper].Member[encryption].Member[StreamIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[filehelper].Member[ftp_transfer].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[filehelper].Member[ftp_transfer_files].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[filehelper].Member[transfer_api].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[filehelper].Member[transfer_api_ftp].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[helpgen].Member[process_notebooks].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[helpgen].Member[rst_converters].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[helpgen].Member[sphinx_main].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[helpgen].Member[sphinxm_convert_doc_sphinx_helper].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[helpgen].Member[sphinxm_custom_app].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[helpgen].Member[utils_sphinx_config].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[imghelper].Member[svg_helper].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[ipythonhelper].Member[notebook_helper].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[ipythonhelper].Member[notebook_runner].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[ipythonhelper].Member[notebook_runner].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[ipythonhelper].Member[run_notebook].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[loghelper].Member[buffered_flog].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[pandashelper].Member[readh].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[pandashelper].Member[readh].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[pycode].Member[coverage_helper].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[pycode].Member[profiling].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[pycode].Member[trace_execution].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[sphinxext].Member[blog_post].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[sphinxext].Member[sphinx_cmdref_extension].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyquickhelper
+    - Member[sphinxext].Member[sphinx_runpython_extension].Member[StringIO]
+  - - pickle~Alias
+    - pyquickhelper
+    - Member[benchhelper].Member[benchmark].Member[pickle]
+  - - pickle~Alias
+    - pyquickhelper
+    - Member[helpgen].Member[sphinxm_convert_doc_sphinx_helper].Member[pickle]
+  - - pickle~Alias
+    - pyquickhelper
+    - Member[loghelper].Member[process_script].Member[pickle]
+  - - pickle~Alias
+    - pyquickhelper
+    - Member[sphinxext].Member[sphinx_ext_helper].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - pyquickhelper
+    - Member[server].Member[filestore_fastapi].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - pyquickhelper
+    - Member[server].Member[filestore_fastapi].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - pyquickhelper
+    - Member[server].Member[filestore_fastapi].Member[QueryL]
+  - - pydantic.BaseModel~Subclass
+    - pyquickhelper
+    - Member[server].Member[filestore_fastapi].Member[Query]
+  - - xml.etree.ElementTree~Subclass
+    - pyquickhelper
+    - Member[imghelper].Member[svg_helper].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - pyquickhelper
+    - Member[loghelper].Member[repositories].Member[pygit_helper].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - pyquickhelper
+    - Member[loghelper].Member[repositories].Member[pysvn_helper].Member[ET]

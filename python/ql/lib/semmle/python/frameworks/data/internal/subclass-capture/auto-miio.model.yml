@@ -1,0 +1,99 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - miio
+    - Member[updater].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - miio
+    - Member[updater].Member[SingleFileHandler]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[CloudDeviceInfo]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[cloud].Member[CloudDeviceInfo]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miiosimulator].Member[MiioAction]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miiosimulator].Member[MiioMethod]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miiosimulator].Member[MiioModel]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miiosimulator].Member[MiioProperty]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miiosimulator].Member[SimulatedMiio]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miotsimulator].Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miotsimulator].Member[MiotProperty]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miotsimulator].Member[MiotService]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miotsimulator].Member[SimulatedDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miotsimulator].Member[SimulatedMiotProperty]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[devtools].Member[simulators].Member[miotsimulator].Member[SimulatedMiotService]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[integrations].Member[genericmiot].Member[genericmiot].Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[integrations].Member[genericmiot].Member[genericmiot].Member[MiotAction]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[integrations].Member[genericmiot].Member[genericmiot].Member[MiotService]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[integrations].Member[genericmiot].Member[status].Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[integrations].Member[genericmiot].Member[status].Member[MiotProperty]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_cloud].Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_cloud].Member[ReleaseInfo]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_cloud].Member[ReleaseList]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_models].Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_models].Member[MiotAction]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_models].Member[MiotBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_models].Member[MiotEnumValue]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_models].Member[MiotEvent]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_models].Member[MiotProperty]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_models].Member[MiotService]
+  - - pydantic.BaseModel~Subclass
+    - miio
+    - Member[miot_models].Member[URN]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - scrapelib
+    - Member[CacheResponse]
+  - - requests.models.Response~Subclass
+    - scrapelib
+    - Member[Response]
+  - - requests.models.Response~Subclass
+    - scrapelib
+    - Member[_types].Member[Response]
+  - - requests.models.Response~Subclass
+    - scrapelib
+    - Member[cache].Member[CacheResponse]
+  - - requests.models.Response~Subclass
+    - scrapelib
+    - Member[cache].Member[Response]

@@ -1,0 +1,9 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - tinkoff
+    - Member[invest].Member[caching].Member[market_data_cache].Member[cache_settings].Member[pickle]

@@ -4,9 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - django_messages
+    - Member[fields].Member[CommaSeparatedUserField]
+  - - Django.Forms.Field~Subclass
+    - django_messages
+    - Member[forms].Member[CommaSeparatedUserField]
+  - - Django.Views.View~Subclass
+    - django_messages
+    - Member[urls].Member[RedirectView]
   - - Django.db.models.Model~Subclass
     - django_messages
     - Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - django_messages
+    - Member[admin].Member[Message]
   - - Django.db.models.Model~Subclass
     - django_messages
     - Member[admin].Member[User]
@@ -15,7 +27,40 @@ extensions:
     - Member[fields].Member[User]
   - - Django.db.models.Model~Subclass
     - django_messages
+    - Member[forms].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - django_messages
+    - Member[management].Member[commands].Member[delete_deleted_messages].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - django_messages
+    - Member[models].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - django_messages
+    - Member[urls].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - django_messages
     - Member[urls].Member[User]
   - - Django.db.models.Model~Subclass
     - django_messages
+    - Member[views].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - django_messages
     - Member[views].Member[User]
+  - - django.forms.BaseForm~Subclass
+    - django_messages
+    - Member[admin].Member[MessageAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - django_messages
+    - Member[forms].Member[ComposeForm]
+  - - django.forms.BaseForm~Subclass
+    - django_messages
+    - Member[urls].Member[ComposeForm]
+  - - django.forms.BaseForm~Subclass
+    - django_messages
+    - Member[views].Member[ComposeForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_messages
+    - Member[urls].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_messages
+    - Member[views].Member[HttpResponseRedirect]

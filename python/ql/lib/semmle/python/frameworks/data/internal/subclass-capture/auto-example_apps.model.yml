@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - example_apps
+    - Member[auth0_app].Member[Flask]
+  - - flask.Flask~Subclass
+    - example_apps
+    - Member[basic_app].Member[Flask]
+  - - flask.Flask~Subclass
+    - example_apps
+    - Member[dynamodb_app].Member[Flask]
+  - - flask.Flask~Subclass
+    - example_apps
+    - Member[invite_app].Member[Flask]
+  - - flask.Flask~Subclass
+    - example_apps
+    - Member[mongodb_app].Member[Flask]
+  - - flask.Flask~Subclass
+    - example_apps
+    - Member[multi_email_app].Member[Flask]
+  - - flask.Flask~Subclass
+    - example_apps
+    - Member[pynamodb_app].Member[Flask]
+  - - flask.Flask~Subclass
+    - example_apps
+    - Member[quickstart_app].Member[Flask]

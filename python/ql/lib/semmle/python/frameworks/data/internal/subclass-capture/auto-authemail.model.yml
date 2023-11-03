@@ -4,6 +4,54 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[EmailChangeVerify]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[EmailChange]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[Login]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[Logout]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[PasswordChange]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[PasswordResetVerified]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[PasswordResetVerify]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[PasswordReset]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[SignupVerify]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[Signup]
+  - - Django.Views.View~Subclass
+    - authemail
+    - Member[views].Member[UserMe]
+  - - Django.db.models.Model~Subclass
+    - authemail
+    - Member[admin].Member[EmailChangeCode]
+  - - Django.db.models.Model~Subclass
+    - authemail
+    - Member[admin].Member[PasswordResetCode]
+  - - Django.db.models.Model~Subclass
+    - authemail
+    - Member[admin].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - authemail
+    - Member[models].Member[AbstractBaseCode]
   - - Django.db.models.Model~Subclass
     - authemail
     - Member[models].Member[AbstractBaseUser]
@@ -12,7 +60,46 @@ extensions:
     - Member[models].Member[EmailAbstractUser]
   - - Django.db.models.Model~Subclass
     - authemail
+    - Member[models].Member[EmailChangeCode]
+  - - Django.db.models.Model~Subclass
+    - authemail
+    - Member[models].Member[PasswordResetCode]
+  - - Django.db.models.Model~Subclass
+    - authemail
     - Member[models].Member[PermissionsMixin]
   - - Django.db.models.Model~Subclass
     - authemail
+    - Member[models].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - authemail
+    - Member[views].Member[EmailChangeCode]
+  - - Django.db.models.Model~Subclass
+    - authemail
+    - Member[views].Member[PasswordResetCode]
+  - - Django.db.models.Model~Subclass
+    - authemail
+    - Member[views].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - authemail
     - Member[views].Member[Token]
+  - - django.forms.BaseForm~Subclass
+    - authemail
+    - Member[admin].Member[EmailUserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - authemail
+    - Member[admin].Member[EmailUserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - authemail
+    - Member[forms].Member[EmailUserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - authemail
+    - Member[forms].Member[EmailUserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - authemail
+    - Member[forms].Member[UserChangeForm]
+  - - django.http.response.HttpResponse~Subclass
+    - authemail
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - authemail
+    - Member[views].Member[Response]

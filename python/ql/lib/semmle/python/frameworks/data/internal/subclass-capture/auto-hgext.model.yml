@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - hgext
+    - Member[convert].Member[cvs].Member[stringio]
+  - - io.StringIO~Subclass
+    - hgext
+    - Member[convert].Member[hg].Member[stringio]
+  - - io.StringIO~Subclass
+    - hgext
+    - Member[convert].Member[subversion].Member[stringio]
+  - - io.StringIO~Subclass
+    - hgext
+    - Member[patchbomb].Member[stringio]
+  - - pickle~Alias
+    - hgext
+    - Member[convert].Member[common].Member[pickle]
+  - - pickle~Alias
+    - hgext
+    - Member[convert].Member[cvsps].Member[pickle]
+  - - pickle~Alias
+    - hgext
+    - Member[convert].Member[subversion].Member[pickle]
+  - - pickle~Alias
+    - hgext
+    - Member[histedit].Member[pickle]

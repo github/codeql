@@ -13,6 +13,12 @@ extensions:
   - - Django.Views.View~Subclass
     - server
     - Member[apps].Member[botrequest].Member[views].Member[TemplateView]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - server
+    - Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - server
+    - Member[HealthCheckServer]
   - - io.StringIO~Subclass
     - server
     - Member[contrib].Member[gis].Member[shortcuts].Member[BytesIO]

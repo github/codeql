@@ -12,4 +12,7 @@ extensions:
     - Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - tidings
+    - Member[models].Member[NotificationsMixin]
+  - - Django.db.models.Model~Subclass
+    - tidings
     - Member[models].Member[Site]

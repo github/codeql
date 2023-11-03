@@ -4,15 +4,168 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - pickle~Alias
+    - rocketry
+    - Member[core].Member[utils].Member[pickle].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[FuncTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[_setup].Member[CodeTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[_setup].Member[CommandTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[_setup].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[_setup].Member[FuncTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[_setup].Member[Restart]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[_setup].Member[ShutDown]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[_setup].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[_setup].Member[_FuncTaskCondWrapper]
   - - pydantic.BaseModel~Subclass
     - rocketry
     - Member[application].Member[BaseRepo]
   - - pydantic.BaseModel~Subclass
     - rocketry
+    - Member[application].Member[LogRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
     - Member[application].Member[MemoryRepo]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[args].Member[builtin].Member[BaseTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[conditions].Member[meta].Member[FuncTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[conditions].Member[meta].Member[_FuncTaskCondWrapper]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[core].Member[Task]
   - - pydantic.BaseModel~Subclass
     - rocketry
     - Member[core].Member[log].Member[adapter].Member[BaseRepo]
   - - pydantic.BaseModel~Subclass
     - rocketry
+    - Member[core].Member[log].Member[adapter].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[core].Member[schedule].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[core].Member[task].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[LogRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[MinimalRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[MinimalRunRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[RunRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[TaskLogRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[TaskRunRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
     - Member[log].Member[defaults].Member[MemoryRepo]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[defaults].Member[MinimalRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[log_record].Member[LogRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[log_record].Member[MinimalRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[log_record].Member[MinimalRunRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[log_record].Member[RunRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[log_record].Member[TaskLogRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[log].Member[log_record].Member[TaskRunRecord]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[session].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[session].Member[Hooks]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[session].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[CodeTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[CommandTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[FuncTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[code].Member[CodeTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[code].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[command].Member[CommandTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[command].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[func].Member[FuncTask]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[func].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[maintain].Member[Restart]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[maintain].Member[ShutDown]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[maintain].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[maintain].Member[os].Member[Restart]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[maintain].Member[os].Member[ShutDown]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[tasks].Member[maintain].Member[os].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[utils].Member[dependencies].Member[Dependencies]
+  - - pydantic.BaseModel~Subclass
+    - rocketry
+    - Member[utils].Member[dependencies].Member[Task]

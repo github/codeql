@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - select2_nestedadmin
+    - Member[admin].Member[TModelOne]
+  - - Django.db.models.Model~Subclass
+    - select2_nestedadmin
+    - Member[admin].Member[TModelThree]
+  - - Django.db.models.Model~Subclass
+    - select2_nestedadmin
+    - Member[admin].Member[TModelTwo]
+  - - Django.db.models.Model~Subclass
+    - select2_nestedadmin
+    - Member[forms].Member[TModelThree]
+  - - Django.db.models.Model~Subclass
+    - select2_nestedadmin
+    - Member[models].Member[TModelOne]
+  - - Django.db.models.Model~Subclass
+    - select2_nestedadmin
+    - Member[models].Member[TModelThree]
+  - - Django.db.models.Model~Subclass
+    - select2_nestedadmin
+    - Member[models].Member[TModelTwo]
+  - - Django.db.models.Model~Subclass
+    - select2_nestedadmin
+    - Member[urls].Member[TModelThree]
+  - - django.forms.BaseForm~Subclass
+    - select2_nestedadmin
+    - Member[admin].Member[TFormThree]
+  - - django.forms.BaseForm~Subclass
+    - select2_nestedadmin
+    - Member[forms].Member[TFormThree]

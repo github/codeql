@@ -1,0 +1,219 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - slack_bolt
+    - Member[adapter].Member[django].Member[handler].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - slack_bolt
+    - Member[adapter].Member[django].Member[handler].Member[HttpResponse]
+  - - flask.Response~Subclass
+    - slack_bolt
+    - Member[adapter].Member[flask].Member[handler].Member[Response]
+  - - flask.Response~Subclass
+    - slack_bolt
+    - Member[adapter].Member[google_cloud_functions].Member[handler].Member[Response]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - slack_bolt
+    - Member[app].Member[app].Member[SimpleHTTPRequestHandler]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[adapter].Member[aws_lambda].Member[chalice_lazy_listener_runner].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[adapter].Member[aws_lambda].Member[lambda_s3_oauth_flow].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[adapter].Member[aws_lambda].Member[lazy_listener_runner].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[adapter].Member[django].Member[handler].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[adapter].Member[socket_mode].Member[aiohttp].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[adapter].Member[socket_mode].Member[builtin].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[adapter].Member[socket_mode].Member[websocket_client].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[adapter].Member[socket_mode].Member[websockets].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[authorization].Member[async_authorize].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[authorization].Member[async_authorize_args].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[authorization].Member[authorize].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[authorization].Member[authorize_args].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[context].Member[base_context].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[kwargs_injection].Member[args].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[kwargs_injection].Member[async_args].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[lazy_listener].Member[async_internals].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[lazy_listener].Member[async_runner].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[lazy_listener].Member[asyncio_runner].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[lazy_listener].Member[internals].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[lazy_listener].Member[runner].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[lazy_listener].Member[thread_runner].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[async_listener].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[async_listener_completion_handler].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[async_listener_error_handler].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[async_listener_start_handler].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[asyncio_runner].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[custom_listener].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[listener_completion_handler].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[listener_error_handler].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[listener_start_handler].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener].Member[thread_runner].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener_matcher].Member[async_listener_matcher].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener_matcher].Member[builtins].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[listener_matcher].Member[custom_listener_matcher].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[async_custom_middleware].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[async_middleware_error_handler].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[authorization].Member[async_multi_teams_authorization].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[authorization].Member[async_single_team_authorization].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[authorization].Member[multi_teams_authorization].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[authorization].Member[single_team_authorization].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[custom_middleware].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[middleware_error_handler].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[request_verification].Member[request_verification].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[ssl_check].Member[ssl_check].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[url_verification].Member[async_url_verification].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[middleware].Member[url_verification].Member[url_verification].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[oauth].Member[async_callback_options].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[oauth].Member[async_internals].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[oauth].Member[async_oauth_flow].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[oauth].Member[async_oauth_settings].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[oauth].Member[callback_options].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[oauth].Member[internals].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[oauth].Member[oauth_flow].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[oauth].Member[oauth_settings].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[util].Member[async_utils].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[util].Member[utils].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[workflows].Member[step].Member[async_step].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_bolt
+    - Member[workflows].Member[step].Member[step].Member[Logger]
+  - - tornado.web.RequestHandler~Subclass
+    - slack_bolt
+    - Member[adapter].Member[tornado].Member[SlackEventsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - slack_bolt
+    - Member[adapter].Member[tornado].Member[SlackOAuthHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - slack_bolt
+    - Member[adapter].Member[tornado].Member[async_handler].Member[AsyncSlackEventsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - slack_bolt
+    - Member[adapter].Member[tornado].Member[async_handler].Member[AsyncSlackOAuthHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - slack_bolt
+    - Member[adapter].Member[tornado].Member[async_handler].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - slack_bolt
+    - Member[adapter].Member[tornado].Member[handler].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - slack_bolt
+    - Member[adapter].Member[tornado].Member[handler].Member[SlackEventsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - slack_bolt
+    - Member[adapter].Member[tornado].Member[handler].Member[SlackOAuthHandler]

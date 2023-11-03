@@ -1,0 +1,138 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - aionotion
+    - Member[client].Member[ClientSession]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[bridge].Member[BridgeAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[bridge].Member[BridgeGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[bridge].Member[models].Member[BridgeAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[bridge].Member[models].Member[BridgeGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[bridge].Member[models].Member[Bridge]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[bridge].Member[models].Member[FirmwareVersion]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[bridge].Member[models].Member[NotionBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[client].Member[NotionBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[device].Member[DeviceAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[device].Member[DeviceGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[device].Member[models].Member[DeviceAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[device].Member[models].Member[DeviceGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[device].Member[models].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[device].Member[models].Member[NotionBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[helpers].Member[model].Member[NotionBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[ListenerAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[SensorAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[SensorGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[Bridge]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[Firmware]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[InsightOrigin]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[ListenerAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[ListenerInsights]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[ListenerLocalizedStatus]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[ListenerStatus]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[Listener]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[NotionBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[PrimaryListenerInsight]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[SensorAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[SensorGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[SurfaceType]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[sensor].Member[models].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[system].Member[SystemAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[system].Member[SystemGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[system].Member[models].Member[NotionBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[system].Member[models].Member[SystemAllResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[system].Member[models].Member[SystemGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[system].Member[models].Member[System]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[user].Member[UserPreferencesResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[user].Member[models].Member[NotionBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[user].Member[models].Member[UserPreferencesResponse]
+  - - pydantic.BaseModel~Subclass
+    - aionotion
+    - Member[user].Member[models].Member[UserPreferences]

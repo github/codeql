@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - fs
+    - Member[expose].Member[http].Member[FSHTTPRequestHandler]
   - - io.StringIO~Subclass
     - fs
     - Member[filelike].Member[_StringIO]
+  - - pickle~Alias
+    - fs
+    - Member[expose].Member[dokan].Member[pickle]
+  - - pickle~Alias
+    - fs
+    - Member[expose].Member[fuse].Member[cPickle]
+  - - pickle~Alias
+    - fs
+    - Member[xattrs].Member[pickle]

@@ -6,4 +6,10 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - django_tenants
+    - Member[models].Member[DomainMixin]
+  - - Django.db.models.Model~Subclass
+    - django_tenants
+    - Member[models].Member[TenantMixin]
+  - - Django.db.models.Model~Subclass
+    - django_tenants
     - Member[postgresql_backend].Member[base].Member[ContentType]

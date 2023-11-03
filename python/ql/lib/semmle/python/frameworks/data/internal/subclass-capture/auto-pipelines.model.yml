@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pipelines
+    - Member[nodes].Member[document].Member[document_preprocessor].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipelines
+    - Member[nodes].Member[file_converter].Member[docx].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipelines
+    - Member[nodes].Member[text_to_image_generator].Member[text_to_image_generator].Member[BytesIO]

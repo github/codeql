@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - watchman
+    - Member[decorators].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponse~Subclass
+    - watchman
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - watchman
+    - Member[views].Member[JsonResponse]

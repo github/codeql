@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - djmoney
+    - Member[forms].Member[MoneyField]
+  - - Django.Forms.Field~Subclass
+    - djmoney
+    - Member[forms].Member[fields].Member[MoneyField]
+  - - Django.db.models.Model~Subclass
+    - djmoney
+    - Member[contrib].Member[exchange].Member[admin].Member[Rate]
+  - - Django.db.models.Model~Subclass
+    - djmoney
+    - Member[contrib].Member[exchange].Member[backends].Member[base].Member[ExchangeBackend]
+  - - Django.db.models.Model~Subclass
+    - djmoney
+    - Member[contrib].Member[exchange].Member[backends].Member[base].Member[Rate]
+  - - Django.db.models.Model~Subclass
+    - djmoney
+    - Member[contrib].Member[exchange].Member[management].Member[commands].Member[clear_rates].Member[Rate]
+  - - Django.db.models.Model~Subclass
+    - djmoney
+    - Member[contrib].Member[exchange].Member[models].Member[ExchangeBackend]
+  - - Django.db.models.Model~Subclass
+    - djmoney
+    - Member[contrib].Member[exchange].Member[models].Member[Rate]

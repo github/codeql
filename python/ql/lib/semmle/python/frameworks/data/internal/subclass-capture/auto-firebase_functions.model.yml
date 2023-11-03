@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - firebase_functions
+    - Member[private].Member[serving].Member[Flask]
+  - - flask.Response~Subclass
+    - firebase_functions
+    - Member[https_fn].Member[Response]
+  - - flask.Response~Subclass
+    - firebase_functions
+    - Member[identity_fn].Member[_Response]
+  - - flask.Response~Subclass
+    - firebase_functions
+    - Member[private].Member[_identity_fn].Member[_Response]
+  - - flask.Response~Subclass
+    - firebase_functions
+    - Member[private].Member[serving].Member[Response]
+  - - flask.Response~Subclass
+    - firebase_functions
+    - Member[scheduler_fn].Member[_Response]
+  - - flask.Response~Subclass
+    - firebase_functions
+    - Member[tasks_fn].Member[Response]

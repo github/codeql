@@ -1,0 +1,138 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - zep_python
+    - Member[user].Member[client].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - zep_python
+    - Member[user].Member[client].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[DocumentCollection]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[client].Member[DocumentCollection]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[collections].Member[DocumentCollectionModel]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[collections].Member[DocumentCollection]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[collections].Member[DocumentSearchPayload]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[collections].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[models].Member[DocumentCollectionModel]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[models].Member[DocumentSearchPayload]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[document].Member[models].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[MemorySearchPayload]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[MemorySearchResult]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[Memory]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[Session]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[Summary]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[client].Member[MemorySearchPayload]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[client].Member[MemorySearchResult]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[client].Member[Memory]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[client].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[client].Member[Session]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[client].Member[Summary]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[models].Member[MemorySearchPayload]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[models].Member[MemorySearchResult]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[models].Member[Memory]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[models].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[models].Member[Session]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[memory].Member[models].Member[Summary]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[CreateUserRequest]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[UpdateUserRequest]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[client].Member[CreateUserRequest]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[client].Member[Session]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[client].Member[UpdateUserRequest]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[client].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[models].Member[CreateUserRequest]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[models].Member[UpdateUserRequest]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[user].Member[models].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[zep_client].Member[MemorySearchPayload]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[zep_client].Member[MemorySearchResult]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[zep_client].Member[Memory]
+  - - pydantic.BaseModel~Subclass
+    - zep_python
+    - Member[zep_client].Member[Session]

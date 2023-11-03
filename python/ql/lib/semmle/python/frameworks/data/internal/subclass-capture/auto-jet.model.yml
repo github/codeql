@@ -4,15 +4,174 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - jet
+    - Member[templatetags].Member[jet_tags].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - jet
+    - Member[templatetags].Member[jet_tags].Member[ModelMultipleChoiceField]
   - - Django.Views.View~Subclass
     - jet
     - Member[dashboard].Member[urls].Member[JavaScriptCatalog]
   - - Django.Views.View~Subclass
     - jet
+    - Member[dashboard].Member[urls].Member[UpdateDashboardModuleView]
+  - - Django.Views.View~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[UpdateDashboardModuleView]
+  - - Django.Views.View~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - jet
     - Member[urls].Member[JavaScriptCatalog]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard].Member[UserDashboardModule]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[google_analytics_views].Member[UserDashboardModule]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[yandex_metrika_views].Member[UserDashboardModule]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[dashboard].Member[forms].Member[UserDashboardModule]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[dashboard].Member[models].Member[UserDashboardModule]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[UserDashboardModule]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[forms].Member[Bookmark]
   - - Django.db.models.Model~Subclass
     - jet
     - Member[forms].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - jet
     - Member[forms].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[forms].Member[PinnedApplication]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[models].Member[Bookmark]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[models].Member[PinnedApplication]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[templatetags].Member[jet_tags].Member[Bookmark]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[utils].Member[PinnedApplication]
+  - - Django.db.models.Model~Subclass
+    - jet
+    - Member[views].Member[Bookmark]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[google_analytics].Member[GoogleAnalyticsChartSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[google_analytics].Member[GoogleAnalyticsPeriodVisitorsSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[google_analytics].Member[GoogleAnalyticsSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[yandex_metrika].Member[YandexMetrikaChartSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[yandex_metrika].Member[YandexMetrikaPeriodVisitorsSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[yandex_metrika].Member[YandexMetrikaSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[forms].Member[AddUserDashboardModuleForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[forms].Member[RemoveDashboardModuleForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[forms].Member[ResetDashboardForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[forms].Member[UpdateDashboardModuleCollapseForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[forms].Member[UpdateDashboardModulesForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[modules].Member[FeedSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[modules].Member[LinkListItemForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[modules].Member[LinkListSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[modules].Member[RecentActionsSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[AddUserDashboardModuleForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[RemoveDashboardModuleForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[ResetDashboardForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[UpdateDashboardModuleCollapseForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[UpdateDashboardModulesForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[forms].Member[AddBookmarkForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[forms].Member[ModelLookupForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[forms].Member[RemoveBookmarkForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[forms].Member[ToggleApplicationPinForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[views].Member[AddBookmarkForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[views].Member[ModelLookupForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[views].Member[RemoveBookmarkForm]
+  - - django.forms.BaseForm~Subclass
+    - jet
+    - Member[views].Member[ToggleApplicationPinForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[google_analytics_views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - jet
+    - Member[dashboard].Member[dashboard_modules].Member[yandex_metrika_views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - jet
+    - Member[dashboard].Member[views].Member[JsonResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - jet
+    - Member[utils].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - jet
+    - Member[utils].Member[JsonResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - jet
+    - Member[views].Member[JsonResponse]

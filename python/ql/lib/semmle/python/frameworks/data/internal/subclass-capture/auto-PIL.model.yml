@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - PIL
+    - Member[BlpImagePlugin].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PIL
+    - Member[DdsImagePlugin].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PIL
+    - Member[FtexImagePlugin].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PIL
+    - Member[IcoImagePlugin].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PIL
+    - Member[ImageFont].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PIL
+    - Member[ImageQt].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PIL
+    - Member[ImageTk].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PIL
+    - Member[WebPImagePlugin].Member[BytesIO]

@@ -9,10 +9,34 @@ extensions:
     - Member[search].Member[BaseListView]
   - - Django.Views.View~Subclass
     - search_views
+    - Member[search].Member[FormView]
+  - - Django.Views.View~Subclass
+    - search_views
+    - Member[search].Member[ListView]
+  - - Django.Views.View~Subclass
+    - search_views
     - Member[search].Member[SearchListView]
+  - - Django.Views.View~Subclass
+    - search_views
+    - Member[search].Member[View]
   - - Django.Views.View~Subclass
     - search_views
     - Member[views].Member[BaseListView]
   - - Django.Views.View~Subclass
     - search_views
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - search_views
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - search_views
     - Member[views].Member[SearchListView]
+  - - Django.Views.View~Subclass
+    - search_views
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponse~Subclass
+    - search_views
+    - Member[search].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - search_views
+    - Member[views].Member[HttpResponse]

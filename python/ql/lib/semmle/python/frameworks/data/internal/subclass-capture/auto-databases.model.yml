@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - databases
+    - Member[constants].Member[DatabaseConfig]
+  - - pydantic.BaseModel~Subclass
+    - databases
+    - Member[main].Member[DatabaseConfig]
+  - - pydantic.BaseModel~Subclass
+    - databases
+    - Member[utils].Member[DatabaseConfig]
+  - - pydantic.BaseModel~Subclass
+    - databases
+    - Member[utils].Member[RawQueries]
+  - - urllib.parse.SplitResult~Subclass
+    - databases
+    - Member[core].Member[SplitResult]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - compas
+    - Member[rpc].Member[dispatcher].Member[StringIO]
+  - - io.StringIO~Subclass
+    - compas
+    - Member[utilities].Member[decorators].Member[StringIO]
+  - - pickle~Alias
+    - compas
+    - Member[rpc].Member[xfunc].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - compas
+    - Member[files].Member[_xml].Member[xml_shared].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - compas
+    - Member[files].Member[xml].Member[ET]

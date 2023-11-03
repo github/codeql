@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - chia
+    - Member[daemon].Member[keychain_proxy].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - chia
+    - Member[rpc].Member[rpc_server].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - chia
+    - Member[server].Member[server].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - chia
+    - Member[server].Member[ws_connection].Member[ClientSession]
+  - - logging.Logger~Subclass
+    - chia
+    - Member[server].Member[api_protocol].Member[Logger]
+  - - logging.Logger~Subclass
+    - chia
+    - Member[server].Member[node_discovery].Member[Logger]
+  - - logging.Logger~Subclass
+    - chia
+    - Member[util].Member[ssl_check].Member[Logger]

@@ -7,6 +7,12 @@ extensions:
   - - flask.Flask~Subclass
     - moto
     - Member[server].Member[Flask]
+  - - http.client.HTTPConnection~Subclass
+    - moto
+    - Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - moto
+    - Member[VerifiedHTTPSConnection]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - moto
     - Member[packages].Member[httpretty].Member[compat].Member[BaseHTTPRequestHandler]

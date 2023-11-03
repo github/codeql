@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - cities
+    - Member[urls].Member[CityCreateView]
+  - - Django.Views.View~Subclass
+    - cities
+    - Member[urls].Member[CityDetailView]
+  - - Django.Views.View~Subclass
+    - cities
+    - Member[urls].Member[CityListView]
+  - - Django.Views.View~Subclass
+    - cities
+    - Member[views].Member[CityCreateView]
+  - - Django.Views.View~Subclass
+    - cities
+    - Member[views].Member[CityDetailView]
+  - - Django.Views.View~Subclass
+    - cities
+    - Member[views].Member[CityListView]
+  - - Django.Views.View~Subclass
+    - cities
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - cities
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - cities
+    - Member[views].Member[UpdateView]
+  - - django.forms.BaseForm~Subclass
+    - cities
+    - Member[admin].Member[HouseAdminStaticForm]
+  - - django.forms.BaseForm~Subclass
+    - cities
+    - Member[forms].Member[CityCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - cities
+    - Member[forms].Member[CityDetailForm]
+  - - django.forms.BaseForm~Subclass
+    - cities
+    - Member[views].Member[CityCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - cities
+    - Member[views].Member[CityDetailForm]

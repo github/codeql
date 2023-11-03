@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - rest_flex_fields
+    - Member[FlexFieldsModelViewSet]
+  - - Django.Views.View~Subclass
+    - rest_flex_fields
+    - Member[filter_backends].Member[GenericViewSet]
+  - - Django.Views.View~Subclass
+    - rest_flex_fields
+    - Member[views].Member[FlexFieldsModelViewSet]
+  - - rest_framework.request.Request~Subclass
+    - rest_flex_fields
+    - Member[filter_backends].Member[Request]

@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - diazo
+    - Member[compiler].Member[etree]
+  - - lxml.etree~Alias
+    - diazo
+    - Member[cssrules].Member[etree]
+  - - lxml.etree~Alias
+    - diazo
+    - Member[rules].Member[etree]
+  - - lxml.etree~Alias
+    - diazo
+    - Member[run].Member[etree]
+  - - lxml.etree~Alias
+    - diazo
+    - Member[runtrace].Member[etree]
+  - - lxml.etree~Alias
+    - diazo
+    - Member[utils].Member[etree]
+  - - lxml.etree~Alias
+    - diazo
+    - Member[wsgi].Member[etree]

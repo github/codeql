@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.Application~Subclass
+    - bokeh
+    - Member[server].Member[tornado].Member[BokehTornado]
+  - - tornado.web.RequestHandler~Subclass
+    - bokeh
+    - Member[server].Member[views].Member[auth_request_handler].Member[AuthRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - bokeh
+    - Member[server].Member[views].Member[autoload_js_handler].Member[AutoloadJsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - bokeh
+    - Member[server].Member[views].Member[doc_handler].Member[DocHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - bokeh
+    - Member[server].Member[views].Member[ico_handler].Member[IcoHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - bokeh
+    - Member[server].Member[views].Member[metadata_handler].Member[MetadataHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - bokeh
+    - Member[server].Member[views].Member[root_handler].Member[RootHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - bokeh
+    - Member[server].Member[views].Member[session_handler].Member[SessionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - bokeh
+    - Member[server].Member[views].Member[ws].Member[WSHandler]

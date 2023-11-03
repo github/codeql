@@ -4,6 +4,213 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[CatalogQueryPreviewView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[EnterpriseCustomerManageLearnerDataSharingConsentView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[EnterpriseCustomerManageLearnersView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[EnterpriseCustomerTransmitCoursesView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[TemplatePreviewView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[BaseEnterpriseCustomerView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[CatalogQueryPreviewView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[EnterpriseCustomerManageLearnerDataSharingConsentView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[EnterpriseCustomerManageLearnersView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[EnterpriseCustomerTransmitCoursesView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[TemplatePreviewView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[View]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[analytics_summary].Member[AnalyticsSummaryView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[base_views].Member[EnterpriseReadOnlyModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[base_views].Member[EnterpriseReadWriteModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[base_views].Member[EnterpriseWrapperApiViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[base_views].Member[EnterpriseWriteOnlyModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[coupon_codes].Member[APIView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[coupon_codes].Member[CouponCodesView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_catalog_query].Member[EnterpriseCatalogQueryViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_catalog_query].Member[EnterpriseReadOnlyModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_course_enrollment].Member[EnterpriseCourseEnrollmentViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_course_enrollment].Member[EnterpriseReadWriteModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer].Member[EnterpriseCustomerViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer].Member[EnterpriseReadWriteModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_api_credentials].Member[APICredentialsRegenerateViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_api_credentials].Member[APICredentialsViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_api_credentials].Member[EnterpriseReadWriteModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_branding_configuration].Member[EnterpriseCustomerBrandingConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_branding_configuration].Member[EnterpriseReadWriteModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_catalog].Member[EnterpriseCustomerCatalogViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_catalog].Member[EnterpriseCustomerCatalogWriteViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_catalog].Member[EnterpriseReadOnlyModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_catalog].Member[EnterpriseWriteOnlyModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_invite_key].Member[EnterpriseCustomerInviteKeyViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_invite_key].Member[EnterpriseReadWriteModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_reporting].Member[APIView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_reporting].Member[EnterpriseCustomerReportTypesView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_reporting].Member[EnterpriseCustomerReportingConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_reporting].Member[EnterpriseReadWriteModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_sso_configuration].Member[EnterpriseCustomerSsoConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_user].Member[EnterpriseCustomerUserViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_user].Member[EnterpriseReadWriteModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_subsidy_fulfillment].Member[EnterpriseSubsidyFulfillmentViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_subsidy_fulfillment].Member[EnterpriseWrapperApiViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_subsidy_fulfillment].Member[LicensedEnterpriseCourseEnrollmentViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[notifications].Member[APIView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[notifications].Member[NotificationReadView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[pending_enterprise_customer_user].Member[EnterpriseReadWriteModelViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[pending_enterprise_customer_user].Member[PendingEnterpriseCustomerUserEnterpriseAdminViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[pending_enterprise_customer_user].Member[PendingEnterpriseCustomerUserViewSet]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[plotly_auth].Member[PlotlyAuthView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[urls].Member[EnterpriseLoginView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[urls].Member[EnterpriseProxyLoginView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[urls].Member[EnterpriseSelectionView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[urls].Member[GrantDataSharingPermissions]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[urls].Member[RouterView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[CourseEnrollmentView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[EnterpriseLoginView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[EnterpriseProxyLoginView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[EnterpriseSelectionView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[GrantDataSharingPermissions]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[HandleConsentEnrollment]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[NonAtomicView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[ProgramEnrollmentView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[RouterView]
+  - - Django.Views.View~Subclass
+    - enterprise
+    - Member[views].Member[View]
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[admin].Member[UpdateRoleAssignmentsWithCustomersConfig]
@@ -27,6 +234,12 @@ extensions:
     - Member[admin].Member[forms].Member[EnterpriseCustomer]
   - - Django.db.models.Model~Subclass
     - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseFeatureUserRoleAssignment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[SystemWideEnterpriseUserRoleAssignment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
     - Member[admin].Member[views].Member[EnrollmentNotificationEmailTemplate]
   - - Django.db.models.Model~Subclass
     - enterprise
@@ -48,6 +261,9 @@ extensions:
     - Member[api].Member[filters].Member[EnterpriseCustomerUser]
   - - Django.db.models.Model~Subclass
     - enterprise
+    - Member[api].Member[filters].Member[SystemWideEnterpriseUserRoleAssignment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
     - Member[api].Member[utils].Member[EnterpriseCustomerCatalog]
   - - Django.db.models.Model~Subclass
     - enterprise
@@ -61,6 +277,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[api].Member[utils].Member[EnterpriseCustomer]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[utils].Member[EnterpriseFeatureRole]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[utils].Member[EnterpriseFeatureUserRoleAssignment]
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[api].Member[v1].Member[serializers].Member[AdminNotificationRead]
@@ -79,6 +301,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[api].Member[v1].Member[serializers].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[serializers].Member[SystemWideEnterpriseUserRoleAssignment]
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[api].Member[v1].Member[views].Member[analytics_summary].Member[ChatGPTResponse]
@@ -109,6 +334,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[management].Member[commands].Member[backfill_learner_role_assignments].Member[EnterpriseCustomerUser]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[backfill_learner_role_assignments].Member[SystemWideEnterpriseRole]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[backfill_learner_role_assignments].Member[SystemWideEnterpriseUserRoleAssignment]
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[management].Member[commands].Member[bulk_update_catalog_query_id].Member[BulkCatalogQueryUpdateCommandConfiguration]
@@ -171,10 +402,22 @@ extensions:
     - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[EnterpriseCustomer]
   - - Django.db.models.Model~Subclass
     - enterprise
+    - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[EnterpriseFeatureRole]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[EnterpriseFeatureUserRoleAssignment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
     - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[Group]
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[SystemWideEnterpriseRole]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[management].Member[commands].Member[seed_enterprise_devstack_data].Member[SystemWideEnterpriseUserRoleAssignment]
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[management].Member[commands].Member[unlink_enterprise_customer_learners].Member[EnterpriseCustomerUser]
@@ -246,6 +489,9 @@ extensions:
     - Member[management].Member[commands].Member[update_role_assignments_with_customers].Member[EnterpriseCustomerUser]
   - - Django.db.models.Model~Subclass
     - enterprise
+    - Member[management].Member[commands].Member[update_role_assignments_with_customers].Member[SystemWideEnterpriseUserRoleAssignment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
     - Member[management].Member[commands].Member[update_role_assignments_with_customers].Member[UpdateRoleAssignmentsWithCustomersConfig]
   - - Django.db.models.Model~Subclass
     - enterprise
@@ -309,6 +555,12 @@ extensions:
     - Member[models].Member[EnterpriseEnrollmentSource]
   - - Django.db.models.Model~Subclass
     - enterprise
+    - Member[models].Member[EnterpriseFeatureRole]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[EnterpriseFeatureUserRoleAssignment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
     - Member[models].Member[EnterpriseFulfillmentSource]
   - - Django.db.models.Model~Subclass
     - enterprise
@@ -333,7 +585,28 @@ extensions:
     - Member[models].Member[SoftDeletableModel]
   - - Django.db.models.Model~Subclass
     - enterprise
+    - Member[models].Member[SystemWideEnterpriseRole]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[SystemWideEnterpriseUserRoleAssignment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
     - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[UserRoleAssignment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[models].Member[UserRole]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[roles_api].Member[SystemWideEnterpriseRole]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[roles_api].Member[SystemWideEnterpriseUserRoleAssignment]
+  - - Django.db.models.Model~Subclass
+    - enterprise
+    - Member[rules].Member[EnterpriseFeatureUserRoleAssignment]
   - - Django.db.models.Model~Subclass
     - enterprise
     - Member[signals].Member[BlackboardEnterpriseCustomerConfiguration]
@@ -384,16 +657,202 @@ extensions:
     - Member[views].Member[EnterpriseEnrollmentSource]
   - - django.forms.BaseForm~Subclass
     - enterprise
+    - Member[admin].Member[AdminNotificationForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[EnterpriseCustomerAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[EnterpriseCustomerCatalogAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[EnterpriseCustomerIdentityProviderAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[EnterpriseCustomerReportingConfigAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
     - Member[admin].Member[EnterpriseFeatureUserRoleAssignmentForm]
   - - django.forms.BaseForm~Subclass
     - enterprise
     - Member[admin].Member[SystemWideEnterpriseUserRoleAssignmentForm]
   - - django.forms.BaseForm~Subclass
     - enterprise
+    - Member[admin].Member[forms].Member[AdminNotificationForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseCustomerAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseCustomerCatalogAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseCustomerIdentityProviderAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[EnterpriseCustomerReportingConfigAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
     - Member[admin].Member[forms].Member[EnterpriseFeatureUserRoleAssignmentForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[ManageLearnersDataSharingConsentForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[forms].Member[ManageLearnersForm]
   - - django.forms.BaseForm~Subclass
     - enterprise
     - Member[admin].Member[forms].Member[SystemWideEnterpriseUserRoleAssignmentForm]
   - - django.forms.BaseForm~Subclass
     - enterprise
+    - Member[admin].Member[forms].Member[TransmitEnterpriseCoursesForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
     - Member[admin].Member[forms].Member[UserRoleAssignmentAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[ManageLearnersDataSharingConsentForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[ManageLearnersForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[TransmitEnterpriseCoursesForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[forms].Member[EnterpriseLoginForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[forms].Member[EnterpriseSelectionForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[views].Member[EnterpriseLoginForm]
+  - - django.forms.BaseForm~Subclass
+    - enterprise
+    - Member[views].Member[EnterpriseSelectionForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - enterprise
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[admin].Member[actions].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[pagination].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[analytics_summary].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[coupon_codes].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_api_credentials].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_branding_configuration].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_catalog].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_invite_key].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_reporting].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_sso_configuration].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_subsidy_fulfillment].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[notifications].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[pending_enterprise_customer_user].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[plotly_auth].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - enterprise
+    - Member[heartbeat].Member[views].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - enterprise
+    - Member[views].Member[JsonResponse]
+  - - pickle~Alias
+    - enterprise
+    - Member[api_client].Member[discovery].Member[pickle]
+  - - rest_framework.exceptions.APIException~Subclass
+    - enterprise
+    - Member[api].Member[filters].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[decorators].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[base_views].Member[NotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_subsidy_fulfillment].Member[ValidationError]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[admin].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[pagination].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[analytics_summary].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[coupon_codes].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_api_credentials].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_branding_configuration].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_catalog].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_invite_key].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_reporting].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_customer_sso_configuration].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[enterprise_subsidy_fulfillment].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[notifications].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise
+    - Member[api].Member[v1].Member[views].Member[pending_enterprise_customer_user].Member[Response]

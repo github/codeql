@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[adapters].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[internal].Member[adapter].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[internal].Member[adapter].Member[bot].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[internal].Member[adapter].Member[event].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[internal].Member[matcher].Member[matcher].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[internal].Member[params].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[internal].Member[permission].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[internal].Member[rule].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[message].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[params].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[permission].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[plugin].Member[on].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[plugins].Member[single_session].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - nonebot
+    - Member[rule].Member[Event]
+  - - starlette.websockets.WebSocket~Subclass
+    - nonebot
+    - Member[drivers].Member[fastapi].Member[WebSocket]

@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_base_client].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_base_client].Member[BasePage]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_base_client].Member[FinalRequestOptions]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_base_client].Member[GenericModel]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_compat].Member[GenericModel]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_models].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_models].Member[FinalRequestOptions]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_models].Member[GenericModel]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_models].Member[RootModel]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[_types].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[pagination].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[types].Member[Completion]
+  - - pydantic.BaseModel~Subclass
+    - anthropic
+    - Member[types].Member[completion].Member[Completion]

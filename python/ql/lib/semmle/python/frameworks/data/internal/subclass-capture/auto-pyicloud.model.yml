@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - pyicloud
+    - Member[cmdline].Member[pickle]
+  - - requests.models.Response~Subclass
+    - pyicloud
+    - Member[services].Member[drive].Member[Response]

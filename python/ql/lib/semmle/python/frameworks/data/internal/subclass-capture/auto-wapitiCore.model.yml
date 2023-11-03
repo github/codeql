@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - wapitiCore
+    - Member[net].Member[explorer].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - wapitiCore
+    - Member[attack].Member[mod_wp_enum].Member[ET]

@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - concurrency
+    - Member[forms].Member[VersionField]
+  - - django.forms.BaseForm~Subclass
+    - concurrency
+    - Member[admin].Member[ConcurrentForm]
+  - - django.forms.BaseForm~Subclass
+    - concurrency
+    - Member[admin].Member[ConcurrentManagementForm]
+  - - django.forms.BaseForm~Subclass
+    - concurrency
+    - Member[admin].Member[ManagementForm]
+  - - django.forms.BaseForm~Subclass
+    - concurrency
+    - Member[forms].Member[ConcurrentForm]
+  - - django.forms.BaseForm~Subclass
+    - concurrency
+    - Member[forms].Member[ModelForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - concurrency
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - concurrency
+    - Member[admin].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - concurrency
+    - Member[views].Member[ConflictResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - concurrency
+    - Member[views].Member[HttpResponse]

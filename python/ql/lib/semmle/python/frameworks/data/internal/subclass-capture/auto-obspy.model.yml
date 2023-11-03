@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - obspy
+    - Member[clients].Member[filesystem].Member[miniseed].Member[BytesIO]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[clients].Member[fdsn].Member[client].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[clients].Member[fdsn].Member[mass_downloader].Member[utils].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[clients].Member[fdsn].Member[wadl_parser].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[clients].Member[seedlink].Member[basic_client].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[io].Member[arclink].Member[inventory].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[io].Member[quakeml].Member[core].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[io].Member[seiscomp].Member[core].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[io].Member[seiscomp].Member[event].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[io].Member[seiscomp].Member[inventory].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[io].Member[stationxml].Member[core].Member[etree]
+  - - lxml.etree~Alias
+    - obspy
+    - Member[io].Member[xseed].Member[parser].Member[etree]
+  - - pickle~Alias
+    - obspy
+    - Member[core].Member[stream].Member[pickle]

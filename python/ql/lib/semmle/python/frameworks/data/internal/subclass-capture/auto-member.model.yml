@@ -7,3 +7,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - member
     - Member[models].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - member
+    - Member[models].Member[CustomFacebookUser]
+  - - Django.db.models.Model~Subclass
+    - member
+    - Member[models].Member[FacebookModel]
+  - - Django.db.models.Model~Subclass
+    - member
+    - Member[models].Member[UserProfile]

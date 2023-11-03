@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - konoha
+    - Member[api].Member[v1].Member[batch_tokenization].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - konoha
+    - Member[api].Member[v1].Member[tokenization].Member[APIRouter]
+  - - pydantic.BaseModel~Subclass
+    - konoha
+    - Member[api].Member[v1].Member[batch_tokenization].Member[TokenizeParameter]
+  - - pydantic.BaseModel~Subclass
+    - konoha
+    - Member[api].Member[v1].Member[tokenization].Member[TokenizeParameter]

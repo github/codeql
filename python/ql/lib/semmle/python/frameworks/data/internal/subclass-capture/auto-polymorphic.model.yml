@@ -27,6 +27,9 @@ extensions:
     - Member[formsets].Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - polymorphic
+    - Member[formsets].Member[models].Member[PolymorphicModel]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
     - Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - polymorphic
@@ -37,6 +40,27 @@ extensions:
   - - Django.db.models.Model~Subclass
     - polymorphic
     - Member[utils].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - polymorphic
+    - Member[utils].Member[PolymorphicModel]
+  - - django.forms.BaseForm~Subclass
+    - polymorphic
+    - Member[admin].Member[PolymorphicModelChoiceForm]
+  - - django.forms.BaseForm~Subclass
+    - polymorphic
+    - Member[admin].Member[forms].Member[PolymorphicModelChoiceForm]
+  - - django.forms.BaseForm~Subclass
+    - polymorphic
+    - Member[admin].Member[parentadmin].Member[PolymorphicModelChoiceForm]
+  - - django.forms.BaseForm~Subclass
+    - polymorphic
+    - Member[formsets].Member[generic].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - polymorphic
+    - Member[formsets].Member[models].Member[ModelForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - polymorphic
+    - Member[admin].Member[parentadmin].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponse~Subclass
     - polymorphic
     - Member[admin].Member[parentadmin].Member[TemplateResponse]

@@ -1,0 +1,9 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - urllib3.PoolManager~Subclass
+    - scout_apm
+    - Member[instruments].Member[urllib3].Member[HTTPConnectionPool]

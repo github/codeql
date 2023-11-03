@@ -10,3 +10,6 @@ extensions:
   - - Django.Views.View~Subclass
     - admin_auto_filters
     - Member[views].Member[Base]
+  - - django.http.response.JsonResponse~Subclass
+    - admin_auto_filters
+    - Member[views].Member[JsonResponse]

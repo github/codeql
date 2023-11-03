@@ -6,7 +6,28 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - voting
+    - Member[admin].Member[Vote]
+  - - Django.db.models.Model~Subclass
+    - voting
     - Member[managers].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - voting
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - voting
+    - Member[models].Member[Vote]
+  - - Django.db.models.Model~Subclass
+    - voting
+    - Member[templatetags].Member[voting_tags].Member[Vote]
+  - - Django.db.models.Model~Subclass
+    - voting
+    - Member[views].Member[Vote]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - voting
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - voting
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - voting
+    - Member[views].Member[HttpResponse]

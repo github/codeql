@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - rest_framework_dataclasses
+    - Member[serializers].Member[Model]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_dataclasses
+    - Member[fields].Member[ValidationError]

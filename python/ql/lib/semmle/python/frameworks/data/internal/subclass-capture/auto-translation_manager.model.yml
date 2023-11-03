@@ -1,0 +1,78 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - translation_manager
+    - Member[urls].Member[SyncView]
+  - - Django.Views.View~Subclass
+    - translation_manager
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - translation_manager
+    - Member[views].Member[SyncView]
+  - - Django.Views.View~Subclass
+    - translation_manager
+    - Member[views].Member[TranslationListView]
+  - - Django.Views.View~Subclass
+    - translation_manager
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[admin].Member[ProxyTranslationEntry]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[admin].Member[RemoteTranslationEntry]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[admin].Member[TranslationBackup]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[admin].Member[TranslationEntry]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[manager].Member[TranslationBackup]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[manager].Member[TranslationEntry]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[models].Member[ProxyTranslationEntry]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[models].Member[RemoteTranslationEntry]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[models].Member[TranslationBackup]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[models].Member[TranslationEntry]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[serializers].Member[TranslationEntry]
+  - - Django.db.models.Model~Subclass
+    - translation_manager
+    - Member[views].Member[TranslationEntry]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - translation_manager
+    - Member[admin].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - translation_manager
+    - Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - translation_manager
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - translation_manager
+    - Member[views].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - translation_manager
+    - Member[admin].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - translation_manager
+    - Member[views].Member[JsonResponse]
+  - - rest_framework.response.Response~Subclass
+    - translation_manager
+    - Member[views].Member[Response]

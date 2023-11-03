@@ -6,19 +6,79 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - shop
+    - Member[admin].Member[product].Member[CategoryModelMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - shop
     - Member[cascade].Member[auth].Member[ChoiceField]
   - - Django.Forms.Field~Subclass
     - shop
+    - Member[cascade].Member[catalog].Member[ProductSelectField]
+  - - Django.Forms.Field~Subclass
+    - shop
+    - Member[cascade].Member[plugin_base].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - shop
+    - Member[cascade].Member[plugin_base].Member[ProductSelectField]
+  - - Django.Forms.Field~Subclass
+    - shop
+    - Member[cascade].Member[processbar].Member[IntegerField]
+  - - Django.Forms.Field~Subclass
+    - shop
     - Member[forms].Member[wizards].Member[HTMLFormField]
+  - - Django.Forms.Field~Subclass
+    - shop
+    - Member[money].Member[fields].Member[MoneyFormField]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[urls].Member[auth].Member[AuthFormsView]
   - - Django.Views.View~Subclass
     - shop
     - Member[urls].Member[auth].Member[LoginView]
   - - Django.Views.View~Subclass
     - shop
+    - Member[urls].Member[auth].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - shop
     - Member[urls].Member[auth].Member[PasswordChangeView]
   - - Django.Views.View~Subclass
     - shop
+    - Member[urls].Member[auth].Member[PasswordResetRequestView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[urls].Member[rest_api].Member[AddressEditView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[urls].Member[rest_api].Member[CartViewSet]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[urls].Member[rest_api].Member[CheckoutViewSet]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[urls].Member[rest_api].Member[ProductSelectView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[urls].Member[rest_api].Member[WatchViewSet]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[address].Member[AddressEditView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[address].Member[GenericAPIView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[APIView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[AuthFormsView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[GenericAPIView]
+  - - Django.Views.View~Subclass
+    - shop
     - Member[views].Member[auth].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[LogoutView]
   - - Django.Views.View~Subclass
     - shop
     - Member[views].Member[auth].Member[OriginalLoginView]
@@ -28,6 +88,57 @@ extensions:
   - - Django.Views.View~Subclass
     - shop
     - Member[views].Member[auth].Member[PasswordChangeView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[PasswordResetConfirmView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[auth].Member[PasswordResetRequestView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[cart].Member[BaseViewSet]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[cart].Member[CartViewSet]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[cart].Member[WatchViewSet]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[catalog].Member[AddToCartView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[catalog].Member[ProductListView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[catalog].Member[ProductRetrieveView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[catalog].Member[ProductSelectView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[catalog].Member[SyncCatalogView]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[checkout].Member[CheckoutViewSet]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[checkout].Member[GenericViewSet]
+  - - Django.Views.View~Subclass
+    - shop
+    - Member[views].Member[order].Member[OrderView]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[admin].Member[defaults].Member[commodity].Member[Commodity]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[admin].Member[notification].Member[NotificationAttachment]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[admin].Member[notification].Member[Notification]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[admin].Member[order].Member[OrderPayment]
   - - Django.db.models.Model~Subclass
     - shop
     - Member[admin].Member[product].Member[Page]
@@ -42,28 +153,184 @@ extensions:
     - Member[forms].Member[auth].Member[EmailTemplate]
   - - Django.db.models.Model~Subclass
     - shop
+    - Member[forms].Member[wizards].Member[Commodity]
+  - - Django.db.models.Model~Subclass
+    - shop
     - Member[management].Member[commands].Member[shop].Member[CascadeClipboard]
   - - Django.db.models.Model~Subclass
     - shop
     - Member[management].Member[commands].Member[shop].Member[StaticPlaceholder]
   - - Django.db.models.Model~Subclass
     - shop
+    - Member[models].Member[NotificationAttachment]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[Notification]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[address].Member[BaseAddress]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[address].Member[BaseBillingAddress]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[address].Member[BaseShippingAddress]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[cart].Member[BaseCartItem]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[cart].Member[BaseCart]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[cart].Member[BaseProduct]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[customer].Member[BaseCustomer]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[address].Member[AddressModelMixin]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[address].Member[BaseBillingAddress]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[address].Member[BaseShippingAddress]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[address].Member[BillingAddress]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[address].Member[ShippingAddress]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[cart].Member[BaseBillingAddress]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[cart].Member[BaseCart]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[cart].Member[BaseShippingAddress]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[cart].Member[Cart]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[cart_item].Member[CartItem]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[commodity].Member[BaseProduct]
+  - - Django.db.models.Model~Subclass
+    - shop
     - Member[models].Member[defaults].Member[commodity].Member[CommodityTranslation]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[commodity].Member[Commodity]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[commodity].Member[ProductPage]
   - - Django.db.models.Model~Subclass
     - shop
     - Member[models].Member[defaults].Member[commodity].Member[TranslatedFieldsModel]
   - - Django.db.models.Model~Subclass
     - shop
+    - Member[models].Member[defaults].Member[customer].Member[BaseCustomer]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[customer].Member[Customer]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[delivery].Member[BaseDelivery]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[delivery].Member[Delivery]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[delivery_item].Member[BaseDeliveryItem]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[delivery_item].Member[DeliveryItem]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[mapping].Member[BaseProductImage]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[mapping].Member[BaseProductPage]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[mapping].Member[ProductImage]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[mapping].Member[ProductPage]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[order].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[defaults].Member[order_item].Member[OrderItem]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[delivery].Member[BaseDeliveryItem]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[delivery].Member[BaseDelivery]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[delivery].Member[BaseOrderItem]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[delivery].Member[BaseOrder]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[inventory].Member[BaseInventory]
+  - - Django.db.models.Model~Subclass
+    - shop
     - Member[models].Member[notification].Member[EmailTemplate]
   - - Django.db.models.Model~Subclass
     - shop
+    - Member[models].Member[notification].Member[NotificationAttachment]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[notification].Member[Notification]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[order].Member[BaseOrderItem]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[order].Member[BaseOrder]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[order].Member[BaseProduct]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[order].Member[OrderPayment]
+  - - Django.db.models.Model~Subclass
+    - shop
     - Member[models].Member[order].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[product].Member[BaseProduct]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[product].Member[PolymorphicModel]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[related].Member[BaseProductImage]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[related].Member[BaseProductPage]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[models].Member[related].Member[BaseProduct]
   - - Django.db.models.Model~Subclass
     - shop
     - Member[models].Member[related].Member[Page]
   - - Django.db.models.Model~Subclass
     - shop
     - Member[patches].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[payment].Member[workflows].Member[BaseOrder]
   - - Django.db.models.Model~Subclass
     - shop
     - Member[serializers].Member[auth].Member[Page]
@@ -75,7 +342,34 @@ extensions:
     - Member[templatetags].Member[shop_search_tags].Member[Placeholder]
   - - Django.db.models.Model~Subclass
     - shop
+    - Member[transition].Member[BaseOrder]
+  - - Django.db.models.Model~Subclass
+    - shop
     - Member[transition].Member[EmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - shop
+    - Member[transition].Member[Notification]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[admin].Member[customer].Member[CustomerChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[admin].Member[customer].Member[CustomerCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[admin].Member[customer].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[admin].Member[customer].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[admin].Member[delivery].Member[DeliveryForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[admin].Member[delivery].Member[OrderItemForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[admin].Member[notification].Member[NotificationForm]
   - - django.forms.BaseForm~Subclass
     - shop
     - Member[cascade].Member[catalog].Member[EntangledModelForm]
@@ -91,6 +385,18 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - shop
     - Member[forms].Member[auth].Member[Bootstrap3ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[auth].Member[ContinueAsGuestForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[auth].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[auth].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[forms].Member[auth].Member[PasswordResetRequestForm]
   - - django.forms.BaseForm~Subclass
     - shop
     - Member[forms].Member[auth].Member[RegisterUserForm]
@@ -141,6 +447,15 @@ extensions:
     - Member[forms].Member[checkout].Member[ShippingMethodForm]
   - - django.forms.BaseForm~Subclass
     - shop
+    - Member[forms].Member[wizards].Member[CommodityWizardForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[serializers].Member[auth].Member[PasswordResetRequestForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
+    - Member[urls].Member[auth].Member[ContinueAsGuestForm]
+  - - django.forms.BaseForm~Subclass
+    - shop
     - Member[urls].Member[auth].Member[RegisterUserForm]
   - - django.forms.BaseForm~Subclass
     - shop
@@ -148,3 +463,72 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - shop
     - Member[urls].Member[rest_api].Member[ShippingAddressForm]
+  - - django.http.request.HttpRequest~Subclass
+    - shop
+    - Member[templatetags].Member[shop_search_tags].Member[EmulateHttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - shop
+    - Member[templatetags].Member[shop_search_tags].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - shop
+    - Member[transition].Member[EmulateHttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - shop
+    - Member[transition].Member[HttpRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - shop
+    - Member[views].Member[catalog].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - shop
+    - Member[admin].Member[delivery].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - shop
+    - Member[admin].Member[order].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - shop
+    - Member[views].Member[address].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - shop
+    - Member[views].Member[auth].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - shop
+    - Member[views].Member[cart].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - shop
+    - Member[views].Member[catalog].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - shop
+    - Member[views].Member[checkout].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - shop
+    - Member[urls].Member[rest_api].Member[JsonResponse]
+  - - rest_framework.exceptions.APIException~Subclass
+    - shop
+    - Member[rest].Member[renderers].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - shop
+    - Member[views].Member[auth].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - shop
+    - Member[views].Member[checkout].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - shop
+    - Member[views].Member[order].Member[NotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - shop
+    - Member[views].Member[order].Member[PermissionDenied]
+  - - rest_framework.response.Response~Subclass
+    - shop
+    - Member[views].Member[address].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - shop
+    - Member[views].Member[auth].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - shop
+    - Member[views].Member[cart].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - shop
+    - Member[views].Member[catalog].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - shop
+    - Member[views].Member[checkout].Member[Response]

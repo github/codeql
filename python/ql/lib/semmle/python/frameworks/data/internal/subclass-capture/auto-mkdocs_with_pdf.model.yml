@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - mkdocs_with_pdf
+    - Member[drivers].Member[headless_chrome].Member[Logger]
+  - - logging.Logger~Subclass
+    - mkdocs_with_pdf
+    - Member[utils].Member[emoji_util].Member[Logger]
+  - - logging.Logger~Subclass
+    - mkdocs_with_pdf
+    - Member[utils].Member[iframe_util].Member[Logger]
+  - - logging.Logger~Subclass
+    - mkdocs_with_pdf
+    - Member[utils].Member[image_util].Member[Logger]
+  - - logging.Logger~Subclass
+    - mkdocs_with_pdf
+    - Member[utils].Member[layout_util].Member[Logger]
+  - - logging.Logger~Subclass
+    - mkdocs_with_pdf
+    - Member[utils].Member[tabbed_set_util].Member[Logger]

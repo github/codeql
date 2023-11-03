@@ -6,10 +6,178 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - example_project
+    - Member[articles].Member[views].Member[ArticleCreateView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[ArticleDeleteView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[ArticleDetailView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[ArticleListView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[ArticleUpdateView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[articles].Member[views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - example_project
     - Member[example].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[posts].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[posts].Member[views].Member[PostList]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[EmailChangeEmailsSentFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[EmailChangeFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[EmailChangeNotVerifiedFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[EmailChangeVerifiedFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[EmailChangeVerifyFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[ExampleCreateView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[ExampleListView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[ExampleProjectHomeView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[ExampleUpdateView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[HomeFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[LandingFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[LoginFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[LogoutFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[PasswordChangeFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[PasswordChangeSuccessFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[PasswordResetEmailSentFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[PasswordResetFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[PasswordResetNotVerifiedFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[PasswordResetSuccessFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[PasswordResetVerifiedFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[PasswordResetVerifyFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[SignupEmailSentFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[SignupFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[SignupNotVerifiedFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[SignupVerifiedFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[SignupVerifyFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[UsersMeChangeFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[UsersMeChangeSuccessFrontEnd]
+  - - Django.Views.View~Subclass
+    - example_project
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[admin].Member[ExampleModel]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[admin].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[models].Member[ArticleGroupObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[models].Member[ArticleUserObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[models].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[models].Member[BigGroupObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[models].Member[BigUserObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[models].Member[GroupObjectPermissionAbstract]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[models].Member[GroupObjectPermissionBase]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[models].Member[UserObjectPermissionAbstract]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[articles].Member[models].Member[UserObjectPermissionBase]
   - - Django.db.models.Model~Subclass
     - example_project
     - Member[articles].Member[views].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[bare_bones_app].Member[models].Member[Cat]
   - - Django.db.models.Model~Subclass
     - example_project
     - Member[core].Member[admin].Member[CustomUser]
@@ -24,7 +192,115 @@ extensions:
     - Member[main].Member[models].Member[User]
   - - Django.db.models.Model~Subclass
     - example_project
+    - Member[models].Member[ExampleModel]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[models].Member[JSignatureFieldsMixin]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[polls].Member[admin].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[polls].Member[admin].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[polls].Member[admin].Member[Poll]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[polls].Member[admin].Member[RelatedData]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[polls].Member[models].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[polls].Member[models].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[polls].Member[models].Member[Poll]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[polls].Member[models].Member[RelatedData]
+  - - Django.db.models.Model~Subclass
+    - example_project
     - Member[posts].Member[admin].Member[Post]
   - - Django.db.models.Model~Subclass
     - example_project
+    - Member[posts].Member[models].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - example_project
     - Member[posts].Member[views].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[posts].Member[views].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[regular_app].Member[models].Member[Dog]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[regular_app].Member[models].Member[Toy]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[views].Member[AcmeChallenge]
+  - - Django.db.models.Model~Subclass
+    - example_project
+    - Member[views].Member[ExampleModel]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[forms].Member[EmailChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[forms].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[forms].Member[PasswordChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[forms].Member[PasswordConfirmForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[forms].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[forms].Member[PasswordResetVerifiedForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[forms].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[forms].Member[UsersMeChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[main].Member[forms].Member[EmailForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[main].Member[views].Member[EmailForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[views].Member[EmailChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[views].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[views].Member[PasswordChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[views].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[views].Member[PasswordResetVerifiedForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[views].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - example_project
+    - Member[views].Member[UsersMeChangeForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - example_project
+    - Member[main].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - example_project
+    - Member[polls].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - example_project
+    - Member[views].Member[HttpResponseRedirect]

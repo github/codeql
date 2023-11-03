@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - flask_admin
+    - Member[base].Member[Blueprint]
+  - - flask.Response~Subclass
+    - flask_admin
+    - Member[contrib].Member[mongoengine].Member[view].Member[Response]
+  - - flask.Response~Subclass
+    - flask_admin
+    - Member[model].Member[base].Member[Response]
+  - - markupsafe.Markup~Subclass
+    - flask_admin
+    - Member[_backwards].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_admin
+    - Member[contrib].Member[geoa].Member[typefmt].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_admin
+    - Member[contrib].Member[mongoengine].Member[typefmt].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_admin
+    - Member[contrib].Member[mongoengine].Member[widgets].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_admin
+    - Member[contrib].Member[rediscli].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_admin
+    - Member[contrib].Member[sqla].Member[widgets].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_admin
+    - Member[form].Member[rules].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_admin
+    - Member[model].Member[typefmt].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_admin
+    - Member[model].Member[widgets].Member[Markup]

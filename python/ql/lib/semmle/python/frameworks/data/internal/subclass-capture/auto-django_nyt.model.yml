@@ -10,3 +10,24 @@ extensions:
   - - Django.db.models.Model~Subclass
     - django_nyt
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_nyt
+    - Member[models].Member[NotificationType]
+  - - Django.db.models.Model~Subclass
+    - django_nyt
+    - Member[models].Member[Notification]
+  - - Django.db.models.Model~Subclass
+    - django_nyt
+    - Member[models].Member[Settings]
+  - - Django.db.models.Model~Subclass
+    - django_nyt
+    - Member[models].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - django_nyt
+    - Member[utils].Member[Model]
+  - - django.forms.BaseForm~Subclass
+    - django_nyt
+    - Member[forms].Member[SettingsForm]
+  - - django.http.response.HttpResponse~Subclass
+    - django_nyt
+    - Member[decorators].Member[HttpResponse]

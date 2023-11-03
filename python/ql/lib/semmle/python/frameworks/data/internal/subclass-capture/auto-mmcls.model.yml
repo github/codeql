@@ -19,3 +19,9 @@ extensions:
   - - logging.Logger~Subclass
     - mmcls
     - Member[models].Member[backbones].Member[timm_backbone].Member[MMLogger]
+  - - pickle~Alias
+    - mmcls
+    - Member[datasets].Member[cifar].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - mmcls
+    - Member[datasets].Member[voc].Member[ET]

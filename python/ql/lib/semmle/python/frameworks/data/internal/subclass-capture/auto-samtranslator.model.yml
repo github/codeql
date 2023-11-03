@@ -1,0 +1,558 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[any_cfn_resource].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[Auth]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[CognitoAuthorizerIdentity]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[CognitoAuthorizer]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[Cors]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[DefinitionUri]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[Domain]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[EmbeddedConnector]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[EndpointConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[Globals]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[LambdaRequestAuthorizerIdentity]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[LambdaRequestAuthorizer]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[LambdaTokenAuthorizerIdentity]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[LambdaTokenAuthorizer]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[ResourcePolicy]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[Route53]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_api].Member[UsagePlan]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_application].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_application].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_application].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_application].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_application].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_application].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_connector].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_connector].Member[EmbeddedConnectorProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_connector].Member[EmbeddedConnector]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_connector].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_connector].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_connector].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_connector].Member[ResourceReference]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_connector].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_connector].Member[SourceReferenceProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[AlexaSkillEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[AlexaSkillEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[ApiAuth]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[ApiEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[ApiEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[CloudWatchEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[CloudWatchEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[CloudWatchLogsEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[CloudWatchLogsEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[CodeUri]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[CognitoEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[CognitoEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[DeadLetterConfig]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[DeadLetterQueue]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[DeploymentPreference]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[DocumentDBEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[DocumentDBEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[DynamoDBEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[DynamoDBEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[EmbeddedConnector]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[EventBridgeRuleEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[EventBridgeRuleEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[EventBridgeRuleTarget]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[EventInvokeConfig]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[EventInvokeDestinationConfig]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[EventInvokeOnFailure]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[EventInvokeOnSuccess]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[EventsScheduleProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[FunctionUrlConfig]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[Globals]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[Hooks]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[HttpApiAuth]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[HttpApiEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[HttpApiEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[IoTRuleEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[IoTRuleEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[KinesisEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[KinesisEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[MQEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[MQEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[MSKEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[MSKEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[Ref]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[RequestModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[RequestParameters]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[ResourcePolicy]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[S3EventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[S3Event]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[SNSEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[SNSEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[SQSEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[SQSEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[ScheduleEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[ScheduleV2EventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[ScheduleV2Event]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[SelfManagedKafkaEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[SelfManagedKafkaEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_function].Member[SqsSubscription]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[ApiKey]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Auth]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Authorizer]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Cache]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Caching]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[DataSources]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[DeltaSync]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[DomainName]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[DynamoDBDataSource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Function]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[LambdaAuthorizerConfig]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[LambdaConflictHandlerConfig]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[LambdaDataSource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Logging]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[OpenIDConnectConfig]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Resolver]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Runtime]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[Sync]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_graphqlapi].Member[UserPoolConfig]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[Auth]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[CorsConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[DefinitionUri]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[Domain]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[EmbeddedConnector]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[Globals]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[LambdaAuthorizerIdentity]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[LambdaAuthorizer]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[OAuth2Authorizer]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_httpapi].Member[Route53]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_layerversion].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_layerversion].Member[ContentUri]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_layerversion].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_layerversion].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_layerversion].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_layerversion].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_simpletable].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_simpletable].Member[EmbeddedConnector]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_simpletable].Member[Globals]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_simpletable].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_simpletable].Member[PrimaryKey]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_simpletable].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_simpletable].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_simpletable].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[ApiEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[ApiEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[Auth]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[CloudWatchEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[CloudWatchEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[DeadLetterConfig]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[EmbeddedConnector]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[EventBridgeRuleEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[EventBridgeRuleEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[EventBridgeRuleTarget]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[Globals]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[Properties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[ResourcePolicy]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[ScheduleEventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[ScheduleEvent]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[ScheduleTarget]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[ScheduleV2EventProperties]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[aws_serverless_statemachine].Member[ScheduleV2Event]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[common].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[common].Member[PassThroughProp]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[common].Member[Ref]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[common].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[schema].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[schema].Member[Globals]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[schema].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[schema].Member[SamModel]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[schema_source].Member[schema].Member[_ModelWithoutResources]
+  - - pydantic.BaseModel~Subclass
+    - samtranslator
+    - Member[internal].Member[utils].Member[utils].Member[PassThroughProp]

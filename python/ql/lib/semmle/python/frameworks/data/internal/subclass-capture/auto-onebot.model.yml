@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - onebot
+    - Member[utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - onebot
+    - Member[v11].Member[message].Member[BytesIO]
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[collator].Member[Event]
@@ -78,6 +84,9 @@ extensions:
     - Member[v11].Member[RequestEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
+    - Member[v11].Member[adapter].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - onebot
     - Member[v11].Member[adapter].Member[Event]
   - - pydantic.BaseModel~Subclass
     - onebot
@@ -90,7 +99,19 @@ extensions:
     - Member[v11].Member[bot].Member[MessageEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
+    - Member[v11].Member[bot].Member[Reply]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[config].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[Anonymous]
+  - - pydantic.BaseModel~Subclass
+    - onebot
     - Member[v11].Member[event].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[File]
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[v11].Member[event].Member[FriendAddNoticeEvent]
@@ -156,7 +177,16 @@ extensions:
     - Member[v11].Member[event].Member[PrivateMessageEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
+    - Member[v11].Member[event].Member[Reply]
+  - - pydantic.BaseModel~Subclass
+    - onebot
     - Member[v11].Member[event].Member[RequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[Sender]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v11].Member[event].Member[Status]
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[v11].Member[helpers].Member[Event]
@@ -166,6 +196,12 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[v12].Member[BotEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[BotSelf]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[BotStatus]
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[v12].Member[ChannelCreateEvent]
@@ -219,6 +255,9 @@ extensions:
     - Member[v12].Member[HeartbeatMetaEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
+    - Member[v12].Member[ImplVersion]
+  - - pydantic.BaseModel~Subclass
+    - onebot
     - Member[v12].Member[MessageEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
@@ -234,13 +273,22 @@ extensions:
     - Member[v12].Member[PrivateMessageEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
+    - Member[v12].Member[Reply]
+  - - pydantic.BaseModel~Subclass
+    - onebot
     - Member[v12].Member[RequestEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[v12].Member[StatusUpdateMetaEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
+    - Member[v12].Member[Status]
+  - - pydantic.BaseModel~Subclass
+    - onebot
     - Member[v12].Member[adapter].Member[BotEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[adapter].Member[Config]
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[v12].Member[adapter].Member[ConnectMetaEvent]
@@ -261,10 +309,22 @@ extensions:
     - Member[v12].Member[bot].Member[MessageEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
+    - Member[v12].Member[bot].Member[Reply]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[config].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - onebot
     - Member[v12].Member[event].Member[BaseEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[v12].Member[event].Member[BotEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[BotSelf]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[BotStatus]
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[v12].Member[event].Member[ChannelCreateEvent]
@@ -318,6 +378,9 @@ extensions:
     - Member[v12].Member[event].Member[HeartbeatMetaEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
+    - Member[v12].Member[event].Member[ImplVersion]
+  - - pydantic.BaseModel~Subclass
+    - onebot
     - Member[v12].Member[event].Member[MessageEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
@@ -333,7 +396,13 @@ extensions:
     - Member[v12].Member[event].Member[PrivateMessageEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
+    - Member[v12].Member[event].Member[Reply]
+  - - pydantic.BaseModel~Subclass
+    - onebot
     - Member[v12].Member[event].Member[RequestEvent]
   - - pydantic.BaseModel~Subclass
     - onebot
     - Member[v12].Member[event].Member[StatusUpdateMetaEvent]
+  - - pydantic.BaseModel~Subclass
+    - onebot
+    - Member[v12].Member[event].Member[Status]

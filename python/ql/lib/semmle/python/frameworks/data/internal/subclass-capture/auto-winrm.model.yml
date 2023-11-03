@@ -7,3 +7,15 @@ extensions:
   - - io.StringIO~Subclass
     - winrm
     - Member[vendor].Member[requests_kerberos].Member[kerberos_].Member[StringIO]
+  - - requests.models.Response~Subclass
+    - winrm
+    - Member[vendor].Member[requests_kerberos].Member[kerberos_].Member[Response]
+  - - requests.models.Response~Subclass
+    - winrm
+    - Member[vendor].Member[requests_kerberos].Member[kerberos_].Member[SanitizedResponse]
+  - - xml.etree.ElementTree~Subclass
+    - winrm
+    - Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - winrm
+    - Member[protocol].Member[ET]

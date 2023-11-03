@@ -1,0 +1,102 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[BatchItemError]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[LeapProject]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[ProblemCancelError]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[ProblemInfo]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[ProblemInitialStatus]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[ProblemJob]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[ProblemMetadata]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[ProblemStatusMaybeWithAnswer]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[ProblemStatusWithAnswer]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[ProblemStatus]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[ProblemSubmitError]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[Region]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[SolverConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[StructuredProblemAnswer]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[StructuredProblemData]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[UnstructuredProblemAnswer]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[UnstructuredProblemData]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[_LeapActiveProjectResponse]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[_LeapProjectTokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[_LeapProjectWrapper]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[_LeapProjectsResponse]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[_LeapProjectsWrapper]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[api].Member[models].Member[_LeapTokenWrapper]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[config].Member[ClientConfig]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[config].Member[PollingSchedule]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[config].Member[RequestRetryConfig]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[config].Member[models].Member[ClientConfig]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[config].Member[models].Member[PollingSchedule]
+  - - pydantic.BaseModel~Subclass
+    - dwave
+    - Member[cloud].Member[config].Member[models].Member[RequestRetryConfig]
+  - - urllib.parse.SplitResult~Subclass
+    - dwave
+    - Member[cloud].Member[auth].Member[server].Member[SplitResult]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - dwave
+    - Member[cloud].Member[auth].Member[server].Member[ThreadingWSGIServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - dwave
+    - Member[cloud].Member[auth].Member[server].Member[WSGIServer]

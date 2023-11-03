@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - smartfields
+    - Member[urls].Member[FileUploadView]
+  - - Django.Views.View~Subclass
+    - smartfields
+    - Member[views].Member[FileUploadView]
+  - - django.db.models.FileField~Subclass
+    - smartfields
+    - Member[fields].Member[FileField]
+  - - django.db.models.FileField~Subclass
+    - smartfields
+    - Member[fields].Member[ImageField]
+  - - django.db.models.FileField~Subclass
+    - smartfields
+    - Member[fields]Member[FileField]
+  - - django.db.models.FileField~Subclass
+    - smartfields
+    - Member[fields]Member[ImageField]

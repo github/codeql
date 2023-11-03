@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - neural_compressor
+    - Member[experimental].Member[graph_optimization].Member[pickle]
+  - - pickle~Alias
+    - neural_compressor
+    - Member[experimental].Member[mixed_precision].Member[pickle]
+  - - pickle~Alias
+    - neural_compressor
+    - Member[experimental].Member[quantization].Member[pickle]
+  - - pickle~Alias
+    - neural_compressor
+    - Member[experimental].Member[strategy].Member[strategy].Member[pickle]
+  - - pickle~Alias
+    - neural_compressor
+    - Member[mix_precision].Member[pickle]
+  - - pickle~Alias
+    - neural_compressor
+    - Member[quantization].Member[pickle]
+  - - pickle~Alias
+    - neural_compressor
+    - Member[strategy].Member[strategy].Member[pickle]
+  - - pickle~Alias
+    - neural_compressor
+    - Member[training].Member[pickle]
+  - - pickle~Alias
+    - neural_compressor
+    - Member[utils].Member[utility].Member[pickle]

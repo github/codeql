@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_token
+    - Member[handlers].Member[on_mint].Member[MintParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_token
+    - Member[handlers].Member[on_mint].Member[TzbtcStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_token
+    - Member[handlers].Member[on_transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_token
+    - Member[handlers].Member[on_transfer].Member[TzbtcStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_token
+    - Member[types].Member[tzbtc].Member[tezos_parameters].Member[mint].Member[MintParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_token
+    - Member[types].Member[tzbtc].Member[tezos_parameters].Member[transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_token
+    - Member[types].Member[tzbtc].Member[tezos_storage].Member[TzbtcStorage]

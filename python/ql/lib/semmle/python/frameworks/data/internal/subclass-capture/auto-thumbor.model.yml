@@ -1,0 +1,84 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - thumbor
+    - Member[engines].Member[extensions].Member[exif_orientation_editor].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - thumbor
+    - Member[engines].Member[gif].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - thumbor
+    - Member[engines].Member[pil].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - thumbor
+    - Member[utils].Member[BytesIO]
+  - - tornado.web.Application~Subclass
+    - thumbor
+    - Member[app].Member[ThumborServiceApp]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[app].Member[ImagingHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handler_lists].Member[blacklist].Member[BlacklistHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handler_lists].Member[healthcheck].Member[HealthcheckHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handler_lists].Member[upload].Member[ImageResourceHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handler_lists].Member[upload].Member[ImageUploadHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[ContextHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[ImageApiHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[blacklist].Member[BlacklistHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[blacklist].Member[ContextHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[healthcheck].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[healthcheck].Member[HealthcheckHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[image_resource].Member[ImageApiHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[image_resource].Member[ImageResourceHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[imaging].Member[ContextHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[imaging].Member[ImagingHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[upload].Member[ImageApiHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers].Member[upload].Member[ImageUploadHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers]Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers]Member[ContextHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - thumbor
+    - Member[handlers]Member[ImageApiHandler]

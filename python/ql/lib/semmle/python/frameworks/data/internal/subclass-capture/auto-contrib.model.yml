@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - contrib
+    - Member[time_series_expectations].Member[time_series_expectations].Member[generator].Member[StringIO]
+  - - lxml.etree~Alias
+    - contrib
+    - Member[experimental].Member[great_expectations_experimental].Member[expectations].Member[expect_column_values_to_match_xml_schema].Member[etree]
+  - - lxml.etree~Alias
+    - contrib
+    - Member[great_expectations_semantic_types_expectations].Member[great_expectations_semantic_types_expectations].Member[expectations].Member[expect_column_values_to_be_xml_parseable].Member[etree]

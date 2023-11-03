@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - session_security
+    - Member[urls].Member[PingView]
+  - - Django.Views.View~Subclass
+    - session_security
+    - Member[views].Member[PingView]

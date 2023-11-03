@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - nmap3
+    - Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - nmap3
+    - Member[nmap3].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - nmap3
+    - Member[nmapparser].Member[ET]

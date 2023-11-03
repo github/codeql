@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - unearth
+    - Member[auth].Member[Response]
+  - - requests.models.Response~Subclass
+    - unearth
+    - Member[collector].Member[Response]
+  - - requests.models.Response~Subclass
+    - unearth
+    - Member[session].Member[Response]
+  - - urllib.parse.SplitResult~Subclass
+    - unearth
+    - Member[auth].Member[SplitResult]

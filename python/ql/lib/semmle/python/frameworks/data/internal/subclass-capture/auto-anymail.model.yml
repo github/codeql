@@ -1,0 +1,213 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[AmazonSESInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[AmazonSESTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[MailerSendInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[MailerSendTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[MailgunInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[MailgunTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[MailjetInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[MailjetTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[MandrillCombinedWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[PostalInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[PostalTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[PostmarkInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[PostmarkTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[ResendTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[SendGridInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[SendGridTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[SendinBlueInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[SendinBlueTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[SparkPostInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[urls].Member[SparkPostTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[amazon_ses].Member[AmazonSESBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[amazon_ses].Member[AmazonSESInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[amazon_ses].Member[AmazonSESTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[amazon_ses].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[base].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[base].Member[AnymailBasicAuthMixin]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[base].Member[AnymailCoreWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[base].Member[View]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailersend].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailersend].Member[MailerSendBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailersend].Member[MailerSendInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailersend].Member[MailerSendTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailgun].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailgun].Member[MailgunBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailgun].Member[MailgunInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailgun].Member[MailgunTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailjet].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailjet].Member[MailjetInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mailjet].Member[MailjetTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mandrill].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mandrill].Member[AnymailCoreWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mandrill].Member[MandrillCombinedWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mandrill].Member[MandrillSignatureMixin]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[mandrill].Member[MandrillTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[postal].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[postal].Member[PostalBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[postal].Member[PostalInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[postal].Member[PostalTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[postmark].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[postmark].Member[PostmarkBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[postmark].Member[PostmarkInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[postmark].Member[PostmarkTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[resend].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[resend].Member[AnymailCoreWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[resend].Member[ResendTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[resend].Member[SvixWebhookValidationMixin]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sendgrid].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sendgrid].Member[SendGridInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sendgrid].Member[SendGridTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sendinblue].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sendinblue].Member[SendinBlueBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sendinblue].Member[SendinBlueInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sendinblue].Member[SendinBlueTrackingWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sparkpost].Member[AnymailBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sparkpost].Member[SparkPostBaseWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sparkpost].Member[SparkPostInboundWebhookView]
+  - - Django.Views.View~Subclass
+    - anymail
+    - Member[webhooks].Member[sparkpost].Member[SparkPostTrackingWebhookView]
+  - - django.http.response.HttpResponse~Subclass
+    - anymail
+    - Member[webhooks].Member[amazon_ses].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - anymail
+    - Member[webhooks].Member[base].Member[HttpResponse]

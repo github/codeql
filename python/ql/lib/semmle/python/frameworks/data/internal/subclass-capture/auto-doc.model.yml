@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - tornado.web.Application~Subclass
+    - doc
+    - Member[examples].Member[tornado_change_stream_example].Member[Application]
   - - tornado.web.RequestHandler~Subclass
     - doc
     - Member[examples].Member[tornado_change_stream_example].Member[ChangesHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - doc
+    - Member[examples].Member[tornado_change_stream_example].Member[MainHandler]

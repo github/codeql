@@ -7,6 +7,12 @@ extensions:
   - - Django.Views.View~Subclass
     - sandbox
     - Member[apps].Member[checkout].Member[views].Member[PaymentDetailsView]
+  - - Django.Views.View~Subclass
+    - sandbox
+    - Member[urls].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - sandbox
+    - Member[apps].Member[offers].Member[ChangesOwnerName]
   - - Django.db.models.Model~Subclass
     - sandbox
     - Member[apps].Member[user].Member[models].Member[AbstractBaseUser]
@@ -22,3 +28,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - sandbox
     - Member[apps].Member[user].Member[models].Member[ExtendedUserModel]
+  - - Django.db.models.Model~Subclass
+    - sandbox
+    - Member[apps].Member[user].Member[models].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - sandbox
+    - Member[dummyapp].Member[models].Member[DummyModel]

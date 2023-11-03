@@ -10,3 +10,6 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - django_mptt_admin
     - Member[django_mptt_admin_mixin].Member[TemplateResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - django_mptt_admin
+    - Member[django_mptt_admin_mixin].Member[JsonResponse]

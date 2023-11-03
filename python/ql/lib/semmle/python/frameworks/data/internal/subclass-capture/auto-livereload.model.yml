@@ -6,10 +6,22 @@ extensions:
   data:
   - - tornado.web.RequestHandler~Subclass
     - livereload
+    - Member[handlers].Member[ForceReloadHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - livereload
     - Member[handlers].Member[LiveReloadHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - livereload
+    - Member[handlers].Member[LiveReloadJSHandler]
   - - tornado.web.RequestHandler~Subclass
     - livereload
     - Member[handlers].Member[WebSocketHandler]
   - - tornado.web.RequestHandler~Subclass
     - livereload
+    - Member[server].Member[ForceReloadHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - livereload
     - Member[server].Member[LiveReloadHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - livereload
+    - Member[server].Member[LiveReloadJSHandler]

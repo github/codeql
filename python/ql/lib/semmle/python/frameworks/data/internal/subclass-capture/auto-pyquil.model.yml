@@ -1,0 +1,72 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[api].Member[_quantum_computer].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[external].Member[rpcq].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[external].Member[rpcq].Member[Edge]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[external].Member[rpcq].Member[GateInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[external].Member[rpcq].Member[MeasureInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[external].Member[rpcq].Member[Operator]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[external].Member[rpcq].Member[Qubit]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[noise].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[noise_gates].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[noise_gates].Member[Edge]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[noise_gates].Member[GateInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[_base].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[compiler].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[graph].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[qcs].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[transformers].Member[compiler_isa_to_graph].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[transformers].Member[graph_to_compiler_isa].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[transformers].Member[graph_to_compiler_isa].Member[GateInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[transformers].Member[graph_to_compiler_isa].Member[MeasureInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[transformers].Member[qcs_isa_to_compiler_isa].Member[CompilerISA]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[transformers].Member[qcs_isa_to_compiler_isa].Member[GateInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyquil
+    - Member[quantum_processor].Member[transformers].Member[qcs_isa_to_compiler_isa].Member[MeasureInfo]

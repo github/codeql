@@ -1,0 +1,138 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[parser].Member[AllOf]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[parser].Member[AnyOf]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[parser].Member[Array]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[parser].Member[JSFEnum]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[parser].Member[JSFTuple]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[parser].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[parser].Member[OneOf]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[AllOf]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[AnyOf]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[Array]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[Boolean]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[Integer]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[JSFEnum]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[JSFTuple]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[Null]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[Number]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[OneOf]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[String]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[_tuple].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[_tuple].Member[JSFTuple]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[allof].Member[AllOf]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[allof].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[anyof].Member[AnyOf]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[anyof].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[array].Member[Array]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[array].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[base].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[boolean].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[boolean].Member[Boolean]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[enum].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[enum].Member[JSFEnum]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[null].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[null].Member[Null]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[number].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[number].Member[Integer]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[number].Member[Number]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[object].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[object].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[object].Member[PropertyNames]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[oneof].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[oneof].Member[OneOf]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[string].Member[BaseSchema]
+  - - pydantic.BaseModel~Subclass
+    - jsf
+    - Member[schema_types].Member[string].Member[String]

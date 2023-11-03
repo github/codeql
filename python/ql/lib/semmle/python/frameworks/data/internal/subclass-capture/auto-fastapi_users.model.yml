@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - fastapi_users
+    - Member[fastapi_users].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_users
+    - Member[router].Member[auth].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_users
+    - Member[router].Member[oauth].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_users
+    - Member[router].Member[register].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_users
+    - Member[router].Member[reset].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_users
+    - Member[router].Member[users].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_users
+    - Member[router].Member[verify].Member[APIRouter]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[authentication].Member[transport].Member[bearer].Member[BearerResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[router].Member[auth].Member[ErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[router].Member[common].Member[ErrorCodeReasonModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[router].Member[common].Member[ErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[router].Member[oauth].Member[ErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[router].Member[oauth].Member[OAuth2AuthorizeResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[router].Member[register].Member[ErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[router].Member[reset].Member[ErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[router].Member[users].Member[ErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[router].Member[verify].Member[ErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[schemas].Member[BaseOAuthAccountMixin]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[schemas].Member[BaseOAuthAccount]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[schemas].Member[BaseUserCreate]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[schemas].Member[BaseUserUpdate]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[schemas].Member[BaseUser]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_users
+    - Member[schemas].Member[CreateUpdateDictModel]

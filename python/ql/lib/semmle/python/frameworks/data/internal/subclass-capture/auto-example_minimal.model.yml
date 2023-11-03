@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - example_minimal
+    - Member[ajax_datatable_views].Member[AjaxDatatableView]
+  - - Django.Views.View~Subclass
+    - example_minimal
+    - Member[ajax_datatable_views].Member[PermissionAjaxDatatableView]
   - - Django.db.models.Model~Subclass
     - example_minimal
     - Member[ajax_datatable_views].Member[Permission]

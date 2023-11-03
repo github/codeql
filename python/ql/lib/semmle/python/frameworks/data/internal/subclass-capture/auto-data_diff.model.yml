@@ -1,0 +1,84 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[TCloudApiDataDiff]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[TCloudApiOrgMeta]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[data_source].Member[TCloudApiDataSourceConfigSchema]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[data_source].Member[TCloudApiDataSource]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[data_source].Member[TDsConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TCloudApiDataDiffSummaryResult]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TCloudApiDataDiff]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TCloudApiDataSourceConfigSchema]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TCloudApiDataSourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TCloudApiDataSource]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TCloudApiOrgMeta]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TDsConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TSummaryResultColumnDiffStats]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TSummaryResultPrimaryKeyStats]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TSummaryResultSchemaStats]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[cloud].Member[datafold_api].Member[TSummaryResultValueStats]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt].Member[TCloudApiDataDiff]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt].Member[TCloudApiOrgMeta]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt].Member[TDatadiffConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt].Member[TDiffVars]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt_config_validators].Member[ManifestJsonConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt_config_validators].Member[RunResultsJsonConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt_parser].Member[ManifestJsonConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt_parser].Member[RunResultsJsonConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt_parser].Member[TDatadiffConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_diff
+    - Member[dbt_parser].Member[TDatadiffModelConfig]

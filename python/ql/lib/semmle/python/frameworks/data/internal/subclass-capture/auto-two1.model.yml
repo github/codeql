@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[urls].Member[ChannelViewSet]
+  - - Django.Views.View~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[views].Member[ChannelViewSet]
+  - - Django.Views.View~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[views].Member[ViewSet]
+  - - Django.db.models.Model~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[models].Member[BlockchainTransaction]
+  - - Django.db.models.Model~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[models].Member[PaymentChannelSpend]
+  - - Django.db.models.Model~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[models].Member[PaymentChannel]
+  - - django.http.response.HttpResponse~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[decorator].Member[PaymentRequiredResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[decorator].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[views].Member[Response]
+  - - flask.MethodView~Subclass
+    - two1
+    - Member[bitserv].Member[flask].Member[decorator].Member[Channel]
+  - - flask.Response~Subclass
+    - two1
+    - Member[bitserv].Member[flask].Member[decorator].Member[Response]
+  - - io.StringIO~Subclass
+    - two1
+    - Member[sell].Member[composer].Member[BytesIO]
+  - - rest_framework.exceptions.APIException~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[decorator].Member[ParseError]
+  - - rest_framework.response.Response~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[decorator].Member[PaymentRequiredResponse]
+  - - rest_framework.response.Response~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[decorator].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - two1
+    - Member[bitserv].Member[django].Member[views].Member[Response]

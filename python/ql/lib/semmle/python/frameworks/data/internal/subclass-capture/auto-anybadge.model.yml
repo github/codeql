@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - anybadge
+    - Member[server].Member[cli].Member[AnyBadgeHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - anybadge
+    - Member[server].Member[request_handler].Member[AnyBadgeHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - anybadge
+    - Member[server].Member[request_handler].Member[BaseHTTPRequestHandler]

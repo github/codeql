@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - Orange
+    - Member[misc].Member[server_embedder].Member[AsyncClient]
+  - - pickle~Alias
+    - Orange
+    - Member[misc].Member[utils].Member[embedder_utils].Member[pickle]
+  - - pickle~Alias
+    - Orange
+    - Member[widgets].Member[model].Member[owloadmodel].Member[pickle]
+  - - pickle~Alias
+    - Orange
+    - Member[widgets].Member[model].Member[owsavemodel].Member[pickle]

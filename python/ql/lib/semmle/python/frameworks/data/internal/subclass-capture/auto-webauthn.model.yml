@@ -1,0 +1,159 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[authentication].Member[generate_authentication_options].Member[PublicKeyCredentialDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[authentication].Member[generate_authentication_options].Member[PublicKeyCredentialRequestOptions]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[authentication].Member[verify_authentication_response].Member[AuthenticationCredential]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[authentication].Member[verify_authentication_response].Member[VerifiedAuthentication]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[authentication].Member[verify_authentication_response].Member[WebAuthnBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[decode_credential_public_key].Member[DecodedEC2PublicKey]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[decode_credential_public_key].Member[DecodedOKPPublicKey]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[decode_credential_public_key].Member[DecodedRSAPublicKey]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[decoded_public_key_to_cryptography].Member[DecodedEC2PublicKey]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[decoded_public_key_to_cryptography].Member[DecodedOKPPublicKey]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[decoded_public_key_to_cryptography].Member[DecodedRSAPublicKey]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[options_to_json].Member[PublicKeyCredentialCreationOptions]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[options_to_json].Member[PublicKeyCredentialRequestOptions]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[parse_authentication_credential_json].Member[AuthenticationCredential]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[parse_authenticator_data].Member[AuthenticatorDataFlags]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[parse_authenticator_data].Member[AuthenticatorData]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[parse_backup_flags].Member[AuthenticatorDataFlags]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[parse_backup_flags].Member[ParsedBackupFlags]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[parse_client_data_json].Member[CollectedClientData]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[parse_client_data_json].Member[TokenBinding]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[parse_registration_credential_json].Member[RegistrationCredential]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[AuthenticationCredential]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[AuthenticatorAssertionResponse]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[AuthenticatorDataFlags]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[AuthenticatorData]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[AuthenticatorSelectionCriteria]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[CollectedClientData]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[PublicKeyCredentialCreationOptions]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[PublicKeyCredentialDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[PublicKeyCredentialParameters]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[PublicKeyCredentialRequestOptions]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[PublicKeyCredentialRpEntity]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[PublicKeyCredentialUserEntity]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[RegistrationCredential]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[TokenBinding]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[helpers].Member[structs].Member[WebAuthnBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[formats].Member[android_safetynet].Member[SafetyNetJWSHeader]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[formats].Member[android_safetynet].Member[SafetyNetJWSPayload]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[formats].Member[android_safetynet].Member[WebAuthnBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[formats].Member[fido_u2f].Member[DecodedEC2PublicKey]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[formats].Member[tpm].Member[DecodedEC2PublicKey]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[formats].Member[tpm].Member[DecodedRSAPublicKey]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[generate_registration_options].Member[AuthenticatorSelectionCriteria]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[generate_registration_options].Member[PublicKeyCredentialCreationOptions]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[generate_registration_options].Member[PublicKeyCredentialDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[generate_registration_options].Member[PublicKeyCredentialParameters]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[generate_registration_options].Member[PublicKeyCredentialRpEntity]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[generate_registration_options].Member[PublicKeyCredentialUserEntity]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[verify_registration_response].Member[RegistrationCredential]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[verify_registration_response].Member[VerifiedRegistration]
+  - - pydantic.BaseModel~Subclass
+    - webauthn
+    - Member[registration].Member[verify_registration_response].Member[WebAuthnBaseModel]

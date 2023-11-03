@@ -1,0 +1,531 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - flask_openapi3
+    - Member[APIBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_openapi3
+    - Member[blueprint].Member[APIBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_openapi3
+    - Member[blueprint].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[APIBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - flask_openapi3
+    - Member[OpenAPI]
+  - - flask.Flask~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[OpenAPI]
+  - - flask.Flask~Subclass
+    - flask_openapi3
+    - Member[view].Member[OpenAPI]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[APISpec]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Components]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Discriminator]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Encoding]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[License]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[OAuthConfig]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[OAuthFlow]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[OAuthFlows]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[UnprocessableEntity]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[ValidationErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[XML]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[blueprint].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[blueprint].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[blueprint].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[APISpec]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Components]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Discriminator]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Encoding]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[OAuthConfig]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[OAuthFlow]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[OAuthFlows]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[UnprocessableEntity]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[ValidationErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[XML]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[callback].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[Components]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[components].Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[contact].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[discriminator].Member[Discriminator]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[encoding].Member[Encoding]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[encoding].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[encoding].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[example].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[external_documentation].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[header].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[header].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[info].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[info].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[info].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[license].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[link].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[link].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[media_type].Member[Encoding]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[media_type].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[media_type].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[media_type].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[media_type].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[oauth_flow].Member[OAuthFlow]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[oauth_flows].Member[OAuthFlow]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[oauth_flows].Member[OAuthFlows]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[operation].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[operation].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[operation].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[operation].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[operation].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[operation].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[operation].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[parameter].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[parameter].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[parameter].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[parameter].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[parameter].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[path_item].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[path_item].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[path_item].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[path_item].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[path_item].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[paths].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[reference].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[request_body].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[request_body].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[response].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[response].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[response].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[response].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[response].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[responses].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[responses].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[schema].Member[Discriminator]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[schema].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[schema].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[schema].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[schema].Member[XML]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[security_scheme].Member[OAuthFlows]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[security_scheme].Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[server].Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[server].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[server_variable].Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[tag].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[tag].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[validation_error].Member[UnprocessableEntity]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[validation_error].Member[ValidationErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models].Member[xml].Member[XML]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models]Member[APISpec]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[models]Member[OAuthConfig]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[APISpec]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[Components]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[OAuthConfig]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[openapi].Member[ValidationErrorModel]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[scaffold].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[scaffold].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[scaffold].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[types].Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[utils].Member[Encoding]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[utils].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[utils].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[utils].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[utils].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[utils].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[utils].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[utils].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[utils].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[view].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[view].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - flask_openapi3
+    - Member[view].Member[Tag]

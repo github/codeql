@@ -13,3 +13,6 @@ extensions:
   - - flask.MethodView~Subclass
     - flask
     - Member[MethodView]
+  - - markupsafe.Markup~Subclass
+    - flask
+    - Member[json].Member[tag].Member[Markup]

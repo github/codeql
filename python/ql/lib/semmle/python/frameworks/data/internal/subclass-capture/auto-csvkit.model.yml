@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - csvkit
+    - Member[convert].Member[fixed].Member[StringIO]
+  - - io.StringIO~Subclass
+    - csvkit
+    - Member[convert].Member[geojs].Member[StringIO]
+  - - io.StringIO~Subclass
+    - csvkit
+    - Member[utilities].Member[in2csv].Member[BytesIO]

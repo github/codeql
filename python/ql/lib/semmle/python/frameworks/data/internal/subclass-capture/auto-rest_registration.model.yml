@@ -4,12 +4,69 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[base].Member[APIView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[base].Member[BaseAPIView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[change_password].Member[BaseAPIView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[change_password].Member[ChangePasswordView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[login].Member[BaseAPIView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[login].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[login].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[profile].Member[BaseAPIView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[profile].Member[ProfileView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register].Member[BaseAPIView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register].Member[RegisterView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register].Member[VerifyRegistrationView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register_email].Member[BaseAPIView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register_email].Member[RegisterEmailView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register_email].Member[VerifyEmailView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[reset_password].Member[BaseAPIView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[reset_password].Member[ResetPasswordView]
+  - - Django.Views.View~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[reset_password].Member[SendResetPasswordLinkView]
   - - Django.db.models.Model~Subclass
     - rest_registration
     - Member[api].Member[views].Member[login].Member[AbstractBaseUser]
   - - Django.db.models.Model~Subclass
     - rest_registration
     - Member[auth_token_managers].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - rest_registration
+    - Member[checks].Member[Model]
   - - Django.db.models.Model~Subclass
     - rest_registration
     - Member[notifications].Member[email].Member[AbstractBaseUser]
@@ -24,6 +81,9 @@ extensions:
     - Member[utils].Member[users].Member[BaseUserAttrsProxy]
   - - Django.db.models.Model~Subclass
     - rest_registration
+    - Member[utils].Member[users].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - rest_registration
     - Member[utils].Member[users].Member[UserAttrsProxy]
   - - Django.db.models.Model~Subclass
     - rest_registration
@@ -34,3 +94,159 @@ extensions:
   - - Django.db.models.Model~Subclass
     - rest_registration
     - Member[verification_notifications].Member[AbstractBaseUser]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[change_password].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[login].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[profile].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register_email].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[reset_password].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_registration
+    - Member[utils].Member[responses].Member[Response]
+  - - pickle~Alias
+    - rest_registration
+    - Member[utils].Member[signers].Member[pickle]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[login].Member[LoginInvalid]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[login].Member[UserNotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register].Member[UserWithoutEmailNonverifiable]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register_email].Member[EmailAlreadyRegistered]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[reset_password].Member[UserNotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[auth_token_managers].Member[AuthTokenNotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[auth_token_managers].Member[AuthTokenNotRevoked]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[contrib].Member[verification_redirects].Member[views].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[AuthTokenError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[AuthTokenNotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[AuthTokenNotProvided]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[AuthTokenNotRevoked]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[BadRequest]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[EmailAlreadyRegistered]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[LoginInvalid]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[SignatureError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[SignatureExpired]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[SignatureInvalid]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[UserNotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[UserWithoutEmailNonverifiable]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[VerificationTemplatesNotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[exceptions].Member[_APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[utils].Member[users].Member[UserNotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[utils].Member[validation].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[utils].Member[verification].Member[SignatureExpired]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[utils].Member[verification].Member[SignatureInvalid]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_registration
+    - Member[verification_notifications].Member[VerificationTemplatesNotFound]
+  - - rest_framework.request.Request~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[change_password].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[login].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[profile].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register_email].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[reset_password].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - rest_registration
+    - Member[utils].Member[signers].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - rest_registration
+    - Member[utils].Member[verification].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - rest_registration
+    - Member[verification_notifications].Member[Request]
+  - - rest_framework.response.Response~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[change_password].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[login].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[profile].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[register_email].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_registration
+    - Member[api].Member[views].Member[reset_password].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_registration
+    - Member[utils].Member[responses].Member[Response]

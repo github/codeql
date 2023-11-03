@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - aiida
+    - Member[restapi].Member[api].Member[App]
+  - - flask.Flask~Subclass
+    - aiida
+    - Member[restapi].Member[api].Member[Flask]
   - - flask.MethodView~Subclass
     - aiida
     - Member[restapi].Member[resources].Member[BaseResource]
@@ -34,3 +40,36 @@ extensions:
   - - flask.MethodView~Subclass
     - aiida
     - Member[restapi].Member[resources].Member[User]
+  - - io.StringIO~Subclass
+    - aiida
+    - Member[tools].Member[archive].Member[implementations].Member[sqlite_zip].Member[writer].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - aiida
+    - Member[common].Member[log].Member[AiidaLoggerType]
+  - - pydantic.BaseModel~Subclass
+    - aiida
+    - Member[manage].Member[configuration].Member[config].Member[ConfigSchema]
+  - - pydantic.BaseModel~Subclass
+    - aiida
+    - Member[manage].Member[configuration].Member[config].Member[ConfigVersionSchema]
+  - - pydantic.BaseModel~Subclass
+    - aiida
+    - Member[manage].Member[configuration].Member[config].Member[GlobalOptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - aiida
+    - Member[manage].Member[configuration].Member[config].Member[ProcessControlConfig]
+  - - pydantic.BaseModel~Subclass
+    - aiida
+    - Member[manage].Member[configuration].Member[config].Member[ProfileOptionsSchema]
+  - - pydantic.BaseModel~Subclass
+    - aiida
+    - Member[manage].Member[configuration].Member[config].Member[ProfileSchema]
+  - - pydantic.BaseModel~Subclass
+    - aiida
+    - Member[manage].Member[configuration].Member[config].Member[ProfileStorageConfig]
+  - - sqlalchemy.orm.Session~Subclass
+    - aiida
+    - Member[storage].Member[psql_dos].Member[migrator].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - aiida
+    - Member[storage].Member[psql_dos].Member[orm].Member[utils].Member[Session]

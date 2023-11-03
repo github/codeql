@@ -1,0 +1,312 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[clients].Member[dbt].Member[slim_dbt_runner].Member[ConfigArgs]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[clients].Member[slack].Member[client].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[clients].Member[slack].Member[schema].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[clients].Member[slack].Member[slack_message_builder].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[alerts].Member[alert].Member[AlertSuppressionSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[alerts].Member[alert].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[alerts].Member[group_of_alerts].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[alerts].Member[malformed].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[alerts].Member[model].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[alerts].Member[schema].Member[alert].Member[AlertSuppressionSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[alerts].Member[source_freshness].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[alerts].Member[alert_filters].Member[SelectorFilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[alerts].Member[alerts].Member[SelectorFilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[filters].Member[filters].Member[ArtifactSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[filters].Member[filters].Member[FilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[filters].Member[filters].Member[FiltersSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[filters].Member[filters].Member[ModelRunsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[filters].Member[filters].Member[NormalizedModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[filters].Member[filters].Member[NormalizedSourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[filters].Member[filters].Member[TotalsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[filters].Member[schema].Member[FilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[filters].Member[schema].Member[FiltersSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[groups].Member[groups].Member[GroupItemSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[groups].Member[groups].Member[GroupsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[groups].Member[groups].Member[NormalizedExposureSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[groups].Member[groups].Member[NormalizedModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[groups].Member[groups].Member[NormalizedSourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[groups].Member[schema].Member[GroupItemSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[groups].Member[schema].Member[GroupsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[invocations].Member[invocations].Member[DbtInvocationSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[invocations].Member[invocations].Member[SelectorFilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[lineage].Member[lineage].Member[LineageNodeSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[lineage].Member[lineage].Member[LineageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[lineage].Member[lineage].Member[NodeDependsOnNodesSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[lineage].Member[schema].Member[LineageNodeSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[lineage].Member[schema].Member[LineageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[ExposureSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[FetcherModelRunSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[ModelCoverageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[ModelRunSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[ModelRunsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[ModelRunsWithTotalsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[ModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[NormalizedExposureSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[NormalizedModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[NormalizedSourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[SourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[TotalsModelRunsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[models].Member[TotalsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[ExposureSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[ExtendedBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[ModelCoverageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[ModelRunSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[ModelRunsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[ModelRunsWithTotalsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[ModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[NormalizedArtifactSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[NormalizedExposureSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[NormalizedModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[NormalizedSourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[SourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[TotalsModelRunsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[models].Member[schema].Member[TotalsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[report].Member[ModelCoverageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[report].Member[ModelRunsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[report].Member[NormalizedExposureSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[report].Member[NormalizedModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[report].Member[NormalizedSourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[report].Member[ReportDataEnvSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[report].Member[ReportDataSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[report].Member[SelectorFilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[report].Member[TotalsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[schema].Member[ReportDataEnvSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[schema].Member[ReportDataSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[report].Member[totals_utils].Member[TotalsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[selector].Member[schema].Member[SelectorSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[selector].Member[selector].Member[SelectorSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[api].Member[totals_schema].Member[TotalsSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[data_monitoring].Member[data_monitoring].Member[WarehouseInfo]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[data_monitoring].Member[data_monitoring_alerts].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[data_monitoring].Member[report].Member[data_monitoring_report].Member[ReportDataSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[data_monitoring].Member[report].Member[slack_report_summary_message_builder].Member[SelectorFilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[data_monitoring].Member[report].Member[slack_report_summary_message_builder].Member[SlackMessageSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[data_monitoring].Member[schema].Member[SelectorFilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[data_monitoring].Member[schema].Member[WarehouseInfo]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[data_monitoring].Member[selector_filter].Member[SelectorFilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[invocations].Member[invocations].Member[DbtInvocationSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[invocations].Member[schema].Member[DbtInvocationSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[lineage].Member[lineage].Member[NodeDependsOnNodesSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[lineage].Member[schema].Member[NodeDependsOnNodesSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[models].Member[ExposureSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[models].Member[ModelRunSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[models].Member[ModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[models].Member[SourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[schema].Member[ArtifactSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[schema].Member[ExposureSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[schema].Member[ExtendedBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[schema].Member[ModelRunSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[schema].Member[ModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[schema].Member[OwnerSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[monitor].Member[fetchers].Member[models].Member[schema].Member[SourceSchema]
+  - - pydantic.BaseModel~Subclass
+    - elementary
+    - Member[utils].Member[schema].Member[ExtendedBaseModel]

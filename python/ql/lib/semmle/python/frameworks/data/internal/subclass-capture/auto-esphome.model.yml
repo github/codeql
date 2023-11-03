@@ -6,6 +6,24 @@ extensions:
   data:
   - - tornado.web.RequestHandler~Subclass
     - esphome
+    - Member[dashboard].Member[dashboard].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[BoardsRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[DeleteRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[DownloadBinaryRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[DownloadListRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[EditRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
     - Member[dashboard].Member[dashboard].Member[EsphomeAceEditorHandler]
   - - tornado.web.RequestHandler~Subclass
     - esphome
@@ -39,4 +57,46 @@ extensions:
     - Member[dashboard].Member[dashboard].Member[EsphomeValidateHandler]
   - - tornado.web.RequestHandler~Subclass
     - esphome
+    - Member[dashboard].Member[dashboard].Member[EsphomeVersionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
     - Member[dashboard].Member[dashboard].Member[EsphomeVscodeHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[ImportRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[InfoRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[JsonConfigRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[ListDevicesHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[LoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[LogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[MainRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[PingRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[PrometheusServiceDiscoveryHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[SecretKeysRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[SerialPortRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[UndoDeleteRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - esphome
+    - Member[dashboard].Member[dashboard].Member[WizardRequestHandler]

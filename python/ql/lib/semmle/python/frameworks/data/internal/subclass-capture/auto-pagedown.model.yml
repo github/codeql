@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - pagedown
+    - Member[forms].Member[AdminPagedownField]
+  - - Django.Forms.Field~Subclass
+    - pagedown
+    - Member[forms].Member[PagedownField]
+  - - django.forms.BaseForm~Subclass
+    - pagedown
+    - Member[forms].Member[ImageUploadForm]
+  - - django.forms.BaseForm~Subclass
+    - pagedown
+    - Member[views].Member[ImageUploadForm]
+  - - django.http.response.JsonResponse~Subclass
+    - pagedown
+    - Member[views].Member[JsonResponse]

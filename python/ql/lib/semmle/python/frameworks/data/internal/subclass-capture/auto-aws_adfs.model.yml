@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[_azure_cloud_mfa_authenticator].Member[ET]
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[_azure_mfa_authenticator].Member[ET]
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[_duo_authenticator].Member[ET]
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[_duo_universal_prompt_authenticator].Member[ET]
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[_rsa_authenticator].Member[ET]
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[_silverfort_authenticator].Member[ET]
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[_symantec_vip_access].Member[ET]
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[account_aliases_fetcher].Member[ET]
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[authenticator].Member[ET]
+  - - lxml.etree~Alias
+    - aws_adfs
+    - Member[roles_assertion_extractor].Member[ET]

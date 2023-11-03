@@ -13,3 +13,15 @@ extensions:
   - - Django.Views.View~Subclass
     - table
     - Member[views].Member[FeedDataView]
+  - - Django.db.models.Model~Subclass
+    - table
+    - Member[models].Member[Person]
+  - - django.forms.BaseForm~Subclass
+    - table
+    - Member[forms].Member[QueryDataForm]
+  - - django.forms.BaseForm~Subclass
+    - table
+    - Member[views].Member[QueryDataForm]
+  - - django.http.response.HttpResponse~Subclass
+    - table
+    - Member[views].Member[HttpResponse]

@@ -4,12 +4,168 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - filer
+    - Member[fields].Member[file].Member[AdminFileFormField]
+  - - Django.Forms.Field~Subclass
+    - filer
+    - Member[fields].Member[folder].Member[AdminFolderFormField]
+  - - Django.Forms.Field~Subclass
+    - filer
+    - Member[fields].Member[image].Member[AdminFileFormField]
+  - - Django.Forms.Field~Subclass
+    - filer
+    - Member[fields].Member[image].Member[AdminImageFormField]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[Clipboard]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[FolderPermission]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[ThumbnailOption]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[clipboardadmin].Member[ClipboardItem]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[clipboardadmin].Member[Clipboard]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[clipboardadmin].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[fileadmin].Member[BaseImage]
   - - Django.db.models.Model~Subclass
     - filer
     - Member[admin].Member[fileadmin].Member[EasyThumbnail]
   - - Django.db.models.Model~Subclass
     - filer
+    - Member[admin].Member[fileadmin].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[FolderPermission]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
     - Member[admin].Member[folderadmin].Member[Thumbnail]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[forms].Member[ThumbnailOption]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[views].Member[Clipboard]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[admin].Member[views].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[fields].Member[file].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[fields].Member[folder].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[management].Member[commands].Member[generate_thumbnails].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[management].Member[commands].Member[import_files].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[management].Member[commands].Member[import_files].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[BaseImage]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[ClipboardItem]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[Clipboard]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[FolderPermission]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[PolymorphicModel]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[ThumbnailOption]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[abstract].Member[BaseImage]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[abstract].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[clipboardmodels].Member[ClipboardItem]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[clipboardmodels].Member[Clipboard]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[filemodels].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[filemodels].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[filemodels].Member[PolymorphicModel]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[foldermodels].Member[FolderPermission]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[foldermodels].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[imagemodels].Member[BaseImage]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[imagemodels].Member[Image]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[thumbnailoptionmodels].Member[ThumbnailOption]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[tools].Member[Clipboard]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[virtualitems].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[models].Member[virtualitems].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[server].Member[views].Member[File]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[templatetags].Member[filer_admin_tags].Member[BaseImage]
+  - - Django.db.models.Model~Subclass
+    - filer
+    - Member[views].Member[File]
   - - django.db.models.FileField~Subclass
     - filer
     - Member[fields].Member[multistorage_file].Member[MultiStorageFileField]
@@ -19,3 +175,72 @@ extensions:
   - - django.db.models.FileField~Subclass
     - filer
     - Member[models].Member[filemodels].Member[MultiStorageFileField]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[fileadmin].Member[FileAdminChangeFrom]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[AddFolderPopupForm]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[CopyFilesAndFoldersForm]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[RenameFilesForm]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[ResizeImagesForm]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[forms].Member[CopyFilesAndFoldersForm]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[forms].Member[RenameFilesForm]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[forms].Member[ResizeImagesForm]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[imageadmin].Member[FileAdminChangeFrom]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[imageadmin].Member[ImageAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - filer
+    - Member[admin].Member[views].Member[NewFolderForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - filer
+    - Member[admin].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseNotModified~Subclass
+    - filer
+    - Member[server].Member[backends].Member[default].Member[HttpResponseNotModified]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - filer
+    - Member[admin].Member[fileadmin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - filer
+    - Member[admin].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - filer
+    - Member[admin].Member[fileadmin].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - filer
+    - Member[admin].Member[folderadmin].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - filer
+    - Member[server].Member[backends].Member[default].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - filer
+    - Member[server].Member[backends].Member[nginx].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - filer
+    - Member[server].Member[backends].Member[xsendfile].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - filer
+    - Member[admin].Member[clipboardadmin].Member[JsonResponse]
+  - - io.StringIO~Subclass
+    - filer
+    - Member[fields].Member[multistorage_file].Member[BytesIO]

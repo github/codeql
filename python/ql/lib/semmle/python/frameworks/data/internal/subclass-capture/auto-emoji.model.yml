@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - emoji
+    - Member[urls].Member[EmojiJSONListView]
+  - - Django.Views.View~Subclass
+    - emoji
+    - Member[views].Member[EmojiJSONListView]
+  - - Django.Views.View~Subclass
+    - emoji
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponse~Subclass
+    - emoji
+    - Member[views].Member[HttpResponse]

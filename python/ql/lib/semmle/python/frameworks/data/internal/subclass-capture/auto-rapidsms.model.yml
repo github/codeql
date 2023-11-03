@@ -7,6 +7,9 @@ extensions:
   - - Django.Forms.Field~Subclass
     - rapidsms
     - Member[contrib].Member[messaging].Member[forms].Member[AutoCompleteSelectMultipleField]
+  - - Django.Forms.Field~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[forms].Member[SmallFileField]
   - - Django.Views.View~Subclass
     - rapidsms
     - Member[backends].Member[http].Member[views].Member[BaseHttpBackendView]
@@ -19,6 +22,12 @@ extensions:
   - - Django.Views.View~Subclass
     - rapidsms
     - Member[backends].Member[kannel].Member[views].Member[BaseHttpBackendView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[views].Member[DeliveryReportView]
   - - Django.Views.View~Subclass
     - rapidsms
     - Member[backends].Member[kannel].Member[views].Member[KannelBackendView]
@@ -40,3 +49,174 @@ extensions:
   - - Django.Views.View~Subclass
     - rapidsms
     - Member[views].Member[RapidSMSLogoutView]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[admin].Member[App]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[admin].Member[Backend]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[admin].Member[Connection]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[admin].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[backends].Member[database].Member[models].Member[BackendMessage]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[admin].Member[DeliveryReport]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[models].Member[DeliveryReport]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[views].Member[DeliveryReport]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[messagelog].Member[admin].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[messagelog].Member[app].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[messagelog].Member[models].Member[Connection]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[messagelog].Member[models].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[messagelog].Member[models].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[messagelog].Member[tables].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[messagelog].Member[views].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[messaging].Member[lookups].Member[Connection]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[forms].Member[Connection]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[forms].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[handlers].Member[register].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[tables].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[views].Member[Backend]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[views].Member[Connection]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[views].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[management].Member[commands].Member[update_apps].Member[App]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[management].Member[commands].Member[update_backends].Member[Backend]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[models].Member[App]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[models].Member[Backend]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[models].Member[ConnectionBase]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[models].Member[Connection]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[models].Member[ContactBase]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[models].Member[Contact]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[router].Member[db].Member[admin].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[router].Member[db].Member[admin].Member[Transmission]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[router].Member[db].Member[models].Member[Connection]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[router].Member[db].Member[models].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - rapidsms
+    - Member[router].Member[db].Member[models].Member[Transmission]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[backends].Member[http].Member[forms].Member[BaseHttpForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[backends].Member[http].Member[forms].Member[GenericHttpForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[backends].Member[http].Member[views].Member[GenericHttpForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[forms].Member[BaseHttpForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[forms].Member[KannelForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[views].Member[KannelForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[backends].Member[vumi].Member[forms].Member[BaseHttpForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[backends].Member[vumi].Member[forms].Member[VumiForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[backends].Member[vumi].Member[views].Member[VumiForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[contrib].Member[messaging].Member[forms].Member[MessageForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[contrib].Member[messaging].Member[views].Member[MessageForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[forms].Member[BulkRegistrationForm]
+  - - django.forms.BaseForm~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[views].Member[BulkRegistrationForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - rapidsms
+    - Member[backends].Member[http].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - rapidsms
+    - Member[contrib].Member[messaging].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - rapidsms
+    - Member[contrib].Member[registration].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - rapidsms
+    - Member[backends].Member[http].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - rapidsms
+    - Member[backends].Member[kannel].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - rapidsms
+    - Member[backends].Member[vumi].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - rapidsms
+    - Member[contrib].Member[messaging].Member[views].Member[HttpResponse]

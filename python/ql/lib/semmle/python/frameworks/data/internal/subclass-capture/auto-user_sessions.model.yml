@@ -6,10 +6,28 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - user_sessions
+    - Member[urls].Member[SessionDeleteOtherView]
+  - - Django.Views.View~Subclass
+    - user_sessions
     - Member[urls].Member[SessionDeleteView]
+  - - Django.Views.View~Subclass
+    - user_sessions
+    - Member[urls].Member[SessionListView]
   - - Django.Views.View~Subclass
     - user_sessions
     - Member[views].Member[BaseDetailView]
   - - Django.Views.View~Subclass
     - user_sessions
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - user_sessions
+    - Member[views].Member[SessionDeleteOtherView]
+  - - Django.Views.View~Subclass
+    - user_sessions
     - Member[views].Member[SessionDeleteView]
+  - - Django.Views.View~Subclass
+    - user_sessions
+    - Member[views].Member[SessionListView]
+  - - Django.Views.View~Subclass
+    - user_sessions
+    - Member[views].Member[View]

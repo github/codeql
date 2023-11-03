@@ -1,0 +1,588 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - pyunifiprotect
+    - Member[websocket].Member[ClientSession]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Bootstrap]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Bridge]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Chime]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Liveview]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[ProtectModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[SmartDetectTrack]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[api].Member[Viewer]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[base].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[base].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[base].Member[ProtectBaseObject]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[chimes].Member[Chime]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[doorlocks].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[lights].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[liveviews].Member[Liveview]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[nvr].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[sensors].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[cli].Member[viewers].Member[Viewer]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Bootstrap]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Bridge]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[CameraChannel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Chime]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[CloudAccount]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[DoorbellMessage]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[LCDMessage]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Liveview]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[NVRLocation]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Permission]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[ProtectBaseObject]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[ProtectDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[ProtectModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[SmartDetectItem]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[SmartDetectTrack]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[UserLocation]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[Viewer]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[BluetoothConnectionState]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[Bridge]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[ProtectBaseObject]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[ProtectDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[ProtectModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[ProtectMotionDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[WifiConnectionState]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[WiredConnectionState]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[base].Member[WirelessConnectionState]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Bootstrap]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Bridge]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Chime]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Liveview]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[ProtectBaseObject]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[ProtectDeviceRef]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[ProtectModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[bootstrap].Member[Viewer]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[Bridge]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[CloudAccount]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[Liveview]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[ProtectModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[UserLocation]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[convert].Member[Viewer]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[BatteryStats]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Bridge]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[CameraChannel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[CameraEventStats]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[CameraFeatureFlags]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[CameraHomekitSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[CameraLenses]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[CameraStats]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[CameraZone]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[ChimeFeatureFlags]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Chime]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Doorlock]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[EventStats]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[HotplugExtender]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Hotplug]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[ISPSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[LCDMessage]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[LEDSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[LightDeviceSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[LightModeSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[LightOnSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Liveview]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[MotionZone]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[OSDSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[PIRSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[PrivacyMaskCapability]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[ProtectAdoptableDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[ProtectBaseObject]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[ProtectMotionDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[RecordingSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[SensorBatteryStatus]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[SensorSensitivitySettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[SensorSettingsBase]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[SensorStat]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[SensorStats]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[SensorThresholdSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[SmartDetectSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[SmartMotionZone]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[SpeakerSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[StorageStats]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[TalkbackSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[VideoStats]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[Viewer]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[devices].Member[WifiStats]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[CPUInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[CameraZone]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[Camera]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[DoorbellMessage]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[DoorbellSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[EventMetadata]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[LicensePlateMetadata]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[Light]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[LiveviewSlot]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[Liveview]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[MemoryInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[NVRFeatureFlags]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[NVRLocation]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[NVR]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[PortConfig]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[ProtectBaseObject]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[ProtectDeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[RecordingTypeDistribution]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[ResolutionDistribution]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[SmartDetectItem]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[SmartDetectTrack]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[StorageDevice]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[StorageDistribution]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[StorageInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[StorageSpace]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[StorageStats]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[SystemInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[TMPFSInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[UOSDisk]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[UOSSpace]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[UOSStorage]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[UserLocation]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[nvr].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[user].Member[CloudAccount]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[user].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[user].Member[Permission]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[user].Member[ProtectBaseObject]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[user].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[user].Member[ProtectModel]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[user].Member[UserFeatureFlags]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[user].Member[UserLocation]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[data].Member[websocket].Member[ProtectModelWithId]
+  - - pydantic.BaseModel~Subclass
+    - pyunifiprotect
+    - Member[stream].Member[Camera]

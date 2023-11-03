@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - mocket
+    - Member[mockhttp].Member[BaseHTTPRequestHandler]
+  - - io.StringIO~Subclass
+    - mocket
+    - Member[mocket].Member[MocketSocketCore]
+  - - io.StringIO~Subclass
+    - mocket
+    - Member[utils].Member[MocketSocketCore]

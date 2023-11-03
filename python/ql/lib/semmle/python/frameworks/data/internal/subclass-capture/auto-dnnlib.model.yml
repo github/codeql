@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - dnnlib
+    - Member[submission].Member[submit].Member[pickle]
+  - - pickle~Alias
+    - dnnlib
+    - Member[util].Member[pickle]

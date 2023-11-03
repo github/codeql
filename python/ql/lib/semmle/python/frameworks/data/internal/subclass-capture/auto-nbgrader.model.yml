@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - nbgrader
+    - Member[apps].Member[baseapp].Member[StringIO]
+  - - logging.Logger~Subclass
+    - nbgrader
+    - Member[utils].Member[Logger]
   - - tornado.web.RequestHandler~Subclass
     - nbgrader
     - Member[server_extensions].Member[assignment_list].Member[handlers].Member[AssignmentActionHandler]

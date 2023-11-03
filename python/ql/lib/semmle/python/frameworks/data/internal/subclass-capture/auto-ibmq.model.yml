@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - ibmq
+    - Member[jupyter].Member[live_data_widget].Member[BytesIO]
+  - - requests.models.Response~Subclass
+    - ibmq
+    - Member[api].Member[session].Member[Response]

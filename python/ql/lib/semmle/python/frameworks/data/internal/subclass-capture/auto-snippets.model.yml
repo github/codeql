@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - snippets
+    - Member[views].Member[SnippetDetail]
+  - - Django.Views.View~Subclass
+    - snippets
+    - Member[views].Member[SnippetList]
+  - - Django.Views.View~Subclass
+    - snippets
+    - Member[views].Member[SnippetViewerList]
+  - - Django.db.models.Model~Subclass
+    - snippets
+    - Member[models].Member[SnippetViewer]
+  - - Django.db.models.Model~Subclass
+    - snippets
+    - Member[models].Member[Snippet]
+  - - Django.db.models.Model~Subclass
+    - snippets
+    - Member[serializers].Member[SnippetViewer]
+  - - Django.db.models.Model~Subclass
+    - snippets
+    - Member[serializers].Member[Snippet]
+  - - Django.db.models.Model~Subclass
+    - snippets
+    - Member[views].Member[SnippetViewer]
+  - - Django.db.models.Model~Subclass
+    - snippets
+    - Member[views].Member[Snippet]

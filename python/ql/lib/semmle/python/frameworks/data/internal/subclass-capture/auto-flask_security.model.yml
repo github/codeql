@@ -4,6 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - flask_security
+    - Member[views].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - flask_security
+    - Member[utils].Member[Flask]
+  - - flask.Response~Subclass
+    - flask_security
+    - Member[decorators].Member[Response]
+  - - flask.Response~Subclass
+    - flask_security
+    - Member[tf_plugin].Member[Response]
+  - - flask.Response~Subclass
+    - flask_security
+    - Member[utils].Member[Response]
+  - - markupsafe.Markup~Subclass
+    - flask_security
+    - Member[forms].Member[Markup]
   - - pydantic.BaseModel~Subclass
     - flask_security
     - Member[webauthn].Member[PublicKeyCredentialDescriptor]

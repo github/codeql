@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - confluent_kafka
+    - Member[avro].Member[serializer].Member[message_serializer].Member[ContextStringIO]
+  - - io.StringIO~Subclass
+    - confluent_kafka
+    - Member[schema_registry].Member[avro].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - confluent_kafka
+    - Member[schema_registry].Member[avro].Member[_ContextStringIO]
+  - - io.StringIO~Subclass
+    - confluent_kafka
+    - Member[schema_registry].Member[json_schema].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - confluent_kafka
+    - Member[schema_registry].Member[json_schema].Member[_ContextStringIO]
+  - - io.StringIO~Subclass
+    - confluent_kafka
+    - Member[schema_registry].Member[protobuf].Member[_ContextStringIO]

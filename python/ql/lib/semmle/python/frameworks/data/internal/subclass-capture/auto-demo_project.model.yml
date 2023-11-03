@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - demo_project
+    - Member[urls].Member[TemplateView]
+  - - fastapi.APIRouter~Subclass
+    - demo_project
+    - Member[api].Member[api_v1].Member[api].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - demo_project
+    - Member[api].Member[api_v1].Member[endpoints].Member[graph].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - demo_project
+    - Member[api].Member[api_v1].Member[endpoints].Member[hello_world].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - demo_project
+    - Member[api].Member[api_v1].Member[endpoints].Member[hello_world_multi_auth].Member[APIRouter]
+  - - httpx.Client~Subclass
+    - demo_project
+    - Member[api].Member[api_v1].Member[endpoints].Member[graph].Member[AsyncClient]
+  - - pydantic.BaseModel~Subclass
+    - demo_project
+    - Member[api].Member[api_v1].Member[endpoints].Member[hello_world].Member[HelloWorldResponse]
+  - - pydantic.BaseModel~Subclass
+    - demo_project
+    - Member[api].Member[api_v1].Member[endpoints].Member[hello_world].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - demo_project
+    - Member[api].Member[api_v1].Member[endpoints].Member[hello_world_multi_auth].Member[TokenType]
+  - - pydantic.BaseModel~Subclass
+    - demo_project
+    - Member[api].Member[api_v1].Member[endpoints].Member[hello_world_multi_auth].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - demo_project
+    - Member[api].Member[dependencies].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - demo_project
+    - Member[schemas].Member[hello_world].Member[HelloWorldResponse]
+  - - pydantic.BaseModel~Subclass
+    - demo_project
+    - Member[schemas].Member[hello_world].Member[TokenType]
+  - - pydantic.BaseModel~Subclass
+    - demo_project
+    - Member[schemas].Member[hello_world].Member[User]

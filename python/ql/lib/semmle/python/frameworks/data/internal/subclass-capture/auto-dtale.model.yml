@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - dtale
+    - Member[Blueprint]
+  - - flask.Flask~Subclass
+    - dtale
+    - Member[app].Member[DtaleFlask]
+  - - flask.Flask~Subclass
+    - dtale
+    - Member[app].Member[Flask]
+  - - flask.Response~Subclass
+    - dtale
+    - Member[views].Member[Response]
   - - io.StringIO~Subclass
     - dtale
     - Member[cli].Member[clickutils].Member[BytesIO]

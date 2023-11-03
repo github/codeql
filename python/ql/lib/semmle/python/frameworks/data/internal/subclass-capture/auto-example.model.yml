@@ -6,4 +6,22 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - example
+    - Member[models].Member[ConfigurationModel]
+  - - Django.db.models.Model~Subclass
+    - example
+    - Member[models].Member[ExampleConfig]
+  - - Django.db.models.Model~Subclass
+    - example
+    - Member[models].Member[ExampleDecoratorConfig]
+  - - Django.db.models.Model~Subclass
+    - example
+    - Member[models].Member[ExampleDeserializeConfig]
+  - - Django.db.models.Model~Subclass
+    - example
+    - Member[models].Member[ExampleKeyedConfig]
+  - - Django.db.models.Model~Subclass
+    - example
+    - Member[models].Member[ManyToManyExampleConfig]
+  - - Django.db.models.Model~Subclass
+    - example
     - Member[models].Member[User]

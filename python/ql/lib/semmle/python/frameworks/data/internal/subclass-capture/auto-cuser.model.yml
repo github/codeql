@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - cuser
+    - Member[forms].Member[ReadOnlyPasswordHashField]
   - - Django.db.models.Model~Subclass
     - cuser
     - Member[admin].Member[CUser]
@@ -40,3 +43,18 @@ extensions:
   - - Django.db.models.Model~Subclass
     - cuser
     - Member[models].Member[PermissionsMixin]
+  - - django.forms.BaseForm~Subclass
+    - cuser
+    - Member[admin].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - cuser
+    - Member[admin].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - cuser
+    - Member[forms].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - cuser
+    - Member[forms].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - cuser
+    - Member[forms].Member[UserCreationForm]

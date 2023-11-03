@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - pykrx
+    - Member[website].Member[naver].Member[et]
+  - - xml.etree.ElementTree~Subclass
+    - pykrx
+    - Member[website].Member[naver].Member[wrap].Member[et]

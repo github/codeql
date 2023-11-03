@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - cms
+    - Member[forms].Member[fields].Member[LazyChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cms
+    - Member[forms].Member[fields].Member[PageSelectFormField]
+  - - Django.Forms.Field~Subclass
+    - cms
+    - Member[forms].Member[fields].Member[PageSmartLinkField]
+  - - Django.Forms.Field~Subclass
+    - cms
+    - Member[models].Member[fields].Member[PageSelectFormField]
   - - Django.Views.View~Subclass
     - cms
     - Member[wizards].Member[urls].Member[WizardCreateView]
@@ -21,13 +33,31 @@ extensions:
     - Member[admin].Member[forms].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[admin].Member[forms].Member[GlobalPagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PageType]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[admin].Member[forms].Member[PageUserGroup]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[admin].Member[forms].Member[Permission]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[admin].Member[forms].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[admin].Member[forms].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[Title]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[admin].Member[forms].Member[TreeNode]
@@ -39,7 +69,31 @@ extensions:
     - Member[admin].Member[pageadmin].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[admin].Member[pageadmin].Member[GlobalPagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[PagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[PageType]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[admin].Member[pageadmin].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[StaticPlaceholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[permissionadmin].Member[GlobalPagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[permissionadmin].Member[PagePermission]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[admin].Member[permissionadmin].Member[Site]
@@ -51,7 +105,22 @@ extensions:
     - Member[admin].Member[placeholderadmin].Member[PlaceholderReference]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[admin].Member[placeholderadmin].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[settingsadmin].Member[UserSettings]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[static_placeholder].Member[StaticPlaceholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[useradmin].Member[PagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[admin].Member[useradmin].Member[PageUserGroup]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[admin].Member[useradmin].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[admin].Member[useradmin].Member[Site]
@@ -60,7 +129,25 @@ extensions:
     - Member[api].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[api].Member[GlobalPagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[api].Member[PagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[api].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[api].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[api].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[api].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[appresolver].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[cms_plugins].Member[AliasPluginModel]
@@ -72,19 +159,94 @@ extensions:
     - Member[cms_plugins].Member[PlaceholderReference]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[cms_plugins].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_toolbars].Member[PageType]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_toolbars].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_toolbars].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[cms_toolbars].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_toolbars].Member[StaticPlaceholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_toolbars].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[cms_wizards].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[PageExtension]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[TitleExtension]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[admin].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[admin].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[extension_pool].Member[PageExtension]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[extension_pool].Member[TitleExtension]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[models].Member[BaseExtension]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[models].Member[PageExtension]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[models].Member[TitleExtension]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[extensions].Member[models].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[forms].Member[fields].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[forms].Member[utils].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[forms].Member[utils].Member[Site]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[forms].Member[utils].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[forms].Member[widgets].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[forms].Member[widgets].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[management].Member[commands].Member[subcommands].Member[copy].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[management].Member[commands].Member[subcommands].Member[copy].Member[Site]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[management].Member[commands].Member[subcommands].Member[copy].Member[StaticPlaceholder]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[management].Member[commands].Member[subcommands].Member[list].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[management].Member[commands].Member[subcommands].Member[list].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[management].Member[commands].Member[subcommands].Member[publisher_publish].Member[Site]
@@ -99,10 +261,22 @@ extensions:
     - Member[management].Member[commands].Member[subcommands].Member[uninstall].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[management].Member[commands].Member[subcommands].Member[uninstall].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[menu_bases].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[AbstractPagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[models].Member[AliasPluginModel]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[GlobalPagePermission]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[models].Member[Group]
@@ -111,16 +285,43 @@ extensions:
     - Member[models].Member[MP_Node]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[models].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[PagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[PageType]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[models].Member[PageUserGroup]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[models].Member[PlaceholderReference]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[models].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[models].Member[Site]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[models].Member[StaticPlaceholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[models].Member[TreeNode]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[UrlconfRevision]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[UserSettings]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[models].Member[aliaspluginmodel].Member[AliasPluginModel]
@@ -129,10 +330,25 @@ extensions:
     - Member[models].Member[aliaspluginmodel].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[models].Member[aliaspluginmodel].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[apphooks_reload].Member[UrlconfRevision]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[fields].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[models].Member[managers].Member[Site]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[models].Member[pagemodel].Member[MP_Node]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[pagemodel].Member[PageType]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[pagemodel].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[models].Member[pagemodel].Member[Site]
@@ -141,13 +357,28 @@ extensions:
     - Member[models].Member[pagemodel].Member[TreeNode]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[models].Member[permissionmodels].Member[AbstractPagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[permissionmodels].Member[GlobalPagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[models].Member[permissionmodels].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[permissionmodels].Member[PagePermission]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[models].Member[permissionmodels].Member[PageUserGroup]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[models].Member[permissionmodels].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[models].Member[permissionmodels].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[placeholdermodel].Member[Placeholder]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[models].Member[placeholderpluginmodel].Member[CMSPlugin]
@@ -162,7 +393,28 @@ extensions:
     - Member[models].Member[pluginmodel].Member[MP_Node]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[models].Member[pluginmodel].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[pluginmodel].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[settingmodels].Member[UserSettings]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[models].Member[static_placeholder].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[static_placeholder].Member[StaticPlaceholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[titlemodels].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[models].Member[titlemodels].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[page_rendering].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[plugin_base].Member[CMSPlugin]
@@ -171,7 +423,13 @@ extensions:
     - Member[plugin_rendering].Member[Site]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[signals].Member[GlobalPagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[signals].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[signals].Member[PagePermission]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[signals].Member[PageUserGroup]
@@ -180,10 +438,34 @@ extensions:
     - Member[signals].Member[permissions].Member[PageUserGroup]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[sitemaps].Member[cms_sitemap].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[templatetags].Member[cms_js_tags].Member[StaticPlaceholder]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[templatetags].Member[cms_tags].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[templatetags].Member[cms_tags].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[templatetags].Member[cms_tags].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[templatetags].Member[cms_tags].Member[PlaceholderModel]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[templatetags].Member[cms_tags].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[templatetags].Member[cms_tags].Member[StaticPlaceholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[toolbar].Member[toolbar].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[toolbar].Member[toolbar].Member[UserSettings]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[utils].Member[check].Member[AliasPluginModel]
@@ -192,13 +474,247 @@ extensions:
     - Member[utils].Member[mail].Member[Site]
   - - Django.db.models.Model~Subclass
     - cms
+    - Member[utils].Member[page_permissions].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[utils].Member[page_permissions].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[utils].Member[permissions].Member[GlobalPagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
     - Member[utils].Member[permissions].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[utils].Member[permissions].Member[PagePermission]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[utils].Member[permissions].Member[Page]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[utils].Member[plugins].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - cms
     - Member[views].Member[TreeNode]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[wizards].Member[forms].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - cms
+    - Member[wizards].Member[views].Member[Page]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[AddPageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[AddPageTypeForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[AdvancedSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[BasePageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[BasePermissionAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[ChangeListForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[ChangePageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[CopyPageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[CopyPermissionForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[DuplicatePageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[GenericCmsPermissionForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[GlobalPagePermissionAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[MovePageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PagePermissionForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PagePermissionInlineAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PageTreeForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PageUserAddForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PageUserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PageUserGroupForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PluginAddValidationForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[PublicationDatesForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[RequestToolbarForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[forms].Member[ViewRestrictionInlineAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[AddPageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[AddPageTypeForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[AdvancedSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[ChangeListForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[ChangePageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[CopyPageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[CopyPermissionForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[DuplicatePageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[MovePageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[PagePermissionForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[PublicationDatesForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[permissionadmin].Member[GlobalPagePermissionAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[permissionadmin].Member[PagePermissionInlineAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[permissionadmin].Member[ViewRestrictionInlineAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[placeholderadmin].Member[PluginAddValidationForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[settingsadmin].Member[RequestToolbarForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[useradmin].Member[PageUserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[admin].Member[useradmin].Member[PageUserGroupForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[cms_wizards].Member[CreateCMSPageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[cms_wizards].Member[CreateCMSSubPageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[forms].Member[login].Member[AdminAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[forms].Member[login].Member[CMSToolbarLoginForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[forms].Member[wizards].Member[AddPageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[forms].Member[wizards].Member[CreateCMSPageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[forms].Member[wizards].Member[CreateCMSSubPageForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[toolbar].Member[toolbar].Member[CMSToolbarLoginForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[utils].Member[compat].Member[forms].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[utils].Member[compat].Member[forms].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[views].Member[CMSToolbarLoginForm]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[wizards].Member[forms].Member[WizardStep1Form]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[wizards].Member[views].Member[Form]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[wizards].Member[views].Member[WizardStep1Form]
+  - - django.forms.BaseForm~Subclass
+    - cms
+    - Member[wizards].Member[wizard_base].Member[ModelForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - cms
+    - Member[admin].Member[placeholderadmin].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - cms
+    - Member[admin].Member[settingsadmin].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - cms
+    - Member[cms_plugins].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - cms
+    - Member[admin].Member[placeholderadmin].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - cms
+    - Member[cms_plugins].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - cms
+    - Member[admin].Member[placeholderadmin].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - cms
+    - Member[admin].Member[placeholderadmin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - cms
+    - Member[admin].Member[settingsadmin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - cms
+    - Member[extensions].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - cms
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
+    - Member[admin].Member[pageadmin].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - cms
     - Member[admin].Member[pageadmin].Member[SimpleTemplateResponse]
@@ -207,10 +723,25 @@ extensions:
     - Member[admin].Member[pageadmin].Member[TemplateResponse]
   - - django.http.response.HttpResponse~Subclass
     - cms
+    - Member[admin].Member[placeholderadmin].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
     - Member[admin].Member[placeholderadmin].Member[TemplateResponse]
   - - django.http.response.HttpResponse~Subclass
     - cms
+    - Member[admin].Member[settingsadmin].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
+    - Member[cms_plugins].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
     - Member[page_rendering].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
+    - Member[utils].Member[admin].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cms
+    - Member[views].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - cms
     - Member[wizards].Member[views].Member[SimpleTemplateResponse]

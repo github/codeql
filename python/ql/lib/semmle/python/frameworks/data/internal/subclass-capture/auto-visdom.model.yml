@@ -4,12 +4,75 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - visdom
+    - Member[BytesIO]
+  - - io.StringIO~Subclass
+    - visdom
+    - Member[StringIO]
+  - - tornado.web.Application~Subclass
+    - visdom
+    - Member[server].Member[app].Member[Application]
+  - - tornado.web.Application~Subclass
+    - visdom
+    - Member[server].Member[run_server].Member[Application]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[CloseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[CompareHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[DataHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[DeleteEnvHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[EnvHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[EnvStateHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[ErrorHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[ExistsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[ForkEnvHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[IndexHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[PostHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[SaveHandler]
   - - tornado.web.RequestHandler~Subclass
     - visdom
     - Member[server].Member[app].Member[SocketHandler]
   - - tornado.web.RequestHandler~Subclass
     - visdom
+    - Member[server].Member[app].Member[SocketWrap]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[UpdateHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[UserSettingsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
     - Member[server].Member[app].Member[VisSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[app].Member[VisSocketWrap]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[base_handlers].Member[BaseHandler]
   - - tornado.web.RequestHandler~Subclass
     - visdom
     - Member[server].Member[handlers].Member[base_handlers].Member[BaseWebSocketHandler]
@@ -21,6 +84,9 @@ extensions:
     - Member[server].Member[handlers].Member[socket_handlers].Member[AnySocketWrapper]
   - - tornado.web.RequestHandler~Subclass
     - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
     - Member[server].Member[handlers].Member[socket_handlers].Member[BaseWebSocketHandler]
   - - tornado.web.RequestHandler~Subclass
     - visdom
@@ -28,6 +94,9 @@ extensions:
   - - tornado.web.RequestHandler~Subclass
     - visdom
     - Member[server].Member[handlers].Member[socket_handlers].Member[SocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[SocketWrap]
   - - tornado.web.RequestHandler~Subclass
     - visdom
     - Member[server].Member[handlers].Member[socket_handlers].Member[SocketWrapper]
@@ -39,4 +108,52 @@ extensions:
     - Member[server].Member[handlers].Member[socket_handlers].Member[VisSocketHandler]
   - - tornado.web.RequestHandler~Subclass
     - visdom
+    - Member[server].Member[handlers].Member[socket_handlers].Member[VisSocketWrap]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
     - Member[server].Member[handlers].Member[socket_handlers].Member[VisSocketWrapper]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[CloseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[CompareHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[DataHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[DeleteEnvHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[EnvHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[EnvStateHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[ErrorHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[ExistsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[ForkEnvHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[IndexHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[PostHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[SaveHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[UpdateHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - visdom
+    - Member[server].Member[handlers].Member[web_handlers].Member[UserSettingsHandler]

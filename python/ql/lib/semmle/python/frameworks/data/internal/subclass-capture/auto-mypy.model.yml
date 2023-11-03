@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - mypy
+    - Member[api].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mypy
+    - Member[config_parser].Member[StringIO]
+  - - lxml.etree~Alias
+    - mypy
+    - Member[report].Member[etree]
+  - - pickle~Alias
+    - mypy
+    - Member[dmypy].Member[client].Member[pickle]
+  - - pickle~Alias
+    - mypy
+    - Member[dmypy_server].Member[pickle]

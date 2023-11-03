@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[A]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[B]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[CustomRootListObj]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[CustomRootListStr]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[Empty]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[HasEnums]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[Recursive]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[SecretTstModelDumpable]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[SecretTstModel]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[UsesRefs]
+  - - pydantic.BaseModel~Subclass
+    - v1
+    - Member[base_models].Member[_Name]

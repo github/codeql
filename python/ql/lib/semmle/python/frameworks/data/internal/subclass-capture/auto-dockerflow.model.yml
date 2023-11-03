@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - dockerflow
+    - Member[django].Member[views].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponse~Subclass
+    - dockerflow
+    - Member[django].Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - dockerflow
+    - Member[django].Member[views].Member[JsonResponse]

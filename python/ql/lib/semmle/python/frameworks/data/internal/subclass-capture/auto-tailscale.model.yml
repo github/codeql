@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[ClientConnectivity]
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[ClientSupports]
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[Devices]
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[models].Member[ClientConnectivity]
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[models].Member[ClientSupports]
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[models].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[models].Member[Devices]
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[tailscale].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - tailscale
+    - Member[tailscale].Member[Devices]

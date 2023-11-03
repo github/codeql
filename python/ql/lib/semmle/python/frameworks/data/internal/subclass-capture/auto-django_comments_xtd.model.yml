@@ -4,6 +4,45 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[urls].Member[CommentCount]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[urls].Member[CommentCreate]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[urls].Member[CommentList]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[urls].Member[CreateReportFlag]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[urls].Member[ToggleFeedbackFlag]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[views].Member[CommentCount]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[views].Member[CommentCreate]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[views].Member[CommentList]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[views].Member[CreateReportFlag]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[api].Member[views].Member[ToggleFeedbackFlag]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - django_comments_xtd
+    - Member[views].Member[XtdCommentListView]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[admin].Member[BlackListedDomain]
   - - Django.db.models.Model~Subclass
     - django_comments_xtd
     - Member[admin].Member[CommentFlag]
@@ -33,6 +72,9 @@ extensions:
     - Member[management].Member[commands].Member[initialize_nested_count].Member[XtdComment]
   - - Django.db.models.Model~Subclass
     - django_comments_xtd
+    - Member[models].Member[BlackListedDomain]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
     - Member[models].Member[CommentFlag]
   - - Django.db.models.Model~Subclass
     - django_comments_xtd
@@ -43,6 +85,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - django_comments_xtd
     - Member[models].Member[XtdComment]
+  - - Django.db.models.Model~Subclass
+    - django_comments_xtd
+    - Member[moderation].Member[BlackListedDomain]
   - - Django.db.models.Model~Subclass
     - django_comments_xtd
     - Member[moderation].Member[CommentFlag]
@@ -73,3 +118,24 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - django_comments_xtd
     - Member[forms].Member[XtdCommentForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - django_comments_xtd
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - django_comments_xtd
+    - Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponse~Subclass
+    - django_comments_xtd
+    - Member[api].Member[frontend].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - django_comments_xtd
+    - Member[api].Member[views].Member[Response]
+  - - pickle~Alias
+    - django_comments_xtd
+    - Member[signed].Member[pickle]
+  - - rest_framework.response.Response~Subclass
+    - django_comments_xtd
+    - Member[api].Member[frontend].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - django_comments_xtd
+    - Member[api].Member[views].Member[Response]

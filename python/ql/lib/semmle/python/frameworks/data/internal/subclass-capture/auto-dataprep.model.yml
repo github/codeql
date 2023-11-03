@@ -1,0 +1,318 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - dataprep
+    - Member[connector].Member[connector].Member[ClientSession]
+  - - flask.Flask~Subclass
+    - dataprep
+    - Member[clean].Member[gui].Member[clean_gui].Member[Flask]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[HTTPServer]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[HTTPServer]
+  - - io.StringIO~Subclass
+    - dataprep
+    - Member[connector].Member[generator].Member[ui].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[connector].Member[FieldDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[connector].Member[OffsetPaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[connector].Member[PagePaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[connector].Member[SeekPaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[connector].Member[TokenPaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[generator].Member[generator].Member[AuthUnion]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[generator].Member[generator].Member[BaseDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[generator].Member[generator].Member[ConfigDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[generator].Member[generator].Member[PageUnion]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[generator].Member[state].Member[ConfigDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[generator].Member[table].Member[SchemaFieldDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[implicit_database].Member[ConfigDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[info].Member[ConfigDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[BaseDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[BearerAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[BodyDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[ConfigDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[FieldDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[HeaderAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[OAuth2AuthorizationCodeAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[OAuth2ClientCredentialsAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[OffsetPaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[PagePaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[QueryParamAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[RequestDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[ResponseDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[SchemaFieldDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[SearchDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[SeekPaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[TokenPaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[UrlDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[base].Member[BaseDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[BaseDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[BearerAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[BodyDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[ConfigDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[FieldDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[HeaderAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[OAuth2AuthorizationCodeAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[OAuth2ClientCredentialsAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[OffsetPaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[PagePaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[QueryParamAuthorizationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[RequestDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[ResponseDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[SchemaFieldDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[SearchDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[SeekPaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[TokenPaginationDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[connector].Member[schema].Member[defs].Member[UrlDef]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Bar]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Box]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[CDF]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Correlations]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Dendrogram]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Diff]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Heatmap]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Hexbin]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Hist]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Insight]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Interactions]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[KDE]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[KendallTau]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[MissingValues]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Nested]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Overview]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[PDF]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Pearson]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Pie]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Plot]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[QQNorm]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Scatter]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Spearman]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Spectrum]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Stacked]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Stats]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[ValueTable]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[Variables]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[WordCloud]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[WordFrequency]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[configs].Member[WordLength]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[container].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[correlation].Member[compute].Member[bivariate].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[correlation].Member[compute].Member[overview].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[correlation].Member[compute].Member[univariate].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[create_diff_report].Member[diff_formatter].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[create_report].Member[formatter].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[diff].Member[compute].Member[multiple_column].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[diff].Member[compute].Member[multiple_df].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[distribution].Member[compute].Member[bivariate].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[distribution].Member[compute].Member[overview].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[distribution].Member[compute].Member[trivariate].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[distribution].Member[compute].Member[univariate].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[missing].Member[compute].Member[bivariate].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[missing].Member[compute].Member[common].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[missing].Member[compute].Member[nullivariate].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - dataprep
+    - Member[eda].Member[missing].Member[compute].Member[univariate].Member[Config]

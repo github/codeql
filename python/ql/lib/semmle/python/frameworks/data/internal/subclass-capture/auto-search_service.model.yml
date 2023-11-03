@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - search_service
+    - Member[Blueprint]
+  - - flask.Flask~Subclass
+    - search_service
+    - Member[Flask]
   - - flask.MethodView~Subclass
     - search_service
     - Member[DocumentAPI]

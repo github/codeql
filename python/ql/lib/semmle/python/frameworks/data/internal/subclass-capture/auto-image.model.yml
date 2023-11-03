@@ -4,6 +4,30 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - image
+    - Member[fields].Member[ImageCenterFormField]
+  - - Django.Forms.Field~Subclass
+    - image
+    - Member[forms].Member[ImageCenterFormField]
+  - - django.db.models.FileField~Subclass
+    - image
+    - Member[fields].Member[VideoField]
+  - - django.db.models.FileField~Subclass
+    - image
+    - Member[forms].Member[VideoField]
+  - - django.db.models.FileField~Subclass
+    - image
+    - Member[models].Member[FileField]
+  - - django.db.models.FileField~Subclass
+    - image
+    - Member[video_field].Member[VideoField]
+  - - django.http.request.HttpRequest~Subclass
+    - image
+    - Member[templatetags].Member[img].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - image
+    - Member[views].Member[HttpResponse]
   - - io.StringIO~Subclass
     - image
     - Member[utils].Member[BytesIO]

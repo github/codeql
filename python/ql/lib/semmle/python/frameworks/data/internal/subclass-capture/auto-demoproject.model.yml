@@ -1,0 +1,189 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[apache].Member[views].Member[StorageDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[http].Member[views].Member[GithubAvatarDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[http].Member[views].Member[HTTPDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[http].Member[views].Member[SimpleURLDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[lighttpd].Member[views].Member[StorageDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[nginx].Member[views].Member[StorageDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[object].Member[views].Member[ObjectDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[path].Member[views].Member[DynamicPathDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[path].Member[views].Member[PathDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[storage].Member[views].Member[DynamicStorageDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[storage].Member[views].Member[StorageDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[BaseColumnsHighChartsView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[BaseLineChartView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[BaseLineOptionsChartView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[ColorsView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[ColumnHighChartJSONView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[DiscontinuousDatesChartJSONView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[DiscontinuousDatesHighChartJSONView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[DonutHighChartJSONView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[HighChartDonutView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[HighChartPieView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[HighchartPlotLineChartView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[LineChartJSONView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[LineChartWithOptionsJSONView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[LineHighChartJSONView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[PieHighChartJSONView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[virtual].Member[views].Member[GeneratedDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[virtual].Member[views].Member[StringIODownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[virtual].Member[views].Member[TextDownloadView]
+  - - Django.Views.View~Subclass
+    - demoproject
+    - Member[virtual].Member[views].Member[VirtualDownloadView]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartdemo].Member[BookStore]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartdemo].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartdemo].Member[DailyWeather]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartdemo].Member[MonthlyWeatherByCity]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartdemo].Member[MonthlyWeatherSeattle]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartdemo].Member[SalesHistory]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartraw].Member[BookStore]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartraw].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartraw].Member[MonthlyWeatherByCity]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartraw].Member[MonthlyWeatherSeattle]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[chartraw].Member[SalesHistory]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[BookStore]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[City]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[DailyWeather]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[Genre]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[Meter]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[MonthlyWeatherByCity]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[MonthlyWeatherSeattle]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[Publisher]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[models].Member[SalesHistory]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[object].Member[models].Member[Document]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[object].Member[views].Member[Document]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[pivotdemo].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[pivotdemo].Member[SalesHistory]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[views].Member[Meter]
+  - - Django.db.models.Model~Subclass
+    - demoproject
+    - Member[views].Member[MonthlyWeatherByCity]
+  - - io.StringIO~Subclass
+    - demoproject
+    - Member[virtual].Member[views].Member[StringIO]

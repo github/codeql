@@ -1,0 +1,111 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - towhee
+    - Member[utils].Member[ndarray_utils].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[config].Member[LogConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[config].Member[log_config].Member[LogConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[pipelines].Member[insert_milvus].Member[MilvusInsertConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[pipelines].Member[search_milvus].Member[MilvusSearchConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[pipelines].Member[sentence_embedding].Member[SentenceSimilarityConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[pipelines].Member[text_image_embedding].Member[TextImageEmbeddingConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[pipelines].Member[video_copy_detection].Member[VideoCopyDetectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[pipelines].Member[video_embedding].Member[VideoEmbeddingConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[AcceleratorConf]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[check_utils].Member[IntForm]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[check_utils].Member[SetForm]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[check_utils].Member[TupleForm]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[dag_repr].Member[DAGRepr]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[dag_repr].Member[NodeRepr]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[dag_repr].Member[SchemaRepr]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[node_config].Member[AcceleratorConf]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[node_config].Member[NodeConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[node_config].Member[ServerConf]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[node_config].Member[TritonClientConf]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[node_config].Member[TritonServerConf]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[node_repr].Member[IterationRepr]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[node_repr].Member[NodeConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[node_repr].Member[NodeRepr]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[node_repr].Member[OperatorRepr]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[pipeline].Member[TupleForm]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[runtime_pipeline].Member[DAGRepr]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[runtime_pipeline].Member[NodeRepr]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[runtime].Member[schema_repr].Member[SchemaRepr]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[serve].Member[api_service].Member[APIService]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[serve].Member[api_service].Member[RouterConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[serve].Member[grpc].Member[client].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[serve].Member[grpc].Member[server].Member[RouterConfig]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[serve].Member[triton].Member[pipeline_builder].Member[AcceleratorConf]
+  - - pydantic.BaseModel~Subclass
+    - towhee
+    - Member[utils].Member[log].Member[LogConfig]

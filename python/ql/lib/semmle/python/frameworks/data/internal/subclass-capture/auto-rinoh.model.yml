@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - rinoh
+    - Member[backend].Member[pdf].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - rinoh
+    - Member[backend].Member[pdf].Member[Canvas]
+  - - io.StringIO~Subclass
+    - rinoh
+    - Member[backend].Member[pdf].Member[PageCanvas]
+  - - io.StringIO~Subclass
+    - rinoh
+    - Member[backend].Member[pdf].Member[cos].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - rinoh
+    - Member[backend].Member[pdf].Member[util].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - rinoh
+    - Member[backend].Member[pdf]Member[Canvas]
+  - - io.StringIO~Subclass
+    - rinoh
+    - Member[backend].Member[pdf]Member[PageCanvas]
+  - - io.StringIO~Subclass
+    - rinoh
+    - Member[font].Member[opentype].Member[cff].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - rinoh
+    - Member[font].Member[type1].Member[BytesIO]
+  - - lxml.etree~Alias
+    - rinoh
+    - Member[frontend].Member[xml].Member[lxml].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - rinoh
+    - Member[frontend].Member[xml].Member[elementtree].Member[ElementTree]

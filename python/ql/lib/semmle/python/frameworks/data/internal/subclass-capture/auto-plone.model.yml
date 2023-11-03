@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - plone
+    - Member[app].Member[dexterity].Member[browser].Member[export].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - plone
+    - Member[app].Member[dexterity].Member[browser].Member[import_types].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - plone
+    - Member[app].Member[theming].Member[utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - plone
+    - Member[app].Member[theming].Member[utils].Member[StringIO]
+  - - lxml.etree~Alias
+    - plone
+    - Member[app].Member[dexterity].Member[browser].Member[export].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[app].Member[dexterity].Member[browser].Member[import_types].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[app].Member[dexterity].Member[browser].Member[modeleditor].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[app].Member[registry].Member[browser].Member[exportxml].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[app].Member[registry].Member[exportimport].Member[handler].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[app].Member[theming].Member[exportimport].Member[handler].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[app].Member[theming].Member[transform].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[app].Member[theming].Member[utils].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[autoform].Member[supermodel].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[supermodel].Member[exportimport].Member[etree]
+  - - lxml.etree~Alias
+    - plone
+    - Member[supermodel].Member[utils].Member[etree]

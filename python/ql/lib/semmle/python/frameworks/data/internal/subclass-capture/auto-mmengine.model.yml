@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - mmengine
+    - Member[fileio].Member[io].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mmengine
+    - Member[fileio].Member[io].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mmengine
+    - Member[fileio].Member[parse].Member[StringIO]
+  - - logging.Logger~Subclass
+    - mmengine
+    - Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmengine
+    - Member[_strategy].Member[base].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmengine
+    - Member[logging].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmengine
+    - Member[logging].Member[logger].Member[Logger]
+  - - logging.Logger~Subclass
+    - mmengine
+    - Member[logging].Member[logger].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmengine
+    - Member[model].Member[base_module].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmengine
+    - Member[runner].Member[runner].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmengine
+    - Member[utils].Member[dl_utils].Member[time_counter].Member[MMLogger]
+  - - logging.Logger~Subclass
+    - mmengine
+    - Member[visualization].Member[vis_backend].Member[MMLogger]
+  - - pickle~Alias
+    - mmengine
+    - Member[dataset].Member[base_dataset].Member[pickle]
+  - - pickle~Alias
+    - mmengine
+    - Member[dist].Member[dist].Member[pickle]
+  - - pickle~Alias
+    - mmengine
+    - Member[fileio].Member[handlers].Member[pickle_handler].Member[pickle]
+  - - pickle~Alias
+    - mmengine
+    - Member[hooks].Member[checkpoint_hook].Member[pickle]
+  - - pickle~Alias
+    - mmengine
+    - Member[runner].Member[_flexible_runner].Member[pickle]
+  - - pickle~Alias
+    - mmengine
+    - Member[runner].Member[runner].Member[pickle]

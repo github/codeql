@@ -1,0 +1,87 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pandasai
+    - Member[smart_dataframe].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[agent].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[config].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[airtable].Member[AirtableConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[airtable].Member[BaseConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[base].Member[AirtableConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[base].Member[BaseConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[base].Member[DatabricksConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[base].Member[SQLBaseConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[base].Member[SQLConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[base].Member[SnowFlakeConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[base].Member[SqliteConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[base].Member[YahooFinanceConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[databricks].Member[BaseConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[databricks].Member[DatabricksConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[snowflake].Member[BaseConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[snowflake].Member[SnowFlakeConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[sql].Member[BaseConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[sql].Member[SQLConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[sql].Member[SqliteConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[connectors].Member[yahoo_finance].Member[YahooFinanceConnectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[helpers].Member[code_manager].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[helpers].Member[logger].Member[Log]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[responses].Member[context].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[schemas].Member[df_config].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[smart_dataframe].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - pandasai
+    - Member[smart_datalake].Member[Config]

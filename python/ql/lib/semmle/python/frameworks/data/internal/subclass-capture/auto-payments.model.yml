@@ -4,6 +4,156 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - payments
+    - Member[cybersource].Member[forms].Member[FingerprintInput]
+  - - Django.Forms.Field~Subclass
+    - payments
+    - Member[fields].Member[CreditCardExpiryField]
+  - - Django.Forms.Field~Subclass
+    - payments
+    - Member[fields].Member[CreditCardNameField]
+  - - Django.Forms.Field~Subclass
+    - payments
+    - Member[fields].Member[CreditCardNumberField]
+  - - Django.Forms.Field~Subclass
+    - payments
+    - Member[fields].Member[CreditCardVerificationField]
+  - - Django.Forms.Field~Subclass
+    - payments
+    - Member[forms].Member[CreditCardExpiryField]
+  - - Django.Forms.Field~Subclass
+    - payments
+    - Member[forms].Member[CreditCardNameField]
+  - - Django.Forms.Field~Subclass
+    - payments
+    - Member[forms].Member[CreditCardNumberField]
+  - - Django.Forms.Field~Subclass
+    - payments
+    - Member[forms].Member[CreditCardVerificationField]
+  - - Django.db.models.Model~Subclass
+    - payments
+    - Member[core].Member[BasePayment]
   - - Django.db.models.Model~Subclass
     - payments
     - Member[core].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - payments
+    - Member[mercadopago].Member[BasePayment]
+  - - Django.db.models.Model~Subclass
+    - payments
+    - Member[models].Member[BasePayment]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[authorizenet].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[authorizenet].Member[forms].Member[CreditCardPaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[authorizenet].Member[forms].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[braintree].Member[BraintreePaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[braintree].Member[forms].Member[BraintreePaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[braintree].Member[forms].Member[CreditCardPaymentFormWithName]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[cybersource].Member[BaseForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[cybersource].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[cybersource].Member[forms].Member[CreditCardPaymentFormWithName]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[cybersource].Member[forms].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[dotpay].Member[ProcessPaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[dotpay].Member[forms].Member[ProcessPaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[dummy].Member[DummyForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[dummy].Member[forms].Member[DummyForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[dummy].Member[forms].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[forms].Member[CreditCardPaymentFormWithName]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[forms].Member[CreditCardPaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[forms].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[paypal].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[paypal].Member[forms].Member[CreditCardPaymentFormWithName]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[paypal].Member[forms].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[stripe].Member[forms].Member[BasePaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[stripe].Member[forms].Member[CreditCardPaymentFormWithName]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[stripe].Member[forms].Member[ModalPaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[stripe].Member[forms].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - payments
+    - Member[stripe].Member[providers].Member[BasePaymentForm]
+  - - django.http.request.HttpRequest~Subclass
+    - payments
+    - Member[core].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - payments
+    - Member[mercadopago].Member[HttpRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - payments
+    - Member[authorizenet].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - payments
+    - Member[coinbase].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - payments
+    - Member[dotpay].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - payments
+    - Member[paypal].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - payments
+    - Member[sofort].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - payments
+    - Member[dummy].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - payments
+    - Member[coinbase].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - payments
+    - Member[dotpay].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - payments
+    - Member[mercadopago].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - payments
+    - Member[stripe].Member[providers].Member[JsonResponse]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - matrix_runner
+    - Member[command].Member[StringIO]
+  - - io.StringIO~Subclass
+    - matrix_runner
+    - Member[report].Member[StringIO]
+  - - lxml.etree~Alias
+    - matrix_runner
+    - Member[report].Member[etree]

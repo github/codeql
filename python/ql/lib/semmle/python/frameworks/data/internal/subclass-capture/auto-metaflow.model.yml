@@ -1,0 +1,78 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[client].Member[core].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[datastore].Member[content_addressed_store].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[datastore].Member[datastore_set].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[metadata].Member[util].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[package].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[plugins].Member[airflow].Member[airflow].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[plugins].Member[azure].Member[azure_tail].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[plugins].Member[cards].Member[card_datastore].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[plugins].Member[datatools].Member[s3].Member[s3tail].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[plugins].Member[gcp].Member[gs_tail].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[pylint_wrapper].Member[StringIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[runtime].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[task].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - metaflow
+    - Member[util].Member[BytesIO]
+  - - pickle~Alias
+    - metaflow
+    - Member[cli].Member[pickle]
+  - - pickle~Alias
+    - metaflow
+    - Member[client].Member[core].Member[pickle]
+  - - pickle~Alias
+    - metaflow
+    - Member[datastore].Member[task_datastore].Member[pickle]
+  - - pickle~Alias
+    - metaflow
+    - Member[multicore_utils].Member[pickle]
+  - - pickle~Alias
+    - metaflow
+    - Member[plugins].Member[env_escape].Member[client_modules].Member[pickle]
+  - - pickle~Alias
+    - metaflow
+    - Member[plugins].Member[env_escape].Member[data_transferer].Member[pickle]
+  - - pickle~Alias
+    - metaflow
+    - Member[plugins].Member[env_escape].Member[pickle]
+  - - pickle~Alias
+    - metaflow
+    - Member[plugins].Member[env_escape].Member[server].Member[pickle]
+  - - pickle~Alias
+    - metaflow
+    - Member[plugins].Member[env_escape].Member[stub].Member[pickle]
+  - - pickle~Alias
+    - metaflow
+    - Member[plugins].Member[frameworks].Member[pytorch].Member[pickle]

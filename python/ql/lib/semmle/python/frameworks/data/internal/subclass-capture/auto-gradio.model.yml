@@ -1,0 +1,183 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - gradio
+    - Member[processing_utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - gradio
+    - Member[utils].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[blocks].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[blocks].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[annotated_image].Member[AnnotatedImageData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[annotated_image].Member[Annotation]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[annotated_image].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[annotated_image].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[audio].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[bar_plot].Member[AltairPlotData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[chatbot].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[chatbot].Member[FileMessage]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[chatbot].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[clear_button].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[dataframe].Member[DataframeData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[dataframe].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[file].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[gallery].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[gallery].Member[GalleryImage]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[gallery].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[highlighted_text].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[highlighted_text].Member[HighlightedToken]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[image].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[label].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[label].Member[LabelConfidence]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[label].Member[LabelData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[line_plot].Member[AltairPlotData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[model3d].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[plot].Member[AltairPlotData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[plot].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[plot].Member[PlotData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[scatter_plot].Member[AltairPlotData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[upload_button].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[video].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[video].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[components].Member[video].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[data_classes].Member[ComponentServerBody]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[data_classes].Member[Estimation]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[data_classes].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[data_classes].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[data_classes].Member[LogMessage]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[data_classes].Member[PredictBody]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[data_classes].Member[ProgressUnit]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[data_classes].Member[Progress]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[data_classes].Member[ResetBody]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[helpers].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[processing_utils].Member[FileData]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[processing_utils].Member[GradioModel]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[queueing].Member[Estimation]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[queueing].Member[LogMessage]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[queueing].Member[PredictBody]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[queueing].Member[ProgressUnit]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[queueing].Member[Progress]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[route_utils].Member[PredictBody]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[routes].Member[ComponentServerBody]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[routes].Member[Estimation]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[routes].Member[PredictBody]
+  - - pydantic.BaseModel~Subclass
+    - gradio
+    - Member[routes].Member[ResetBody]

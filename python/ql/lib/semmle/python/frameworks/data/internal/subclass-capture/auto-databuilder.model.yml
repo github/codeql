@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - sqlalchemy.orm.Session~Subclass
+    - databuilder
+    - Member[extractor].Member[mysql_search_data_extractor].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - databuilder
+    - Member[publisher].Member[mysql_csv_publisher].Member[Session]
+  - - xml.etree.ElementTree~Subclass
+    - databuilder
+    - Member[extractor].Member[user].Member[bamboohr].Member[bamboohr_user_extractor].Member[ElementTree]

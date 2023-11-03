@@ -12,7 +12,19 @@ extensions:
     - Member[conda_interface].Member[StringIO]
   - - io.StringIO~Subclass
     - conda_build
+    - Member[jinja_context].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_build
     - Member[skeletons].Member[pypi].Member[StringIO]
   - - io.StringIO~Subclass
     - conda_build
     - Member[utils].Member[StringIO]
+  - - pickle~Alias
+    - conda_build
+    - Member[skeletons].Member[cpan].Member[pickle]
+  - - pickle~Alias
+    - conda_build
+    - Member[skeletons].Member[rpm].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - conda_build
+    - Member[skeletons].Member[rpm].Member[ET]

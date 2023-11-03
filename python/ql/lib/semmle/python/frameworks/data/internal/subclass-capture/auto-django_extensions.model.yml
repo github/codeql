@@ -6,6 +6,18 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - django_extensions
+    - Member[db].Member[models].Member[ActivatorModel]
+  - - Django.db.models.Model~Subclass
+    - django_extensions
+    - Member[db].Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - django_extensions
+    - Member[db].Member[models].Member[TitleDescriptionModel]
+  - - Django.db.models.Model~Subclass
+    - django_extensions
+    - Member[db].Member[models].Member[TitleSlugDescriptionModel]
+  - - Django.db.models.Model~Subclass
+    - django_extensions
     - Member[management].Member[commands].Member[dumpscript].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - django_extensions
@@ -16,6 +28,21 @@ extensions:
   - - Django.db.models.Model~Subclass
     - django_extensions
     - Member[management].Member[commands].Member[update_permissions].Member[Permission]
+  - - django.db.models.FileField~Subclass
+    - django_extensions
+    - Member[management].Member[commands].Member[dumpscript].Member[FileField]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - django_extensions
+    - Member[admin].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponse~Subclass
+    - django_extensions
+    - Member[admin].Member[HttpResponse]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - django_extensions
     - Member[management].Member[commands].Member[runserver_plus].Member[_WSGIRequestHandler]
+  - - io.StringIO~Subclass
+    - django_extensions
+    - Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django_extensions
+    - Member[management].Member[commands].Member[sync_s3].Member[StringIO]

@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - djangosaml2
+    - Member[views].Member[AssertionConsumerServiceView]
+  - - Django.Views.View~Subclass
+    - djangosaml2
+    - Member[views].Member[EchoAttributesView]
+  - - Django.Views.View~Subclass
+    - djangosaml2
+    - Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - djangosaml2
+    - Member[views].Member[LogoutInitView]
+  - - Django.Views.View~Subclass
+    - djangosaml2
+    - Member[views].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - djangosaml2
+    - Member[views].Member[MetadataView]
+  - - Django.Views.View~Subclass
+    - djangosaml2
+    - Member[views].Member[View]
+  - - django.http.request.HttpRequest~Subclass
+    - djangosaml2
+    - Member[conf].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - djangosaml2
+    - Member[views].Member[HttpRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - djangosaml2
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - djangosaml2
+    - Member[utils].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - djangosaml2
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseServerError~Subclass
+    - djangosaml2
+    - Member[views].Member[HttpResponseServerError]
+  - - django.http.response.HttpResponse~Subclass
+    - djangosaml2
+    - Member[utils].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - djangosaml2
+    - Member[views].Member[HttpResponse]

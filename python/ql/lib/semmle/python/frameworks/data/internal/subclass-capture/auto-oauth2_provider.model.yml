@@ -4,9 +4,159 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationDelete]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationDetail]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationList]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationRegistration]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationUpdate]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[AuthorizationView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ReadWriteScopedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[RevokeTokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ScopedProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[TokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationDelete]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationDetail]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationList]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationRegistration]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationUpdate]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ListView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[AuthorizationView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[BaseAuthorizationView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[FormView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[RevokeTokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[TokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[View]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[ProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[ReadWriteScopedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[ScopedProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[View]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[admin].Member[AccessToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[admin].Member[Grant]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[admin].Member[RefreshToken]
   - - Django.db.models.Model~Subclass
     - oauth2_provider
     - Member[backends].Member[UserModel]
   - - Django.db.models.Model~Subclass
     - oauth2_provider
     - Member[compat].Member[User]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[AbstractApplication]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[AccessToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[Application]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[Grant]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[models].Member[RefreshToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[oauth2_validators].Member[AccessToken]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[oauth2_validators].Member[Grant]
+  - - Django.db.models.Model~Subclass
+    - oauth2_provider
+    - Member[oauth2_validators].Member[RefreshToken]
+  - - django.forms.BaseForm~Subclass
+    - oauth2_provider
+    - Member[forms].Member[AllowForm]
+  - - django.forms.BaseForm~Subclass
+    - oauth2_provider
+    - Member[forms].Member[RegistrationForm]
+  - - django.forms.BaseForm~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[RegistrationForm]
+  - - django.forms.BaseForm~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[AllowForm]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - oauth2_provider
+    - Member[decorators].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - oauth2_provider
+    - Member[views].Member[mixins].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[HttpResponse]

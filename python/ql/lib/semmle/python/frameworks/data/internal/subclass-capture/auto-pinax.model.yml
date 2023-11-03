@@ -4,6 +4,93 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[urls].Member[AnnouncementCreateView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[urls].Member[AnnouncementDeleteView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[urls].Member[AnnouncementDetailView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[urls].Member[AnnouncementDismissView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[urls].Member[AnnouncementListView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[urls].Member[AnnouncementUpdateView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[AnnouncementCreateView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[AnnouncementDeleteView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[AnnouncementDetailView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[AnnouncementDismissView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[AnnouncementListView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[AnnouncementUpdateView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[ProtectedView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[View]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[notifications].Member[urls].Member[NoticeSettingsView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[notifications].Member[views].Member[NoticeSettingsView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[notifications].Member[views].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[announcements].Member[admin].Member[Announcement]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[announcements].Member[admin].Member[Dismissal]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[announcements].Member[forms].Member[Announcement]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[announcements].Member[models].Member[Announcement]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[announcements].Member[models].Member[Dismissal]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[announcements].Member[templatetags].Member[pinax_announcements_tags].Member[Announcement]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[Announcement]
   - - Django.db.models.Model~Subclass
     - pinax
     - Member[apps].Member[account].Member[admin].Member[Account]
@@ -84,10 +171,28 @@ extensions:
     - Member[core].Member[context_processors].Member[Site]
   - - Django.db.models.Model~Subclass
     - pinax
+    - Member[eventlog].Member[admin].Member[Log]
+  - - Django.db.models.Model~Subclass
+    - pinax
     - Member[eventlog].Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - pinax
+    - Member[eventlog].Member[models].Member[Log]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[admin].Member[NoticeQueueBatch]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[admin].Member[NoticeSetting]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[admin].Member[NoticeType]
+  - - Django.db.models.Model~Subclass
+    - pinax
     - Member[notifications].Member[backends].Member[base].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[engine].Member[NoticeQueueBatch]
   - - Django.db.models.Model~Subclass
     - pinax
     - Member[notifications].Member[engine].Member[Site]
@@ -97,6 +202,24 @@ extensions:
   - - Django.db.models.Model~Subclass
     - pinax
     - Member[notifications].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[models].Member[NoticeQueueBatch]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[models].Member[NoticeSetting]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[models].Member[NoticeType]
+  - - Django.db.models.Model~Subclass
+    - pinax
+    - Member[notifications].Member[views].Member[NoticeType]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[announcements].Member[forms].Member[AnnouncementForm]
+  - - django.forms.BaseForm~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[AnnouncementForm]
   - - django.forms.BaseForm~Subclass
     - pinax
     - Member[apps].Member[account].Member[forms].Member[AccountForm]
@@ -198,6 +321,9 @@ extensions:
     - Member[apps].Member[account].Member[views].Member[HttpResponseForbidden]
   - - django.http.response.HttpResponseRedirect~Subclass
     - pinax
+    - Member[announcements].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - pinax
     - Member[apps].Member[account].Member[middleware].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponseRedirect~Subclass
     - pinax
@@ -211,6 +337,21 @@ extensions:
   - - django.http.response.HttpResponseRedirect~Subclass
     - pinax
     - Member[apps].Member[waitinglist].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - pinax
+    - Member[notifications].Member[views].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponseServerError~Subclass
     - pinax
     - Member[views].Member[HttpResponseServerError]
+  - - django.http.response.HttpResponse~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - pinax
+    - Member[announcements].Member[views].Member[JsonResponse]
+  - - pickle~Alias
+    - pinax
+    - Member[notifications].Member[engine].Member[pickle]
+  - - pickle~Alias
+    - pinax
+    - Member[notifications].Member[models].Member[pickle]

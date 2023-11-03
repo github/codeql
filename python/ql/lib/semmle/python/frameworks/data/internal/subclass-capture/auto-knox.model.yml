@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - knox
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - knox
+    - Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - knox
+    - Member[views].Member[LogoutAllView]
+  - - Django.Views.View~Subclass
+    - knox
+    - Member[views].Member[LogoutView]
+  - - Django.db.models.Model~Subclass
+    - knox
+    - Member[models].Member[AbstractAuthToken]
+  - - Django.db.models.Model~Subclass
+    - knox
+    - Member[models].Member[AuthToken]
+  - - django.http.response.HttpResponse~Subclass
+    - knox
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - knox
+    - Member[views].Member[Response]

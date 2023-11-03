@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_contact_form
+    - Member[akismet_urls].Member[ContactFormView]
+  - - Django.Views.View~Subclass
+    - django_contact_form
+    - Member[akismet_urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - django_contact_form
+    - Member[urls].Member[ContactFormView]
+  - - Django.Views.View~Subclass
+    - django_contact_form
+    - Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - django_contact_form
+    - Member[views].Member[ContactFormView]
+  - - Django.Views.View~Subclass
+    - django_contact_form
+    - Member[views].Member[FormView]
+  - - django.forms.BaseForm~Subclass
+    - django_contact_form
+    - Member[akismet_urls].Member[AkismetContactForm]
+  - - django.forms.BaseForm~Subclass
+    - django_contact_form
+    - Member[forms].Member[AkismetContactForm]
+  - - django.forms.BaseForm~Subclass
+    - django_contact_form
+    - Member[forms].Member[ContactForm]
+  - - django.forms.BaseForm~Subclass
+    - django_contact_form
+    - Member[views].Member[ContactForm]

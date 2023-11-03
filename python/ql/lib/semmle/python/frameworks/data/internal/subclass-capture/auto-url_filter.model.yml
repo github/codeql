@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - url_filter
+    - Member[fields].Member[MultipleValuesField]
+  - - Django.Forms.Field~Subclass
+    - url_filter
+    - Member[filters].Member[MultipleValuesField]
+  - - Django.Forms.Field~Subclass
+    - url_filter
+    - Member[integrations].Member[drf_coreapi].Member[MultipleValuesField]
+  - - rest_framework.exceptions.APIException~Subclass
+    - url_filter
+    - Member[integrations].Member[drf].Member[ValidationError]

@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - selectable
+    - Member[forms].Member[AutoCompleteSelectField]
+  - - Django.Forms.Field~Subclass
+    - selectable
+    - Member[forms].Member[AutoCompleteSelectMultipleField]
+  - - Django.Forms.Field~Subclass
+    - selectable
+    - Member[forms].Member[fields].Member[AutoCompleteSelectField]
+  - - Django.Forms.Field~Subclass
+    - selectable
+    - Member[forms].Member[fields].Member[AutoCompleteSelectMultipleField]
+  - - Django.Forms.Field~Subclass
+    - selectable
+    - Member[forms].Member[fields].Member[BaseAutoCompleteField]
+  - - django.forms.BaseForm~Subclass
+    - selectable
+    - Member[forms].Member[BaseLookupForm]
+  - - django.forms.BaseForm~Subclass
+    - selectable
+    - Member[forms].Member[base].Member[BaseLookupForm]

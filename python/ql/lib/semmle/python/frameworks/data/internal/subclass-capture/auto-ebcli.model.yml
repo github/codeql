@@ -7,3 +7,6 @@ extensions:
   - - io.StringIO~Subclass
     - ebcli
     - Member[core].Member[fileoperations].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ebcli
+    - Member[lib].Member[s3].Member[BytesIO]

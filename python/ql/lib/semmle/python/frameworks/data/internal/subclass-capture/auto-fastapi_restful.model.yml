@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - fastapi_restful
+    - Member[cbv].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_restful
+    - Member[cbv_base].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_restful
+    - Member[inferring_router].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_restful
+    - Member[inferring_router].Member[InferringRouter]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_restful
+    - Member[api_model].Member[APIMessage]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_restful
+    - Member[api_model].Member[APIModel]
+  - - sqlalchemy.orm.Session~Subclass
+    - fastapi_restful
+    - Member[session].Member[Session]

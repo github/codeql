@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[arithmatex].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[blocks].Member[admonition].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[blocks].Member[definition].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[blocks].Member[details].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[blocks].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[blocks].Member[html].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[blocks].Member[tab].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[details].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[emoji].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[highlight].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[inlinehilite].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[keys].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[magiclink].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[progressbar].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[tabbed].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pymdownx
+    - Member[util].Member[etree]

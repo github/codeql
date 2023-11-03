@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - unicorn_binance_websocket_api
+    - Member[manager].Member[Flask]
   - - flask.MethodView~Subclass
     - unicorn_binance_websocket_api
     - Member[BinanceWebSocketApiRestServer]

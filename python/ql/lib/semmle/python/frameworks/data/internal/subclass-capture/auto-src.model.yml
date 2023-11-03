@@ -6,6 +6,24 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - src
+    - Member[dal_queryset_sequence].Member[fields].Member[GenericForeignKeyModelField]
+  - - Django.Forms.Field~Subclass
+    - src
+    - Member[dal_queryset_sequence].Member[fields].Member[QuerySetSequenceModelField]
+  - - Django.Forms.Field~Subclass
+    - src
+    - Member[dal_queryset_sequence].Member[fields].Member[QuerySetSequenceModelMultipleField]
+  - - Django.Forms.Field~Subclass
+    - src
+    - Member[dal_select2].Member[fields].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - src
+    - Member[dal_select2].Member[fields].Member[Select2ListChoiceField]
+  - - Django.Forms.Field~Subclass
+    - src
+    - Member[dal_select2].Member[fields].Member[Select2ListCreateChoiceField]
+  - - Django.Forms.Field~Subclass
+    - src
     - Member[spicy].Member[core].Member[profile].Member[forms].Member[CaptchaField]
   - - Django.Forms.Field~Subclass
     - src
@@ -222,6 +240,12 @@ extensions:
     - Member[spicy].Member[utils].Member[settings].Member[CustomSettings]
   - - django.forms.BaseForm~Subclass
     - src
+    - Member[dal].Member[autocomplete].Member[FutureModelForm]
+  - - django.forms.BaseForm~Subclass
+    - src
+    - Member[dal].Member[forms].Member[FutureModelForm]
+  - - django.forms.BaseForm~Subclass
+    - src
     - Member[spicy].Member[core].Member[admin].Member[forms].Member[ApplicationForm]
   - - django.forms.BaseForm~Subclass
     - src
@@ -322,9 +346,15 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - src
     - Member[spicy].Member[core].Member[trash].Member[forms].Member[TrashFiltersForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - src
+    - Member[dal].Member[views].Member[HttpResponseBadRequest]
   - - django.http.response.HttpResponseForbidden~Subclass
     - src
     - Member[spicy].Member[core].Member[profile].Member[middleware].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - src
+    - Member[dal].Member[views].Member[HttpResponseNotAllowed]
   - - django.http.response.HttpResponseRedirect~Subclass
     - src
     - Member[spicy].Member[core].Member[profile].Member[admin].Member[HttpResponseRedirect]
@@ -361,12 +391,27 @@ extensions:
   - - flask.Flask~Subclass
     - src
     - Member[pandora].Member[bots].Member[server].Member[Flask]
+  - - flask.Flask~Subclass
+    - src
+    - Member[robusta].Member[runner].Member[web].Member[Flask]
   - - flask.Response~Subclass
     - src
     - Member[pandora].Member[bots].Member[server].Member[Response]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - src
     - Member[pandora].Member[bots].Member[server].Member[WSGIRequestHandler]
+  - - io.StringIO~Subclass
+    - src
+    - Member[plugins].Member[info].Member[plugin].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - src
+    - Member[plugins].Member[social].Member[plugin].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - src
+    - Member[project].Member[StringIO]
+  - - io.StringIO~Subclass
+    - src
+    - Member[robusta].Member[utils].Member[json_schema].Member[StringIO]
   - - logging.Logger~Subclass
     - src
     - Member[falconpy].Member[_api_request].Member[_request].Member[Logger]
@@ -388,6 +433,15 @@ extensions:
   - - logging.Logger~Subclass
     - src
     - Member[falconpy].Member[debug].Member[Logger]
+  - - pickle~Alias
+    - src
+    - Member[examples].Member[pybench].Member[pybench].Member[cPickle]
+  - - pickle~Alias
+    - src
+    - Member[examples].Member[pybench].Member[pybench].Member[pickle]
+  - - pickle~Alias
+    - src
+    - Member[services].Member[file].Member[pickle]
   - - pickle~Alias
     - src
     - Member[spicy].Member[core].Member[rmanager].Member[middleware].Member[cPickle]
@@ -906,7 +960,394 @@ extensions:
     - Member[pubsub].Member[recommender_subscribers].Member[ConfigFiles]
   - - pydantic.BaseModel~Subclass
     - src
+    - Member[python_rucaptcha].Member[core].Member[base].Member[CaptchaOptionsSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[base].Member[CreateTaskBaseSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[base].Member[CreateTaskResponseSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[base].Member[GetTaskResultRequestSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[base].Member[TaskSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[result_handler].Member[GetTaskResultRequestSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[result_handler].Member[GetTaskResultResponseSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[CaptchaOptionsSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[CaptchaOptionsSocketSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[ControlCaptchaSocketSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[CreateTaskBaseSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[CreateTaskResponseSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[GetTaskResultRequestSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[GetTaskResultResponseSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[MyBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[NormalCaptchaSocketSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[PostRequestSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[SockAuthSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[SocketResponse]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[TaskSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[TextCaptchaSocketSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[core].Member[serializer].Member[TextCaptchaTaskSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[image_captcha].Member[GetTaskResultResponseSer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[python_rucaptcha].Member[text_captcha].Member[TextCaptchaTaskSer]
+  - - pydantic.BaseModel~Subclass
+    - src
     - Member[recommender].Member[recommender].Member[RecommenderConfig]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[cli].Member[auth].Member[RSAKeyPair]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[cli].Member[auth].Member[TokenDetails]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[cli].Member[main].Member[GlobalConfig]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[cli].Member[main].Member[HelmValues]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[cli].Member[self_host].Member[RobustaRelay]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[cli].Member[self_host].Member[RobustaUI]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[cli].Member[self_host].Member[SelfHostValues]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[cli].Member[slack_feedback_message].Member[SlackFeedbackConfig]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[cli].Member[slack_feedback_message].Member[SlackFeedbackMessage]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[discovery].Member[discovery].Member[DiscoveryResults]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[discovery].Member[resource_names].Member[ResourceLister]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[base_params].Member[NamedRegexPattern]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[base_params].Member[OverrideGraph]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[base_params].Member[PrometheusDateRange]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[base_params].Member[PrometheusDuration]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[events].Member[ExecutionContext]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[events].Member[ExecutionEventBaseParams]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[helm_release].Member[Chart]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[helm_release].Member[HelmRelease]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[helm_release].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[helm_release].Member[Metadata]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[jobs].Member[JobCondition]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[jobs].Member[JobContainer]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[jobs].Member[JobData]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[jobs].Member[JobInfo]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[jobs].Member[JobStatus]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[namespaces].Member[NamespaceInfo]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[pods].Member[ContainerResources]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[pods].Member[PodResources]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[runner_config].Member[PlaybookRepo]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[runner_config].Member[RunnerConfig]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[services].Member[ContainerInfo]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[services].Member[EnvVar]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[services].Member[Resources]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[services].Member[ServiceConfig]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[services].Member[ServiceInfo]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[model].Member[services].Member[VolumeInfo]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[playbooks].Member[base_trigger].Member[TriggerEvent]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[playbooks].Member[prometheus_enrichment_utils].Member[XAxisLine]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[playbooks].Member[prometheus_enrichment_utils].Member[YAxisLine]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[reporting].Member[action_requests].Member[ActionRequestBody]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[reporting].Member[action_requests].Member[ExternalActionRequest]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[reporting].Member[action_requests].Member[PartialAuth]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[reporting].Member[blocks].Member[CallbackChoice]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[reporting].Member[blocks].Member[EventRow]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[reporting].Member[blocks].Member[EventsRef]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[reporting].Member[blocks].Member[LinkProp]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[reporting].Member[blocks].Member[ScanReportRow]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[reporting].Member[callbacks].Member[ExternalActionRequestBuilder]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[schedule].Member[model].Member[BaseDelayRepeat]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[schedule].Member[model].Member[CronScheduleRepeat]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[schedule].Member[model].Member[DynamicDelayRepeat]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[schedule].Member[model].Member[FixedDelayRepeat]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[schedule].Member[model].Member[JobState]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[schedule].Member[model].Member[ScheduledJob]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[schedule].Member[model].Member[SchedulingInfo]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[sinks].Member[robusta].Member[prometheus_health_checker].Member[PrometheusHealthStatus]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[sinks].Member[sink_base_params].Member[SinkBaseParams]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[sinks].Member[sink_config].Member[SinkConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[triggers].Member[custom_triggers].Member[CustomTriggers]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[triggers].Member[helm_releases_triggers].Member[HelmReleaseTriggers]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[triggers].Member[helm_releases_triggers].Member[IncomingHelmReleasesEventPayload]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[core].Member[triggers].Member[oom_killed_trigger_base].Member[Exclude]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[ClusterRoleAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[ClusterRoleBindingAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[ConfigMapAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[DaemonSetAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[DeploymentAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[EventAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[ExecutionEventBaseParams]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[HorizontalPodAutoscalerAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[IngressAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[JobAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[NamespaceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[NetworkPolicyAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[NodeAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[PersistentVolumeAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[PersistentVolumeClaimAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[PodAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[ReplicaSetAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[ResourceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[ServiceAccountAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[ServiceAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[events].Member[StatefulSetAttributes]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[autogenerated].Member[triggers].Member[K8sTriggers]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[base_triggers].Member[IncomingK8sEventPayload]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[custom_models].Member[JobSecret]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[custom_models].Member[NamedRegexPattern]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[custom_models].Member[ProcessList]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[kubernetes].Member[custom_models].Member[Process]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[prometheus].Member[models].Member[AlertManagerEvent]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[prometheus].Member[models].Member[PrometheusAlert]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[receiver].Member[SlackActionRequest]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[receiver].Member[SlackActionsMessage]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[receiver].Member[ValidationResponse]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[scheduled].Member[models].Member[SchedulerEvent]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[scheduled].Member[playbook_scheduler_manager_impl].Member[ScheduledIntegrationParams]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[integrations].Member[scheduled].Member[trigger].Member[ScheduledTriggers]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[model].Member[alert_relabel_config].Member[AlertRelabel]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[model].Member[playbook_action].Member[PlaybookAction]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[model].Member[playbook_definition].Member[PlaybookDefinition]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[utils].Member[documented_pydantic].Member[DocumentedModel]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[utils].Member[silence_utils].Member[Matcher]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[utils].Member[silence_utils].Member[SilenceStatus]
+  - - pydantic.BaseModel~Subclass
+    - src
+    - Member[robusta].Member[utils].Member[silence_utils].Member[Silence]
   - - pydantic.BaseModel~Subclass
     - src
     - Member[rpc].Member[CancelQueryRunRpcRequestParams]
@@ -958,3 +1399,6 @@ extensions:
   - - requests.models.Response~Subclass
     - src
     - Member[pandora].Member[turbo].Member[chat].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - src
+    - Member[robusta].Member[utils].Member[docs].Member[ElementTree]

@@ -1,0 +1,600 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[SystemInfo]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[buildx].Member[imagetools].Member[cli_wrapper].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[buildx].Member[imagetools].Member[models].Member[ImageVariantManifest]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[buildx].Member[imagetools].Member[models].Member[ManifestConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[buildx].Member[imagetools].Member[models].Member[ManifestLayer]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[buildx].Member[imagetools].Member[models].Member[ManifestPlatform]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[buildx].Member[imagetools].Member[models].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[cli_wrapper].Member[ComposeConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[cli_wrapper].Member[ComposeProject]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ComposeConfigNetwork]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ComposeConfigService]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ComposeConfigVolume]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ComposeConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ComposeProject]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ComposeServiceBuild]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ComposeServicePort]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ComposeServiceVolume]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[DependencyCondition]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ResourcesLimits]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ResourcesReservation]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ServiceDeployConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ServicePlacement]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[compose].Member[models].Member[ServiceResources]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[config].Member[cli_wrapper].Member[ConfigInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[config].Member[cli_wrapper].Member[ConfigSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[config].Member[cli_wrapper].Member[DockerObjectVersion]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[config].Member[models].Member[ConfigInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[config].Member[models].Member[ConfigSpecDriver]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[config].Member[models].Member[ConfigSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[config].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[config].Member[models].Member[DockerObjectVersion]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[cli_wrapper].Member[ContainerConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[cli_wrapper].Member[ContainerGraphDriver]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[cli_wrapper].Member[ContainerHostConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[cli_wrapper].Member[ContainerInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[cli_wrapper].Member[ContainerState]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[cli_wrapper].Member[Mount]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[cli_wrapper].Member[NetworkSettings]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerDeviceRequest]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerDevice]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerEndpointIPAMConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerGraphDriver]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerHealthCheck]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerHealth]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerHealthcheckResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerHostConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerLogConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerMountBindOption]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerMount]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerNetworkAddress]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerRestartPolicy]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerState]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerThrottleDevice]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerTmpfsOptions]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerUlimit]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerVolumeDriverConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerVolumeOptions]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[ContainerWeightDevice]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[Mount]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[NetworkInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[NetworkSettings]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[container].Member[models].Member[PortBinding]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[context].Member[cli_wrapper].Member[ContextEndpoint]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[context].Member[cli_wrapper].Member[ContextInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[context].Member[cli_wrapper].Member[ContextStorage]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[context].Member[models].Member[ContextEndpoint]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[context].Member[models].Member[ContextInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[context].Member[models].Member[ContextStorage]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[context].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[image].Member[cli_wrapper].Member[ContainerConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[image].Member[cli_wrapper].Member[ImageGraphDriver]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[image].Member[cli_wrapper].Member[ImageInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[image].Member[cli_wrapper].Member[ImageRootFS]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[image].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[image].Member[models].Member[ImageGraphDriver]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[image].Member[models].Member[ImageHealthcheck]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[image].Member[models].Member[ImageInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[image].Member[models].Member[ImageRootFS]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[manifest].Member[cli_wrapper].Member[ImageVariantManifest]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[manifest].Member[cli_wrapper].Member[ManifestListInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[manifest].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[manifest].Member[models].Member[ImageVariantManifest]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[manifest].Member[models].Member[ManifestListInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[network].Member[cli_wrapper].Member[NetworkContainer]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[network].Member[cli_wrapper].Member[NetworkIPAM]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[network].Member[cli_wrapper].Member[NetworkInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[network].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[network].Member[models].Member[NetworkContainer]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[network].Member[models].Member[NetworkIPAM]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[network].Member[models].Member[NetworkInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[cli_wrapper].Member[NodeDescription]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[cli_wrapper].Member[NodeInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[cli_wrapper].Member[NodeManagerStatus]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[cli_wrapper].Member[NodeSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[cli_wrapper].Member[NodeStatus]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[cli_wrapper].Member[NodeVersion]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[EnginePlugin]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeDescription]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeDiscreteResourceSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeEngine]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeGenericResource]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeManagerStatus]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeNamedResourceSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodePlatform]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeResource]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeStatus]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeTLSInfo]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[node].Member[models].Member[NodeVersion]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[cli_wrapper].Member[PluginConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[cli_wrapper].Member[PluginInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[cli_wrapper].Member[PluginSettings]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[models].Member[Interface]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[models].Member[PluginConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[models].Member[PluginDevice]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[models].Member[PluginInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[models].Member[PluginMount]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[plugin].Member[models].Member[PluginSettings]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[secret].Member[cli_wrapper].Member[SecretInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[secret].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[secret].Member[models].Member[SecretInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[cli_wrapper].Member[ServiceEndpoint]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[cli_wrapper].Member[ServiceInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[cli_wrapper].Member[ServiceSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[cli_wrapper].Member[ServiceVersion]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[CPUMemoryQuotas]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[ChangeConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[ContainerSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[EndpointPortConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[Resources]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[ServiceEndpointSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[ServiceEndpoint]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[ServiceInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[ServiceSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[ServiceVersion]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[TaskTemplate]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[service].Member[models].Member[VirtualIP]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[cli_wrapper].Member[DockerEvent]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[cli_wrapper].Member[DockerItemsSummary]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[cli_wrapper].Member[SystemInfo]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[ClientInfo]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[ClientPlugin]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[ClusterInfo]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[DockerEventActor]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[DockerEvent]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[DockerItemsSummary]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[Driver]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[Orchestration]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[Plugins]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[Raft]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[RemoteManager]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[Runtime]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[SwarmCAConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[SwarmDispatcher]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[SwarmEncryptionConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[SwarmInfo]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[SwarmSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[SwarmTasksDefault]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[system].Member[models].Member[SystemInfo]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[cli_wrapper].Member[AssignedGenericResources]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[cli_wrapper].Member[ObjectVersion]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[cli_wrapper].Member[TaskInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[cli_wrapper].Member[TaskSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[cli_wrapper].Member[TaskStatus]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[AssignedGenericResources]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[ContainerSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[ContainerStatus]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[DiscreteResourceSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[LogDriver]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[NamedResourceSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[NetworkAttachmentConfig]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[NetworkAttachmentSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[ObjectVersion]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[Placement]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[Platform]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[PluginPrivilege]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[PluginSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[ResourceObject]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[Resources]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[RestartPolicy]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[Spread]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[TaskInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[TaskSpec]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[task].Member[models].Member[TaskStatus]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[volume].Member[cli_wrapper].Member[VolumeInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[volume].Member[models].Member[DockerCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[components].Member[volume].Member[models].Member[VolumeInspectResult]
+  - - pydantic.BaseModel~Subclass
+    - python_on_whales
+    - Member[utils].Member[DockerCamelModel]

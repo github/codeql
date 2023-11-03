@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponse~Subclass
+    - edx_rest_framework_extensions
+    - Member[paginators].Member[Response]
+  - - rest_framework.request.Request~Subclass
+    - edx_rest_framework_extensions
+    - Member[auth].Member[jwt].Member[middleware].Member[Request]
+  - - rest_framework.response.Response~Subclass
+    - edx_rest_framework_extensions
+    - Member[paginators].Member[Response]

@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - geos
+    - Member[Flask]
+  - - flask.Response~Subclass
+    - geos
+    - Member[server].Member[Response]
+  - - lxml.etree~Alias
+    - geos
+    - Member[kml].Member[etree]
+  - - lxml.etree~Alias
+    - geos
+    - Member[server].Member[etree]

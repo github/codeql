@@ -1,0 +1,114 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[OAuth1ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[consumer].Member[OAuth1ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[consumer].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[consumer].Member[base].Member[BaseOAuthConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[consumer].Member[oauth1].Member[BaseOAuthConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[consumer].Member[oauth1].Member[OAuth1ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[consumer].Member[oauth2].Member[BaseOAuthConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[consumer].Member[oauth2].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[atlassian].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[authentiq].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[azure].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[dexcom].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[digitalocean].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[discord].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[dropbox].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[facebook].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[fitbit].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[github].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[gitlab].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[google].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[heroku].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[jira].Member[OAuth1ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[linkedin].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[meetup].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[nylas].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[orcid].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[osm].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[reddit].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[salesforce].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[slack].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[slack].Member[SlackBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[spotify].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[strava].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[twitch].Member[OAuth2ConsumerBlueprint]
+  - - flask.Blueprint~Subclass
+    - flask_dance
+    - Member[contrib].Member[zoho].Member[OAuth2ConsumerBlueprint]

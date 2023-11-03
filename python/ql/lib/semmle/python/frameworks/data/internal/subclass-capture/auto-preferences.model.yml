@@ -7,3 +7,6 @@ extensions:
   - - Django.db.models.Model~Subclass
     - preferences
     - Member[managers].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - preferences
+    - Member[models].Member[Preferences]

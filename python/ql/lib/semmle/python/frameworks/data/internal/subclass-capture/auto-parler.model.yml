@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - parler
+    - Member[views].Member[TranslatableCreateView]
+  - - Django.Views.View~Subclass
+    - parler
+    - Member[views].Member[TranslatableUpdateView]
+  - - Django.db.models.Model~Subclass
+    - parler
+    - Member[models].Member[TranslatableModel]
+  - - Django.db.models.Model~Subclass
+    - parler
+    - Member[models].Member[TranslatedFieldsModel]
+  - - Django.db.models.Model~Subclass
+    - parler
+    - Member[templatetags].Member[parler_tags].Member[TranslatableModel]
+  - - django.forms.BaseForm~Subclass
+    - parler
+    - Member[forms].Member[BaseTranslatableModelForm]
+  - - django.forms.BaseForm~Subclass
+    - parler
+    - Member[forms].Member[TranslatableModelForm]

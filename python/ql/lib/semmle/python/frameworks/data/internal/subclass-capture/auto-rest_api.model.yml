@@ -1,0 +1,135 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - rest_api
+    - Member[controller].Member[document].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - rest_api
+    - Member[controller].Member[feedback].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - rest_api
+    - Member[controller].Member[file_upload].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - rest_api
+    - Member[controller].Member[health].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - rest_api
+    - Member[controller].Member[router].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - rest_api
+    - Member[utils].Member[APIRouter]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[document].Member[FilterRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[feedback].Member[CreateLabelSerialized]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[feedback].Member[FilterRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[feedback].Member[LabelSerialized]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[file_upload].Member[FileConverterParams]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[file_upload].Member[PreprocessorParams]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[file_upload].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[health].Member[CPUUsage]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[health].Member[GPUInfo]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[health].Member[GPUUsage]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[health].Member[HealthResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[health].Member[MemoryUsage]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[Chatfile_QueryResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[DocumentRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[DocumentResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[QueryImageResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[QueryQAPairRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[QueryQAPairResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[QueryRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[QueryResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[SentaRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[controller].Member[search].Member[SentaResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[Chatfile_QueryResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[CreateLabelSerialized]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[DocumentRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[DocumentResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[FilterRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[LabelSerialized]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[QueryImageResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[QueryQAPairRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[QueryQAPairResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[QueryRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[QueryResponse]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[RequestBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[SentaRequest]
+  - - pydantic.BaseModel~Subclass
+    - rest_api
+    - Member[schema].Member[SentaResponse]

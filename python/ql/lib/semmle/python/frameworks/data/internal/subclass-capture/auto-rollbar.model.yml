@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - rollbar
+    - Member[DjangoHttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - rollbar
+    - Member[examples].Member[django].Member[app].Member[HttpResponse]
+  - - fastapi.APIRouter~Subclass
+    - rollbar
+    - Member[contrib].Member[fastapi].Member[utils].Member[APIRouter]
+  - - flask.Flask~Subclass
+    - rollbar
+    - Member[examples].Member[flask].Member[app].Member[Flask]
+  - - rest_framework.request.Request~Subclass
+    - rollbar
+    - Member[RestFrameworkRequest]

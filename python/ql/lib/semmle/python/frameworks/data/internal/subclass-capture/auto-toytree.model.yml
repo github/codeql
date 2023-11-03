@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - toytree
+    - Member[MultiDrawing].Member[xml]
+  - - xml.etree.ElementTree~Subclass
+    - toytree
+    - Member[Render].Member[xml]
+  - - xml.etree.ElementTree~Subclass
+    - toytree
+    - Member[html].Member[xml]

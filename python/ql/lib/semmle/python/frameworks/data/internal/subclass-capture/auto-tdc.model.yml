@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - tdc
+    - Member[chem_utils].Member[oracle].Member[oracle].Member[pickle]
+  - - pickle~Alias
+    - tdc
+    - Member[utils].Member[load].Member[pickle]
+  - - pickle~Alias
+    - tdc
+    - Member[utils].Member[misc].Member[pickle]

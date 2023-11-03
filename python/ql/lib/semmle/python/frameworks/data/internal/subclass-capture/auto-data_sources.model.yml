@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - data_sources
+    - Member[bigquery].Member[BigQueryOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_sources
+    - Member[file].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - data_sources
+    - Member[file].Member[FileOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_sources
+    - Member[redshift].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - data_sources
+    - Member[redshift].Member[RedshiftOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - data_sources
+    - Member[snowflake].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - data_sources
+    - Member[snowflake].Member[SnowflakeOfflineStoreConfig]

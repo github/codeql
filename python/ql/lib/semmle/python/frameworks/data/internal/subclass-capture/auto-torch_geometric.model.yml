@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - torch_geometric
+    - Member[datasets].Member[aqsol].Member[pickle]
+  - - pickle~Alias
+    - torch_geometric
+    - Member[datasets].Member[ged_dataset].Member[pickle]
+  - - pickle~Alias
+    - torch_geometric
+    - Member[datasets].Member[gnn_benchmark_dataset].Member[pickle]
+  - - pickle~Alias
+    - torch_geometric
+    - Member[datasets].Member[lrgb].Member[pickle]
+  - - pickle~Alias
+    - torch_geometric
+    - Member[datasets].Member[mixhop_synthetic_dataset].Member[pickle]
+  - - pickle~Alias
+    - torch_geometric
+    - Member[datasets].Member[zinc].Member[pickle]
+  - - pickle~Alias
+    - torch_geometric
+    - Member[io].Member[planetoid].Member[pickle]

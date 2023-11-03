@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - semantic_release
+    - Member[cli].Member[commands].Member[generate_config].Member[RawConfig]
+  - - pydantic.BaseModel~Subclass
+    - semantic_release
+    - Member[cli].Member[commands].Member[main].Member[RawConfig]
+  - - pydantic.BaseModel~Subclass
+    - semantic_release
+    - Member[cli].Member[config].Member[BranchConfig]
+  - - pydantic.BaseModel~Subclass
+    - semantic_release
+    - Member[cli].Member[config].Member[ChangelogConfig]
+  - - pydantic.BaseModel~Subclass
+    - semantic_release
+    - Member[cli].Member[config].Member[ChangelogEnvironmentConfig]
+  - - pydantic.BaseModel~Subclass
+    - semantic_release
+    - Member[cli].Member[config].Member[EnvConfigVar]
+  - - pydantic.BaseModel~Subclass
+    - semantic_release
+    - Member[cli].Member[config].Member[PublishConfig]
+  - - pydantic.BaseModel~Subclass
+    - semantic_release
+    - Member[cli].Member[config].Member[RawConfig]
+  - - pydantic.BaseModel~Subclass
+    - semantic_release
+    - Member[cli].Member[config].Member[RemoteConfig]

@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - todo
+    - Member[views].Member[HarvestViewSet]
+  - - Django.Views.View~Subclass
+    - todo
+    - Member[views].Member[NestedTodoView]
+  - - Django.Views.View~Subclass
+    - todo
+    - Member[views].Member[RetrieveAPIView]
+  - - Django.Views.View~Subclass
+    - todo
+    - Member[views].Member[TodoAnotherViewSet]
+  - - Django.Views.View~Subclass
+    - todo
+    - Member[views].Member[TodoRecursiveView]
+  - - Django.Views.View~Subclass
+    - todo
+    - Member[views].Member[TodoTreeView]
+  - - Django.Views.View~Subclass
+    - todo
+    - Member[views].Member[TodoViewSet]
+  - - Django.Views.View~Subclass
+    - todo
+    - Member[views].Member[TodoYetAnotherViewSet]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[models].Member[Pack]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[models].Member[TodoAnother]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[models].Member[TodoTree]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[models].Member[TodoYetAnother]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[models].Member[Todo]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[serializer].Member[Pack]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[serializer].Member[TodoAnother]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[serializer].Member[TodoTree]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[serializer].Member[TodoYetAnother]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[serializer].Member[Todo]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[views].Member[Pack]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[views].Member[TodoAnother]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[views].Member[TodoTree]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[views].Member[TodoYetAnother]
+  - - Django.db.models.Model~Subclass
+    - todo
+    - Member[views].Member[Todo]

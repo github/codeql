@@ -4,6 +4,201 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[forms].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[forms].Member[IntegerField]
+  - - Django.Forms.Field~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_link].Member[forms].Member[IconField]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_alerts].Member[cms_plugins].Member[Bootstrap4Alerts]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_alerts].Member[models].Member[Bootstrap4Alerts]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_alerts].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_badge].Member[cms_plugins].Member[Bootstrap4Badge]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_badge].Member[models].Member[Bootstrap4Badge]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_badge].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_card].Member[cms_plugins].Member[Bootstrap4CardInner]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_card].Member[cms_plugins].Member[Bootstrap4Card]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_card].Member[models].Member[Bootstrap4CardInner]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_card].Member[models].Member[Bootstrap4Card]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_card].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_carousel].Member[cms_plugins].Member[Bootstrap4Carousel]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_carousel].Member[models].Member[Bootstrap4Carousel]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_carousel].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_collapse].Member[cms_plugins].Member[Bootstrap4CollapseContainer]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_collapse].Member[cms_plugins].Member[Bootstrap4CollapseTrigger]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_collapse].Member[cms_plugins].Member[Bootstrap4Collapse]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_collapse].Member[models].Member[Bootstrap4CollapseContainer]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_collapse].Member[models].Member[Bootstrap4CollapseTrigger]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_collapse].Member[models].Member[Bootstrap4Collapse]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_collapse].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[cms_plugins].Member[Bootstrap4Blockquote]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[cms_plugins].Member[Bootstrap4Code]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[cms_plugins].Member[Bootstrap4Figure]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[models].Member[Bootstrap4Blockquote]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[models].Member[Bootstrap4Code]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[models].Member[Bootstrap4Figure]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[cms_plugins].Member[Bootstrap4GridContainer]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[cms_plugins].Member[Bootstrap4GridRow]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[forms].Member[Bootstrap4GridRow]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[models].Member[Bootstrap4GridColumn]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[models].Member[Bootstrap4GridContainer]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[models].Member[Bootstrap4GridRow]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_jumbotron].Member[cms_plugins].Member[Bootstrap4Jumbotron]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_jumbotron].Member[models].Member[Bootstrap4Jumbotron]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_jumbotron].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_listgroup].Member[cms_plugins].Member[Bootstrap4ListGroupItem]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_listgroup].Member[cms_plugins].Member[Bootstrap4ListGroup]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_listgroup].Member[models].Member[Bootstrap4ListGroupItem]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_listgroup].Member[models].Member[Bootstrap4ListGroup]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_listgroup].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_media].Member[cms_plugins].Member[Bootstrap4MediaBody]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_media].Member[cms_plugins].Member[Bootstrap4Media]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_media].Member[models].Member[Bootstrap4MediaBody]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_media].Member[models].Member[Bootstrap4Media]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_media].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_tabs].Member[cms_plugins].Member[Bootstrap4TabItem]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_tabs].Member[cms_plugins].Member[Bootstrap4Tab]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_tabs].Member[models].Member[Bootstrap4TabItem]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_tabs].Member[models].Member[Bootstrap4Tab]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_tabs].Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_utilities].Member[cms_plugins].Member[Bootstrap4Spacing]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_utilities].Member[models].Member[Bootstrap4Spacing]
+  - - Django.db.models.Model~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_utilities].Member[models].Member[CMSPlugin]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[cms_plugins].Member[Bootstrap4CodeForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[forms].Member[Bootstrap4CodeForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_content].Member[forms].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[cms_plugins].Member[Bootstrap4GridRowForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[forms].Member[Bootstrap4GridColumnBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_bootstrap4
+    - Member[contrib].Member[bootstrap4_grid].Member[forms].Member[Bootstrap4GridRowForm]
   - - django.forms.BaseForm~Subclass
     - djangocms_bootstrap4
     - Member[contrib].Member[bootstrap4_link].Member[cms_plugins].Member[Bootstrap4LinkForm]

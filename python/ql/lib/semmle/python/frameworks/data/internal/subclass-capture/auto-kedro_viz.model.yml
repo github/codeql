@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - kedro_viz
+    - Member[api].Member[graphql].Member[router].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[router].Member[APIRouter]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[requests].Member[S3DeployerConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[APIErrorMessage]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[BaseAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[BaseGraphNodeAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[DataNodeAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[DataNodeMetadataAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[GraphAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[GraphEdgeAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[ModularPipelineChildAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[ModularPipelinesTreeNodeAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[NamedEntityAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[PackageCompatibilityAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[ParametersNodeMetadataAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[TaskNodeAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[TaskNodeMetadataAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[responses].Member[TranscodedDataNodeMetadataAPIReponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[router].Member[APIErrorMessage]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[router].Member[GraphAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[router].Member[PackageCompatibilityAPIResponse]
+  - - pydantic.BaseModel~Subclass
+    - kedro_viz
+    - Member[api].Member[rest].Member[router].Member[S3DeployerConfiguration]
+  - - sqlalchemy.orm.Session~Subclass
+    - kedro_viz
+    - Member[integrations].Member[kedro].Member[sqlite_store].Member[Session]

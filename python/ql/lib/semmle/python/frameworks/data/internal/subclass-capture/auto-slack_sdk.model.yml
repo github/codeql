@@ -1,0 +1,114 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - slack_sdk
+    - Member[audit_logs].Member[v1].Member[async_client].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - slack_sdk
+    - Member[scim].Member[v1].Member[async_client].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - slack_sdk
+    - Member[web].Member[async_internal_utils].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - slack_sdk
+    - Member[webhook].Member[async_client].Member[ClientSession]
+  - - http.client.HTTPResponse~Subclass
+    - slack_sdk
+    - Member[audit_logs].Member[v1].Member[client].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - slack_sdk
+    - Member[scim].Member[v1].Member[client].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - slack_sdk
+    - Member[web].Member[base_client].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - slack_sdk
+    - Member[web].Member[internal_utils].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - slack_sdk
+    - Member[web].Member[legacy_base_client].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - slack_sdk
+    - Member[webhook].Member[client].Member[HTTPResponse]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[installation_store].Member[amazon_s3].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[installation_store].Member[async_cacheable_installation_store].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[installation_store].Member[async_installation_store].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[installation_store].Member[cacheable_installation_store].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[installation_store].Member[file].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[installation_store].Member[installation_store].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[installation_store].Member[sqlalchemy].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[installation_store].Member[sqlite3].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[state_store].Member[amazon_s3].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[state_store].Member[async_state_store].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[state_store].Member[file].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[state_store].Member[sqlalchemy].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[state_store].Member[sqlite3].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[oauth].Member[state_store].Member[state_store].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[rtm_v2].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[socket_mode].Member[aiohttp].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[socket_mode].Member[async_client].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[socket_mode].Member[builtin].Member[client].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[socket_mode].Member[builtin].Member[connection].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[socket_mode].Member[builtin].Member[internals].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[socket_mode].Member[client].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[socket_mode].Member[websocket_client].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[socket_mode].Member[websockets].Member[Logger]
+  - - logging.Logger~Subclass
+    - slack_sdk
+    - Member[web].Member[async_internal_utils].Member[Logger]
+  - - sqlalchemy.engine.Engine~Subclass
+    - slack_sdk
+    - Member[oauth].Member[installation_store].Member[sqlalchemy].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - slack_sdk
+    - Member[oauth].Member[state_store].Member[sqlalchemy].Member[Engine]

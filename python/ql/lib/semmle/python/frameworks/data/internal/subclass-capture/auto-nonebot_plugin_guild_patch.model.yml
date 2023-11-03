@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - nonebot_plugin_guild_patch
+    - Member[models].Member[ChannelInfo]
+  - - pydantic.BaseModel~Subclass
+    - nonebot_plugin_guild_patch
+    - Member[models].Member[ReactionInfo]
+  - - pydantic.BaseModel~Subclass
+    - nonebot_plugin_guild_patch
+    - Member[models].Member[SlowModeInfo]

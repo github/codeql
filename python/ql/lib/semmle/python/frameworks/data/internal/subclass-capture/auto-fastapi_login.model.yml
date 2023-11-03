@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_login
+    - Member[fastapi_login].Member[Secret]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_login
+    - Member[secrets].Member[AsymmetricPairKey]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_login
+    - Member[secrets].Member[AsymmetricSecretIn]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_login
+    - Member[secrets].Member[AsymmetricSecret]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_login
+    - Member[secrets].Member[RawPrivateSecret]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_login
+    - Member[secrets].Member[Secret]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_login
+    - Member[secrets].Member[SymmetricSecret]

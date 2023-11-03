@@ -1,0 +1,366 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - stravalib
+    - Member[client].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - stravalib
+    - Member[util].Member[limiter].Member[Logger]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[field_conversions].Member[ActivityType]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[field_conversions].Member[SportType]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityComment]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityKudos]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityLap]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityPhotoMeta]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityPhotoPrimary]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityPhoto]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityStats]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityTotal]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityTotals]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityType]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ActivityZone]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Activity]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[AthletePrEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[AthleteSegmentStats]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Athlete]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[BaseActivityZone]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[BaseEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[BaseStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[BestEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Bike]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[BoundClientEntity]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Club]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Comment]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[DeprecatedSerializableMixin]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[DetailedActivity]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[DetailedAthlete]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[DetailedClub]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[DetailedGear]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[DetailedSegmentEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[DetailedSegment]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[DistributionBucket]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[ExplorerSegment]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Gear]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Lap]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[LatLng]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[LatLon]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Map]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[PhotosSummary]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[PolylineMap]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Primary]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Route]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SegmentEffortAchievement]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SegmentEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SegmentExplorerResult]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Segment]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Shoe]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Split]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SportType]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Stream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SubscriptionCallback]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SubscriptionUpdate]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[Subscription]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SummaryClub]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SummaryGear]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SummaryPRSegmentEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[SummarySegmentEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[model].Member[TimedZoneRange]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ActivityStats]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ActivityTotal]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ActivityType]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ActivityZone]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[AltitudeStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[BaseStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[CadenceStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ClubActivity]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ClubAnnouncement]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ClubAthlete]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[Comment]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[DetailedActivity]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[DetailedAthlete]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[DetailedClub]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[DetailedGear]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[DetailedSegmentEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[DetailedSegment]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[DistanceStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ExplorerResponse]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ExplorerSegment]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[Fault]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[HeartRateZoneRanges]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[Lap]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[LatLngStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[LatLng]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[MembershipApplication]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[MetaActivity]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[MetaAthlete]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[MetaClub]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[MovingStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[PhotosSummary]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[PolylineMap]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[PowerStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[PowerZoneRanges]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[Primary]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[Route]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SmoothGradeStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SmoothVelocityStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[Split]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SportType]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[StreamSet]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[StreamType]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SummaryActivity]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SummaryAthlete]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SummaryClub]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SummaryGear]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SummaryPRSegmentEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SummarySegmentEffort]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[SummarySegment]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[TemperatureStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[TimeStream]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[TimedZoneDistribution]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[TimedZoneRange]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[UpdatableActivity]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[Upload]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ZoneRange]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[ZoneRanges]
+  - - pydantic.BaseModel~Subclass
+    - stravalib
+    - Member[strava_model].Member[Zones]

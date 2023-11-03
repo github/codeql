@@ -6,6 +6,9 @@ extensions:
   data:
   - - django.http.response.HttpResponse~Subclass
     - django_xhtml2pdf
+    - Member[utils].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_xhtml2pdf
     - Member[utils].Member[PdfResponse]
   - - django.http.response.HttpResponse~Subclass
     - django_xhtml2pdf
@@ -13,3 +16,6 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - django_xhtml2pdf
     - Member[views].Member[PdfResponse]
+  - - io.StringIO~Subclass
+    - django_xhtml2pdf
+    - Member[utils].Member[BytesIO]

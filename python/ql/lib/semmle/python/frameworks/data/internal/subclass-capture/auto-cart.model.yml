@@ -6,4 +6,10 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - cart
+    - Member[models].Member[Cart]
+  - - Django.db.models.Model~Subclass
+    - cart
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - cart
+    - Member[models].Member[Item]

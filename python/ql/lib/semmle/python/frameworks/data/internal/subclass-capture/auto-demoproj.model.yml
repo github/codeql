@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - demoproj
+    - Member[views].Member[async_views].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - demoproj
+    - Member[views].Member[sync_views].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - demoproj
+    - Member[views].Member[sync_views].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - demoproj
+    - Member[views].Member[async_views].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - demoproj
+    - Member[views].Member[sync_views].Member[JsonResponse]
+  - - rest_framework.request.Request~Subclass
+    - demoproj
+    - Member[views].Member[sync_views].Member[Request]
+  - - rest_framework.response.Response~Subclass
+    - demoproj
+    - Member[views].Member[sync_views].Member[Response]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - uiautomator2
+    - Member[ext].Member[xpath].Member[etree]
+  - - lxml.etree~Alias
+    - uiautomator2
+    - Member[widget].Member[etree]
+  - - lxml.etree~Alias
+    - uiautomator2
+    - Member[xpath].Member[etree]

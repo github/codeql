@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - underthesea
+    - Member[corpus].Member[uvd].Member[pickle]
+  - - pickle~Alias
+    - underthesea
+    - Member[dictionary].Member[pickle]
+  - - pickle~Alias
+    - underthesea
+    - Member[pipeline].Member[say].Member[viettts_].Member[hifigan].Member[convert_torch_model_to_haiku].Member[pickle]
+  - - pickle~Alias
+    - underthesea
+    - Member[pipeline].Member[say].Member[viettts_].Member[hifigan].Member[mel2wave].Member[pickle]
+  - - pickle~Alias
+    - underthesea
+    - Member[pipeline].Member[say].Member[viettts_].Member[nat].Member[acoustic_tpu_trainer].Member[pickle]
+  - - pickle~Alias
+    - underthesea
+    - Member[pipeline].Member[say].Member[viettts_].Member[nat].Member[acoustic_trainer].Member[pickle]
+  - - pickle~Alias
+    - underthesea
+    - Member[pipeline].Member[say].Member[viettts_].Member[nat].Member[gta].Member[pickle]
+  - - pickle~Alias
+    - underthesea
+    - Member[pipeline].Member[say].Member[viettts_].Member[nat].Member[text2mel].Member[pickle]
+  - - pickle~Alias
+    - underthesea
+    - Member[pipeline].Member[say].Member[viettts_].Member[nat].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - underthesea
+    - Member[pipeline].Member[sent_tokenize].Member[pickle]

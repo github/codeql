@@ -13,3 +13,6 @@ extensions:
   - - logging.Logger~Subclass
     - mmseg
     - Member[evaluation].Member[metrics].Member[iou_metric].Member[MMLogger]
+  - - pickle~Alias
+    - mmseg
+    - Member[utils].Member[io].Member[pickle]

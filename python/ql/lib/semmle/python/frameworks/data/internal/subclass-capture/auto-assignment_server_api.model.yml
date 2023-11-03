@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - assignment_server_api
+    - Member[routers].Member[instructor].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - assignment_server_api
+    - Member[routers].Member[student].Member[APIRouter]

@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - person
+    - Member[forms].Member[AddressField]
+  - - Django.db.models.Model~Subclass
+    - person
+    - Member[admin].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - person
+    - Member[forms].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - person
+    - Member[models].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - person
+    - Member[views].Member[Address]
+  - - django.forms.BaseForm~Subclass
+    - person
+    - Member[forms].Member[PersonForm]
+  - - django.forms.BaseForm~Subclass
+    - person
+    - Member[views].Member[PersonForm]

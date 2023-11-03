@@ -1,0 +1,111 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[base].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[base].Member[BasicQuery]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[logging].Member[handler].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[CSVFileRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[JSONDirectoryRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[MemoryRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[MongoRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[RESTRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[SQLExprRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[SQLRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[csv].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[csv].Member[CSVFileRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[csv].Member[TemplateRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[json].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[json].Member[JSONDirectoryRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[json].Member[TemplateRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[memory].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[memory].Member[MemoryRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[memory].Member[TemplateRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[mongo].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[mongo].Member[MongoRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[mongo].Member[TemplateRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[rest].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[rest].Member[RESTRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[rest].Member[TemplateRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[sqlalchemy].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[sqlalchemy].Member[SQLExprRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[sqlalchemy].Member[SQLRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[repos].Member[sqlalchemy].Member[TemplateRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[templates].Member[BaseRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[templates].Member[TemplateRepo]
+  - - pydantic.BaseModel~Subclass
+    - redbird
+    - Member[utils].Member[query].Member[TemplateRepo]
+  - - sqlalchemy.engine.Engine~Subclass
+    - redbird
+    - Member[repos].Member[sqlalchemy].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - redbird
+    - Member[sql].Member[expressions].Member[Engine]

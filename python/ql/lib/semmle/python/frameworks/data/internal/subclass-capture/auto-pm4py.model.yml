@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pm4py
+    - Member[objects].Member[dfg].Member[importer].Member[variants].Member[classic].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pm4py
+    - Member[objects].Member[log].Member[exporter].Member[xes].Member[variants].Member[etree_xes_exp].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pm4py
+    - Member[objects].Member[log].Member[exporter].Member[xes].Member[variants].Member[line_by_line].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pm4py
+    - Member[objects].Member[log].Member[importer].Member[xes].Member[variants].Member[chunk_regex].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pm4py
+    - Member[objects].Member[log].Member[importer].Member[xes].Member[variants].Member[iterparse].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pm4py
+    - Member[objects].Member[log].Member[importer].Member[xes].Member[variants].Member[iterparse_20].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pm4py
+    - Member[objects].Member[log].Member[importer].Member[xes].Member[variants].Member[iterparse_mem_compressed].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pm4py
+    - Member[objects].Member[log].Member[importer].Member[xes].Member[variants].Member[line_by_line].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pm4py
+    - Member[visualization].Member[common].Member[gview].Member[BytesIO]
+  - - lxml.etree~Alias
+    - pm4py
+    - Member[objects].Member[log].Member[exporter].Member[xes].Member[variants].Member[etree_xes_exp].Member[etree]
+  - - lxml.etree~Alias
+    - pm4py
+    - Member[objects].Member[ocel].Member[exporter].Member[xmlocel].Member[variants].Member[classic].Member[etree]
+  - - lxml.etree~Alias
+    - pm4py
+    - Member[objects].Member[ocel].Member[exporter].Member[xmlocel].Member[variants].Member[ocel20].Member[etree]
+  - - lxml.etree~Alias
+    - pm4py
+    - Member[objects].Member[ocel].Member[importer].Member[xmlocel].Member[variants].Member[classic].Member[etree]
+  - - lxml.etree~Alias
+    - pm4py
+    - Member[objects].Member[ocel].Member[importer].Member[xmlocel].Member[variants].Member[ocel20].Member[etree]
+  - - lxml.etree~Alias
+    - pm4py
+    - Member[objects].Member[petri_net].Member[exporter].Member[variants].Member[pnml].Member[etree]
+  - - lxml.etree~Alias
+    - pm4py
+    - Member[objects].Member[petri_net].Member[importer].Member[variants].Member[pnml].Member[etree]
+  - - lxml.etree~Alias
+    - pm4py
+    - Member[objects].Member[process_tree].Member[exporter].Member[variants].Member[ptml].Member[etree]
+  - - lxml.etree~Alias
+    - pm4py
+    - Member[objects].Member[process_tree].Member[importer].Member[variants].Member[ptml].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - pm4py
+    - Member[visualization].Member[common].Member[svg_pos_parser].Member[ET]

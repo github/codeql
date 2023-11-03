@@ -4,6 +4,57 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[announcements].Member[v0].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[log].Member[v0].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[mail].Member[v0].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[metadata].Member[v0].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[notice].Member[v0].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[preview].Member[dashboard].Member[v0].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[preview].Member[v0].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[quality].Member[v0].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[search].Member[v1].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - amundsen_application
+    - Member[api].Member[v0].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - amundsen_application
+    - Member[Flask]
+  - - flask.Flask~Subclass
+    - amundsen_application
+    - Member[api].Member[Flask]
+  - - flask.Flask~Subclass
+    - amundsen_application
+    - Member[app_wrapper_class]
+  - - flask.Flask~Subclass
+    - amundsen_application
+    - Member[config].Member[Flask]
+  - - flask.Flask~Subclass
+    - amundsen_application
+    - Member[deprecations].Member[Flask]
+  - - flask.Flask~Subclass
+    - amundsen_application
+    - Member[oidc_config].Member[Flask]
   - - flask.MethodView~Subclass
     - amundsen_application
     - Member[IssueAPI]
@@ -19,3 +70,81 @@ extensions:
   - - flask.MethodView~Subclass
     - amundsen_application
     - Member[api].Member[issue].Member[issue].Member[Resource]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[announcements].Member[v0].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[issue].Member[issue].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[log].Member[v0].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[mail].Member[v0].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[metadata].Member[v0].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[notice].Member[v0].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[preview].Member[dashboard].Member[v0].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[preview].Member[v0].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[quality].Member[v0].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[search].Member[v1].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[utils].Member[notification_utils].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[utils].Member[response_utils].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[api].Member[v0].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_announcement_client].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_bigquery_preview_client].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_mail_client].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_notice_client].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_preview_client].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_quality_client].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_redash_preview_client].Member[FlaskResponse]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_s3_preview_client].Member[FlaskResponse]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_superset_preview_client].Member[FlaskResponse]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[examples].Member[example_dremio_preview_client].Member[Response]
+  - - flask.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[examples].Member[example_mail_client].Member[Response]
+  - - requests.models.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[base_superset_preview_client].Member[Response]
+  - - requests.models.Response~Subclass
+    - amundsen_application
+    - Member[base].Member[examples].Member[example_superset_preview_client].Member[Response]

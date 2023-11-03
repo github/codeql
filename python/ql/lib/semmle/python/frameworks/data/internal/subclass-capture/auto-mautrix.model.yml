@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - mautrix
+    - Member[api].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - mautrix
+    - Member[appservice].Member[api].Member[appservice].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - mautrix
+    - Member[client].Member[api].Member[base].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - mautrix
+    - Member[util].Member[manhole].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mautrix
+    - Member[util].Member[manhole].Member[StringIO]
+  - - pickle~Alias
+    - mautrix
+    - Member[util].Member[file_store].Member[pickle]
+  - - sqlalchemy.engine.Connection~Subclass
+    - mautrix
+    - Member[util].Member[db].Member[base].Member[Connection]

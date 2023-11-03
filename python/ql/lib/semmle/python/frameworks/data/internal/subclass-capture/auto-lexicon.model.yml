@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPResponse~Subclass
+    - lexicon
+    - Member[_private].Member[providers].Member[valuedomain].Member[HTTPResponse]
+  - - requests.models.Response~Subclass
+    - lexicon
+    - Member[_private].Member[providers].Member[easyname].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - lexicon
+    - Member[_private].Member[providers].Member[namesilo].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - lexicon
+    - Member[_private].Member[providers].Member[zonomi].Member[ElementTree]

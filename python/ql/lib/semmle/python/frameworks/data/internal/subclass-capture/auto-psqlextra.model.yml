@@ -1,0 +1,93 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[patched_autodetector].Member[PostgresMaterializedViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[patched_autodetector].Member[PostgresPartitionedModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[patched_autodetector].Member[PostgresViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[patched_project_state].Member[PostgresMaterializedViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[patched_project_state].Member[PostgresPartitionedModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[patched_project_state].Member[PostgresViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[state].Member[materialized_view].Member[PostgresMaterializedViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[state].Member[model].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[state].Member[model].Member[PostgresModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[state].Member[partitioning].Member[PostgresPartitionedModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[migrations].Member[state].Member[view].Member[PostgresViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[backend].Member[schema].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[compiler].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[introspect].Member[fields].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[introspect].Member[models].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[management].Member[commands].Member[pgrefreshmv].Member[PostgresMaterializedViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[PostgresMaterializedViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[PostgresModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[PostgresPartitionedModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[PostgresViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[base].Member[PostgresModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[partitioned].Member[PostgresModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[partitioned].Member[PostgresPartitionedModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[view].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[view].Member[PostgresMaterializedViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[view].Member[PostgresModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[models].Member[view].Member[PostgresViewModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[partitioning].Member[manager].Member[PostgresPartitionedModel]
+  - - Django.db.models.Model~Subclass
+    - psqlextra
+    - Member[partitioning].Member[shorthands].Member[PostgresPartitionedModel]

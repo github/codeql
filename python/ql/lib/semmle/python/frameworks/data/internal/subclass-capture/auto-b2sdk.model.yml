@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - b2sdk
+    - Member[transfer].Member[emerge].Member[unbound_write_intent].Member[IOWrapper]
+  - - requests.models.Response~Subclass
+    - b2sdk
+    - Member[b2http].Member[NotDecompressingResponse]
+  - - requests.models.Response~Subclass
+    - b2sdk
+    - Member[requests].Member[NotDecompressingResponse]
+  - - requests.models.Response~Subclass
+    - b2sdk
+    - Member[requests].Member[Response]
+  - - requests.models.Response~Subclass
+    - b2sdk
+    - Member[requests]Member[NotDecompressingResponse]
+  - - requests.models.Response~Subclass
+    - b2sdk
+    - Member[transfer].Member[inbound].Member[downloaded_file].Member[Response]
+  - - requests.models.Response~Subclass
+    - b2sdk
+    - Member[transfer].Member[inbound].Member[downloader].Member[abstract].Member[Response]
+  - - requests.models.Response~Subclass
+    - b2sdk
+    - Member[transfer].Member[inbound].Member[downloader].Member[parallel].Member[Response]
+  - - requests.models.Response~Subclass
+    - b2sdk
+    - Member[transfer].Member[inbound].Member[downloader].Member[simple].Member[Response]

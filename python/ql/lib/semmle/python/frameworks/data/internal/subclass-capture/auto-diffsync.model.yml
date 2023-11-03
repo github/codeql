@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle.loads~Alias
+    - diffsync
+    - Member[store].Member[redis].Member[loads]
+  - - pydantic.BaseModel~Subclass
+    - diffsync
+    - Member[DiffSyncModel]
+  - - pydantic.BaseModel~Subclass
+    - diffsync
+    - Member[exceptions].Member[DiffSyncModel]
+  - - pydantic.BaseModel~Subclass
+    - diffsync
+    - Member[helpers].Member[DiffSyncModel]
+  - - pydantic.BaseModel~Subclass
+    - diffsync
+    - Member[store].Member[DiffSyncModel]
+  - - pydantic.BaseModel~Subclass
+    - diffsync
+    - Member[store].Member[local].Member[DiffSyncModel]
+  - - pydantic.BaseModel~Subclass
+    - diffsync
+    - Member[store].Member[redis].Member[DiffSyncModel]

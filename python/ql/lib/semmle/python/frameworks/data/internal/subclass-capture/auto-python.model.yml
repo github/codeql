@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - python
+    - Member[examples].Member[integrations].Member[flask_streaming].Member[api].Member[views].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - python
+    - Member[examples].Member[integrations].Member[flask_streaming].Member[app].Member[Flask]
+  - - flask.Response~Subclass
+    - python
+    - Member[examples].Member[integrations].Member[flask_streaming].Member[app].Member[Response]
+  - - io.StringIO~Subclass
+    - python
+    - Member[whylogs].Member[experimental].Member[extras].Member[matrix_component].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - python
+    - Member[examples].Member[integrations].Member[fastapi].Member[api].Member[PredictRequest]
+  - - pydantic.BaseModel~Subclass
+    - python
+    - Member[examples].Member[integrations].Member[flask_streaming].Member[schemas].Member[FeatureVector]
+  - - urllib3.PoolManager~Subclass
+    - python
+    - Member[whylogs].Member[api].Member[whylabs].Member[session].Member[whylabs_client_cache].Member[ProxyManager]
+  - - urllib3.PoolManager~Subclass
+    - python
+    - Member[whylogs].Member[api].Member[writer].Member[whylabs].Member[PoolManager]
+  - - urllib3.PoolManager~Subclass
+    - python
+    - Member[whylogs].Member[api].Member[writer].Member[whylabs].Member[ProxyManager]

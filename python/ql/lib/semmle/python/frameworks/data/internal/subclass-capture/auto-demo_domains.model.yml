@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[handlers].Member[on_admin_update].Member[AdminUpdateParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[handlers].Member[on_admin_update].Member[NameRegistryStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[handlers].Member[on_execute].Member[ExecuteParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[handlers].Member[on_execute].Member[NameRegistryStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[handlers].Member[on_storage_diff].Member[NameRegistryStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[types].Member[name_registry].Member[tezos_parameters].Member[admin_update].Member[AdminUpdateParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[types].Member[name_registry].Member[tezos_parameters].Member[execute].Member[ExecuteParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[types].Member[name_registry].Member[tezos_storage].Member[NameRegistryStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[types].Member[name_registry].Member[tezos_storage].Member[Records]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[types].Member[name_registry].Member[tezos_storage].Member[ReverseRecords]
+  - - pydantic.BaseModel~Subclass
+    - demo_domains
+    - Member[types].Member[name_registry].Member[tezos_storage].Member[Store]

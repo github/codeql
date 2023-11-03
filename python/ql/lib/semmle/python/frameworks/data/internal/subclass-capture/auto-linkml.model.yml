@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - linkml
+    - Member[generators].Member[markdowngen].Member[StringIO]
+  - - io.StringIO~Subclass
+    - linkml
+    - Member[utils].Member[generator].Member[StringIO]
+  - - io.StringIO~Subclass
+    - linkml
+    - Member[workspaces].Member[example_runner].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[generators].Member[erdiagramgen].Member[Attribute]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[generators].Member[erdiagramgen].Member[Cardinality]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[generators].Member[erdiagramgen].Member[ERDiagram]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[generators].Member[erdiagramgen].Member[Entity]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[generators].Member[erdiagramgen].Member[RelationshipType]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[generators].Member[erdiagramgen].Member[Relationship]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[validator].Member[cli].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[validator].Member[plugins].Member[jsonschema_validation_plugin].Member[ValidationResult]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[validator].Member[plugins].Member[pydantic_validation_plugin].Member[ValidationResult]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[validator].Member[plugins].Member[recommended_slots_plugin].Member[ValidationResult]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[validator].Member[plugins].Member[validation_plugin].Member[ValidationResult]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[validator].Member[report].Member[ValidationReport]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[validator].Member[report].Member[ValidationResult]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[validator].Member[validator].Member[ValidationReport]
+  - - pydantic.BaseModel~Subclass
+    - linkml
+    - Member[validator].Member[validator].Member[ValidationResult]
+  - - sqlalchemy.engine.Engine~Subclass
+    - linkml
+    - Member[utils].Member[sqlutils].Member[Engine]

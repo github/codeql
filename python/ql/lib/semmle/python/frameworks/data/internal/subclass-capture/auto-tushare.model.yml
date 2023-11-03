@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPConnection~Subclass
+    - tushare
+    - Member[util].Member[common].Member[HTTPSConnection]
+  - - lxml.etree~Alias
+    - tushare
+    - Member[internet].Member[indexes].Member[etree]
+  - - lxml.etree~Alias
+    - tushare
+    - Member[stock].Member[billboard].Member[etree]
+  - - lxml.etree~Alias
+    - tushare
+    - Member[stock].Member[fundamental].Member[etree]
+  - - lxml.etree~Alias
+    - tushare
+    - Member[stock].Member[newsevent].Member[etree]
+  - - lxml.etree~Alias
+    - tushare
+    - Member[stock].Member[reference].Member[etree]
+  - - lxml.etree~Alias
+    - tushare
+    - Member[stock].Member[trading].Member[etree]
+  - - lxml.etree~Alias
+    - tushare
+    - Member[util].Member[mailmerge].Member[etree]

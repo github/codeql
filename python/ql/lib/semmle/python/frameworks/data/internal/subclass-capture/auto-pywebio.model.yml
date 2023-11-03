@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - pywebio
+    - Member[platform].Member[django].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - pywebio
+    - Member[platform].Member[django].Member[HttpResponse]
+  - - flask.Flask~Subclass
+    - pywebio
+    - Member[platform].Member[flask].Member[Flask]
+  - - flask.Response~Subclass
+    - pywebio
+    - Member[platform].Member[flask].Member[Response]
+  - - starlette.websockets.WebSocket~Subclass
+    - pywebio
+    - Member[platform].Member[fastapi].Member[WebSocket]

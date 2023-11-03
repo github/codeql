@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.forms.BaseForm~Subclass
+    - admin_numeric_filter
+    - Member[admin].Member[RangeNumericForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_numeric_filter
+    - Member[admin].Member[SingleNumericForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_numeric_filter
+    - Member[admin].Member[SliderNumericForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_numeric_filter
+    - Member[forms].Member[RangeNumericForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_numeric_filter
+    - Member[forms].Member[SingleNumericForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_numeric_filter
+    - Member[forms].Member[SliderNumericForm]

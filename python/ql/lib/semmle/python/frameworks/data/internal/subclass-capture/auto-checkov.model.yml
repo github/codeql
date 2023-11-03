@@ -1,0 +1,102 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - checkov
+    - Member[common].Member[bridgecrew].Member[vulnerability_scanning].Member[image_scanner].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - checkov
+    - Member[common].Member[sca].Member[output].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - checkov
+    - Member[common].Member[bridgecrew].Member[platform_integration].Member[StringIO]
+  - - io.StringIO~Subclass
+    - checkov
+    - Member[common].Member[bridgecrew].Member[wrapper].Member[StringIO]
+  - - io.StringIO~Subclass
+    - checkov
+    - Member[common].Member[output].Member[spdx].Member[StringIO]
+  - - io.StringIO~Subclass
+    - checkov
+    - Member[common].Member[util].Member[ext_argument_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - checkov
+    - Member[logging_init].Member[StringIO]
+  - - logging.Logger~Subclass
+    - checkov
+    - Member[common].Member[resource_code_logger_filter].Member[Logger]
+  - - pickle~Alias
+    - checkov
+    - Member[common].Member[util].Member[data_structures_utils].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[common].Member[sca].Member[reachability].Member[sast_contract].Member[data_fetcher_sast_lib].Member[ReachabilityData]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[common].Member[sca].Member[reachability].Member[sast_contract].Member[data_fetcher_sast_lib].Member[ReachabilityRunConfig]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[common].Member[sca].Member[reachability].Member[sast_contract].Member[models].Member[ReachabilityData]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[common].Member[sca].Member[reachability].Member[sast_contract].Member[models].Member[ReachabilityRunConfig]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[common].Member[Flow]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[engines].Member[prisma_engine].Member[PrismaReport]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[policies_list].Member[SastPolicyEntry]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[policies_list].Member[SastPolicyMetadataEntry]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[DataFlow]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[Flow]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[Function]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[MatchLocation]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[MatchMetadata]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[Match]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[Package]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[PrismaReport]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[Profiler]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[Repositories]
+  - - pydantic.BaseModel~Subclass
+    - checkov
+    - Member[sast].Member[prisma_models].Member[report].Member[RuleMatch]
+  - - requests.models.Response~Subclass
+    - checkov
+    - Member[common].Member[util].Member[http_utils].Member[Response]
+  - - urllib3.PoolManager~Subclass
+    - checkov
+    - Member[common].Member[bridgecrew].Member[integration_features].Member[features].Member[fixes_integration].Member[PoolManager]

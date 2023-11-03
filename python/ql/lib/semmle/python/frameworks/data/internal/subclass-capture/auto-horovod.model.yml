@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - horovod
+    - Member[runner].Member[elastic].Member[rendezvous].Member[RendezvousHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - horovod
+    - Member[runner].Member[http].Member[http_server].Member[KVStoreHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - horovod
+    - Member[runner].Member[http].Member[http_server].Member[RendezvousHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - horovod
+    - Member[runner].Member[http].Member[http_server].Member[SimpleHTTPRequestHandler]
+  - - pickle~Alias
+    - horovod
+    - Member[runner].Member[common].Member[util].Member[codec].Member[pickle]
+  - - pickle~Alias
+    - horovod
+    - Member[runner].Member[common].Member[util].Member[network].Member[pickle]

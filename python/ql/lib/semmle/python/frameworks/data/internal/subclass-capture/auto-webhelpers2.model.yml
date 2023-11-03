@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - markupsafe.Markup~Subclass
+    - webhelpers2
+    - Member[html].Member[_literal].Member[literal]
+  - - markupsafe.Markup~Subclass
+    - webhelpers2
+    - Member[html].Member[builder].Member[literal]
+  - - markupsafe.Markup~Subclass
+    - webhelpers2
+    - Member[html].Member[literal]

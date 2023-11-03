@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPConnection~Subclass
+    - warcio
+    - Member[capture_http].Member[RecordingHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - warcio
+    - Member[capture_http].Member[orig_connection]
+  - - io.StringIO~Subclass
+    - warcio
+    - Member[bufferedreaders].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - warcio
+    - Member[capture_http].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - warcio
+    - Member[recordbuilder].Member[BytesIO]

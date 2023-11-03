@@ -1,0 +1,66 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - lektor
+    - Member[admin].Member[modules].Member[api].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - lektor
+    - Member[admin].Member[modules].Member[dash].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - lektor
+    - Member[admin].Member[modules].Member[livereload].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - lektor
+    - Member[admin].Member[modules].Member[serve].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - lektor
+    - Member[admin].Member[context].Member[Flask]
+  - - flask.Flask~Subclass
+    - lektor
+    - Member[admin].Member[context].Member[LektorApp]
+  - - flask.Flask~Subclass
+    - lektor
+    - Member[admin].Member[modules].Member[serve].Member[LektorApp]
+  - - flask.Flask~Subclass
+    - lektor
+    - Member[admin].Member[webui].Member[Flask]
+  - - flask.Flask~Subclass
+    - lektor
+    - Member[admin].Member[webui].Member[LektorApp]
+  - - flask.Response~Subclass
+    - lektor
+    - Member[admin].Member[modules].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - lektor
+    - Member[admin].Member[modules].Member[serve].Member[Response]
+  - - flask.Response~Subclass
+    - lektor
+    - Member[admin].Member[utils].Member[Response]
+  - - markupsafe.Markup~Subclass
+    - lektor
+    - Member[markdown].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - lektor
+    - Member[types].Member[flow].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - lektor
+    - Member[types].Member[primitives].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - lektor
+    - Member[utils].Member[Markup]
+  - - urllib.parse.SplitResult~Subclass
+    - lektor
+    - Member[compat].Member[_CompatURL]
+  - - urllib.parse.SplitResult~Subclass
+    - lektor
+    - Member[types].Member[special].Member[Url]
+  - - urllib.parse.SplitResult~Subclass
+    - lektor
+    - Member[utils].Member[Url]
+  - - xml.etree.ElementTree~Subclass
+    - lektor
+    - Member[imagetools].Member[etree]

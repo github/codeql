@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[EmbeddedJsonModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[HashModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[JsonModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[RedisModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[model].Member[EmbeddedJsonModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[model].Member[HashModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[model].Member[JsonModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[model].Member[RedisModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[model].Member[model].Member[EmbeddedJsonModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[model].Member[model].Member[HashModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[model].Member[model].Member[JsonModel]
+  - - pydantic.BaseModel~Subclass
+    - aredis_om
+    - Member[model].Member[model].Member[RedisModel]

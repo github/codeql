@@ -27,7 +27,13 @@ extensions:
     - Member[views].Member[TemplateView]
   - - Django.db.models.Model~Subclass
     - orders
+    - Member[admin].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - orders
     - Member[forms].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - orders
+    - Member[models].Member[Order]
   - - Django.db.models.Model~Subclass
     - orders
     - Member[models].Member[User]

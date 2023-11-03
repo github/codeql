@@ -4,6 +4,30 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - generic_chooser
+    - Member[views].Member[BaseChooseView]
+  - - Django.Views.View~Subclass
+    - generic_chooser
+    - Member[views].Member[BaseChosenMultipleView]
+  - - Django.Views.View~Subclass
+    - generic_chooser
+    - Member[views].Member[BaseChosenView]
+  - - Django.Views.View~Subclass
+    - generic_chooser
+    - Member[views].Member[DRFChooseView]
+  - - Django.Views.View~Subclass
+    - generic_chooser
+    - Member[views].Member[DRFChosenView]
+  - - Django.Views.View~Subclass
+    - generic_chooser
+    - Member[views].Member[ModelChooseView]
+  - - Django.Views.View~Subclass
+    - generic_chooser
+    - Member[views].Member[ModelChosenView]
+  - - Django.Views.View~Subclass
+    - generic_chooser
+    - Member[views].Member[View]
   - - django.forms.BaseForm~Subclass
     - generic_chooser
     - Member[views].Member[SearchForm]

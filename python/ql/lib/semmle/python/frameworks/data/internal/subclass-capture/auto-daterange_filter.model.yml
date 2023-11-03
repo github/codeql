@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.forms.BaseForm~Subclass
+    - daterange_filter
+    - Member[filter].Member[DateRangeFilterBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - daterange_filter
+    - Member[filter].Member[DateRangeForm]
+  - - django.forms.BaseForm~Subclass
+    - daterange_filter
+    - Member[filter].Member[DateTimeRangeForm]

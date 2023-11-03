@@ -1,0 +1,240 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[AutohighlightResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[AutohighlightResult]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[Chapter]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[ContentSafetyLabelResult]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[ContentSafetyResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[ContentSafetySeverityScore]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[Entity]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[IABLabelResult]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[IABResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[IABResult]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[LemurActionItemsResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[LemurPurgeRequest]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[LemurPurgeResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[LemurQuestionAnswer]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[LemurQuestionResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[LemurQuestion]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[LemurSummaryResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[LemurTaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[Paragraph]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[RawTranscriptionConfig]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[RealtimeFinalTranscript]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[RealtimePartialTranscript]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[RealtimeSessionOpened]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[RealtimeTranscript]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[RealtimeWord]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[Sentence]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[Sentiment]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[Timestamp]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[UtteranceWord]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[Utterance]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[WordSearchMatch]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[Word]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[AutohighlightResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[AutohighlightResult]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[BaseLemurRequest]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[BaseTranscript]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[Chapter]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[ContentSafetyLabelResult]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[ContentSafetyResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[ContentSafetyResult]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[ContentSafetySeverityScore]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[Entity]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[IABLabelResult]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[IABResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[IABResult]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurActionItemsRequest]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurActionItemsResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurPurgeRequest]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurPurgeResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurQuestionAnswer]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurQuestionRequest]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurQuestionResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurQuestion]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurSourceRequest]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurSummaryRequest]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurSummaryResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurTaskRequest]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[LemurTaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[Paragraph]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[ParagraphsResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[RawTranscriptionConfig]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[RealtimeFinalTranscript]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[RealtimePartialTranscript]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[RealtimeSessionOpened]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[RealtimeTranscript]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[RealtimeWord]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[RedactedAudioResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[Sentence]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[SentencesResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[Sentiment]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[Timestamp]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[TranscriptRequest]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[TranscriptResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[UtteranceWord]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[Utterance]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[WordSearchMatchResponse]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[WordSearchMatch]
+  - - pydantic.BaseModel~Subclass
+    - assemblyai
+    - Member[types].Member[Word]

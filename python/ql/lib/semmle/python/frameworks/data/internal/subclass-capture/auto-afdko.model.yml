@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - afdko
+    - Member[pdflib].Member[pdfgen].Member[StringIO]
+  - - io.StringIO~Subclass
+    - afdko
+    - Member[pdflib].Member[pdfutils].Member[StringIO]

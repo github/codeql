@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - extra_settings
+    - Member[admin].Member[Setting]
+  - - Django.db.models.Model~Subclass
+    - extra_settings
+    - Member[forms].Member[Setting]
+  - - Django.db.models.Model~Subclass
+    - extra_settings
+    - Member[models].Member[Setting]
+  - - Django.db.models.Model~Subclass
+    - extra_settings
+    - Member[signals].Member[Setting]
+  - - Django.db.models.Model~Subclass
+    - extra_settings
+    - Member[templatetags].Member[extra_settings].Member[Setting]
+  - - django.forms.BaseForm~Subclass
+    - extra_settings
+    - Member[admin].Member[SettingForm]
+  - - django.forms.BaseForm~Subclass
+    - extra_settings
+    - Member[forms].Member[SettingForm]

@@ -49,6 +49,39 @@ extensions:
   - - Django.db.models.Model~Subclass
     - api
     - Member[views_users].Member[Review]
+  - - fastapi.APIRouter~Subclass
+    - api
+    - Member[routes].Member[ai].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - api
+    - Member[routes].Member[alerts].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - api
+    - Member[routes].Member[healthcheck].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - api
+    - Member[routes].Member[providers].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - api
+    - Member[routes].Member[settings].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - api
+    - Member[routes].Member[status].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - api
+    - Member[routes].Member[tenant].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - api
+    - Member[routes].Member[workflows].Member[APIRouter]
+  - - flask.Blueprint~Subclass
+    - api
+    - Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - api
+    - Member[views].Member[Blueprint]
+  - - logging.Logger~Subclass
+    - api
+    - Member[logging].Member[CustomizedUvicornLogger]
   - - pydantic.BaseModel~Subclass
     - api
     - Member[Linkedin].Member[Document]
@@ -79,6 +112,12 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - api
     - Member[main].Member[Post]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[alert].Member[AlertDto]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[alert].Member[DeleteRequestBody]
   - - pydantic.BaseModel~Subclass
     - api
     - Member[models].Member[db].Member[alert].Member[AlertEnrichment]
@@ -118,6 +157,42 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - api
     - Member[models].Member[db].Member[workflow].Member[Workflow]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[provider].Member[Provider]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[step_context].Member[StepContext]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[webhook].Member[ProviderWebhookSettings]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[webhook].Member[WebhookSettings]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[workflow].Member[ProviderDTO]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[workflow].Member[WorkflowCreateOrUpdateDTO]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[workflow].Member[WorkflowDTO]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[workflow].Member[WorkflowExecutionDTO]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[models].Member[workflow].Member[WorkflowExecutionLogsDTO]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[routes].Member[ai].Member[CreateAlert]
+  - - pydantic.BaseModel~Subclass
+    - api
+    - Member[routes].Member[ai].Member[RepairAlert]
   - - sqlalchemy.orm.Session~Subclass
     - api
     - Member[core].Member[db].Member[Session]

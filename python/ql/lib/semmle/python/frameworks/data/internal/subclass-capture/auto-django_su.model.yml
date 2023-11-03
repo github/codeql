@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.forms.BaseForm~Subclass
+    - django_su
+    - Member[forms].Member[UserSuForm]
+  - - django.forms.BaseForm~Subclass
+    - django_su
+    - Member[views].Member[UserSuForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - django_su
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_su
+    - Member[views].Member[HttpResponseRedirect]

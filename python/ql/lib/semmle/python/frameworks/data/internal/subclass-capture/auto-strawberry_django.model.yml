@@ -9,6 +9,9 @@ extensions:
     - Member[auth].Member[mutations].Member[AbstractBaseUser]
   - - Django.db.models.Model~Subclass
     - strawberry_django
+    - Member[fields].Member[types].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - strawberry_django
     - Member[integrations].Member[guardian].Member[GroupObjectPermissionBase]
   - - Django.db.models.Model~Subclass
     - strawberry_django
@@ -18,10 +21,31 @@ extensions:
     - Member[integrations].Member[guardian].Member[UserObjectPermissionBase]
   - - Django.db.models.Model~Subclass
     - strawberry_django
+    - Member[mutations].Member[resolvers].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - strawberry_django
+    - Member[permissions].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - strawberry_django
+    - Member[type].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - strawberry_django
     - Member[utils].Member[query].Member[AbstractUser]
   - - Django.db.models.Model~Subclass
     - strawberry_django
     - Member[utils].Member[query].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - strawberry_django
+    - Member[utils].Member[query].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - strawberry_django
     - Member[utils].Member[typing].Member[AbstractBaseUser]
+  - - django.http.request.HttpRequest~Subclass
+    - strawberry_django
+    - Member[middlewares].Member[debug_toolbar].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - strawberry_django
+    - Member[utils].Member[requests].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - strawberry_django
+    - Member[middlewares].Member[debug_toolbar].Member[HttpResponse]

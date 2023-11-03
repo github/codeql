@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - aiohttp.ClientSession~Subclass
+    - google
+    - Member[cloud].Member[hooks].Member[bigquery].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - google
+    - Member[cloud].Member[hooks].Member[gcs].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - google
+    - Member[cloud].Member[triggers].Member[bigquery].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - google
+    - Member[cloud].Member[triggers].Member[gcs].Member[ClientSession]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - google
+    - Member[colab].Member[files].Member[_FileHandler]
   - - io.StringIO~Subclass
     - google
     - Member[appengine].Member[_internal].Member[antlr3].Member[StringIO]
@@ -13,3 +28,48 @@ extensions:
   - - io.StringIO~Subclass
     - google
     - Member[appengine].Member[api].Member[memcache].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - google
+    - Member[cloud].Member[storage].Member[blob].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - google
+    - Member[cloud].Member[xcom_backends].Member[gcs].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - google
+    - Member[datalab].Member[contrib].Member[mlworkbench].Member[_local_predict].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - google
+    - Member[datalab].Member[data].Member[_csv_file].Member[StringIO]
+  - - io.StringIO~Subclass
+    - google
+    - Member[protobuf].Member[internal].Member[python_message].Member[BytesIO]
+  - - pickle~Alias
+    - google
+    - Member[appengine].Member[ext].Member[deferred].Member[deferred].Member[pickle]
+  - - pickle~Alias
+    - google
+    - Member[appengine].Member[ext].Member[deferred].Member[pickle]
+  - - pickle~Alias
+    - google
+    - Member[cloud].Member[spanner_dbapi].Member[checksum].Member[pickle]
+  - - pickle~Alias
+    - google
+    - Member[cloud].Member[storage].Member[transfer_manager].Member[pickle]
+  - - pickle~Alias
+    - google
+    - Member[cloud].Member[xcom_backends].Member[gcs].Member[pickle]
+  - - pickle~Alias
+    - google
+    - Member[protobuf].Member[internal].Member[containers].Member[pickle]
+  - - requests.models.Response~Subclass
+    - google
+    - Member[cloud].Member[storage].Member[batch].Member[_FutureResponse]
+  - - tornado.web.RequestHandler~Subclass
+    - google
+    - Member[colab].Member[html].Member[_provide].Member[_ResourceHandler]
+  - - xml.etree.ElementTree~Subclass
+    - google
+    - Member[appengine].Member[datastore].Member[datastore_index_xml].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - google
+    - Member[appengine].Member[tools].Member[queue_xml_parser].Member[ElementTree]

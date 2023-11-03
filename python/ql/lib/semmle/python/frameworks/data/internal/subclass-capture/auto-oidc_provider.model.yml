@@ -6,7 +6,130 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - oidc_provider
+    - Member[views].Member[AuthorizeView]
+  - - Django.Views.View~Subclass
+    - oidc_provider
+    - Member[views].Member[CheckSessionIframeView]
+  - - Django.Views.View~Subclass
+    - oidc_provider
     - Member[views].Member[EndSessionView]
   - - Django.Views.View~Subclass
     - oidc_provider
+    - Member[views].Member[JwksView]
+  - - Django.Views.View~Subclass
+    - oidc_provider
     - Member[views].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - oidc_provider
+    - Member[views].Member[ProviderInfoView]
+  - - Django.Views.View~Subclass
+    - oidc_provider
+    - Member[views].Member[TokenIntrospectionView]
+  - - Django.Views.View~Subclass
+    - oidc_provider
+    - Member[views].Member[TokenView]
+  - - Django.Views.View~Subclass
+    - oidc_provider
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[admin].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[admin].Member[Code]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[admin].Member[RSAKey]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[admin].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[endpoints].Member[authorize].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[endpoints].Member[authorize].Member[UserConsent]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[endpoints].Member[introspection].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[endpoints].Member[introspection].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[endpoints].Member[token].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[endpoints].Member[token].Member[Code]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[endpoints].Member[token].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[utils].Member[oauth2].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[utils].Member[token].Member[Code]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[utils].Member[token].Member[RSAKey]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[lib].Member[utils].Member[token].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[management].Member[commands].Member[creatersakey].Member[RSAKey]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[BaseCodeTokenModel]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[Code]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[RSAKey]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[ResponseType]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[UserConsent]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[views].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[views].Member[RSAKey]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[views].Member[ResponseType]
+  - - django.forms.BaseForm~Subclass
+    - oidc_provider
+    - Member[admin].Member[ClientForm]
+  - - django.forms.BaseForm~Subclass
+    - oidc_provider
+    - Member[admin].Member[ModelForm]
+  - - django.http.response.HttpResponse~Subclass
+    - oidc_provider
+    - Member[lib].Member[utils].Member[common].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - oidc_provider
+    - Member[lib].Member[utils].Member[oauth2].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - oidc_provider
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - oidc_provider
+    - Member[lib].Member[endpoints].Member[introspection].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - oidc_provider
+    - Member[lib].Member[endpoints].Member[token].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - oidc_provider
+    - Member[views].Member[JsonResponse]

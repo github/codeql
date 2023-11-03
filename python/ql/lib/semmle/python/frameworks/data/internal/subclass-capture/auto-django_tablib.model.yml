@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - django_tablib
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - django_tablib
+    - Member[admin].Member[actions].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_tablib
+    - Member[views].Member[HttpResponse]

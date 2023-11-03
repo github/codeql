@@ -1,0 +1,1098 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[ACHRelationship]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[AllAccountsPositions]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Asset]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Bank]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[BaseActivity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[BatchJournalResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CIPInfo]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Calendar]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CancelOrderResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Clock]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[ClosePositionRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[ClosePositionResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CorporateActionAnnouncement]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreateACHRelationshipRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreateACHTransferRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreateAccountRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreateBankRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreateBankTransferRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreateBatchJournalRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreateJournalRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreatePlaidRelationshipRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreateReverseBatchJournalRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[CreateWatchlistRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetAccountActivitiesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetAssetsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetCalendarRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetCorporateAnnouncementsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetEventsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetJournalsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetOrderByIdRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetOrdersRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetPortfolioHistoryRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetTradeDocumentsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[GetTransfersRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Journal]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[ListAccountsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[NonTradeActivity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[OrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Order]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[PortfolioHistory]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Position]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[ReplaceOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[TradeAccountConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[TradeAccount]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[TradeActivity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[TradeDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Transfer]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[UpdateAccountRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[UpdateWatchlistRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[UploadDocumentRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Watchlist]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[ACHRelationship]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[AccountDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[Agreement]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[Bank]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[BaseOrder]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[BaseTradeAccount]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[BatchJournalResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[CIPDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[CIPIdentity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[CIPInfo]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[CIPKYCInfo]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[CIPPhoto]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[CIPWatchlist]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[Disclosures]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[Identity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[Journal]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[Order]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[TradeAccount]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[TradeDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[Transfer]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[TrustedContact]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[W8BenDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[AccountDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[Agreement]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[BaseTradeAccount]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[Disclosures]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[Identity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[TradeAccount]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[accounts].Member[TrustedContact]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[cip].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[cip].Member[CIPDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[cip].Member[CIPIdentity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[cip].Member[CIPInfo]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[cip].Member[CIPKYCInfo]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[cip].Member[CIPPhoto]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[cip].Member[CIPWatchlist]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[cip].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[documents].Member[AccountDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[documents].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[documents].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[documents].Member[TradeDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[documents].Member[W8BenDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[funding].Member[ACHRelationship]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[funding].Member[Bank]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[funding].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[funding].Member[Transfer]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[journals].Member[BatchJournalResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[journals].Member[Journal]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[journals].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[trading].Member[BaseOrder]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[models].Member[trading].Member[Order]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[AccountDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[Agreement]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[BaseCancelOrderResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[BaseLimitOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[BaseMarketOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[BaseOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[BaseStopLimitOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[BaseStopOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[BaseTrailingStopOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[BatchJournalRequestEntry]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CancelOrderResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CreateACHRelationshipRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CreateACHTransferRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CreateAccountRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CreateBankRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CreateBankTransferRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CreateBatchJournalRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CreateJournalRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CreatePlaidRelationshipRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[CreateReverseBatchJournalRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[Disclosures]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[GetAccountActivitiesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[GetEventsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[GetJournalsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[GetTradeDocumentsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[GetTransfersRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[Identity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[LimitOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[ListAccountsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[MarketOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[NonEmptyRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[OrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[Order]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[ReverseBatchJournalRequestEntry]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[StopLimitOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[StopOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[TrailingStopOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[TrustedContact]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[UpdatableContact]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[UpdatableDisclosures]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[UpdatableIdentity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[UpdatableTrustedContact]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[UpdateAccountRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[UploadDocumentRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[UploadW8BenDocumentRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[W8BenDocument]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[broker].Member[requests].Member[_CreateTransferRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[common].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[common].Member[ValidateBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[common].Member[models].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[common].Member[models].Member[ValidateBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[common].Member[requests].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[common].Member[requests].Member[NonEmptyRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[common].Member[websocket].Member[Bar]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[common].Member[websocket].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[common].Member[websocket].Member[Trade]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[BaseBarsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[BaseTimeseriesDataRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[CryptoBarsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[CryptoSnapshotRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[CryptoTradesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[MarketMoversRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[MostActivesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[NewsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[NonEmptyRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[ScreenerRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[StockBarsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[StockQuotesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[StockSnapshotRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[StockTradesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[crypto].Member[BarSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[crypto].Member[CryptoBarsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[crypto].Member[CryptoSnapshotRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[crypto].Member[CryptoTradesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[crypto].Member[Orderbook]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[crypto].Member[QuoteSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[crypto].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[crypto].Member[TradeSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[crypto].Member[Trade]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[news].Member[NewsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[news].Member[NewsSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[screener].Member[MarketMoversRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[screener].Member[MostActivesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[screener].Member[MostActives]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[screener].Member[Movers]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[stock].Member[BarSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[stock].Member[QuoteSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[stock].Member[StockBarsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[stock].Member[StockQuotesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[stock].Member[StockSnapshotRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[stock].Member[StockTradesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[historical].Member[stock].Member[TradeSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[BarSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[Bar]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[BaseDataSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[OrderbookQuote]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[Orderbook]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[QuoteSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[Snapshot]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[TradeSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[Trade]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[bars].Member[BarSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[bars].Member[Bar]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[bars].Member[BaseDataSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[bars].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[base].Member[BaseDataSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[base].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[news].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[news].Member[NewsImage]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[news].Member[NewsSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[news].Member[News]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[orderbooks].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[orderbooks].Member[OrderbookQuote]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[orderbooks].Member[Orderbook]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[quotes].Member[BaseDataSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[quotes].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[quotes].Member[QuoteSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[quotes].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[screener].Member[ActiveStock]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[screener].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[screener].Member[MostActives]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[screener].Member[Mover]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[screener].Member[Movers]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[snapshots].Member[Bar]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[snapshots].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[snapshots].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[snapshots].Member[Snapshot]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[snapshots].Member[Trade]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[trades].Member[BaseDataSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[trades].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[trades].Member[TradeSet]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[models].Member[trades].Member[Trade]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[BaseBarsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[BaseTimeseriesDataRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[CryptoBarsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[CryptoSnapshotRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[CryptoTradesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[MarketMoversRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[MostActivesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[NewsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[NonEmptyRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[ScreenerRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[StockBarsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[StockQuotesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[StockSnapshotRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[data].Member[requests].Member[StockTradesRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[AccountConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[AllAccountsPositions]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[Asset]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[BaseActivity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[Calendar]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[CancelOrderResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[Clock]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[ClosePositionRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[ClosePositionResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[CorporateActionAnnouncement]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[CreateWatchlistRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[FailedClosePositionDetails]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[GetAssetsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[GetCalendarRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[GetCorporateAnnouncementsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[GetOrderByIdRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[GetOrdersRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[GetPortfolioHistoryRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[LimitOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[MarketOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[NonEmptyRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[NonTradeActivity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[OrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[Order]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[PortfolioHistory]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[Position]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[ReplaceOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[StopLimitOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[StopLossRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[StopOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[TakeProfitRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[TradeAccount]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[TradeActivity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[TradeUpdate]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[TrailingStopOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[USDPositionValues]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[UpdateWatchlistRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[Watchlist]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[AccountConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[Asset]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[Calendar]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[CancelOrderResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[Clock]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[ClosePositionRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[ClosePositionResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[CorporateActionAnnouncement]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[CreateWatchlistRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[GetAssetsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[GetCalendarRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[GetCorporateAnnouncementsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[GetOrderByIdRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[GetOrdersRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[OrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[Order]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[Position]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[ReplaceOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[TradeAccount]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[UpdateWatchlistRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[client].Member[Watchlist]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[AccountConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[AllAccountsPositions]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[Asset]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[BaseActivity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[Calendar]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[Clock]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[ClosePositionResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[CorporateActionAnnouncement]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[FailedClosePositionDetails]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[NonTradeActivity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[Order]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[PortfolioHistory]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[Position]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[TradeAccount]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[TradeActivity]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[TradeUpdate]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[USDPositionValues]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[models].Member[Watchlist]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[CancelOrderResponse]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[ClosePositionRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[CreateWatchlistRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[GetAssetsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[GetCalendarRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[GetCorporateAnnouncementsRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[GetOrderByIdRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[GetOrdersRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[GetPortfolioHistoryRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[LimitOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[MarketOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[ModelWithID]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[NonEmptyRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[OrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[ReplaceOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[StopLimitOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[StopLossRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[StopOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[TakeProfitRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[TrailingStopOrderRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[requests].Member[UpdateWatchlistRequest]
+  - - pydantic.BaseModel~Subclass
+    - alpaca
+    - Member[trading].Member[stream].Member[TradeUpdate]
+  - - requests.models.Response~Subclass
+    - alpaca
+    - Member[broker].Member[client].Member[Response]

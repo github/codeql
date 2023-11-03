@@ -4,6 +4,57 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - benchmarks
+    - Member[drest].Member[UserViewSet]
+  - - Django.Views.View~Subclass
+    - benchmarks
+    - Member[drf].Member[UserViewSet]
+  - - Django.Views.View~Subclass
+    - benchmarks
+    - Member[drf].Member[UserWithAllViewSet]
+  - - Django.Views.View~Subclass
+    - benchmarks
+    - Member[drf].Member[UserWithGroupsViewSet]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[drest].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[drest].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[drest].Member[User]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[drf].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[drf].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[drf].Member[User]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[models].Member[DirectGroup]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[models].Member[DirectUser]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[models].Member[GroupObjectPermissionBase]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[models].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[models].Member[UserObjectPermissionBase]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
+    - Member[models].Member[User]
   - - Django.db.models.Model~Subclass
     - benchmarks
     - Member[run_benchmarks].Member[ContentType]
@@ -12,7 +63,37 @@ extensions:
     - Member[run_benchmarks].Member[Group]
   - - Django.db.models.Model~Subclass
     - benchmarks
+    - Member[run_benchmarks].Member[UserObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - benchmarks
     - Member[run_benchmarks].Member[User]
+  - - flask.Flask~Subclass
+    - benchmarks
+    - Member[flask_simple].Member[app].Member[Flask]
+  - - flask.Flask~Subclass
+    - benchmarks
+    - Member[flask_sqli].Member[app].Member[Flask]
+  - - flask.Response~Subclass
+    - benchmarks
+    - Member[flask_sqli].Member[app].Member[Response]
   - - io.StringIO~Subclass
     - benchmarks
     - Member[bm].Member[utils].Member[BytesIO]
+  - - pickle~Alias
+    - benchmarks
+    - Member[utils].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - benchmarks
+    - Member[pydantic].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - benchmarks
+    - Member[pydantic].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - benchmarks
+    - Member[pydantic].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - benchmarks
+    - Member[pydantic].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - benchmarks
+    - Member[pydantic].Member[Receipt]

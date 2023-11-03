@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - paddlehub
+    - Member[serving].Member[app_compat].Member[Flask]
+  - - flask.Flask~Subclass
+    - paddlehub
+    - Member[serving].Member[http_server].Member[Flask]
+  - - flask.Response~Subclass
+    - paddlehub
+    - Member[serving].Member[app_compat].Member[Response]
+  - - pickle~Alias
+    - paddlehub
+    - Member[compat].Member[task].Member[tokenization].Member[pickle]
+  - - pickle~Alias
+    - paddlehub
+    - Member[finetune].Member[trainer].Member[pickle]
+  - - pickle~Alias
+    - paddlehub
+    - Member[text].Member[bert_tokenizer].Member[pickle]

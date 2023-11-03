@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - sap_success_factors
+    - Member[urls].Member[SAPSuccessFactorsConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - sap_success_factors
+    - Member[views].Member[SAPSuccessFactorsConfigurationViewSet]
   - - Django.db.models.Model~Subclass
     - sap_success_factors
     - Member[serializers].Member[SAPSuccessFactorsEnterpriseCustomerConfiguration]

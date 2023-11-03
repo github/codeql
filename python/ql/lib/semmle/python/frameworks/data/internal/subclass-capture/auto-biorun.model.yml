@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - biorun
+    - Member[libs].Member[xmltodict].Member[StringIO]
+  - - io.StringIO~Subclass
+    - biorun
+    - Member[utils].Member[StringIO]
+  - - pickle.loads~Alias
+    - biorun
+    - Member[libs].Member[sqlitedict].Member[loads]
+  - - pickle~Alias
+    - biorun
+    - Member[enrichr].Member[pickle]
+  - - pickle~Alias
+    - biorun
+    - Member[gprof].Member[pickle]

@@ -4,6 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - drf_haystack
+    - Member[generics].Member[GenericAPIView]
+  - - Django.Views.View~Subclass
+    - drf_haystack
+    - Member[generics].Member[HaystackGenericAPIView]
+  - - Django.Views.View~Subclass
+    - drf_haystack
+    - Member[viewsets].Member[HaystackGenericAPIView]
+  - - Django.Views.View~Subclass
+    - drf_haystack
+    - Member[viewsets].Member[HaystackViewSet]
   - - Django.db.models.Model~Subclass
     - drf_haystack
     - Member[generics].Member[ContentType]
+  - - django.http.response.HttpResponse~Subclass
+    - drf_haystack
+    - Member[mixins].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - drf_haystack
+    - Member[mixins].Member[Response]

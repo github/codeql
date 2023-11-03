@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - flexxamples
+    - Member[howtos].Member[flask_server].Member[Flask]
+  - - flask.Flask~Subclass
+    - flexxamples
+    - Member[howtos].Member[serve_with_flask].Member[Flask]
+  - - tornado.web.RequestHandler~Subclass
+    - flexxamples
+    - Member[howtos].Member[adding_handlers].Member[MyAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - flexxamples
+    - Member[howtos].Member[adding_handlers].Member[MyAboutHandler]

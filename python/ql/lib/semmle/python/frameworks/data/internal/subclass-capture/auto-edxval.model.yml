@@ -4,6 +4,42 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - edxval
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - edxval
+    - Member[views].Member[CourseTranscriptsDetailView]
+  - - Django.Views.View~Subclass
+    - edxval
+    - Member[views].Member[CourseVideoIDsView]
+  - - Django.Views.View~Subclass
+    - edxval
+    - Member[views].Member[HLSMissingVideoView]
+  - - Django.Views.View~Subclass
+    - edxval
+    - Member[views].Member[VideoDetail]
+  - - Django.Views.View~Subclass
+    - edxval
+    - Member[views].Member[VideoImagesView]
+  - - Django.Views.View~Subclass
+    - edxval
+    - Member[views].Member[VideoList]
+  - - Django.Views.View~Subclass
+    - edxval
+    - Member[views].Member[VideoStatusView]
+  - - Django.Views.View~Subclass
+    - edxval
+    - Member[views].Member[VideoTranscriptView]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[admin].Member[CourseVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[admin].Member[EncodedVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[admin].Member[Profile]
   - - Django.db.models.Model~Subclass
     - edxval
     - Member[admin].Member[ThirdPartyTranscriptCredentialsState]
@@ -18,6 +54,18 @@ extensions:
     - Member[admin].Member[VideoTranscript]
   - - Django.db.models.Model~Subclass
     - edxval
+    - Member[admin].Member[Video]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[api].Member[CourseVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[api].Member[EncodedVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[api].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - edxval
     - Member[api].Member[ThirdPartyTranscriptCredentialsState]
   - - Django.db.models.Model~Subclass
     - edxval
@@ -28,6 +76,18 @@ extensions:
   - - Django.db.models.Model~Subclass
     - edxval
     - Member[api].Member[VideoTranscript]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[api].Member[Video]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[models].Member[CourseVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[models].Member[EncodedVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[models].Member[Profile]
   - - Django.db.models.Model~Subclass
     - edxval
     - Member[models].Member[ThirdPartyTranscriptCredentialsState]
@@ -45,13 +105,37 @@ extensions:
     - Member[models].Member[VideoTranscript]
   - - Django.db.models.Model~Subclass
     - edxval
+    - Member[models].Member[Video]
+  - - Django.db.models.Model~Subclass
+    - edxval
     - Member[pacts].Member[middleware].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[pacts].Member[utils].Member[CourseVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[pacts].Member[utils].Member[EncodedVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[pacts].Member[utils].Member[Profile]
   - - Django.db.models.Model~Subclass
     - edxval
     - Member[pacts].Member[utils].Member[VideoImage]
   - - Django.db.models.Model~Subclass
     - edxval
     - Member[pacts].Member[utils].Member[VideoTranscript]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[pacts].Member[utils].Member[Video]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[serializers].Member[CourseVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[serializers].Member[EncodedVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[serializers].Member[Profile]
   - - Django.db.models.Model~Subclass
     - edxval
     - Member[serializers].Member[TranscriptPreference]
@@ -63,7 +147,40 @@ extensions:
     - Member[serializers].Member[VideoTranscript]
   - - Django.db.models.Model~Subclass
     - edxval
+    - Member[serializers].Member[Video]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[views].Member[CourseVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[views].Member[EncodedVideo]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[views].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - edxval
     - Member[views].Member[VideoImage]
   - - Django.db.models.Model~Subclass
     - edxval
     - Member[views].Member[VideoTranscript]
+  - - Django.db.models.Model~Subclass
+    - edxval
+    - Member[views].Member[Video]
+  - - django.db.models.FileField~Subclass
+    - edxval
+    - Member[models].Member[CustomizableFileField]
+  - - django.db.models.FileField~Subclass
+    - edxval
+    - Member[models].Member[CustomizableImageField]
+  - - django.http.response.HttpResponse~Subclass
+    - edxval
+    - Member[views].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - edxval
+    - Member[pacts].Member[views].Member[JsonResponse]
+  - - lxml.etree~Alias
+    - edxval
+    - Member[api].Member[etree]
+  - - rest_framework.response.Response~Subclass
+    - edxval
+    - Member[views].Member[Response]

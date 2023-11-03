@@ -1,0 +1,9 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - script
+    - Member[scaffold].Member[templates].Member[config_flow_oauth2].Member[integration].Member[api].Member[ClientSession]

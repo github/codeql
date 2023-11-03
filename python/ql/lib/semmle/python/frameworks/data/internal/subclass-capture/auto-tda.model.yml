@@ -10,3 +10,9 @@ extensions:
   - - httpx.Client~Subclass
     - tda
     - Member[auth].Member[OAuth2Client]
+  - - pickle~Alias
+    - tda
+    - Member[auth].Member[pickle]
+  - - pickle~Alias
+    - tda
+    - Member[client].Member[base].Member[pickle]

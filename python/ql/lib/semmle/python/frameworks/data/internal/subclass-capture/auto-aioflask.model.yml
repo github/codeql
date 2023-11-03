@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - aioflask
+    - Member[Flask]
+  - - flask.Flask~Subclass
+    - aioflask
+    - Member[app].Member[Flask]
+  - - flask.Flask~Subclass
+    - aioflask
+    - Member[app].Member[OriginalFlask]

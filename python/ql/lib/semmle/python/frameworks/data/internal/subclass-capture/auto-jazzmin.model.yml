@@ -10,6 +10,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - jazzmin
     - Member[utils].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - jazzmin
+    - Member[utils].Member[Model]
+  - - django.http.request.HttpRequest~Subclass
+    - jazzmin
+    - Member[templatetags].Member[jazzmin].Member[HttpRequest]
   - - django.http.request.HttpRequest~Subclass
     - jazzmin
     - Member[templatetags].Member[jazzmin].Member[WSGIRequest]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - maskrcnn_benchmark
+    - Member[utils].Member[c2_model_loading].Member[pickle]
+  - - pickle~Alias
+    - maskrcnn_benchmark
+    - Member[utils].Member[comm].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - maskrcnn_benchmark
+    - Member[data].Member[datasets].Member[voc].Member[ET]

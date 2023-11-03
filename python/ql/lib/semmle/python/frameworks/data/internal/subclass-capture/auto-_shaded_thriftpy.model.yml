@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - _shaded_thriftpy
+    - Member[contrib].Member[aio].Member[transport].Member[buffered].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - _shaded_thriftpy
+    - Member[contrib].Member[aio].Member[transport].Member[framed].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - _shaded_thriftpy
+    - Member[http].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - _shaded_thriftpy
+    - Member[tornado].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - _shaded_thriftpy
+    - Member[transport].Member[buffered].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - _shaded_thriftpy
+    - Member[transport].Member[framed].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - _shaded_thriftpy
+    - Member[transport].Member[memory].Member[BytesIO]

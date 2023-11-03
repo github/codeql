@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - Products
+    - Member[CMFPlone].Member[MigrationTool].Member[StringIO]
+  - - io.StringIO~Subclass
+    - Products
+    - Member[CMFPlone].Member[controlpanel].Member[browser].Member[redirects].Member[StringIO]
+  - - lxml.etree~Alias
+    - Products
+    - Member[CMFPlone].Member[browser].Member[icons].Member[etree]

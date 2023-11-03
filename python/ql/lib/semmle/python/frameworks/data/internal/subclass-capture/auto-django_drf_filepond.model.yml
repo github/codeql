@@ -1,0 +1,111 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[urls].Member[FetchView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[urls].Member[LoadView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[urls].Member[PatchView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[urls].Member[ProcessView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[urls].Member[RestoreView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[urls].Member[RevertView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[views].Member[FetchView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[views].Member[LoadView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[views].Member[PatchView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[views].Member[ProcessView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[views].Member[RestoreView]
+  - - Django.Views.View~Subclass
+    - django_drf_filepond
+    - Member[views].Member[RevertView]
+  - - Django.db.models.Model~Subclass
+    - django_drf_filepond
+    - Member[api].Member[StoredUpload]
+  - - Django.db.models.Model~Subclass
+    - django_drf_filepond
+    - Member[api].Member[TemporaryUpload]
+  - - Django.db.models.Model~Subclass
+    - django_drf_filepond
+    - Member[models].Member[StoredUpload]
+  - - Django.db.models.Model~Subclass
+    - django_drf_filepond
+    - Member[models].Member[TemporaryUploadChunked]
+  - - Django.db.models.Model~Subclass
+    - django_drf_filepond
+    - Member[models].Member[TemporaryUpload]
+  - - Django.db.models.Model~Subclass
+    - django_drf_filepond
+    - Member[uploaders].Member[TemporaryUploadChunked]
+  - - Django.db.models.Model~Subclass
+    - django_drf_filepond
+    - Member[uploaders].Member[TemporaryUpload]
+  - - Django.db.models.Model~Subclass
+    - django_drf_filepond
+    - Member[views].Member[StoredUpload]
+  - - Django.db.models.Model~Subclass
+    - django_drf_filepond
+    - Member[views].Member[TemporaryUpload]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - django_drf_filepond
+    - Member[views].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponseServerError~Subclass
+    - django_drf_filepond
+    - Member[views].Member[HttpResponseServerError]
+  - - django.http.response.HttpResponse~Subclass
+    - django_drf_filepond
+    - Member[uploaders].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - django_drf_filepond
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_drf_filepond
+    - Member[views].Member[Response]
+  - - io.StringIO~Subclass
+    - django_drf_filepond
+    - Member[uploaders].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django_drf_filepond
+    - Member[uploaders].Member[StringIO]
+  - - io.StringIO~Subclass
+    - django_drf_filepond
+    - Member[views].Member[BytesIO]
+  - - rest_framework.exceptions.APIException~Subclass
+    - django_drf_filepond
+    - Member[uploaders].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - django_drf_filepond
+    - Member[views].Member[NotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - django_drf_filepond
+    - Member[views].Member[ParseError]
+  - - rest_framework.response.Response~Subclass
+    - django_drf_filepond
+    - Member[uploaders].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - django_drf_filepond
+    - Member[views].Member[Response]

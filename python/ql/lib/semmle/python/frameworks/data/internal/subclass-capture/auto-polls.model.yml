@@ -6,6 +6,15 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - polls
+    - Member[api].Member[views].Member[ChoiceViewSet]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[api].Member[views].Member[ModelViewSet]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[api].Member[views].Member[QuestionViewSet]
+  - - Django.Views.View~Subclass
+    - polls
     - Member[urls].Member[PollDetailView]
   - - Django.Views.View~Subclass
     - polls
@@ -13,6 +22,12 @@ extensions:
   - - Django.Views.View~Subclass
     - polls
     - Member[urls].Member[PollVoteView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[views].Member[IndexView]
   - - Django.Views.View~Subclass
     - polls
     - Member[views].Member[ListView]
@@ -28,12 +43,78 @@ extensions:
   - - Django.Views.View~Subclass
     - polls
     - Member[views].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - polls
+    - Member[views].Member[VoteView]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[admin].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[admin].Member[Poll]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[admin].Member[Question]
   - - Django.db.models.Model~Subclass
     - polls
     - Member[admin].Member[Vote]
   - - Django.db.models.Model~Subclass
     - polls
+    - Member[api].Member[filters].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[api].Member[filters].Member[Question]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[api].Member[serializers].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[api].Member[serializers].Member[Question]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[api].Member[views].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[api].Member[views].Member[Question]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[models].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[models].Member[Poll]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[models].Member[Question]
+  - - Django.db.models.Model~Subclass
+    - polls
     - Member[models].Member[Vote]
   - - Django.db.models.Model~Subclass
     - polls
+    - Member[views].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[views].Member[Poll]
+  - - Django.db.models.Model~Subclass
+    - polls
+    - Member[views].Member[Question]
+  - - Django.db.models.Model~Subclass
+    - polls
     - Member[views].Member[Vote]
+  - - django.forms.BaseForm~Subclass
+    - polls
+    - Member[views].Member[UploadFileForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - polls
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - polls
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - polls
+    - Member[api].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - polls
+    - Member[views].Member[HttpResponse]
+  - - rest_framework.response.Response~Subclass
+    - polls
+    - Member[api].Member[views].Member[Response]

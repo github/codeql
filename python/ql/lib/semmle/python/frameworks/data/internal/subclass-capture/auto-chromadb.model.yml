@@ -1,0 +1,90 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[ChromaAPIRouter]
+  - - fastapi.APIRouter~Subclass
+    - chromadb
+    - Member[server].Member[fastapi]Member[ChromaAPIRouter]
+  - - pickle~Alias
+    - chromadb
+    - Member[segment].Member[impl].Member[vector].Member[local_persistent_hnsw].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[api].Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[api].Member[client].Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[api].Member[fastapi].Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[api].Member[models].Member[Collection].Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[api].Member[segment].Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[AddEmbedding]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[CreateCollection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[CreateDatabase]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[CreateTenant]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[DeleteEmbedding]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[GetEmbedding]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[QueryEmbedding]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[UpdateCollection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[UpdateEmbedding]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[types].Member[AddEmbedding]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[types].Member[CreateCollection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[types].Member[CreateDatabase]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[types].Member[CreateTenant]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[types].Member[DeleteEmbedding]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[types].Member[GetEmbedding]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[types].Member[QueryEmbedding]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[types].Member[UpdateCollection]
+  - - pydantic.BaseModel~Subclass
+    - chromadb
+    - Member[server].Member[fastapi].Member[types].Member[UpdateEmbedding]

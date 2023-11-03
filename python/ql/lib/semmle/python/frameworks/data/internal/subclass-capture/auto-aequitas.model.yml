@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - aequitas
+    - Member[fairflow].Member[optimization].Member[pickle]
+  - - pickle~Alias
+    - aequitas
+    - Member[fairflow].Member[orchestrator].Member[pickle]

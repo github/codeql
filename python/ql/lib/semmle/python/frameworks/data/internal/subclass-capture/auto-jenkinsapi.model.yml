@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - jenkinsapi
+    - Member[utils].Member[simple_post_logger].Member[Handler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - jenkinsapi
+    - Member[utils].Member[simple_post_logger].Member[ServerHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - jenkinsapi
+    - Member[utils].Member[simple_post_logger].Member[SimpleHTTPRequestHandler]
+  - - io.StringIO~Subclass
+    - jenkinsapi
+    - Member[plugins].Member[BytesIO]
+  - - xml.etree.ElementTree~Subclass
+    - jenkinsapi
+    - Member[job].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - jenkinsapi
+    - Member[node].Member[ET]

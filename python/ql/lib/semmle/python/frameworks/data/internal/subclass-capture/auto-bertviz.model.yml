@@ -1,0 +1,9 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - bertviz
+    - Member[transformers_neuron_view].Member[tokenization_transfo_xl].Member[pickle]

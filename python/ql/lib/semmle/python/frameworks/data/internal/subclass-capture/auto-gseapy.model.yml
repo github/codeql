@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - gseapy
+    - Member[biomart].Member[StringIO]
+  - - io.StringIO~Subclass
+    - gseapy
+    - Member[enrichr].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - gseapy
+    - Member[gsea].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - gseapy
+    - Member[parser].Member[ET]

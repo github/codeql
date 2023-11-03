@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - apiclient
+    - Member[utils].Member[typing].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - apiclient
+    - Member[response_handlers].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - apiclient
+    - Member[utils].Member[typing].Member[ElementTree]

@@ -4,6 +4,15 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - consent
+    - Member[api].Member[v1].Member[urls].Member[DataSharingConsentView]
+  - - Django.Views.View~Subclass
+    - consent
+    - Member[api].Member[v1].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - consent
+    - Member[api].Member[v1].Member[views].Member[DataSharingConsentView]
   - - Django.db.models.Model~Subclass
     - consent
     - Member[admin].Member[DataSharingConsentTextOverrides]
@@ -28,3 +37,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - consent
     - Member[models].Member[TimeStampedModel]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - consent
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - consent
+    - Member[api].Member[v1].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - consent
+    - Member[api].Member[v1].Member[views].Member[Response]

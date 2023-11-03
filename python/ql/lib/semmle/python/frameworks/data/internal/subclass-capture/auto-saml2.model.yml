@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - saml2
+    - Member[s2repoze].Member[plugins].Member[sp].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - saml2
+    - Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - saml2
+    - Member[pack].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - saml2
+    - Member[soap].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - saml2
+    - Member[tools].Member[parse_xsd2].Member[ElementTree]

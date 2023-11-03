@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - experiments
+    - Member[docs_json].Member[convert_docs_json_to_markdown].Member[pickle]
+  - - pickle~Alias
+    - experiments
+    - Member[docs_rst].Member[download_docs].Member[pickle]
+  - - pickle~Alias
+    - experiments
+    - Member[docs_rst].Member[old].Member[docs].Member[pickle]

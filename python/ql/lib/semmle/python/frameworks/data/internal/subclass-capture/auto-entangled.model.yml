@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - entangled
+    - Member[forms].Member[EntangledField]
+  - - Django.Forms.Field~Subclass
+    - entangled
+    - Member[forms].Member[Field]
+  - - Django.Forms.Field~Subclass
+    - entangled
+    - Member[forms].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - entangled
+    - Member[forms].Member[ModelMultipleChoiceField]
+  - - Django.db.models.Model~Subclass
+    - entangled
+    - Member[forms].Member[Model]
+  - - django.forms.BaseForm~Subclass
+    - entangled
+    - Member[forms].Member[EntangledModelForm]
+  - - django.forms.BaseForm~Subclass
+    - entangled
+    - Member[forms].Member[ModelForm]

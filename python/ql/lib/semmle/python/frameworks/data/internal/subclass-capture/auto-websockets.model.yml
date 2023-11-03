@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - starlette.websockets.WebSocket~Subclass
+    - websockets
+    - Member[tutorial001].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - websockets
+    - Member[tutorial002].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - websockets
+    - Member[tutorial002_an].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - websockets
+    - Member[tutorial002_an_py310].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - websockets
+    - Member[tutorial002_an_py39].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - websockets
+    - Member[tutorial002_py310].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - websockets
+    - Member[tutorial003].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - websockets
+    - Member[tutorial003_py39].Member[WebSocket]

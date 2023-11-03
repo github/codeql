@@ -4,6 +4,15 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - edx_rbac
+    - Member[admin].Member[forms].Member[UserFromEmailField]
+  - - Django.Forms.Field~Subclass
+    - edx_rbac
+    - Member[fields].Member[UserFromEmailField]
+  - - Django.Views.View~Subclass
+    - edx_rbac
+    - Member[urls].Member[TemplateView]
   - - Django.db.models.Model~Subclass
     - edx_rbac
     - Member[models].Member[TimeStampedModel]
@@ -13,3 +22,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - edx_rbac
     - Member[models].Member[UserRole]
+  - - django.forms.BaseForm~Subclass
+    - edx_rbac
+    - Member[admin].Member[UserRoleAssignmentAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - edx_rbac
+    - Member[admin].Member[forms].Member[UserRoleAssignmentAdminForm]

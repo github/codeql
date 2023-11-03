@@ -4,9 +4,129 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - http.client.HTTPConnection~Subclass
+    - salt
+    - Member[utils].Member[nxos].Member[UHTTPConnection]
+  - - io.StringIO~Subclass
+    - salt
+    - Member[renderers].Member[jinja].Member[StringIO]
+  - - lxml.etree~Alias
+    - salt
+    - Member[cloud].Member[clouds].Member[opennebula].Member[etree]
+  - - lxml.etree~Alias
+    - salt
+    - Member[modules].Member[inspectlib].Member[kiwiproc].Member[etree]
+  - - lxml.etree~Alias
+    - salt
+    - Member[modules].Member[junos].Member[etree]
+  - - lxml.etree~Alias
+    - salt
+    - Member[modules].Member[win_lgpo].Member[etree]
+  - - pickle~Alias
+    - salt
+    - Member[fileserver].Member[s3fs].Member[pickle]
+  - - pickle~Alias
+    - salt
+    - Member[pillar].Member[s3].Member[pickle]
+  - - pickle~Alias
+    - salt
+    - Member[returners].Member[carbon_return].Member[pickle]
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado].Member[BaseSaltAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado].Member[EventsSaltAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado].Member[JobsSaltAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado].Member[MinionSaltAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado].Member[RunSaltAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado].Member[SaltAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado].Member[SaltAuthHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - salt
+    - Member[netapi].Member[rest_tornado].Member[saltnado].Member[WebhookSaltAPIHandler]
   - - tornado.web.RequestHandler~Subclass
     - salt
     - Member[netapi].Member[rest_tornado].Member[saltnado_websockets].Member[AllEventsHandler]
   - - tornado.web.RequestHandler~Subclass
     - salt
     - Member[netapi].Member[rest_tornado].Member[saltnado_websockets].Member[FormattedEventsHandler]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[cloud].Member[clouds].Member[ec2].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[cloud].Member[clouds].Member[libvirt].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[cloud].Member[clouds].Member[parallels].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[modules].Member[artifactory].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[modules].Member[bamboohr].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[modules].Member[glusterfs].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[modules].Member[ilo].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[modules].Member[inspectlib].Member[kiwiproc].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[modules].Member[junos].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[modules].Member[nexus].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[modules].Member[virt].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[modules].Member[xml].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[proxy].Member[cimc].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[proxy].Member[panos].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[states].Member[boto_cfn].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[states].Member[boto_iam].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[states].Member[jenkins].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[states].Member[panos].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[utils].Member[aws].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[utils].Member[http].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[utils].Member[s3].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[utils].Member[xmlutil].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - salt
+    - Member[utils].Member[yast].Member[ET]

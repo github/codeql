@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_health
+    - Member[Check]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_health
+    - Member[endpoint].Member[Check]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_health
+    - Member[endpoint].Member[Condition]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_health
+    - Member[endpoint].Member[HealthBody]

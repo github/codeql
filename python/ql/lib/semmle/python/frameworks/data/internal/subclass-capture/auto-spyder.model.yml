@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - spyder
+    - Member[utils].Member[external].Member[github].Member[StringIO]
+  - - pickle~Alias
+    - spyder
+    - Member[plugins].Member[ipythonconsole].Member[comms].Member[kernelcomm].Member[pickle]
+  - - pickle~Alias
+    - spyder
+    - Member[plugins].Member[pylint].Member[main_widget].Member[pickle]
+  - - pickle~Alias
+    - spyder
+    - Member[py3compat].Member[pickle]
+  - - pickle~Alias
+    - spyder
+    - Member[utils].Member[bsdsocket].Member[pickle]

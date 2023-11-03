@@ -1,0 +1,114 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[app].Member[app].Member[EndpointHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[app].Member[app].Member[EndpointsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[app].Member[app].Member[EvaluationPlaneDisabledHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[app].Member[app].Member[EvaluationPlaneHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[app].Member[app].Member[QueryPlaneHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[app].Member[app].Member[ServiceInfoHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[app].Member[app].Member[StatusHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[app].Member[app].Member[UploadDestinationHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[EndpointHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[EndpointsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[EvaluationPlaneDisabledHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[EvaluationPlaneHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[ManagementHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[QueryPlaneHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[ServiceInfoHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[StatusHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[UploadDestinationHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[base_handler].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[endpoint_handler].Member[EndpointHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[endpoint_handler].Member[ManagementHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[endpoints_handler].Member[EndpointsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[endpoints_handler].Member[ManagementHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[evaluation_plane_handler].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[evaluation_plane_handler].Member[EvaluationPlaneDisabledHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[evaluation_plane_handler].Member[EvaluationPlaneHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[management_handler].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[management_handler].Member[ManagementHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[query_plane_handler].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[query_plane_handler].Member[QueryPlaneHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[service_info_handler].Member[ManagementHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[service_info_handler].Member[ServiceInfoHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[status_handler].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[status_handler].Member[StatusHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[upload_destination_handler].Member[ManagementHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tabpy
+    - Member[tabpy_server].Member[handlers].Member[upload_destination_handler].Member[UploadDestinationHandler]

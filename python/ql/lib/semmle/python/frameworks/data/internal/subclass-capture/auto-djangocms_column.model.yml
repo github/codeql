@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - djangocms_column
+    - Member[cms_plugins].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_column
+    - Member[cms_plugins].Member[Column]
+  - - Django.db.models.Model~Subclass
+    - djangocms_column
+    - Member[cms_plugins].Member[MultiColumns]
+  - - Django.db.models.Model~Subclass
+    - djangocms_column
+    - Member[forms].Member[MultiColumns]
+  - - Django.db.models.Model~Subclass
+    - djangocms_column
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_column
+    - Member[models].Member[Column]
+  - - Django.db.models.Model~Subclass
+    - djangocms_column
+    - Member[models].Member[MultiColumns]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_column
+    - Member[cms_plugins].Member[MultiColumnForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_column
+    - Member[forms].Member[MultiColumnForm]

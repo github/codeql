@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pypiserver
+    - Member[_app].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pypiserver
+    - Member[bottle].Member[BytesIO]
+  - - pickle~Alias
+    - pypiserver
+    - Member[bottle].Member[pickle]
+  - - urllib.parse.SplitResult~Subclass
+    - pypiserver
+    - Member[bottle].Member[UrlSplitResult]

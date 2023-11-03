@@ -6,6 +6,9 @@ extensions:
   data:
   - - io.StringIO~Subclass
     - clearml
+    - Member[binding].Member[frameworks].Member[tensorflow_bind].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - clearml
     - Member[binding].Member[matplotlib_bind].Member[BytesIO]
   - - io.StringIO~Subclass
     - clearml
@@ -16,3 +19,15 @@ extensions:
   - - io.StringIO~Subclass
     - clearml
     - Member[utilities].Member[lowlevel].Member[astor_unparse].Member[StringIO]
+  - - io.StringIO~Subclass
+    - clearml
+    - Member[utilities].Member[requests_toolbelt].Member[multipart].Member[encoder].Member[CustomBytesIO]
+  - - pickle~Alias
+    - clearml
+    - Member[binding].Member[artifacts].Member[pickle]
+  - - pickle~Alias
+    - clearml
+    - Member[utilities].Member[process].Member[mp].Member[pickle]
+  - - urllib3.PoolManager~Subclass
+    - clearml
+    - Member[backend_api].Member[utils].Member[PoolManager]

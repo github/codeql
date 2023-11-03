@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - colossalai
+    - Member[legacy].Member[communication].Member[p2p_v2].Member[pickle]
+  - - pickle~Alias
+    - colossalai
+    - Member[pipeline].Member[p2p].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - colossalai
+    - Member[inference].Member[dynamic_batching].Member[ray_dist_init].Member[EngineArgsClass]
+  - - pydantic.BaseModel~Subclass
+    - colossalai
+    - Member[inference].Member[dynamic_batching].Member[ray_dist_init].Member[RooterArgsClass]
+  - - pydantic.BaseModel~Subclass
+    - colossalai
+    - Member[inference].Member[dynamic_batching].Member[ray_init_config].Member[EngineArgsClass]
+  - - pydantic.BaseModel~Subclass
+    - colossalai
+    - Member[inference].Member[dynamic_batching].Member[ray_init_config].Member[RayInitConfig]
+  - - pydantic.BaseModel~Subclass
+    - colossalai
+    - Member[inference].Member[dynamic_batching].Member[ray_init_config].Member[RooterArgsClass]

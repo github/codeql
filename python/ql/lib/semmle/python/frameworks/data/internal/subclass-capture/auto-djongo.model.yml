@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - djongo
+    - Member[models].Member[fields].Member[ArrayFormField]
+  - - Django.Forms.Field~Subclass
+    - djongo
+    - Member[models].Member[fields].Member[EmbeddedFormField]
+  - - Django.db.models.Model~Subclass
+    - djongo
+    - Member[models].Member[fields].Member[Model]

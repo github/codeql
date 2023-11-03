@@ -7,3 +7,15 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - starlette_admin
     - Member[contrib].Member[sqlmodel].Member[view].Member[SQLModel]
+  - - sqlalchemy.engine.Engine~Subclass
+    - starlette_admin
+    - Member[contrib].Member[sqla].Member[admin].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - starlette_admin
+    - Member[contrib].Member[sqla].Member[middleware].Member[Engine]
+  - - sqlalchemy.orm.Session~Subclass
+    - starlette_admin
+    - Member[contrib].Member[sqla].Member[middleware].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - starlette_admin
+    - Member[contrib].Member[sqla].Member[view].Member[Session]

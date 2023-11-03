@@ -6,6 +6,12 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - django_comments
+    - Member[abstracts].Member[BaseCommentAbstractModel]
+  - - Django.db.models.Model~Subclass
+    - django_comments
+    - Member[abstracts].Member[CommentAbstractModel]
+  - - Django.db.models.Model~Subclass
+    - django_comments
     - Member[abstracts].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - django_comments
@@ -15,7 +21,34 @@ extensions:
     - Member[forms].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - django_comments
+    - Member[management].Member[commands].Member[delete_stale_comments].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - django_comments
     - Member[managers].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - django_comments
+    - Member[models].Member[CommentAbstractModel]
+  - - Django.db.models.Model~Subclass
+    - django_comments
+    - Member[models].Member[CommentFlag]
+  - - Django.db.models.Model~Subclass
+    - django_comments
+    - Member[models].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - django_comments
     - Member[templatetags].Member[comments].Member[ContentType]
+  - - django.forms.BaseForm~Subclass
+    - django_comments
+    - Member[forms].Member[CommentDetailsForm]
+  - - django.forms.BaseForm~Subclass
+    - django_comments
+    - Member[forms].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - django_comments
+    - Member[forms].Member[CommentSecurityForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - django_comments
+    - Member[views].Member[comments].Member[CommentPostBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_comments
+    - Member[views].Member[utils].Member[HttpResponseRedirect]

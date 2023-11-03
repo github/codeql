@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - text_generation
+    - Member[client].Member[ClientSession]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[client].Member[Parameters]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[client].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[client].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[client].Member[StreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[inference_api].Member[DeployedModel]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[BestOfSequence]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[DeployedModel]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[Details]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[InputToken]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[Parameters]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[StreamDetails]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[StreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - text_generation
+    - Member[types].Member[Token]

@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - rosetta
+    - Member[urls].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - rosetta
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - rosetta
+    - Member[views].Member[TranslationFileDownload]
+  - - Django.Views.View~Subclass
+    - rosetta
+    - Member[views].Member[TranslationFileListView]
+  - - Django.Views.View~Subclass
+    - rosetta
+    - Member[views].Member[TranslationFormView]
+  - - Django.Views.View~Subclass
+    - rosetta
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - rosetta
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - rosetta
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - rosetta
+    - Member[views].Member[JsonResponse]
+  - - io.StringIO~Subclass
+    - rosetta
+    - Member[views].Member[BytesIO]

@@ -6,6 +6,15 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - dashing
+    - Member[utils].Member[Dashboard]
+  - - Django.Views.View~Subclass
+    - dashing
+    - Member[views].Member[Dashboard]
+  - - Django.Views.View~Subclass
+    - dashing
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - dashing
     - Member[widgets].Member[GraphWidget]
   - - Django.Views.View~Subclass
     - dashing
@@ -25,3 +34,6 @@ extensions:
   - - Django.Views.View~Subclass
     - dashing
     - Member[widgets].Member[Widget]
+  - - django.http.response.HttpResponse~Subclass
+    - dashing
+    - Member[widgets].Member[HttpResponse]

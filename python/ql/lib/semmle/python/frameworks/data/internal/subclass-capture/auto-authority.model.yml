@@ -9,10 +9,19 @@ extensions:
     - Member[admin].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - authority
+    - Member[admin].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[decorators].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - authority
     - Member[forms].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - authority
     - Member[forms].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[forms].Member[Permission]
   - - Django.db.models.Model~Subclass
     - authority
     - Member[managers].Member[ContentType]
@@ -24,7 +33,49 @@ extensions:
     - Member[models].Member[Group]
   - - Django.db.models.Model~Subclass
     - authority
+    - Member[models].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - authority
     - Member[permissions].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - authority
     - Member[permissions].Member[DjangoPermission]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[permissions].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[permissions].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[templatetags].Member[permissions].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - authority
+    - Member[views].Member[Permission]
+  - - django.forms.BaseForm~Subclass
+    - authority
+    - Member[forms].Member[BasePermissionForm]
+  - - django.forms.BaseForm~Subclass
+    - authority
+    - Member[forms].Member[GroupPermissionForm]
+  - - django.forms.BaseForm~Subclass
+    - authority
+    - Member[forms].Member[UserPermissionForm]
+  - - django.forms.BaseForm~Subclass
+    - authority
+    - Member[templatetags].Member[permissions].Member[UserPermissionForm]
+  - - django.forms.BaseForm~Subclass
+    - authority
+    - Member[views].Member[UserPermissionForm]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - authority
+    - Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - authority
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - authority
+    - Member[decorators].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - authority
+    - Member[views].Member[HttpResponseRedirect]

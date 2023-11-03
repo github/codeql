@@ -6,6 +6,18 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - mapbox_location_field
+    - Member[forms].Member[AddressAutoHiddenField]
+  - - Django.Forms.Field~Subclass
+    - mapbox_location_field
+    - Member[forms].Member[LocationField]
+  - - Django.Forms.Field~Subclass
+    - mapbox_location_field
+    - Member[models].Member[AddressAutoHiddenFormField]
+  - - Django.Forms.Field~Subclass
+    - mapbox_location_field
+    - Member[models].Member[LocationFormField]
+  - - Django.Forms.Field~Subclass
+    - mapbox_location_field
     - Member[spatial].Member[forms].Member[PointField]
   - - Django.Forms.Field~Subclass
     - mapbox_location_field

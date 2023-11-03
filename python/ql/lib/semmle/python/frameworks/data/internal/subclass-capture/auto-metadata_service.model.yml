@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - metadata_service
+    - Member[Blueprint]
+  - - flask.Flask~Subclass
+    - metadata_service
+    - Member[Flask]
+  - - flask.Flask~Subclass
+    - metadata_service
+    - Member[config].Member[Flask]
+  - - flask.Flask~Subclass
+    - metadata_service
+    - Member[deprecations].Member[Flask]
   - - flask.MethodView~Subclass
     - metadata_service
     - Member[BadgeAPI]
@@ -286,3 +298,9 @@ extensions:
   - - flask.MethodView~Subclass
     - metadata_service
     - Member[api]Member[BaseAPI]
+  - - sqlalchemy.orm.Session~Subclass
+    - metadata_service
+    - Member[client].Member[rds_client].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - metadata_service
+    - Member[proxy].Member[mysql_proxy].Member[Session]

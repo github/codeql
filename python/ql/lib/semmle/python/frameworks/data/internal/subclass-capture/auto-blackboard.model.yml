@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - blackboard
+    - Member[urls].Member[BlackboardConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - blackboard
+    - Member[urls].Member[BlackboardGlobalConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - blackboard
+    - Member[views].Member[BlackboardConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - blackboard
+    - Member[views].Member[BlackboardGlobalConfigurationViewSet]
   - - Django.db.models.Model~Subclass
     - blackboard
     - Member[serializers].Member[BlackboardEnterpriseCustomerConfiguration]

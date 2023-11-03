@@ -6,6 +6,12 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - zinnia
+    - Member[admin].Member[fields].Member[MPTTModelMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - zinnia
+    - Member[admin].Member[forms].Member[MPTTModelMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - zinnia
     - Member[admin].Member[forms].Member[TreeNodeChoiceField]
   - - Django.Views.View~Subclass
     - zinnia
@@ -30,13 +36,55 @@ extensions:
     - Member[urls].Member[authors].Member[AuthorDetail]
   - - Django.Views.View~Subclass
     - zinnia
+    - Member[urls].Member[authors].Member[AuthorList]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[capabilities].Member[HumansTxt]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[capabilities].Member[OpenSearchXml]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[capabilities].Member[RsdXml]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[capabilities].Member[WLWManifestXml]
+  - - Django.Views.View~Subclass
+    - zinnia
     - Member[urls].Member[categories].Member[CategoryDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[categories].Member[CategoryList]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[comments].Member[CommentSuccess]
   - - Django.Views.View~Subclass
     - zinnia
     - Member[urls].Member[entries].Member[EntryDetail]
   - - Django.Views.View~Subclass
     - zinnia
+    - Member[urls].Member[quick_entry].Member[QuickEntry]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[random].Member[EntryRandom]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[search].Member[EntrySearch]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[shortlink].Member[EntryShortLink]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[sitemap].Member[Sitemap]
+  - - Django.Views.View~Subclass
+    - zinnia
     - Member[urls].Member[tags].Member[TagDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[tags].Member[TagList]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[urls].Member[trackback].Member[EntryTrackback]
   - - Django.Views.View~Subclass
     - zinnia
     - Member[views].Member[archives].Member[BaseArchiveIndexView]
@@ -78,13 +126,55 @@ extensions:
     - Member[views].Member[authors].Member[AuthorDetail]
   - - Django.Views.View~Subclass
     - zinnia
+    - Member[views].Member[authors].Member[AuthorList]
+  - - Django.Views.View~Subclass
+    - zinnia
     - Member[views].Member[authors].Member[BaseListView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[authors].Member[ListView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[capabilities].Member[CapabilityView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[capabilities].Member[HumansTxt]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[capabilities].Member[OpenSearchXml]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[capabilities].Member[RsdXml]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[capabilities].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[capabilities].Member[WLWManifestXml]
   - - Django.Views.View~Subclass
     - zinnia
     - Member[views].Member[categories].Member[BaseListView]
   - - Django.Views.View~Subclass
     - zinnia
     - Member[views].Member[categories].Member[CategoryDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[categories].Member[CategoryList]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[categories].Member[ListView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[channels].Member[EntryChannel]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[channels].Member[ListView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[comments].Member[CommentSuccess]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[comments].Member[View]
   - - Django.Views.View~Subclass
     - zinnia
     - Member[views].Member[entries].Member[BaseDateDetailView]
@@ -99,16 +189,64 @@ extensions:
     - Member[views].Member[mixins].Member[entry_protection].Member[LoginView]
   - - Django.Views.View~Subclass
     - zinnia
+    - Member[views].Member[quick_entry].Member[QuickEntry]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[quick_entry].Member[View]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[random].Member[EntryRandom]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[random].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[search].Member[EntrySearch]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[search].Member[ListView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[shortlink].Member[EntryShortLink]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[shortlink].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[sitemap].Member[Sitemap]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[sitemap].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - zinnia
     - Member[views].Member[tags].Member[BaseListView]
   - - Django.Views.View~Subclass
     - zinnia
+    - Member[views].Member[tags].Member[ListView]
+  - - Django.Views.View~Subclass
+    - zinnia
     - Member[views].Member[tags].Member[TagDetail]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[tags].Member[TagList]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[trackback].Member[EntryTrackback]
+  - - Django.Views.View~Subclass
+    - zinnia
+    - Member[views].Member[trackback].Member[TemplateView]
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[admin].Member[Category]
   - - Django.db.models.Model~Subclass
     - zinnia
+    - Member[admin].Member[entry].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - zinnia
     - Member[admin].Member[entry].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[admin].Member[filters].Member[Author]
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[admin].Member[filters].Member[Category]
@@ -118,6 +256,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[comparison].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[feeds].Member[Author]
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[feeds].Member[ContentType]
@@ -132,16 +273,70 @@ extensions:
     - Member[managers].Member[Site]
   - - Django.db.models.Model~Subclass
     - zinnia
+    - Member[models].Member[author].Member[AuthorPublishedManager]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models].Member[author].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - zinnia
     - Member[models].Member[category].Member[Category]
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[models].Member[category].Member[MPTTModel]
   - - Django.db.models.Model~Subclass
     - zinnia
+    - Member[models_bases].Member[entry].Member[AbstractEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[AuthorsEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[CategoriesEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
     - Member[models_bases].Member[entry].Member[CommentFlag]
   - - Django.db.models.Model~Subclass
     - zinnia
+    - Member[models_bases].Member[entry].Member[ContentEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[ContentTemplateEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[CoreEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[DetailTemplateEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[DiscussionsEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[ExcerptEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[FeaturedEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[ImageEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[LeadEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[LoginRequiredEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[PasswordRequiredEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[RelatedEntry]
+  - - Django.db.models.Model~Subclass
+    - zinnia
     - Member[models_bases].Member[entry].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[models_bases].Member[entry].Member[TagsEntry]
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[moderator].Member[Site]
@@ -150,7 +345,16 @@ extensions:
     - Member[ping].Member[Site]
   - - Django.db.models.Model~Subclass
     - zinnia
+    - Member[search].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[sitemaps].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - zinnia
     - Member[sitemaps].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[templatetags].Member[zinnia].Member[Author]
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[templatetags].Member[zinnia].Member[Category]
@@ -165,6 +369,9 @@ extensions:
     - Member[url_shortener].Member[backends].Member[default].Member[Site]
   - - Django.db.models.Model~Subclass
     - zinnia
+    - Member[views].Member[authors].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - zinnia
     - Member[views].Member[capabilities].Member[Site]
   - - Django.db.models.Model~Subclass
     - zinnia
@@ -174,6 +381,9 @@ extensions:
     - Member[views].Member[quick_entry].Member[Site]
   - - Django.db.models.Model~Subclass
     - zinnia
+    - Member[views].Member[sitemap].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - zinnia
     - Member[views].Member[sitemap].Member[Category]
   - - Django.db.models.Model~Subclass
     - zinnia
@@ -181,6 +391,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[views].Member[trackback].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - zinnia
+    - Member[xmlrpc].Member[metaweblog].Member[Author]
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[xmlrpc].Member[metaweblog].Member[Category]
@@ -193,3 +406,24 @@ extensions:
   - - Django.db.models.Model~Subclass
     - zinnia
     - Member[xmlrpc].Member[pingback].Member[Site]
+  - - django.forms.BaseForm~Subclass
+    - zinnia
+    - Member[admin].Member[category].Member[CategoryAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - zinnia
+    - Member[admin].Member[entry].Member[EntryAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - zinnia
+    - Member[admin].Member[forms].Member[CategoryAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - zinnia
+    - Member[admin].Member[forms].Member[EntryAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - zinnia
+    - Member[views].Member[quick_entry].Member[QuickEntryForm]
+  - - django.http.response.HttpResponsePermanentRedirect~Subclass
+    - zinnia
+    - Member[views].Member[comments].Member[HttpResponsePermanentRedirect]
+  - - django.http.response.HttpResponsePermanentRedirect~Subclass
+    - zinnia
+    - Member[views].Member[trackback].Member[HttpResponsePermanentRedirect]

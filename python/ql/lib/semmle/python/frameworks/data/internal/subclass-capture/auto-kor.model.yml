@@ -1,0 +1,126 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - kor
+    - Member[encoders].Member[csv_data].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[Bool]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[Number]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[Option]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[Selection]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[adapters].Member[Bool]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[adapters].Member[ExtractionSchemaNode]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[adapters].Member[Number]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[adapters].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[adapters].Member[Option]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[adapters].Member[Selection]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[adapters].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[encoders].Member[csv_data].Member[AbstractSchemaNode]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[encoders].Member[csv_data].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[encoders].Member[encode].Member[AbstractSchemaNode]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[encoders].Member[typedefs].Member[AbstractSchemaNode]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[examples].Member[AbstractSchemaNode]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[examples].Member[ExtractionSchemaNode]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[examples].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[examples].Member[Option]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[examples].Member[Selection]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[extraction].Member[api].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[extraction].Member[parser].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[nodes].Member[AbstractSchemaNode]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[nodes].Member[Bool]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[nodes].Member[ExtractionSchemaNode]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[nodes].Member[Number]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[nodes].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[nodes].Member[Option]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[nodes].Member[Selection]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[nodes].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[prompts].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[type_descriptors].Member[AbstractSchemaNode]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[type_descriptors].Member[Bool]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[type_descriptors].Member[Number]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[type_descriptors].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[type_descriptors].Member[Selection]
+  - - pydantic.BaseModel~Subclass
+    - kor
+    - Member[type_descriptors].Member[Text]

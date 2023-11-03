@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - phone_verify
+    - Member[api].Member[VerificationViewSet]
+  - - Django.Views.View~Subclass
+    - phone_verify
+    - Member[urls].Member[VerificationViewSet]
+  - - Django.db.models.Model~Subclass
+    - phone_verify
+    - Member[admin].Member[SMSVerification]
+  - - Django.db.models.Model~Subclass
+    - phone_verify
+    - Member[backends].Member[base].Member[SMSVerification]
+  - - Django.db.models.Model~Subclass
+    - phone_verify
+    - Member[backends].Member[nexmo].Member[SMSVerification]
+  - - Django.db.models.Model~Subclass
+    - phone_verify
+    - Member[backends].Member[twilio].Member[SMSVerification]
+  - - Django.db.models.Model~Subclass
+    - phone_verify
+    - Member[models].Member[SMSVerification]
+  - - Django.db.models.Model~Subclass
+    - phone_verify
+    - Member[models].Member[TimeStampedUUIDModel]
+  - - Django.db.models.Model~Subclass
+    - phone_verify
+    - Member[models].Member[UUIDModel]
+  - - django.http.response.HttpResponse~Subclass
+    - phone_verify
+    - Member[base].Member[response].Member[Ok]
+  - - django.http.response.HttpResponse~Subclass
+    - phone_verify
+    - Member[base].Member[response].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - phone_verify
+    - Member[base].Member[response].Member[Ok]
+  - - rest_framework.response.Response~Subclass
+    - phone_verify
+    - Member[base].Member[response].Member[Response]

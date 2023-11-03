@@ -58,3 +58,18 @@ extensions:
   - - logging.Logger~Subclass
     - mmdet
     - Member[utils].Member[memory].Member[MMLogger]
+  - - pickle~Alias
+    - mmdet
+    - Member[core].Member[evaluation].Member[widerface].Member[pickle]
+  - - pickle~Alias
+    - mmdet
+    - Member[evaluation].Member[metrics].Member[base_video_metric].Member[pickle]
+  - - pickle~Alias
+    - mmdet
+    - Member[utils].Member[dist_utils].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - mmdet
+    - Member[datasets].Member[wider_face].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - mmdet
+    - Member[datasets].Member[xml_style].Member[ET]

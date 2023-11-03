@@ -6,16 +6,37 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - dbtemplates
+    - Member[admin].Member[Template]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
     - Member[loader].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
+    - Member[loader].Member[Template]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
+    - Member[management].Member[commands].Member[check_template_syntax].Member[Template]
   - - Django.db.models.Model~Subclass
     - dbtemplates
     - Member[management].Member[commands].Member[create_error_templates].Member[Site]
   - - Django.db.models.Model~Subclass
     - dbtemplates
+    - Member[management].Member[commands].Member[create_error_templates].Member[Template]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
     - Member[management].Member[commands].Member[sync_templates].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
+    - Member[management].Member[commands].Member[sync_templates].Member[Template]
   - - Django.db.models.Model~Subclass
     - dbtemplates
     - Member[models].Member[Site]
   - - Django.db.models.Model~Subclass
     - dbtemplates
+    - Member[models].Member[Template]
+  - - Django.db.models.Model~Subclass
+    - dbtemplates
     - Member[utils].Member[cache].Member[Site]
+  - - django.forms.BaseForm~Subclass
+    - dbtemplates
+    - Member[admin].Member[TemplateAdminForm]

@@ -6,7 +6,43 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - project
+    - Member[accounts].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[accounts].Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[accounts].Member[views].Member[PasswordResetConfirmView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[accounts].Member[views].Member[PasswordResetView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[accounts].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[accounts].Member[views].Member[UserProfileView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[accounts].Member[views].Member[UserRegistrationView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[organisations].Member[views].Member[CreateOrganisationView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[organisations].Member[views].Member[LeaveOrganisationView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[organisations].Member[views].Member[OrganisationMembersView]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[organisations].Member[views].Member[RetrieveOrganisationView]
+  - - Django.Views.View~Subclass
+    - project
     - Member[urls].Member[JavaScriptCatalog]
+  - - Django.Views.View~Subclass
+    - project
+    - Member[urls].Member[RedirectView]
   - - Django.db.models.Model~Subclass
     - project
     - Member[accounts].Member[models].Member[AbstractBaseUser]
@@ -24,4 +60,37 @@ extensions:
     - Member[accounts].Member[views].Member[User]
   - - Django.db.models.Model~Subclass
     - project
+    - Member[organisations].Member[models].Member[Membership]
+  - - Django.db.models.Model~Subclass
+    - project
+    - Member[organisations].Member[models].Member[Organisation]
+  - - Django.db.models.Model~Subclass
+    - project
     - Member[organisations].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - project
+    - Member[organisations].Member[serializers].Member[Membership]
+  - - Django.db.models.Model~Subclass
+    - project
+    - Member[organisations].Member[serializers].Member[Organisation]
+  - - Django.db.models.Model~Subclass
+    - project
+    - Member[organisations].Member[views].Member[Membership]
+  - - Django.db.models.Model~Subclass
+    - project
+    - Member[organisations].Member[views].Member[Organisation]
+  - - django.http.response.HttpResponse~Subclass
+    - project
+    - Member[accounts].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - project
+    - Member[organisations].Member[views].Member[Response]
+  - - io.StringIO~Subclass
+    - project
+    - Member[StringIO]
+  - - rest_framework.response.Response~Subclass
+    - project
+    - Member[accounts].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - project
+    - Member[organisations].Member[views].Member[Response]

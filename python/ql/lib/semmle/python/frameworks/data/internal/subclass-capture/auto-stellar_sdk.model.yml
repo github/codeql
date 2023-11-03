@@ -1,0 +1,150 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[EventFilter]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[EventInfo]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[GetEventsRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[GetEventsResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[GetHealthResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[GetLedgerEntriesRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[GetLedgerEntriesResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[GetNetworkResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[GetTransactionRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[GetTransactionResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[LedgerEntryResult]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[PaginationOptions]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[RestorePreamble]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[SendTransactionRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[SendTransactionResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[SimulateHostFunctionResult]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[SimulateTransactionCost]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[SimulateTransactionRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[SimulateTransactionResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[SimulateTransactionResult]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[base_soroban_server].Member[TransactionResponseError]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[EventFilter]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[EventInfo]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[GetEventsRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[GetEventsResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[GetHealthResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[GetLedgerEntriesRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[GetLedgerEntriesResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[GetNetworkResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[GetTransactionRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[GetTransactionResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[LedgerEntryResult]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[PaginationOptions]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[RestorePreamble]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[SendTransactionRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[SendTransactionResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[SimulateHostFunctionResult]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[SimulateTransactionCost]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[SimulateTransactionRequest]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[SimulateTransactionResponse]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[SimulateTransactionResult]
+  - - pydantic.BaseModel~Subclass
+    - stellar_sdk
+    - Member[soroban_rpc].Member[TransactionResponseError]

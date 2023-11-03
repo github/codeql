@@ -6,4 +6,25 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - djangocms_picture
+    - Member[cms_plugins].Member[Picture]
+  - - Django.db.models.Model~Subclass
+    - djangocms_picture
+    - Member[forms].Member[Picture]
+  - - Django.db.models.Model~Subclass
+    - djangocms_picture
+    - Member[models].Member[AbstractPicture]
+  - - Django.db.models.Model~Subclass
+    - djangocms_picture
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_picture
+    - Member[models].Member[Picture]
+  - - Django.db.models.Model~Subclass
+    - djangocms_picture
     - Member[models].Member[ThumbnailOption]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_picture
+    - Member[cms_plugins].Member[PictureForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_picture
+    - Member[forms].Member[PictureForm]

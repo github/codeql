@@ -1,0 +1,402 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - superset
+    - Member[config].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[app].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[app].Member[SupersetApp]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[async_events].Member[async_query_manager].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[async_events].Member[async_query_manager_factory].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[extensions].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[extensions].Member[metastore_cache].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[extensions].Member[ssh].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[extensions].Member[stats_logger].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[initialization].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[initialization].Member[SupersetApp]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[security].Member[manager].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[utils].Member[cache_manager].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[utils].Member[encrypt].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[utils].Member[feature_flag_manager].Member[Flask]
+  - - flask.Flask~Subclass
+    - superset
+    - Member[utils].Member[machine_auth].Member[Flask]
+  - - flask.Response~Subclass
+    - superset
+    - Member[annotation_layers].Member[annotations].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[annotation_layers].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[async_events].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[async_events].Member[async_query_manager].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[available_domains].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[cachekeys].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[charts].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[charts].Member[data].Member[api].Member[CsvResponse]
+  - - flask.Response~Subclass
+    - superset
+    - Member[charts].Member[data].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[charts].Member[data].Member[api].Member[XlsxResponse]
+  - - flask.Response~Subclass
+    - superset
+    - Member[css_templates].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[dashboards].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[dashboards].Member[filter_sets].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[dashboards].Member[filter_state].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[dashboards].Member[permalink].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[databases].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[datasets].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[datasets].Member[columns].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[datasets].Member[metrics].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[embedded].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[explore].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[explore].Member[form_data].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[explore].Member[permalink].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[importexport].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[queries].Member[saved_queries].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[reports].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[reports].Member[logs].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[row_level_security].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[security].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[sqllab].Member[api].Member[CsvResponse]
+  - - flask.Response~Subclass
+    - superset
+    - Member[sqllab].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[tags].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[temporary_cache].Member[api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[utils].Member[decorators].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[utils].Member[machine_auth].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[base].Member[CsvResponse]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[base].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[base].Member[XlsxResponse]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[base_api].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[core].Member[CsvResponse]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[core].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[dashboard].Member[views].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[dynamic_plugins].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[key_value].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[sql_lab].Member[views].Member[Response]
+  - - flask.Response~Subclass
+    - superset
+    - Member[views].Member[users].Member[api].Member[Response]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[charts].Member[api].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[charts].Member[post_processing].Member[StringIO]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[dashboards].Member[api].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[databases].Member[api].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[datasets].Member[api].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[extensions].Member[ssh].Member[StringIO]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[importexport].Member[api].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[queries].Member[saved_queries].Member[api].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[utils].Member[core].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - superset
+    - Member[utils].Member[screenshots].Member[BytesIO]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[connectors].Member[base].Member[views].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[connectors].Member[sqla].Member[models].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[connectors].Member[sqla].Member[views].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[models].Member[dashboard].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[models].Member[helpers].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[models].Member[slice].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[models].Member[sql_lab].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[utils].Member[cache_manager].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[utils].Member[core].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[views].Member[chart].Member[mixin].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - superset
+    - Member[views].Member[database].Member[mixins].Member[Markup]
+  - - pickle~Alias
+    - superset
+    - Member[key_value].Member[types].Member[pickle]
+  - - sqlalchemy.engine.Connection~Subclass
+    - superset
+    - Member[connectors].Member[sqla].Member[models].Member[Connection]
+  - - sqlalchemy.engine.Connection~Subclass
+    - superset
+    - Member[models].Member[dashboard].Member[Connection]
+  - - sqlalchemy.engine.Connection~Subclass
+    - superset
+    - Member[models].Member[slice].Member[Connection]
+  - - sqlalchemy.engine.Connection~Subclass
+    - superset
+    - Member[security].Member[manager].Member[Connection]
+  - - sqlalchemy.engine.Connection~Subclass
+    - superset
+    - Member[tags].Member[models].Member[Connection]
+  - - sqlalchemy.engine.Engine~Subclass
+    - superset
+    - Member[models].Member[core].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - superset
+    - Member[utils].Member[core].Member[Engine]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[charts].Member[commands].Member[importers].Member[v1].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[charts].Member[commands].Member[importers].Member[v1].Member[utils].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[commands].Member[importers].Member[v1].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[commands].Member[importers].Member[v1].Member[assets].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[commands].Member[importers].Member[v1].Member[examples].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[connectors].Member[base].Member[models].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[connectors].Member[sqla].Member[models].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[connectors].Member[sqla].Member[utils].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[daos].Member[base].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[daos].Member[datasource].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[daos].Member[report].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[dashboards].Member[commands].Member[importers].Member[v0].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[dashboards].Member[commands].Member[importers].Member[v1].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[dashboards].Member[commands].Member[importers].Member[v1].Member[utils].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[databases].Member[commands].Member[importers].Member[v1].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[databases].Member[commands].Member[importers].Member[v1].Member[utils].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[datasets].Member[commands].Member[importers].Member[v0].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[datasets].Member[commands].Member[importers].Member[v1].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[datasets].Member[commands].Member[importers].Member[v1].Member[utils].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[db_engine_specs].Member[base].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[db_engine_specs].Member[hive].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[db_engine_specs].Member[impala].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[db_engine_specs].Member[ocient].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[db_engine_specs].Member[presto].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[db_engine_specs].Member[trino].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[migrations].Member[shared].Member[migrate_viz].Member[base].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[migrations].Member[shared].Member[security_converge].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[migrations].Member[shared].Member[utils].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[models].Member[helpers].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[queries].Member[saved_queries].Member[commands].Member[importers].Member[v1].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[queries].Member[saved_queries].Member[commands].Member[importers].Member[v1].Member[utils].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[reports].Member[commands].Member[execute].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[security].Member[manager].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[sql_lab].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[tables].Member[models].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[tags].Member[models].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[utils].Member[celery].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[utils].Member[dashboard_import_export].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[utils].Member[dict_import_export].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - superset
+    - Member[utils].Member[mock_data].Member[Session]

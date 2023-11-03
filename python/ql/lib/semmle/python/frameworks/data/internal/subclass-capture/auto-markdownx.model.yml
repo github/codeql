@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - markdownx
+    - Member[fields].Member[MarkdownxFormField]
+  - - Django.Forms.Field~Subclass
+    - markdownx
+    - Member[models].Member[MarkdownxFormField]
   - - Django.Views.View~Subclass
     - markdownx
     - Member[urls].Member[ImageUploadView]
@@ -22,3 +28,18 @@ extensions:
   - - Django.Views.View~Subclass
     - markdownx
     - Member[views].Member[View]
+  - - django.forms.BaseForm~Subclass
+    - markdownx
+    - Member[forms].Member[ImageForm]
+  - - django.forms.BaseForm~Subclass
+    - markdownx
+    - Member[views].Member[ImageForm]
+  - - django.http.response.HttpResponse~Subclass
+    - markdownx
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - markdownx
+    - Member[views].Member[JsonResponse]
+  - - io.StringIO~Subclass
+    - markdownx
+    - Member[forms].Member[BytesIO]

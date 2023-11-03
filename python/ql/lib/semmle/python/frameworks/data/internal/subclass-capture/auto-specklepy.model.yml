@@ -1,0 +1,219 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[client].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[credentials].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[credentials].Member[ServerInfo]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[credentials].Member[UserInfo]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[Activity]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[Branch]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[Branches]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[Collaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[Commits]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[LimitedUser]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[PendingStreamCollaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[ServerInfo]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[Stream]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[Streams]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[models].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resource].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[active_user].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[active_user].Member[PendingStreamCollaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[active_user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[branch].Member[Branch]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[commit].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[other_user].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[other_user].Member[LimitedUser]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[server].Member[ServerInfo]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[stream].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[stream].Member[PendingStreamCollaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[stream].Member[Stream]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[subscriptions].Member[Stream]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[user].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[user].Member[PendingStreamCollaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[resources].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[api].Member[wrapper].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[client].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[credentials].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[credentials].Member[ServerInfo]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[credentials].Member[UserInfo]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[Activity]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[Branch]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[Branches]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[Collaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[Commits]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[LimitedUser]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[Object]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[PendingStreamCollaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[ServerInfo]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[Stream]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[Streams]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[models].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resource].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[active_user].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[active_user].Member[PendingStreamCollaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[active_user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[branch].Member[Branch]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[commit].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[other_user].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[other_user].Member[LimitedUser]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[server].Member[ServerInfo]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[stream].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[stream].Member[PendingStreamCollaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[stream].Member[Stream]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[subscriptions].Member[Stream]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[user].Member[ActivityCollection]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[user].Member[PendingStreamCollaborator]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[resources].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[core].Member[api].Member[wrapper].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - specklepy
+    - Member[transports].Member[server].Member[server].Member[Account]

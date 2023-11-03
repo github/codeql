@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - fastapi_plugins
+    - Member[logger].Member[LoggerLogfmt]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[ControlEnviron]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[ControlHealthCheck]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[ControlHealthError]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[ControlHealth]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[ControlHeartBeat]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[ControlVersion]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[control].Member[ControlBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[control].Member[ControlEnviron]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[control].Member[ControlHealthCheck]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[control].Member[ControlHealthError]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[control].Member[ControlHealthStatus]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[control].Member[ControlHealth]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[control].Member[ControlHeartBeat]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_plugins
+    - Member[control].Member[ControlVersion]

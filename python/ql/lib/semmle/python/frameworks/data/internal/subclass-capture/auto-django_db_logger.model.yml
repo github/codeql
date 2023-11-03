@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_db_logger
+    - Member[admin].Member[StatusLog]
+  - - Django.db.models.Model~Subclass
+    - django_db_logger
+    - Member[models].Member[StatusLog]
+  - - django.http.response.HttpResponse~Subclass
+    - django_db_logger
+    - Member[views].Member[HttpResponse]

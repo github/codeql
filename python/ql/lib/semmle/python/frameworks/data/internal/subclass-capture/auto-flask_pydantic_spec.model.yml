@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - flask_pydantic_spec
+    - Member[flask_backend].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_pydantic_spec
+    - Member[spec].Member[Flask]
+  - - flask.Response~Subclass
+    - flask_pydantic_spec
+    - Member[flask_backend].Member[FlaskResponse]
+  - - flask.Response~Subclass
+    - flask_pydantic_spec
+    - Member[spec].Member[FlaskResponse]

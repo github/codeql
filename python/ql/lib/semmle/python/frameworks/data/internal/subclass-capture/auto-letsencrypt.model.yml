@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - letsencrypt
+    - Member[admin].Member[AcmeChallenge]
+  - - Django.db.models.Model~Subclass
+    - letsencrypt
+    - Member[models].Member[AcmeChallenge]
+  - - Django.db.models.Model~Subclass
+    - letsencrypt
+    - Member[views].Member[AcmeChallenge]
+  - - django.http.response.HttpResponse~Subclass
+    - letsencrypt
+    - Member[views].Member[HttpResponse]

@@ -4,15 +4,144 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - reversion_compare_project
+    - Member[urls].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - reversion_compare_project
+    - Member[urls].Member[SimpleModelHistoryCompareView]
+  - - Django.Views.View~Subclass
+    - reversion_compare_project
+    - Member[views].Member[HistoryCompareDetailView]
+  - - Django.Views.View~Subclass
+    - reversion_compare_project
+    - Member[views].Member[SimpleModelHistoryCompareView]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[Car]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[CustomModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[Factory]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[Identity]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[MigrationModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[NotRegisteredModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[Pet]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[RegisteredWithNotRegisteredRelationModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[SimpleModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[TemplateField]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[admin].Member[VariantModel]
   - - Django.db.models.Model~Subclass
     - reversion_compare_project
     - Member[middleware].Member[User]
   - - Django.db.models.Model~Subclass
     - reversion_compare_project
+    - Member[models].Member[Building]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[Car]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[CustomModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[Factory]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[Identity]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[MigrationModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[NotRegisteredModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[Pet]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[RegisteredWithNotRegisteredRelationModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[SimpleModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[TemplateField]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[models].Member[VariantModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[templatetags].Member[own_detail_view_demo].Member[SimpleModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[Car]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
     - Member[utils].Member[fixtures].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[CustomModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[Factory]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[Identity]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[MigrationModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[NotRegisteredModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[Pet]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[RegisteredWithNotRegisteredRelationModel]
   - - Django.db.models.Model~Subclass
     - reversion_compare_project
     - Member[utils].Member[fixtures].Member[Revision]
   - - Django.db.models.Model~Subclass
     - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[SimpleModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[TemplateField]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[utils].Member[fixtures].Member[VariantModel]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
     - Member[utils].Member[fixtures].Member[Version]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare_project
+    - Member[views].Member[SimpleModel]

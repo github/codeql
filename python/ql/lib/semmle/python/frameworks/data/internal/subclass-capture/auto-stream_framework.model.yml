@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - stream_framework
+    - Member[serializers].Member[activity_serializer].Member[pickle]
+  - - pickle~Alias
+    - stream_framework
+    - Member[serializers].Member[cassandra].Member[activity_serializer].Member[pickle]
+  - - pickle~Alias
+    - stream_framework
+    - Member[serializers].Member[cassandra].Member[aggregated_activity_serializer].Member[pickle]
+  - - pickle~Alias
+    - stream_framework
+    - Member[serializers].Member[pickle_serializer].Member[pickle]

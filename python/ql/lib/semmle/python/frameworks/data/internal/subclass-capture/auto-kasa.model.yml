@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - kasa
+    - Member[SmartBulbPreset]
+  - - pydantic.BaseModel~Subclass
+    - kasa
+    - Member[TurnOnBehavior]
+  - - pydantic.BaseModel~Subclass
+    - kasa
+    - Member[TurnOnBehaviors]
+  - - pydantic.BaseModel~Subclass
+    - kasa
+    - Member[modules].Member[Rule]
+  - - pydantic.BaseModel~Subclass
+    - kasa
+    - Member[modules].Member[cloud].Member[CloudInfo]
+  - - pydantic.BaseModel~Subclass
+    - kasa
+    - Member[modules].Member[rulemodule].Member[Rule]
+  - - pydantic.BaseModel~Subclass
+    - kasa
+    - Member[smartbulb].Member[SmartBulbPreset]
+  - - pydantic.BaseModel~Subclass
+    - kasa
+    - Member[smartbulb].Member[TurnOnBehavior]
+  - - pydantic.BaseModel~Subclass
+    - kasa
+    - Member[smartbulb].Member[TurnOnBehaviors]

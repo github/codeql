@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pyshacl
+    - Member[rdfutil].Member[load].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - pyshacl
+    - Member[parameter].Member[Logger]
+  - - logging.Logger~Subclass
+    - pyshacl
+    - Member[rdfutil].Member[load].Member[Logger]
+  - - pickle~Alias
+    - pyshacl
+    - Member[assets].Member[make_builtin].Member[pickle]
+  - - pickle~Alias
+    - pyshacl
+    - Member[rdfutil].Member[load].Member[pickle]

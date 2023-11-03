@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - fido2
+    - Member[ctap1].Member[ByteBuffer]
+  - - io.StringIO~Subclass
+    - fido2
+    - Member[utils].Member[ByteBuffer]
+  - - io.StringIO~Subclass
+    - fido2
+    - Member[webauthn].Member[ByteBuffer]

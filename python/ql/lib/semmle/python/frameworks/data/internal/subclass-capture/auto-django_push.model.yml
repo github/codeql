@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_push
+    - Member[subscriber].Member[views].Member[CallbackView]
+  - - Django.db.models.Model~Subclass
+    - django_push
+    - Member[subscriber].Member[admin].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - django_push
+    - Member[subscriber].Member[models].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - django_push
+    - Member[subscriber].Member[views].Member[Subscription]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - django_push
+    - Member[subscriber].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - django_push
+    - Member[subscriber].Member[views].Member[HttpResponse]

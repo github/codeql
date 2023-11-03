@@ -7,3 +7,6 @@ extensions:
   - - io.StringIO~Subclass
     - build_tools
     - Member[generate_debugger_import_errors].Member[generation_utils].Member[StringIO]
+  - - lxml.etree~Alias
+    - build_tools
+    - Member[core].Member[ET]

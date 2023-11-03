@@ -1,0 +1,1644 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - mlem
+    - Member[contrib].Member[callable].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mlem
+    - Member[contrib].Member[pil].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mlem
+    - Member[contrib].Member[torchvision].Member[BytesIO]
+  - - pickle~Alias
+    - mlem
+    - Member[core].Member[import_objects].Member[pickle]
+  - - pickle~Alias
+    - mlem
+    - Member[core].Member[model].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[ImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[MlemBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[MlemData]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[MlemDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[MlemEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[MlemLink]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[ModelInterface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[commands].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[migrations].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[utils].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[utils].Member[MlemData]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[utils].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[api].Member[utils].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[apply].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[apply].Member[ImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[apply].Member[MlemData]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[apply].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[build].Member[MlemBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[build].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[checkenv].Member[MlemData]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[checkenv].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[declare].Member[CliTypeField]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[declare].Member[EnvLink]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[declare].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[declare].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[declare].Member[MlemDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[declare].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[deployment].Member[DeployState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[deployment].Member[MlemDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[deployment].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[import_object].Member[ImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[info].Member[MlemLink]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[info].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[serve].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[serve].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[types].Member[CliTypeField]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[types].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[types].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[utils].Member[CliTypeField]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[utils].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[utils].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[cli].Member[utils].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[bitbucketfs].Member[BitBucketResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[bitbucketfs].Member[CloudGitResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[callable].Member[CallableModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[callable].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[callable].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[callable].Member[PickleModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[callable].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[callable].Member[SimplePickleIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[callable].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[catboost].Member[CatBoostModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[catboost].Member[CatBoostModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[catboost].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[catboost].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[catboost].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[catboost].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[catboost].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[catboost].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[DockerDirBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[DockerImageBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DeployState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerBuildArgs]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerContainerState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerContainer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerDaemon]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerDirBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerIORegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerImageBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerImageOptions]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerImage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerModelDirectory]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[DockerRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[MlemBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[MlemDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[MlemEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[RemoteRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[base].Member[_DockerBuildMixin]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[context].Member[DockerBuildArgs]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[context].Member[DockerModelDirectory]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[context].Member[DockerfileGenerator]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[context].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[context].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[context].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[context].Member[TemplateModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[context].Member[UnixPackageRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[helpers].Member[DockerBuildArgs]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[helpers].Member[DockerDaemon]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[helpers].Member[DockerImageBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[helpers].Member[DockerImageOptions]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[helpers].Member[DockerImage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[helpers].Member[DockerRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[helpers].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[docker].Member[helpers].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[dvc].Member[DVCArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[dvc].Member[DVCStorage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[dvc].Member[LocalArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[dvc].Member[LocalStorage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[dvc].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[DataTypeSerializer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[FastAPIMiddleware]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[FastAPIServer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[InterfaceArgument]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[InterfaceMethod]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[Interface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[Middleware]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[Middlewares]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[fastapi].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[DeployState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[DockerDirBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[FlyioAppState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[FlyioApp]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[FlyioEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[FlyioSettings]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[HTTPClient]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[MlemDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[MlemEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[meta].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[utils].Member[FlyioScaleModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[flyio].Member[utils].Member[FlyioStatusModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[git].Member[LocalGitResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[git].Member[UriResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[github].Member[CloudGitResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[github].Member[GithubResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[gitlabfs].Member[CloudGitResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[gitlabfs].Member[GitlabResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[build].Member[DockerImage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[build].Member[HerokuRemoteRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[build].Member[HerokuServer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[build].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[build].Member[RemoteRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[build].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[DeployState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[DockerImage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[HTTPClient]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[HerokuAppMeta]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[HerokuEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[HerokuState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[MlemDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[MlemEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[meta].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[server].Member[HerokuServer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[server].Member[Interface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[server].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[server].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[heroku].Member[utils].Member[HerokuAppMeta]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[DeployState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[DockerDaemon]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[DockerImage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[DockerRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[HTTPClient]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[K8sDeploymentState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[K8sDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[K8sEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[K8sYamlBuildArgs]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[K8sYamlGenerator]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[MlemDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[MlemEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[base].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[build].Member[DockerDaemon]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[build].Member[DockerRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[build].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[build].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[context].Member[K8sYamlBuildArgs]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[context].Member[K8sYamlGenerator]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[context].Member[NodePortService]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[context].Member[ServiceType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[context].Member[TemplateModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[service].Member[ClusterIPService]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[service].Member[LoadBalancerService]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[service].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[service].Member[NodePortService]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[service].Member[ServiceType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[kubernetes].Member[utils].Member[K8sYamlGenerator]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[DataReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[DataWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[LightGBMDataReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[LightGBMDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[LightGBMDataWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[LightGBMModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[LightGBMModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[Requirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[lightgbm].Member[UnixPackageRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[numpy].Member[DataReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[numpy].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[numpy].Member[DataWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[numpy].Member[NumpyArrayReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[numpy].Member[NumpyArrayWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[numpy].Member[NumpyNdarrayType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[numpy].Member[NumpyNumberReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[numpy].Member[NumpyNumberType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[numpy].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[onnx].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[onnx].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[onnx].Member[ModelProtoIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[onnx].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[onnx].Member[ONNXModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[onnx].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[onnx].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[onnx].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[Artifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[DataFrameType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[DataReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[DataWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[ExtImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[LoadAndAnalyzeImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[MlemData]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[PandasImport]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[PandasReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[PandasSeriesReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[PandasSeriesWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[PandasWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[SeriesType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[_PandasDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pandas].Member[_PandasIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pil].Member[NumpyNdarrayType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pip].Member[base].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pip].Member[base].Member[MlemBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pip].Member[base].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pip].Member[base].Member[PipBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pip].Member[base].Member[PipMixin]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pip].Member[base].Member[SetupTemplate]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pip].Member[base].Member[SourceTemplate]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pip].Member[base].Member[TemplateModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[pip].Member[base].Member[WhlBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[prometheus].Member[FastAPIMiddleware]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[prometheus].Member[PrometheusFastAPIMiddleware]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[rabbitmq].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[rabbitmq].Member[InterfaceDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[rabbitmq].Member[InterfaceMethod]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[rabbitmq].Member[Interface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[rabbitmq].Member[RabbitMQClient]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[rabbitmq].Member[RabbitMQMixin]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[rabbitmq].Member[RabbitMQServer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[rabbitmq].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[rabbitmq].Member[VersionedInterfaceDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[requirements].Member[MlemBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[requirements].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[requirements].Member[Requirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[requirements].Member[RequirementsBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[build].Member[AWSVars]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[build].Member[DockerImageOptions]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[build].Member[ECRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[build].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[build].Member[RemoteRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[AWSVars]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[DeployState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[DockerDaemon]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[DockerImage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[ECRegistry]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[MlemDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[MlemEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[SagemakerClient]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[SagemakerDeployState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[SagemakerEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[meta].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[runtime].Member[AWSVars]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[runtime].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[runtime].Member[FastAPIServer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[runtime].Member[InterfaceDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[runtime].Member[Interface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[runtime].Member[SageMakerServer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[runtime].Member[SagemakerClient]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[runtime].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[utils].Member[AWSVars]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sagemaker].Member[utils].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[scipy].Member[DataReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[scipy].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[scipy].Member[DataWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[scipy].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[scipy].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[scipy].Member[ScipyReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[scipy].Member[ScipySparseMatrix]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[scipy].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sklearn].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sklearn].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sklearn].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sklearn].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sklearn].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sklearn].Member[SimplePickleIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sklearn].Member[SklearnModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sklearn].Member[SklearnPipelineType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[sklearn].Member[SklearnTransformer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[_template].Member[HTTPClient]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[server].Member[Interface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[server].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[server].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[server].Member[StreamlitScript]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[server].Member[StreamlitServer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[server].Member[StreamlitTemplate]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[server].Member[TemplateModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[utils].Member[HTTPClient]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[utils].Member[InterfaceArgument]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[streamlit].Member[utils].Member[InterfaceMethod]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[BufferModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[DataReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[DataWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[TFKerasModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[TFKerasModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[TFTensorDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[TFTensorReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[tensorflow].Member[TFTensorWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[DataReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[DataWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[FSSpecArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[LoadAndAnalyzeImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[Requirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[TorchModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[TorchModelImport]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[TorchModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[TorchTensorDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[TorchTensorReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torch].Member[TorchTensorWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[torchvision].Member[TorchTensorDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[venv].Member[CondaBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[venv].Member[CondaPackageRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[venv].Member[EnvBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[venv].Member[MlemBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[venv].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[venv].Member[Requirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[venv].Member[VenvBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[DMatrixDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[DataWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[Requirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[UnixPackageRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[XGBoostModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[contrib].Member[xgboost].Member[XGBoostModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[Artifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[FSSpecArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[FSSpecStorage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[InMemoryArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[InMemoryFileobjArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[InMemoryStorage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[LocalArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[LocalStorage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[PlaceholderArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[artifacts].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[base].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[base].Member[PolyModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[ArrayReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[ArrayType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[ArrayWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[Artifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[BinaryDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[DataReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[DataTypeSerializer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[DataWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[DefaultDataTypeSerializer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[DictType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[DictWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[DynamicDictType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[DynamicDictWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[InMemoryArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[InMemoryFileobjArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[InMemoryStorage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[ListType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[PrimitiveType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[Serializer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[TupleType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[UnspecifiedDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[_TupleLikeReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[_TupleLikeType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[data_type].Member[_TupleLikeWriter]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[ExtImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[ImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[LoadAndAnalyzeImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[MlemData]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[PickleImportHook]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[import_objects].Member[PlaceholderArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[meta_io].Member[CloudGitResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[meta_io].Member[FSSpecResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[meta_io].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[meta_io].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[meta_io].Member[UriResolver]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[metadata].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[metadata].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[metadata].Member[MlemData]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[metadata].Member[MlemLink]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[metadata].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[metadata].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[metadata].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[Argument]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[BufferModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[ModelIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[SimplePickleIO]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[model].Member[UnspecifiedDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[DataReader]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[DeployState]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[EnvLink]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[FSSpecStateManager]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[FSSpecStorage]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[LocalArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[LocalFileStateManager]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[MlemBuilder]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[MlemData]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[MlemDeployment]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[MlemEnv]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[MlemLink]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[ModelLink]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[ModelType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[PlaceholderArtifact]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[StateManager]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[TypedLink]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[objects].Member[_WithArtifacts]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[requirements].Member[CustomRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[requirements].Member[FileRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[requirements].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[requirements].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[requirements].Member[PythonRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[requirements].Member[Requirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[requirements].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[core].Member[requirements].Member[UnixPackageRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[polydantic].Member[PolyModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[polydantic].Member[core].Member[LazyModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[polydantic].Member[core].Member[PolyModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[polydantic].Member[lazy].Member[LazyModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[InterfaceMethod]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[Interface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[client].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[client].Member[HTTPClient]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[client].Member[InterfaceDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[client].Member[InterfaceMethod]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[client].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[client].Member[VersionedInterfaceDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[client].Member[_MethodCall]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[Argument]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[DataTypeSerializer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[InterfaceArgument]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[InterfaceDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[InterfaceDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[InterfaceMethod]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[Interface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[MlemModel]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[ModelInterface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[Serializer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[Signature]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[SimpleInterface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[UnspecifiedDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[interface].Member[VersionedInterfaceDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[middleware].Member[Middleware]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[middleware].Member[Middlewares]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[middleware].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[middleware].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[DataTypeSerializer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[InterfaceArgument]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[InterfaceDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[InterfaceDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[InterfaceMethod]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[Interface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[Middlewares]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[Serializer]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[ServerArgument]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[ServerDataType]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[ServerInterface]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[ServerMethod]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[runtime].Member[server].Member[_ServerOptions]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[utils].Member[entrypoints].Member[MlemABC]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[utils].Member[entrypoints].Member[MlemObject]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[utils].Member[module].Member[CustomRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[utils].Member[module].Member[InstallableRequirement]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[utils].Member[module].Member[Requirements]
+  - - pydantic.BaseModel~Subclass
+    - mlem
+    - Member[utils].Member[templates].Member[TemplateModel]

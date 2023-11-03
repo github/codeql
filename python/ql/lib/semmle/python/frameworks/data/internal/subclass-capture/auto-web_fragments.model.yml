@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - web_fragments
+    - Member[examples].Member[urls].Member[ExampleFragmentView]
+  - - Django.Views.View~Subclass
+    - web_fragments
+    - Member[examples].Member[views].Member[ExampleFragmentView]
+  - - Django.Views.View~Subclass
+    - web_fragments
+    - Member[examples].Member[views].Member[FragmentView]
+  - - Django.Views.View~Subclass
+    - web_fragments
+    - Member[views].Member[FragmentView]
+  - - Django.Views.View~Subclass
+    - web_fragments
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponse~Subclass
+    - web_fragments
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - web_fragments
+    - Member[views].Member[JsonResponse]

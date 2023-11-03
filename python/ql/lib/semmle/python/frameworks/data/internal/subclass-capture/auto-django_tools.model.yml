@@ -4,12 +4,48 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - django_tools
+    - Member[fields].Member[directory].Member[DirectoryFormField]
+  - - Django.Forms.Field~Subclass
+    - django_tools
+    - Member[fields].Member[language_code].Member[LanguageCodeFormField]
+  - - Django.Forms.Field~Subclass
+    - django_tools
+    - Member[fields].Member[sign_separated].Member[SignSeparatedFormField]
+  - - Django.Forms.Field~Subclass
+    - django_tools
+    - Member[fields].Member[url].Member[OriginFormsCharField]
+  - - Django.Forms.Field~Subclass
+    - django_tools
+    - Member[fields].Member[url].Member[URLFormField2]
+  - - Django.Views.View~Subclass
+    - django_tools
+    - Member[serve_media_app].Member[urls].Member[UserMediaView]
+  - - Django.Views.View~Subclass
+    - django_tools
+    - Member[serve_media_app].Member[views].Member[serve_user_files].Member[UserMediaView]
+  - - Django.Views.View~Subclass
+    - django_tools
+    - Member[serve_media_app].Member[views].Member[serve_user_files].Member[View]
   - - Django.db.models.Model~Subclass
     - django_tools
     - Member[limit_to_usergroups].Member[Group]
   - - Django.db.models.Model~Subclass
     - django_tools
     - Member[management].Member[commands].Member[permission_info].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[model_version_protect].Member[models].Member[VersionProtectBaseModel]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[models].Member[UpdateInfoBaseModel]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[models].Member[UpdateTimeBaseModel]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[models].Member[UpdateUserBaseModel]
   - - Django.db.models.Model~Subclass
     - django_tools
     - Member[permissions].Member[ContentType]
@@ -19,3 +55,24 @@ extensions:
   - - Django.db.models.Model~Subclass
     - django_tools
     - Member[playwright].Member[utils].Member[User]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[serve_media_app].Member[models].Member[UserMediaTokenModel]
+  - - Django.db.models.Model~Subclass
+    - django_tools
+    - Member[serve_media_app].Member[views].Member[serve_user_files].Member[UserMediaTokenModel]
+  - - django.http.request.HttpRequest~Subclass
+    - django_tools
+    - Member[decorators].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - django_tools
+    - Member[cache].Member[site_cache_middleware].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_tools
+    - Member[selenium].Member[response].Member[FakedHttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_tools
+    - Member[selenium].Member[response].Member[HttpResponse]
+  - - pickle~Alias
+    - django_tools
+    - Member[auto_update_cache].Member[filebased].Member[pickle]

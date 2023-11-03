@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - graphos
+    - Member[views].Member[FlotAsJson]
+  - - Django.Views.View~Subclass
+    - graphos
+    - Member[views].Member[RendererAsJson]
+  - - Django.Views.View~Subclass
+    - graphos
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponse~Subclass
+    - graphos
+    - Member[views].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - graphos
+    - Member[renderers].Member[matplotlib_renderer].Member[StringIO]

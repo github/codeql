@@ -7,6 +7,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - safedelete
     - Member[admin].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - safedelete
+    - Member[models].Member[SafeDeleteMixin]
+  - - Django.db.models.Model~Subclass
+    - safedelete
+    - Member[models].Member[SafeDeleteModel]
   - - django.http.response.HttpResponse~Subclass
     - safedelete
     - Member[admin].Member[TemplateResponse]

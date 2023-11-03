@@ -7,3 +7,6 @@ extensions:
   - - pickle~Alias
     - core
     - Member[projection_handler].Member[pickle]
+  - - sqlalchemy.orm.Session~Subclass
+    - core
+    - Member[triggers].Member[external_task].Member[Session]

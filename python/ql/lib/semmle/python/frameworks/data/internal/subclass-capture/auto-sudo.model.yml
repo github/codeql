@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - sudo
+    - Member[views].Member[SudoView]
+  - - Django.Views.View~Subclass
+    - sudo
+    - Member[views].Member[View]
+  - - django.forms.BaseForm~Subclass
+    - sudo
+    - Member[forms].Member[SudoForm]
+  - - django.forms.BaseForm~Subclass
+    - sudo
+    - Member[views].Member[SudoForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - sudo
+    - Member[views].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponse~Subclass
     - sudo
     - Member[views].Member[TemplateResponse]

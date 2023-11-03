@@ -12,4 +12,64 @@ extensions:
     - Member[models].Member[AbstractUser]
   - - Django.db.models.Model~Subclass
     - django_facebook
+    - Member[models].Member[BaseFacebookModel]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[BaseFacebookProfileModel]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[CreatedAtAbstractBase]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[FacebookCustomUser]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[FacebookLike]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[FacebookModel]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[FacebookProfileModel]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[FacebookProfile]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[FacebookUser]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[models].Member[OpenGraphShare]
+  - - Django.db.models.Model~Subclass
+    - django_facebook
+    - Member[urls].Member[FacebookProfile]
+  - - django.forms.BaseForm~Subclass
+    - django_facebook
+    - Member[forms].Member[FacebookRegistrationFormUniqueEmail]
+  - - django.forms.BaseForm~Subclass
+    - django_facebook
+    - Member[registration_backends].Member[FacebookRegistrationFormUniqueEmail]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_facebook
+    - Member[utils].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - django_facebook
+    - Member[example_views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_facebook
+    - Member[middleware].Member[ScriptRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - django_facebook
+    - Member[urls].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_facebook
+    - Member[utils].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_facebook
+    - Member[utils].Member[ScriptRedirect]

@@ -22,3 +22,33 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - advocate
     - Member[connectionpool].Member[ValidatingHTTPSConnection]
+  - - requests.models.Response~Subclass
+    - advocate
+    - Member[Response]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[adapters].Member[ValidatingPoolManager]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[connectionpool].Member[HTTPConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[connectionpool].Member[HTTPSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[connectionpool].Member[ValidatingHTTPConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[connectionpool].Member[ValidatingHTTPSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[poolmanager].Member[PoolManager]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[poolmanager].Member[ValidatingHTTPConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[poolmanager].Member[ValidatingHTTPSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[poolmanager].Member[ValidatingPoolManager]

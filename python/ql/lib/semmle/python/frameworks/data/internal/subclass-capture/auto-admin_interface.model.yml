@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - admin_interface
+    - Member[admin].Member[Theme]
+  - - Django.db.models.Model~Subclass
+    - admin_interface
+    - Member[models].Member[Theme]
+  - - Django.db.models.Model~Subclass
+    - admin_interface
+    - Member[templatetags].Member[admin_interface_tags].Member[Theme]

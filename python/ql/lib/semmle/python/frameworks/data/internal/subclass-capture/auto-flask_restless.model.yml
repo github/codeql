@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - flask_restless
+    - Member[manager].Member[Blueprint]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[manager].Member[API]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[manager].Member[FunctionAPI]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[manager].Member[RelationshipAPI]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[manager].Member[SchemaView]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[API]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[FunctionAPI]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[RelationshipAPI]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[SchemaView]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[base].Member[APIBase]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[base].Member[MethodView]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[base].Member[ModelView]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[base].Member[SchemaView]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[function].Member[FunctionAPI]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[function].Member[ModelView]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[relationships].Member[APIBase]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[relationships].Member[RelationshipAPI]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[resources].Member[APIBase]
+  - - flask.MethodView~Subclass
+    - flask_restless
+    - Member[views].Member[resources].Member[API]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - otree
+    - Member[cli].Member[startproject].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - otree
+    - Member[views].Member[export].Member[StringIO]
+  - - markupsafe.Markup~Subclass
+    - otree
+    - Member[forms].Member[widgets].Member[Markup]
+  - - pickle~Alias
+    - otree
+    - Member[database].Member[pickle]
+  - - starlette.websockets.WebSocket~Subclass
+    - otree
+    - Member[channels].Member[consumers].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - otree
+    - Member[channels].Member[utils].Member[WebSocket]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - bimmer_connected
+    - Member[account].Member[MyBMWClient]
+  - - httpx.Client~Subclass
+    - bimmer_connected
+    - Member[api].Member[authentication].Member[MyBMWLoginClient]
+  - - httpx.Client~Subclass
+    - bimmer_connected
+    - Member[api].Member[client].Member[MyBMWClient]
+  - - httpx.Client~Subclass
+    - bimmer_connected
+    - Member[vehicle].Member[remote_services].Member[MyBMWClient]
+  - - httpx.Client~Subclass
+    - bimmer_connected
+    - Member[vehicle].Member[vehicle].Member[MyBMWClient]

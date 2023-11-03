@@ -4,6 +4,231 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[accounts].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[accounts].Member[DeleteAccount]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[accounts].Member[MembershipViewSet]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[invitations].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[invitations].Member[DeleteInvitation]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[invitations].Member[InviteView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[invitations].Member[ListInvitations]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[secrets].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[secrets].Member[AddSecret]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[secrets].Member[DeleteSecret]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[secrets].Member[ListSecrets]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[secrets].Member[WorkerListSecrets]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[sites].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[sites].Member[GetSiteView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[sites].Member[InitializeSite]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[sites].Member[SiteViewSet]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[subscription].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[subscription].Member[SubscriptionView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[views].Member[GetNbIframes]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[views].Member[ListNotebooks]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[views].Member[RetrieveNotebookWithSlug]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[views].Member[RetrieveNotebook]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[DeleteFile]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[FileUploaded]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[GetStorageType]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[ListFiles]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[PresignedUrlPut]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[PresignedUrl]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[WorkerPresignedUrl]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[notebookfiles].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[notebookfiles].Member[NbDeleteFile]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[notebookfiles].Member[NbFileUploaded]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[notebookfiles].Member[NbPresignedUrlPut]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[notebookfiles].Member[WorkerGetNbFileUrl]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[stylefiles].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[stylefiles].Member[StyleUrlGet]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[stylefiles].Member[StyleUrlPut]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[workerfiles].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[workerfiles].Member[WorkerAddFile]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[workerfiles].Member[WorkerGetUploadedFilesUrls]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[workerfiles].Member[WorkerPresignedUrl]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[ClearTasksView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[CreateAPIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[CreateRestAPITask]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[ExecutionHistoryView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[ExportPDF]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[GetLastTaskView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[GetPDFAddress]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[GetRestAPITask]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[ListAPIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[ListOutputFilesView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[ListWorkerOutputFilesView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[RetrieveAPIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[TaskCreateView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[DeleteWorker]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[GetWorker]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[IsWorkerStale]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[MachineInfo]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[SetWorkerState]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[WorkerGetNb]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[WorkerGetOwnerAndUser]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[WorkerUpdateNb]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[server].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[server].Member[views].Member[VersionInfo]
+  - - Django.Views.View~Subclass
+    - mercury
+    - Member[server].Member[views].Member[WelcomeMessage]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[models].Member[Invitation]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[models].Member[Membership]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[models].Member[Secret]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[models].Member[UserProfile]
   - - Django.db.models.Model~Subclass
     - mercury
     - Member[apps].Member[accounts].Member[models].Member[User]
@@ -15,16 +240,34 @@ extensions:
     - Member[apps].Member[accounts].Member[views].Member[invitations].Member[User]
   - - Django.db.models.Model~Subclass
     - mercury
+    - Member[apps].Member[notebooks].Member[models].Member[Notebook]
+  - - Django.db.models.Model~Subclass
+    - mercury
     - Member[apps].Member[notebooks].Member[models].Member[User]
   - - Django.db.models.Model~Subclass
     - mercury
     - Member[apps].Member[notebooks].Member[tasks].Member[User]
   - - Django.db.models.Model~Subclass
     - mercury
+    - Member[apps].Member[storage].Member[models].Member[UploadedFile]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[models].Member[UserUploadedFile]
+  - - Django.db.models.Model~Subclass
+    - mercury
     - Member[apps].Member[storage].Member[models].Member[User]
   - - Django.db.models.Model~Subclass
     - mercury
+    - Member[apps].Member[storage].Member[models].Member[WorkerFile]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[admin].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - mercury
     - Member[apps].Member[tasks].Member[clean_service].Member[TemporaryUpload]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[models].Member[Task]
   - - Django.db.models.Model~Subclass
     - mercury
     - Member[apps].Member[tasks].Member[notify].Member[User]
@@ -33,16 +276,142 @@ extensions:
     - Member[apps].Member[tasks].Member[tasks].Member[TemporaryUpload]
   - - Django.db.models.Model~Subclass
     - mercury
+    - Member[apps].Member[workers].Member[models].Member[Machine]
+  - - Django.db.models.Model~Subclass
+    - mercury
     - Member[apps].Member[workers].Member[models].Member[User]
   - - Django.db.models.Model~Subclass
     - mercury
+    - Member[apps].Member[workers].Member[models].Member[WorkerSession]
+  - - Django.db.models.Model~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[models].Member[Worker]
+  - - Django.db.models.Model~Subclass
+    - mercury
     - Member[apps].Member[ws].Member[middleware].Member[Token]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[accounts].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[invitations].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[secrets].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[sites].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[subscription].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[notebookfiles].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[stylefiles].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[workerfiles].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - mercury
+    - Member[server].Member[views].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[views].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[notebookfiles].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[stylefiles].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[workerfiles].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[JsonResponse]
+  - - rest_framework.exceptions.APIException~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[accounts].Member[APIException]
   - - rest_framework.exceptions.APIException~Subclass
     - mercury
     - Member[apps].Member[accounts].Member[views].Member[accounts].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[invitations].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[secrets].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[sites].Member[APIException]
   - - rest_framework.exceptions.APIException~Subclass
     - mercury
     - Member[apps].Member[accounts].Member[views].Member[sites].Member[ValidationError]
   - - rest_framework.exceptions.APIException~Subclass
     - mercury
     - Member[apps].Member[accounts].Member[views].Member[subscription].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[APIException]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[accounts].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[invitations].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[secrets].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[sites].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[accounts].Member[views].Member[subscription].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[notebooks].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[dashboardfiles].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[notebookfiles].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[stylefiles].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[storage].Member[views].Member[workerfiles].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[tasks].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[apps].Member[workers].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - mercury
+    - Member[server].Member[views].Member[Response]

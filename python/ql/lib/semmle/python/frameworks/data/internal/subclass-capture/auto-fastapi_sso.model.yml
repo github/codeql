@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[base].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[facebook].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[fitbit].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[generic].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[github].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[gitlab].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[google].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[kakao].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[microsoft].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[naver].Member[OpenID]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_sso
+    - Member[sso].Member[spotify].Member[OpenID]

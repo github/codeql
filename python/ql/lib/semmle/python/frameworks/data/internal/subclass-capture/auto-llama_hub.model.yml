@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - llama_hub
+    - Member[sec_filings].Member[prepline_sec_filings].Member[api].Member[section].Member[APIRouter]
+  - - io.StringIO~Subclass
+    - llama_hub
+    - Member[tools].Member[multion].Member[base].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - llama_hub
+    - Member[tools].Member[text_to_image].Member[base].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - llama_hub
+    - Member[gmail].Member[GmailReader]
+  - - pydantic.BaseModel~Subclass
+    - llama_hub
+    - Member[gmail].Member[base].Member[GmailReader]
+  - - pydantic.BaseModel~Subclass
+    - llama_hub
+    - Member[kibela].Member[Note]
+  - - pydantic.BaseModel~Subclass
+    - llama_hub
+    - Member[kibela].Member[PageInfo]
+  - - pydantic.BaseModel~Subclass
+    - llama_hub
+    - Member[kibela].Member[base].Member[Note]
+  - - pydantic.BaseModel~Subclass
+    - llama_hub
+    - Member[kibela].Member[base].Member[PageInfo]
+  - - sqlalchemy.engine.Engine~Subclass
+    - llama_hub
+    - Member[database].Member[base].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - llama_hub
+    - Member[tools].Member[database].Member[base].Member[Engine]
+  - - xml.etree.ElementTree~Subclass
+    - llama_hub
+    - Member[web].Member[sitemap].Member[base].Member[ET]

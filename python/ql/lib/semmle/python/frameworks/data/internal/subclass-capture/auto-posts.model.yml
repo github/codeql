@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - posts
+    - Member[urls].Member[PostDetailView]
+  - - Django.Views.View~Subclass
+    - posts
+    - Member[urls].Member[PostListView]
+  - - Django.Views.View~Subclass
+    - posts
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - posts
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - posts
+    - Member[views].Member[PostDetailView]
+  - - Django.Views.View~Subclass
+    - posts
+    - Member[views].Member[PostListView]
+  - - Django.db.models.Model~Subclass
+    - posts
+    - Member[admin].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - posts
+    - Member[models].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - posts
+    - Member[views].Member[Post]

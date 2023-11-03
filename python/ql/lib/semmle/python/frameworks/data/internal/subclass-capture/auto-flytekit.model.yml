@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - flytekit
+    - Member[clients].Member[auth].Member[auth_client].Member[OAuthCallbackHandler]
+  - - io.StringIO~Subclass
+    - flytekit
+    - Member[configuration].Member[BytesIO]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - django_jenkins
+    - Member[tasks].Member[run_flake8].Member[StringIO]
+  - - io.StringIO~Subclass
+    - django_jenkins
+    - Member[tasks].Member[run_pyflakes].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - django_jenkins
+    - Member[runner].Member[ET]

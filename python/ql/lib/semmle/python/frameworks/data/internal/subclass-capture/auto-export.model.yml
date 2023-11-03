@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - django.http.response.HttpResponse~Subclass
+    - export
+    - Member[Response]
   - - logging.Logger~Subclass
     - export
     - Member[pack_cfg].Member[MMLogger]

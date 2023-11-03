@@ -1,0 +1,114 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ChatCompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ChatCompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ChatCompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ChatCompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ChatCompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ChatMessage]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[CompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[CompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[CompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[CompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[CompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[DeltaMessage]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[LogProbs]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ModelCard]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ModelList]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[ModelPermission]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[api_server].Member[UsageInfo]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ChatCompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ChatCompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ChatCompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ChatCompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ChatCompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ChatMessage]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[CompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[CompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[CompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[CompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[CompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[DeltaMessage]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[LogProbs]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ModelCard]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ModelList]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[ModelPermission]
+  - - pydantic.BaseModel~Subclass
+    - vllm
+    - Member[entrypoints].Member[openai].Member[protocol].Member[UsageInfo]

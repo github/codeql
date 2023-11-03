@@ -7,3 +7,6 @@ extensions:
   - - Django.db.models.Model~Subclass
     - common
     - Member[dockerfiles].Member[scripts].Member[createsuperuser].Member[User]
+  - - requests.models.Response~Subclass
+    - common
+    - Member[base].Member[Response]

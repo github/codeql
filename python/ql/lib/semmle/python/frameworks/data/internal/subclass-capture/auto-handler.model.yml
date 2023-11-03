@@ -7,3 +7,9 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - handler
     - Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - handler
+    - Member[History]
+  - - pydantic.BaseModel~Subclass
+    - handler
+    - Member[Message]

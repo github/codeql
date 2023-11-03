@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - showcase
+    - Member[views].Member[FormExampleView]
+  - - Django.Views.View~Subclass
+    - showcase
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - showcase
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - showcase
+    - Member[views].Member[PaginatedList]
+  - - Django.db.models.Model~Subclass
+    - showcase
+    - Member[models].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - showcase
+    - Member[views].Member[Task]
+  - - django.forms.BaseForm~Subclass
+    - showcase
+    - Member[forms].Member[FormExample]
+  - - django.forms.BaseForm~Subclass
+    - showcase
+    - Member[views].Member[FormExample]

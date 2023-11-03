@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - jsignature
+    - Member[fields].Member[JSignatureFormField]
+  - - Django.Forms.Field~Subclass
+    - jsignature
+    - Member[forms].Member[Field]
+  - - Django.Forms.Field~Subclass
+    - jsignature
+    - Member[forms].Member[JSignatureField]
+  - - Django.db.models.Model~Subclass
+    - jsignature
+    - Member[mixins].Member[JSignatureFieldsMixin]

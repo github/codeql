@@ -4,6 +4,66 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - logging.Logger~Subclass
+    - jupyter_server
+    - Member[gateway].Member[managers].Member[Logger]
+  - - tornado.web.Application~Subclass
+    - jupyter_server
+    - Member[serverapp].Member[ServerWebApplication]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[auth].Member[login].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[auth].Member[login].Member[LoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[auth].Member[logout].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[auth].Member[logout].Member[LogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[APIVersionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[AuthenticatedFileHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[AuthenticatedHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[FileFindHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[FilesRedirectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[PrometheusMetricsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[RedirectWithParams]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[Template404]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[handlers].Member[TrailingSlashHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[zmqhandlers].Member[AuthenticatedZMQStreamHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[base].Member[zmqhandlers].Member[JupyterHandler]
   - - tornado.web.RequestHandler~Subclass
     - jupyter_server
     - Member[base].Member[zmqhandlers].Member[WebSocketHandler]
@@ -12,4 +72,190 @@ extensions:
     - Member[base].Member[zmqhandlers].Member[ZMQStreamHandler]
   - - tornado.web.RequestHandler~Subclass
     - jupyter_server
+    - Member[extension].Member[handler].Member[FileFindHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[files].Member[handlers].Member[FilesHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[files].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[gateway].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[gateway].Member[handlers].Member[GatewayResourceHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[gateway].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[gateway].Member[handlers].Member[WebSocketChannelsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
     - Member[gateway].Member[handlers].Member[WebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[kernelspecs].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[kernelspecs].Member[handlers].Member[KernelSpecResourceHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[nbconvert].Member[handlers].Member[FilesRedirectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[nbconvert].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[nbconvert].Member[handlers].Member[NbconvertFileHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[nbconvert].Member[handlers].Member[NbconvertPostHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[serverapp].Member[FileFindHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[serverapp].Member[LoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[serverapp].Member[LogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[serverapp].Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[serverapp].Member[RedirectWithParams]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[serverapp].Member[Template404]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[api].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[api].Member[handlers].Member[APISpecHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[api].Member[handlers].Member[APIStatusHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[api].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[config].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[config].Member[handlers].Member[ConfigHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[filemanager].Member[AuthenticatedFileHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[handlers].Member[CheckpointsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[handlers].Member[ContentsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[handlers].Member[ModifyCheckpointsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[handlers].Member[NotebooksRedirectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[handlers].Member[TrustNotebooksHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[manager].Member[FilesHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[contents].Member[manager].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[kernels].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[kernels].Member[handlers].Member[AuthenticatedZMQStreamHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[kernels].Member[handlers].Member[KernelActionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[kernels].Member[handlers].Member[KernelHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[kernels].Member[handlers].Member[MainKernelHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[kernels].Member[handlers].Member[ZMQChannelsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[kernelspecs].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[kernelspecs].Member[handlers].Member[KernelSpecHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[kernelspecs].Member[handlers].Member[MainKernelSpecHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[nbconvert].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[nbconvert].Member[handlers].Member[NbconvertRootHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[security].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[security].Member[handlers].Member[CSPReportHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[sessions].Member[handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[sessions].Member[handlers].Member[SessionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[sessions].Member[handlers].Member[SessionRootHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[shutdown].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[services].Member[shutdown].Member[ShutdownHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[terminal].Member[TermSocket]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[terminal].Member[api_handlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[terminal].Member[api_handlers].Member[TerminalHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[terminal].Member[api_handlers].Member[TerminalRootHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[terminal].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[terminal].Member[handlers].Member[TermSocket]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[view].Member[handlers].Member[JupyterHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyter_server
+    - Member[view].Member[handlers].Member[ViewHandler]
+  - - urllib.parse.SplitResult~Subclass
+    - jupyter_server
+    - Member[utils].Member[SplitResult]

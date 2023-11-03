@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - lager
+    - Member[logging].Member[Logger]
+  - - logging.Logger~Subclass
+    - lager
+    - Member[logging]Member[Logger]
+  - - pydantic.BaseModel~Subclass
+    - lager
+    - Member[pydantic].Member[JsonBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - lager
+    - Member[pydantic].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - lager
+    - Member[pydantic].Member[RecordException]
+  - - pydantic.BaseModel~Subclass
+    - lager
+    - Member[pydantic].Member[RecordFile]
+  - - pydantic.BaseModel~Subclass
+    - lager
+    - Member[pydantic].Member[RecordLevel]
+  - - pydantic.BaseModel~Subclass
+    - lager
+    - Member[pydantic].Member[RecordProcess]
+  - - pydantic.BaseModel~Subclass
+    - lager
+    - Member[pydantic].Member[RecordThread]
+  - - pydantic.BaseModel~Subclass
+    - lager
+    - Member[pydantic].Member[Record]

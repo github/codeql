@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - djangocms_file
+    - Member[cms_plugins].Member[File]
+  - - Django.db.models.Model~Subclass
+    - djangocms_file
+    - Member[cms_plugins].Member[Folder]
+  - - Django.db.models.Model~Subclass
+    - djangocms_file
+    - Member[models].Member[AbstractFile]
+  - - Django.db.models.Model~Subclass
+    - djangocms_file
+    - Member[models].Member[AbstractFolder]
+  - - Django.db.models.Model~Subclass
+    - djangocms_file
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_file
+    - Member[models].Member[File]
+  - - Django.db.models.Model~Subclass
+    - djangocms_file
+    - Member[models].Member[Folder]

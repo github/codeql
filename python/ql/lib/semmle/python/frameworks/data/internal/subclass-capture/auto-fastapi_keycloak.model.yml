@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[api].Member[KeycloakGroup]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[api].Member[KeycloakIdentityProvider]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[api].Member[KeycloakRole]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[api].Member[KeycloakToken]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[api].Member[KeycloakUser]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[api].Member[OIDCUser]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[model].Member[KeycloakGroup]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[model].Member[KeycloakIdentityProvider]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[model].Member[KeycloakRole]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[model].Member[KeycloakToken]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[model].Member[KeycloakUser]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[model].Member[OIDCUser]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_keycloak
+    - Member[model].Member[UsernamePassword]
+  - - requests.models.Response~Subclass
+    - fastapi_keycloak
+    - Member[api].Member[Response]

@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - django_mysql
+    - Member[forms].Member[SimpleListField]
+  - - Django.Forms.Field~Subclass
+    - django_mysql
+    - Member[forms].Member[SimpleSetField]
+  - - Django.Forms.Field~Subclass
+    - django_mysql
+    - Member[models].Member[fields].Member[dynamic].Member[FormField]
+  - - Django.Forms.Field~Subclass
+    - django_mysql
+    - Member[models].Member[fields].Member[lists].Member[FormField]
+  - - Django.Forms.Field~Subclass
+    - django_mysql
+    - Member[models].Member[fields].Member[lists].Member[SimpleListField]
+  - - Django.Forms.Field~Subclass
+    - django_mysql
+    - Member[models].Member[fields].Member[sets].Member[FormField]
+  - - Django.Forms.Field~Subclass
+    - django_mysql
+    - Member[models].Member[fields].Member[sets].Member[SimpleSetField]
+  - - Django.db.models.Model~Subclass
+    - django_mysql
+    - Member[locks].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_mysql
+    - Member[models].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_mysql
+    - Member[models].Member[base].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_mysql
+    - Member[models].Member[fields].Member[lists].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_mysql
+    - Member[models].Member[fields].Member[sets].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_mysql
+    - Member[utils].Member[Model]
+  - - pickle~Alias
+    - django_mysql
+    - Member[cache].Member[pickle]

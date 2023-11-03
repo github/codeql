@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - tracking
+    - Member[admin].Member[Pageview]
+  - - Django.db.models.Model~Subclass
+    - tracking
+    - Member[admin].Member[Visitor]
+  - - Django.db.models.Model~Subclass
+    - tracking
+    - Member[handlers].Member[Visitor]
+  - - Django.db.models.Model~Subclass
+    - tracking
+    - Member[middleware].Member[Pageview]
+  - - Django.db.models.Model~Subclass
+    - tracking
+    - Member[middleware].Member[Visitor]
+  - - Django.db.models.Model~Subclass
+    - tracking
+    - Member[models].Member[Pageview]
+  - - Django.db.models.Model~Subclass
+    - tracking
+    - Member[models].Member[Visitor]
+  - - Django.db.models.Model~Subclass
+    - tracking
+    - Member[views].Member[Pageview]
+  - - Django.db.models.Model~Subclass
+    - tracking
+    - Member[views].Member[Visitor]
+  - - django.forms.BaseForm~Subclass
+    - tracking
+    - Member[views].Member[DashboardForm]

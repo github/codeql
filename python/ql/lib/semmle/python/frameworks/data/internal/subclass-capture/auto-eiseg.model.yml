@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - eiseg
+    - Member[util].Member[misc].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - eiseg
+    - Member[util].Member[voc].Member[ET]

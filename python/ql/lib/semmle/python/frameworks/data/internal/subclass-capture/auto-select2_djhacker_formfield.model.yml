@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - select2_djhacker_formfield
+    - Member[admin].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_djhacker_formfield
+    - Member[models].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_djhacker_formfield
+    - Member[urls].Member[TModel]

@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - openmdao
+    - Member[core].Member[problem].Member[StringIO]
+  - - io.StringIO~Subclass
+    - openmdao
+    - Member[devtools].Member[debug].Member[StringIO]
+  - - io.StringIO~Subclass
+    - openmdao
+    - Member[devtools].Member[itrace].Member[StringIO]
+  - - io.StringIO~Subclass
+    - openmdao
+    - Member[error_checking].Member[check_config].Member[StringIO]
+  - - io.StringIO~Subclass
+    - openmdao
+    - Member[recorders].Member[sqlite_recorder].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - openmdao
+    - Member[utils].Member[general_utils].Member[StringIO]
+  - - pickle~Alias
+    - openmdao
+    - Member[devtools].Member[dump_sqlite_recorder_file].Member[pickle]
+  - - pickle~Alias
+    - openmdao
+    - Member[error_checking].Member[check_config].Member[pickle]
+  - - pickle~Alias
+    - openmdao
+    - Member[recorders].Member[sqlite_reader].Member[pickle]
+  - - pickle~Alias
+    - openmdao
+    - Member[recorders].Member[sqlite_recorder].Member[pickle]
+  - - pickle~Alias
+    - openmdao
+    - Member[utils].Member[coloring].Member[pickle]
+  - - pickle~Alias
+    - openmdao
+    - Member[visualization].Member[timing_viewer].Member[timer].Member[pickle]
+  - - pickle~Alias
+    - openmdao
+    - Member[visualization].Member[timing_viewer].Member[timing_viewer].Member[pickle]
+  - - tornado.web.Application~Subclass
+    - openmdao
+    - Member[devtools].Member[iprofile_app].Member[iprofile_app].Member[_Application]
+  - - tornado.web.RequestHandler~Subclass
+    - openmdao
+    - Member[devtools].Member[iprofile_app].Member[iprofile_app].Member[_Function]
+  - - tornado.web.RequestHandler~Subclass
+    - openmdao
+    - Member[devtools].Member[iprofile_app].Member[iprofile_app].Member[_Index]

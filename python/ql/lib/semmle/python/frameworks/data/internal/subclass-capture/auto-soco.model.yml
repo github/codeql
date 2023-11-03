@@ -1,0 +1,57 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - soco
+    - Member[events_asyncio].Member[ClientSession]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - soco
+    - Member[events].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - soco
+    - Member[events].Member[EventNotifyHandler]
+  - - lxml.etree~Alias
+    - soco
+    - Member[zonegroupstate].Member[LXML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[alarms].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[core].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[data_structures].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[data_structures_entry].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[events_base].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[ms_data_structures].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[music_services].Member[accounts].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[music_services].Member[music_service].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[services].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[services].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[soap].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[utils].Member[XML]
+  - - xml.etree.ElementTree~Subclass
+    - soco
+    - Member[xml].Member[XML]

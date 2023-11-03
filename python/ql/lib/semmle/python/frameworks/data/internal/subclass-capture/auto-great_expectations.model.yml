@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - great_expectations
+    - Member[datasource].Member[fluent].Member[config].Member[StringIO]
+  - - io.StringIO~Subclass
+    - great_expectations
+    - Member[datasource].Member[fluent].Member[fluent_base_model].Member[StringIO]
+  - - io.StringIO~Subclass
+    - great_expectations
+    - Member[datasource].Member[pandas_datasource].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - great_expectations
+    - Member[execution_engine].Member[pandas_execution_engine].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - great_expectations
+    - Member[self_check].Member[util].Member[Logger]
+  - - pickle~Alias
+    - great_expectations
+    - Member[execution_engine].Member[pandas_execution_engine].Member[pickle]
+  - - sqlalchemy.engine.Engine~Subclass
+    - great_expectations
+    - Member[compatibility].Member[sqlalchemy].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - great_expectations
+    - Member[execution_engine].Member[sqlalchemy_execution_engine].Member[SaEngine]

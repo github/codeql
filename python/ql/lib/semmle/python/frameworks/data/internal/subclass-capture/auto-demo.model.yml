@@ -6,7 +6,151 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - demo
+    - Member[app].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[app].Member[views].Member[FooView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[app].Member[views].Member[SizesView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[app].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[urls].Member[FooView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[urls].Member[LibraryCreateView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[urls].Member[LibraryDeleteView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[urls].Member[LibraryDetailView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[urls].Member[LibraryListsView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[urls].Member[LibraryUpdateView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[urls].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[urls].Member[SizesView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[C3jsDemo]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[Demo]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - demo
     - Member[views].Member[FilterView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[FlotAsJson]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[FlotDemo]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[GChartDemo]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[GhcartRendererAsJson]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[HighChartsDemo]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[LibraryCreateView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[LibraryDeleteView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[LibraryDetailView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[LibraryListsView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[LibraryUpdateView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[MongoJson2]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[MongoJsonMulti2]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[MongoJsonMulti]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[MongoJson]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[MorrisDemo]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[RendererAsJson]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - demo
+    - Member[views].Member[YUIDemo]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[admin].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[admin].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[admin].Member[City]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[admin].Member[Continent]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[admin].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[admin].Member[Movie]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[admin].Member[Showcase]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[admin].Member[TimeSeries]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[app].Member[models].Member[Foo]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[app].Member[views].Member[Foo]
   - - Django.db.models.Model~Subclass
     - demo
     - Member[cron].Member[User]
@@ -16,3 +160,81 @@ extensions:
   - - Django.db.models.Model~Subclass
     - demo
     - Member[example].Member[models].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[City]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[Continent]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[Movie]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[Showcase]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[SlugModel]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[models].Member[TimeSeries]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[utils].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[views].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[views].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - demo
+    - Member[views].Member[Library]
+  - - django.forms.BaseForm~Subclass
+    - demo
+    - Member[admin].Member[CityInlineForm]
+  - - django.forms.BaseForm~Subclass
+    - demo
+    - Member[admin].Member[CountryForm]
+  - - django.forms.BaseForm~Subclass
+    - demo
+    - Member[admin].Member[CountryInlineForm]
+  - - django.forms.BaseForm~Subclass
+    - demo
+    - Member[admin].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - demo
+    - Member[admin].Member[MovieInlineForm]
+  - - django.forms.BaseForm~Subclass
+    - demo
+    - Member[admin].Member[ShowcaseForm]
+  - - django.forms.BaseForm~Subclass
+    - demo
+    - Member[forms].Member[EmailForm]
+  - - django.http.response.HttpResponse~Subclass
+    - demo
+    - Member[admin].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - demo
+    - Member[views].Member[HttpResponse]
+  - - flask.Flask~Subclass
+    - demo
+    - Member[main].Member[Flask]
+  - - io.StringIO~Subclass
+    - demo
+    - Member[fake_diffusion_with_gif].Member[run].Member[BytesIO]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - demo
+    - Member[auth].Member[WSGIServer]

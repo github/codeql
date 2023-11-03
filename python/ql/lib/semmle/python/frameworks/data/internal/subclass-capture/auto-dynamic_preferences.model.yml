@@ -1,0 +1,114 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[api].Member[viewsets].Member[GlobalPreferencesViewSet]
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[api].Member[viewsets].Member[PerInstancePreferenceViewSet]
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[api].Member[viewsets].Member[PreferenceViewSet]
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[users].Member[views].Member[PreferenceFormView]
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[users].Member[views].Member[UserPreferenceFormView]
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[users].Member[viewsets].Member[UserPreferencesViewSet]
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[views].Member[PreferenceFormView]
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[views].Member[RegularTemplateView]
+  - - Django.Views.View~Subclass
+    - dynamic_preferences
+    - Member[views].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[admin].Member[GlobalPreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[api].Member[serializers].Member[GlobalPreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[forms].Member[GlobalPreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[management].Member[commands].Member[checkpreferences].Member[GlobalPreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[models].Member[BasePreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[models].Member[GlobalPreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[models].Member[PerInstancePreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[users].Member[admin].Member[UserPreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[users].Member[forms].Member[UserPreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[users].Member[models].Member[PerInstancePreferenceModel]
+  - - Django.db.models.Model~Subclass
+    - dynamic_preferences
+    - Member[users].Member[models].Member[UserPreferenceModel]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[admin].Member[GlobalSinglePreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[admin].Member[SinglePerInstancePreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[forms].Member[AbstractSinglePreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[forms].Member[GlobalPreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[forms].Member[GlobalSinglePreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[forms].Member[PreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[forms].Member[SinglePerInstancePreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[urls].Member[GlobalPreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[users].Member[admin].Member[UserSinglePreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[users].Member[forms].Member[PreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[users].Member[forms].Member[SinglePerInstancePreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[users].Member[forms].Member[UserPreferenceForm]
+  - - django.forms.BaseForm~Subclass
+    - dynamic_preferences
+    - Member[users].Member[forms].Member[UserSinglePreferenceForm]
+  - - django.http.response.HttpResponse~Subclass
+    - dynamic_preferences
+    - Member[api].Member[viewsets].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - dynamic_preferences
+    - Member[api].Member[viewsets].Member[Response]

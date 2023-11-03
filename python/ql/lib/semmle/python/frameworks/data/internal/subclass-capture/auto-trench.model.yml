@@ -4,24 +4,207 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[urls].Member[authtoken].Member[MFAFirstStepAuthTokenView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[urls].Member[authtoken].Member[MFALogoutView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[urls].Member[authtoken].Member[MFASecondStepAuthTokenView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[urls].Member[jwt].Member[MFAFirstStepJWTView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[urls].Member[jwt].Member[MFASecondStepJWTView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[ListAPIView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAConfigView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAFirstStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAListActiveUserMethodsView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAMethodActivationView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAMethodBackupCodesRegenerationView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAMethodConfirmActivationView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAMethodDeactivationView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAMethodRequestCodeView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAPrimaryMethodChangeView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFASecondStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[MFAStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[APIView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[MFAAuthTokenView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[MFAFirstStepAuthTokenView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[MFAFirstStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[MFALogoutView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[MFASecondStepAuthTokenView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[MFASecondStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[MFAStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[APIView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[ListAPIView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAConfigView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAFirstStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAListActiveUserMethodsView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAMethodActivationView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAMethodBackupCodesRegenerationView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAMethodConfirmActivationView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAMethodDeactivationView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAMethodRequestCodeView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAPrimaryMethodChangeView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFASecondStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[base].Member[MFAStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[jwt].Member[MFAFirstStepJWTView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[jwt].Member[MFAFirstStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[jwt].Member[MFAJWTView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[jwt].Member[MFASecondStepJWTView]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[jwt].Member[MFASecondStepMixin]
+  - - Django.Views.View~Subclass
+    - trench
+    - Member[views].Member[jwt].Member[MFAStepMixin]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[admin].Member[MFAMethod]
   - - Django.db.models.Model~Subclass
     - trench
     - Member[backends].Member[application].Member[AbstractUser]
   - - Django.db.models.Model~Subclass
     - trench
+    - Member[backends].Member[base].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[backends].Member[base].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[backends].Member[provider].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[command].Member[activate_mfa_method].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
     - Member[command].Member[authenticate_second_factor].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[command].Member[authenticate_second_factor].Member[MFAMethod]
   - - Django.db.models.Model~Subclass
     - trench
     - Member[command].Member[authenticate_user].Member[AbstractUser]
   - - Django.db.models.Model~Subclass
     - trench
+    - Member[command].Member[create_mfa_method].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[command].Member[deactivate_mfa_method].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[command].Member[remove_backup_code].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[command].Member[replace_mfa_method_backup_codes].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[command].Member[set_primary_mfa_method].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[models].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[models].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - trench
     - Member[serializers].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[serializers].Member[MFAMethod]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[serializers].Member[Model]
   - - Django.db.models.Model~Subclass
     - trench
     - Member[serializers].Member[Token]
   - - Django.db.models.Model~Subclass
     - trench
     - Member[utils].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - trench
+    - Member[utils].Member[MFAMethod]
   - - Django.db.models.Model~Subclass
     - trench
     - Member[views].Member[AbstractUser]
@@ -31,6 +214,93 @@ extensions:
   - - Django.db.models.Model~Subclass
     - trench
     - Member[views].Member[base].Member[AbstractUser]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[application].Member[DispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[application].Member[FailedDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[application].Member[SuccessfulDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[aws].Member[DispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[aws].Member[FailedDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[aws].Member[SuccessfulDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[base].Member[DispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[basic_mail].Member[DispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[basic_mail].Member[FailedDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[basic_mail].Member[SuccessfulDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[sms_api].Member[DispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[sms_api].Member[FailedDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[sms_api].Member[SuccessfulDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[twilio].Member[DispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[twilio].Member[FailedDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[twilio].Member[SuccessfulDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[yubikey].Member[DispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[backends].Member[yubikey].Member[SuccessfulDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[responses].Member[DispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[responses].Member[ErrorResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[responses].Member[FailedDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[responses].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[responses].Member[SuccessfulDispatchResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[views].Member[ErrorResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[views].Member[base].Member[ErrorResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[views].Member[base].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - trench
+    - Member[views].Member[jwt].Member[Response]
   - - rest_framework.exceptions.APIException~Subclass
     - trench
     - Member[command].Member[activate_mfa_method].Member[MFAMethodDoesNotExistError]
@@ -148,3 +418,102 @@ extensions:
   - - rest_framework.exceptions.APIException~Subclass
     - trench
     - Member[views].Member[base].Member[MFAValidationError]
+  - - rest_framework.request.Request~Subclass
+    - trench
+    - Member[command].Member[authenticate_user].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - trench
+    - Member[views].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - trench
+    - Member[views].Member[base].Member[Request]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[application].Member[DispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[application].Member[FailedDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[application].Member[SuccessfulDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[aws].Member[DispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[aws].Member[FailedDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[aws].Member[SuccessfulDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[base].Member[DispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[basic_mail].Member[DispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[basic_mail].Member[FailedDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[basic_mail].Member[SuccessfulDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[sms_api].Member[DispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[sms_api].Member[FailedDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[sms_api].Member[SuccessfulDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[twilio].Member[DispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[twilio].Member[FailedDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[twilio].Member[SuccessfulDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[yubikey].Member[DispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[backends].Member[yubikey].Member[SuccessfulDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[responses].Member[DispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[responses].Member[ErrorResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[responses].Member[FailedDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[responses].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[responses].Member[SuccessfulDispatchResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[views].Member[ErrorResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[views].Member[authtoken].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[views].Member[base].Member[ErrorResponse]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[views].Member[base].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - trench
+    - Member[views].Member[jwt].Member[Response]

@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - degreed2
+    - Member[urls].Member[Degreed2ConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - degreed2
+    - Member[views].Member[Degreed2ConfigurationViewSet]
   - - Django.db.models.Model~Subclass
     - degreed2
     - Member[serializers].Member[Degreed2EnterpriseCustomerConfiguration]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - easy_pdf
+    - Member[views].Member[PDFTemplateView]
+  - - Django.Views.View~Subclass
+    - easy_pdf
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponse~Subclass
+    - easy_pdf
+    - Member[rendering].Member[HttpResponse]

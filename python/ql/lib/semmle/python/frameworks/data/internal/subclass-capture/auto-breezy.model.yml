@@ -1,0 +1,183 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPConnection~Subclass
+    - breezy
+    - Member[plugins].Member[webdav].Member[webdav].Member[DavHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - breezy
+    - Member[plugins].Member[webdav].Member[webdav].Member[DavHTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - breezy
+    - Member[transport].Member[http].Member[urllib].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - breezy
+    - Member[transport].Member[http].Member[urllib].Member[HTTPSConnection]
+  - - http.client.HTTPResponse~Subclass
+    - breezy
+    - Member[plugins].Member[webdav].Member[webdav].Member[DavResponse]
+  - - http.client.HTTPResponse~Subclass
+    - breezy
+    - Member[transport].Member[http].Member[urllib].Member[Response]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[archive].Member[tar].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[branch].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[btree_index].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[bundle].Member[bundle_data].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[bundle].Member[commands].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[bundle].Member[serializer].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[bundle].Member[serializer].Member[v4].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[debug_commands].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[knit].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[pack].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[smart].Member[message].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[smart].Member[protocol].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[versionedfile].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[vf_repository].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[weave].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[workingtree].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[bzr].Member[workingtree_4].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[config].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[crash].Member[StringIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[delta].Member[StringIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[filter_tree].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[filters].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[git].Member[branch].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[git].Member[repository].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[git].Member[roundtrip].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[git].Member[send].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[git].Member[transportgit].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[git].Member[tree].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[git].Member[unpeel_map].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[grep].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[ignores].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[log].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[merge_directive].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[mergeable].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[msgeditor].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[msgeditor].Member[StringIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[multiparent].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[plugins].Member[fastimport].Member[revision_store].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[plugins].Member[propose].Member[cmds].Member[StringIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[plugins].Member[weave_fmt].Member[bzrdir].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[plugins].Member[weave_fmt].Member[repository].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[plugins].Member[weave_fmt].Member[store].Member[text].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[plugins].Member[weave_fmt].Member[workingtree].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[plugins].Member[webdav].Member[webdav].Member[StringIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[rename_map].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[shelf_ui].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[trace].Member[StringIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[transport].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[transport].Member[gio_transport].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[transport].Member[http].Member[response].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[transport].Member[http].Member[wsgi].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[transport].Member[memory].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - breezy
+    - Member[upstream_import].Member[BytesIO]

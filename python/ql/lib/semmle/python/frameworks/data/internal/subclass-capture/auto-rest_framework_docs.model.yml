@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - rest_framework_docs
+    - Member[api_docs].Member[APIView]
+  - - Django.Views.View~Subclass
+    - rest_framework_docs
+    - Member[api_endpoint].Member[ModelViewSet]
+  - - Django.Views.View~Subclass
+    - rest_framework_docs
+    - Member[urls].Member[DRFDocsView]
+  - - Django.Views.View~Subclass
+    - rest_framework_docs
+    - Member[views].Member[DRFDocsView]
+  - - Django.Views.View~Subclass
+    - rest_framework_docs
+    - Member[views].Member[TemplateView]

@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - select2_many_to_many
+    - Member[admin].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_many_to_many
+    - Member[forms].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_many_to_many
+    - Member[models].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_many_to_many
+    - Member[urls].Member[TModel]
+  - - django.forms.BaseForm~Subclass
+    - select2_many_to_many
+    - Member[admin].Member[TForm]
+  - - django.forms.BaseForm~Subclass
+    - select2_many_to_many
+    - Member[forms].Member[TForm]
+  - - django.forms.BaseForm~Subclass
+    - select2_many_to_many
+    - Member[urls].Member[TForm]

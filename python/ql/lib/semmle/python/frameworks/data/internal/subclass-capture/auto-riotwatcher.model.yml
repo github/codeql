@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - riotwatcher
+    - Member[Handlers].Member[DeprecationHandler].Member[Response]
+  - - requests.models.Response~Subclass
+    - riotwatcher
+    - Member[Handlers].Member[DeserializerAdapter].Member[Response]
+  - - requests.models.Response~Subclass
+    - riotwatcher
+    - Member[Handlers].Member[RateLimiterAdapter].Member[Response]

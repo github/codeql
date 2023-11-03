@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - fcmeans
+    - Member[cli].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - fcmeans
+    - Member[FCM]
+  - - pydantic.BaseModel~Subclass
+    - fcmeans
+    - Member[cli].Member[FCM]
+  - - pydantic.BaseModel~Subclass
+    - fcmeans
+    - Member[main].Member[FCM]

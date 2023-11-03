@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - torch
+    - Member[_inductor].Member[select_algorithm].Member[StringIO]
+  - - io.StringIO~Subclass
+    - torch
+    - Member[_inductor].Member[utils].Member[StringIO]
+  - - pickle~Alias
+    - torch
+    - Member[_dynamo].Member[config_utils].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[_functorch].Member[compilers].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[_inductor].Member[codecache].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[_inductor].Member[debug].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[_jit_internal].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[distributed].Member[_tools].Member[memory_tracker].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[distributed].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[jit].Member[_script].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[multiprocessing].Member[queue].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[package].Member[_package_unpickler].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[utils].Member[benchmark].Member[examples].Member[compare].Member[pickle]
+  - - pickle~Alias
+    - torch
+    - Member[utils].Member[benchmark].Member[examples].Member[sparse].Member[compare].Member[pickle]

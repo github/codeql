@@ -6,4 +6,7 @@ extensions:
   data:
   - - io.StringIO~Subclass
     - pywebcopy
+    - Member[elements].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pywebcopy
     - Member[helpers].Member[BytesIO]

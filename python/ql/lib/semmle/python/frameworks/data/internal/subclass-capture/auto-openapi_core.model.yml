@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - openapi_core
+    - Member[contrib].Member[django].Member[handlers].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - openapi_core
+    - Member[contrib].Member[django].Member[middlewares].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - openapi_core
+    - Member[contrib].Member[django].Member[requests].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - openapi_core
+    - Member[contrib].Member[django].Member[handlers].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - openapi_core
+    - Member[contrib].Member[django].Member[middlewares].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - openapi_core
+    - Member[contrib].Member[django].Member[responses].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - openapi_core
+    - Member[contrib].Member[django].Member[handlers].Member[JsonResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - openapi_core
+    - Member[contrib].Member[django].Member[responses].Member[StreamingHttpResponse]
+  - - flask.MethodView~Subclass
+    - openapi_core
+    - Member[contrib].Member[flask].Member[views].Member[FlaskOpenAPIView]
+  - - flask.MethodView~Subclass
+    - openapi_core
+    - Member[contrib].Member[flask].Member[views].Member[MethodView]
+  - - requests.models.Response~Subclass
+    - openapi_core
+    - Member[contrib].Member[requests].Member[responses].Member[Response]

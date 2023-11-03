@@ -9,16 +9,112 @@ extensions:
     - Member[apps].Member[forum].Member[forms].Member[TreeNodeChoiceField]
   - - Django.Views.View~Subclass
     - machina
+    - Member[apps].Member[forum].Member[views].Member[ForumView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_attachments].Member[views].Member[AttachmentView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_attachments].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[views].Member[TopicPollVoteView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[BasePostFormView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[BaseTopicFormView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[PostCreateView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[PostDeleteView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[PostFormView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[PostUpdateView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[TopicCreateView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[TopicFormView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[TopicUpdateView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[TopicView]
+  - - Django.Views.View~Subclass
+    - machina
     - Member[apps].Member[forum_member].Member[views].Member[BaseDetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[views].Member[ForumProfileDetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[views].Member[ForumProfileUpdateView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[views].Member[ListView]
   - - Django.Views.View~Subclass
     - machina
     - Member[apps].Member[forum_member].Member[views].Member[TopicSubscribeView]
   - - Django.Views.View~Subclass
     - machina
+    - Member[apps].Member[forum_member].Member[views].Member[TopicSubscriptionListView]
+  - - Django.Views.View~Subclass
+    - machina
     - Member[apps].Member[forum_member].Member[views].Member[TopicUnsubscribeView]
   - - Django.Views.View~Subclass
     - machina
+    - Member[apps].Member[forum_member].Member[views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[views].Member[UserPostsView]
+  - - Django.Views.View~Subclass
+    - machina
     - Member[apps].Member[forum_moderation].Member[views].Member[BaseDetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[ModerationQueueDetailView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[ModerationQueueListView]
   - - Django.Views.View~Subclass
     - machina
     - Member[apps].Member[forum_moderation].Member[views].Member[PostApproveView]
@@ -28,6 +124,9 @@ extensions:
   - - Django.Views.View~Subclass
     - machina
     - Member[apps].Member[forum_moderation].Member[views].Member[ProcessFormView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[TopicDeleteView]
   - - Django.Views.View~Subclass
     - machina
     - Member[apps].Member[forum_moderation].Member[views].Member[TopicLockView]
@@ -54,7 +153,25 @@ extensions:
     - Member[apps].Member[forum_tracking].Member[views].Member[BaseDetailView]
   - - Django.Views.View~Subclass
     - machina
+    - Member[apps].Member[forum_tracking].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[views].Member[MarkForumsReadView]
+  - - Django.Views.View~Subclass
+    - machina
     - Member[apps].Member[forum_tracking].Member[views].Member[MarkTopicsReadView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[views].Member[UnreadTopicsView]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[abstract_models].Member[AbstractForum]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[abstract_models].Member[DatedModel]
   - - Django.db.models.Model~Subclass
     - machina
     - Member[apps].Member[forum].Member[abstract_models].Member[MPTTModel]
@@ -63,13 +180,178 @@ extensions:
     - Member[apps].Member[forum].Member[admin].Member[Group]
   - - Django.db.models.Model~Subclass
     - machina
+    - Member[apps].Member[forum].Member[models].Member[AbstractForum]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[abstract_models].Member[AbstractPost]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[abstract_models].Member[AbstractTopic]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[abstract_models].Member[DatedModel]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_attachments].Member[abstract_models].Member[AbstractAttachment]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_attachments].Member[models].Member[AbstractAttachment]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[abstract_models].Member[AbstractTopicPollOption]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[abstract_models].Member[AbstractTopicPollVote]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[abstract_models].Member[AbstractTopicPoll]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[abstract_models].Member[DatedModel]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[models].Member[AbstractTopicPollOption]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[models].Member[AbstractTopicPollVote]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[models].Member[AbstractTopicPoll]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[models].Member[AbstractPost]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[models].Member[AbstractTopic]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[abstract_models].Member[AbstractForumProfile]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[models].Member[AbstractForumProfile]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_permission].Member[abstract_models].Member[AbstractForumPermission]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_permission].Member[abstract_models].Member[AbstractGroupForumPermission]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_permission].Member[abstract_models].Member[AbstractUserForumPermission]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_permission].Member[abstract_models].Member[BaseAuthForumPermission]
+  - - Django.db.models.Model~Subclass
+    - machina
     - Member[apps].Member[forum_permission].Member[abstract_models].Member[Group]
   - - Django.db.models.Model~Subclass
     - machina
+    - Member[apps].Member[forum_permission].Member[models].Member[AbstractForumPermission]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_permission].Member[models].Member[AbstractGroupForumPermission]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_permission].Member[models].Member[AbstractUserForumPermission]
+  - - Django.db.models.Model~Subclass
+    - machina
     - Member[apps].Member[forum_permission].Member[shortcuts].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[abstract_models].Member[AbstractForumReadTrack]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[abstract_models].Member[AbstractTopicReadTrack]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[models].Member[AbstractForumReadTrack]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[models].Member[AbstractTopicReadTrack]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[models].Member[DatedModel]
+  - - Django.db.models.Model~Subclass
+    - machina
+    - Member[models].Member[abstract_models].Member[DatedModel]
+  - - django.db.models.FileField~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[abstract_models].Member[ExtendedImageField]
+  - - django.db.models.FileField~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[abstract_models].Member[ExtendedImageField]
+  - - django.db.models.FileField~Subclass
+    - machina
+    - Member[models].Member[fields].Member[ExtendedImageField]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[forms].Member[PermissionsForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[forms].Member[PickForumForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[forms].Member[PickGroupForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[forms].Member[PickUserForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forms].Member[PostForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forms].Member[TopicForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_attachments].Member[forms].Member[AttachmentForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[forms].Member[TopicPollOptionForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[forms].Member[TopicPollVoteForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[forms].Member[ForumProfileForm]
+  - - django.forms.BaseForm~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[forms].Member[TopicMoveForm]
   - - django.forms.BaseForm~Subclass
     - machina
     - Member[apps].Member[forum_search].Member[forms].Member[FacetedSearchForm]
   - - django.forms.BaseForm~Subclass
     - machina
     - Member[apps].Member[forum_search].Member[forms].Member[SearchForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - machina
+    - Member[apps].Member[forum].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_polls].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - machina
+    - Member[apps].Member[forum_member].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - machina
+    - Member[apps].Member[forum_moderation].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - machina
+    - Member[apps].Member[forum_permission].Member[viewmixins].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - machina
+    - Member[apps].Member[forum_tracking].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_attachments].Member[views].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - machina
+    - Member[apps].Member[forum_conversation].Member[forum_attachments].Member[cache].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - machina
+    - Member[models].Member[fields].Member[BytesIO]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - combojsonapi
+    - Member[event].Member[plugin].Member[Resource]
+  - - flask.MethodView~Subclass
+    - combojsonapi
+    - Member[permission].Member[permission_plugin].Member[ResourceDetail]
+  - - flask.MethodView~Subclass
+    - combojsonapi
+    - Member[permission].Member[permission_plugin].Member[ResourceList]
+  - - flask.MethodView~Subclass
+    - combojsonapi
+    - Member[spec].Member[plugin].Member[ResourceDetail]
+  - - flask.MethodView~Subclass
+    - combojsonapi
+    - Member[spec].Member[plugin].Member[ResourceList]
+  - - flask.MethodView~Subclass
+    - combojsonapi
+    - Member[spec].Member[plugin].Member[Resource]

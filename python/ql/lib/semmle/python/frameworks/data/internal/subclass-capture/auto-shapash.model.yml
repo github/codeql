@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - shapash
+    - Member[webapp].Member[smart_app].Member[Flask]
+  - - pickle~Alias
+    - shapash
+    - Member[utils].Member[io].Member[pickle]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_elasticsearch_dsl_drf
+    - Member[viewsets].Member[BaseDocumentViewSet]
+  - - Django.Views.View~Subclass
+    - django_elasticsearch_dsl_drf
+    - Member[viewsets].Member[DocumentViewSet]

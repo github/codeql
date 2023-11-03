@@ -4,9 +4,36 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - notifications
+    - Member[views].Member[AllNotificationsList]
+  - - Django.Views.View~Subclass
+    - notifications
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - notifications
+    - Member[views].Member[NotificationViewList]
+  - - Django.Views.View~Subclass
+    - notifications
+    - Member[views].Member[UnreadNotificationsList]
+  - - Django.db.models.Model~Subclass
+    - notifications
+    - Member[base].Member[models].Member[AbstractNotification]
   - - Django.db.models.Model~Subclass
     - notifications
     - Member[base].Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - notifications
     - Member[base].Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - notifications
+    - Member[models].Member[AbstractNotification]
+  - - Django.db.models.Model~Subclass
+    - notifications
+    - Member[models].Member[Notification]
+  - - django.http.response.HttpResponse~Subclass
+    - notifications
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - notifications
+    - Member[views].Member[JsonResponse]

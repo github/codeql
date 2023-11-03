@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - model_filefields_example
+    - Member[urls].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - model_filefields_example
+    - Member[urls].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - model_filefields_example
+    - Member[urls].Member[ListView]
+  - - Django.Views.View~Subclass
+    - model_filefields_example
+    - Member[urls].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[admin].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[forms].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[forms].Member[SoundDevice]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[models].Member[BookCover]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[models].Member[BookIndex]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[models].Member[BookPages]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[models].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[models].Member[SoundDeviceInstructionManual]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[models].Member[SoundDevice]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[urls].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - model_filefields_example
+    - Member[urls].Member[SoundDevice]
+  - - django.forms.BaseForm~Subclass
+    - model_filefields_example
+    - Member[forms].Member[BookForm]
+  - - django.forms.BaseForm~Subclass
+    - model_filefields_example
+    - Member[forms].Member[SoundDeviceForm]
+  - - django.forms.BaseForm~Subclass
+    - model_filefields_example
+    - Member[urls].Member[BookForm]
+  - - django.forms.BaseForm~Subclass
+    - model_filefields_example
+    - Member[urls].Member[SoundDeviceForm]

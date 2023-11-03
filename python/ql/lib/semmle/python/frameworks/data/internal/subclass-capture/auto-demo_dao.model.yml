@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[handlers].Member[on_origination].Member[RegistryStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[handlers].Member[on_propose].Member[ProposeParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[handlers].Member[on_propose].Member[RegistryStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_parameters].Member[propose].Member[ProposeParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[Delegate]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[FreezeHistory]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[GovernanceToken]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[Key1]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[Key]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[ProposalKeyListSortByLevelItem]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[Proposals]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[QuorumThresholdAtCycle]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[RegistryStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dao
+    - Member[types].Member[registry].Member[tezos_storage].Member[Voter]

@@ -1,0 +1,174 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - zwave_js_server
+    - Member[client].Member[ClientSession]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[event].Member[BaseEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[BaseControllerEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[BaseEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[ExclusionFailedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[ExclusionStartedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[ExclusionStoppedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[FirmwareUpdateFinishedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[FirmwareUpdateProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[GrantSecurityClassesEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[IdentifyEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[InclusionAbortedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[InclusionFailedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[InclusionStartedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[InclusionStoppedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[NVMBackupAndConvertProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[NVMBackupProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[NVMConvertProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[NVMRestoreProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[NodeAddedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[NodeFoundEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[NodeRemovedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[RebuildRoutesDoneEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[RebuildRoutesProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[StatisticsUpdatedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[StatusChangedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[controller].Member[event_model].Member[ValidateDSKAndEnterPINEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[driver].Member[AllNodesReadyEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[driver].Member[BaseDriverEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[driver].Member[BaseEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[driver].Member[LogConfigUpdatedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[AliveEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[BaseEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[BaseNodeEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[CheckHealthProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[CheckLifelineHealthProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[CheckRouteHealthProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[DeadEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[FirmwareUpdateFinishedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[FirmwareUpdateProgressEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[InterviewCompletedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[InterviewFailedEventArgsModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[InterviewFailedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[InterviewStageCompletedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[InterviewStartedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[MetadataUpdatedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[NotificationEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[ReadyEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[SleepEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[StatisticsUpdatedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[ValueAddedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[ValueEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[ValueNotificationEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[ValueRemovedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[ValueUpdatedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - zwave_js_server
+    - Member[model].Member[node].Member[event_model].Member[WakeUpEventModel]

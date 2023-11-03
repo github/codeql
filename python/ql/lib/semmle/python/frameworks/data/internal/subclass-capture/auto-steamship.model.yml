@@ -1,0 +1,1980 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[Configuration]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[EmbeddingIndex]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[PackageInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[PackageVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[Package]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[PluginVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[Workspace]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[basic_chat].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[basic_chat].Member[Agent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[basic_chat].Member[ConversationSupport]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[basic_chat].Member[FinishAction]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[basic_chat].Member[SystemPromptSupport]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[basic_chat].Member[_BasicChatAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[chatgpt_api].Member[FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[chatgpt_with_web_and_telegram].Member[FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[document_qa_agent].Member[FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[example_assistant].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[example_assistant].Member[FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[example_assistant_with_caching].Member[FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[example_react_assistant].Member[ReACTAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[fact_learner].Member[FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[telegram_bot].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[telegram_bot].Member[FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[examples].Member[telegram_bot].Member[TelegramTransportConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[FunctionsBasedOutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[functions_based].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[functions_based].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[functions_based].Member[ChatAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[functions_based].Member[FinishAction]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[functions_based].Member[FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[functions_based].Member[FunctionsBasedOutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[functions_based].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[output_parser].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[output_parser].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[output_parser].Member[FinishAction]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[output_parser].Member[FunctionsBasedOutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[output_parser].Member[OutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[output_parser].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functional].Member[output_parser].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functions_based].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functions_based].Member[Agent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functions_based].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functions_based].Member[ConversationSupport]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functions_based].Member[FinishAction]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functions_based].Member[FunctionCallingSupport]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functions_based].Member[SystemPromptSupport]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functions_based].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[functions_based].Member[_FunctionsBasedAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[openai].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[openai].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[openai].Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[openai].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[openai].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[steamship_llm].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[steamship_llm].Member[CapabilityPluginRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[steamship_llm].Member[CapabilityPluginResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[steamship_llm].Member[Capability]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[steamship_llm].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[steamship_llm].Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[steamship_llm].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[llms].Member[steamship_llm].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[slack].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[slack].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[slack].Member[SlackBlock]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[slack].Member[SlackElement]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[slack].Member[SlackEvent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[slack].Member[SlackRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[slack].Member[SlackTransportConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[slack].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[steamship_widget].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[steamship_widget].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[telegram].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[telegram].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[telegram].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[telegram].Member[TelegramTransportConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[transport].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[mixins].Member[transports].Member[transport].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[ReACTAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[ReACTOutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[output_parser].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[output_parser].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[output_parser].Member[FinishAction]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[output_parser].Member[OutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[output_parser].Member[ReACTOutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[output_parser].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[react].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[react].Member[LLMAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[react].Member[ReACTAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[react].Member[react].Member[ReACTOutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[Agent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[ChatAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[FinishAction]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[LLMAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[OutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[action].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[action].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[action].Member[FinishAction]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[agent].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[agent].Member[Agent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[agent].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[agent].Member[ChatAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[agent].Member[LLMAgent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[agent].Member[OutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[cache].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[cache].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[cache].Member[FinishAction]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[cache].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[chathistory].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[chathistory].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[chathistory].Member[EmbeddingIndexPluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[chathistory].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[chathistory].Member[SearchResults]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[chathistory].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[chathistory].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[chathistory].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[context].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[context].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[context].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[context].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[llm].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[message_selectors].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[output_parser].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[output_parser].Member[OutputParser]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[text_splitters].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[text_splitters].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[tool].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[schema].Member[tool].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[service].Member[agent_service].Member[Action]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[service].Member[agent_service].Member[Agent]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[service].Member[agent_service].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[service].Member[agent_service].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[service].Member[agent_service].Member[FinishAction]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[service].Member[agent_service].Member[StreamingResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[service].Member[agent_service].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[audio_transcription].Member[assembly_speech_to_text_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[audio_transcription].Member[fetch_audio_urls_from_rss_tool].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[audio_transcription].Member[fetch_audio_urls_from_rss_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[audio_transcription].Member[fetch_audio_urls_from_rss_tool].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[audio_transcription].Member[whisper_speech_to_text_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[base_tools].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[base_tools].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[base_tools].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[classification].Member[multiple_choice_tool].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[classification].Member[multiple_choice_tool].Member[MultipleChoiceOption]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[classification].Member[multiple_choice_tool].Member[MultipleChoiceQuestion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[classification].Member[multiple_choice_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[classification].Member[multiple_choice_tool].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[classification].Member[sentiment_analysis_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[classification].Member[zero_shot_classifier_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[conversation_starters].Member[knock_knock_tool].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[conversation_starters].Member[knock_knock_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[conversation_starters].Member[knock_knock_tool].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[image_generation].Member[dalle].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[image_generation].Member[google_image_search].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[image_generation].Member[stable_diffusion].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[question_answering].Member[prompt_database_question_answerer].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[question_answering].Member[vector_search_learner_tool].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[question_answering].Member[vector_search_learner_tool].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[question_answering].Member[vector_search_learner_tool].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[question_answering].Member[vector_search_qa_tool].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[question_answering].Member[vector_search_qa_tool].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[question_answering].Member[vector_search_qa_tool].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[question_answering].Member[vector_search_tool].Member[EmbeddingIndexPluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[question_answering].Member[vector_search_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[search].Member[search].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[search].Member[search].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[search].Member[search].Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[search].Member[search].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[search].Member[search].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[speech_generation].Member[generate_speech].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[custom_llm_prompt].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[custom_llm_prompt].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[custom_llm_prompt].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[image_prompt_generator_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[json_object_generator].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[json_object_generator].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[json_object_generator].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[personality_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[summarize_text_with_prompt_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[text_rewrite_tool].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[text_rewrite_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[text_rewrite_tool].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[text_generation].Member[text_translation_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[video_generation].Member[did_video_generator_tool].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[video_generation].Member[did_video_generator_tool].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[tools].Member[video_generation].Member[did_video_generator_tool].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[agents].Member[utils].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[Configuration]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[client].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[client].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[client].Member[Configuration]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[client].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[client].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[configuration].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[configuration].Member[Configuration]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[environments].Member[Configuration]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[model].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[model].Member[GenericCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[package_spec].Member[ArgSpec]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[package_spec].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[package_spec].Member[MethodSpec]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[package_spec].Member[PackageSpec]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[request].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[request].Member[CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[request].Member[DeleteRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[request].Member[GetRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[request].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[request].Member[ListRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[request].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[request].Member[UpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[response].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[response].Member[ListResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[response].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[CreateTaskCommentRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[DeleteRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[GenericCamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[ListRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[ListResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[ListTaskCommentRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[TaskCommentList]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[TaskComment]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[TaskRunRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[TaskStatusRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[base].Member[tasks].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[cli].Member[Configuration]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[cli].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[cli].Member[PackageInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[cli].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[cli].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[cli].Member[Workspace]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[create_instance].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[create_instance].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[deploy].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[deploy].Member[PackageVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[deploy].Member[Package]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[deploy].Member[PluginVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[deploy].Member[Plugin]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[deploy].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[deploy].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[handler].Member[InvocableRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[handler].Member[InvocationContext]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[handler].Member[Invocation]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[handler].Member[LoggingConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[handler].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[handler].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[server].Member[InvocableRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[server].Member[InvocationContext]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[server].Member[Invocation]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[server].Member[LoggingConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[local_server].Member[server].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[manifest_init_wizard].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[manifest_init_wizard].Member[PluginConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[manifest_init_wizard].Member[SteamshipRegistry]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[manifest_init_wizard].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[cli].Member[manifest_init_wizard].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[skill_to_provider].Member[SkillVendorConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[Configuration]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[EmbedAndSearchRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[EmbeddingIndexPluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[PackageInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[PromptGenerationPluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[QueryResults]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[client].Member[steamship].Member[Workspace]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[EmbeddingIndex]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[PackageInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[PackageVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[Package]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[PluginVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[Plugin]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[Workspace]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[BlockQueryRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[BlockQueryResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[DeleteRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[block].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[DeleteRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[EmbedAndSearchRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[EmbeddedItem]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[EmbeddingIndex]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[Hit]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[IndexCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[IndexEmbedRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[IndexEmbedResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[IndexInsertRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[IndexInsertResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[IndexItemId]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[IndexSearchRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[ListItemsRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[ListItemsResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[ListRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[ListResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[QueryResult]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[QueryResults]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[embeddings].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[EmbeddingIndex]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[FileClearResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[FileQueryRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[FileQueryResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[GenerateResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[GetRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[ListFileRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[ListFileResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[ListRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[ListResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[TagResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[file].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[manifest].Member[ConfigParameter]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[manifest].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[manifest].Member[PluginConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[manifest].Member[SteamshipRegistry]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[blockifier].Member[BlockifyRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[blockifier].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[embedder].Member[EmbedRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[embedder].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[generator].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[generator].Member[GenerateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[generator].Member[GenerateResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[generator].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[generator].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[generator].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[tagger].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[tagger].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[tagger].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[tagger].Member[TagRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[operations].Member[tagger].Member[TagResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[PackageInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[PackageVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[Package]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[GetRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[PackageCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[PackageUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[Package]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package].Member[UpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[CreatePackageInstanceRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[DeleteRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[ListPackageInstancesRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[ListPackageInstancesResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[ListRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[ListResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[PackageInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_instance].Member[Workspace]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_version].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_version].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_version].Member[CreatePackageVersionRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_version].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_version].Member[PackageVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[package].Member[package_version].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[PluginVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[Plugin]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[EmbeddedItem]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[EmbedderInvocation]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[EmbeddingIndexPluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[EmbeddingIndex]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[QueryResult]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[QueryResults]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[SearchResult]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[SearchResults]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[index_plugin_instance].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[CreatePluginRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[ListPluginsRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[ListPluginsResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[ListRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[ListResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[PluginUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[Plugin]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin].Member[UpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[CreatePluginInstanceRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[DeleteRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[ExportPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[GenerateRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[GenerateResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[TagRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[TagResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[TrainPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[TrainingParameterPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_instance].Member[TrainingParameterPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_version].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_version].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_version].Member[CreatePluginVersionRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_version].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_version].Member[ListPluginVersionsRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_version].Member[ListPluginVersionsResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_version].Member[PluginVersion]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_version].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[plugin_version].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[prompt_generation_plugin_instance].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[prompt_generation_plugin_instance].Member[CreatePluginInstanceRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[prompt_generation_plugin_instance].Member[PluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[plugin].Member[prompt_generation_plugin_instance].Member[PromptGenerationPluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[search].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[search].Member[Hit]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[EmbeddingTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[EmotionTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[EntityTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[IntentTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[PromptCompletionTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[SentimentTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[SummaryTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[TagQueryRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[TagQueryResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[TimestampTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[TokenizationTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag].Member[TopicTag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[tags].Member[tag_utils].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[user].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[user].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[GetRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[IdentifierRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[ListRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[ListResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[ListWorkspacesRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[ListWorkspacesResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[SteamshipRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[SteamshipResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[data].Member[workspace].Member[Workspace]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[InvocableRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[InvocationContext]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[Invocation]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[LoggingConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[config].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[config].Member[ConfigParameter]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[config].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable].Member[ConfigParameter]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable].Member[InvocableRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable].Member[InvocationContext]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable].Member[MethodSpec]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable].Member[PackageSpec]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable].Member[RouteMethod]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_request].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_request].Member[Configuration]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_request].Member[InvocableRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_request].Member[InvocationContext]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_request].Member[Invocation]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_request].Member[LoggingConfig]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_response].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_response].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_response].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_response].Member[Http]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_response].Member[StreamingResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[invocable_response].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[lambda_handler].Member[Configuration]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[lambda_handler].Member[InvocableRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[lambda_handler].Member[InvocationContext]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[lambda_handler].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[blockifier_mixin].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[blockifier_mixin].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[blockifier_mixin].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[file_importer_mixin].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[file_importer_mixin].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[file_importer_mixin].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[file_importer_mixin].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[indexer_mixin].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[indexer_mixin].Member[EmbeddingIndexPluginInstance]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[indexer_mixin].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[indexer_mixin].Member[SearchResults]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[indexer_mixin].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[indexer_mixin].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[indexer_pipeline_mixin].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[indexer_pipeline_mixin].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[mixins].Member[indexer_pipeline_mixin].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[package_service].Member[MethodSpec]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[package_service].Member[PackageSpec]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[package_service].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[plugin_service].Member[TrainPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[plugin_service].Member[TrainPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[plugin_service].Member[TrainingParameterPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[invocable].Member[plugin_service].Member[TrainingParameterPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[blockifier].Member[blockifier].Member[BlockAndTagPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[blockifier].Member[blockifier].Member[RawDataPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[blockifier].Member[transcriber].Member[BlockAndTagPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[blockifier].Member[transcriber].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[blockifier].Member[transcriber].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[blockifier].Member[transcriber].Member[RawDataPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[blockifier].Member[transcriber].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[blockifier].Member[transcriber].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[CapabilityImpl]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[CapabilityPluginRequest]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[CapabilityPluginResponse]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[Capability]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[ConversationSupport]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[FunctionCallingSupport]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[SystemPromptSupport]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[capabilities].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[embedder].Member[BlockAndTagPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[embedder].Member[EmbeddedItemsPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[file_importer].Member[FileImportPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[file_importer].Member[RawDataPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[generator].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[generator].Member[RawBlockAndTagPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[generator].Member[RawBlockAndTagPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[generator].Member[TrainPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[generator].Member[TrainPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[generator].Member[TrainingParameterPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[generator].Member[TrainingParameterPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[block_and_tag_plugin_input].Member[BlockAndTagPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[block_and_tag_plugin_input].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[block_and_tag_plugin_input].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[export_plugin_input].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[export_plugin_input].Member[ExportPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[file_import_plugin_input].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[file_import_plugin_input].Member[FileImportPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[raw_block_and_tag_plugin_input].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[raw_block_and_tag_plugin_input].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[raw_block_and_tag_plugin_input].Member[RawBlockAndTagPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[raw_block_and_tag_plugin_input_with_preallocated_blocks].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[raw_block_and_tag_plugin_input_with_preallocated_blocks].Member[RawBlockAndTagPluginInputWithPreallocatedBlocks]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[raw_block_and_tag_plugin_input_with_preallocated_blocks].Member[RawBlockAndTagPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[raw_data_plugin_input].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[raw_data_plugin_input].Member[RawDataPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[train_plugin_input].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[train_plugin_input].Member[TrainPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[training_parameter_plugin_input].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[training_parameter_plugin_input].Member[ExportPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[inputs].Member[training_parameter_plugin_input].Member[TrainingParameterPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[block_and_tag_plugin_output].Member[BlockAndTagPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[block_and_tag_plugin_output].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[block_and_tag_plugin_output].Member[PluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[block_type_plugin_output].Member[BlockTypePluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[block_type_plugin_output].Member[PluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[embedded_items_plugin_output].Member[EmbeddedItemsPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[embedded_items_plugin_output].Member[PluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[model_checkpoint].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[model_checkpoint].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[model_checkpoint].Member[ModelCheckpoint]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[model_checkpoint].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[model_checkpoint].Member[Workspace]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[plugin_output].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[plugin_output].Member[PluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[plugin_output].Member[UsageReport]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[raw_block_and_tag_plugin_output].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[raw_block_and_tag_plugin_output].Member[PluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[raw_block_and_tag_plugin_output].Member[RawBlockAndTagPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[raw_data_plugin_output].Member[PluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[raw_data_plugin_output].Member[RawDataPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[raw_data_plugin_output].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[stream_complete_plugin_output].Member[PluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[stream_complete_plugin_output].Member[StreamCompletePluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[train_plugin_output].Member[PluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[train_plugin_output].Member[TrainPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[training_parameter_plugin_output].Member[ExportPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[training_parameter_plugin_output].Member[PluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[training_parameter_plugin_output].Member[TrainingParameterPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[outputs].Member[training_parameter_plugin_output].Member[TrainingParameterPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[request].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[request].Member[PluginRequestContext]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[request].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[streaming_generator].Member[BlockTypePluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[streaming_generator].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[streaming_generator].Member[RawBlockAndTagPluginInputWithPreallocatedBlocks]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[streaming_generator].Member[RawBlockAndTagPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[streaming_generator].Member[StreamCompletePluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[tagger].Member[BlockAndTagPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[tagger].Member[BlockAndTagPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[tagger].Member[TrainPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[tagger].Member[TrainPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[tagger].Member[TrainingParameterPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[tagger].Member[TrainingParameterPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[trainable_model].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[trainable_model].Member[ModelCheckpoint]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[trainable_model].Member[TrainPluginInput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[plugin].Member[trainable_model].Member[TrainPluginOutput]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[binary_utils].Member[CamelModel]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[context_length].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[file_tags].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[file_tags].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[file_tags].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[huggingface_helper].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[kv_store].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[kv_store].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[kv_store].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[kv_store].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[repl].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[repl].Member[Steamship]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[repl].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - steamship
+    - Member[utils].Member[repl].Member[Workspace]

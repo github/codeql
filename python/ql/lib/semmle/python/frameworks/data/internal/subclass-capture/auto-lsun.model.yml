@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - lsun
+    - Member[BytesIO]
+  - - pickle~Alias
+    - lsun
+    - Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - lsun
+    - Member[ET]

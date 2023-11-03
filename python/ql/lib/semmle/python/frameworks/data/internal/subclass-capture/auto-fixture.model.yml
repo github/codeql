@@ -6,6 +6,21 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - fixture
+    - Member[examples].Member[django_example].Member[app].Member[models].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - fixture
+    - Member[examples].Member[django_example].Member[app].Member[models].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - fixture
+    - Member[examples].Member[django_example].Member[app].Member[models].Member[Reviewer]
+  - - Django.db.models.Model~Subclass
+    - fixture
+    - Member[examples].Member[django_example].Member[blog].Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - fixture
+    - Member[examples].Member[django_example].Member[blog].Member[models].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - fixture
     - Member[examples].Member[django_example].Member[blog].Member[models].Member[User]
   - - io.StringIO~Subclass
     - fixture

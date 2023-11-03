@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - finviz
+    - Member[helper_functions].Member[scraper_functions].Member[etree]
+  - - lxml.etree~Alias
+    - finviz
+    - Member[main_func].Member[etree]
+  - - requests.models.Response~Subclass
+    - finviz
+    - Member[helper_functions].Member[request_functions].Member[Response]

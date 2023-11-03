@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_object_actions
+    - Member[utils].Member[BaseActionView]
+  - - Django.Views.View~Subclass
+    - django_object_actions
+    - Member[utils].Member[ChangeActionView]
+  - - Django.Views.View~Subclass
+    - django_object_actions
+    - Member[utils].Member[ChangeListActionView]
+  - - Django.Views.View~Subclass
+    - django_object_actions
+    - Member[utils].Member[View]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_object_actions
+    - Member[utils].Member[HttpResponseRedirect]

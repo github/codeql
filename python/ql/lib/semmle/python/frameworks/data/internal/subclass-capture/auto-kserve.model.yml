@@ -1,0 +1,87 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[server].Member[InferenceResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[server].Member[ListModelsResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[server].Member[ModelMetadataResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[server].Member[ModelReadyResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[server].Member[ServerLiveResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[server].Member[ServerMetadataResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[server].Member[ServerReadyResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[InferenceRequest]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[InferenceResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[ListModelsResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[MetadataTensor]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[ModelMetadataResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[ModelReadyResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[RequestInput]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[RequestOutput]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[ResponseOutput]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[ServerLiveResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[ServerMetadataResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_datamodels].Member[ServerReadyResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_endpoints].Member[InferenceRequest]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_endpoints].Member[InferenceResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_endpoints].Member[ListModelsResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_endpoints].Member[ModelMetadataResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_endpoints].Member[ModelReadyResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_endpoints].Member[ServerLiveResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_endpoints].Member[ServerMetadataResponse]
+  - - pydantic.BaseModel~Subclass
+    - kserve
+    - Member[protocol].Member[rest].Member[v2_endpoints].Member[ServerReadyResponse]

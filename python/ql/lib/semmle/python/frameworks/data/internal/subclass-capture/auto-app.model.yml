@@ -4,24 +4,174 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - app
+    - Member[forms].Member[MartorFormField]
+  - - Django.Views.View~Subclass
+    - app
+    - Member[demo].Member[urls].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - app
+    - Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - app
+    - Member[views].Member[HelloView]
+  - - Django.Views.View~Subclass
+    - app
+    - Member[views].Member[TemplateView]
   - - Django.db.models.Model~Subclass
     - app
     - Member[adapters].Member[Group]
   - - Django.db.models.Model~Subclass
     - app
+    - Member[admin].Member[PostMeta]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[admin].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[controllers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[models].Member[Country1]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[models].Member[Country2]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[models].Member[Country3]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[models].Member[Country4]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[models].Member[Country5]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[models].Member[Country6]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[models].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[models].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[models].Member[ProxyPerson]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[translation].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[countries].Member[translation].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[documents].Member[models].Member[Document]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[documents].Member[models].Member[Link]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[periods].Member[models].Member[DateModel]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[periods].Member[models].Member[DateTimeModel]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[periods].Member[models].Member[Period1]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[periods].Member[models].Member[Period2]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[periods].Member[models].Member[Period3]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[periods].Member[models].Member[Period4]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[periods].Member[models].Member[Period5]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[periods].Member[models].Member[TimeModel]
+  - - Django.db.models.Model~Subclass
+    - app
     - Member[demo].Member[profile].Member[admin].Member[User]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[profile].Member[models].Member[UserProfile]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[demo].Member[relations].Member[models].Member[Relation]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[forms].Member[Post]
   - - Django.db.models.Model~Subclass
     - app
     - Member[models].Member[AbstractBaseUser]
   - - Django.db.models.Model~Subclass
     - app
+    - Member[models].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[Company]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[GroupMembership]
+  - - Django.db.models.Model~Subclass
+    - app
     - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[PostMeta]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[models].Member[Reviewer]
   - - Django.db.models.Model~Subclass
     - app
     - Member[models].Member[TimeStampedModel]
   - - Django.db.models.Model~Subclass
     - app
     - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[views].Member[News]
+  - - Django.db.models.Model~Subclass
+    - app
+    - Member[views].Member[Post]
+  - - django.forms.BaseForm~Subclass
+    - app
+    - Member[demo].Member[documents].Member[forms].Member[DocumentForm]
+  - - django.forms.BaseForm~Subclass
+    - app
+    - Member[demo].Member[periods].Member[admin].Member[DateForm]
+  - - django.forms.BaseForm~Subclass
+    - app
+    - Member[demo].Member[periods].Member[admin].Member[TimeForm]
+  - - django.forms.BaseForm~Subclass
+    - app
+    - Member[demo].Member[profile].Member[forms].Member[RelationForm]
+  - - django.forms.BaseForm~Subclass
+    - app
+    - Member[forms].Member[PostForm]
+  - - django.forms.BaseForm~Subclass
+    - app
+    - Member[forms].Member[SimpleForm]
+  - - django.forms.BaseForm~Subclass
+    - app
+    - Member[views].Member[PostForm]
+  - - django.forms.BaseForm~Subclass
+    - app
+    - Member[views].Member[SimpleForm]
+  - - django.http.response.JsonResponse~Subclass
+    - app
+    - Member[views].Member[JsonResponse]
   - - fastapi.APIRouter~Subclass
     - app
     - Member[routes].Member[detection].Member[APIRouter]
@@ -34,6 +184,18 @@ extensions:
   - - fastapi.APIRouter~Subclass
     - app
     - Member[routes].Member[recognition].Member[APIRouter]
+  - - flask.Flask~Subclass
+    - app
+    - Member[Flask]
+  - - flask.Flask~Subclass
+    - app
+    - Member[flask_app].Member[Flask]
+  - - flask.Flask~Subclass
+    - app
+    - Member[helpers].Member[middleware].Member[Flask]
+  - - flask.Response~Subclass
+    - app
+    - Member[Response]
   - - flask.Response~Subclass
     - app
     - Member[decorators].Member[Response]

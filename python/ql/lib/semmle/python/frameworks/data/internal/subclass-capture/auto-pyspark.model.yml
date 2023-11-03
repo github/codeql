@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle.loads~Alias
+    - pyspark
+    - Member[cloudpickle].Member[cloudpickle].Member[loads]
+  - - pickle.loads~Alias
+    - pyspark
+    - Member[cloudpickle].Member[cloudpickle_fast].Member[loads]
+  - - pickle.loads~Alias
+    - pyspark
+    - Member[cloudpickle].Member[loads]
+  - - pickle.load~Alias
+    - pyspark
+    - Member[cloudpickle].Member[cloudpickle].Member[load]
+  - - pickle.load~Alias
+    - pyspark
+    - Member[cloudpickle].Member[cloudpickle_fast].Member[load]
+  - - pickle.load~Alias
+    - pyspark
+    - Member[cloudpickle].Member[load]
+  - - pickle~Alias
+    - pyspark
+    - Member[cloudpickle].Member[cloudpickle].Member[pickle]
+  - - pickle~Alias
+    - pyspark
+    - Member[cloudpickle].Member[cloudpickle_fast].Member[pickle]
+  - - pickle~Alias
+    - pyspark
+    - Member[cloudpickle].Member[compat].Member[pickle]
+  - - pickle~Alias
+    - pyspark
+    - Member[cloudpickle].Member[pickle]
+  - - pickle~Alias
+    - pyspark
+    - Member[ml].Member[connect].Member[feature].Member[pickle]
+  - - pickle~Alias
+    - pyspark
+    - Member[sql].Member[connect].Member[plan].Member[pickle]
+  - - pickle~Alias
+    - pyspark
+    - Member[sql].Member[connect].Member[streaming].Member[query].Member[pickle]
+  - - pickle~Alias
+    - pyspark
+    - Member[sql].Member[connect].Member[streaming].Member[readwriter].Member[pickle]

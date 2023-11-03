@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - articles
+    - Member[views].Member[ArticleViewSet]
+  - - Django.db.models.Model~Subclass
+    - articles
+    - Member[models].Member[ArticleGroup]
+  - - Django.db.models.Model~Subclass
+    - articles
+    - Member[models].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - articles
+    - Member[serializers].Member[ArticleGroup]
+  - - Django.db.models.Model~Subclass
+    - articles
+    - Member[serializers].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - articles
+    - Member[views].Member[Article]
+  - - django.http.response.HttpResponse~Subclass
+    - articles
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - articles
+    - Member[views].Member[Response]

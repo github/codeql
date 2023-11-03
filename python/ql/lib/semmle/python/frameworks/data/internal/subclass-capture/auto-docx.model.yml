@@ -7,3 +7,15 @@ extensions:
   - - lxml.etree~Alias
     - docx
     - Member[etree]
+  - - lxml.etree~Alias
+    - docx
+    - Member[opc].Member[oxml].Member[etree]
+  - - lxml.etree~Alias
+    - docx
+    - Member[oxml].Member[parser].Member[etree]
+  - - lxml.etree~Alias
+    - docx
+    - Member[oxml].Member[section].Member[etree]
+  - - lxml.etree~Alias
+    - docx
+    - Member[oxml].Member[xmlchemy].Member[etree]

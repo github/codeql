@@ -6,6 +6,21 @@ extensions:
   data:
   - - http.client.HTTPConnection~Subclass
     - vcr
+    - Member[patch].Member[AWSHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[patch].Member[AWSHTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[patch].Member[_Boto3VerifiedHTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[patch].Member[_HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[patch].Member[_HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
     - Member[patch].Member[_VerifiedHTTPSConnection]
   - - http.client.HTTPConnection~Subclass
     - vcr
@@ -13,6 +28,30 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - vcr
     - Member[patch].Member[_connHTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[patch].Member[_cpoolBoto3HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[patch].Member[_cpoolBoto3HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[stubs].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[stubs].Member[HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[stubs].Member[boto3_stubs].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[stubs].Member[boto3_stubs].Member[VCRRequestsHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[stubs].Member[boto3_stubs].Member[VCRRequestsHTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - vcr
+    - Member[stubs].Member[boto3_stubs].Member[VerifiedHTTPSConnection]
   - - http.client.HTTPConnection~Subclass
     - vcr
     - Member[stubs].Member[requests_stubs].Member[HTTPConnection]
@@ -37,3 +76,30 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - vcr
     - Member[stubs].Member[urllib3_stubs].Member[VerifiedHTTPSConnection]
+  - - http.client.HTTPResponse~Subclass
+    - vcr
+    - Member[stubs].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - vcr
+    - Member[stubs].Member[VCRHTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - vcr
+    - Member[stubs]Member[VCRHTTPResponse]
+  - - io.StringIO~Subclass
+    - vcr
+    - Member[filters].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - vcr
+    - Member[request].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - vcr
+    - Member[stubs].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - vcr
+    - Member[stubs].Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - vcr
+    - Member[stubs].Member[tornado_stubs].Member[BytesIO]
+  - - multidict.MultiDictProxy~Subclass
+    - vcr
+    - Member[stubs].Member[aiohttp_stubs].Member[CIMultiDictProxy]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_rq
+    - Member[models].Member[Queue]
+  - - django.http.response.JsonResponse~Subclass
+    - django_rq
+    - Member[views].Member[JsonResponse]

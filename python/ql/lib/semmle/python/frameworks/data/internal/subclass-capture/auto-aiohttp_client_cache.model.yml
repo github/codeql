@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - aiohttp_client_cache
+    - Member[CachedSession]
+  - - aiohttp.ClientSession~Subclass
+    - aiohttp_client_cache
+    - Member[session].Member[CacheMixin]
+  - - aiohttp.ClientSession~Subclass
+    - aiohttp_client_cache
+    - Member[session].Member[CachedSession]
+  - - aiohttp.ClientSession~Subclass
+    - aiohttp_client_cache
+    - Member[session].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - aiohttp_client_cache
+    - Member[session].Member[MIXIN_BASE]
+  - - multidict.MultiDictProxy~Subclass
+    - aiohttp_client_cache
+    - Member[response].Member[CIMultiDictProxy]
+  - - multidict.MultiDictProxy~Subclass
+    - aiohttp_client_cache
+    - Member[response].Member[MultiDictProxy]
+  - - pickle~Alias
+    - aiohttp_client_cache
+    - Member[backends].Member[base].Member[pickle]

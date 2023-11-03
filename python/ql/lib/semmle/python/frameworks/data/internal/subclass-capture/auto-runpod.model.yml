@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - runpod
+    - Member[serverless].Member[modules].Member[rp_job].Member[ClientSession]
+  - - fastapi.APIRouter~Subclass
+    - runpod
+    - Member[serverless].Member[modules].Member[rp_fastapi].Member[APIRouter]
+  - - io.StringIO~Subclass
+    - runpod
+    - Member[serverless].Member[utils].Member[rp_upload].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - runpod
+    - Member[serverless].Member[modules].Member[rp_fastapi].Member[Job]

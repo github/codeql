@@ -31,3 +31,6 @@ extensions:
   - - io.StringIO~Subclass
     - theano
     - Member[tensor].Member[opt].Member[StringIO]
+  - - pickle~Alias
+    - theano
+    - Member[misc].Member[pkl_utils].Member[pickle]

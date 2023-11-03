@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - sphinx
+    - Member[application].Member[StringIO]
+  - - io.StringIO~Subclass
+    - sphinx
+    - Member[util].Member[inspect].Member[StringIO]
+  - - io.StringIO~Subclass
+    - sphinx
+    - Member[util].Member[osutil].Member[StringIO]
+  - - pickle~Alias
+    - sphinx
+    - Member[application].Member[pickle]
+  - - pickle~Alias
+    - sphinx
+    - Member[builders].Member[pickle]
+  - - pickle~Alias
+    - sphinx
+    - Member[environment].Member[pickle]
+  - - pickle~Alias
+    - sphinx
+    - Member[ext].Member[coverage].Member[pickle]
+  - - pickle~Alias
+    - sphinx
+    - Member[search].Member[pickle]
+  - - pickle~Alias
+    - sphinx
+    - Member[versioning].Member[pickle]
+  - - requests.models.Response~Subclass
+    - sphinx
+    - Member[builders].Member[linkcheck].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - sphinx
+    - Member[ext].Member[graphviz].Member[ET]

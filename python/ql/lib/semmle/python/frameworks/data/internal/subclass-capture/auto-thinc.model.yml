@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - thinc
+    - Member[shims].Member[pytorch].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - thinc
+    - Member[shims].Member[tensorflow].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - thinc
+    - Member[shims].Member[torchscript].Member[BytesIO]

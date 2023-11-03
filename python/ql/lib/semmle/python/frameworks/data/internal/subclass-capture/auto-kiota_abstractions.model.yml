@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - kiota_abstractions
+    - Member[request_adapter].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - kiota_abstractions
+    - Member[request_information].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - kiota_abstractions
+    - Member[serialization].Member[parse_node].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - kiota_abstractions
+    - Member[serialization].Member[parse_node_factory].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - kiota_abstractions
+    - Member[serialization].Member[parse_node_factory_registry].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - kiota_abstractions
+    - Member[serialization].Member[parse_node_proxy_factory].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - kiota_abstractions
+    - Member[serialization].Member[serialization_writer].Member[BytesIO]

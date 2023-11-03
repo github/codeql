@@ -6,7 +6,40 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - news
+    - Member[admin].Member[Activity]
+  - - Django.db.models.Model~Subclass
+    - news
+    - Member[admin].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - news
+    - Member[admin].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - news
+    - Member[admin].Member[News]
+  - - Django.db.models.Model~Subclass
+    - news
+    - Member[admin].Member[Video]
+  - - Django.db.models.Model~Subclass
+    - news
+    - Member[models].Member[Activity]
+  - - Django.db.models.Model~Subclass
+    - news
+    - Member[models].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - news
+    - Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - news
     - Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - news
+    - Member[models].Member[News]
+  - - Django.db.models.Model~Subclass
+    - news
     - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - news
+    - Member[models].Member[Video]
+  - - Django.db.models.Model~Subclass
+    - news
+    - Member[views].Member[News]

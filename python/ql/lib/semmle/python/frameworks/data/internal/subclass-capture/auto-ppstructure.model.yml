@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - ppstructure
+    - Member[table].Member[table_metric].Member[table_metric].Member[etree]
+  - - pickle~Alias
+    - ppstructure
+    - Member[table].Member[eval_table].Member[pickle]
+  - - pickle~Alias
+    - ppstructure
+    - Member[table].Member[table_master_match].Member[pickle]

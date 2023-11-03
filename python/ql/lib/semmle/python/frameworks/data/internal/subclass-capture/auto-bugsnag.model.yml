@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - bugsnag
+    - Member[tornado].Member[BugsnagRequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - bugsnag
+    - Member[tornado].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - bugsnag
+    - Member[tornado]Member[BugsnagRequestHandler]

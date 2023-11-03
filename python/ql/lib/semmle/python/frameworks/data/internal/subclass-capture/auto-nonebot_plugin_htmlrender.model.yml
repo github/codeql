@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - nonebot_plugin_htmlrender
+    - Member[browser].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - nonebot_plugin_htmlrender
+    - Member[config].Member[Config]

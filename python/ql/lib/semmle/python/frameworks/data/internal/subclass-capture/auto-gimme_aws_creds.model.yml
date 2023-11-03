@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - gimme_aws_creds
+    - Member[duo].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - gimme_aws_creds
+    - Member[duo].Member[QuietHandler]
+  - - xml.etree.ElementTree~Subclass
+    - gimme_aws_creds
+    - Member[aws].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - gimme_aws_creds
+    - Member[default].Member[ET]

@@ -4,6 +4,138 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[accuweather].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[airly].Member[config_flow].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[airly].Member[coordinator].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[august].Member[gateway].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[awair].Member[coordinator].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[cloudflare].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[electric_kiwi].Member[api].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[gios].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[lyric].Member[api].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[api].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[netatmo].Member[api].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[openexchangerates].Member[coordinator].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[switchbee].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[ukraine_alarm].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[whirlpool].Member[climate].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[api].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - homeassistant
+    - Member[components].Member[yolink].Member[api].Member[ClientSession]
+  - - http.client.HTTPConnection~Subclass
+    - homeassistant
+    - Member[block_async_io].Member[HTTPConnection]
+  - - httpx.Client~Subclass
+    - homeassistant
+    - Member[components].Member[point].Member[PointSession]
+  - - httpx.Client~Subclass
+    - homeassistant
+    - Member[components].Member[point].Member[config_flow].Member[PointSession]
+  - - httpx.Client~Subclass
+    - homeassistant
+    - Member[components].Member[senz].Member[api].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - homeassistant
+    - Member[helpers].Member[httpx_client].Member[HassHttpXAsyncClient]
+  - - io.StringIO~Subclass
+    - homeassistant
+    - Member[auth].Member[mfa_modules].Member[totp].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - homeassistant
+    - Member[components].Member[discord].Member[notify].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - homeassistant
+    - Member[components].Member[fritz].Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - homeassistant
+    - Member[components].Member[google_translate].Member[tts].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - homeassistant
+    - Member[components].Member[stream].Member[recorder].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - homeassistant
+    - Member[components].Member[stream].Member[worker].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - homeassistant
+    - Member[components].Member[trafikverket_camera].Member[coordinator].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - homeassistant
+    - Member[util].Member[yaml].Member[loader].Member[StringIO]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[bthome].Member[coordinator].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[elmax].Member[common].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[github].Member[const].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[nina].Member[const].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[shelly].Member[const].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[tautulli].Member[const].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[uptimerobot].Member[const].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[version].Member[const].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[weatherkit].Member[const].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[components].Member[xiaomi_ble].Member[coordinator].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[helpers].Member[debounce].Member[Logger]
+  - - logging.Logger~Subclass
+    - homeassistant
+    - Member[helpers].Member[entity_platform].Member[Logger]
+  - - multidict.MultiDictProxy~Subclass
+    - homeassistant
+    - Member[components].Member[auth].Member[MultiDictProxy]
+  - - pickle~Alias
+    - homeassistant
+    - Member[components].Member[feedreader].Member[pickle]
   - - pydantic.BaseModel~Subclass
     - homeassistant
     - Member[components].Member[bsblan].Member[Device]
@@ -52,6 +184,9 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - homeassistant
     - Member[components].Member[elgato].Member[coordinator].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[kostal_plenticore].Member[number].Member[SettingsData]
   - - pydantic.BaseModel~Subclass
     - homeassistant
     - Member[components].Member[lametric].Member[config_flow].Member[CloudDevice]
@@ -114,6 +249,117 @@ extensions:
     - Member[components].Member[lametric].Member[switch].Member[Device]
   - - pydantic.BaseModel~Subclass
     - homeassistant
+    - Member[components].Member[nest].Member[CameraClipPreviewTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[EventMessage]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[camera].Member[CameraImageTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[camera].Member[CameraLiveStreamTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[camera].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[camera].Member[RtspStream]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[climate].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[climate].Member[FanTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[climate].Member[TemperatureTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[climate].Member[ThermostatEcoTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[climate].Member[ThermostatHeatCoolTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[climate].Member[ThermostatHvacTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[climate].Member[ThermostatModeTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[climate].Member[ThermostatTemperatureSetpointTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[config_flow].Member[InfoTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[config_flow].Member[Structure]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[device_info].Member[ConnectivityTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[device_info].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[device_info].Member[InfoTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[diagnostics].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[diagnostics].Member[InfoTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[events].Member[CameraMotionEvent]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[events].Member[CameraMotionTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[events].Member[CameraPersonEvent]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[events].Member[CameraPersonTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[events].Member[CameraSoundEvent]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[events].Member[CameraSoundTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[events].Member[DoorbellChimeEvent]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[events].Member[DoorbellChimeTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[media_source].Member[CameraClipPreviewTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[media_source].Member[CameraEventImageTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[media_source].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[media_source].Member[ImageEventBase]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[sensor].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[sensor].Member[HumidityTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[nest].Member[sensor].Member[TemperatureTrait]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
     - Member[components].Member[notion].Member[BridgeAllResponse]
   - - pydantic.BaseModel~Subclass
     - homeassistant
@@ -171,6 +417,15 @@ extensions:
     - Member[components].Member[rdw].Member[sensor].Member[Vehicle]
   - - pydantic.BaseModel~Subclass
     - homeassistant
+    - Member[components].Member[system_bridge].Member[coordinator].Member[SystemBridgeCoordinatorData]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[system_bridge].Member[media_player].Member[SystemBridgeCoordinatorData]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[system_bridge].Member[sensor].Member[SystemBridgeCoordinatorData]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
     - Member[components].Member[tailscale].Member[TailscaleDevice]
   - - pydantic.BaseModel~Subclass
     - homeassistant
@@ -181,6 +436,15 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - homeassistant
     - Member[components].Member[tailscale].Member[sensor].Member[TailscaleDevice]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[traccar].Member[device_tracker].Member[DeviceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[traccar].Member[device_tracker].Member[GeofenceModel]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[traccar].Member[device_tracker].Member[PositionModel]
   - - pydantic.BaseModel~Subclass
     - homeassistant
     - Member[components].Member[unifiprotect].Member[binary_sensor].Member[Camera]
@@ -418,3 +682,90 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - homeassistant
     - Member[components].Member[unifiprotect].Member[views].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[PeopleResponse]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[Person]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[PresenceDetail]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[Product]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[SmartglassConsoleList]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[SmartglassConsoleStatus]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[api].Member[OAuth2TokenResponse]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[browse_media].Member[CatalogResponse]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[browse_media].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[browse_media].Member[InstalledPackage]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[browse_media].Member[InstalledPackagesList]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[media_player].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[media_player].Member[SmartglassConsoleList]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[media_player].Member[SmartglassConsole]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[media_source].Member[GameclipsResponse]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[media_source].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[media_source].Member[InstalledPackage]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[media_source].Member[ScreenshotResponse]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[remote].Member[SmartglassConsoleList]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[xbox].Member[remote].Member[SmartglassConsole]
+  - - pydantic.BaseModel~Subclass
+    - homeassistant
+    - Member[components].Member[yolink].Member[climate].Member[ThermostatState]
+  - - requests.models.Response~Subclass
+    - homeassistant
+    - Member[components].Member[abode].Member[camera].Member[Response]
+  - - sqlalchemy.engine.Engine~Subclass
+    - homeassistant
+    - Member[components].Member[recorder].Member[core].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - homeassistant
+    - Member[components].Member[recorder].Member[migration].Member[Engine]
+  - - sqlalchemy.orm.Session~Subclass
+    - homeassistant
+    - Member[components].Member[sql].Member[config_flow].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - homeassistant
+    - Member[components].Member[sql].Member[sensor].Member[Session]
+  - - xml.etree.ElementTree~Subclass
+    - homeassistant
+    - Member[components].Member[environment_canada].Member[config_flow].Member[et]
+  - - xml.etree.ElementTree~Subclass
+    - homeassistant
+    - Member[components].Member[environment_canada].Member[et]
+  - - xml.etree.ElementTree~Subclass
+    - homeassistant
+    - Member[components].Member[ssdp].Member[ET]

@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - smuggler
+    - Member[forms].Member[FixturePathField]
+  - - Django.Forms.Field~Subclass
+    - smuggler
+    - Member[forms].Member[MultiFixtureField]
+  - - Django.Views.View~Subclass
+    - smuggler
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - smuggler
+    - Member[views].Member[LoadDataView]
+  - - django.forms.BaseForm~Subclass
+    - smuggler
+    - Member[forms].Member[ImportForm]
+  - - django.forms.BaseForm~Subclass
+    - smuggler
+    - Member[views].Member[ImportForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - smuggler
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - smuggler
+    - Member[utils].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - smuggler
+    - Member[utils].Member[StringIO]

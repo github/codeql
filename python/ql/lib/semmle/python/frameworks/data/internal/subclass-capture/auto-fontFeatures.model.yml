@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - fontFeatures
+    - Member[ttLib].Member[GTableUnparser].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontFeatures
+    - Member[voltLib].Member[StringIO]
+  - - lxml.etree~Alias
+    - fontFeatures
+    - Member[xmlLib].Member[Attachment].Member[etree]
+  - - lxml.etree~Alias
+    - fontFeatures
+    - Member[xmlLib].Member[Chaining].Member[etree]
+  - - lxml.etree~Alias
+    - fontFeatures
+    - Member[xmlLib].Member[FontFeatures].Member[etree]
+  - - lxml.etree~Alias
+    - fontFeatures
+    - Member[xmlLib].Member[Positioning].Member[etree]
+  - - lxml.etree~Alias
+    - fontFeatures
+    - Member[xmlLib].Member[RoutineReference].Member[etree]
+  - - lxml.etree~Alias
+    - fontFeatures
+    - Member[xmlLib].Member[Routine].Member[etree]
+  - - lxml.etree~Alias
+    - fontFeatures
+    - Member[xmlLib].Member[Rule].Member[etree]
+  - - lxml.etree~Alias
+    - fontFeatures
+    - Member[xmlLib].Member[Substitution].Member[etree]

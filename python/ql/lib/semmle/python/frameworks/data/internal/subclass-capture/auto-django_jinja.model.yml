@@ -1,0 +1,156 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[BadRequest]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[ErrorView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[GenericView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[PageNotFound]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[PermissionDenied]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[ServerError]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[View]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[ArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[DateDetailView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[DayArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[ListView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[MonthArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[TodayArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[WeekArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[YearArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[ArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[DateDetailView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[DayArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[MonthArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[TodayArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[WeekArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[YearArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[_django_ArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[_django_DateDetailView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[_django_DayArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[_django_MonthArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[_django_TodayArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[_django_WeekArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[dates].Member[_django_YearArchiveView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[detail].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[detail].Member[_django_DetailView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[edit].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[edit].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[edit].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[edit].Member[_django_CreateView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[edit].Member[_django_DeleteView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[edit].Member[_django_UpdateView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[list].Member[ListView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views].Member[generic].Member[list].Member[_django_ListView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views]Member[BadRequest]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views]Member[ErrorView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views]Member[GenericView]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views]Member[PageNotFound]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views]Member[PermissionDenied]
+  - - Django.Views.View~Subclass
+    - django_jinja
+    - Member[views]Member[ServerError]
+  - - markupsafe.Markup~Subclass
+    - django_jinja
+    - Member[builtins].Member[extensions].Member[Markup]

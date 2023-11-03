@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - rcnn
+    - Member[dataset].Member[imdb].Member[pickle]
+  - - pickle~Alias
+    - rcnn
+    - Member[dataset].Member[retinaface].Member[pickle]
+  - - pickle~Alias
+    - rcnn
+    - Member[tools].Member[reeval].Member[pickle]

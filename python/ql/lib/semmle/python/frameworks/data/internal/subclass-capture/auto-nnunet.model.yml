@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - nnunet
+    - Member[datasets].Member[dataloader].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[datasets].Member[dataset].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[ensemble].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[experiment_planning].Member[DatasetAnalyzer].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[experiment_planning].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[export].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[infer].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[losses].Member[multiple_losses].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[predict].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[single_fold_eval].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[training].Member[data_augmentation].Member[default_data_augmentation].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[utils].Member[predict_utils].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[utils].Member[static_predictor].Member[pickle]
+  - - pickle~Alias
+    - nnunet
+    - Member[utils].Member[utils].Member[pickle]

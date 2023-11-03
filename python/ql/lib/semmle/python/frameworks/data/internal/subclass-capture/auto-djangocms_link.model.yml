@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - djangocms_link
+    - Member[fields].Member[PageSearchField]
+  - - Django.Forms.Field~Subclass
+    - djangocms_link
+    - Member[fields_select2].Member[Select2PageSearchField]
+  - - Django.Forms.Field~Subclass
+    - djangocms_link
+    - Member[forms].Member[PageSearchField]
+  - - Django.db.models.Model~Subclass
+    - djangocms_link
+    - Member[cms_plugins].Member[Link]
   - - Django.db.models.Model~Subclass
     - djangocms_link
     - Member[cms_plugins].Member[Site]
@@ -12,7 +24,28 @@ extensions:
     - Member[fields_select2].Member[Page]
   - - Django.db.models.Model~Subclass
     - djangocms_link
+    - Member[forms].Member[Link]
+  - - Django.db.models.Model~Subclass
+    - djangocms_link
+    - Member[models].Member[AbstractLink]
+  - - Django.db.models.Model~Subclass
+    - djangocms_link
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_link
+    - Member[models].Member[Link]
+  - - Django.db.models.Model~Subclass
+    - djangocms_link
     - Member[models].Member[Page]
   - - Django.db.models.Model~Subclass
     - djangocms_link
     - Member[models].Member[Site]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_link
+    - Member[cms_plugins].Member[LinkForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_link
+    - Member[forms].Member[LinkForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_link
+    - Member[forms].Member[ModelForm]

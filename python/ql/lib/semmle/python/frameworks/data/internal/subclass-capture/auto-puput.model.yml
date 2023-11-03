@@ -4,6 +4,27 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - puput
+    - Member[urls].Member[EntryPageServe]
+  - - Django.Views.View~Subclass
+    - puput
+    - Member[urls].Member[EntryPageUpdateCommentsView]
+  - - Django.Views.View~Subclass
+    - puput
+    - Member[views].Member[EntryPageServe]
+  - - Django.Views.View~Subclass
+    - puput
+    - Member[views].Member[EntryPageUpdateCommentsView]
+  - - Django.Views.View~Subclass
+    - puput
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[abstracts].Member[BlogAbstract]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[abstracts].Member[EntryAbstract]
   - - Django.db.models.Model~Subclass
     - puput
     - Member[feeds].Member[BlogPage]
@@ -24,7 +45,22 @@ extensions:
     - Member[management].Member[commands].Member[puput_initial_data].Member[Site]
   - - Django.db.models.Model~Subclass
     - puput
+    - Member[models].Member[BlogAbstract]
+  - - Django.db.models.Model~Subclass
+    - puput
     - Member[models].Member[BlogPage]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[models].Member[CategoryEntryPage]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[models].Member[EntryAbstract]
+  - - Django.db.models.Model~Subclass
+    - puput
+    - Member[models].Member[EntryPageRelated]
   - - Django.db.models.Model~Subclass
     - puput
     - Member[models].Member[EntryPage]
@@ -36,6 +72,9 @@ extensions:
     - Member[routes].Member[Page]
   - - Django.db.models.Model~Subclass
     - puput
+    - Member[templatetags].Member[puput_tags].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - puput
     - Member[templatetags].Member[puput_tags].Member[Site]
   - - Django.db.models.Model~Subclass
     - puput
@@ -43,3 +82,6 @@ extensions:
   - - Django.db.models.Model~Subclass
     - puput
     - Member[views].Member[Site]
+  - - django.http.response.HttpResponse~Subclass
+    - puput
+    - Member[views].Member[HttpResponse]

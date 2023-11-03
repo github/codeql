@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[GroupSearchView]
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[GroupsView]
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[ResourceTypesView]
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[SCIMView]
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[SchemasView]
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[SearchView]
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[ServiceProviderConfigView]
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[UserSearchView]
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[UsersView]
+  - - Django.Views.View~Subclass
+    - django_scim
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - django_scim
+    - Member[models].Member[AbstractSCIMCommonAttributesMixin]
+  - - Django.db.models.Model~Subclass
+    - django_scim
+    - Member[models].Member[AbstractSCIMGroupMixin]
+  - - Django.db.models.Model~Subclass
+    - django_scim
+    - Member[models].Member[AbstractSCIMUserMixin]
+  - - django.http.response.HttpResponse~Subclass
+    - django_scim
+    - Member[middleware].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_scim
+    - Member[views].Member[HttpResponse]

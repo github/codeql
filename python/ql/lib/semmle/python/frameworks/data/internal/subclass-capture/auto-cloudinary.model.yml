@@ -4,9 +4,69 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - cloudinary
+    - Member[forms].Member[CloudinaryFileField]
+  - - Django.Forms.Field~Subclass
+    - cloudinary
+    - Member[forms].Member[CloudinaryJsFileField]
+  - - Django.Forms.Field~Subclass
+    - cloudinary
+    - Member[forms].Member[CloudinaryUnsignedJsFileField]
+  - - Django.Forms.Field~Subclass
+    - cloudinary
+    - Member[templatetags].Member[cloudinary].Member[CloudinaryJsFileField]
+  - - django.forms.BaseForm~Subclass
+    - cloudinary
+    - Member[templatetags].Member[cloudinary].Member[Form]
+  - - http.client.HTTPConnection~Subclass
+    - cloudinary
+    - Member[poster].Member[streaminghttp].Member[StreamingHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - cloudinary
+    - Member[poster].Member[streaminghttp].Member[StreamingHTTPSConnection]
   - - io.StringIO~Subclass
     - cloudinary
     - Member[compat].Member[BytesIO]
   - - io.StringIO~Subclass
     - cloudinary
     - Member[compat].Member[StringIO]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[api_client].Member[tcp_keep_alive_manager].Member[HTTPConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[api_client].Member[tcp_keep_alive_manager].Member[HTTPSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[api_client].Member[tcp_keep_alive_manager].Member[PoolManager]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[api_client].Member[tcp_keep_alive_manager].Member[ProxyManager]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[api_client].Member[tcp_keep_alive_manager].Member[TCPKeepAliveHTTPConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[api_client].Member[tcp_keep_alive_manager].Member[TCPKeepAliveHTTPSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[api_client].Member[tcp_keep_alive_manager].Member[TCPKeepAlivePoolManager]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[api_client].Member[tcp_keep_alive_manager].Member[TCPKeepAliveProxyManager]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[http_client].Member[PoolManager]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[utils].Member[PoolManager]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[utils].Member[ProxyManager]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[utils].Member[TCPKeepAlivePoolManager]
+  - - urllib3.PoolManager~Subclass
+    - cloudinary
+    - Member[utils].Member[TCPKeepAliveProxyManager]

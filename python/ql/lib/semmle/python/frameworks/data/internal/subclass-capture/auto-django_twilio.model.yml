@@ -4,9 +4,45 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.db.models.Model~Subclass
+    - django_twilio
+    - Member[admin].Member[Caller]
+  - - Django.db.models.Model~Subclass
+    - django_twilio
+    - Member[admin].Member[Credential]
+  - - Django.db.models.Model~Subclass
+    - django_twilio
+    - Member[models].Member[Caller]
+  - - Django.db.models.Model~Subclass
+    - django_twilio
+    - Member[models].Member[Credential]
+  - - Django.db.models.Model~Subclass
+    - django_twilio
+    - Member[utils].Member[Caller]
+  - - Django.db.models.Model~Subclass
+    - django_twilio
+    - Member[utils].Member[Credential]
+  - - django.http.request.HttpRequest~Subclass
+    - django_twilio
+    - Member[decorators].Member[HttpRequest]
   - - django.http.request.HttpRequest~Subclass
     - django_twilio
     - Member[request].Member[ASGIRequest]
   - - django.http.request.HttpRequest~Subclass
     - django_twilio
+    - Member[request].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django_twilio
     - Member[request].Member[WSGIRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - django_twilio
+    - Member[decorators].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - django_twilio
+    - Member[decorators].Member[HttpResponseNotAllowed]
+  - - django.http.response.HttpResponse~Subclass
+    - django_twilio
+    - Member[decorators].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_twilio
+    - Member[utils].Member[HttpResponse]

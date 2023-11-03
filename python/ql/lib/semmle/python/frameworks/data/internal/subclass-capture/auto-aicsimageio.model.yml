@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - aicsimageio
+    - Member[metadata].Member[utils].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - aicsimageio
+    - Member[readers].Member[czi_reader].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - aicsimageio
+    - Member[readers].Member[lif_reader].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - aicsimageio
+    - Member[readers].Member[ome_tiff_reader].Member[ET]

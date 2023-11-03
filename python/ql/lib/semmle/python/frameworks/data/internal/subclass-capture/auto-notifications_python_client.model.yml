@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - notifications_python_client
+    - Member[notifications].Member[BytesIO]
+  - - requests.models.Response~Subclass
+    - notifications_python_client
+    - Member[errors].Member[Response]

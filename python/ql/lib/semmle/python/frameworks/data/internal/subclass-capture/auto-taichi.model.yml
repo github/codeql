@@ -1,0 +1,9 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - taichi
+    - Member[examples].Member[autodiff].Member[diff_sph].Member[diff_sph].Member[pkl]

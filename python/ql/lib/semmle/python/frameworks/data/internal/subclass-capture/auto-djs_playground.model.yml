@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - djs_playground
+    - Member[admin].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - djs_playground
+    - Member[admin].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - djs_playground
+    - Member[admin].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - djs_playground
+    - Member[models].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - djs_playground
+    - Member[models].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - djs_playground
+    - Member[models].Member[Post]
+  - - django.forms.BaseForm~Subclass
+    - djs_playground
+    - Member[views].Member[SampleForm]

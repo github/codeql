@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - bots
+    - Member[AIApplication]
+  - - pydantic.BaseModel~Subclass
+    - bots
+    - Member[DiscoursePost]
+  - - pydantic.BaseModel~Subclass
+    - bots
+    - Member[DuckDuckGoSearch]
+  - - pydantic.BaseModel~Subclass
+    - bots
+    - Member[History]
+  - - pydantic.BaseModel~Subclass
+    - bots
+    - Member[Notes]
+  - - pydantic.BaseModel~Subclass
+    - bots
+    - Member[SearchGitHubIssues]

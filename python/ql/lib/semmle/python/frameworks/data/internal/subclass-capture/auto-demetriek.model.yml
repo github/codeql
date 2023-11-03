@@ -1,0 +1,123 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Audio]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Bluetooth]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Chart]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[CloudDevice]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Display]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[GoalData]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Goal]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Notification]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Range]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Simple]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Sound]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[User]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[Wifi]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[cloud].Member[CloudDevice]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[cloud].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[device].Member[Audio]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[device].Member[Bluetooth]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[device].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[device].Member[Display]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[device].Member[Notification]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[device].Member[Wifi]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Audio]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Bluetooth]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Chart]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[CloudDevice]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[DisplayScreensaver]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Display]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[GoalData]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Goal]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Notification]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Range]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Simple]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Sound]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - demetriek
+    - Member[models].Member[Wifi]

@@ -1,0 +1,90 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[bond].Member[bond_cb_sina].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[bond].Member[bond_summary].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[bond].Member[china_repo].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[currency].Member[currency_safe].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[fund].Member[fund_portfolio_em].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[cot].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[cot].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[futures_comm_qihuo].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[futures_daily_bar].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[futures_daily_bar].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[futures_sgx_daily].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[futures_sgx_daily].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[futures_warehouse_receipt].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[futures_warehouse_receipt].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[receipt].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures].Member[requests_fun].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[futures_derivative].Member[futures_index_sina].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[index].Member[index_cons].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[option].Member[option_commodity].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[option].Member[option_commodity].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[option].Member[option_czce].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[stock].Member[stock_info].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[stock].Member[stock_summary].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[stock_feature].Member[stock_board_concept_ths].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[stock_feature].Member[stock_board_industry_ths].Member[StringIO]
+  - - io.StringIO~Subclass
+    - akshare
+    - Member[stock_fundamental].Member[stock_finance].Member[StringIO]
+  - - pickle~Alias
+    - akshare
+    - Member[futures].Member[cons].Member[pickle]
+  - - pickle~Alias
+    - akshare
+    - Member[futures].Member[inventory_data].Member[pickle]

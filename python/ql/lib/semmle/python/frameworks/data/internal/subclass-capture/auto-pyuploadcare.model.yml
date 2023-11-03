@@ -1,0 +1,243 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - pyuploadcare
+    - Member[dj].Member[forms].Member[Field]
+  - - Django.Forms.Field~Subclass
+    - pyuploadcare
+    - Member[dj].Member[forms].Member[FileField]
+  - - Django.Forms.Field~Subclass
+    - pyuploadcare
+    - Member[dj].Member[forms].Member[FileGroupField]
+  - - Django.Forms.Field~Subclass
+    - pyuploadcare
+    - Member[dj].Member[forms].Member[ImageField]
+  - - Django.Forms.Field~Subclass
+    - pyuploadcare
+    - Member[dj].Member[forms].Member[ImageGroupField]
+  - - pickle~Alias
+    - pyuploadcare
+    - Member[ucare_cli].Member[commands].Member[sync].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[ProjectInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[Webhook]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[addon_entities].Member[AddonClamAVExecutionParams]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[addon_entities].Member[AddonClamAVExecutionRequestData]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[addon_entities].Member[AddonExecutionGeneralRequestData]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[addon_entities].Member[AddonExecutionParams]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[addon_entities].Member[AddonRemoveBGExecutionParams]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[addon_entities].Member[AddonRemoveBGExecutionRequestData]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[addon_entities].Member[Entity]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[api].Member[AddonExecutionGeneralRequestData]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[api].Member[AddonExecutionParams]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[api].Member[UUIDEntity]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[base].Member[Entity]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[base].Member[PaginatedResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[base].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[base].Member[UUIDEntity]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[AWSRecognitionDetectLabelsApplicationData]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[AWSRecognitionDetectLabelsDetails]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[AWSRecognitionLabel]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[ApllicationDataDetails]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[ApplicationDataBase]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[ApplicationDataSet]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[AudioStreamInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[ColaboratorInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[ContentInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[DocumentConvertInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[DocumentConvertShortInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[DocumentConvertStatus]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[Entity]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[FileInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[GEOPoint]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[GroupInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[IDEntity]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[ImageInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[MIMEInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[ProjectInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[RemoveBackgroundApplicationData]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[RemoveBackgroundDetails]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[UCClamAVApplicationData]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[UCClamAVDetails]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[UUIDEntity]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[VideoConvertInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[VideoConvertShortInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[VideoConvertStatus]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[VideoInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[VideoStreamInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[entities].Member[Webhook]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[AddonExecuteResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[AddonResponseResult]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[AddonResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[BatchFileOperationResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[CreateLocalCopyResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[CreateRemoteCopyResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[DeleteMetadataKeyResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[DocumentConvertInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[DocumentConvertResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[EntityListResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[Entity]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[FileInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[FileListResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[GetAllMetadataResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[GroupInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[GroupListResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[PaginatedResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[UpdateMetadataKeyResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[VideoConvertInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[api].Member[responses].Member[VideoConvertResponse]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[client].Member[ProjectInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[client].Member[Webhook]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[resources].Member[file].Member[DocumentConvertInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[resources].Member[file].Member[VideoConvertInfo]
+  - - pydantic.BaseModel~Subclass
+    - pyuploadcare
+    - Member[ucare_cli].Member[commands].Member[get_project].Member[ProjectInfo]

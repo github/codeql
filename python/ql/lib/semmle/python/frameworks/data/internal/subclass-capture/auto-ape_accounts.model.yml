@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - ape_accounts
+    - Member[AccountContainer]
+  - - pydantic.BaseModel~Subclass
+    - ape_accounts
+    - Member[KeyfileAccount]
+  - - pydantic.BaseModel~Subclass
+    - ape_accounts
+    - Member[_cli].Member[AccountContainer]
+  - - pydantic.BaseModel~Subclass
+    - ape_accounts
+    - Member[_cli].Member[KeyfileAccount]
+  - - pydantic.BaseModel~Subclass
+    - ape_accounts
+    - Member[accounts].Member[AccountAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_accounts
+    - Member[accounts].Member[AccountContainerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_accounts
+    - Member[accounts].Member[AccountContainer]
+  - - pydantic.BaseModel~Subclass
+    - ape_accounts
+    - Member[accounts].Member[KeyfileAccount]
+  - - pydantic.BaseModel~Subclass
+    - ape_accounts
+    - Member[accounts].Member[TransactionAPI]

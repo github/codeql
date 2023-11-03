@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - nni
+    - Member[contrib].Member[training_service].Member[trial_client].Member[TrialServerHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - nni
+    - Member[contrib].Member[training_service].Member[trial_runner].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - nni
+    - Member[contrib].Member[training_service].Member[trial_runner].Member[TrialServerHandler]
+  - - peewee.Database~Subclass
+    - nni
+    - Member[nas].Member[benchmark].Member[nlp].Member[schema].Member[SqliteExtDatabase]
+  - - peewee.Database~Subclass
+    - nni
+    - Member[nas].Member[benchmark].Member[utils].Member[SqliteExtDatabase]
+  - - pickle~Alias
+    - nni
+    - Member[algorithms].Member[feature_engineering].Member[gradient_selector].Member[fginitialize].Member[pickle]
+  - - pickle~Alias
+    - nni
+    - Member[contrib].Member[distillation].Member[utils].Member[pickle]
+  - - tornado.web.RequestHandler~Subclass
+    - nni
+    - Member[tools].Member[jupyter_extension].Member[proxy].Member[NniProxyHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - nni
+    - Member[tools].Member[jupyter_extension].Member[proxy].Member[RequestHandler]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - parl
+    - Member[remote].Member[log_server].Member[Flask]
+  - - flask.Flask~Subclass
+    - parl
+    - Member[remote].Member[monitor].Member[Flask]
+  - - pickle~Alias
+    - parl
+    - Member[remote].Member[job].Member[pickle]
+  - - pickle~Alias
+    - parl
+    - Member[remote].Member[master].Member[pickle]
+  - - pickle~Alias
+    - parl
+    - Member[remote].Member[monitor].Member[pickle]
+  - - pickle~Alias
+    - parl
+    - Member[remote].Member[pickle]

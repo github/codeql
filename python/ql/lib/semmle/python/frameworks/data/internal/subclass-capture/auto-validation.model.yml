@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - validation
+    - Member[schemas].Member[AssessmentRequest]
+  - - pydantic.BaseModel~Subclass
+    - validation
+    - Member[schemas].Member[BaseModelNone]
+  - - pydantic.BaseModel~Subclass
+    - validation
+    - Member[schemas].Member[LastPageDataIncoming]
+  - - pydantic.BaseModel~Subclass
+    - validation
+    - Member[schemas].Member[LastPageData]
+  - - pydantic.BaseModel~Subclass
+    - validation
+    - Member[schemas].Member[LogItemIncoming]
+  - - pydantic.BaseModel~Subclass
+    - validation
+    - Member[schemas].Member[LogRunIncoming]
+  - - pydantic.BaseModel~Subclass
+    - validation
+    - Member[schemas].Member[PeerMessage]
+  - - pydantic.BaseModel~Subclass
+    - validation
+    - Member[schemas].Member[SelectQRequest]
+  - - pydantic.BaseModel~Subclass
+    - validation
+    - Member[schemas].Member[TimezoneRequest]

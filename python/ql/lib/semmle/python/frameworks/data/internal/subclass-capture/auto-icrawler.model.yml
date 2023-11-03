@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - icrawler
+    - Member[downloader].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - icrawler
+    - Member[storage].Member[google_storage].Member[BytesIO]

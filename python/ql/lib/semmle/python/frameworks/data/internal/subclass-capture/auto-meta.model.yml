@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - meta
+    - Member[datasets].Member[gluonts].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - meta
+    - Member[datasets].Member[gluonts].Member[MetaData]
+  - - pydantic.BaseModel~Subclass
+    - meta
+    - Member[datasets].Member[splits].Member[MetaData]

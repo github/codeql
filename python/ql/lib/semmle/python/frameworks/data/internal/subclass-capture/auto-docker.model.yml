@@ -13,3 +13,6 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - docker
     - Member[transport].Member[unixconn].Member[UnixHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - docker
+    - Member[unixconn].Member[unixconn].Member[UnixHTTPConnection]

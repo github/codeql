@@ -4,6 +4,222 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - pickle~Alias
+    - fastchat
+    - Member[serve].Member[gradio_web_server_multi].Member[pickle]
+  - - pickle~Alias
+    - fastchat
+    - Member[serve].Member[monitor].Member[elo_analysis].Member[pickle]
+  - - pickle~Alias
+    - fastchat
+    - Member[serve].Member[monitor].Member[monitor].Member[pickle]
+  - - pickle~Alias
+    - fastchat
+    - Member[serve].Member[monitor].Member[summarize_cluster].Member[pickle]
+  - - pickle~Alias
+    - fastchat
+    - Member[serve].Member[monitor].Member[topic_clustering].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[APIChatCompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[APITokenCheckRequestItem]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[APITokenCheckRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[APITokenCheckResponseItem]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[APITokenCheckResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[ChatCompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[ChatCompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[ChatCompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[ChatCompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[ChatMessage]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[CompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[CompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[CompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[CompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[CompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[DeltaMessage]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[ErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[ModelCard]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[ModelList]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[ModelPermission]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[api_protocol].Member[UsageInfo]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ChatCompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ChatCompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ChatCompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ChatCompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ChatCompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ChatMessage]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[CompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[CompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[CompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[CompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[CompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[DeltaMessage]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[EmbeddingsRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[EmbeddingsResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ModelCard]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ModelList]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[ModelPermission]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[TokenCheckRequestItem]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[TokenCheckRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[TokenCheckResponseItem]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[TokenCheckResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[protocol].Member[openai_api_protocol].Member[UsageInfo]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[APIChatCompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[APITokenCheckRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[APITokenCheckResponseItem]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[APITokenCheckResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ChatCompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ChatCompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ChatCompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ChatCompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ChatCompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ChatMessage]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[CompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[CompletionResponseChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[CompletionResponseStreamChoice]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[CompletionResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[CompletionStreamResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[DeltaMessage]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[EmbeddingsRequest]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[EmbeddingsResponse]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ErrorResponse]
   - - pydantic.BaseModel~Subclass
     - fastchat
     - Member[serve].Member[openai_api_server].Member[HTTPAuthorizationCredentials]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ModelCard]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ModelList]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[ModelPermission]
+  - - pydantic.BaseModel~Subclass
+    - fastchat
+    - Member[serve].Member[openai_api_server].Member[UsageInfo]

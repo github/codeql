@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[AutomateBase]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[AutomationResult]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[AutomationRunData]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[ResultCase]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[automation_context].Member[AutomateBase]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[automation_context].Member[AutomationResult]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[automation_context].Member[AutomationRunData]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[automation_context].Member[Branch]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[automation_context].Member[ResultCase]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[runner].Member[AutomateBase]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[runner].Member[AutomationRunData]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[schema].Member[AutomateBase]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[schema].Member[AutomationResult]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[schema].Member[AutomationRunData]
+  - - pydantic.BaseModel~Subclass
+    - speckle_automate
+    - Member[schema].Member[ResultCase]

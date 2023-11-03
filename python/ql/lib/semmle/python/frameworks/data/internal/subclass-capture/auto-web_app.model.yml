@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - web_app
+    - Member[main].Member[APIRouter]
+  - - pydantic.BaseModel~Subclass
+    - web_app
+    - Member[schemas].Member[ManifestCreate]
+  - - pydantic.BaseModel~Subclass
+    - web_app
+    - Member[schemas].Member[ManifestResponse]

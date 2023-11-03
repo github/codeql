@@ -1,0 +1,96 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - ninja
+    - Member[orm].Member[metaclass].Member[DjangoModel]
+  - - django.http.request.HttpRequest~Subclass
+    - ninja
+    - Member[compatibility].Member[request].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - ninja
+    - Member[openapi].Member[docs].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - ninja
+    - Member[openapi].Member[views].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - ninja
+    - Member[pagination].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - ninja
+    - Member[params].Member[models].Member[_HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - ninja
+    - Member[openapi].Member[docs].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - ninja
+    - Member[openapi].Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - ninja
+    - Member[openapi].Member[views].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - ninja
+    - Member[responses].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[FilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[ModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[conf].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[filter_schema].Member[FilterSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[filter_schema].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[orm].Member[ModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[orm].Member[metaclass].Member[ModelSchema]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[orm].Member[metaclass].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[pagination].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[params].Member[models].Member[BodyModel]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[params].Member[models].Member[CookieModel]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[params].Member[models].Member[FileModel]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[params].Member[models].Member[FormModel]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[params].Member[models].Member[HeaderModel]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[params].Member[models].Member[ParamModel]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[params].Member[models].Member[PathModel]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[params].Member[models].Member[QueryModel]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[params].Member[models].Member[_MultiPartBodyModel]
+  - - pydantic.BaseModel~Subclass
+    - ninja
+    - Member[schema].Member[Schema]

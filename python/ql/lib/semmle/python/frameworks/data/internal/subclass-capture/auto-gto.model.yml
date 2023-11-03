@@ -1,0 +1,195 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[GitRegistry]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[RepoIndexManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[api].Member[Artifact]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[api].Member[FileIndexManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[api].Member[GitRegistry]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[api].Member[RepoIndexManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[Artifact]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[Assignment]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[BaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[BaseManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[BaseObject]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[BaseRegistryState]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[Creation]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[Deprecation]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[Deregistration]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[Registration]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[Unassignment]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[VStage]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[base].Member[Version]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[config].Member[EnrichmentConfig]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[config].Member[EnrichmentReader]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[constants].Member[Shortcut]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[ext].Member[EnrichmentInfo]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[ext].Member[EnrichmentReader]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[Artifact]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[BaseIndexManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[BaseManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[BaseRegistryState]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[EnrichmentEvent]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[EnrichmentInfo]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[EnrichmentManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[EnrichmentReader]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[FileIndexManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[GTOEnrichment]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[GTOInfo]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[Index]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[index].Member[RepoIndexManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[Assignment]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[BaseEvent]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[BaseRegistryState]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[Deprecation]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[Deregistration]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[EnrichmentManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[GitRegistry]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[Registration]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[TagArtifactManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[TagStageManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[TagVersionManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[registry].Member[Unassignment]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[Artifact]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[Assignment]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[BaseManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[BaseRegistryState]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[Deprecation]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[Deregistration]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[Registration]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[TagArtifactManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[TagManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[TagStageManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[TagVersionManager]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - gto
+    - Member[tag].Member[Unassignment]

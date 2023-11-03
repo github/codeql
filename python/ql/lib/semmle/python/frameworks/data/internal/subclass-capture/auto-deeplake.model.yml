@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - deeplake
+    - Member[visualizer].Member[video_streaming].Member[Flask]
+  - - flask.Flask~Subclass
+    - deeplake
+    - Member[visualizer].Member[visualizer].Member[Flask]
+  - - flask.Response~Subclass
+    - deeplake
+    - Member[visualizer].Member[video_streaming].Member[Response]
+  - - flask.Response~Subclass
+    - deeplake
+    - Member[visualizer].Member[visualizer].Member[Response]
+  - - io.StringIO~Subclass
+    - deeplake
+    - Member[core].Member[compression].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - deeplake
+    - Member[core].Member[query].Member[autocomplete].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - deeplake
+    - Member[core].Member[sample].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - deeplake
+    - Member[core].Member[storage].Member[google_drive].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - deeplake
+    - Member[integrations].Member[pytorch].Member[shuffle_buffer].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - deeplake
+    - Member[util].Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - deeplake
+    - Member[util].Member[object_3d].Member[ply_readers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - deeplake
+    - Member[util].Member[object_3d].Member[ply_readers].Member[StringIO]
+  - - pickle~Alias
+    - deeplake
+    - Member[core].Member[storage].Member[gcs].Member[pickle]
+  - - pickle~Alias
+    - deeplake
+    - Member[core].Member[storage].Member[google_drive].Member[pickle]
+  - - pickle~Alias
+    - deeplake
+    - Member[util].Member[version_control].Member[pickle]

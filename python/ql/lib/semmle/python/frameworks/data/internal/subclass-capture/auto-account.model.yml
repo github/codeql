@@ -4,21 +4,111 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - account
+    - Member[forms].Member[PasswordField]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[urls].Member[ChangePasswordView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[urls].Member[ConfirmEmailView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[urls].Member[DeleteView]
   - - Django.Views.View~Subclass
     - account
     - Member[urls].Member[InviteUserView]
   - - Django.Views.View~Subclass
     - account
+    - Member[urls].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[urls].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[urls].Member[PasswordResetTokenView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[urls].Member[PasswordResetView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[urls].Member[SettingsView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[urls].Member[SignupView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[ChangePasswordView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[ConfirmEmailView]
+  - - Django.Views.View~Subclass
+    - account
     - Member[views].Member[CreateView]
   - - Django.Views.View~Subclass
     - account
+    - Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - account
     - Member[views].Member[InviteUserView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[PasswordResetTokenView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[PasswordResetView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[SettingsView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[SignupView]
+  - - Django.Views.View~Subclass
+    - account
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[admin].Member[AccountDeletion]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[admin].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[admin].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[admin].Member[PasswordExpiry]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[admin].Member[PasswordHistory]
   - - Django.db.models.Model~Subclass
     - account
     - Member[admin].Member[SignupCodeExtended]
   - - Django.db.models.Model~Subclass
     - account
+    - Member[admin].Member[SignupCode]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[auth_backends].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - account
     - Member[compat].Member[User]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[context_processors].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[forms].Member[EmailAddress]
   - - Django.db.models.Model~Subclass
     - account
     - Member[forms].Member[SignupCodeExtended]
@@ -27,16 +117,124 @@ extensions:
     - Member[forms].Member[SignupCode]
   - - Django.db.models.Model~Subclass
     - account
+    - Member[management].Member[commands].Member[expunge_deleted].Member[AccountDeletion]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[management].Member[commands].Member[user_password_expiry].Member[PasswordExpiry]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[management].Member[commands].Member[user_password_history].Member[PasswordHistory]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[middleware].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[AccountDeletion]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[EmailConfirmation]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[PasswordExpiry]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[PasswordHistory]
+  - - Django.db.models.Model~Subclass
+    - account
     - Member[models].Member[SignupCodeExtended]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[SignupCodeResult]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[models].Member[SignupCode]
   - - Django.db.models.Model~Subclass
     - account
     - Member[models].Member[Site]
   - - Django.db.models.Model~Subclass
     - account
+    - Member[utils].Member[PasswordHistory]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[views].Member[AccountDeletion]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[views].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[views].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[views].Member[EmailConfirmation]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[views].Member[PasswordHistory]
+  - - Django.db.models.Model~Subclass
+    - account
     - Member[views].Member[SignupCodeExtended]
+  - - Django.db.models.Model~Subclass
+    - account
+    - Member[views].Member[SignupCode]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[forms].Member[ChangePasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[forms].Member[LoginEmailForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[forms].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[forms].Member[LoginUsernameForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[forms].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[forms].Member[PasswordResetTokenForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[forms].Member[SettingsForm]
   - - django.forms.BaseForm~Subclass
     - account
     - Member[forms].Member[SignupCodeForm]
   - - django.forms.BaseForm~Subclass
     - account
+    - Member[forms].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[views].Member[ChangePasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[views].Member[LoginUsernameForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[views].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[views].Member[PasswordResetTokenForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[views].Member[SettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - account
     - Member[views].Member[SignupCodeForm]
+  - - django.forms.BaseForm~Subclass
+    - account
+    - Member[views].Member[SignupForm]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - account
+    - Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - account
+    - Member[middleware].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - account
+    - Member[utils].Member[HttpResponseRedirect]

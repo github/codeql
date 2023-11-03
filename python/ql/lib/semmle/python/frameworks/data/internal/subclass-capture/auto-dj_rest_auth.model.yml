@@ -6,10 +6,103 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - dj_rest_auth
+    - Member[registration].Member[urls].Member[RegisterView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[urls].Member[ResendEmailVerificationView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[urls].Member[VerifyEmailView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
     - Member[registration].Member[views].Member[ConfirmEmailView]
   - - Django.Views.View~Subclass
     - dj_rest_auth
+    - Member[registration].Member[views].Member[CreateAPIView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[GenericAPIView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[ListAPIView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[RegisterView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[ResendEmailVerificationView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[SocialAccountDisconnectView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[SocialAccountListView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[SocialConnectView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[SocialLoginView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[VerifyEmailView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[urls].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[urls].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[urls].Member[PasswordChangeView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[urls].Member[PasswordResetConfirmView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[urls].Member[PasswordResetView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
     - Member[urls].Member[TokenVerifyView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[urls].Member[UserDetailsView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[views].Member[GenericAPIView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[views].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[views].Member[PasswordChangeView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[views].Member[PasswordResetConfirmView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[views].Member[PasswordResetView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[views].Member[RetrieveUpdateAPIView]
+  - - Django.Views.View~Subclass
+    - dj_rest_auth
+    - Member[views].Member[UserDetailsView]
   - - Django.db.models.Model~Subclass
     - dj_rest_auth
     - Member[models].Member[DefaultTokenModel]
@@ -34,3 +127,36 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - dj_rest_auth
     - Member[serializers].Member[AllAuthPasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - dj_rest_auth
+    - Member[serializers].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - dj_rest_auth
+    - Member[serializers].Member[SetPasswordForm]
+  - - django.http.request.HttpRequest~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[serializers].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - dj_rest_auth
+    - Member[social_serializers].Member[HttpRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[serializers].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - dj_rest_auth
+    - Member[views].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[NotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - dj_rest_auth
+    - Member[serializers].Member[ValidationError]
+  - - rest_framework.response.Response~Subclass
+    - dj_rest_auth
+    - Member[registration].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - dj_rest_auth
+    - Member[views].Member[Response]

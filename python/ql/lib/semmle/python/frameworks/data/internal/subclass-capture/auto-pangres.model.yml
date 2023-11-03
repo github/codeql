@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - sqlalchemy.engine.Connection~Subclass
+    - pangres
+    - Member[upsert_query].Member[Connection]
+  - - sqlalchemy.engine.Engine~Subclass
+    - pangres
+    - Member[examples].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - pangres
+    - Member[pangres_types].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - pangres
+    - Member[transaction].Member[Engine]

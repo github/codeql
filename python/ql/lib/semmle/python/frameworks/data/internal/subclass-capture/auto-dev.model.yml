@@ -9,6 +9,9 @@ extensions:
     - Member[myapp].Member[views].Member[BSModalCreateView]
   - - Django.Views.View~Subclass
     - dev
+    - Member[myapp].Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - dev
     - Member[myapp].Member[views].Member[EventListView]
   - - Django.Views.View~Subclass
     - dev
@@ -16,9 +19,33 @@ extensions:
   - - Django.Views.View~Subclass
     - dev
     - Member[myapp].Member[views].Member[FilterView]
+  - - Django.Views.View~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[ModalIndexTemplateView]
+  - - Django.Views.View~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - dev
+    - Member[myapp].Member[forms].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - dev
+    - Member[myapp].Member[models].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[Event]
   - - django.forms.BaseForm~Subclass
     - dev
     - Member[myapp].Member[forms].Member[BSModalModelForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[forms].Member[CustomForm]
   - - django.forms.BaseForm~Subclass
     - dev
     - Member[myapp].Member[forms].Member[CustomInputTemplateToDoForm]
@@ -27,16 +54,40 @@ extensions:
     - Member[myapp].Member[forms].Member[EventModalModelForm]
   - - django.forms.BaseForm~Subclass
     - dev
+    - Member[myapp].Member[forms].Member[ToDoForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
     - Member[myapp].Member[views].Member[BaseForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[CustomForm]
   - - django.forms.BaseForm~Subclass
     - dev
     - Member[myapp].Member[views].Member[CustomInputTemplateToDoForm]
   - - django.forms.BaseForm~Subclass
     - dev
     - Member[myapp].Member[views].Member[EventModalModelForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[ToDoForm]
+  - - django.http.request.HttpRequest~Subclass
+    - dev
+    - Member[myapp].Member[views].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - dev
+    - Member[mysite].Member[context_processors].Member[HttpRequest]
   - - django.http.response.HttpResponseRedirect~Subclass
     - dev
     - Member[myapp].Member[views].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponse~Subclass
     - dev
+    - Member[myapp].Member[urls].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - dev
     - Member[myapp].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - dev
+    - Member[mysite].Member[urls].Member[HttpResponse]

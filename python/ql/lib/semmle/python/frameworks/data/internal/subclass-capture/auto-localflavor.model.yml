@@ -1,0 +1,765 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ar].Member[forms].Member[ARCBUField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ar].Member[forms].Member[ARCUITField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ar].Member[forms].Member[ARDNIField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ar].Member[forms].Member[ARPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ar].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ar].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[at].Member[forms].Member[ATSocialSecurityNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[at].Member[forms].Member[ATZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[at].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[at].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[au].Member[forms].Member[AUBusinessNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[au].Member[forms].Member[AUCompanyNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[au].Member[forms].Member[AUPostCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[au].Member[forms].Member[AUTaxFileNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[au].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[au].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[be].Member[forms].Member[BEPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[be].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[br].Member[forms].Member[BRCNPJField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[br].Member[forms].Member[BRCPFField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[br].Member[forms].Member[BRProcessoField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[br].Member[forms].Member[BRStateChoiceField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[br].Member[forms].Member[BRZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[br].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[by].Member[forms].Member[BYPassIdNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[by].Member[forms].Member[BYPassNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[by].Member[forms].Member[BYPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[by].Member[models].Member[BYPassIdNumberFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[by].Member[models].Member[BYPassNumberFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[by].Member[models].Member[BYPostalCodeFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ca].Member[forms].Member[CAPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ca].Member[forms].Member[CAProvinceField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ca].Member[forms].Member[CASocialInsuranceNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ca].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ca].Member[models].Member[CAPostalCodeFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ca].Member[models].Member[CASocialInsuranceNumberFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ch].Member[forms].Member[CHIdentityCardNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ch].Member[forms].Member[CHSocialSecurityNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ch].Member[forms].Member[CHZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ch].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ch].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cl].Member[forms].Member[CLRutField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cl].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cn].Member[forms].Member[CNIDCardField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cn].Member[forms].Member[CNPostCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[co].Member[forms].Member[CONITField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[co].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cu].Member[forms].Member[CUIdentityCardNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cu].Member[forms].Member[CUPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cu].Member[forms].Member[CUProvinceField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cu].Member[forms].Member[CURegionField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cu].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cu].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cu].Member[models].Member[CUIdentityCardNumberFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cu].Member[models].Member[CUPostalCodeFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cz].Member[forms].Member[CZBirthNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cz].Member[forms].Member[CZICNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cz].Member[forms].Member[CZPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cz].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[cz].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[de].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[de].Member[forms].Member[DEIdentityCardNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[de].Member[forms].Member[DEZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[de].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[dk].Member[forms].Member[DKPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ee].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ee].Member[forms].Member[EEBusinessRegistryCode]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ee].Member[forms].Member[EEPersonalIdentificationCode]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ee].Member[forms].Member[EEZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ee].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[eg].Member[forms].Member[EGNationalIDNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[eg].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[es].Member[forms].Member[ESCCCField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[es].Member[forms].Member[ESIdentityCardNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[es].Member[forms].Member[ESPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[es].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[es].Member[models].Member[ESIdentityCardNumberFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[es].Member[models].Member[ESPostalCodeFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fi].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fi].Member[forms].Member[FISocialSecurityNumber]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fi].Member[forms].Member[FIZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fi].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fr].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fr].Member[forms].Member[FRDepartmentField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fr].Member[forms].Member[FRNationalIdentificationNumber]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fr].Member[forms].Member[FRRNAField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fr].Member[forms].Member[FRRegionField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fr].Member[forms].Member[FRSIRENField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fr].Member[forms].Member[FRSIRETField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fr].Member[forms].Member[FRZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[fr].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[gb].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[gb].Member[forms].Member[GBPostcodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[generic].Member[forms].Member[BICFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[generic].Member[forms].Member[DateField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[generic].Member[forms].Member[DateTimeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[generic].Member[forms].Member[IBANFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[generic].Member[forms].Member[SplitDateTimeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[generic].Member[models].Member[BICFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[generic].Member[models].Member[IBANFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[gr].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[gr].Member[forms].Member[GRPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[gr].Member[forms].Member[GRSocialSecurityNumberCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[gr].Member[forms].Member[GRTaxNumberCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[gr].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[hr].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[hr].Member[forms].Member[HRJMBAGField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[hr].Member[forms].Member[HRJMBGField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[hr].Member[forms].Member[HRLicensePlateField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[hr].Member[forms].Member[HROIBField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[hr].Member[forms].Member[HRPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[hr].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[id_].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[id_].Member[forms].Member[IDLicensePlateField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[id_].Member[forms].Member[IDNationalIdentityNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[id_].Member[forms].Member[IDPostCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ie].Member[forms].Member[EircodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ie].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[il].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[il].Member[forms].Member[ILIDNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[il].Member[forms].Member[ILPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[il].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[in_].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[in_].Member[forms].Member[INAadhaarNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[in_].Member[forms].Member[INPANCardNumberFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[in_].Member[forms].Member[INStateField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[in_].Member[forms].Member[INZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[in_].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[in_].Member[models].Member[INPANCardNumberFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ir].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ir].Member[forms].Member[IRIDNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ir].Member[forms].Member[IRPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ir].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[is_].Member[forms].Member[ISIdNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[is_].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[it].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[it].Member[forms].Member[ITSocialSecurityNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[it].Member[forms].Member[ITVatNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[it].Member[forms].Member[ITZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[it].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[jp].Member[forms].Member[JPPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[jp].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[kw].Member[forms].Member[KWCivilIDNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[kw].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[lt].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[lt].Member[forms].Member[LTIDCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[lt].Member[forms].Member[LTPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[lt].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[lv].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[lv].Member[forms].Member[LVPersonalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[lv].Member[forms].Member[LVPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ma].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ma].Member[forms].Member[MAPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ma].Member[forms].Member[MAProvinceField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ma].Member[forms].Member[MARegionField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ma].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[md].Member[forms].Member[MDIDNOField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[md].Member[forms].Member[MDLicensePlateField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mk].Member[forms].Member[MKIdentityCardNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mk].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mk].Member[forms].Member[UMCNField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mk].Member[models].Member[MKIdentityCardNumberFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mk].Member[models].Member[UMCNFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mt].Member[forms].Member[MTPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mt].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[forms].Member[MXCLABEField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[forms].Member[MXCURPField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[forms].Member[MXRFCField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[forms].Member[MXSocialSecurityNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[forms].Member[MXZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[models].Member[MXCLABEFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[models].Member[MXCURPFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[models].Member[MXRFCFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[models].Member[MXSocialSecurityNumberFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[mx].Member[models].Member[MXZipCodeFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[my].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[my].Member[forms].Member[MyKadFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[nl].Member[forms].Member[NLBSNFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[nl].Member[forms].Member[NLLicensePlateFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[nl].Member[forms].Member[NLZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[no].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[no].Member[forms].Member[NOBankAccountNumber]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[no].Member[forms].Member[NOSocialSecurityNumber]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[no].Member[forms].Member[NOZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[no].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[np].Member[forms].Member[NPPostalCodeFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[np].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[np].Member[models].Member[NPPostalCodeFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[nz].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[nz].Member[forms].Member[NZBankAccountNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[nz].Member[forms].Member[NZPostCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[nz].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pe].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pe].Member[forms].Member[PEDNIField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pe].Member[forms].Member[PERUCField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pk].Member[forms].Member[PKPostCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pk].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pl].Member[forms].Member[PLNIPField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pl].Member[forms].Member[PLNationalIDCardNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pl].Member[forms].Member[PLPESELField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pl].Member[forms].Member[PLPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pl].Member[forms].Member[PLREGONField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pl].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pt].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pt].Member[forms].Member[PTCitizenCardNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pt].Member[forms].Member[PTSocialSecurityNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pt].Member[forms].Member[PTZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[pt].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ro].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ro].Member[forms].Member[ROCIFField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ro].Member[forms].Member[ROCNPField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ro].Member[forms].Member[ROCountyField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ro].Member[forms].Member[ROPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ro].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ru].Member[forms].Member[RUAlienPassportNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ru].Member[forms].Member[RUPassportNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ru].Member[forms].Member[RUPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ru].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[se].Member[forms].Member[SEOrganisationNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[se].Member[forms].Member[SEPersonalIdentityNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[se].Member[forms].Member[SEPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[sg].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[sg].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[sg].Member[forms].Member[SGNRICFINField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[sg].Member[forms].Member[SGPostCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[si].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[si].Member[forms].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[si].Member[forms].Member[SIEMSOField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[si].Member[forms].Member[SIPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[si].Member[forms].Member[SITaxNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[sk].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[sk].Member[forms].Member[SKPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[tr].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[tr].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[tr].Member[forms].Member[TRIdentificationNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[tr].Member[forms].Member[TRPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ua].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ua].Member[forms].Member[UAPostalCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[ua].Member[forms].Member[UAVatNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[us].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[us].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[us].Member[forms].Member[USSocialSecurityNumberField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[us].Member[forms].Member[USStateField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[us].Member[forms].Member[USZipCodeField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[us].Member[models].Member[USSocialSecurityNumberFieldFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[us].Member[models].Member[USZipCodeFormField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[uy].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[uy].Member[forms].Member[UYCIField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[za].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[za].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[za].Member[forms].Member[ZAIDField]
+  - - Django.Forms.Field~Subclass
+    - localflavor
+    - Member[za].Member[forms].Member[ZAPostCodeField]

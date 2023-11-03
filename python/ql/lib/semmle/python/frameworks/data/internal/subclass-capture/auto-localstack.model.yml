@@ -1,0 +1,78 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - localstack
+    - Member[dashboard].Member[api].Member[Flask]
+  - - flask.Flask~Subclass
+    - localstack
+    - Member[services].Member[awslambda].Member[lambda_api].Member[Flask]
+  - - flask.Flask~Subclass
+    - localstack
+    - Member[services].Member[dynamodbstreams].Member[dynamodbstreams_api].Member[Flask]
+  - - flask.Flask~Subclass
+    - localstack
+    - Member[services].Member[es].Member[es_api].Member[Flask]
+  - - flask.Flask~Subclass
+    - localstack
+    - Member[services].Member[firehose].Member[firehose_api].Member[Flask]
+  - - flask.Flask~Subclass
+    - localstack
+    - Member[utils].Member[cloudwatch].Member[cloudwatch_util].Member[Flask]
+  - - flask.Response~Subclass
+    - localstack
+    - Member[services].Member[awslambda].Member[lambda_api].Member[Response]
+  - - flask.Response~Subclass
+    - localstack
+    - Member[utils].Member[cloudwatch].Member[cloudwatch_util].Member[Response]
+  - - io.StringIO~Subclass
+    - localstack
+    - Member[dashboard].Member[infra].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - localstack
+    - Member[services].Member[awslambda].Member[lambda_api].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - localstack
+    - Member[services].Member[dynamodb].Member[dynamodb_listener].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - localstack
+    - Member[services].Member[infra].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - localstack
+    - Member[utils].Member[aws].Member[aws_stack].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - localstack
+    - Member[utils].Member[common].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - localstack
+    - Member[utils].Member[kinesis].Member[kinesis_connector].Member[BytesIO]
+  - - requests.models.Response~Subclass
+    - localstack
+    - Member[services].Member[apigateway].Member[apigateway_listener].Member[Response]
+  - - requests.models.Response~Subclass
+    - localstack
+    - Member[services].Member[cloudformation].Member[cloudformation_listener].Member[Response]
+  - - requests.models.Response~Subclass
+    - localstack
+    - Member[services].Member[dynamodb].Member[dynamodb_listener].Member[Response]
+  - - requests.models.Response~Subclass
+    - localstack
+    - Member[services].Member[es].Member[es_api].Member[Response]
+  - - requests.models.Response~Subclass
+    - localstack
+    - Member[services].Member[generic_proxy].Member[Response]
+  - - requests.models.Response~Subclass
+    - localstack
+    - Member[services].Member[kinesis].Member[kinesis_listener].Member[Response]
+  - - requests.models.Response~Subclass
+    - localstack
+    - Member[services].Member[s3].Member[s3_listener].Member[Response]
+  - - requests.models.Response~Subclass
+    - localstack
+    - Member[services].Member[sns].Member[sns_listener].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - localstack
+    - Member[services].Member[s3].Member[s3_listener].Member[ET]

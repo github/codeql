@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - markupsafe.Markup~Subclass
+    - mkdocs
+    - Member[utils].Member[templates].Member[Markup]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - mkdocs
+    - Member[commands].Member[build].Member[LiveReloadServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - mkdocs
+    - Member[commands].Member[serve].Member[LiveReloadServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - mkdocs
+    - Member[livereload].Member[LiveReloadServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - mkdocs
+    - Member[livereload]Member[LiveReloadServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - mkdocs
+    - Member[plugins].Member[LiveReloadServer]
+  - - xml.etree.ElementTree~Subclass
+    - mkdocs
+    - Member[structure].Member[pages].Member[etree]

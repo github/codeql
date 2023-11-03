@@ -4,6 +4,96 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[blackboard].Member[urls].Member[BlackboardConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[blackboard].Member[urls].Member[BlackboardGlobalConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[blackboard].Member[views].Member[BlackboardConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[blackboard].Member[views].Member[BlackboardGlobalConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[canvas].Member[urls].Member[CanvasConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[canvas].Member[views].Member[CanvasConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[cornerstone].Member[urls].Member[CornerstoneConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[cornerstone].Member[views].Member[CornerstoneConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[degreed2].Member[urls].Member[Degreed2ConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[degreed2].Member[views].Member[Degreed2ConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[degreed].Member[urls].Member[DegreedConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[degreed].Member[views].Member[DegreedConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[ContentSyncStatusViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[LearnerSyncStatusViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[moodle].Member[urls].Member[MoodleConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[moodle].Member[views].Member[MoodleConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[sap_success_factors].Member[urls].Member[SAPSuccessFactorsConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[sap_success_factors].Member[views].Member[SAPSuccessFactorsConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[urls].Member[IntegratedChannelHealthCheckView]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[urls].Member[IntegratedChannelsBaseViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[IntegratedChannelHealthCheckView]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[IntegratedChannelsBaseViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[urls].Member[BlackboardCompleteOAuthView]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[views].Member[BlackboardCompleteOAuthView]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[canvas].Member[urls].Member[CanvasCompleteOAuthView]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[canvas].Member[views].Member[CanvasCompleteOAuthView]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[urls].Member[CornerstoneCoursesListView]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[views].Member[BaseViewSet]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[views].Member[CornerstoneCoursesListView]
+  - - Django.Views.View~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[exporters].Member[content_metadata].Member[CourseEnrollmentView]
   - - Django.db.models.Model~Subclass
     - integrated_channels
     - Member[api].Member[serializers].Member[EnterpriseCustomerPluginConfiguration]
@@ -82,6 +172,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - integrated_channels
     - Member[api].Member[v1].Member[logs].Member[views].Member[LearnerDataTransmissionAudit]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[mixins].Member[SystemWideEnterpriseUserRoleAssignment]
   - - Django.db.models.Model~Subclass
     - integrated_channels
     - Member[api].Member[v1].Member[moodle].Member[serializers].Member[MoodleEnterpriseCustomerConfiguration]
@@ -187,6 +280,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - integrated_channels
     - Member[cornerstone].Member[models].Member[ConfigurationModel]
+  - - Django.db.models.Model~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[models].Member[CornerstoneCourseKey]
   - - Django.db.models.Model~Subclass
     - integrated_channels
     - Member[cornerstone].Member[models].Member[CornerstoneEnterpriseCustomerConfiguration]
@@ -487,3 +583,66 @@ extensions:
   - - Django.db.models.Model~Subclass
     - integrated_channels
     - Member[xapi].Member[models].Member[XAPILearnerDataTransmissionAudit]
+  - - django.forms.BaseForm~Subclass
+    - integrated_channels
+    - Member[moodle].Member[admin].Member[MoodleEnterpriseCustomerConfigurationForm]
+  - - django.forms.BaseForm~Subclass
+    - integrated_channels
+    - Member[moodle].Member[admin]Member[MoodleEnterpriseCustomerConfigurationForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - integrated_channels
+    - Member[canvas].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - integrated_channels
+    - Member[degreed2].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - integrated_channels
+    - Member[degreed].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - integrated_channels
+    - Member[moodle].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - integrated_channels
+    - Member[sap_success_factors].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - integrated_channels
+    - Member[xapi].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[views].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[BaseReportingSyncStatusException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[InvalidChannelCodeException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[InvalidSortByParamException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[mixins].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - integrated_channels
+    - Member[blackboard].Member[views].Member[NotFound]
+  - - rest_framework.response.Response~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[logs].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - integrated_channels
+    - Member[api].Member[v1].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - integrated_channels
+    - Member[cornerstone].Member[views].Member[Response]

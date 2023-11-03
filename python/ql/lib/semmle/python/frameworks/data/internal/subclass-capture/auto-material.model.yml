@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - material
+    - Member[admin].Member[options].Member[SplitDateTimeField]
+  - - Django.Views.View~Subclass
+    - material
+    - Member[admin].Member[sites].Member[ThemesView]
+  - - Django.Views.View~Subclass
+    - material
+    - Member[admin].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - material
+    - Member[admin].Member[views].Member[ThemesView]
+  - - io.StringIO~Subclass
+    - material
+    - Member[plugins].Member[info].Member[plugin].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - material
+    - Member[plugins].Member[social].Member[plugin].Member[BytesIO]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - rename_forward
+    - Member[admin].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - rename_forward
+    - Member[forms].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - rename_forward
+    - Member[models].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - rename_forward
+    - Member[urls].Member[TModel]
+  - - django.forms.BaseForm~Subclass
+    - rename_forward
+    - Member[admin].Member[TForm]
+  - - django.forms.BaseForm~Subclass
+    - rename_forward
+    - Member[forms].Member[TForm]

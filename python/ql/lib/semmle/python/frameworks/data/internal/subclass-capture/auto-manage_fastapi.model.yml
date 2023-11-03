@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - manage_fastapi
+    - Member[context].Member[AppContext]
+  - - pydantic.BaseModel~Subclass
+    - manage_fastapi
+    - Member[context].Member[ProjectContext]
+  - - pydantic.BaseModel~Subclass
+    - manage_fastapi
+    - Member[generator].Member[AppContext]
+  - - pydantic.BaseModel~Subclass
+    - manage_fastapi
+    - Member[generator].Member[ProjectContext]
+  - - pydantic.BaseModel~Subclass
+    - manage_fastapi
+    - Member[main].Member[AppContext]
+  - - pydantic.BaseModel~Subclass
+    - manage_fastapi
+    - Member[main].Member[ProjectContext]

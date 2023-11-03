@@ -1,0 +1,288 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[__main__].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[imports].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[imports].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[ConstraintsBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[base].Member[BaseClassDataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[base].Member[ConstraintsBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[base].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[base].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[base].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[base].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[base].Member[_BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[dataclass].Member[Constraints]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[dataclass].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[dataclass].Member[DataModelField]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[dataclass].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[dataclass].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[enum].Member[BaseClassDataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[enum].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[enum].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[enum].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[enum].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[imports].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[msgspec].Member[Constraints]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[msgspec].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[msgspec].Member[DataModelField]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[msgspec].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[msgspec].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[msgspec].Member[_Constraints]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[DataModelField]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[base_model].Member[ConstraintsBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[base_model].Member[Constraints]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[base_model].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[base_model].Member[DataModelField]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[base_model].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[base_model].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[dataclass].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[imports].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic].Member[types].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic]Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2].Member[DataModelField]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2].Member[base_model].Member[Constraints]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2].Member[base_model].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2].Member[base_model].Member[DataModelFieldV1]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2].Member[base_model].Member[DataModelField]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2].Member[base_model].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2].Member[base_model].Member[_Constraints]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2].Member[imports].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2].Member[types].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[pydantic_v2]Member[ConfigDict]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[typed_dict].Member[DataModelFieldBackport]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[typed_dict].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[typed_dict].Member[DataModelField]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[typed_dict].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[typed_dict].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[model].Member[types].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[base].Member[BaseClassDataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[base].Member[ConstraintsBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[base].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[base].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[base].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[base].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[base].Member[Result]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[base].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[jsonschema].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[jsonschema].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[jsonschema].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[jsonschema].Member[Discriminator]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[jsonschema].Member[EmptyDataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[jsonschema].Member[JsonSchemaObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[jsonschema].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[jsonschema].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[ComponentsObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[DataModelFieldBase]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[EmptyDataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[ExampleObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[HeaderObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[JsonSchemaObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[MediaObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[ParameterObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[ReferenceObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[RequestBodyObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[parser].Member[openapi].Member[ResponseObject]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[reference].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[reference].Member[_BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[types].Member[DataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[types].Member[EmptyDataType]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[types].Member[Import]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[types].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[types].Member[_BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - datamodel_code_generator
+    - Member[util].Member[BaseModel]

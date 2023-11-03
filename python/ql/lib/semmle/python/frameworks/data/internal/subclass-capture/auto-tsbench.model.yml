@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - tsbench
+    - Member[analysis].Member[tracking].Member[experiment].Member[BytesIO]
+  - - pickle~Alias
+    - tsbench
+    - Member[analysis].Member[tracking].Member[experiment].Member[pickle]
+  - - pickle~Alias
+    - tsbench
+    - Member[evaluations].Member[tracking].Member[ensemble].Member[pickle]
+  - - pickle~Alias
+    - tsbench
+    - Member[evaluations].Member[tracking].Member[model].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - tsbench
+    - Member[config].Member[dataset].Member[_base].Member[MetaData]
+  - - pydantic.BaseModel~Subclass
+    - tsbench
+    - Member[config].Member[dataset].Member[sources].Member[MetaData]
+  - - pydantic.BaseModel~Subclass
+    - tsbench
+    - Member[config].Member[model].Member[models].Member[Constant]
+  - - pydantic.BaseModel~Subclass
+    - tsbench
+    - Member[forecasts].Member[owa].Member[MetaData]

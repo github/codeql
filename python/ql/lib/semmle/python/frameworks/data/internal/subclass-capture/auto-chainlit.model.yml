@@ -1,0 +1,57 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - chainlit
+    - Member[element].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[client].Member[base].Member[ConversationFilter]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[client].Member[base].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[client].Member[cloud].Member[ConversationFilter]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[client].Member[cloud].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[playground].Member[CompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[playground].Member[provider].Member[CompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[server].Member[CompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[server].Member[DeleteConversationRequest]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[server].Member[GetConversationsRequest]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[server].Member[UpdateFeedbackRequest]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[types].Member[CompletionRequest]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[types].Member[ConversationFilter]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[types].Member[DeleteConversationRequest]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[types].Member[GetConversationsRequest]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[types].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - chainlit
+    - Member[types].Member[UpdateFeedbackRequest]

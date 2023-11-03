@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - people
+    - Member[urls].Member[IdentityViewSet]
+  - - Django.Views.View~Subclass
+    - people
+    - Member[urls].Member[PersonViewSet]
+  - - Django.Views.View~Subclass
+    - people
+    - Member[views].Member[IdentityViewSet]
+  - - Django.Views.View~Subclass
+    - people
+    - Member[views].Member[PersonViewSet]
+  - - Django.db.models.Model~Subclass
+    - people
+    - Member[models].Member[Identity]
+  - - Django.db.models.Model~Subclass
+    - people
+    - Member[models].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - people
+    - Member[serializers].Member[Identity]
+  - - Django.db.models.Model~Subclass
+    - people
+    - Member[serializers].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - people
+    - Member[views].Member[Identity]
+  - - Django.db.models.Model~Subclass
+    - people
+    - Member[views].Member[Person]

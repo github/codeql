@@ -1,0 +1,84 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - stanza
+    - Member[pipeline].Member[demo].Member[demo_server].Member[Flask]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - stanza
+    - Member[server].Member[annotator].Member[BaseHTTPRequestHandler]
+  - - io.StringIO~Subclass
+    - stanza
+    - Member[models].Member[constituency].Member[parse_tree].Member[StringIO]
+  - - io.StringIO~Subclass
+    - stanza
+    - Member[protobuf].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - stanza
+    - Member[utils].Member[visualization].Member[semgrex_app].Member[StringIO]
+  - - lxml.etree~Alias
+    - stanza
+    - Member[utils].Member[datasets].Member[ner].Member[convert_nkjp].Member[etree]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[common].Member[doc].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[common].Member[vocab].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[depparse].Member[data].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[identity_lemmatizer].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[lemma].Member[data].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[lemmatizer].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[ner].Member[data].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[ner_tagger].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[parser].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[pos].Member[build_xpos_vocab_factory].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[pos].Member[data].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[tagger].Member[pickle]
+  - - pickle~Alias
+    - stanza
+    - Member[models].Member[tokenization].Member[utils].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - stanza
+    - Member[utils].Member[datasets].Member[constituency].Member[convert_arboretum].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - stanza
+    - Member[utils].Member[datasets].Member[constituency].Member[convert_cintil].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - stanza
+    - Member[utils].Member[datasets].Member[constituency].Member[convert_ctb].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - stanza
+    - Member[utils].Member[datasets].Member[ner].Member[convert_nkjp].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - stanza
+    - Member[utils].Member[datasets].Member[sentiment].Member[process_arguana_xml].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - stanza
+    - Member[utils].Member[datasets].Member[sentiment].Member[process_ren_chinese].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - stanza
+    - Member[utils].Member[datasets].Member[tokenization].Member[convert_th_orchid].Member[ET]

@@ -6,4 +6,19 @@ extensions:
   data:
   - - django.http.request.HttpRequest~Subclass
     - django_browser_reload
+    - Member[middleware].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django_browser_reload
     - Member[views].Member[ASGIRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django_browser_reload
+    - Member[views].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - django_browser_reload
+    - Member[middleware].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_browser_reload
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - django_browser_reload
+    - Member[views].Member[StreamingHttpResponse]

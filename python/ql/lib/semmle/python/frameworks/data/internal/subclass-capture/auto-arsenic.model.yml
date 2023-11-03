@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - arsenic
+    - Member[connection].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - arsenic
+    - Member[services].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - arsenic
+    - Member[connection].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - arsenic
+    - Member[session].Member[BytesIO]

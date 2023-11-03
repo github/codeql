@@ -1,0 +1,612 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[handlers].Member[yaml].Member[ruamel_handler].Member[StringIO]
+  - - io.StringIO~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[tools].Member[StringIO]
+  - - io.StringIO~Subclass
+    - demisto_sdk
+    - Member[commands].Member[download].Member[downloader].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - demisto_sdk
+    - Member[commands].Member[download].Member[downloader].Member[StringIO]
+  - - io.StringIO~Subclass
+    - demisto_sdk
+    - Member[commands].Member[generate_modeling_rules].Member[generate_modeling_rules].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[docker_helper].Member[DockerImagesMetadata]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[docker_images_metadata].Member[DockerImageTagMetadata]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[docker_images_metadata].Member[DockerImagesMetadata]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[hook_validations].Member[graph_validator].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[native_image].Member[IgnoredContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[native_image].Member[NativeImageConfig]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[native_image].Member[NativeImage]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[content_graph_builder].Member[ContentDTO]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[graph].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[graph].Member[ContentDTO]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[graph].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[graph].Member[Pack]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[neo4j].Member[neo4j_graph].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[neo4j].Member[neo4j_graph].Member[Integration]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[neo4j].Member[neo4j_graph].Member[Pack]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[neo4j].Member[neo4j_graph].Member[RelationshipData]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[neo4j].Member[neo4j_graph].Member[UnknownContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Classifier]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[CorrelationRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Dashboard]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[GenericDefinition]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[GenericField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[GenericModule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[GenericType]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[IncidentField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[IncidentType]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[IndicatorField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[IndicatorType]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Integration]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Job]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[LayoutRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Layout]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[List]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Mapper]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[ModelingRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Pack]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[ParsingRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Playbook]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[PreProcessRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[RelationshipData]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Report]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Script]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Trigger]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Widget]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[Wizard]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[XDRCTemplate]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[XSIAMDashboard]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[XSIAMReport]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[base_content].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[base_content].Member[RelationshipData]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[base_content].Member[UnknownContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[classifier].Member[Classifier]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[classifier].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[content_item].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[content_item].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[content_item].Member[Pack]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[content_item].Member[RelationshipData]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[content_item_xsiam].Member[ContentItemXSIAM]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[content_item_xsiam].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[correlation_rule].Member[ContentItemXSIAM]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[correlation_rule].Member[CorrelationRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[dashboard].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[dashboard].Member[Dashboard]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[exceptions].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[generic_definition].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[generic_definition].Member[GenericDefinition]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[generic_field].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[generic_field].Member[GenericField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[generic_module].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[generic_module].Member[GenericModule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[generic_type].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[generic_type].Member[GenericType]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[incident_field].Member[IncidentField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[incident_field].Member[IndicatorIncidentField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[incident_type].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[incident_type].Member[IncidentType]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[indicator_field].Member[IndicatorField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[indicator_field].Member[IndicatorIncidentField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[indicator_incident_field].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[indicator_incident_field].Member[IndicatorIncidentField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[indicator_type].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[indicator_type].Member[IndicatorType]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[integration].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[integration].Member[Command]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[integration].Member[IntegrationScript]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[integration].Member[Integration]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[integration].Member[Script]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[integration_script].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[integration_script].Member[IntegrationScript]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[integration_script].Member[NativeImageConfig]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[job].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[job].Member[Job]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[layout].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[layout].Member[Layout]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[layout_rule].Member[ContentItemXSIAM]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[layout_rule].Member[LayoutRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[list].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[list].Member[List]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[mapper].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[mapper].Member[Mapper]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[modeling_rule].Member[ContentItemXSIAM]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[modeling_rule].Member[ModelingRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack].Member[PackContentItems]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack].Member[PackMetadata]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack].Member[Pack]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack].Member[RelationshipData]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Classifier]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[CorrelationRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Dashboard]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[GenericDefinition]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[GenericField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[GenericModule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[GenericType]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[IncidentField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[IncidentType]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[IndicatorField]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[IndicatorType]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Integration]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Job]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[LayoutRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Layout]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[ListObject]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Mapper]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[ModelingRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[PackContentItems]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[ParsingRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Playbook]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[PreProcessRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Report]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Script]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Trigger]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Widget]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[Wizard]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[XDRCTemplate]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[XSIAMDashboard]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_content_items].Member[XSIAMReport]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_metadata].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_metadata].Member[PackContentItems]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_metadata].Member[PackMetadata]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pack_metadata].Member[RelationshipData]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[parsing_rule].Member[ContentItemXSIAM]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[parsing_rule].Member[ParsingRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[playbook].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[playbook].Member[Playbook]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pre_process_rule].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[pre_process_rule].Member[PreProcessRule]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[relationship].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[relationship].Member[RelationshipData]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[report].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[report].Member[Report]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[repository].Member[ContentDTO]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[repository].Member[Pack]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[script].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[script].Member[IntegrationScript]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[script].Member[Script]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[trigger].Member[ContentItemXSIAM]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[trigger].Member[Trigger]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[widget].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[widget].Member[Widget]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[wizard].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[wizard].Member[Wizard]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[xdrc_template].Member[ContentItemXSIAM]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[xdrc_template].Member[XDRCTemplate]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[xsiam_dashboard].Member[ContentItemXSIAM]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[xsiam_dashboard].Member[XSIAMDashboard]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[xsiam_report].Member[ContentItemXSIAM]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[objects].Member[xsiam_report].Member[XSIAMReport]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[format].Member[update_layout].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[format].Member[update_layout].Member[Layout]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[format].Member[update_layout].Member[UnknownContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[format].Member[update_mapper].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[format].Member[update_mapper].Member[Mapper]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[format].Member[update_mapper].Member[UnknownContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[generate_docs].Member[generate_script_doc].Member[Script]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[init].Member[contribution_converter].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[init].Member[contribution_converter].Member[IntegrationScript]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[lint].Member[linter].Member[NativeImageConfig]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[pre_commit].Member[pre_commit_command].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[pre_commit].Member[pre_commit_command].Member[IntegrationScript]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[prepare_content].Member[prepare_upload_manager].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[prepare_content].Member[prepare_upload_manager].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[prepare_content].Member[prepare_upload_manager].Member[Pack]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[prepare_content].Member[preparers].Member[incident_to_alert].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[prepare_content].Member[preparers].Member[marketplace_incident_to_alert_playbooks_prepare].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[upload].Member[exceptions].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[upload].Member[exceptions].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[upload].Member[upload].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[upload].Member[upload].Member[ContentDTO]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[upload].Member[upload].Member[Pack]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[upload].Member[uploader].Member[BaseContent]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[upload].Member[uploader].Member[ContentItem]
+  - - pydantic.BaseModel~Subclass
+    - demisto_sdk
+    - Member[commands].Member[upload].Member[uploader].Member[Pack]
+  - - requests.models.Response~Subclass
+    - demisto_sdk
+    - Member[commands].Member[common].Member[errors].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - demisto_sdk
+    - Member[commands].Member[content_graph].Member[interface].Member[neo4j].Member[import_utils].Member[ET]

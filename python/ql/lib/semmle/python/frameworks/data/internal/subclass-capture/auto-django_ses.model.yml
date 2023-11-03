@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_ses
+    - Member[urls].Member[DashboardView]
+  - - Django.Views.View~Subclass
+    - django_ses
+    - Member[views].Member[DashboardView]
+  - - Django.Views.View~Subclass
+    - django_ses
+    - Member[views].Member[SESEventWebhookView]
+  - - Django.Views.View~Subclass
+    - django_ses
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - django_ses
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - django_ses
+    - Member[admin].Member[SESStat]
+  - - Django.db.models.Model~Subclass
+    - django_ses
+    - Member[management].Member[commands].Member[get_ses_statistics].Member[SESStat]
+  - - Django.db.models.Model~Subclass
+    - django_ses
+    - Member[models].Member[SESStat]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - django_ses
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - django_ses
+    - Member[views].Member[HttpResponse]

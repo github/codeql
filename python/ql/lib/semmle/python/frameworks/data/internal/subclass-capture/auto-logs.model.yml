@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - logs
+    - Member[views].Member[ContentSyncStatusViewSet]
+  - - Django.Views.View~Subclass
+    - logs
+    - Member[views].Member[LearnerSyncStatusViewSet]
   - - Django.db.models.Model~Subclass
     - logs
     - Member[serializers].Member[BlackboardLearnerDataTransmissionAudit]
@@ -43,3 +49,18 @@ extensions:
   - - Django.db.models.Model~Subclass
     - logs
     - Member[views].Member[LearnerDataTransmissionAudit]
+  - - django.http.response.HttpResponse~Subclass
+    - logs
+    - Member[views].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - logs
+    - Member[views].Member[BaseReportingSyncStatusException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - logs
+    - Member[views].Member[InvalidChannelCodeException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - logs
+    - Member[views].Member[InvalidSortByParamException]
+  - - rest_framework.response.Response~Subclass
+    - logs
+    - Member[views].Member[Response]

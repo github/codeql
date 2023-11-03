@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - django.http.response.HttpResponse~Subclass
+    - exceptions_hog
+    - Member[handler].Member[Response]
   - - rest_framework.response.Response~Subclass
     - exceptions_hog
     - Member[handler].Member[Response]

@@ -4,15 +4,84 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - avatar
+    - Member[api].Member[urls].Member[AvatarViewSets]
+  - - Django.Views.View~Subclass
+    - avatar
+    - Member[api].Member[views].Member[AvatarViewSets]
+  - - Django.db.models.Model~Subclass
+    - avatar
+    - Member[admin].Member[Avatar]
   - - Django.db.models.Model~Subclass
     - avatar
     - Member[admin].Member[Orglogo]
   - - Django.db.models.Model~Subclass
     - avatar
+    - Member[api].Member[apps].Member[Avatar]
+  - - Django.db.models.Model~Subclass
+    - avatar
+    - Member[api].Member[serializers].Member[Avatar]
+  - - Django.db.models.Model~Subclass
+    - avatar
+    - Member[api].Member[signals].Member[Avatar]
+  - - Django.db.models.Model~Subclass
+    - avatar
+    - Member[api].Member[views].Member[Avatar]
+  - - Django.db.models.Model~Subclass
+    - avatar
+    - Member[forms].Member[Avatar]
+  - - Django.db.models.Model~Subclass
+    - avatar
+    - Member[management].Member[commands].Member[rebuild_avatars].Member[Avatar]
+  - - Django.db.models.Model~Subclass
+    - avatar
+    - Member[models].Member[Avatar]
+  - - Django.db.models.Model~Subclass
+    - avatar
     - Member[models].Member[Orglogo]
   - - Django.db.models.Model~Subclass
     - avatar
+    - Member[templatetags].Member[avatar_tags].Member[Avatar]
+  - - Django.db.models.Model~Subclass
+    - avatar
     - Member[templatetags].Member[avatar_tags].Member[Orglogo]
+  - - Django.db.models.Model~Subclass
+    - avatar
+    - Member[views].Member[Avatar]
+  - - django.db.models.FileField~Subclass
+    - avatar
+    - Member[models].Member[AvatarField]
+  - - django.forms.BaseForm~Subclass
+    - avatar
+    - Member[forms].Member[DeleteAvatarForm]
+  - - django.forms.BaseForm~Subclass
+    - avatar
+    - Member[forms].Member[PrimaryAvatarForm]
+  - - django.forms.BaseForm~Subclass
+    - avatar
+    - Member[forms].Member[UploadAvatarForm]
+  - - django.forms.BaseForm~Subclass
+    - avatar
+    - Member[views].Member[DeleteAvatarForm]
+  - - django.forms.BaseForm~Subclass
+    - avatar
+    - Member[views].Member[PrimaryAvatarForm]
+  - - django.forms.BaseForm~Subclass
+    - avatar
+    - Member[views].Member[UploadAvatarForm]
   - - django.http.response.HttpResponseRedirect~Subclass
     - avatar
     - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - avatar
+    - Member[api].Member[views].Member[Response]
+  - - io.StringIO~Subclass
+    - avatar
+    - Member[models].Member[BytesIO]
+  - - rest_framework.exceptions.APIException~Subclass
+    - avatar
+    - Member[api].Member[views].Member[ValidationError]
+  - - rest_framework.response.Response~Subclass
+    - avatar
+    - Member[api].Member[views].Member[Response]

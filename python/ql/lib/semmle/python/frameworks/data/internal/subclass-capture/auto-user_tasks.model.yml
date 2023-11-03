@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - user_tasks
+    - Member[urls].Member[ArtifactViewSet]
+  - - Django.Views.View~Subclass
+    - user_tasks
+    - Member[urls].Member[StatusViewSet]
+  - - Django.Views.View~Subclass
+    - user_tasks
+    - Member[views].Member[ArtifactViewSet]
+  - - Django.Views.View~Subclass
+    - user_tasks
+    - Member[views].Member[StatusViewSet]
   - - Django.db.models.Model~Subclass
     - user_tasks
     - Member[admin].Member[UserTaskArtifact]
@@ -37,3 +49,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - user_tasks
     - Member[views].Member[UserTaskStatus]
+  - - django.http.response.HttpResponse~Subclass
+    - user_tasks
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - user_tasks
+    - Member[views].Member[Response]

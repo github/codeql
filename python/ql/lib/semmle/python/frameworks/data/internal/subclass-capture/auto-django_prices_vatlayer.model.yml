@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_prices_vatlayer
+    - Member[admin].Member[VAT]
+  - - Django.db.models.Model~Subclass
+    - django_prices_vatlayer
+    - Member[models].Member[RateTypes]
+  - - Django.db.models.Model~Subclass
+    - django_prices_vatlayer
+    - Member[models].Member[VAT]
+  - - Django.db.models.Model~Subclass
+    - django_prices_vatlayer
+    - Member[utils].Member[RateTypes]
+  - - Django.db.models.Model~Subclass
+    - django_prices_vatlayer
+    - Member[utils].Member[VAT]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - bitfield
+    - Member[forms].Member[BitFormField]
+  - - Django.Forms.Field~Subclass
+    - bitfield
+    - Member[forms].Member[IntegerField]
+  - - Django.Forms.Field~Subclass
+    - bitfield
+    - Member[models].Member[BitFormField]

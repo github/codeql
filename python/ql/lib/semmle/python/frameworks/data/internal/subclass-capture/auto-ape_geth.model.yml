@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[GethDev]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[GethProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[BaseGethProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[GethDev]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[Geth]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[SourceTraceback]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[SubprocessProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[TraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[UpstreamProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[provider].Member[Web3Provider]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[query].Member[BaseGethProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[query].Member[ContractCreationQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape_geth
+    - Member[query].Member[ReceiptAPI]

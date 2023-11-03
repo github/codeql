@@ -4,6 +4,66 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - django_unicorn
+    - Member[components].Member[UnicornView]
+  - - Django.Views.View~Subclass
+    - django_unicorn
+    - Member[components].Member[unicorn_view].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - django_unicorn
+    - Member[components].Member[unicorn_view].Member[UnicornView]
+  - - Django.Views.View~Subclass
+    - django_unicorn
+    - Member[views].Member[UnicornView]
+  - - Django.Views.View~Subclass
+    - django_unicorn
+    - Member[views].Member[action_parsers].Member[call_method].Member[UnicornView]
+  - - Django.Views.View~Subclass
+    - django_unicorn
+    - Member[views].Member[action_parsers].Member[sync_input].Member[UnicornView]
+  - - Django.Views.View~Subclass
+    - django_unicorn
+    - Member[views].Member[action_parsers].Member[utils].Member[UnicornView]
+  - - Django.Views.View~Subclass
+    - django_unicorn
+    - Member[views].Member[utils].Member[UnicornView]
+  - - Django.db.models.Model~Subclass
+    - django_unicorn
+    - Member[components].Member[typing].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_unicorn
+    - Member[components].Member[unicorn_view].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_unicorn
+    - Member[db].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_unicorn
+    - Member[serializer].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_unicorn
+    - Member[views].Member[action_parsers].Member[call_method].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - django_unicorn
+    - Member[views].Member[utils].Member[Model]
+  - - django.http.request.HttpRequest~Subclass
+    - django_unicorn
+    - Member[components].Member[unicorn_view].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django_unicorn
+    - Member[utils].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django_unicorn
+    - Member[views].Member[HttpRequest]
+  - - django.http.response.HttpResponseNotModified~Subclass
+    - django_unicorn
+    - Member[views].Member[HttpResponseNotModified]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_unicorn
+    - Member[components].Member[updaters].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_unicorn
+    - Member[views].Member[objects].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponse~Subclass
     - django_unicorn
     - Member[components].Member[unicorn_template_response].Member[TemplateResponse]
@@ -13,3 +73,12 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - django_unicorn
     - Member[components].Member[unicorn_view].Member[UnicornTemplateResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - django_unicorn
+    - Member[views].Member[JsonResponse]
+  - - pickle~Alias
+    - django_unicorn
+    - Member[components].Member[unicorn_view].Member[pickle]
+  - - pickle~Alias
+    - django_unicorn
+    - Member[utils].Member[pickle]

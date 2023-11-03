@@ -9,7 +9,157 @@ extensions:
     - Member[config].Member[SiteIndexView]
   - - Django.Views.View~Subclass
     - sample
+    - Member[urls].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - sample
+    - Member[views].Member[ContinentListView]
+  - - Django.Views.View~Subclass
+    - sample
+    - Member[views].Member[ContinentView]
+  - - Django.Views.View~Subclass
+    - sample
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - sample
+    - Member[views].Member[SampleFormView]
+  - - Django.Views.View~Subclass
+    - sample
     - Member[views].Member[SiteIndexView]
   - - Django.Views.View~Subclass
     - sample
     - Member[views].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[admin].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[admin].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[admin].Member[City]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[admin].Member[Continent]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[admin].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[admin].Member[Library]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[admin].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[admin].Member[Timezone]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[forms].Member[SampleModel]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Assignment]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[BackCover]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[BookSaleTag]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[BookTag]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[City]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[CloneModel]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Continent]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Cover]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Edition]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Editor]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Ending]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Furniture]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[House]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Library]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Room]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[SaleTag]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[SampleModel]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Sentence]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Timezone]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[models].Member[Translatable]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[serializers].Member[City]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[serializers].Member[Continent]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[serializers].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[signals].Member[Edition]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[utils].Member[City]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[utils].Member[Continent]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[utils].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - sample
+    - Member[views].Member[Continent]
+  - - django.forms.BaseForm~Subclass
+    - sample
+    - Member[forms].Member[SampleForm]
+  - - django.forms.BaseForm~Subclass
+    - sample
+    - Member[views].Member[SampleForm]

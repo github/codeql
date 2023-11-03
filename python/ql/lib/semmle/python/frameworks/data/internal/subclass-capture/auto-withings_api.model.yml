@@ -1,0 +1,108 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[Credentials2]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[HeartGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[HeartListResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[MeasureGetActivityResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[MeasureGetMeasResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[NotifyGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[NotifyListResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[SleepGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[SleepGetSummaryResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[UserGetDeviceResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[ConfiguredBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[Credentials2]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[GetSleepSummaryData]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[GetSleepSummarySerie]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[HeartBloodPressure]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[HeartGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[HeartListECG]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[HeartListResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[HeartListSerie]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[MeasureGetActivityActivity]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[MeasureGetActivityResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[MeasureGetMeasGroup]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[MeasureGetMeasMeasure]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[MeasureGetMeasResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[NotifyGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[NotifyListProfile]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[NotifyListResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[SleepGetResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[SleepGetSerie]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[SleepGetSummaryResponse]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[SleepGetTimestampValue]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[UserGetDeviceDevice]
+  - - pydantic.BaseModel~Subclass
+    - withings_api
+    - Member[common].Member[UserGetDeviceResponse]
+  - - requests.models.Response~Subclass
+    - withings_api
+    - Member[Response]

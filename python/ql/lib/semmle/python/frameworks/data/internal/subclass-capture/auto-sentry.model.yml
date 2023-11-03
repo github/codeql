@@ -21,6 +21,9 @@ extensions:
     - Member[models].Member[MessageFilterValue]
   - - Django.db.models.Model~Subclass
     - sentry
+    - Member[models].Member[MessageIndex]
+  - - Django.db.models.Model~Subclass
+    - sentry
     - Member[models].Member[Message]
   - - Django.db.models.Model~Subclass
     - sentry

@@ -10,6 +10,21 @@ extensions:
   - - Django.Forms.Field~Subclass
     - djangocms_icon
     - Member[forms].Member[IconField]
+  - - Django.db.models.Model~Subclass
+    - djangocms_icon
+    - Member[cms_plugins].Member[Icon]
+  - - Django.db.models.Model~Subclass
+    - djangocms_icon
+    - Member[forms].Member[Icon]
+  - - Django.db.models.Model~Subclass
+    - djangocms_icon
+    - Member[models].Member[AbstractIcon]
+  - - Django.db.models.Model~Subclass
+    - djangocms_icon
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_icon
+    - Member[models].Member[Icon]
   - - django.forms.BaseForm~Subclass
     - djangocms_icon
     - Member[cms_plugins].Member[IconForm]

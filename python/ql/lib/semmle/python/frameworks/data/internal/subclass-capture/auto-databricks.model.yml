@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPResponse~Subclass
+    - databricks
+    - Member[sql].Member[auth].Member[thrift_http_client].Member[HTTPResponse]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - databricks
+    - Member[sdk].Member[oauth].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - databricks
+    - Member[sdk].Member[oauth].Member[_OAuthCallback]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - databricks
+    - Member[sql].Member[auth].Member[oauth].Member[OAuthHttpSingleRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - databricks
+    - Member[sql].Member[auth].Member[oauth_http_handler].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - databricks
+    - Member[sql].Member[auth].Member[oauth_http_handler].Member[OAuthHttpSingleRequestHandler]
+  - - io.StringIO~Subclass
+    - databricks
+    - Member[sql].Member[auth].Member[thrift_http_client].Member[BytesIO]
+  - - sqlalchemy.engine.Engine~Subclass
+    - databricks
+    - Member[sqlalchemy].Member[base].Member[Engine]
+  - - urllib3.PoolManager~Subclass
+    - databricks
+    - Member[sql].Member[auth].Member[thrift_http_client].Member[HTTPConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - databricks
+    - Member[sql].Member[auth].Member[thrift_http_client].Member[HTTPSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - databricks
+    - Member[sql].Member[auth].Member[thrift_http_client].Member[ProxyManager]

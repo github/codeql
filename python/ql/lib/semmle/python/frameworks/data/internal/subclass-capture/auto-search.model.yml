@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.db.models.Model~Subclass
+    - search
+    - Member[views].Member[Page]
   - - django.http.response.HttpResponse~Subclass
     - search
     - Member[views].Member[TemplateResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - search
+    - Member[views].Member[JsonResponse]
+  - - requests.models.Response~Subclass
+    - search
+    - Member[v1].Member[api].Member[Response]
+  - - requests.models.Response~Subclass
+    - search
+    - Member[v2].Member[api].Member[Response]

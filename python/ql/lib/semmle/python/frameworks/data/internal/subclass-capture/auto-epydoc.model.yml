@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle.load~Alias
+    - epydoc
+    - Member[gui].Member[load]
+  - - pickle~Alias
+    - epydoc
+    - Member[apidoc].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[checker].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[cli].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[docbuilder].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[docintrospecter].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[docparser].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[docstringparser].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[docwriter].Member[dotgraph].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[docwriter].Member[html].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[docwriter].Member[html_colorize].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[docwriter].Member[latex].Member[pickle]
+  - - pickle~Alias
+    - epydoc
+    - Member[docwriter].Member[plaintext].Member[pickle]

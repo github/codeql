@@ -4,6 +4,81 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - strawberry
+    - Member[django].Member[views].Member[AsyncGraphQLView]
+  - - Django.Views.View~Subclass
+    - strawberry
+    - Member[django].Member[views].Member[GraphQLView]
+  - - Django.Views.View~Subclass
+    - strawberry
+    - Member[django].Member[views].Member[View]
+  - - django.http.request.HttpRequest~Subclass
+    - strawberry
+    - Member[django].Member[context].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - strawberry
+    - Member[django].Member[views].Member[HttpRequest]
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - strawberry
+    - Member[django].Member[views].Member[HttpResponseNotAllowed]
+  - - django.http.response.HttpResponse~Subclass
+    - strawberry
+    - Member[django].Member[context].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - strawberry
+    - Member[django].Member[views].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - strawberry
     - Member[django].Member[views].Member[TemplateResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - strawberry
+    - Member[django].Member[views].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - strawberry
+    - Member[django].Member[views].Member[TemporalHttpResponse]
+  - - fastapi.APIRouter~Subclass
+    - strawberry
+    - Member[fastapi].Member[GraphQLRouter]
+  - - fastapi.APIRouter~Subclass
+    - strawberry
+    - Member[fastapi].Member[router].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - strawberry
+    - Member[fastapi].Member[router].Member[GraphQLRouter]
+  - - flask.Response~Subclass
+    - strawberry
+    - Member[flask].Member[views].Member[Response]
+  - - flask.View~Subclass
+    - strawberry
+    - Member[flask].Member[views].Member[AsyncGraphQLView]
+  - - flask.View~Subclass
+    - strawberry
+    - Member[flask].Member[views].Member[GraphQLView]
+  - - flask.View~Subclass
+    - strawberry
+    - Member[flask].Member[views].Member[View]
+  - - io.StringIO~Subclass
+    - strawberry
+    - Member[aiohttp].Member[views].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - strawberry
+    - Member[channels].Member[handlers].Member[http_handler].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - strawberry
+    - Member[sanic].Member[utils].Member[BytesIO]
+  - - starlette.websockets.WebSocket~Subclass
+    - strawberry
+    - Member[asgi].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - strawberry
+    - Member[asgi].Member[handlers].Member[graphql_transport_ws_handler].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - strawberry
+    - Member[asgi].Member[handlers].Member[graphql_ws_handler].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - strawberry
+    - Member[fastapi].Member[context].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - strawberry
+    - Member[fastapi].Member[router].Member[WebSocket]

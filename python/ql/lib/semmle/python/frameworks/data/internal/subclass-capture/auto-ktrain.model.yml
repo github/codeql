@@ -1,0 +1,168 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - ktrain
+    - Member[core].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[dataset].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[graph].Member[data].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[graph].Member[learner].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[graph].Member[models].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[graph].Member[predictor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[graph].Member[preprocessor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[graph].Member[sg_wrappers].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[imports].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[lroptimize].Member[lrfinder].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[lroptimize].Member[sgdr].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[lroptimize].Member[triangular].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[models].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[predictor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[preprocessor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[tabular].Member[data].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[tabular].Member[dataset].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[tabular].Member[models].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[tabular].Member[predictor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[tabular].Member[preprocessor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[data].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[dataset].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[eda].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[learner].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[models].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[anago].Member[callbacks].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[anago].Member[layers].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[anago].Member[layers_standalone].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[anago].Member[models].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[anago].Member[preprocessing].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[anago].Member[tagger].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[anago].Member[trainer].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[anago].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[anago].Member[wrapper].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[data].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[dataset].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[learner].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[models].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[predictor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[ner].Member[preprocessor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[predictor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[preprocessor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[qa].Member[extractive_qa].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[qa].Member[generative_qa].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[textextractor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[textutils].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[text].Member[translation].Member[core].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[utils].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[vision].Member[data].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[vision].Member[learner].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[vision].Member[models].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[vision].Member[predictor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[vision].Member[preprocessor].Member[pickle]
+  - - pickle~Alias
+    - ktrain
+    - Member[vision].Member[wrn].Member[pickle]

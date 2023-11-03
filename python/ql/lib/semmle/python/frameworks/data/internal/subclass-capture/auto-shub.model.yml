@@ -7,3 +7,6 @@ extensions:
   - - io.StringIO~Subclass
     - shub
     - Member[bootstrap].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - shub
+    - Member[migrate_eggs].Member[BytesIO]

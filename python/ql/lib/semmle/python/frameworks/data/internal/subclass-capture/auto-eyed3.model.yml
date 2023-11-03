@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - eyed3
+    - Member[id3].Member[frames].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - eyed3
+    - Member[main].Member[StringIO]
+  - - io.StringIO~Subclass
+    - eyed3
+    - Member[mimetype].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - eyed3
+    - Member[utils].Member[log].Member[Logger]

@@ -6,6 +6,9 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - wagtailmedia
+    - Member[blocks].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - wagtailmedia
     - Member[forms].Member[CollectionChoiceField]
   - - Django.Views.View~Subclass
     - wagtailmedia
@@ -15,10 +18,40 @@ extensions:
     - Member[api].Member[views].Member[MediaAPIViewSet]
   - - Django.db.models.Model~Subclass
     - wagtailmedia
+    - Member[admin].Member[Media]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[edit_handlers].Member[AbstractMedia]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[forms].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[forms].Member[Media]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[models].Member[AbstractMedia]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
     - Member[models].Member[CollectionMember]
   - - Django.db.models.Model~Subclass
     - wagtailmedia
+    - Member[models].Member[Media]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
     - Member[models].Member[ReferenceIndex]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[permissions].Member[Media]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[utils].Member[AbstractMedia]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[views].Member[chooser].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - wagtailmedia
+    - Member[views].Member[media].Member[Collection]
   - - Django.db.models.Model~Subclass
     - wagtailmedia
     - Member[views].Member[media].Member[Page]

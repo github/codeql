@@ -7,3 +7,6 @@ extensions:
   - - io.StringIO~Subclass
     - behave
     - Member[capture].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - behave
+    - Member[reporter].Member[junit].Member[ElementTree]

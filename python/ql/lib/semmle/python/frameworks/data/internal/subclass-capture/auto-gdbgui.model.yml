@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - gdbgui
+    - Member[server].Member[http_routes].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - gdbgui
+    - Member[server].Member[app].Member[Flask]
+  - - flask.Response~Subclass
+    - gdbgui
+    - Member[server].Member[http_routes].Member[Response]
+  - - flask.Response~Subclass
+    - gdbgui
+    - Member[server].Member[http_util].Member[Response]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - telegram
+    - Member[_bot].Member[pickle]
+  - - pickle~Alias
+    - telegram
+    - Member[ext].Member[_picklepersistence].Member[pickle]
+  - - tornado.web.Application~Subclass
+    - telegram
+    - Member[ext].Member[_updater].Member[WebhookAppClass]
+  - - tornado.web.Application~Subclass
+    - telegram
+    - Member[ext].Member[_utils].Member[webhookhandler].Member[WebhookAppClass]
+  - - tornado.web.RequestHandler~Subclass
+    - telegram
+    - Member[ext].Member[_utils].Member[webhookhandler].Member[TelegramHandler]

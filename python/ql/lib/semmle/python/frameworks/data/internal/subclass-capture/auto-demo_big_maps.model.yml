@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_big_maps
+    - Member[handlers].Member[on_update_expiry_map].Member[StoreExpiryMapKey]
+  - - pydantic.BaseModel~Subclass
+    - demo_big_maps
+    - Member[handlers].Member[on_update_expiry_map].Member[StoreExpiryMapValue]
+  - - pydantic.BaseModel~Subclass
+    - demo_big_maps
+    - Member[handlers].Member[on_update_records].Member[StoreRecordsKey]
+  - - pydantic.BaseModel~Subclass
+    - demo_big_maps
+    - Member[handlers].Member[on_update_records].Member[StoreRecordsValue]
+  - - pydantic.BaseModel~Subclass
+    - demo_big_maps
+    - Member[types].Member[name_registry].Member[tezos_big_maps].Member[store_expiry_map_key].Member[StoreExpiryMapKey]
+  - - pydantic.BaseModel~Subclass
+    - demo_big_maps
+    - Member[types].Member[name_registry].Member[tezos_big_maps].Member[store_expiry_map_value].Member[StoreExpiryMapValue]
+  - - pydantic.BaseModel~Subclass
+    - demo_big_maps
+    - Member[types].Member[name_registry].Member[tezos_big_maps].Member[store_records_key].Member[StoreRecordsKey]
+  - - pydantic.BaseModel~Subclass
+    - demo_big_maps
+    - Member[types].Member[name_registry].Member[tezos_big_maps].Member[store_records_value].Member[StoreRecordsValue]

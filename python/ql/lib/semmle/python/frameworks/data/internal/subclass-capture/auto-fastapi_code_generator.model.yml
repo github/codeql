@@ -15,6 +15,12 @@ extensions:
     - Member[__main__].Member[Reference]
   - - pydantic.BaseModel~Subclass
     - fastapi_code_generator
+    - Member[parser].Member[Argument]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[CachedPropertyModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
     - Member[parser].Member[DataModelFieldBase]
   - - pydantic.BaseModel~Subclass
     - fastapi_code_generator
@@ -33,6 +39,9 @@ extensions:
     - Member[parser].Member[MediaObject]
   - - pydantic.BaseModel~Subclass
     - fastapi_code_generator
+    - Member[parser].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
     - Member[parser].Member[ParameterObject]
   - - pydantic.BaseModel~Subclass
     - fastapi_code_generator
@@ -42,7 +51,13 @@ extensions:
     - Member[parser].Member[RequestBodyObject]
   - - pydantic.BaseModel~Subclass
     - fastapi_code_generator
+    - Member[parser].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
     - Member[parser].Member[ResponseObject]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[parser].Member[Response]
   - - pydantic.BaseModel~Subclass
     - fastapi_code_generator
     - Member[visitors].Member[imports].Member[DataType]
@@ -52,3 +67,6 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - fastapi_code_generator
     - Member[visitors].Member[imports].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_code_generator
+    - Member[visitors].Member[operations].Member[Operation]

@@ -1,0 +1,78 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - clients
+    - Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[AsyncGraph]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[AsyncProxy]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[AsyncRemote]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[AsyncResource]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[Client]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[Graph]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[Proxy]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[Remote]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[Resource]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[aio].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[aio].Member[AsyncGraph]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[aio].Member[AsyncProxy]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[aio].Member[AsyncRemote]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[aio].Member[AsyncResource]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[aio].Member[Graph]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[aio].Member[Proxy]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[aio].Member[Remote]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[aio].Member[Resource]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[base].Member[Client]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[base].Member[Graph]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[base].Member[Proxy]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[base].Member[Remote]
+  - - httpx.Client~Subclass
+    - clients
+    - Member[base].Member[Resource]

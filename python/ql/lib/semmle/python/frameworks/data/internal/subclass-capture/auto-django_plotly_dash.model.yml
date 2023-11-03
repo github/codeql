@@ -4,6 +4,36 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.db.models.Model~Subclass
+    - django_plotly_dash
+    - Member[admin].Member[DashApp]
+  - - Django.db.models.Model~Subclass
+    - django_plotly_dash
+    - Member[admin].Member[StatelessApp]
+  - - Django.db.models.Model~Subclass
+    - django_plotly_dash
+    - Member[models].Member[DashApp]
+  - - Django.db.models.Model~Subclass
+    - django_plotly_dash
+    - Member[models].Member[StatelessApp]
+  - - Django.db.models.Model~Subclass
+    - django_plotly_dash
+    - Member[templatetags].Member[plotly_dash].Member[DashApp]
+  - - Django.db.models.Model~Subclass
+    - django_plotly_dash
+    - Member[views].Member[DashApp]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_plotly_dash
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - django_plotly_dash
+    - Member[views].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - django_plotly_dash
     - Member[views].Member[TemplateResponse]
+  - - flask.Flask~Subclass
+    - django_plotly_dash
+    - Member[dash_wrapper].Member[Flask]
+  - - flask.Flask~Subclass
+    - django_plotly_dash
+    - Member[dash_wrapper].Member[PseudoFlask]

@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - multiupload
+    - Member[fields].Member[MultiFileField]
+  - - Django.Forms.Field~Subclass
+    - multiupload
+    - Member[fields].Member[MultiImageField]
+  - - Django.Forms.Field~Subclass
+    - multiupload
+    - Member[fields].Member[MultiMediaField]
+  - - Django.Forms.Field~Subclass
+    - multiupload
+    - Member[fields].Member[MultiUploadMetaField]

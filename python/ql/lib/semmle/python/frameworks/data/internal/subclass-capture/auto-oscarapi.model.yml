@@ -1,0 +1,183 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[order].Member[OrderAdminDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[order].Member[OrderAdminList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[order].Member[OrderLineAdminDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[order].Member[OrderLineAdminList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[order].Member[OrderLineAttributeAdminDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[partner].Member[PartnerDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[partner].Member[PartnerList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[partner].Member[StockRecordDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[AttributeOptionGroupAdminDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[AttributeOptionGroupAdminList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[CategoryAdminDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[CategoryAdminList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[ProductAdminDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[ProductAdminList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[ProductAttributeAdminDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[ProductAttributeAdminList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[ProductClassAdminDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[ProductClassAdminList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[user].Member[UserAdminDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[user].Member[UserAdminList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basic].Member[BasketDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basic].Member[BasketList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basic].Member[CountryDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basic].Member[CountryList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basic].Member[LineAttributeDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basic].Member[OptionDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basic].Member[OptionList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basic].Member[RangeDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basic].Member[RangeList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basket].Member[AddProductView]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basket].Member[AddVoucherView]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basket].Member[BasketLineDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basket].Member[BasketView]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basket].Member[LineList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[basket].Member[ShippingMethodView]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[checkout].Member[CheckoutView]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[checkout].Member[OrderDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[checkout].Member[OrderLineAttributeDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[checkout].Member[OrderLineDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[checkout].Member[OrderLineList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[checkout].Member[OrderList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[checkout].Member[UserAddressDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[checkout].Member[UserAddressList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[login].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[login].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[login].Member[UserDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[product].Member[CategoryDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[product].Member[CategoryList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[product].Member[ProductAvailability]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[product].Member[ProductDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[product].Member[ProductList]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[product].Member[ProductPrice]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[product].Member[ProductStockRecordDetail]
+  - - Django.Views.View~Subclass
+    - oscarapi
+    - Member[views].Member[product].Member[ProductStockRecords]
+  - - Django.db.models.Model~Subclass
+    - oscarapi
+    - Member[models].Member[ApiKey]
+  - - django.http.response.HttpResponse~Subclass
+    - oscarapi
+    - Member[middleware].Member[HttpResponse]
+  - - rest_framework.exceptions.APIException~Subclass
+    - oscarapi
+    - Member[serializers].Member[admin].Member[product].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - oscarapi
+    - Member[utils].Member[categories].Member[NotFound]
+  - - rest_framework.exceptions.APIException~Subclass
+    - oscarapi
+    - Member[views].Member[admin].Member[product].Member[NotFound]

@@ -7,3 +7,24 @@ extensions:
   - - Django.Views.View~Subclass
     - defender
     - Member[middleware].Member[LoginView]
+  - - Django.db.models.Model~Subclass
+    - defender
+    - Member[admin].Member[AccessAttempt]
+  - - Django.db.models.Model~Subclass
+    - defender
+    - Member[data].Member[AccessAttempt]
+  - - Django.db.models.Model~Subclass
+    - defender
+    - Member[management].Member[commands].Member[cleanup_django_defender].Member[AccessAttempt]
+  - - Django.db.models.Model~Subclass
+    - defender
+    - Member[models].Member[AccessAttempt]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - defender
+    - Member[utils].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - defender
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - defender
+    - Member[utils].Member[HttpResponse]

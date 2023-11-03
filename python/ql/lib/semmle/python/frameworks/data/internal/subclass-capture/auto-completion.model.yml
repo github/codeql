@@ -4,6 +4,36 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - completion
+    - Member[api].Member[v1].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - completion
+    - Member[api].Member[v1].Member[views].Member[CompletionBatchView]
+  - - Django.Views.View~Subclass
+    - completion
+    - Member[api].Member[v1].Member[views].Member[SubsectionCompletionView]
+  - - Django.db.models.Model~Subclass
+    - completion
+    - Member[api].Member[v1].Member[views].Member[BlockCompletion]
+  - - Django.db.models.Model~Subclass
+    - completion
+    - Member[handlers].Member[BlockCompletion]
+  - - Django.db.models.Model~Subclass
+    - completion
+    - Member[models].Member[BlockCompletion]
   - - Django.db.models.Model~Subclass
     - completion
     - Member[models].Member[TimeStampedModel]
+  - - Django.db.models.Model~Subclass
+    - completion
+    - Member[services].Member[BlockCompletion]
+  - - Django.db.models.Model~Subclass
+    - completion
+    - Member[utilities].Member[BlockCompletion]
+  - - django.http.response.HttpResponse~Subclass
+    - completion
+    - Member[api].Member[v1].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - completion
+    - Member[api].Member[v1].Member[views].Member[Response]

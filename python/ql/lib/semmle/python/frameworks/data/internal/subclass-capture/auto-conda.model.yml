@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - conda
+    - Member[common].Member[io].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - conda
+    - Member[common].Member[io].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda
+    - Member[common].Member[pkg_formats].Member[python].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda
+    - Member[common].Member[serialize].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda
+    - Member[exports].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda
+    - Member[gateways].Member[connection].Member[adapters].Member[ftp].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - conda
+    - Member[gateways].Member[connection].Member[adapters].Member[ftp].Member[StringIO]
+  - - pickle~Alias
+    - conda
+    - Member[core].Member[subdir_data].Member[pickle]
+  - - requests.models.Response~Subclass
+    - conda
+    - Member[gateways].Member[connection].Member[Response]
+  - - requests.models.Response~Subclass
+    - conda
+    - Member[gateways].Member[connection].Member[adapters].Member[ftp].Member[Response]
+  - - requests.models.Response~Subclass
+    - conda
+    - Member[gateways].Member[connection].Member[adapters].Member[localfs].Member[Response]
+  - - requests.models.Response~Subclass
+    - conda
+    - Member[gateways].Member[connection].Member[adapters].Member[s3].Member[Response]
+  - - requests.models.Response~Subclass
+    - conda
+    - Member[gateways].Member[repodata].Member[Response]
+  - - requests.models.Response~Subclass
+    - conda
+    - Member[gateways].Member[repodata].Member[jlap].Member[fetch].Member[Response]
+  - - urllib3.PoolManager~Subclass
+    - conda
+    - Member[gateways].Member[connection].Member[adapters].Member[http].Member[PoolManager]

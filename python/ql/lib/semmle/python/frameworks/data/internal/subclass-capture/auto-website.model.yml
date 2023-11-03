@@ -24,6 +24,9 @@ extensions:
     - Member[models].Member[CoderedFormField]
   - - Django.db.models.Model~Subclass
     - website
+    - Member[models].Member[CoderedFormPage]
+  - - Django.db.models.Model~Subclass
+    - website
     - Member[models].Member[CoderedWebPage]
   - - Django.db.models.Model~Subclass
     - website
@@ -39,4 +42,13 @@ extensions:
     - Member[models].Member[FormPageField]
   - - Django.db.models.Model~Subclass
     - website
+    - Member[models].Member[FormPage]
+  - - Django.db.models.Model~Subclass
+    - website
     - Member[models].Member[WebPage]
+  - - django.http.response.HttpResponse~Subclass
+    - website
+    - Member[logins].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - website
+    - Member[logins].Member[JsonResponse]

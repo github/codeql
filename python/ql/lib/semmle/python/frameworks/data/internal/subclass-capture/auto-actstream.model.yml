@@ -4,12 +4,54 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[drf].Member[urls].Member[ActionViewSet]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[drf].Member[urls].Member[FollowViewSet]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[drf].Member[views].Member[ActionViewSet]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[drf].Member[views].Member[DefaultModelViewSet]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[drf].Member[views].Member[FollowViewSet]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[feeds].Member[CustomJSONActivityFeed]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[feeds].Member[JSONActivityFeed]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[feeds].Member[ModelJSONActivityFeed]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[feeds].Member[ObjectJSONActivityFeed]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[feeds].Member[UserJSONActivityFeed]
+  - - Django.Views.View~Subclass
+    - actstream
+    - Member[feeds].Member[View]
   - - Django.db.models.Model~Subclass
     - actstream
     - Member[actions].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - actstream
+    - Member[drf].Member[serializers].Member[Action]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[drf].Member[serializers].Member[Follow]
+  - - Django.db.models.Model~Subclass
+    - actstream
     - Member[drf].Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[feeds].Member[Action]
   - - Django.db.models.Model~Subclass
     - actstream
     - Member[feeds].Member[ContentType]
@@ -18,13 +60,55 @@ extensions:
     - Member[feeds].Member[Site]
   - - Django.db.models.Model~Subclass
     - actstream
+    - Member[follows].Member[Follow]
+  - - Django.db.models.Model~Subclass
+    - actstream
     - Member[managers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[managers].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[models].Member[Action]
   - - Django.db.models.Model~Subclass
     - actstream
     - Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - actstream
+    - Member[models].Member[Follow]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[templatetags].Member[activity_tags].Member[Action]
+  - - Django.db.models.Model~Subclass
+    - actstream
     - Member[templatetags].Member[activity_tags].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - actstream
+    - Member[templatetags].Member[activity_tags].Member[Follow]
+  - - Django.db.models.Model~Subclass
+    - actstream
     - Member[views].Member[ContentType]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - actstream
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - actstream
+    - Member[drf].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - actstream
+    - Member[feeds].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - actstream
+    - Member[views].Member[HttpResponse]
+  - - rest_framework.exceptions.APIException~Subclass
+    - actstream
+    - Member[drf].Member[views].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - actstream
+    - Member[drf].Member[views].Member[ModelNotRegistered]
+  - - rest_framework.exceptions.APIException~Subclass
+    - actstream
+    - Member[drf].Member[views].Member[NotFound]
+  - - rest_framework.response.Response~Subclass
+    - actstream
+    - Member[drf].Member[views].Member[Response]

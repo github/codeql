@@ -4,30 +4,141 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[ConfigView]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[ContentTypeViewSet]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[FieldsView]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[FilterFieldViewSet]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[FormatViewSet]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[GenerateReport]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[RelatedFieldsView]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[ReportNestedViewSet]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[ReportViewSet]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[views].Member[DownloadFileView]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[views].Member[ExportToReport]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[views].Member[ReportSPAView]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - report_builder
+    - Member[views].Member[View]
   - - Django.db.models.Model~Subclass
     - report_builder
     - Member[admin].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - report_builder
+    - Member[admin].Member[Format]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[admin].Member[Report]
+  - - Django.db.models.Model~Subclass
+    - report_builder
     - Member[api].Member[serializers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[api].Member[serializers].Member[DisplayField]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[api].Member[serializers].Member[FilterField]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[api].Member[serializers].Member[Format]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[api].Member[serializers].Member[Report]
   - - Django.db.models.Model~Subclass
     - report_builder
     - Member[api].Member[views].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - report_builder
+    - Member[api].Member[views].Member[FilterField]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[Format]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[Report]
+  - - Django.db.models.Model~Subclass
+    - report_builder
     - Member[mixins].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - report_builder
+    - Member[models].Member[AbstractField]
+  - - Django.db.models.Model~Subclass
+    - report_builder
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[models].Member[DisplayField]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[models].Member[FilterField]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[models].Member[Format]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[models].Member[Report]
   - - Django.db.models.Model~Subclass
     - report_builder
     - Member[utils].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - report_builder
     - Member[views].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - report_builder
+    - Member[views].Member[Report]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - report_builder
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - report_builder
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - report_builder
+    - Member[mixins].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - report_builder
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[JsonResponse]
   - - io.StringIO~Subclass
     - report_builder
     - Member[mixins].Member[BytesIO]
   - - io.StringIO~Subclass
     - report_builder
     - Member[mixins].Member[StringIO]
+  - - rest_framework.response.Response~Subclass
+    - report_builder
+    - Member[api].Member[views].Member[Response]

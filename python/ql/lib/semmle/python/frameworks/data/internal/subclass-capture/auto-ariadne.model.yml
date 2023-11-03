@@ -1,0 +1,1194 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - ariadne
+    - Member[service].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - ariadne
+    - Member[asgi].Member[graphql].Member[Logger]
+  - - logging.Logger~Subclass
+    - ariadne
+    - Member[asgi].Member[handlers].Member[base].Member[Logger]
+  - - logging.Logger~Subclass
+    - ariadne
+    - Member[graphql].Member[Logger]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[ActiveFriendMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[ActiveGroupMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[ActiveMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[ActiveTempMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Announcement]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[FileInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[FriendEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[FriendMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[GroupConfig]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[GroupEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[GroupMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[MemberInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[MiraiEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Profile]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Stranger]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[TempMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[app].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[connection].Member[MiraiEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[connection].Member[util].Member[MiraiEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[dispatcher].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[dispatcher].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[dispatcher].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[dispatcher].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[dispatcher].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[dispatcher].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[ActiveFriendMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[ActiveGroupMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[ActiveMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[ActiveStrangerMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[ActiveTempMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Announcement]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[App]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[AriadneBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[AtAll]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[At]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotGroupPermissionChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotInvitedJoinGroupRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotJoinGroupEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotLeaveEventActive]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotLeaveEventKick]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotMuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotOfflineEventActive]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotOfflineEventDropped]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotOfflineEventForce]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotOnlineEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotReloginEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[BotUnmuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[CommandExecutedEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Dice]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[DownloadInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Face]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[FileInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[FlashImage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[ForwardNode]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Forward]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[FriendEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[FriendInputStatusChangedEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[FriendMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[FriendNickChangedEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[FriendRecallEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[FriendSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupAllowAnonymousChatEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupAllowConfessTalkEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupAllowMemberInviteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupConfig]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupEntranceAnnouncementChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupMuteAllEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupNameChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupRecallEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[GroupSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberCardChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberHonorChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberJoinEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberJoinRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberLeaveEventKick]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberLeaveEventQuit]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberMuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberPermissionChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberSpecialTitleChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MemberUnmuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MiraiEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MultimediaElement]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[MusicShare]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[NewFriendRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[NudgeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[OtherClientOfflineEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[OtherClientOnlineEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Plain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Poke]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Profile]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[RequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[StrangerMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[StrangerSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Stranger]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[SyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[TempMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[TempSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[ActiveFriendMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[ActiveGroupMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[ActiveMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[ActiveStrangerMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[ActiveTempMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotGroupPermissionChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotInvitedJoinGroupRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotJoinGroupEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotLeaveEventActive]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotLeaveEventKick]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotMuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotOfflineEventActive]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotOfflineEventDropped]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotOfflineEventForce]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotOnlineEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotReloginEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[BotUnmuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[CommandExecutedEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[FriendEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[FriendInputStatusChangedEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[FriendMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[FriendNickChangedEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[FriendRecallEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[FriendSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupAllowAnonymousChatEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupAllowConfessTalkEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupAllowMemberInviteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupEntranceAnnouncementChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupMuteAllEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupNameChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupRecallEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[GroupSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberCardChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberHonorChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberJoinEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberJoinRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberLeaveEventKick]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberLeaveEventQuit]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberMuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberPermissionChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberSpecialTitleChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MemberUnmuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[MiraiEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[NewFriendRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[NudgeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[OtherClientOfflineEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[OtherClientOnlineEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[RequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[StrangerMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[StrangerSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[SyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[TempMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[event].Member[TempSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[App]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[AtAll]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[At]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Dice]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Face]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[FlashImage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[ForwardNode]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Forward]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[MultimediaElement]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[MusicShare]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Plain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Poke]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[entry].Member[message].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[AriadneBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[MiraiEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[ActiveFriendMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[ActiveGroupMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[ActiveMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[ActiveStrangerMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[ActiveTempMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[FriendEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[FriendMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[FriendSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[GroupEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[GroupMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[GroupSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[MiraiEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[OtherClientMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[StrangerMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[StrangerSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[Stranger]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[SyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[TempMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[message].Member[TempSyncMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotGroupPermissionChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotInvitedJoinGroupRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotJoinGroupEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotLeaveEventActive]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotLeaveEventDisband]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotLeaveEventKick]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotMuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotOfflineEventActive]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotOfflineEventDropped]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotOfflineEventForce]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotOnlineEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotReloginEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[BotUnmuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[CommandExecutedEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[FriendEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[FriendInputStatusChangedEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[FriendNickChangedEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[FriendRecallEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[GroupAllowAnonymousChatEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[GroupAllowConfessTalkEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[GroupAllowMemberInviteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[GroupEntranceAnnouncementChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[GroupEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[GroupMuteAllEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[GroupNameChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[GroupRecallEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberCardChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberHonorChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberJoinEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberJoinRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberLeaveEventKick]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberLeaveEventQuit]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberMuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberPermissionChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberSpecialTitleChangeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MemberUnmuteEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[MiraiEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[NewFriendRequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[NudgeEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[OtherClientOfflineEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[OtherClientOnlineEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[RequestEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event].Member[mirai].Member[Stranger]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[event]Member[MiraiEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[AriadneBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[AriadneBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[AtAll]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[At]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[Face]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[MultimediaElement]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[Plain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[chain].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[AriadneBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[Plain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[util].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[util].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[util].Member[Plain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[util].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[commander].Member[util].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[App]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[AriadneBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[AtAll]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[At]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Dice]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[DisplayStrategy]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Face]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[FlashImage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[ForwardNode]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Forward]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Json]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[MarketFace]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[MiraiCode]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[MultimediaElement]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[MusicShare]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Plain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Poke]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Stranger]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[element].Member[Xml]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[exp].Member[BaseMessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[exp].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[formatter].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[formatter].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[formatter].Member[Plain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[base].Member[At]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[base].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[base].Member[GroupMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[base].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[base].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[base].Member[Plain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[twilight].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[twilight].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[util].Member[Element]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message].Member[parser].Member[util].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message]Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[message]Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[Announcement]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[AriadneBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[DownloadInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[FileInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[GroupConfig]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[MemberInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[Profile]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[Stranger]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[relationship].Member[AriadneBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[relationship].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[relationship].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[relationship].Member[GroupConfig]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[relationship].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[relationship].Member[MemberInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[relationship].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[relationship].Member[Profile]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[relationship].Member[Stranger]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model].Member[util].Member[AriadneBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model]Member[Announcement]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model]Member[DownloadInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model]Member[FileInfo]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[model]Member[Profile]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[typing].Member[ActiveMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[typing].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[typing].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[typing].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[typing].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[util].Member[cooldown].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[util].Member[send].Member[ActiveMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[util].Member[validator].Member[ActiveMessage]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[util].Member[validator].Member[Friend]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[util].Member[validator].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[util].Member[validator].Member[Member]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[util].Member[validator].Member[MessageChain]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[util].Member[validator].Member[Quote]
+  - - pydantic.BaseModel~Subclass
+    - ariadne
+    - Member[util].Member[validator].Member[Source]
+  - - starlette.websockets.WebSocket~Subclass
+    - ariadne
+    - Member[asgi].Member[handlers].Member[graphql_transport_ws].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - ariadne
+    - Member[asgi].Member[handlers].Member[graphql_ws].Member[WebSocket]

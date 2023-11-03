@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - neural_insights
+    - Member[web].Member[server].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - neural_insights
+    - Member[web].Member[server].Member[Flask]
+  - - pickle~Alias
+    - neural_insights
+    - Member[components].Member[diagnosis].Member[diagnosis].Member[pickle]

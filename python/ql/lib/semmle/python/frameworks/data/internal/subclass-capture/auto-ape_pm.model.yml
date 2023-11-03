@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - ape_pm
+    - Member[InterfaceCompiler]
+  - - pydantic.BaseModel~Subclass
+    - ape_pm
+    - Member[compiler].Member[CompilerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_pm
+    - Member[compiler].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape_pm
+    - Member[compiler].Member[InterfaceCompiler]

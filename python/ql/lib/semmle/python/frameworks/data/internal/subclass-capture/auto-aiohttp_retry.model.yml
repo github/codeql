@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - aiohttp_retry
+    - Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - aiohttp_retry
+    - Member[client].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - aiohttp_retry
+    - Member[types].Member[ClientSession]

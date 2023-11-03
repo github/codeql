@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - flwr_experimental
+    - Member[logserver].Member[server].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - flwr_experimental
+    - Member[logserver].Member[server].Member[RequestHandler]
+  - - pickle~Alias
+    - flwr_experimental
+    - Member[baseline].Member[dataset].Member[tf_hotkey_partitioned].Member[pickle]

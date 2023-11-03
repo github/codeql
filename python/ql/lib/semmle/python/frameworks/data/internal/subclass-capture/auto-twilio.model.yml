@@ -4,9 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - aiohttp.ClientSession~Subclass
+    - twilio
+    - Member[http].Member[async_http_client].Member[ClientSession]
   - - flask.Flask~Subclass
     - twilio
     - Member[app].Member[Flask]
   - - flask.Flask~Subclass
     - twilio
     - Member[main].Member[Flask]
+  - - logging.Logger~Subclass
+    - twilio
+    - Member[http].Member[Logger]
+  - - requests.models.Response~Subclass
+    - twilio
+    - Member[http].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - twilio
+    - Member[twiml].Member[ET]

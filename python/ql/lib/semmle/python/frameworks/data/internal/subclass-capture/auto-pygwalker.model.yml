@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pygwalker
+    - Member[api].Member[pygwalker].Member[ChartData]
+  - - pydantic.BaseModel~Subclass
+    - pygwalker
+    - Member[api].Member[streamlit].Member[PreFilter]
+  - - pydantic.BaseModel~Subclass
+    - pygwalker
+    - Member[services].Member[preview_image].Member[ChartData]
+  - - pydantic.BaseModel~Subclass
+    - pygwalker
+    - Member[services].Member[preview_image].Member[ImgData]
+  - - sqlalchemy.engine.Engine~Subclass
+    - pygwalker
+    - Member[data_parsers].Member[database_parser].Member[Engine]
+  - - tornado.web.Application~Subclass
+    - pygwalker
+    - Member[communications].Member[streamlit_comm].Member[Application]
+  - - tornado.web.RequestHandler~Subclass
+    - pygwalker
+    - Member[communications].Member[streamlit_comm].Member[PygwalkerHandler]

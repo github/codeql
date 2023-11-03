@@ -6,7 +6,16 @@ extensions:
   data:
   - - pydantic.BaseModel~Subclass
     - fastapi_cloudauth
+    - Member[auth0].Member[Auth0Claims]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_cloudauth
     - Member[base].Member[HTTPAuthorizationCredentials]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_cloudauth
+    - Member[cognito].Member[CognitoClaims]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_cloudauth
+    - Member[firebase].Member[FirebaseClaims]
   - - pydantic.BaseModel~Subclass
     - fastapi_cloudauth
     - Member[verification].Member[HTTPAuthorizationCredentials]

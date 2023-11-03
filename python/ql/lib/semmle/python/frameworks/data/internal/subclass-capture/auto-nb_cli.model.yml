@@ -1,0 +1,90 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - nb_cli
+    - Member[cli].Member[commands].Member[project].Member[Logger]
+  - - logging.Logger~Subclass
+    - nb_cli
+    - Member[config].Member[Logger]
+  - - logging.Logger~Subclass
+    - nb_cli
+    - Member[log].Member[Logger]
+  - - logging.Logger~Subclass
+    - nb_cli
+    - Member[log]Member[Logger]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[cli].Member[utils].Member[Adapter]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[cli].Member[utils].Member[Driver]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[cli].Member[utils].Member[Plugin]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[Adapter]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[Driver]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[NoneBotConfig]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[Plugin]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[SimpleInfo]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[model].Member[Adapter]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[model].Member[Driver]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[model].Member[NoneBotConfig]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[model].Member[Plugin]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[model].Member[SimpleInfo]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[parser].Member[NoneBotConfig]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[config].Member[parser].Member[SimpleInfo]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[handlers].Member[adapter].Member[Adapter]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[handlers].Member[driver].Member[Driver]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[handlers].Member[meta].Member[NoneBotConfig]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[handlers].Member[plugin].Member[Plugin]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[handlers].Member[project].Member[SimpleInfo]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[handlers].Member[script].Member[SimpleInfo]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[handlers].Member[store].Member[Adapter]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[handlers].Member[store].Member[Driver]
+  - - pydantic.BaseModel~Subclass
+    - nb_cli
+    - Member[handlers].Member[store].Member[Plugin]

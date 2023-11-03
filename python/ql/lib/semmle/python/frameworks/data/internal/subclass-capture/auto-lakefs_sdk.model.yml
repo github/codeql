@@ -1,0 +1,1107 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ACL]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[AccessKeyCredentials]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ActionRunList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ActionRun]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[AuthCapabilities]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[AuthenticationToken]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[BranchCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[BranchProtectionRule]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[CherryPickCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[CommPrefsInput]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[CommitCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[CommitList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[CredentialsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[CredentialsWithSecret]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Credentials]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[CurrentUser]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[DiffList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[DiffProperties]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Diff]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ErrorNoACL]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[FindMergeBaseResult]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[GarbageCollectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[GarbageCollectionPrepareResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[GarbageCollectionRule]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[GarbageCollectionRules]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[GroupCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[GroupList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[HookRunList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[HookRun]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ImportCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ImportCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ImportLocation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ImportStatus]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[InternalDeleteBranchProtectionRuleRequest]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[LoginConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[LoginInformation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[MergeResult]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Merge]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[MetaRangeCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[MetaRangeCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[OTFDiffs]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ObjectCopyCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ObjectErrorList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ObjectError]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ObjectStageCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ObjectStatsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ObjectStats]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[OtfDiffEntry]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[OtfDiffList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[PathList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[PolicyList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Policy]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[PrepareGCUncommittedRequest]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[PrepareGCUncommittedResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[RangeMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[RefList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Ref]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[RefsDump]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[RepositoryCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[RepositoryList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Repository]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[ResetCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[RevertCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[SetupState]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Setup]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[StagingLocation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[StagingMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[Statement]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[StatsEvent]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[StatsEventsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[StorageConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[StorageURI]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[TagCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[UnderlyingObjectProperties]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[UpdateToken]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[UserCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[UserList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[User]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[VersionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[actions_api].Member[ActionRunList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[actions_api].Member[ActionRun]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[actions_api].Member[HookRunList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[ACL]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[AuthenticationToken]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[CredentialsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[CredentialsWithSecret]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[Credentials]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[CurrentUser]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[GroupCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[GroupList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[LoginInformation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[PolicyList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[Policy]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[UserCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[UserList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[auth_api].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[branches_api].Member[BranchCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[branches_api].Member[CherryPickCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[branches_api].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[branches_api].Member[DiffList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[branches_api].Member[RefList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[branches_api].Member[Ref]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[branches_api].Member[ResetCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[branches_api].Member[RevertCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[commits_api].Member[CommitCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[commits_api].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[config_api].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[experimental_api].Member[OTFDiffs]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[experimental_api].Member[OtfDiffList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[import_api].Member[ImportCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[import_api].Member[ImportCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[import_api].Member[ImportStatus]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[AuthCapabilities]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[BranchProtectionRule]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[CommPrefsInput]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[CredentialsWithSecret]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[GarbageCollectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[GarbageCollectionPrepareResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[GarbageCollectionRules]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[InternalDeleteBranchProtectionRuleRequest]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[ObjectStageCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[ObjectStats]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[PrepareGCUncommittedRequest]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[PrepareGCUncommittedResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[RefsDump]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[SetupState]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[Setup]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[StatsEventsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[StorageConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[StorageURI]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[internal_api].Member[VersionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[metadata_api].Member[StorageURI]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[objects_api].Member[ObjectCopyCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[objects_api].Member[ObjectErrorList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[objects_api].Member[ObjectStatsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[objects_api].Member[ObjectStats]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[objects_api].Member[PathList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[objects_api].Member[UnderlyingObjectProperties]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[refs_api].Member[CommitList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[refs_api].Member[DiffList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[refs_api].Member[FindMergeBaseResult]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[refs_api].Member[MergeResult]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[refs_api].Member[Merge]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[repositories_api].Member[BranchProtectionRule]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[repositories_api].Member[GarbageCollectionRules]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[repositories_api].Member[RepositoryCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[repositories_api].Member[RepositoryList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[repositories_api].Member[Repository]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[staging_api].Member[ObjectStats]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[staging_api].Member[StagingLocation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[staging_api].Member[StagingMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[tags_api].Member[RefList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[tags_api].Member[Ref]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[api].Member[tags_api].Member[TagCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ACL]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[AccessKeyCredentials]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ActionRunList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ActionRun]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[AuthCapabilities]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[AuthenticationToken]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[BranchCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[BranchProtectionRule]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[CherryPickCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[CommPrefsInput]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[CommitCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[CommitList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[CredentialsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[CredentialsWithSecret]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Credentials]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[CurrentUser]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[DiffList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[DiffProperties]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Diff]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ErrorNoACL]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[FindMergeBaseResult]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[GarbageCollectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[GarbageCollectionPrepareResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[GarbageCollectionRule]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[GarbageCollectionRules]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[GroupCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[GroupList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[HookRunList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[HookRun]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ImportCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ImportCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ImportLocation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ImportStatus]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[InternalDeleteBranchProtectionRuleRequest]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[LoginConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[LoginInformation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[MergeResult]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Merge]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[MetaRangeCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[MetaRangeCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[OTFDiffs]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ObjectCopyCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ObjectErrorList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ObjectError]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ObjectStageCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ObjectStatsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ObjectStats]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[OtfDiffEntry]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[OtfDiffList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[PathList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[PolicyList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Policy]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[PrepareGCUncommittedRequest]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[PrepareGCUncommittedResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[RangeMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[RefList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Ref]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[RefsDump]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[RepositoryCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[RepositoryList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Repository]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ResetCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[RevertCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[SetupState]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Setup]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[StagingLocation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[StagingMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[Statement]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[StatsEvent]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[StatsEventsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[StorageConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[StorageURI]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[TagCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[UnderlyingObjectProperties]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[UpdateToken]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[UserCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[UserList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[VersionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[access_key_credentials].Member[AccessKeyCredentials]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[acl].Member[ACL]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[action_run].Member[ActionRun]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[action_run_list].Member[ActionRunList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[action_run_list].Member[ActionRun]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[action_run_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[auth_capabilities].Member[AuthCapabilities]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[authentication_token].Member[AuthenticationToken]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[branch_creation].Member[BranchCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[branch_protection_rule].Member[BranchProtectionRule]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[cherry_pick_creation].Member[CherryPickCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[comm_prefs_input].Member[CommPrefsInput]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[commit].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[commit_creation].Member[CommitCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[commit_list].Member[CommitList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[commit_list].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[commit_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[config].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[config].Member[StorageConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[config].Member[VersionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[credentials].Member[Credentials]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[credentials_list].Member[CredentialsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[credentials_list].Member[Credentials]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[credentials_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[credentials_with_secret].Member[CredentialsWithSecret]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[current_user].Member[CurrentUser]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[current_user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[diff].Member[Diff]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[diff_list].Member[DiffList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[diff_list].Member[Diff]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[diff_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[diff_properties].Member[DiffProperties]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[error].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[error_no_acl].Member[ErrorNoACL]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[find_merge_base_result].Member[FindMergeBaseResult]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[garbage_collection_config].Member[GarbageCollectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[garbage_collection_prepare_response].Member[GarbageCollectionPrepareResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[garbage_collection_rule].Member[GarbageCollectionRule]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[garbage_collection_rules].Member[GarbageCollectionRule]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[garbage_collection_rules].Member[GarbageCollectionRules]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[group].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[group_creation].Member[GroupCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[group_list].Member[GroupList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[group_list].Member[Group]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[group_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[hook_run].Member[HookRun]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[hook_run_list].Member[HookRunList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[hook_run_list].Member[HookRun]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[hook_run_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[import_creation].Member[CommitCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[import_creation].Member[ImportCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[import_creation].Member[ImportLocation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[import_creation_response].Member[ImportCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[import_location].Member[ImportLocation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[import_status].Member[Commit]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[import_status].Member[Error]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[import_status].Member[ImportStatus]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[internal_delete_branch_protection_rule_request].Member[InternalDeleteBranchProtectionRuleRequest]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[login_config].Member[LoginConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[login_information].Member[LoginInformation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[merge].Member[Merge]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[merge_result].Member[MergeResult]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[meta_range_creation].Member[MetaRangeCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[meta_range_creation].Member[RangeMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[meta_range_creation_response].Member[MetaRangeCreationResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[object_copy_creation].Member[ObjectCopyCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[object_error].Member[ObjectError]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[object_error_list].Member[ObjectErrorList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[object_error_list].Member[ObjectError]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[object_stage_creation].Member[ObjectStageCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[object_stats].Member[ObjectStats]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[object_stats_list].Member[ObjectStatsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[object_stats_list].Member[ObjectStats]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[object_stats_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[otf_diff_entry].Member[OtfDiffEntry]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[otf_diff_list].Member[OtfDiffEntry]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[otf_diff_list].Member[OtfDiffList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[otf_diffs].Member[DiffProperties]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[otf_diffs].Member[OTFDiffs]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[pagination].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[path_list].Member[PathList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[policy].Member[Policy]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[policy].Member[Statement]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[policy_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[policy_list].Member[PolicyList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[policy_list].Member[Policy]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[prepare_gc_uncommitted_request].Member[PrepareGCUncommittedRequest]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[prepare_gc_uncommitted_response].Member[PrepareGCUncommittedResponse]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[range_metadata].Member[RangeMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ref].Member[Ref]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ref_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ref_list].Member[RefList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[ref_list].Member[Ref]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[refs_dump].Member[RefsDump]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[repository].Member[Repository]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[repository_creation].Member[RepositoryCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[repository_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[repository_list].Member[RepositoryList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[repository_list].Member[Repository]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[reset_creation].Member[ResetCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[revert_creation].Member[RevertCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[setup].Member[AccessKeyCredentials]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[setup].Member[Setup]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[setup_state].Member[LoginConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[setup_state].Member[SetupState]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[staging_location].Member[StagingLocation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[staging_metadata].Member[StagingLocation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[staging_metadata].Member[StagingMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[statement].Member[Statement]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[stats_event].Member[StatsEvent]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[stats_events_list].Member[StatsEvent]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[stats_events_list].Member[StatsEventsList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[storage_config].Member[StorageConfig]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[storage_uri].Member[StorageURI]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[tag_creation].Member[TagCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[underlying_object_properties].Member[UnderlyingObjectProperties]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[update_token].Member[UpdateToken]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[user_creation].Member[UserCreation]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[user_list].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[user_list].Member[UserList]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[user_list].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - lakefs_sdk
+    - Member[models].Member[version_config].Member[VersionConfig]

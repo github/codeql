@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - optuna
+    - Member[artifacts].Member[_gcs].Member[BytesIO]
+  - - pickle~Alias
+    - optuna
+    - Member[integration].Member[_lightgbm_tuner].Member[optimize].Member[pickle]
+  - - pickle~Alias
+    - optuna
+    - Member[integration].Member[pytorch_distributed].Member[pickle]
+  - - pickle~Alias
+    - optuna
+    - Member[samplers].Member[_cmaes].Member[pickle]
+  - - pickle~Alias
+    - optuna
+    - Member[storages].Member[_journal].Member[storage].Member[pickle]

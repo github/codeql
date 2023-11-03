@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - requests_toolbelt
+    - Member[multipart].Member[encoder].Member[CustomBytesIO]
+  - - io.StringIO~Subclass
+    - requests_toolbelt
+    - Member[streaming_iterator].Member[CustomBytesIO]

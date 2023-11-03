@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - robotide
+    - Member[editor].Member[texteditor].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - robotide
+    - Member[editor].Member[texteditor].Member[StringIO]
+  - - io.StringIO~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[libraries].Member[BuiltIn].Member[StringIO]
+  - - io.StringIO~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[parsing].Member[restreader].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[running].Member[outputcapture].Member[StringIO]
+  - - io.StringIO~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[utils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[utils].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[utils].Member[etreewrapper].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - robotide
+    - Member[ui].Member[preview].Member[StringIO]
+  - - lxml.etree~Alias
+    - robotide
+    - Member[lib].Member[robot].Member[libraries].Member[XML].Member[lxml_etree]
+  - - xml.etree.ElementTree~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[libdocpkg].Member[specbuilder].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[libraries].Member[XML].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[result].Member[resultbuilder].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[utils].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - robotide
+    - Member[lib].Member[robot].Member[utils].Member[etreewrapper].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - robotide
+    - Member[utils].Member[ET]

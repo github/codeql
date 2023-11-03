@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - django.http.response.HttpResponse~Subclass
+    - healthcheck
+    - Member[contrib].Member[django].Member[status_endpoint].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - healthcheck
+    - Member[contrib].Member[django].Member[status_endpoint].Member[views].Member[JsonResponseServerError]
+  - - django.http.response.HttpResponse~Subclass
+    - healthcheck
+    - Member[contrib].Member[django].Member[status_endpoint].Member[views].Member[JsonResponse]
   - - flask.Blueprint~Subclass
     - healthcheck
     - Member[routes].Member[Blueprint]
+  - - tornado.web.RequestHandler~Subclass
+    - healthcheck
+    - Member[TornadoHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - healthcheck
+    - Member[tornado_handler].Member[TornadoHandler]

@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - parsl
+    - Member[monitoring].Member[visualization].Member[app].Member[Flask]
+  - - pickle~Alias
+    - parsl
+    - Member[dataflow].Member[dflow].Member[pickle]
+  - - pickle~Alias
+    - parsl
+    - Member[dataflow].Member[memoization].Member[pickle]
+  - - pickle~Alias
+    - parsl
+    - Member[executors].Member[high_throughput].Member[executor].Member[pickle]
+  - - pickle~Alias
+    - parsl
+    - Member[executors].Member[high_throughput].Member[interchange].Member[pickle]
+  - - pickle~Alias
+    - parsl
+    - Member[executors].Member[high_throughput].Member[process_worker_pool].Member[pickle]
+  - - pickle~Alias
+    - parsl
+    - Member[executors].Member[workqueue].Member[exec_parsl_function].Member[pickle]
+  - - pickle~Alias
+    - parsl
+    - Member[executors].Member[workqueue].Member[executor].Member[pickle]
+  - - pickle~Alias
+    - parsl
+    - Member[monitoring].Member[monitoring].Member[pickle]
+  - - pickle~Alias
+    - parsl
+    - Member[monitoring].Member[radios].Member[pickle]
+  - - pickle~Alias
+    - parsl
+    - Member[serialize].Member[concretes].Member[pickle]

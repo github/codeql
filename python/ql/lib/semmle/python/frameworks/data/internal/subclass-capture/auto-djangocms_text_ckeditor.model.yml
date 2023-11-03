@@ -1,0 +1,78 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - djangocms_text_ckeditor
+    - Member[fields].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - djangocms_text_ckeditor
+    - Member[fields].Member[HTMLFormField]
+  - - Django.db.models.Model~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[Text]
+  - - Django.db.models.Model~Subclass
+    - djangocms_text_ckeditor
+    - Member[forms].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_text_ckeditor
+    - Member[forms].Member[Text]
+  - - Django.db.models.Model~Subclass
+    - djangocms_text_ckeditor
+    - Member[models].Member[AbstractText]
+  - - Django.db.models.Model~Subclass
+    - djangocms_text_ckeditor
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_text_ckeditor
+    - Member[models].Member[Text]
+  - - Django.db.models.Model~Subclass
+    - djangocms_text_ckeditor
+    - Member[picture_save].Member[CMSPlugin]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[ActionTokenValidationForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[DeleteOnCancelForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[RenderPluginForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[TextForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_text_ckeditor
+    - Member[forms].Member[ActionTokenValidationForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_text_ckeditor
+    - Member[forms].Member[DeleteOnCancelForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_text_ckeditor
+    - Member[forms].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_text_ckeditor
+    - Member[forms].Member[RenderPluginForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_text_ckeditor
+    - Member[forms].Member[TextForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - djangocms_text_ckeditor
+    - Member[cms_plugins].Member[HttpResponse]

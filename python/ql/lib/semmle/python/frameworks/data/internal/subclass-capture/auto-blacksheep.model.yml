@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - blacksheep
+    - Member[server].Member[controllers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - blacksheep
+    - Member[server].Member[responses].Member[BytesIO]

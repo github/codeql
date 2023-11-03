@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.Application~Subclass
+    - chaussette
+    - Member[backend].Member[_tornado].Member[Application]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - chaussette
+    - Member[backend].Member[_wsgiref].Member[ChaussetteServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - chaussette
+    - Member[backend].Member[_wsgiref].Member[WSGIServer]

@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[LimitOffsetParams]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[Params]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[bases].Member[AbstractPage]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[cursor].Member[CursorParams]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[default].Member[OptionalParams]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[default].Member[Params]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[iterables].Member[LimitOffsetParams]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[iterables].Member[Params]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[limit_offset].Member[LimitOffsetParams]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[limit_offset].Member[OptionalLimitOffsetParams]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_pagination
+    - Member[links].Member[bases].Member[Links]

@@ -4,21 +4,1035 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[config].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[auth].Member[AuthViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bug].Member[BugJobMapViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bug_creation].Member[FilesBugzillaMapViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bugzilla].Member[BugzillaViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[changelog].Member[ChangelogViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[classification].Member[ClassificationViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[groups].Member[SummaryByGroupName]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[infra_compare].Member[InfraCompareView]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[FailureCount]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[FailuresByBug]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[Failures]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[job_log_url].Member[JobLogUrlViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[JobsProjectViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[JobsViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[machine_platforms].Member[MachinePlatformsViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[note].Member[NoteViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerfCompareResults]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceAlertSummaryTasks]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceAlertSummaryViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceAlertViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceBugTemplateViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceDatumViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceFrameworkViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceIssueTrackerViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformancePlatformViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceSignatureViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceSummary]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceTagViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[push].Member[PushViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[refdata].Member[FailureClassificationViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[refdata].Member[OptionCollectionHashViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[refdata].Member[RepositoryViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[refdata].Member[TaskclusterMetadataViewSet]
+  - - Django.Views.View~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[refdata].Member[UserViewSet]
   - - Django.db.models.Model~Subclass
     - treeherder
     - Member[auth].Member[backends].Member[User]
   - - Django.db.models.Model~Subclass
     - treeherder
+    - Member[changelog].Member[changes].Member[Changelog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[changelog].Member[models].Member[ChangelogFile]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[changelog].Member[models].Member[Changelog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[changelog].Member[tasks].Member[ChangelogFile]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[changelog].Member[tasks].Member[Changelog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[artifact].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[artifact].Member[TextLogError]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[bugzilla].Member[BugJobMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[bugzilla].Member[Bugscache]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[classification_loader].Member[BugJobMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[classification_loader].Member[Bugscache]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[classification_loader].Member[FailureClassification]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[classification_loader].Member[JobNote]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[classification_loader].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[classification_loader].Member[MozciClassification]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[classification_loader].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[classification_loader].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[files_bugzilla_map].Member[BugzillaComponent]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[files_bugzilla_map].Member[BugzillaSecurityGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[files_bugzilla_map].Member[FilesBugzillaMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[files_bugzilla_map].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[job_loader].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[job_loader].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[BuildPlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[FailureClassification]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[JobGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[JobLog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[JobType]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[MachinePlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[Machine]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[Option]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[ReferenceDataSignatures]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[jobs].Member[TaskclusterMetadata]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[management].Member[commands].Member[ingest].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[perf].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[perf].Member[MultiCommitDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[perf].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[perf].Member[PerformanceDatumReplicate]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[perf].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[perf].Member[PerformanceFramework]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[perf].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[perf].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[push].Member[Commit]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[push].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[push_loader].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[pushlog].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[tasks].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[etl].Member[tasks].Member[pushlog_tasks].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[intermittents_commenter].Member[commenter].Member[BugJobMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[intermittents_commenter].Member[commenter].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[intermittents_commenter].Member[commenter].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[log_parser].Member[failureline].Member[FailureLine]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[log_parser].Member[failureline].Member[GroupStatus]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[log_parser].Member[failureline].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[log_parser].Member[failureline].Member[JobLog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[log_parser].Member[tasks].Member[JobLog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[log_parser].Member[tasks].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[BackfillReport]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[BuildPlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[GroupStatus]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[JobGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[JobType]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[MachinePlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[Machine]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[PerformanceAlertSummary]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[cyclers].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[removal_strategies].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[removal_strategies].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[removal_strategies].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[data_cycling].Member[signature_remover].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[error_summary].Member[Bugscache]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[error_summary].Member[TextLogError]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[backfill_text_log_error_jobs].Member[TextLogError]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[cache_failure_history].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[BuildPlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[FailureClassification]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[JobGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[JobType]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[MachinePlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[Machine]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[Option]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[RepositoryGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[management].Member[commands].Member[import_reference_data].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[BugJobMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[Bugscache]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[BugzillaComponent]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[BugzillaSecurityGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[BuildPlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[ClassifiedFailure]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[Commit]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[FailureClassification]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[FailureLine]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[FilesBugzillaMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[GroupStatus]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[JobGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[JobLog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[JobNote]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[JobType]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[MachinePlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[Machine]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[MozciClassification]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[NamedModel]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[Option]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[ReferenceDataSignatures]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[RepositoryGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[TaskclusterMetadata]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[TextLogErrorMatch]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[TextLogErrorMetadata]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[TextLogError]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[model].Member[models].Member[TextLogStep]
+  - - Django.db.models.Model~Subclass
+    - treeherder
     - Member[model].Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[alerts].Member[PerformanceAlertSummary]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[alerts].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[alerts].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[alerts].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[backfill_reports].Member[BackfillRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[backfill_reports].Member[BackfillReport]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[backfill_reports].Member[PerformanceAlertSummary]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[backfill_reports].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[backfill_reports].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[backfill_tool].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[outcome_checker].Member[BackfillRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[secretary].Member[BackfillRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[secretary].Member[BackfillReport]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[secretary].Member[PerformanceSettings]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[sherlock].Member[BackfillNotificationRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[sherlock].Member[BackfillRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[auto_perf_sheriffing].Member[sherlock].Member[BackfillReport]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[email].Member[BackfillRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[email].Member[PerformanceAlertSummary]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[email].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[email].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[generate_alerts].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[BackfillRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[BackfillReport]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[BuildPlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[FailureClassification]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[IssueTracker]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[JobGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[JobType]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[MachinePlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[Machine]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[Option]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[PerformanceAlertSummary]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[PerformanceFramework]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[ReferenceDataSignatures]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[RepositoryGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[import_perf_data].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[perf_sheriff].Member[PerformanceFramework]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[perf_sheriff].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[reassign_perf_data].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[reassign_perf_data].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[reassign_perf_data].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[remove_multi_commit_data].Member[MultiCommitDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[remove_multi_commit_data].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[remove_vcs_data].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[management].Member[commands].Member[report_backfill_outcome].Member[BackfillNotificationRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[BackfillNotificationRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[BackfillRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[BackfillReport]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[IssueTracker]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[JobGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[JobType]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[MachinePlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[MultiCommitDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[PerformanceAlertSummary]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[PerformanceBugTemplate]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[PerformanceDatumReplicate]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[PerformanceFramework]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[PerformanceSettings]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[PerformanceTag]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[models].Member[Repository]
   - - Django.db.models.Model~Subclass
     - treeherder
     - Member[perf].Member[models].Member[User]
   - - Django.db.models.Model~Subclass
     - treeherder
+    - Member[perf].Member[sheriffing_criteria].Member[bugzilla_formulas].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[perf].Member[tasks].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[push_health].Member[builds].Member[JobType]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[push_health].Member[builds].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[push_health].Member[compare].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[push_health].Member[compare].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[push_health].Member[linting].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[push_health].Member[performance].Member[JobGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[push_health].Member[performance].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[push_health].Member[usage].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[push_health].Member[usage].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bug].Member[BugJobMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bug].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bug_creation].Member[FilesBugzillaMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bugzilla].Member[BugzillaSecurityGroup]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[classification].Member[BugJobMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[classification].Member[JobNote]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[classification].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[groups].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[infra_serializers].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[BugJobMap]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[TextLogError]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[job_log_url].Member[JobLog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[JobLog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[TextLogError]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[TextLogStep]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[machine_platforms].Member[MachinePlatform]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[note].Member[JobNote]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[note].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[note].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[note].Member[TextLogError]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[perfcompare_utils].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[IssueTracker]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[OptionCollection]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceAlertSummary]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceBugTemplate]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceFramework]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[PerformanceTag]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[BackfillRecord]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[IssueTracker]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[PerformanceAlertSummary]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[PerformanceAlert]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[PerformanceBugTemplate]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[PerformanceDatum]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[PerformanceFramework]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[PerformanceSignature]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[PerformanceTag]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[Repository]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_serializers].Member[TaskclusterMetadata]
+  - - Django.db.models.Model~Subclass
+    - treeherder
     - Member[webapp].Member[api].Member[performance_serializers].Member[User]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[push].Member[JobType]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[push].Member[Job]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[push].Member[Push]
+  - - Django.db.models.Model~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[push].Member[Repository]
   - - Django.db.models.Model~Subclass
     - treeherder
     - Member[webapp].Member[api].Member[refdata].Member[User]
   - - Django.db.models.Model~Subclass
     - treeherder
+    - Member[webapp].Member[api].Member[serializers].Member[Changelog]
+  - - Django.db.models.Model~Subclass
+    - treeherder
     - Member[webapp].Member[api].Member[serializers].Member[User]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[csp_report].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[auth].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bug].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bug_creation].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bugzilla].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[changelog].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[classification].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[csp_report].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[groups].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[infra_compare].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[job_log_url].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[machine_platforms].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[note].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[push].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[refdata].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - treeherder
+    - Member[auth].Member[backends].Member[AuthenticationFailed]
+  - - rest_framework.exceptions.APIException~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[auth].Member[AuthenticationFailed]
+  - - rest_framework.exceptions.APIException~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[exceptions].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[exceptions].Member[InsufficientAlertCreationData]
+  - - rest_framework.exceptions.APIException~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[job_log_url].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[note].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[InsufficientAlertCreationData]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[auth].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bug].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bug_creation].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[bugzilla].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[changelog].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[classification].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[groups].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[infra_compare].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[intermittents_view].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[job_log_url].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[jobs].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[machine_platforms].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[note].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[performance_data].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[push].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - treeherder
+    - Member[webapp].Member[api].Member[refdata].Member[Response]

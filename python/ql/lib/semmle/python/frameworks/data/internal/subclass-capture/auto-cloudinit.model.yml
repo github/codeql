@@ -13,3 +13,48 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - cloudinit
     - Member[sources].Member[DataSourceScaleway].Member[HTTPConnection]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[config].Member[cc_puppet].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[config].Member[cc_seed_random].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[distros].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[distros].Member[freebsd].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[distros].Member[parsers].Member[hostname].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[distros].Member[parsers].Member[hosts].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[distros].Member[parsers].Member[resolv_conf].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[distros].Member[parsers].Member[sys_conf].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[helpers].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[net].Member[dhcp].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[signal_handler].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cloudinit
+    - Member[sources].Member[azure].Member[errors].Member[StringIO]
+  - - pickle~Alias
+    - cloudinit
+    - Member[sources].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - cloudinit
+    - Member[sources].Member[DataSourceAzure].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - cloudinit
+    - Member[sources].Member[helpers].Member[azure].Member[ElementTree]

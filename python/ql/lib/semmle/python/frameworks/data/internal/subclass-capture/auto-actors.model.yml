@@ -10,3 +10,18 @@ extensions:
   - - Django.Views.View~Subclass
     - actors
     - Member[views].Member[SearchListView]
+  - - Django.db.models.Model~Subclass
+    - actors
+    - Member[admin].Member[Actor]
+  - - Django.db.models.Model~Subclass
+    - actors
+    - Member[models].Member[Actor]
+  - - Django.db.models.Model~Subclass
+    - actors
+    - Member[views].Member[Actor]
+  - - django.forms.BaseForm~Subclass
+    - actors
+    - Member[forms].Member[SearchActorForm]
+  - - django.forms.BaseForm~Subclass
+    - actors
+    - Member[views].Member[SearchActorForm]

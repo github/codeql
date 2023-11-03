@@ -6,4 +6,25 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - reversion
+    - Member[admin].Member[Version]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[management].Member[commands].Member[createinitialrevisions].Member[Revision]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[management].Member[commands].Member[createinitialrevisions].Member[Version]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[management].Member[commands].Member[deleterevisions].Member[Revision]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[management].Member[commands].Member[deleterevisions].Member[Version]
+  - - Django.db.models.Model~Subclass
+    - reversion
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[models].Member[Revision]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[models].Member[Version]

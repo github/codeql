@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - bytewax
+    - Member[BytewaxMaterializationEngineConfig]
+  - - pydantic.BaseModel~Subclass
+    - bytewax
+    - Member[bytewax_materialization_dataflow].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - bytewax
+    - Member[bytewax_materialization_engine].Member[BytewaxMaterializationEngineConfig]
+  - - pydantic.BaseModel~Subclass
+    - bytewax
+    - Member[bytewax_materialization_engine].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - bytewax
+    - Member[bytewax_materialization_engine].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - bytewax
+    - Member[dataflow].Member[RepoConfig]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pythx
+    - Member[api].Member[handler].Member[DetectedIssuesResponse]
+  - - pydantic.BaseModel~Subclass
+    - pythx
+    - Member[api].Member[handler].Member[IssueReport]

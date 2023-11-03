@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - pylint_django
+    - Member[augmentations].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - pylint_django
+    - Member[augmentations].Member[View]
+  - - django.db.models.FileField~Subclass
+    - pylint_django
+    - Member[transforms].Member[transforms].Member[django_db_models_fields_files].Member[FileField]
+  - - django.db.models.FileField~Subclass
+    - pylint_django
+    - Member[transforms].Member[transforms].Member[django_db_models_fields_files].Member[ImageField]

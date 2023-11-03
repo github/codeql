@@ -4,12 +4,78 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - post
+    - Member[api].Member[views].Member[PostDetail]
+  - - Django.Views.View~Subclass
+    - post
+    - Member[api].Member[views].Member[PostList]
+  - - Django.Views.View~Subclass
+    - post
+    - Member[urls].Member[PostDetailView]
+  - - Django.Views.View~Subclass
+    - post
+    - Member[urls].Member[PostListView]
+  - - Django.Views.View~Subclass
+    - post
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - post
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - post
+    - Member[views].Member[PostDetailView]
+  - - Django.Views.View~Subclass
+    - post
+    - Member[views].Member[PostListView]
+  - - Django.Views.View~Subclass
+    - post
+    - Member[views].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[api].Member[serializers].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[api].Member[serializers].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[api].Member[views].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[forms].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[management].Member[commands].Member[create_initial_data].Member[Comment]
   - - Django.db.models.Model~Subclass
     - post
     - Member[management].Member[commands].Member[create_initial_data].Member[Group]
   - - Django.db.models.Model~Subclass
     - post
+    - Member[management].Member[commands].Member[create_initial_data].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - post
     - Member[management].Member[commands].Member[create_initial_data].Member[User]
   - - Django.db.models.Model~Subclass
     - post
+    - Member[models].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[models].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - post
     - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - post
+    - Member[views].Member[Post]
+  - - django.forms.BaseForm~Subclass
+    - post
+    - Member[forms].Member[PostForm]
+  - - django.forms.BaseForm~Subclass
+    - post
+    - Member[views].Member[PostForm]
+  - - django.http.response.HttpResponse~Subclass
+    - post
+    - Member[api].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - post
+    - Member[api].Member[views].Member[Response]

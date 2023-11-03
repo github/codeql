@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - skbio
+    - Member[io].Member[_fileobject].Member[IterableStringReaderIO]
+  - - io.StringIO~Subclass
+    - skbio
+    - Member[io].Member[_fileobject].Member[IterableStringWriterIO]
+  - - io.StringIO~Subclass
+    - skbio
+    - Member[io].Member[_iosources].Member[IterableStringReaderIO]
+  - - io.StringIO~Subclass
+    - skbio
+    - Member[io].Member[_iosources].Member[IterableStringWriterIO]

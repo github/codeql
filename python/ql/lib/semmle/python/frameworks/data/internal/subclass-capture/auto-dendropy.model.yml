@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[dataio].Member[multiphylipreader].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[dataio].Member[newickreader].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[dataio].Member[nexmlwriter].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[dataio].Member[xmlprocessing].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[datamodel].Member[basemodel].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[datamodel].Member[charmatrixmodel].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[datamodel].Member[taxonmodel].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[datamodel].Member[treemodel].Member[_edge].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[datamodel].Member[treemodel].Member[_node].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[datamodel].Member[treemodel].Member[_tree].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dendropy
+    - Member[utility].Member[textprocessing].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - dendropy
+    - Member[dataio].Member[xmlprocessing].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - dendropy
+    - Member[interop].Member[genbank].Member[ElementTree]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - allennlp
+    - Member[common].Member[logging].Member[AllenNlpLogger]
+  - - pickle~Alias
+    - allennlp
+    - Member[common].Member[file_utils].Member[pickle]

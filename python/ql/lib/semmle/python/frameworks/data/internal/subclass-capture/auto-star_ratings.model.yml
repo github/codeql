@@ -4,6 +4,15 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - star_ratings
+    - Member[urls].Member[Rate]
+  - - Django.Views.View~Subclass
+    - star_ratings
+    - Member[views].Member[Rate]
+  - - Django.Views.View~Subclass
+    - star_ratings
+    - Member[views].Member[View]
   - - Django.db.models.Model~Subclass
     - star_ratings
     - Member[admin].Member[UserRating]
@@ -12,7 +21,13 @@ extensions:
     - Member[forms].Member[UserRating]
   - - Django.db.models.Model~Subclass
     - star_ratings
+    - Member[models].Member[AbstractBaseRating]
+  - - Django.db.models.Model~Subclass
+    - star_ratings
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - star_ratings
+    - Member[models].Member[Rating]
   - - Django.db.models.Model~Subclass
     - star_ratings
     - Member[models].Member[TimeStampedModel]
@@ -25,3 +40,15 @@ extensions:
   - - Django.db.models.Model~Subclass
     - star_ratings
     - Member[views].Member[ContentType]
+  - - django.forms.BaseForm~Subclass
+    - star_ratings
+    - Member[forms].Member[CreateUserRatingForm]
+  - - django.forms.BaseForm~Subclass
+    - star_ratings
+    - Member[views].Member[CreateUserRatingForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - star_ratings
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.JsonResponse~Subclass
+    - star_ratings
+    - Member[views].Member[JsonResponse]

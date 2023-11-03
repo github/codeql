@@ -1,0 +1,462 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[data_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[embedded_go].Member[online_features_service].Member[FeatureLoggingConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[embedded_go].Member[online_features_service].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[feature_server].Member[MaterializeIncrementalRequest]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[feature_server].Member[MaterializeRequest]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[feature_server].Member[PushFeaturesRequest]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[feature_server].Member[WriteToFeatureStoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[feature_store].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[inference].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[aws].Member[AwsLambdaFeatureServerConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[contrib].Member[azure_provider].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[contrib].Member[spark_kafka_processor].Member[ProcessorConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[contrib].Member[spark_kafka_processor].Member[SparkProcessorConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[contrib].Member[stream_processor].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[contrib].Member[stream_processor].Member[ProcessorConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[feature_servers].Member[aws_lambda].Member[config].Member[AwsLambdaFeatureServerConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[feature_servers].Member[aws_lambda].Member[config].Member[BaseFeatureServerConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[feature_servers].Member[base_config].Member[BaseFeatureServerConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[feature_servers].Member[base_config].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[feature_servers].Member[base_config].Member[FeatureLoggingConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[feature_servers].Member[gcp_cloudrun].Member[config].Member[BaseFeatureServerConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[feature_servers].Member[gcp_cloudrun].Member[config].Member[GcpCloudRunFeatureServerConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[feature_servers].Member[local_process].Member[config].Member[BaseFeatureServerConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[feature_servers].Member[local_process].Member[config].Member[LocalFeatureServerConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[local].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[aws_lambda].Member[lambda_engine].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[aws_lambda].Member[lambda_engine].Member[LambdaMaterializationEngineConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[aws_lambda].Member[lambda_engine].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[batch_materialization_engine].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[contrib].Member[bytewax].Member[BytewaxMaterializationEngineConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[contrib].Member[bytewax].Member[bytewax_materialization_dataflow].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[contrib].Member[bytewax].Member[bytewax_materialization_engine].Member[BytewaxMaterializationEngineConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[contrib].Member[bytewax].Member[bytewax_materialization_engine].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[contrib].Member[bytewax].Member[bytewax_materialization_engine].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[contrib].Member[bytewax].Member[dataflow].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[contrib].Member[spark].Member[spark_materialization_engine].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[contrib].Member[spark].Member[spark_materialization_engine].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[contrib].Member[spark].Member[spark_materialization_engine].Member[SparkMaterializationEngineConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[local_engine].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[local_engine].Member[LocalMaterializationEngineConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[local_engine].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[snowflake_engine].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[snowflake_engine].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[materialization].Member[snowflake_engine].Member[SnowflakeMaterializationEngineConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[bigquery].Member[BigQueryOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[bigquery].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[bigquery].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[bigquery_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[athena_offline_store].Member[athena].Member[AthenaOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[athena_offline_store].Member[athena].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[athena_offline_store].Member[athena].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[athena_offline_store].Member[athena_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[mssql_offline_store].Member[mssql].Member[FeastBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[mssql_offline_store].Member[mssql].Member[MsSqlServerOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[mssql_offline_store].Member[mssql].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[mssql_offline_store].Member[mssqlserver_source].Member[MsSqlServerOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[mssql_offline_store].Member[mssqlserver_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[postgres_offline_store].Member[postgres].Member[PostgreSQLConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[postgres_offline_store].Member[postgres].Member[PostgreSQLOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[postgres_offline_store].Member[postgres].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[postgres_offline_store].Member[postgres_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[spark_offline_store].Member[spark].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[spark_offline_store].Member[spark].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[spark_offline_store].Member[spark].Member[SparkOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[spark_offline_store].Member[spark_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[trino_offline_store].Member[trino].Member[AuthConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[trino_offline_store].Member[trino].Member[BasicAuthModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[trino_offline_store].Member[trino].Member[CertificateAuthModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[trino_offline_store].Member[trino].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[trino_offline_store].Member[trino].Member[JWTAuthModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[trino_offline_store].Member[trino].Member[KerberosAuthModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[trino_offline_store].Member[trino].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[trino_offline_store].Member[trino].Member[TrinoOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[trino_offline_store].Member[trino_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[file].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[file].Member[FileOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[file].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[file_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[offline_store].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[offline_utils].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[redshift].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[redshift].Member[RedshiftOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[redshift].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[redshift_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[snowflake].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[snowflake].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[snowflake].Member[SnowflakeOfflineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[snowflake_source].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[bigtable].Member[BigtableOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[bigtable].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[bigtable].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[cassandra_online_store].Member[cassandra_online_store].Member[CassandraOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[cassandra_online_store].Member[cassandra_online_store].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[cassandra_online_store].Member[cassandra_online_store].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[hazelcast_online_store].Member[hazelcast_online_store].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[hazelcast_online_store].Member[hazelcast_online_store].Member[HazelcastOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[hazelcast_online_store].Member[hazelcast_online_store].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[hbase_online_store].Member[hbase].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[hbase_online_store].Member[hbase].Member[HbaseOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[hbase_online_store].Member[hbase].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[mysql_online_store].Member[mysql].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[mysql_online_store].Member[mysql].Member[MySQLOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[mysql_online_store].Member[mysql].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[postgres].Member[PostgreSQLConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[postgres].Member[PostgreSQLOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[postgres].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[rockset_online_store].Member[rockset].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[rockset_online_store].Member[rockset].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[contrib].Member[rockset_online_store].Member[rockset].Member[RocksetOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[datastore].Member[DatastoreOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[datastore].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[datastore].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[dynamodb].Member[DynamoDBOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[dynamodb].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[dynamodb].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[online_store].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[redis].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[redis].Member[RedisOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[redis].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[snowflake].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[snowflake].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[snowflake].Member[SnowflakeOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[sqlite].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[sqlite].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[online_stores].Member[sqlite].Member[SqliteOnlineStoreConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[passthrough_provider].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[provider].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[contrib].Member[azure].Member[azure_registry_store].Member[RegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[contrib].Member[postgres].Member[postgres_registry_store].Member[PostgreSQLConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[contrib].Member[postgres].Member[postgres_registry_store].Member[PostgresRegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[contrib].Member[postgres].Member[postgres_registry_store].Member[RegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[file].Member[RegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[gcs].Member[RegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[registry].Member[RegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[s3].Member[RegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[snowflake].Member[RegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[snowflake].Member[SnowflakeRegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[sql].Member[RegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[sql].Member[SqlRegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[utils].Member[postgres].Member[connection_utils].Member[PostgreSQLConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[utils].Member[postgres].Member[postgres_config].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[utils].Member[postgres].Member[postgres_config].Member[PostgreSQLConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[infra].Member[utils].Member[snowflake].Member[snowflake_utils].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[repo_config].Member[FeastBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[repo_config].Member[FeastConfigBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[repo_config].Member[RegistryConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[repo_config].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[repo_operations].Member[RepoConfig]
+  - - pydantic.BaseModel~Subclass
+    - feast
+    - Member[templates].Member[postgres].Member[bootstrap].Member[PostgreSQLConfig]
+  - - sqlalchemy.engine.Engine~Subclass
+    - feast
+    - Member[infra].Member[offline_stores].Member[contrib].Member[mssql_offline_store].Member[mssql].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - feast
+    - Member[infra].Member[registry].Member[sql].Member[Engine]

@@ -7,3 +7,39 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - pymisp
     - Member[api].Member[HTTPConnection]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[api].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[api].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[mispevent].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[tools].Member[create_misp_object].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[tools].Member[elfobject].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[tools].Member[emailobject].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[tools].Member[fileobject].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[tools].Member[machoobject].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[tools].Member[peobject].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[tools].Member[reportlab_generator].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[tools].Member[sshauthkeyobject].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pymisp
+    - Member[tools].Member[update_objects].Member[BytesIO]

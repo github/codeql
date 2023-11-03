@@ -6,4 +6,19 @@ extensions:
   data:
   - - pydantic.BaseModel~Subclass
     - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[health_model].Member[JinaHealthModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[health_model].Member[JinaInfoModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[models].Member[JinaEndpointRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[models].Member[JinaRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[models].Member[JinaResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
     - Member[serve].Member[runtimes].Member[gateway].Member[models].Member[PydanticDocument]

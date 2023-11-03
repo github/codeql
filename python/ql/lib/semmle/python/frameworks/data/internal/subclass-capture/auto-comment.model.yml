@@ -6,7 +6,223 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - comment
+    - Member[api].Member[serializers].Member[CommentCreateMixin]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[serializers].Member[CommentCreateSerializer]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[CommentCreateMixin]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[CommentCreateSerializer]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[CommentCreate]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[CommentDetailForFlagStateChange]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[CommentDetailForFlag]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[CommentDetailForReaction]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[CommentDetail]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[CommentList]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[ConfirmComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[SubscribersAPI]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[ToggleBlockingAPI]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[api].Member[views].Member[ToggleFollowAPI]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[ChangeFlagState]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[ConfirmComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[CreateComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[DeleteComment]
+  - - Django.Views.View~Subclass
+    - comment
     - Member[urls].Member[JavaScriptCatalog]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[SetFlag]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[SetReaction]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[ToggleBlockingView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[ToggleFollowView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[urls].Member[UpdateComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[BaseCommentView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[ChangeFlagState]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[CommentCreateMixin]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[ConfirmComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[CreateComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[DeleteComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[SetFlag]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[SetReaction]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[ToggleBlockingView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[ToggleFollowView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[UpdateComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[base].Member[BaseCommentView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[base].Member[CommentCreateMixin]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[base].Member[FormView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[blocker].Member[ToggleBlockingView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[blocker].Member[View]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[comments].Member[BaseCommentView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[comments].Member[CommentCreateMixin]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[comments].Member[ConfirmComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[comments].Member[CreateComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[comments].Member[DeleteComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[comments].Member[UpdateComment]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[flags].Member[ChangeFlagState]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[flags].Member[SetFlag]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[flags].Member[View]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[followers].Member[ToggleFollowView]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[followers].Member[View]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[reactions].Member[SetReaction]
+  - - Django.Views.View~Subclass
+    - comment
+    - Member[views].Member[reactions].Member[View]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[admin].Member[BlockedUserHistory]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[admin].Member[BlockedUser]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[admin].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[admin].Member[FlagInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[admin].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[admin].Member[Follower]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[admin].Member[ReactionInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[admin].Member[Reaction]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[permissions].Member[BlockedUser]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[serializers].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[serializers].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[serializers].Member[Reaction]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[views].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[views].Member[FlagInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[views].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[views].Member[Follower]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[views].Member[ReactionInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[api].Member[views].Member[Reaction]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[forms].Member[Comment]
   - - Django.db.models.Model~Subclass
     - comment
     - Member[managers].Member[comments].Member[ContentType]
@@ -15,19 +231,106 @@ extensions:
     - Member[managers].Member[followers].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - comment
+    - Member[mixins].Member[BlockedUser]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[BlockedUserHistory]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[BlockedUser]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[FlagInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[Follower]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[ReactionInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[Reaction]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[blocker].Member[BlockedUserHistory]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[blocker].Member[BlockedUser]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[comments].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
     - Member[models].Member[comments].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[flags].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[flags].Member[FlagInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[flags].Member[Flag]
   - - Django.db.models.Model~Subclass
     - comment
     - Member[models].Member[followers].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - comment
+    - Member[models].Member[followers].Member[Follower]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[reactions].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[reactions].Member[ReactionInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[models].Member[reactions].Member[Reaction]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[service].Member[email].Member[Follower]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
     - Member[signals].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[FlagInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[Follower]
   - - Django.db.models.Model~Subclass
     - comment
     - Member[signals].Member[Group]
   - - Django.db.models.Model~Subclass
     - comment
     - Member[signals].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[ReactionInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[Reaction]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_delete].Member[FlagInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_delete].Member[ReactionInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_migrate].Member[Comment]
   - - Django.db.models.Model~Subclass
     - comment
     - Member[signals].Member[post_migrate].Member[ContentType]
@@ -39,7 +342,127 @@ extensions:
     - Member[signals].Member[post_migrate].Member[Permission]
   - - Django.db.models.Model~Subclass
     - comment
+    - Member[signals].Member[post_save].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_save].Member[FlagInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_save].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_save].Member[Follower]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_save].Member[ReactionInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[signals].Member[post_save].Member[Reaction]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[templatetags].Member[comment_tags].Member[BlockedUser]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[templatetags].Member[comment_tags].Member[FlagInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[templatetags].Member[comment_tags].Member[Follower]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[templatetags].Member[comment_tags].Member[ReactionInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
     - Member[utils].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - comment
     - Member[validators].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[blocker].Member[BlockedUserHistory]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[blocker].Member[BlockedUser]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[blocker].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[comments].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[flags].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[flags].Member[FlagInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[flags].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[followers].Member[Follower]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[reactions].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[reactions].Member[ReactionInstance]
+  - - Django.db.models.Model~Subclass
+    - comment
+    - Member[views].Member[reactions].Member[Reaction]
+  - - django.db.models.FileField~Subclass
+    - comment
+    - Member[api].Member[serializers].Member[ImageField]
+  - - django.forms.BaseForm~Subclass
+    - comment
+    - Member[forms].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - comment
+    - Member[templatetags].Member[comment_tags].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - comment
+    - Member[views].Member[base].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - comment
+    - Member[views].Member[comments].Member[CommentForm]
+  - - django.http.response.HttpResponse~Subclass
+    - comment
+    - Member[api].Member[views].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - comment
+    - Member[mixins].Member[UTF8JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - comment
+    - Member[responses].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - comment
+    - Member[responses].Member[UTF8JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - comment
+    - Member[validators].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - comment
+    - Member[views].Member[blocker].Member[UTF8JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - comment
+    - Member[views].Member[comments].Member[UTF8JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - comment
+    - Member[views].Member[flags].Member[UTF8JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - comment
+    - Member[views].Member[followers].Member[UTF8JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - comment
+    - Member[views].Member[reactions].Member[UTF8JsonResponse]
+  - - rest_framework.exceptions.APIException~Subclass
+    - comment
+    - Member[exceptions].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - comment
+    - Member[exceptions].Member[CommentBadRequest]
+  - - rest_framework.exceptions.APIException~Subclass
+    - comment
+    - Member[validators].Member[CommentBadRequest]
+  - - rest_framework.response.Response~Subclass
+    - comment
+    - Member[api].Member[views].Member[Response]

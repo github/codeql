@@ -9,4 +9,19 @@ extensions:
     - Member[admin].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - adminsortable
+    - Member[admin].Member[SortableMixin]
+  - - Django.db.models.Model~Subclass
+    - adminsortable
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - adminsortable
+    - Member[models].Member[SortableMixin]
+  - - Django.db.models.Model~Subclass
+    - adminsortable
+    - Member[models].Member[Sortable]
+  - - Django.db.models.Model~Subclass
+    - adminsortable
+    - Member[utils].Member[SortableMixin]
+  - - django.http.response.JsonResponse~Subclass
+    - adminsortable
+    - Member[admin].Member[JsonResponse]

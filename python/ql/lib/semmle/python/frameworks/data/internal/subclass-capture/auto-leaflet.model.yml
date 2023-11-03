@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - leaflet
+    - Member[forms].Member[fields].Member[BaseGeometryField]
+  - - Django.Forms.Field~Subclass
+    - leaflet
+    - Member[forms].Member[fields].Member[GeometryCollectionField]
+  - - Django.Forms.Field~Subclass
+    - leaflet
+    - Member[forms].Member[fields].Member[GeometryField]
+  - - Django.Forms.Field~Subclass
+    - leaflet
+    - Member[forms].Member[fields].Member[LineStringField]
+  - - Django.Forms.Field~Subclass
+    - leaflet
+    - Member[forms].Member[fields].Member[MultiLineStringField]
+  - - Django.Forms.Field~Subclass
+    - leaflet
+    - Member[forms].Member[fields].Member[MultiPointField]
+  - - Django.Forms.Field~Subclass
+    - leaflet
+    - Member[forms].Member[fields].Member[MultiPolygonField]
+  - - Django.Forms.Field~Subclass
+    - leaflet
+    - Member[forms].Member[fields].Member[PointField]
+  - - Django.Forms.Field~Subclass
+    - leaflet
+    - Member[forms].Member[fields].Member[PolygonField]

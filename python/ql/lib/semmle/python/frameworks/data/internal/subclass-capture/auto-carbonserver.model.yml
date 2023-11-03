@@ -4,9 +4,120 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - fastapi.APIRouter~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[routers].Member[authenticate].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[routers].Member[emissions].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[routers].Member[experiments].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[routers].Member[organizations].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[routers].Member[projects].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[routers].Member[runs].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[routers].Member[teams].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[routers].Member[users].Member[APIRouter]
   - - pydantic.BaseModel~Subclass
     - carbonserver
     - Member[carbonserver].Member[api].Member[routers].Member[emissions].Member[BaseParams]
   - - pydantic.BaseModel~Subclass
     - carbonserver
     - Member[carbonserver].Member[api].Member[routers].Member[emissions].Member[Params]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[EmissionBase]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[EmissionCreate]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[Emission]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[Empty]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[ExperimentBase]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[ExperimentCreate]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[ExperimentReport]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[Experiment]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[OrganizationBase]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[OrganizationCreate]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[OrganizationReport]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[Organization]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[ProjectBase]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[ProjectCreate]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[ProjectReport]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[Project]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[RunBase]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[RunCreate]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[RunReport]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[TeamBase]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[TeamCreate]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[Team]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[Token]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[UserAuthenticate]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[UserBase]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[UserCreate]
+  - - pydantic.BaseModel~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[schemas].Member[User]
+  - - sqlalchemy.orm.Session~Subclass
+    - carbonserver
+    - Member[carbonserver].Member[api].Member[infra].Member[database].Member[database_manager].Member[Session]

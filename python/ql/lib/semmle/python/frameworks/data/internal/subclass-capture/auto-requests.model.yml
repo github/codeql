@@ -7,3 +7,6 @@ extensions:
   - - flask.Flask~Subclass
     - requests
     - Member[main].Member[Flask]
+  - - io.StringIO~Subclass
+    - requests
+    - Member[compat].Member[StringIO]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - dojson
+    - Member[_compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dojson
+    - Member[_compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - dojson
+    - Member[contrib].Member[marc21].Member[utils].Member[StringIO]
+  - - lxml.etree~Alias
+    - dojson
+    - Member[contrib].Member[marc21].Member[utils].Member[etree]
+  - - lxml.etree~Alias
+    - dojson
+    - Member[contrib].Member[to_marc21].Member[utils].Member[etree]

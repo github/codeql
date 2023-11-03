@@ -6,4 +6,10 @@ extensions:
   data:
   - - io.StringIO~Subclass
     - salesforce_bulk
+    - Member[csv_adapter].Member[StringIO]
+  - - io.StringIO~Subclass
+    - salesforce_bulk
     - Member[salesforce_bulk].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - salesforce_bulk
+    - Member[salesforce_bulk].Member[ET]

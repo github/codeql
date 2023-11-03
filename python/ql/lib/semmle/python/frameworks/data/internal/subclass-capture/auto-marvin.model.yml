@@ -1,0 +1,537 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - marvin
+    - Member[deployment].Member[APIRouter]
+  - - io.StringIO~Subclass
+    - marvin
+    - Member[tools].Member[python].Member[StringIO]
+  - - logging.Logger~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[anthropic].Member[Logger]
+  - - logging.Logger~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[base].Member[Logger]
+  - - logging.Logger~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[openai].Member[Logger]
+  - - markupsafe.Markup~Subclass
+    - marvin
+    - Member[utilities].Member[strings].Member[Markup]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[AIApplication]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[AIFunction]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[AIModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[_framework].Member[_defaults].Member[DefaultSettings]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[_framework].Member[_defaults]Member[DefaultSettings]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[AIApplication]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[AIFunction]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[AIModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[AIApplicationTool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[AIApplication]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[AppPlan]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[FreeformState]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[JSONPatchModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[LoggerMixin]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[MarvinBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[Prompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_application].Member[UpdatePlan]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_classifier].Member[AIEnumMetaData]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_classifier].Member[AbstractChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_classifier].Member[Prompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_function].Member[AIFunction]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_function].Member[AbstractChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_function].Member[Prompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_model].Member[AIModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_model].Member[AbstractChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_model].Member[Prompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[ai_model_factory].Member[DataSchema]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[components].Member[library].Member[ai_models].Member[DiscoursePost]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[AbstractChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[abstract].Member[AbstractChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[abstract].Member[Conversation]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[abstract].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[abstract].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[abstract].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[abstract].Member[Turn]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[handlers].Member[Choice]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[handlers].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[handlers].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[handlers].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[handlers].Member[Turn]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[handlers].Member[Usage]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[anthropic].Member[AbstractChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[anthropic].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[anthropic].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[openai].Member[AbstractChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[openai].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[openai].Member[OpenAIStreamHandler]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[openai].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[openai].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[openai].Member[StreamHandler]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[core].Member[ChatCompletion].Member[providers].Member[openai].Member[Usage]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[deployment].Member[AIApplication]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[deployment].Member[AIFunction]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[deployment].Member[AIModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[deployment].Member[Deployment]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[deployment].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[deployment]Member[Deployment]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[ChatCompletionBase]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[anthropic].Member[AnthropicChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[anthropic].Member[AnthropicFunctionCall]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[anthropic].Member[ChatCompletionBase]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[anthropic].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[Executor]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[OpenAIFunctionsExecutor]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[base].Member[ChatLLM]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[base].Member[Executor]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[base].Member[LoggerMixin]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[base].Member[MarvinBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[base].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[base].Member[Prompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[openai].Member[Executor]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[openai].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[openai].Member[OpenAIFunction]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[executors].Member[openai].Member[OpenAIFunctionsExecutor]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[ChatLLM]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[OpenAIFunction]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[StreamHandler]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[anthropic].Member[AnthropicChatLLM]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[anthropic].Member[AnthropicFunctionCall]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[anthropic].Member[AnthropicStreamHandler]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[anthropic].Member[ChatLLM]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[anthropic].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[anthropic].Member[OpenAIFunction]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[anthropic].Member[StreamHandler]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[azure_openai].Member[AzureOpenAIChatLLM]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[azure_openai].Member[OpenAIChatLLM]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[base].Member[ChatLLM]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[base].Member[MarvinBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[base].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[base].Member[OpenAIFunction]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[base].Member[StreamHandler]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[openai].Member[ChatLLM]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[openai].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[openai].Member[OpenAIChatLLM]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[openai].Member[OpenAIFunction]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[openai].Member[OpenAIStreamHandler]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine].Member[language_models].Member[openai].Member[StreamHandler]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[engine]Member[ChatCompletionBase]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[openai].Member[ChatCompletion].Member[ChatCompletionBase]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[openai].Member[ChatCompletion].Member[OpenAIChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[openai].Member[ChatCompletion].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[openai].Member[ChatCompletion]Member[OpenAIChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[openai].Member[ChatCompletion]Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[Prompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[base].Member[AbstractChatCompletion]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[base].Member[BasePrompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[base].Member[MessageWrapper]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[base].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[base].Member[Prompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[Assistant]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[ChainOfThought]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[Conditional]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[HistoryFilter]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[JinjaConditional]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[MessageHistory]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[MessagePrompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[Now]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[Prompt]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[System]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[Tagged]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[prompts].Member[library].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[base].Member[LoggerMixin]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[base].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[chroma].Member[MultiQueryChroma]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[chroma].Member[QueryChroma]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[chroma].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[filesystem].Member[FileSystemTool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[filesystem].Member[ListFiles]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[filesystem].Member[ReadFile]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[filesystem].Member[ReadFiles]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[filesystem].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[filesystem].Member[WriteContent]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[filesystem].Member[WriteFile]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[filesystem].Member[WriteFiles]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[format_response].Member[FormatResponse]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[format_response].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[github].Member[GitHubComment]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[github].Member[GitHubIssue]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[github].Member[GitHubLabel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[github].Member[GitHubUser]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[github].Member[SearchGitHubIssues]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[github].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[mathematics].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[mathematics].Member[WolframCalculator]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[python].Member[Python]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[python].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[shell].Member[Shell]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[shell].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[web].Member[DuckDuckGoSearch]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[web].Member[GoogleSearch]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[web].Member[Tool]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[tools].Member[web].Member[VisitUrl]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[types].Member[function].Member[FunctionConfig]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[history].Member[HistoryFilter]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[history].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[history].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[messages].Member[FunctionCall]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[messages].Member[MarvinBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[messages].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[streaming].Member[MarvinBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[streaming].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[streaming].Member[StreamHandler]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[types].Member[LoggerMixin]
+  - - pydantic.BaseModel~Subclass
+    - marvin
+    - Member[utilities].Member[types].Member[MarvinBaseModel]

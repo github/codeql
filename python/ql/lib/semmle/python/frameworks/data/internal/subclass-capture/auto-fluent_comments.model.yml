@@ -73,3 +73,9 @@ extensions:
   - - django.http.response.HttpResponseBadRequest~Subclass
     - fluent_comments
     - Member[views].Member[CommentPostBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - fluent_comments
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - fluent_comments
+    - Member[views].Member[HttpResponse]

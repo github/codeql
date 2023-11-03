@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - flags
+    - Member[views].Member[FlaggedTemplateView]
+  - - Django.Views.View~Subclass
+    - flags
+    - Member[views].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - flags
+    - Member[admin].Member[FlagState]
+  - - Django.db.models.Model~Subclass
+    - flags
+    - Member[forms].Member[FlagState]
+  - - Django.db.models.Model~Subclass
+    - flags
+    - Member[models].Member[FlagState]
+  - - django.forms.BaseForm~Subclass
+    - flags
+    - Member[admin].Member[FlagStateForm]
+  - - django.forms.BaseForm~Subclass
+    - flags
+    - Member[forms].Member[FlagStateForm]

@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - admin_tools
+    - Member[dashboard].Member[forms].Member[DashboardPreferences]
+  - - Django.db.models.Model~Subclass
+    - admin_tools
+    - Member[dashboard].Member[management].Member[commands].Member[clear_dashboard_preferences].Member[DashboardPreferences]
+  - - Django.db.models.Model~Subclass
+    - admin_tools
+    - Member[dashboard].Member[models].Member[DashboardPreferences]
+  - - Django.db.models.Model~Subclass
+    - admin_tools
+    - Member[dashboard].Member[templatetags].Member[admin_tools_dashboard_tags].Member[DashboardPreferences]
+  - - Django.db.models.Model~Subclass
+    - admin_tools
+    - Member[dashboard].Member[views].Member[DashboardPreferences]
+  - - Django.db.models.Model~Subclass
+    - admin_tools
+    - Member[menu].Member[forms].Member[Bookmark]
+  - - Django.db.models.Model~Subclass
+    - admin_tools
+    - Member[menu].Member[models].Member[Bookmark]
+  - - Django.db.models.Model~Subclass
+    - admin_tools
+    - Member[menu].Member[templatetags].Member[admin_tools_menu_tags].Member[Bookmark]
+  - - Django.db.models.Model~Subclass
+    - admin_tools
+    - Member[menu].Member[views].Member[Bookmark]
+  - - django.forms.BaseForm~Subclass
+    - admin_tools
+    - Member[dashboard].Member[forms].Member[DashboardPreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_tools
+    - Member[dashboard].Member[views].Member[DashboardPreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_tools
+    - Member[menu].Member[forms].Member[BookmarkForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_tools
+    - Member[menu].Member[views].Member[BookmarkForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - admin_tools
+    - Member[menu].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - admin_tools
+    - Member[dashboard].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - admin_tools
+    - Member[menu].Member[views].Member[HttpResponse]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - girder_large_image
+    - Member[models].Member[image_item].Member[pickle]
+  - - pickle~Alias
+    - girder_large_image
+    - Member[rest].Member[tiles].Member[pickle]

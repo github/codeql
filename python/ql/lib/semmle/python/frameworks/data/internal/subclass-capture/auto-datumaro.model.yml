@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - datumaro
+    - Member[util].Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - datumaro
+    - Member[util].Member[log_utils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - datumaro
+    - Member[util].Member[os_util].Member[StringIO]
+  - - lxml.etree~Alias
+    - datumaro
+    - Member[components].Member[filter].Member[ET]
+  - - lxml.etree~Alias
+    - datumaro
+    - Member[plugins].Member[data_formats].Member[voc].Member[exporter].Member[ET]
+  - - pickle~Alias
+    - datumaro
+    - Member[plugins].Member[data_formats].Member[cifar].Member[pickle]
+  - - pickle~Alias
+    - datumaro
+    - Member[util].Member[pickle_util].Member[pickle]

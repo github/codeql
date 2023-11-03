@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - art
+    - Member[defences].Member[preprocessor].Member[jpeg_compression].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - art
+    - Member[defences].Member[preprocessor].Member[mp3_compression].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - art
+    - Member[attacks].Member[evasion].Member[laser_attack].Member[utils].Member[Logger]
+  - - pickle~Alias
+    - art
+    - Member[defences].Member[detector].Member[poison].Member[activation_defence].Member[pickle]
+  - - pickle~Alias
+    - art
+    - Member[estimators].Member[classification].Member[catboost].Member[pickle]
+  - - pickle~Alias
+    - art
+    - Member[estimators].Member[classification].Member[lightgbm].Member[pickle]
+  - - pickle~Alias
+    - art
+    - Member[estimators].Member[classification].Member[scikitlearn].Member[pickle]
+  - - pickle~Alias
+    - art
+    - Member[estimators].Member[classification].Member[xgboost].Member[pickle]
+  - - pickle~Alias
+    - art
+    - Member[estimators].Member[regression].Member[scikitlearn].Member[pickle]

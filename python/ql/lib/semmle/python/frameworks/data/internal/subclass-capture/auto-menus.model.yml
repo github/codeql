@@ -6,7 +6,13 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - menus
+    - Member[menu_pool].Member[CacheKey]
+  - - Django.db.models.Model~Subclass
+    - menus
     - Member[menu_pool].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - menus
+    - Member[models].Member[CacheKey]
   - - Django.db.models.Model~Subclass
     - menus
     - Member[templatetags].Member[menu_tags].Member[Site]

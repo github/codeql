@@ -6,7 +6,55 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - submissions
+    - Member[admin].Member[ScoreSummary]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[admin].Member[Score]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[admin].Member[StudentItem]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[admin].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - submissions
     - Member[admin].Member[TeamSubmission]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[api].Member[ScoreAnnotation]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[api].Member[ScoreSummary]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[api].Member[Score]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[api].Member[StudentItem]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[api].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[management].Member[commands].Member[analyze_uploaded_file_sizes].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[management].Member[commands].Member[update_submissions_uuids].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[models].Member[ScoreAnnotation]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[models].Member[ScoreSummary]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[models].Member[Score]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[models].Member[StudentItem]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[models].Member[Submission]
   - - Django.db.models.Model~Subclass
     - submissions
     - Member[models].Member[TeamSubmission]
@@ -15,7 +63,22 @@ extensions:
     - Member[models].Member[TimeStampedModel]
   - - Django.db.models.Model~Subclass
     - submissions
+    - Member[serializers].Member[ScoreAnnotation]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[serializers].Member[Score]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[serializers].Member[StudentItem]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[serializers].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - submissions
     - Member[serializers].Member[TeamSubmission]
+  - - Django.db.models.Model~Subclass
+    - submissions
+    - Member[team_api].Member[Submission]
   - - Django.db.models.Model~Subclass
     - submissions
     - Member[team_api].Member[TeamSubmission]

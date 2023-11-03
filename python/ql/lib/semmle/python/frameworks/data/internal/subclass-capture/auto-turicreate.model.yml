@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - turicreate
+    - Member[meta].Member[asttools].Member[visitors].Member[print_visitor].Member[StringIO]
+  - - io.StringIO~Subclass
+    - turicreate
+    - Member[meta].Member[asttools].Member[visitors].Member[pysourcegen].Member[StringIO]
+  - - io.StringIO~Subclass
+    - turicreate
+    - Member[util].Member[_cloudpickle].Member[_cloudpickle_py27].Member[StringIO]
+  - - pickle.loads~Alias
+    - turicreate
+    - Member[util].Member[_cloudpickle].Member[_cloudpickle].Member[loads]
+  - - pickle.loads~Alias
+    - turicreate
+    - Member[util].Member[_cloudpickle].Member[_cloudpickle_fast].Member[loads]
+  - - pickle.load~Alias
+    - turicreate
+    - Member[util].Member[_cloudpickle].Member[_cloudpickle].Member[load]
+  - - pickle.load~Alias
+    - turicreate
+    - Member[util].Member[_cloudpickle].Member[_cloudpickle_fast].Member[load]
+  - - pickle~Alias
+    - turicreate
+    - Member[_gl_pickle].Member[_pickle]
+  - - pickle~Alias
+    - turicreate
+    - Member[util].Member[_cloudpickle].Member[_cloudpickle].Member[pickle]
+  - - pickle~Alias
+    - turicreate
+    - Member[util].Member[_cloudpickle].Member[_cloudpickle_fast].Member[pickle]
+  - - pickle~Alias
+    - turicreate
+    - Member[util].Member[_cloudpickle].Member[_cloudpickle_py27].Member[pickle]
+  - - pickle~Alias
+    - turicreate
+    - Member[util].Member[_cloudpickle].Member[_compat].Member[pickle]

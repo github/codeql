@@ -1,0 +1,207 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[CProfileView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[ClearDBView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[ProfileDotView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[ProfileDownloadView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[ProfilingDetailView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[ProfilingView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[Raw]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[RequestView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[RequestsView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[SQLDetailView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[SQLView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[urls].Member[SummaryView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[clear_db].Member[ClearDBView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[clear_db].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[cprofile].Member[CProfileView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[cprofile].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[profile_detail].Member[ProfilingDetailView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[profile_detail].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[profile_dot].Member[ProfileDotView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[profile_dot].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[profile_download].Member[ProfileDownloadView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[profile_download].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[profiling].Member[ProfilingView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[profiling].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[raw].Member[Raw]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[raw].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[request_detail].Member[RequestView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[request_detail].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[requests].Member[RequestsView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[requests].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[sql].Member[SQLView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[sql].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[sql_detail].Member[SQLDetailView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[sql_detail].Member[View]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[summary].Member[SummaryView]
+  - - Django.Views.View~Subclass
+    - silk
+    - Member[views].Member[summary].Member[View]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[BaseProfile]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[Response]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[SQLQuery]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[clear_db].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[clear_db].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[clear_db].Member[Response]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[clear_db].Member[SQLQuery]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[cprofile].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[profile_detail].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[profile_dot].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[profile_download].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[profiling].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[profiling].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[raw].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[request_detail].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[requests].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[requests].Member[Response]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[sql].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[sql].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[sql].Member[SQLQuery]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[sql_detail].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[sql_detail].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[views].Member[sql_detail].Member[SQLQuery]
+  - - django.db.models.FileField~Subclass
+    - silk
+    - Member[models].Member[FileField]
+  - - django.http.response.FileResponse~Subclass
+    - silk
+    - Member[views].Member[profile_download].Member[FileResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - silk
+    - Member[views].Member[profile_dot].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - silk
+    - Member[views].Member[raw].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - silk
+    - Member[collector].Member[StringIO]
+  - - io.StringIO~Subclass
+    - silk
+    - Member[views].Member[profile_dot].Member[StringIO]

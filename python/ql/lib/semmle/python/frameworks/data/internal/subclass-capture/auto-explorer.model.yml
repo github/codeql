@@ -4,15 +4,261 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - explorer
+    - Member[forms].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - explorer
+    - Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - explorer
+    - Member[forms].Member[SqlField]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[CreateQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[DeleteQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[DownloadFromSqlView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[DownloadQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[EmailCsvQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[ListQueryLogView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[ListQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[PlayQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[QueryFavoriteView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[QueryFavoritesView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[QueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[SchemaView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[urls].Member[StreamQueryView]
   - - Django.Views.View~Subclass
     - explorer
     - Member[utils].Member[LoginView]
   - - Django.Views.View~Subclass
     - explorer
+    - Member[views].Member[CreateQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[DeleteQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[DownloadFromSqlView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[DownloadQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[EmailCsvQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[ListQueryLogView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[ListQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[PlayQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[QueryFavoriteView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[QueryFavoritesView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[QueryView]
+  - - Django.Views.View~Subclass
+    - explorer
     - Member[views].Member[SafeLoginView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[SchemaView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[StreamQueryView]
   - - Django.Views.View~Subclass
     - explorer
     - Member[views].Member[auth].Member[LoginView]
   - - Django.Views.View~Subclass
     - explorer
     - Member[views].Member[auth].Member[SafeLoginView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[create].Member[CreateQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[create].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[delete].Member[DeleteQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[delete].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[download].Member[DownloadFromSqlView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[download].Member[DownloadQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[download].Member[View]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[email].Member[EmailCsvQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[email].Member[View]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[list].Member[ListQueryLogView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[list].Member[ListQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[list].Member[ListView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[query].Member[PlayQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[query].Member[QueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[query].Member[View]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[query_favorite].Member[QueryFavoriteView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[query_favorite].Member[QueryFavoritesView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[query_favorite].Member[View]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[schema].Member[SchemaView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[schema].Member[View]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[stream].Member[StreamQueryView]
+  - - Django.Views.View~Subclass
+    - explorer
+    - Member[views].Member[stream].Member[View]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[admin].Member[Query]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[forms].Member[Query]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[models].Member[QueryFavorite]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[models].Member[QueryLog]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[models].Member[Query]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[tasks].Member[QueryLog]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[tasks].Member[Query]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[delete].Member[Query]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[download].Member[Query]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[list].Member[QueryFavorite]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[list].Member[QueryLog]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[list].Member[Query]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[query].Member[QueryLog]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[query].Member[Query]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[query_favorite].Member[QueryFavorite]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[stream].Member[Query]
+  - - Django.db.models.Model~Subclass
+    - explorer
+    - Member[views].Member[utils].Member[QueryFavorite]
+  - - django.forms.BaseForm~Subclass
+    - explorer
+    - Member[forms].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - explorer
+    - Member[forms].Member[QueryForm]
+  - - django.forms.BaseForm~Subclass
+    - explorer
+    - Member[utils].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - explorer
+    - Member[views].Member[create].Member[QueryForm]
+  - - django.forms.BaseForm~Subclass
+    - explorer
+    - Member[views].Member[query].Member[QueryForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - explorer
+    - Member[views].Member[query].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - explorer
+    - Member[actions].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - explorer
+    - Member[views].Member[export].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - explorer
+    - Member[views].Member[email].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - explorer
+    - Member[views].Member[format_sql].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - explorer
+    - Member[views].Member[query_favorite].Member[JsonResponse]
+  - - io.StringIO~Subclass
+    - explorer
+    - Member[charts].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - explorer
+    - Member[exporters].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - explorer
+    - Member[exporters].Member[StringIO]

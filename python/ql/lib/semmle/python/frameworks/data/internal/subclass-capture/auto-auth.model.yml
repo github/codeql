@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - auth
+    - Member[transport].Member[_aiohttp_requests].Member[AuthorizedSession]
+  - - urllib3.PoolManager~Subclass
+    - auth
+    - Member[transport].Member[urllib3].Member[AuthorizedHttp]

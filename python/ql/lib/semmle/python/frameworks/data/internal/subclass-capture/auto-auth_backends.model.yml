@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - auth_backends
+    - Member[urls].Member[EdxOAuth2LoginView]
+  - - Django.Views.View~Subclass
+    - auth_backends
+    - Member[urls].Member[EdxOAuth2LogoutView]
+  - - Django.Views.View~Subclass
+    - auth_backends
+    - Member[views].Member[EdxOAuth2LoginView]
+  - - Django.Views.View~Subclass
+    - auth_backends
+    - Member[views].Member[EdxOAuth2LogoutView]
+  - - Django.Views.View~Subclass
+    - auth_backends
+    - Member[views].Member[RedirectView]
+  - - django.http.response.HttpResponse~Subclass
+    - auth_backends
+    - Member[views].Member[HttpResponse]

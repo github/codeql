@@ -4,6 +4,27 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - django.forms.BaseForm~Subclass
+    - ratelimitbackend
+    - Member[admin].Member[AdminAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - ratelimitbackend
+    - Member[forms].Member[AdminAuthForm]
+  - - django.forms.BaseForm~Subclass
+    - ratelimitbackend
+    - Member[forms].Member[AdminAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - ratelimitbackend
+    - Member[forms].Member[AuthForm]
+  - - django.forms.BaseForm~Subclass
+    - ratelimitbackend
+    - Member[forms].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - ratelimitbackend
+    - Member[views].Member[AuthenticationForm]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - ratelimitbackend
+    - Member[middleware].Member[HttpResponseForbidden]
   - - django.http.response.HttpResponse~Subclass
     - ratelimitbackend
     - Member[views].Member[TemplateResponse]

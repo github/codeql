@@ -1,0 +1,69 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - library
+    - Member[views].Member[AuthorDetailView]
+  - - Django.Views.View~Subclass
+    - library
+    - Member[views].Member[AuthorListView]
+  - - Django.Views.View~Subclass
+    - library
+    - Member[views].Member[AuthorViewSet]
+  - - Django.Views.View~Subclass
+    - library
+    - Member[views].Member[BookCreateView]
+  - - Django.Views.View~Subclass
+    - library
+    - Member[views].Member[BookDetailView]
+  - - Django.Views.View~Subclass
+    - library
+    - Member[views].Member[BookListView]
+  - - Django.Views.View~Subclass
+    - library
+    - Member[views].Member[BookUpdateView]
+  - - Django.Views.View~Subclass
+    - library
+    - Member[views].Member[BookViewSet]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[admin].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[admin].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[admin].Member[Editor]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[forms].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[models].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[models].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[models].Member[Editor]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[serializers].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[serializers].Member[Book]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[views].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - library
+    - Member[views].Member[Book]
+  - - django.forms.BaseForm~Subclass
+    - library
+    - Member[forms].Member[BookForm]
+  - - django.forms.BaseForm~Subclass
+    - library
+    - Member[views].Member[BookForm]

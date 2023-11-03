@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - slack
+    - Member[web].Member[async_internal_utils].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - slack
+    - Member[webhook].Member[async_client].Member[ClientSession]
+  - - http.client.HTTPResponse~Subclass
+    - slack
+    - Member[web].Member[base_client].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - slack
+    - Member[webhook].Member[client].Member[HTTPResponse]
+  - - logging.Logger~Subclass
+    - slack
+    - Member[web].Member[async_internal_utils].Member[Logger]

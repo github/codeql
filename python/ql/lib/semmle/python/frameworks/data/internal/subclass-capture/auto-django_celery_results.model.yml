@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[admin].Member[GroupResult]
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[admin].Member[TaskResult]
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[backends].Member[database].Member[ChordCounter]
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[backends].Member[database].Member[GroupResultModel]
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[backends].Member[database].Member[TaskResult]
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[models].Member[ChordCounter]
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[models].Member[GroupResult]
+  - - Django.db.models.Model~Subclass
+    - django_celery_results
+    - Member[models].Member[TaskResult]
+  - - django.http.response.JsonResponse~Subclass
+    - django_celery_results
+    - Member[views].Member[JsonResponse]

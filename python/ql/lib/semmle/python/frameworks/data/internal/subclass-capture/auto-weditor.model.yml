@@ -6,7 +6,67 @@ extensions:
   data:
   - - tornado.web.RequestHandler~Subclass
     - weditor
+    - Member[__main__].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[CropHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[DeviceConnectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[DeviceHierarchyHandlerV2]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[DeviceHierarchyHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[DeviceScreenshotHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[DeviceWidgetListHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
     - Member[__main__].Member[PythonShellHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[QuitHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[VersionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[__main__].Member[WidgetPreviewHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[page].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[page].Member[DeviceConnectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[page].Member[DeviceHierarchyHandlerV2]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[page].Member[DeviceHierarchyHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[page].Member[DeviceScreenshotHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[page].Member[DeviceWidgetListHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[page].Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[page].Member[VersionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - weditor
+    - Member[web].Member[handlers].Member[page].Member[WidgetPreviewHandler]
   - - tornado.web.RequestHandler~Subclass
     - weditor
     - Member[web].Member[handlers].Member[shell].Member[PythonShellHandler]

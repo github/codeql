@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - qiskit_ibm_provider
+    - Member[qpy].Member[binary_io].Member[schedules].Member[BytesIO]
+  - - requests.models.Response~Subclass
+    - qiskit_ibm_provider
+    - Member[api].Member[clients].Member[runtime].Member[Response]
+  - - requests.models.Response~Subclass
+    - qiskit_ibm_provider
+    - Member[api].Member[rest].Member[program_job].Member[Response]
+  - - requests.models.Response~Subclass
+    - qiskit_ibm_provider
+    - Member[api].Member[session].Member[Response]

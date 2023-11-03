@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPConnection~Subclass
+    - ops
+    - Member[pebble].Member[_UnixSocketConnection]
+  - - pickle~Alias
+    - ops
+    - Member[storage].Member[pickle]

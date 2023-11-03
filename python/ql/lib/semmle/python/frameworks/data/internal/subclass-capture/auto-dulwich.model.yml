@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[archive].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[contrib].Member[requests_vendor].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[contrib].Member[swift].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[diff_tree].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[object_store].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[objects].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[pack].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[porcelain].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[protocol].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[repo].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[web].Member[BytesIO]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - dulwich
+    - Member[web].Member[WSGIServerLogger]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - dulwich
+    - Member[web].Member[WSGIServer]

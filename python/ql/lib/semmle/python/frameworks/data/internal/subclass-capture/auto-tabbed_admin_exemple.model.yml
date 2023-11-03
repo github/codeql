@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[admin].Member[Album]
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[admin].Member[Band]
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[admin].Member[Concert]
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[admin].Member[Interview]
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[admin].Member[Musician]
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[models].Member[Album]
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[models].Member[Band]
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[models].Member[Concert]
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[models].Member[Interview]
+  - - Django.db.models.Model~Subclass
+    - tabbed_admin_exemple
+    - Member[band].Member[models].Member[Musician]

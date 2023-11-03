@@ -1,0 +1,78 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - pyatv
+    - Member[protocols].Member[mrp].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - pyatv
+    - Member[support].Member[http].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - pyatv
+    - Member[protocols].Member[dmap].Member[pairing].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyatv
+    - Member[scripts].Member[atvproxy].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[core].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[core].Member[facade].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[interface].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[protocols].Member[airplay].Member[ap2_session].Member[InfoSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[protocols].Member[mrp].Member[messages].Member[InfoSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[protocols].Member[mrp].Member[protocol].Member[InfoSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[protocols].Member[raop].Member[stream_client].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[scripts].Member[atvproxy].Member[InfoSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[settings].Member[AirPlaySettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[settings].Member[CompanionSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[settings].Member[DmapSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[settings].Member[InfoSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[settings].Member[MrpSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[settings].Member[ProtocolSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[settings].Member[RaopSettings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[settings].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[storage].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[storage].Member[StorageModel]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[storage].Member[file_storage].Member[StorageModel]
+  - - pydantic.BaseModel~Subclass
+    - pyatv
+    - Member[storage]Member[StorageModel]

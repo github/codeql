@@ -6,6 +6,9 @@ extensions:
   data:
   - - pydantic.BaseModel~Subclass
     - prefect_sqlalchemy
+    - Member[ConnectionComponents]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
     - Member[DatabaseCredentials]
   - - pydantic.BaseModel~Subclass
     - prefect_sqlalchemy
@@ -15,7 +18,13 @@ extensions:
     - Member[credentials].Member[Block]
   - - pydantic.BaseModel~Subclass
     - prefect_sqlalchemy
+    - Member[credentials].Member[ConnectionComponents]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
     - Member[credentials].Member[DatabaseCredentials]
+  - - pydantic.BaseModel~Subclass
+    - prefect_sqlalchemy
+    - Member[database].Member[ConnectionComponents]
   - - pydantic.BaseModel~Subclass
     - prefect_sqlalchemy
     - Member[database].Member[CredentialsBlock]
@@ -28,3 +37,6 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - prefect_sqlalchemy
     - Member[database].Member[SqlAlchemyConnector]
+  - - sqlalchemy.engine.Engine~Subclass
+    - prefect_sqlalchemy
+    - Member[database].Member[Engine]

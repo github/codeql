@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - wechaty
+    - Member[plugin].Member[Logger]
+  - - pickle~Alias
+    - wechaty
+    - Member[utils].Member[data_util].Member[pickle]

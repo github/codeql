@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - ml_api
+    - Member[api].Member[monitoring].Member[middleware].Member[Flask]
+  - - flask.Flask~Subclass
+    - ml_api
+    - Member[api].Member[persistence].Member[core].Member[Flask]
+  - - flask.Response~Subclass
+    - ml_api
+    - Member[api].Member[controller].Member[Response]
+  - - sqlalchemy.engine.Engine~Subclass
+    - ml_api
+    - Member[api].Member[persistence].Member[core].Member[Engine]

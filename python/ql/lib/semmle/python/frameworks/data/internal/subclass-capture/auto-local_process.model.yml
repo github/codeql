@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - local_process
+    - Member[config].Member[BaseFeatureServerConfig]
+  - - pydantic.BaseModel~Subclass
+    - local_process
+    - Member[config].Member[LocalFeatureServerConfig]

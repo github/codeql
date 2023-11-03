@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - darkflow
+    - Member[net].Member[flow].Member[pickle]
+  - - pickle~Alias
+    - darkflow
+    - Member[net].Member[yolo].Member[data].Member[pickle]
+  - - pickle~Alias
+    - darkflow
+    - Member[net].Member[yolo].Member[misc].Member[pickle]
+  - - pickle~Alias
+    - darkflow
+    - Member[net].Member[yolo].Member[train].Member[pickle]
+  - - pickle~Alias
+    - darkflow
+    - Member[net].Member[yolov2].Member[data].Member[pickle]
+  - - pickle~Alias
+    - darkflow
+    - Member[net].Member[yolov2].Member[train].Member[pickle]
+  - - pickle~Alias
+    - darkflow
+    - Member[utils].Member[process].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - darkflow
+    - Member[utils].Member[pascal_voc_clean_xml].Member[ET]

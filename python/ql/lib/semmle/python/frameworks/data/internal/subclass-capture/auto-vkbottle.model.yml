@@ -1,0 +1,243 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - vkbottle
+    - Member[http].Member[aiohttp].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[StringIO]
+  - - io.StringIO~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message_event].Member[StringIO]
+  - - io.StringIO~Subclass
+    - vkbottle
+    - Member[tools].Member[uploader].Member[base].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[OpenAppEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[OpenLinkEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[ShowSnackbarEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[StatePeer]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[bot].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[bot].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[StatePeer]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[dispenser].Member[StatePeer]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[dispenser].Member[abc].Member[StatePeer]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[dispenser].Member[base].Member[StatePeer]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[dispenser].Member[builtin].Member[StatePeer]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[return_manager].Member[bot].Member[message].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[return_manager].Member[user].Member[message].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[views].Member[abc].Member[message].Member[BaseMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[views].Member[bot].Member[message].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[dispatch].Member[views].Member[user].Member[message].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[framework].Member[labeler].Member[abc].Member[BaseMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[framework].Member[labeler].Member[bot].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[framework].Member[labeler].Member[user].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[framework].Member[labeler].Member[user].Member[RawUserEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[OpenAppEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[OpenLinkEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[ShowSnackbarEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[event_data].Member[OpenAppEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[event_data].Member[OpenLinkEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[event_data].Member[ShowSnackbarEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[BaseMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[AudioAudio]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[BaseForeignMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[DocsDoc]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[Mention]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[MessagesAudioMessage]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[MessagesForeignMessage]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[PhotosPhoto]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[UsersUserFull]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[VideoVideoFull]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[WallWallComment]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[foreign_message].Member[WallWallpostFull]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[mention].Member[Mention]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[AudioAudio]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[BaseForeignMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[BaseMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[DocsDoc]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[Mention]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[MessagesAudioMessage]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[MessagesForward]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[MessagesMessage]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[PhotosPhoto]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[StatePeer]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[UsersUserFull]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[VideoVideoFull]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[WallWallComment]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[base].Member[message].Member[WallWallpostFull]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[MessageEventMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[foreign_message].Member[BaseForeignMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[foreign_message].Member[ClientInfoForBots]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[foreign_message].Member[ForeignMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message].Member[BaseMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message].Member[ClientInfoForBots]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message].Member[ForeignMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message].Member[MessageNew]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message_event].Member[MessageEventMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message_event].Member[MessageEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message_event].Member[OpenAppEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message_event].Member[OpenLinkEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[bot].Member[message_event].Member[ShowSnackbarEvent]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[user].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[user].Member[foreign_message].Member[BaseForeignMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[user].Member[foreign_message].Member[ForeignMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[user].Member[message].Member[BaseMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[user].Member[message].Member[ForeignMessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[tools].Member[mini_types].Member[user].Member[message].Member[MessageMin]
+  - - pydantic.BaseModel~Subclass
+    - vkbottle
+    - Member[user].Member[Message]

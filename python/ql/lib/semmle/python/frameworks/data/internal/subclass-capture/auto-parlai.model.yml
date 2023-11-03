@@ -4,6 +4,51 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - parlai
+    - Member[chat_service].Member[services].Member[browser_chat].Member[client].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - parlai
+    - Member[chat_service].Member[services].Member[browser_chat].Member[client].Member[BrowserHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - parlai
+    - Member[scripts].Member[interactive_web].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - parlai
+    - Member[scripts].Member[interactive_web].Member[MyHandler]
+  - - io.StringIO~Subclass
+    - parlai
+    - Member[crowdsourcing].Member[tasks].Member[model_chat].Member[utils].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - parlai
+    - Member[utils].Member[logging].Member[ParlaiLogger]
+  - - pickle~Alias
+    - parlai
+    - Member[core].Member[opt].Member[pickle]
+  - - pickle~Alias
+    - parlai
+    - Member[core].Member[tod].Member[tod_agents].Member[pickle]
+  - - pickle~Alias
+    - parlai
+    - Member[crowdsourcing].Member[tasks].Member[model_chat].Member[model_chat_blueprint].Member[pickle]
+  - - pickle~Alias
+    - parlai
+    - Member[crowdsourcing].Member[tasks].Member[model_chat].Member[scripts].Member[save_image_contexts].Member[pickle]
+  - - pickle~Alias
+    - parlai
+    - Member[tasks].Member[light_dialog].Member[builder].Member[pickle]
+  - - pickle~Alias
+    - parlai
+    - Member[tasks].Member[light_dialog].Member[worlds].Member[pickle]
+  - - pickle~Alias
+    - parlai
+    - Member[tasks].Member[md_gender].Member[light].Member[pickle]
+  - - pickle~Alias
+    - parlai
+    - Member[utils].Member[distributed].Member[pickle]
+  - - pickle~Alias
+    - parlai
+    - Member[utils].Member[pickle].Member[pickle]
   - - tornado.web.RequestHandler~Subclass
     - parlai
     - Member[chat_service].Member[services].Member[websocket].Member[sockets].Member[MessageSocketHandler]
@@ -13,3 +58,12 @@ extensions:
   - - tornado.web.RequestHandler~Subclass
     - parlai
     - Member[chat_service].Member[services].Member[websocket].Member[websocket_manager].Member[MessageSocketHandler]
+  - - xml.etree.ElementTree~Subclass
+    - parlai
+    - Member[tasks].Member[asdiv].Member[agents].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - parlai
+    - Member[tasks].Member[copa].Member[agents].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - parlai
+    - Member[tasks].Member[opensubtitles].Member[build_2018].Member[ET]

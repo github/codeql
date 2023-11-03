@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - cassiopeia
+    - Member[datastores].Member[common].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - cassiopeia
+    - Member[datastores].Member[image].Member[BytesIO]
+  - - pycurl.Curl~Subclass
+    - cassiopeia
+    - Member[datastores].Member[common].Member[Curl]
+  - - pycurl.Curl~Subclass
+    - cassiopeia
+    - Member[datastores].Member[kernel].Member[common].Member[Curl]
+  - - pycurl.Curl~Subclass
+    - cassiopeia
+    - Member[datastores].Member[riotapi].Member[common].Member[Curl]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - internetarchive
+    - Member[catalog].Member[Response]
+  - - requests.models.Response~Subclass
+    - internetarchive
+    - Member[cli].Member[ia_copy].Member[Response]
+  - - requests.models.Response~Subclass
+    - internetarchive
+    - Member[cli].Member[ia_metadata].Member[Response]
+  - - requests.models.Response~Subclass
+    - internetarchive
+    - Member[item].Member[Response]
+  - - requests.models.Response~Subclass
+    - internetarchive
+    - Member[session].Member[Response]

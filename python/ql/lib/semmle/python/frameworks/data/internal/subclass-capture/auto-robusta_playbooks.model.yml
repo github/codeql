@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[api_service].Member[ApiServiceConditions]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[api_service].Member[ApiService]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[k8s_resource_enrichments].Member[RelatedContainer]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[k8s_resource_enrichments].Member[RelatedPod]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[krr].Member[KRRMetric]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[krr].Member[KRRObject]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[krr].Member[KRRRecommendedInfo]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[krr].Member[KRRRecommended]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[krr].Member[KRRResponse]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[krr].Member[KRRScan]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[krr].Member[KRRSecret]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[krr].Member[KRRStrategyData]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[oom_killer].Member[MemorySpecs]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[oom_killer].Member[OomKill]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[persistent_data].Member[DeploymentChangeCounter]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[pod_troubleshooting].Member[PythonMemorySnapshot]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[pod_troubleshooting].Member[PythonMemoryStatistic]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[pod_troubleshooting].Member[StackTraceObject]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[popeye].Member[GroupedIssues]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[popeye].Member[Issue]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[popeye].Member[PopeyeReport]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[popeye].Member[PopeyeSection]
+  - - pydantic.BaseModel~Subclass
+    - robusta_playbooks
+    - Member[popeye].Member[Tally]

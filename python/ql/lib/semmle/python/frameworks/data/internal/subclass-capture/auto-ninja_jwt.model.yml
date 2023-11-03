@@ -12,7 +12,34 @@ extensions:
     - Member[schema].Member[AbstractUser]
   - - Django.db.models.Model~Subclass
     - ninja_jwt
+    - Member[schema].Member[BlacklistedToken]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[token_blacklist].Member[admin].Member[BlacklistedToken]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[token_blacklist].Member[admin].Member[OutstandingToken]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[token_blacklist].Member[management].Member[commands].Member[flushexpiredtokens].Member[OutstandingToken]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[token_blacklist].Member[models].Member[BlacklistedToken]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[token_blacklist].Member[models].Member[OutstandingToken]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
     - Member[tokens].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[tokens].Member[BlacklistedToken]
+  - - Django.db.models.Model~Subclass
+    - ninja_jwt
+    - Member[tokens].Member[OutstandingToken]
+  - - django.http.request.HttpRequest~Subclass
+    - ninja_jwt
+    - Member[authentication].Member[HttpRequest]
   - - pydantic.BaseModel~Subclass
     - ninja_jwt
     - Member[routers].Member[blacklist].Member[Schema]

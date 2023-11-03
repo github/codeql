@@ -4,6 +4,36 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - fastapi.APIRouter~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[CRUDGenerator]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[_base].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[_base].Member[CRUDGenerator]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[databases].Member[CRUDGenerator]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[gino_starlette].Member[CRUDGenerator]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[mem].Member[CRUDGenerator]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[ormar].Member[CRUDGenerator]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[sqlalchemy].Member[CRUDGenerator]
+  - - fastapi.APIRouter~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[tortoise].Member[CRUDGenerator]
   - - pydantic.BaseModel~Subclass
     - fastapi_crudrouter
     - Member[core].Member[ormar].Member[Model]
+  - - sqlalchemy.orm.Session~Subclass
+    - fastapi_crudrouter
+    - Member[core].Member[sqlalchemy].Member[Session]

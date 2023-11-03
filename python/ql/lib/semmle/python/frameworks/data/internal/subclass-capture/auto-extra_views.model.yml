@@ -9,6 +9,39 @@ extensions:
     - Member[CalendarMonthView]
   - - Django.Views.View~Subclass
     - extra_views
+    - Member[CreateWithInlinesView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[FormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[InlineFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[ModelFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[UpdateWithInlinesView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[advanced].Member[BaseCreateWithInlinesView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[advanced].Member[BaseUpdateWithInlinesView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[advanced].Member[CreateWithInlinesView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[advanced].Member[FormView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[advanced].Member[ProcessFormWithInlinesView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[advanced].Member[UpdateWithInlinesView]
+  - - Django.Views.View~Subclass
+    - extra_views
     - Member[dates].Member[BaseCalendarMonthView]
   - - Django.Views.View~Subclass
     - extra_views
@@ -16,3 +49,42 @@ extensions:
   - - Django.Views.View~Subclass
     - extra_views
     - Member[dates].Member[CalendarMonthView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[formsets].Member[BaseFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[formsets].Member[BaseInlineFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[formsets].Member[BaseModelFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[formsets].Member[FormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[formsets].Member[InlineFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[formsets].Member[ModelFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[formsets].Member[ProcessFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[formsets].Member[View]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[generic].Member[BaseGenericInlineFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[generic].Member[BaseInlineFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[generic].Member[GenericInlineFormSetView]
+  - - Django.Views.View~Subclass
+    - extra_views
+    - Member[generic].Member[InlineFormSetView]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - extra_views
+    - Member[formsets].Member[HttpResponseRedirect]

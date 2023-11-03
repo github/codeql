@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - cgi.FieldStorage~Subclass
+    - kotti
+    - Member[filedepot].Member[FieldStorage]
+  - - cgi.FieldStorage~Subclass
+    - kotti
+    - Member[resources].Member[FieldStorage]
+  - - cgi.FieldStorage~Subclass
+    - kotti
+    - Member[views].Member[edit].Member[upload].Member[FieldStorage]
+  - - io.StringIO~Subclass
+    - kotti
+    - Member[resources].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - kotti
+    - Member[views].Member[form].Member[BytesIO]
+  - - sqlalchemy.engine.Connection~Subclass
+    - kotti
+    - Member[filedepot].Member[Connection]

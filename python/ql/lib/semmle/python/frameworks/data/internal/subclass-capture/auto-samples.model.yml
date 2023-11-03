@@ -6,4 +6,109 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - samples
+    - Member[admin].Member[BackwardCompatibleWidget]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[Component]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[Credit]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[CustomWidgetComponent]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[CustomWidget]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[GenericNote]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[NonSortableCategory]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[NonSortableCredit]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[NonSortableNote]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[Note]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[SortableCategoryWidget]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[SortableNonInlineCategory]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[admin].Member[Widget]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[BackwardCompatibleWidget]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[Component]
+  - - Django.db.models.Model~Subclass
+    - samples
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[Credit]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[CustomWidgetComponent]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[CustomWidget]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[GenericNote]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[NonSortableCategory]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[NonSortableCredit]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[NonSortableNote]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[Note]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[Project]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[SimpleModel]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[SortableCategoryWidget]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[SortableMixin]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[SortableNonInlineCategory]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[Sortable]
+  - - Django.db.models.Model~Subclass
+    - samples
+    - Member[models].Member[Widget]

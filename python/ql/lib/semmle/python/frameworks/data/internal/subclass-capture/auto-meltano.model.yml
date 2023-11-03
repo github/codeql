@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - meltano
+    - Member[core].Member[plugin].Member[singer].Member[tap].Member[StringIO]
+  - - sqlalchemy.engine.Engine~Subclass
+    - meltano
+    - Member[core].Member[db].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - meltano
+    - Member[core].Member[migration_service].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - meltano
+    - Member[core].Member[upgrade_service].Member[Engine]
+  - - sqlalchemy.orm.Session~Subclass
+    - meltano
+    - Member[cli].Member[schedule].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - meltano
+    - Member[core].Member[block].Member[extract_load].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - meltano
+    - Member[core].Member[elt_context].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - meltano
+    - Member[core].Member[job].Member[stale_job_failer].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - meltano
+    - Member[core].Member[job_state].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - meltano
+    - Member[core].Member[settings_store].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - meltano
+    - Member[core].Member[state_service].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - meltano
+    - Member[core].Member[state_store].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - meltano
+    - Member[core].Member[state_store].Member[db].Member[Session]

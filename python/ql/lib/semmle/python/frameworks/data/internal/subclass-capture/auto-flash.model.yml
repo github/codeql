@@ -7,3 +7,39 @@ extensions:
   - - flask.Flask~Subclass
     - flash
     - Member[flash].Member[Flask]
+  - - io.StringIO~Subclass
+    - flash
+    - Member[core].Member[serve].Member[dag].Member[visualize].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - flash
+    - Member[core].Member[serve].Member[interfaces].Member[http].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - flash
+    - Member[core].Member[serve].Member[types].Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - flash
+    - Member[image].Member[data].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - flash
+    - Member[tabular].Member[input].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - flash
+    - Member[core].Member[serve].Member[execution].Member[ComponentJSON]
+  - - pydantic.BaseModel~Subclass
+    - flash
+    - Member[core].Member[serve].Member[execution].Member[EndpointProtoJSON]
+  - - pydantic.BaseModel~Subclass
+    - flash
+    - Member[core].Member[serve].Member[execution].Member[MergedJSON]
+  - - pydantic.BaseModel~Subclass
+    - flash
+    - Member[core].Member[serve].Member[interfaces].Member[http].Member[Alive]
+  - - pydantic.BaseModel~Subclass
+    - flash
+    - Member[core].Member[serve].Member[interfaces].Member[http].Member[ComponentJSON]
+  - - pydantic.BaseModel~Subclass
+    - flash
+    - Member[core].Member[serve].Member[interfaces].Member[http].Member[MergedJSON]
+  - - pydantic.BaseModel~Subclass
+    - flash
+    - Member[core].Member[serve].Member[interfaces].Member[models].Member[Alive]

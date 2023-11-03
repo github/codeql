@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - Cython
+    - Member[Compiler].Member[Annotate].Member[StringIO]
+  - - io.StringIO~Subclass
+    - Cython
+    - Member[Compiler].Member[Parsing].Member[StringIO]
+  - - io.StringIO~Subclass
+    - Cython
+    - Member[Compiler].Member[TreeFragment].Member[StringIO]
+  - - io.StringIO~Subclass
+    - Cython
+    - Member[StringIOTree].Member[StringIO]
+  - - lxml.etree~Alias
+    - Cython
+    - Member[Debugger].Member[DebugWriter].Member[etree]
+  - - lxml.etree~Alias
+    - Cython
+    - Member[Debugger].Member[libcython].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - Cython
+    - Member[Debugger].Member[DebugWriter].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - Cython
+    - Member[Debugger].Member[libcython].Member[etree]

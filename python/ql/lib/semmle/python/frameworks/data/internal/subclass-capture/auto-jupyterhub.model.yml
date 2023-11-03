@@ -4,9 +4,246 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - sqlalchemy.orm.Session~Subclass
+    - jupyterhub
+    - Member[orm].Member[Session]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[API404]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[auth].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[auth].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[auth].Member[CookieAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[auth].Member[OAuthAuthorizeHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[auth].Member[OAuthTokenHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[auth].Member[TokenAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[base].Member[API404]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[base].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[base].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[groups].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[groups].Member[GroupAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[groups].Member[GroupListAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[groups].Member[GroupPropertiesAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[groups].Member[GroupUsersAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[groups].Member[_GroupAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[hub].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[hub].Member[InfoAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[hub].Member[RootAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[hub].Member[ShutdownAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[proxy].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[proxy].Member[ProxyAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[services].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[services].Member[ServiceAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[services].Member[ServiceListAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[ActivityAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[SelfAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[SpawnProgressAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[UserAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[UserAdminAccessAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[UserListAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[UserServerAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[UserTokenAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[apihandlers].Member[users].Member[UserTokenListAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[auth].Member[LoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[AddSlashHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[CSPReportHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[LoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[LogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[PrefixRedirectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[Template404]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[UserRedirectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[UserUrlHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[base].Member[AddSlashHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[base].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[base].Member[CSPReportHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[base].Member[PrefixRedirectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[base].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[base].Member[Template404]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[base].Member[UserRedirectHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[base].Member[UserUrlHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[login].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[login].Member[LoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[login].Member[LogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[metrics].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[metrics].Member[MetricsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[pages].Member[AdminHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[pages].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[pages].Member[HealthCheckHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[pages].Member[HomeHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[pages].Member[ProxyErrorHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[pages].Member[RootHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[pages].Member[SpawnHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[pages].Member[SpawnPendingHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[handlers].Member[pages].Member[TokenPageHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[log].Member[HealthCheckHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[services].Member[auth].Member[HubOAuthCallbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[services].Member[auth].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[singleuser].Member[extension].Member[HubOAuthCallbackHandler]
   - - tornado.web.RequestHandler~Subclass
     - jupyterhub
     - Member[singleuser].Member[extension].Member[JupyterHubLogoutHandler]
   - - tornado.web.RequestHandler~Subclass
     - jupyterhub
+    - Member[singleuser].Member[extension].Member[JupyterHubOAuthCallbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
     - Member[singleuser].Member[extension].Member[LogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[singleuser].Member[mixins].Member[HubOAuthCallbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[singleuser].Member[mixins].Member[OAuthCallbackHandlerMixin]
+  - - tornado.web.RequestHandler~Subclass
+    - jupyterhub
+    - Member[singleuser].Member[mixins].Member[RequestHandler]

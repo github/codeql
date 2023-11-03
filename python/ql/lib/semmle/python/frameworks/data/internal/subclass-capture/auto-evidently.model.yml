@@ -1,0 +1,1707 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - evidently
+    - Member[collector].Member[app].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - evidently
+    - Member[ui].Member[app].Member[APIRouter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[BaseResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[ColumnMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[EnumValueMixin]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[ErrorResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[EvidentlyBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[Options]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[base_metric].Member[PolymorphicModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculation_engine].Member[engine].Member[ErrorResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculation_engine].Member[engine].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculation_engine].Member[engine].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculation_engine].Member[python_engine].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[classification_performance].Member[Boxes]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[classification_performance].Member[ConfusionMatrix]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[classification_performance].Member[DatasetClassificationQuality]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[classification_performance].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[classification_performance].Member[PredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[classification_performance].Member[RatesPlotData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[ColumnDataDriftMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[ColumnMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[DatasetDriftMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[DistributionIncluded]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[DriftStatsField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[ScatterAggField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_drift].Member[ScatterField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_quality].Member[ColumnCorrelations]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_quality].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_quality].Member[DistributionIncluded]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[data_quality].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[calculations].Member[regression_performance].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[app].Member[CollectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[app].Member[CollectorServiceConfig]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[app].Member[LogEvent]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[client].Member[CollectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[CollectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[CollectorServiceConfig]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[CollectorStorage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[CollectorTrigger]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[InMemoryStorage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[IntervalTrigger]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[Options]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[PolymorphicModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[config].Member[ReportConfig]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[storage].Member[CollectorStorage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[storage].Member[InMemoryStorage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[storage].Member[LogEvent]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[collector].Member[storage].Member[PolymorphicModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[core].Member[BaseResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[OOV]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[RegExp]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[SentenceCount]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[Sentiment]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[TriggerWordsPresence]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[WordCount]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[non_letter_character_percentage_descriptor].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[non_letter_character_percentage_descriptor].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[non_letter_character_percentage_descriptor].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[oov_words_percentage_descriptor].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[oov_words_percentage_descriptor].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[oov_words_percentage_descriptor].Member[OOVWordsPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[oov_words_percentage_descriptor].Member[OOV]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[regexp_descriptor].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[regexp_descriptor].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[regexp_descriptor].Member[RegExp]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[sentence_count_descriptor].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[sentence_count_descriptor].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[sentence_count_descriptor].Member[SentenceCount]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[sentiment_descriptor].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[sentiment_descriptor].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[sentiment_descriptor].Member[Sentiment]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[text_length_descriptor].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[text_length_descriptor].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[text_length_descriptor].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[trigger_words_presence_descriptor].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[trigger_words_presence_descriptor].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[trigger_words_presence_descriptor].Member[TriggerWordsPresence]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[word_count_descriptor].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[word_count_descriptor].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[descriptors].Member[word_count_descriptor].Member[WordCount]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[experimental].Member[report_set].Member[Snapshot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[OOV_words_percentage_feature].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[OOV_words_percentage_feature].Member[OOVWordsPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[generated_features].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[generated_features].Member[EvidentlyBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[generated_features].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[generated_features].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[non_letter_character_percentage_feature].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[non_letter_character_percentage_feature].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[non_letter_character_percentage_feature].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[regexp_feature].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[regexp_feature].Member[RegExp]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[sentence_count_feature].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[sentence_count_feature].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[sentence_count_feature].Member[SentenceCount]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[sentiment_feature].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[sentiment_feature].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[sentiment_feature].Member[Sentiment]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[text_length_feature].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[text_length_feature].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[text_length_feature].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[trigger_words_presence_feature].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[trigger_words_presence_feature].Member[TriggerWordsPresent]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[word_count_feature].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[word_count_feature].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[features].Member[word_count_feature].Member[WordCount]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_preset].Member[classification_performance].Member[ClassificationConfusionMatrix]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_preset].Member[data_drift].Member[DriftMethod]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_preset].Member[target_drift].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_preset].Member[text_overview].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[Boxes]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[ColumnAggScatterResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[ColumnCorrelations]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[ColumnScatterResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[ConfusionMatrix]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[DatasetClassificationQuality]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[DatasetUtilityColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[DistributionIncluded]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[Histogram]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[LiftCurveData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[PRCurveData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[PredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[ROCCurveData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[RatesPlotData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[ScatterAggField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[ScatterField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metric_results].Member[StatsByFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[ClassificationConfusionMatrix]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[base_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[base_classification_metric].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[base_classification_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[base_classification_metric].Member[PredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[class_balance_metric].Member[ClassificationClassBalanceResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[class_balance_metric].Member[Histogram]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[class_balance_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[class_balance_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[class_separation_metric].Member[ClassificationClassSeparationPlotResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[class_separation_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[class_separation_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_dummy_metric].Member[ClassMetric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_dummy_metric].Member[ClassificationDummyMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_dummy_metric].Member[ClassificationReport]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_dummy_metric].Member[DatasetClassificationQuality]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_dummy_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_dummy_metric].Member[PredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_quality_metric].Member[ClassificationConfusionMatrix]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_quality_metric].Member[ClassificationQualityMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_quality_metric].Member[DatasetClassificationQuality]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[classification_quality_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[confusion_matrix_metric].Member[ClassificationConfusionMatrixParameters]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[confusion_matrix_metric].Member[ClassificationConfusionMatrixResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[confusion_matrix_metric].Member[ClassificationConfusionMatrix]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[confusion_matrix_metric].Member[ConfusionMatrix]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[confusion_matrix_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_curve_metric].Member[ClassificationLiftCurveResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_curve_metric].Member[LiftCurveData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_curve_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_curve_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_curve_metric].Member[PredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_table_metric].Member[ClassificationLiftTableResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_table_metric].Member[LabelModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_table_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_table_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[lift_table_metric].Member[PredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[objects].Member[ClassMetric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[objects].Member[ClassificationReport]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[objects].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_curve_metric].Member[ClassificationPRCurveResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_curve_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_curve_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_curve_metric].Member[PRCurveData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_curve_metric].Member[PredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_table_metric].Member[ClassificationPRTableResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_table_metric].Member[LabelModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_table_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_table_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[pr_table_metric].Member[PredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[probability_distribution_metric].Member[ClassificationProbDistributionResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[probability_distribution_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[probability_distribution_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_class_metric].Member[ClassificationQualityByClassResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_class_metric].Member[ClassificationQuality]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_class_metric].Member[ClassificationReport]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_class_metric].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_class_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_feature_table].Member[ClassificationQualityByFeatureTableResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_feature_table].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_feature_table].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_feature_table].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_feature_table].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_feature_table].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_feature_table].Member[OOVWordsPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_feature_table].Member[StatsByFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[quality_by_feature_table].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[roc_curve_metric].Member[ClassificationRocCurveResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[roc_curve_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[roc_curve_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[roc_curve_metric].Member[PredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[classification_performance].Member[roc_curve_metric].Member[ROCCurveData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[base].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[base].Member[FrozenBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[base].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[base].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[base].Member[WithDriftOptionsFields]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[base].Member[WithDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_drift_metric].Member[ColumnDataDriftMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_drift_metric].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_drift_metric].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_drift_metric].Member[DistributionIncluded]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_drift_metric].Member[DriftStatsField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_drift_metric].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_drift_metric].Member[ScatterAggField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_drift_metric].Member[ScatterField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_interaction_plot].Member[ColumnInteractionPlotResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_interaction_plot].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_interaction_plot].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_value_plot].Member[ColumnValuePlotResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_value_plot].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[column_value_plot].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[data_drift_table].Member[ColumnDataDriftMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[data_drift_table].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[data_drift_table].Member[DataDriftTableResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[data_drift_table].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[data_drift_table].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[data_drift_table].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[data_drift_table].Member[WithDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[dataset_drift_metric].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[dataset_drift_metric].Member[DatasetDriftMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[dataset_drift_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[dataset_drift_metric].Member[WithDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embedding_drift_methods].Member[DistanceDriftMethod]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embedding_drift_methods].Member[DriftMethod]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embedding_drift_methods].Member[EvidentlyBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embedding_drift_methods].Member[MMDDriftMethod]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embedding_drift_methods].Member[ModelDriftMethod]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embedding_drift_methods].Member[RatioDriftMethod]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embeddings_drift].Member[DriftMethod]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embeddings_drift].Member[EmbeddingsDriftMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embeddings_drift].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[embeddings_drift].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[target_by_features_table].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[target_by_features_table].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[target_by_features_table].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[target_by_features_table].Member[OOVWordsPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[target_by_features_table].Member[StatsByFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[target_by_features_table].Member[TargetByFeaturesTableResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[target_by_features_table].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[ColumnDataDriftMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[OOV]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[TextDescriptorsDriftMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_descriptors_drift_metric].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_domain_classifier_drift_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_domain_classifier_drift_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_domain_classifier_drift_metric].Member[TextDomainClassifierDriftResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_domain_classifier_drift_metric].Member[TextDomainField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_metric].Member[CommentResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_drift].Member[text_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_missing_values_metric].Member[ColumnMissingValuesMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_missing_values_metric].Member[ColumnMissingValues]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_missing_values_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_missing_values_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_regexp_metric].Member[DataIntegrityValueByRegexpMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_regexp_metric].Member[DataIntegrityValueByRegexpStat]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_regexp_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_regexp_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[CategoricalCharacteristics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[ColumnCharacteristics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[ColumnMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[ColumnSummaryResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[DataByTarget]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[DataInTimePlots]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[DataInTime]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[DataQualityPlot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[DatetimeCharacteristics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[Histogram]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[NumericCharacteristics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[OOVWordsPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[TextCharacteristics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[column_summary_metric].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_missing_values_metric].Member[DatasetMissingValuesMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_missing_values_metric].Member[DatasetMissingValues]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_missing_values_metric].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_missing_values_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_missing_values_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_summary_metric].Member[DatasetSummaryMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_summary_metric].Member[DatasetSummary]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_summary_metric].Member[ExcludeNoneMixin]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_summary_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_summary_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_integrity].Member[dataset_summary_metric].Member[NumpyDtype]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_category_metric].Member[CategoryStat]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_category_metric].Member[ColumnCategoryMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_category_metric].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_category_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_category_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_correlations_metric].Member[ColumnCorrelationsMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_correlations_metric].Member[ColumnCorrelations]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_correlations_metric].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_correlations_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_correlations_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_distribution_metric].Member[ColumnDistributionMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_distribution_metric].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_distribution_metric].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_distribution_metric].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_distribution_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_distribution_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_quantile_metric].Member[ColumnMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_quantile_metric].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_quantile_metric].Member[ColumnQuantileMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_quantile_metric].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_quantile_metric].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_quantile_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_quantile_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_quantile_metric].Member[QuantileStats]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_list_metric].Member[ColumnValueListMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_list_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_list_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_list_metric].Member[ValueListStat]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_range_metric].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_range_metric].Member[ColumnValueRangeMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_range_metric].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_range_metric].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_range_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_range_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[column_value_range_metric].Member[ValuesInRangeStat]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[conflict_prediction_metric].Member[ConflictPredictionData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[conflict_prediction_metric].Member[ConflictPredictionMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[conflict_prediction_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[conflict_prediction_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[conflict_target_metric].Member[ConflictTargetMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[conflict_target_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[conflict_target_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[dataset_correlations_metric].Member[CorrelationStats]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[dataset_correlations_metric].Member[DatasetCorrelation]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[dataset_correlations_metric].Member[DatasetCorrelationsMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[dataset_correlations_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[dataset_correlations_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[dataset_correlations_metric].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[dataset_correlations_metric].Member[OOVWordsPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[dataset_correlations_metric].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[stability_metric].Member[DataQualityStabilityMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[stability_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[stability_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_correlation_metric].Member[ColumnCorrelations]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_correlation_metric].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_correlation_metric].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_correlation_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_correlation_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_correlation_metric].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_correlation_metric].Member[OOV]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_correlation_metric].Member[TextDescriptorsCorrelationMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_correlation_metric].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[OOV]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[TextDescriptorsDistributionResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[data_quality].Member[text_descriptors_distribution].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[recsys].Member[base_top_k].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[recsys].Member[base_top_k].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[recsys].Member[base_top_k].Member[TopKMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[recsys].Member[f_beta_top_k].Member[TopKMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[recsys].Member[ndcg_k].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[recsys].Member[ndcg_k].Member[TopKMetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[recsys].Member[precision_recall_k].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[recsys].Member[precision_recall_k].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[recsys].Member[precision_recall_k].Member[PrecisionRecallCalculationResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[abs_perc_error_in_time].Member[ColumnAggScatterResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[abs_perc_error_in_time].Member[ColumnScatterResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[abs_perc_error_in_time].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_bias_table].Member[FeatureDescriptor]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_bias_table].Member[GeneratedFeature]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_bias_table].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_bias_table].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_bias_table].Member[NonLetterCharacterPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_bias_table].Member[OOVWordsPercentage]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_bias_table].Member[RegressionErrorBiasTableResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_bias_table].Member[TextLength]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_distribution].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_distribution].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_distribution].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_distribution].Member[RegressionErrorDistributionResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_in_time].Member[ColumnAggScatterResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_in_time].Member[ColumnScatterResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_in_time].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_normality].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_normality].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[error_normality].Member[RegressionErrorNormalityResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[objects].Member[IntervalSeries]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[objects].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[objects].Member[PredActualScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[objects].Member[RegressionMetricScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[objects].Member[RegressionMetricsScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[objects].Member[RegressionScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[predicted_and_actual_in_time].Member[ColumnAggScatterResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[predicted_and_actual_in_time].Member[ColumnScatterResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[predicted_and_actual_in_time].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[predicted_vs_actual].Member[AggPredActualScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[predicted_vs_actual].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[predicted_vs_actual].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[predicted_vs_actual].Member[PredActualScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[predicted_vs_actual].Member[RegressionPredictedVsActualScatterResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_dummy_metric].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_dummy_metric].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_dummy_metric].Member[RegressionDummyMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_performance_metrics].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_performance_metrics].Member[Histogram]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_performance_metrics].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_performance_metrics].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_performance_metrics].Member[RegressionMetricScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_performance_metrics].Member[RegressionMetricsScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_performance_metrics].Member[RegressionMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_performance_metrics].Member[RegressionPerformanceMetricsResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_quality].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_quality].Member[Histogram]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_quality].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_quality].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_quality].Member[MoreRegressionMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_quality].Member[RegressionMetricScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_quality].Member[RegressionMetricsScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_quality].Member[RegressionMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[regression_quality].Member[RegressionQualityMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[top_error].Member[AggTopData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[top_error].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[top_error].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[top_error].Member[PredActualScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[top_error].Member[RegressionScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[top_error].Member[RegressionTopErrorMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[top_error].Member[TopData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[utils].Member[IntervalSeries]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[utils].Member[RegressionMetricScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[visualization].Member[ColorOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[visualization].Member[Histogram]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[visualization].Member[RegressionMetricScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[metrics].Member[regression_performance].Member[visualization].Member[RegressionScatter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[ColorOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[agg_data].Member[Option]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[agg_data].Member[RenderOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[base].Member[ColorOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[base].Member[Option]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[base].Member[Options]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[base].Member[RenderOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[color_scheme].Member[ColorOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[color_scheme].Member[Option]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[data_drift].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[option].Member[FrozenBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[options].Member[option].Member[Option]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[pydantic_utils].Member[EnumValueMixin]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[pydantic_utils].Member[EvidentlyBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[pydantic_utils].Member[ExcludeNoneMixin]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[pydantic_utils].Member[FrozenBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[pydantic_utils].Member[PolymorphicModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[renderers].Member[base_renderer].Member[ColorOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[renderers].Member[base_renderer].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[renderers].Member[html_widgets].Member[ColorOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[renderers].Member[html_widgets].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[renderers].Member[html_widgets].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[renderers].Member[render_utils].Member[ColorOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[renderers].Member[render_utils].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[renderers].Member[render_utils].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[report].Member[report].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[report].Member[report].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[report].Member[report].Member[Snapshot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[runner].Member[runner].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[ColumnDataDriftMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[DatasetDriftMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[DatasetUtilityColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[DistributionIncluded]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[DriftStatsField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[ScatterAggField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[calculations].Member[data_drift].Member[ScatterField]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[engine].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[engine].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[metrics].Member[data_drift].Member[ColumnDataDriftMetrics]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[metrics].Member[data_drift].Member[DataDriftOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[metrics].Member[data_drift].Member[DataDriftTableResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[metrics].Member[data_drift].Member[DatasetDriftMetricResults]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[utils].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[spark].Member[visualizations].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[suite].Member[base_suite].Member[ContextPayload]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[suite].Member[base_suite].Member[ErrorResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[suite].Member[base_suite].Member[MetricResult]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[suite].Member[base_suite].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[suite].Member[base_suite].Member[Options]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[suite].Member[base_suite].Member[Snapshot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[app].Member[DashboardInfoModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[app].Member[DashboardPanel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[app].Member[ProjectBase]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[app].Member[ReportModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[app].Member[Snapshot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[ColumnName]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[DashboardConfig]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[DashboardPanelCounter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[DashboardPanelPlot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[DashboardPanel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[EnumValueMixin]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[EvidentlyBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[PanelValue]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[PolymorphicModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[dashboards].Member[ReportFilter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[demo_projects].Member[adult].Member[ReportFilter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[demo_projects].Member[bikes].Member[DashboardPanelCounter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[demo_projects].Member[bikes].Member[DashboardPanelPlot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[demo_projects].Member[bikes].Member[PanelValue]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[demo_projects].Member[bikes].Member[ReportFilter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[demo_projects].Member[reviews].Member[DashboardPanelCounter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[demo_projects].Member[reviews].Member[DashboardPanelPlot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[demo_projects].Member[reviews].Member[PanelValue]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[demo_projects].Member[reviews].Member[ReportFilter]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[models].Member[DashboardInfoModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[models].Member[MetricModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[models].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[models].Member[ReportModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[remote].Member[DashboardConfig]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[remote].Member[ProjectBase]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[remote].Member[Snapshot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[workspace].Member[DashboardConfig]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[workspace].Member[ProjectBase]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[ui].Member[workspace].Member[Snapshot]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[data_operations].Member[DatasetColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[data_operations].Member[DatasetUtilityColumns]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[numpy_encoder].Member[ApproxValue]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[types].Member[ApproxValue]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[types].Member[ExcludeNoneMixin]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[types].Member[FrozenBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[visualizations].Member[ApproxValue]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[visualizations].Member[ColorOptions]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[visualizations].Member[Distribution]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[visualizations].Member[HistogramData]
+  - - pydantic.BaseModel~Subclass
+    - evidently
+    - Member[utils].Member[visualizations].Member[Histogram]

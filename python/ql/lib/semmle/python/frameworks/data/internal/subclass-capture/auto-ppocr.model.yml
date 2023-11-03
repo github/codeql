@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - ppocr
+    - Member[data].Member[lmdb_dataset].Member[pickle]
+  - - pickle~Alias
+    - ppocr
+    - Member[losses].Member[center_loss].Member[pickle]
+  - - pickle~Alias
+    - ppocr
+    - Member[losses].Member[text_focus_loss].Member[pkl]

@@ -1,0 +1,150 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[MetricHistogram]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[Metrics]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[_compat].Member[BaseSettings]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[_compat].Member[GenericModel]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[_config].Member[BaseSettings]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[_config].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[_config].Member[DefaultConfig]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[_metrics].Member[MetricHistogram]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[_metrics].Member[Metric]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[_metrics].Member[Metrics]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[GenericData]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[jsonrpc].Member[ErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[jsonrpc].Member[Manifest]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[jsonrpc].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[jsonrpc].Member[SuccessResponse]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[BinaryPaths]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[Constraint]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[DMMF]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[Datamodel]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[Datasource]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[DefaultValue]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[EnumValue]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[Enum]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[Field]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[Generator]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[GenericData]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[Module]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[OptionalValueFromEnvVar]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[PrimaryKey]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[UniqueIndex]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[ValueFromEnvVar]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[_EmptyModel]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[models].Member[_ModelAllowAll]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[schema].Member[ModelInfo]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[schema].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[schema].Member[PrimaryKey]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[schema].Member[PrismaAlias]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[schema].Member[PrismaDict]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[schema].Member[PrismaType]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[schema].Member[PrismaUnion]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[schema].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[utils].Member[Field]
+  - - pydantic.BaseModel~Subclass
+    - prisma
+    - Member[generator].Member[utils].Member[Model]

@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[auth].Member[models].Member[MongoDBTimeStampedModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[auth].Member[models].Member[Token]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[auth].Member[models].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[auth].Member[serializers].Member[ModelSerializer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[auth].Member[serializers].Member[TokenSerializer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[auth].Member[serializers].Member[Token]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[db].Member[client].Member[MongoDBModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[db].Member[models].Member[MongoDBModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[db].Member[models].Member[MongoDBTimeStampedModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[pagination].Member[Serializer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[serializers].Member[common].Member[ModelSerializer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[serializers].Member[common].Member[MongoDBModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[serializers].Member[common].Member[Serializer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_contrib
+    - Member[serializers].Member[utils].Member[Serializer]

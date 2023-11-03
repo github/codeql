@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - bluesky
+    - Member[callbacks].Member[best_effort].Member[StringIO]
+  - - io.StringIO~Subclass
+    - bluesky
+    - Member[callbacks].Member[olog].Member[StringIO]
+  - - pickle~Alias
+    - bluesky
+    - Member[callbacks].Member[zmq].Member[pickle]

@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pyxnat
+    - Member[core].Member[jsonutil].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyxnat
+    - Member[core].Member[search].Member[StringIO]
+  - - lxml.etree~Alias
+    - pyxnat
+    - Member[core].Member[errors].Member[etree]
+  - - lxml.etree~Alias
+    - pyxnat
+    - Member[core].Member[manage].Member[etree]
+  - - lxml.etree~Alias
+    - pyxnat
+    - Member[core].Member[provenance].Member[etree]
+  - - lxml.etree~Alias
+    - pyxnat
+    - Member[core].Member[resources].Member[etree]
+  - - lxml.etree~Alias
+    - pyxnat
+    - Member[core].Member[search].Member[etree]
+  - - lxml.etree~Alias
+    - pyxnat
+    - Member[core].Member[xpath_store].Member[etree]

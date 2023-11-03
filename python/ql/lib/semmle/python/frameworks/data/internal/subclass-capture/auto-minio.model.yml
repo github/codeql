@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - minio
+    - Member[api].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - minio
+    - Member[select].Member[BytesIO]
+  - - urllib.parse.SplitResult~Subclass
+    - minio
+    - Member[signer].Member[SplitResult]
+  - - urllib3.PoolManager~Subclass
+    - minio
+    - Member[api].Member[PoolManager]
+  - - xml.etree.ElementTree~Subclass
+    - minio
+    - Member[api].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - minio
+    - Member[credentials].Member[providers].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - minio
+    - Member[datatypes].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - minio
+    - Member[error].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - minio
+    - Member[select].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - minio
+    - Member[xml].Member[ET]

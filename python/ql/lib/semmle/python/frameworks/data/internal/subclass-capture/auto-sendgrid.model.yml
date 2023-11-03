@@ -6,7 +6,160 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - sendgrid
+    - Member[admin].Member[Argument]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EmailMessageAttachmentsData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EmailMessageBccData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EmailMessageBodyData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EmailMessageCcData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EmailMessageExtraHeadersData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EmailMessageSendGridHeadersData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EmailMessageSubjectData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EmailMessageToData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EmailMessage]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[EventType]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[admin].Member[UniqueArgument]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[management].Member[commands].Member[cleanup_email_message_body_data].Member[EmailMessageBodyData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[management].Member[commands].Member[cleanup_email_message_body_data].Member[EmailMessage]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[Argument]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[BounceEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[BounceReason]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[BounceType]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[ClickEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[ClickUrl]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[DeferredEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[DeliverredEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[DroppedEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EmailMessageAttachmentsData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EmailMessageBccData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EmailMessageBodyData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EmailMessageCcData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EmailMessageExtraHeadersData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EmailMessageSendGridHeadersData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EmailMessageSubjectData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EmailMessageToData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EmailMessage]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[EventType]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[models].Member[UniqueArgument]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
     - Member[models].Member[User]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[utils].Member[cleanup].Member[EmailMessageBodyData]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[utils].Member[cleanup].Member[EmailMessage]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[views].Member[BounceEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[views].Member[ClickEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[views].Member[DeferredEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[views].Member[DeliverredEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[views].Member[DroppedEvent]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[views].Member[EmailMessage]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[views].Member[EventType]
+  - - Django.db.models.Model~Subclass
+    - sendgrid
+    - Member[views].Member[Event]
   - - django.http.request.HttpRequest~Subclass
     - sendgrid
     - Member[utils].Member[requestfactory].Member[WSGIRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - sendgrid
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - sendgrid
+    - Member[views].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponse~Subclass
+    - sendgrid
+    - Member[views].Member[HttpResponse]

@@ -4,6 +4,54 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - django.forms.BaseForm~Subclass
+    - debug_toolbar
+    - Member[forms].Member[SignedDataForm]
+  - - django.forms.BaseForm~Subclass
+    - debug_toolbar
+    - Member[panels].Member[history].Member[forms].Member[HistoryStoreForm]
+  - - django.forms.BaseForm~Subclass
+    - debug_toolbar
+    - Member[panels].Member[history].Member[panel].Member[HistoryStoreForm]
+  - - django.forms.BaseForm~Subclass
+    - debug_toolbar
+    - Member[panels].Member[history].Member[views].Member[HistoryStoreForm]
+  - - django.forms.BaseForm~Subclass
+    - debug_toolbar
+    - Member[panels].Member[sql].Member[forms].Member[SQLSelectForm]
+  - - django.forms.BaseForm~Subclass
+    - debug_toolbar
+    - Member[panels].Member[sql].Member[panel].Member[SQLSelectForm]
+  - - django.forms.BaseForm~Subclass
+    - debug_toolbar
+    - Member[panels].Member[sql].Member[panel].Member[SignedDataForm]
+  - - django.forms.BaseForm~Subclass
+    - debug_toolbar
+    - Member[panels].Member[sql].Member[views].Member[SQLSelectForm]
+  - - django.forms.BaseForm~Subclass
+    - debug_toolbar
+    - Member[panels].Member[sql].Member[views].Member[SignedDataForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - debug_toolbar
+    - Member[panels].Member[history].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - debug_toolbar
+    - Member[panels].Member[sql].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - debug_toolbar
+    - Member[panels].Member[templates].Member[views].Member[HttpResponseBadRequest]
   - - django.http.response.HttpResponse~Subclass
     - debug_toolbar
     - Member[panels].Member[redirects].Member[SimpleTemplateResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - debug_toolbar
+    - Member[panels].Member[history].Member[views].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - debug_toolbar
+    - Member[panels].Member[sql].Member[views].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - debug_toolbar
+    - Member[panels].Member[templates].Member[views].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - debug_toolbar
+    - Member[views].Member[JsonResponse]

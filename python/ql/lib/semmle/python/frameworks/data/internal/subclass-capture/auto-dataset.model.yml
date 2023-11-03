@@ -7,3 +7,6 @@ extensions:
   - - pickle~Alias
     - dataset
     - Member[datasets].Member[pickle]
+  - - pickle~Alias
+    - dataset
+    - Member[pickle]

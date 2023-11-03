@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - planetary_computer
+    - Member[sas].Member[SASBase]
+  - - pydantic.BaseModel~Subclass
+    - planetary_computer
+    - Member[sas].Member[SASToken]
+  - - pydantic.BaseModel~Subclass
+    - planetary_computer
+    - Member[sas].Member[SignedLink]

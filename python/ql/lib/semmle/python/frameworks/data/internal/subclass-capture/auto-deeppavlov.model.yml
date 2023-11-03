@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - deeppavlov
+    - Member[models].Member[kbqa].Member[tree_to_sparql].Member[StringIO]
+  - - pickle~Alias
+    - deeppavlov
+    - Member[core].Member[common].Member[chainer].Member[pickle]
+  - - pickle~Alias
+    - deeppavlov
+    - Member[core].Member[common].Member[file].Member[pickle]
+  - - pickle~Alias
+    - deeppavlov
+    - Member[dataset_readers].Member[sq_reader].Member[pickle]
+  - - pickle~Alias
+    - deeppavlov
+    - Member[models].Member[entity_extraction].Member[find_word].Member[pickle]
+  - - pickle~Alias
+    - deeppavlov
+    - Member[models].Member[kbqa].Member[type_define].Member[pickle]
+  - - pickle~Alias
+    - deeppavlov
+    - Member[models].Member[sklearn].Member[pickle]
+  - - pickle~Alias
+    - deeppavlov
+    - Member[models].Member[sklearn].Member[sklearn_component].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - deeppavlov
+    - Member[dataset_readers].Member[paraphraser_reader].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - deeppavlov
+    - Member[dataset_readers].Member[rel_ranking_reader].Member[ET]

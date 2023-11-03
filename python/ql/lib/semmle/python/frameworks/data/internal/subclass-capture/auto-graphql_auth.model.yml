@@ -1,0 +1,57 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - graphql_auth
+    - Member[forms].Member[CustomUsernameField]
+  - - Django.Forms.Field~Subclass
+    - graphql_auth
+    - Member[forms].Member[UsernameField]
+  - - Django.db.models.Model~Subclass
+    - graphql_auth
+    - Member[mixins].Member[UserStatus]
+  - - Django.db.models.Model~Subclass
+    - graphql_auth
+    - Member[models].Member[UserStatus]
+  - - Django.db.models.Model~Subclass
+    - graphql_auth
+    - Member[shortcuts].Member[UserStatus]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[forms].Member[EmailForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[forms].Member[PasswordLessRegisterForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[forms].Member[RegisterForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[forms].Member[UpdateAccountForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[forms].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[forms].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[mixins].Member[EmailForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[mixins].Member[PasswordChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[mixins].Member[PasswordLessRegisterForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[mixins].Member[RegisterForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[mixins].Member[SetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - graphql_auth
+    - Member[mixins].Member[UpdateAccountForm]

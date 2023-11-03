@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - sentinelhub
+    - Member[decoding].Member[BytesIO]
+  - - requests.models.Response~Subclass
+    - sentinelhub
+    - Member[decoding].Member[Response]
+  - - requests.models.Response~Subclass
+    - sentinelhub
+    - Member[download].Member[models].Member[Response]
+  - - requests.models.Response~Subclass
+    - sentinelhub
+    - Member[download].Member[sentinelhub_client].Member[Response]
+  - - requests.models.Response~Subclass
+    - sentinelhub
+    - Member[download].Member[session].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - sentinelhub
+    - Member[decoding].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - sentinelhub
+    - Member[download].Member[client].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - sentinelhub
+    - Member[io_utils].Member[ElementTree]

@@ -4,6 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - pyspider
+    - Member[webui].Member[app].Member[Flask]
+  - - flask.Flask~Subclass
+    - pyspider
+    - Member[webui].Member[app].Member[QuitableFlask]
+  - - flask.Response~Subclass
+    - pyspider
+    - Member[webui].Member[login].Member[Response]
+  - - flask.Response~Subclass
+    - pyspider
+    - Member[webui].Member[result].Member[Response]
+  - - io.StringIO~Subclass
+    - pyspider
+    - Member[libs].Member[result_dump].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyspider
+    - Member[libs].Member[result_dump].Member[StringIO]
   - - io.StringIO~Subclass
     - pyspider
     - Member[webui].Member[webdav].Member[BytesIO]

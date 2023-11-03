@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.Application~Subclass
+    - plop
+    - Member[viewer].Member[Application]
+  - - tornado.web.RequestHandler~Subclass
+    - plop
+    - Member[viewer].Member[DataHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - plop
+    - Member[viewer].Member[IndexHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - plop
+    - Member[viewer].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - plop
+    - Member[viewer].Member[ViewFlatHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - plop
+    - Member[viewer].Member[ViewHandler]

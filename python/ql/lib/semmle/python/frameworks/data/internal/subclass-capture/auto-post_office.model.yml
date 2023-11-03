@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[admin].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[admin].Member[EmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[admin].Member[Email]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[admin].Member[Log]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[mail].Member[EmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[mail].Member[Email]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[mail].Member[Log]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[models].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[models].Member[EmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[models].Member[Email]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[models].Member[Log]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[utils].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[utils].Member[EmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - post_office
+    - Member[utils].Member[Email]
+  - - django.forms.BaseForm~Subclass
+    - post_office
+    - Member[admin].Member[EmailTemplateAdminForm]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - post_office
+    - Member[admin].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - post_office
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - post_office
+    - Member[admin].Member[HttpResponse]

@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[admin].Member[Mailbox]
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[admin].Member[MessageAttachment]
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[admin].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[management].Member[commands].Member[getmail].Member[Mailbox]
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[management].Member[commands].Member[processincomingmessage].Member[Mailbox]
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[management].Member[commands].Member[rebuildmessageattachments].Member[MessageAttachment]
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[management].Member[commands].Member[rebuildmessageattachments].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[models].Member[Mailbox]
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[models].Member[MessageAttachment]
+  - - Django.db.models.Model~Subclass
+    - django_mailbox
+    - Member[models].Member[Message]
+  - - io.StringIO~Subclass
+    - django_mailbox
+    - Member[models].Member[BytesIO]

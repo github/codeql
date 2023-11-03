@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - napalm
+    - Member[base].Member[helpers].Member[etree]
+  - - lxml.etree~Alias
+    - napalm
+    - Member[iosxr].Member[iosxr].Member[ETREE]
+  - - lxml.etree~Alias
+    - napalm
+    - Member[iosxr_netconf].Member[iosxr_netconf].Member[ETREE]
+  - - lxml.etree~Alias
+    - napalm
+    - Member[junos].Member[junos].Member[etree]
+  - - lxml.etree~Alias
+    - napalm
+    - Member[nxapi_plumbing].Member[api_client].Member[etree]
+  - - lxml.etree~Alias
+    - napalm
+    - Member[nxapi_plumbing].Member[utilities].Member[etree]
+  - - lxml.etree~Alias
+    - napalm
+    - Member[pyIOSXR].Member[iosxr].Member[ET]
+  - - requests.models.Response~Subclass
+    - napalm
+    - Member[nxapi_plumbing].Member[api_client].Member[Response]

@@ -1,0 +1,297 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderCreateWithGenericEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderCreateWithMixinEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderListCreateEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderListWithGenericEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderListWithMixinEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderListWithoutReadSerializerEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderRetrieveUpdateDestroyEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderRetrieveUpdateEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderRetrieveWithGenericEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderRetrieveWithMixinEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderUpdateWithGenericEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderUpdateWithMixinEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[OrderViewset]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[PlayersViewSet]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[urls].Member[TeamsViewSet]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[BootstrapTemplateDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[CSSStylingDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ChoicesFieldsDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ColReorderDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ColumnBackedByMethodDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ColumnsReferenceDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[CompoundColumnsDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ConfigureDatatableObject]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ConfigureDatatableOptions]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ConfigureInline]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ConfigureValuesDatatableObject]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[CustomColumnQueriesDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[CustomColumnsDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[CustomModelFieldsDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[CustomizedTemplateDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[DatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[DefaultCallbackNamesDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[EmbeddedTableDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ExampleCreateView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[HelpersReferenceDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[JavascriptInitializationView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[LegacyDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ManyToManyFieldsDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[MigrationGuideView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[MultiFilterDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[MultipleDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[MultipleTablesDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderCreateWithGenericEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderCreateWithMixinEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderListCreateEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderListWithGenericEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderListWithMixinEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderListWithoutReadSerializerEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderRetrieveUpdateDestroyEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderRetrieveUpdateEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderRetrieveWithGenericEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderRetrieveWithMixinEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderUpdateWithGenericEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderUpdateWithMixinEndpoint]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[OrderViewset]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[PerRequestOptionsDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[PlayersViewSet]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[PrettyNamesDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ProcessorsDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[RequestMethodDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ResetView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[SatelliteDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[SelectRowDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[SkippedRecordDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[SpecificColumnsDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[TeamsViewSet]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ValidColumnFormatsView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[View]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[XEditableColumnsDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[XEditableDatatableView]
+  - - Django.Views.View~Subclass
+    - example_app
+    - Member[views].Member[ZeroConfigurationDatatableView]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[admin].Member[Blind]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Author]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Blind]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Blog]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Entry]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Meal]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Membership]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[OrderedMeal]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Player]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[models].Member[Team]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[serializers].Member[Meal]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[serializers].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[serializers].Member[OrderedMeal]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[serializers].Member[Player]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[serializers].Member[Team]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[views].Member[Blog]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[views].Member[Entry]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[views].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[views].Member[Player]
+  - - Django.db.models.Model~Subclass
+    - example_app
+    - Member[views].Member[Team]
+  - - django.db.models.FileField~Subclass
+    - example_app
+    - Member[models].Member[ImageField]

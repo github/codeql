@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - depthfl
+    - Member[client].Member[pickle]
+  - - pickle~Alias
+    - depthfl
+    - Member[strategy].Member[pickle]
+  - - pickle~Alias
+    - depthfl
+    - Member[strategy_hetero].Member[pickle]
+  - - pickle~Alias
+    - depthfl
+    - Member[utils].Member[pickle]

@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - service_objects
+    - Member[fields].Member[DictField]
+  - - Django.Forms.Field~Subclass
+    - service_objects
+    - Member[fields].Member[ListField]
+  - - Django.Forms.Field~Subclass
+    - service_objects
+    - Member[fields].Member[ModelField]
+  - - Django.Forms.Field~Subclass
+    - service_objects
+    - Member[fields].Member[MultipleFormField]
+  - - Django.Forms.Field~Subclass
+    - service_objects
+    - Member[fields].Member[MultipleModelField]
+  - - Django.Views.View~Subclass
+    - service_objects
+    - Member[views].Member[CreateServiceView]
+  - - Django.Views.View~Subclass
+    - service_objects
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - service_objects
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - service_objects
+    - Member[views].Member[ServiceView]
+  - - Django.Views.View~Subclass
+    - service_objects
+    - Member[views].Member[UpdateServiceView]
+  - - Django.Views.View~Subclass
+    - service_objects
+    - Member[views].Member[UpdateView]
+  - - django.forms.BaseForm~Subclass
+    - service_objects
+    - Member[celery_services].Member[CeleryService]
+  - - django.forms.BaseForm~Subclass
+    - service_objects
+    - Member[celery_services].Member[Service]
+  - - django.forms.BaseForm~Subclass
+    - service_objects
+    - Member[services].Member[Service]

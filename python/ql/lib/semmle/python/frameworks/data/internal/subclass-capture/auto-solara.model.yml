@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - solara
+    - Member[server].Member[flask].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - solara
+    - Member[server].Member[flask].Member[Flask]
+  - - io.StringIO~Subclass
+    - solara
+    - Member[components].Member[image].Member[BytesIO]
+  - - pickle~Alias
+    - solara
+    - Member[server].Member[app].Member[pickle]
+  - - pickle~Alias
+    - solara
+    - Member[server].Member[kernel_context].Member[pickle]
   - - tornado.web.RequestHandler~Subclass
     - solara
     - Member[server].Member[jupyter].Member[cdn_handler].Member[CdnHandler]

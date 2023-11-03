@@ -4,6 +4,27 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - flexx
+    - Member[app].Member[_flaskserver].Member[Flask]
+  - - io.StringIO~Subclass
+    - flexx
+    - Member[app].Member[bsdf_lite].Member[BytesIO]
+  - - tornado.web.Application~Subclass
+    - flexx
+    - Member[app].Member[_tornadoserver].Member[Application]
+  - - tornado.web.RequestHandler~Subclass
+    - flexx
+    - Member[app].Member[_tornadoserver].Member[AppHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - flexx
+    - Member[app].Member[_tornadoserver].Member[FlexxHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - flexx
+    - Member[app].Member[_tornadoserver].Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - flexx
+    - Member[app].Member[_tornadoserver].Member[RequestHandler]
   - - tornado.web.RequestHandler~Subclass
     - flexx
     - Member[app].Member[_tornadoserver].Member[WSHandler]

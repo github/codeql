@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - crossdock
+    - Member[server].Member[server].Member[HttpHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - crossdock
+    - Member[server].Member[server].Member[MainHandler]

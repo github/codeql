@@ -115,6 +115,15 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - ara
     - Member[ui].Member[forms].Member[TaskSearchForm]
+  - - django.http.response.HttpResponse~Subclass
+    - ara
+    - Member[server].Member[urls].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - ara
+    - Member[ui].Member[pagination].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - ara
+    - Member[ui].Member[views].Member[Response]
   - - rest_framework.response.Response~Subclass
     - ara
     - Member[server].Member[urls].Member[Response]

@@ -6,13 +6,100 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - waffle
+    - Member[AbstractBaseFlag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[AbstractBaseSample]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[AbstractBaseSwitch]
+  - - Django.db.models.Model~Subclass
+    - waffle
     - Member[admin].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[admin].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[admin].Member[Sample]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[admin].Member[Switch]
   - - Django.db.models.Model~Subclass
     - waffle
     - Member[management].Member[commands].Member[waffle_flag].Member[Group]
   - - Django.db.models.Model~Subclass
     - waffle
+    - Member[managers].Member[AbstractBaseFlag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[managers].Member[AbstractBaseSample]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[managers].Member[AbstractBaseSwitch]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[AbstractBaseFlag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[AbstractBaseSample]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[AbstractBaseSwitch]
+  - - Django.db.models.Model~Subclass
+    - waffle
     - Member[models].Member[AbstractBaseUser]
   - - Django.db.models.Model~Subclass
     - waffle
+    - Member[models].Member[AbstractUserFlag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - waffle
     - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[Sample]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[Switch]
+  - - django.http.request.HttpRequest~Subclass
+    - waffle
+    - Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - waffle
+    - Member[admin].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - waffle
+    - Member[decorators].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - waffle
+    - Member[middleware].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - waffle
+    - Member[models].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - waffle
+    - Member[views].Member[HttpRequest]
+  - - django.http.response.HttpResponsePermanentRedirect~Subclass
+    - waffle
+    - Member[decorators].Member[HttpResponsePermanentRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - waffle
+    - Member[decorators].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - waffle
+    - Member[decorators].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - waffle
+    - Member[middleware].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - waffle
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - waffle
+    - Member[views].Member[JsonResponse]

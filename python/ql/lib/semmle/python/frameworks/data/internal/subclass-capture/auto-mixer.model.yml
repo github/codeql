@@ -7,3 +7,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - mixer
     - Member[backend].Member[django].Member[ContentType]
+  - - io.StringIO~Subclass
+    - mixer
+    - Member[_compat].Member[StringIO]
+  - - pickle~Alias
+    - mixer
+    - Member[markov].Member[pickle]

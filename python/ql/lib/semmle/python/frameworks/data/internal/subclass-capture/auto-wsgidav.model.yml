@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - wsgidav
+    - Member[server].Member[ext_wsgiutils_server].Member[ExtHandler]
+  - - io.StringIO~Subclass
+    - wsgidav
+    - Member[samples].Member[mongo_dav_provider].Member[StringIO]
+  - - io.StringIO~Subclass
+    - wsgidav
+    - Member[samples].Member[mysql_dav_provider].Member[StringIO]
+  - - io.StringIO~Subclass
+    - wsgidav
+    - Member[samples].Member[virtual_dav_provider].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - wsgidav
+    - Member[server].Member[ext_wsgiutils_server].Member[StringIO]
+  - - io.StringIO~Subclass
+    - wsgidav
+    - Member[xml_tools].Member[StringIO]
+  - - pickle~Alias
+    - wsgidav
+    - Member[lock_man].Member[lock_storage_redis].Member[pickle]

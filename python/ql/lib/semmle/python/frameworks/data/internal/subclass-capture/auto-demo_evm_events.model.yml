@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_evm_events
+    - Member[handlers].Member[on_transfer].Member[Transfer]
+  - - pydantic.BaseModel~Subclass
+    - demo_evm_events
+    - Member[types].Member[eth_usdt].Member[evm_events].Member[transfer].Member[Transfer]

@@ -4,6 +4,30 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - aiohttp.ClientSession~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[aiohttp].Member[ClientSession]
   - - django.http.request.HttpRequest~Subclass
     - sentry_sdk
     - Member[integrations].Member[django].Member[WSGIRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[django].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[django].Member[asgi].Member[HttpResponse]
+  - - flask.Flask~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[flask].Member[Flask]
+  - - http.client.HTTPConnection~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[stdlib].Member[HTTPConnection]
+  - - markupsafe.Markup~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[flask].Member[Markup]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[sqlalchemy].Member[Engine]
+  - - tornado.web.RequestHandler~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[tornado].Member[RequestHandler]

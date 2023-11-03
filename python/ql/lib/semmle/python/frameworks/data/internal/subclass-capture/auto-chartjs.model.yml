@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[HighChartsView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[JSONView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[base].Member[JSONView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[base].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[columns].Member[BaseColumnsHighChartsView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[columns].Member[JSONView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[lines].Member[BaseLineChartView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[lines].Member[BaseLineOptionsChartView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[lines].Member[HighChartsView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[lines].Member[HighchartPlotLineChartView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[lines].Member[JSONView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[pie].Member[HighChartDonutView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[pie].Member[HighChartPieView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views].Member[pie].Member[HighChartsView]
+  - - Django.Views.View~Subclass
+    - chartjs
+    - Member[views]Member[HighChartsView]

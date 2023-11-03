@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - docx2python
+    - Member[docx_reader].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - docx2python
+    - Member[main].Member[BytesIO]
+  - - lxml.etree~Alias
+    - docx2python
+    - Member[docx_context].Member[etree]
+  - - lxml.etree~Alias
+    - docx2python
+    - Member[docx_reader].Member[etree]
+  - - lxml.etree~Alias
+    - docx2python
+    - Member[utilities].Member[etree]

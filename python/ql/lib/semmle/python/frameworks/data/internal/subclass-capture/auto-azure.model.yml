@@ -1,0 +1,315 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[cosmosdb].Member[v2017_04_17].Member[common].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[blob].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[blob].Member[appendblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[blob].Member[baseblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[blob].Member[blockblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[blob].Member[pageblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[file].Member[fileservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[queue].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[blob].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[blob].Member[_upload_chunking].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[blob].Member[appendblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[blob].Member[baseblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[blob].Member[blockblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[blob].Member[pageblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[common].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[file].Member[fileservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[queue].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[blob].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[blob].Member[_upload_chunking].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[blob].Member[appendblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[blob].Member[baseblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[blob].Member[blockblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[blob].Member[pageblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[common].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[file].Member[fileservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[queue].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[blob].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[blob].Member[_upload_chunking].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[blob].Member[appendblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[blob].Member[baseblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[blob].Member[blockblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[blob].Member[pageblobservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[common].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[file].Member[fileservice].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[queue].Member[_serialization].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2019_07_07].Member[_blob_client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2019_07_07].Member[_download].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2019_07_07].Member[_shared].Member[uploads].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2019_07_07].Member[aio].Member[_download_async].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2021_08_06].Member[_blob_client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2021_08_06].Member[_download].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2021_08_06].Member[_encryption].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2021_08_06].Member[_quick_query_helper].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2021_08_06].Member[_shared].Member[uploads].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2021_08_06].Member[aio].Member[_download_async].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2022_11_02].Member[_blob_client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2022_11_02].Member[_download].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2022_11_02].Member[_encryption].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2022_11_02].Member[_quick_query_helper].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2022_11_02].Member[_shared].Member[uploads].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2022_11_02].Member[aio].Member[_download_async].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[filedatalake].Member[v2019_07_07].Member[_shared].Member[uploads].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[filedatalake].Member[v2021_08_06].Member[_data_lake_file_client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[filedatalake].Member[v2021_08_06].Member[_shared].Member[uploads].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2019_07_07].Member[_download].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2019_07_07].Member[_file_client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2019_07_07].Member[_shared].Member[uploads].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2019_07_07].Member[aio].Member[_download_async].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2019_07_07].Member[aio].Member[_file_client_async].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2022_11_02].Member[_download].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2022_11_02].Member[_file_client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2022_11_02].Member[_shared].Member[uploads].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2022_11_02].Member[aio].Member[_download_async].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2022_11_02].Member[aio].Member[_file_client_async].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[queue].Member[v2018_03_28].Member[_shared].Member[uploads].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[queue].Member[v2019_07_07].Member[_shared].Member[uploads].Member[BytesIO]
+  - - pickle~Alias
+    - azure
+    - Member[datalake].Member[store].Member[multithread].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - azure
+    - Member[azure_registry_store].Member[RegistryConfig]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[cosmosdb].Member[v2017_04_17].Member[common].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[cosmosdb].Member[v2017_04_17].Member[common].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[blob].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[blob].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[file].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[queue].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2015_04_05].Member[queue].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[blob].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[blob].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[common].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[common].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[file].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[queue].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_04_17].Member[queue].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[blob].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[blob].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[common].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[common].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[file].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[queue].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2017_11_09].Member[queue].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[blob].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[blob].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[common].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[common].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[file].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[queue].Member[_deserialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storage].Member[v2018_11_09].Member[queue].Member[_serialization].Member[ETree]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2021_08_06].Member[_generated].Member[_serialization].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[blob].Member[v2022_11_02].Member[_generated].Member[_serialization].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[filedatalake].Member[v2021_08_06].Member[_generated].Member[_serialization].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - azure
+    - Member[multiapi].Member[storagev2].Member[fileshare].Member[v2022_11_02].Member[_generated].Member[_serialization].Member[ET]

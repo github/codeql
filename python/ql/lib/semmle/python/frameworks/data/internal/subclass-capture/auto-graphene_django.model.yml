@@ -1,0 +1,81 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[filter].Member[filters].Member[global_id_filter].Member[GlobalIDFormField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[filter].Member[filters].Member[global_id_filter].Member[GlobalIDMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[filter].Member[filters].Member[range_filter].Member[Field]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[filter].Member[filters].Member[range_filter].Member[RangeField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[filter].Member[utils].Member[GlobalIDFormField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[filter].Member[utils].Member[GlobalIDMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[forms].Member[GlobalIDFormField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[forms].Member[GlobalIDMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[forms].Member[converter].Member[GlobalIDFormField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[forms].Member[converter].Member[GlobalIDMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[forms].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[forms].Member[forms].Member[Field]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[forms].Member[forms].Member[GlobalIDFormField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[forms].Member[forms].Member[GlobalIDMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - graphene_django
+    - Member[forms].Member[forms].Member[MultipleChoiceField]
+  - - Django.Views.View~Subclass
+    - graphene_django
+    - Member[views].Member[GraphQLView]
+  - - Django.Views.View~Subclass
+    - graphene_django
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - graphene_django
+    - Member[rest_framework].Member[models].Member[MyFakeModelWithChoiceField]
+  - - Django.db.models.Model~Subclass
+    - graphene_django
+    - Member[rest_framework].Member[models].Member[MyFakeModelWithDate]
+  - - Django.db.models.Model~Subclass
+    - graphene_django
+    - Member[rest_framework].Member[models].Member[MyFakeModelWithPassword]
+  - - Django.db.models.Model~Subclass
+    - graphene_django
+    - Member[rest_framework].Member[models].Member[MyFakeModel]
+  - - Django.db.models.Model~Subclass
+    - graphene_django
+    - Member[types].Member[Model]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - graphene_django
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - graphene_django
+    - Member[views].Member[HttpResponseNotAllowed]
+  - - django.http.response.HttpResponse~Subclass
+    - graphene_django
+    - Member[views].Member[HttpResponse]

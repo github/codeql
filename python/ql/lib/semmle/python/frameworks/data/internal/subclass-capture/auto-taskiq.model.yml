@@ -1,0 +1,129 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - taskiq
+    - Member[result].Member[v1].Member[pickle]
+  - - pickle~Alias
+    - taskiq
+    - Member[result].Member[v2].Member[pickle]
+  - - pickle~Alias
+    - taskiq
+    - Member[serializers].Member[pickle].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[AckableMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[BrokerMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[abc].Member[broker].Member[AckableMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[abc].Member[broker].Member[BrokerMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[abc].Member[formatter].Member[BrokerMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[abc].Member[formatter].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[abc].Member[middleware].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[abc].Member[middleware].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[abc].Member[result_backend].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[acks].Member[AckableMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[brokers].Member[inmemory_broker].Member[BrokerMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[brokers].Member[inmemory_broker].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[brokers].Member[shared_broker].Member[BrokerMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[brokers].Member[zmq_broker].Member[BrokerMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[context].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[formatters].Member[json_formatter].Member[BrokerMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[formatters].Member[json_formatter].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[formatters].Member[proxy_formatter].Member[BrokerMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[formatters].Member[proxy_formatter].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[funcs].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[kicker].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[message].Member[BrokerMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[message].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[middlewares].Member[prometheus_middleware].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[middlewares].Member[prometheus_middleware].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[middlewares].Member[retry_middleware].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[middlewares].Member[retry_middleware].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[receiver].Member[params_parser].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[receiver].Member[receiver].Member[AckableMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[receiver].Member[receiver].Member[TaskiqMessage]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[receiver].Member[receiver].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[result].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[result].Member[v2].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[result_backends].Member[dummy].Member[TaskiqResult]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[serialization].Member[ExceptionRepr]
+  - - pydantic.BaseModel~Subclass
+    - taskiq
+    - Member[task].Member[TaskiqResult]

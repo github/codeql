@@ -4,6 +4,99 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[Buildable404View]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[BuildableArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[BuildableDayArchiveView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[BuildableDetailView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[BuildableListView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[BuildableMonthArchiveView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[BuildableRedirectView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[BuildableTemplateView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[BuildableYearArchiveView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[base].Member[Buildable404View]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[base].Member[BuildableRedirectView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[base].Member[BuildableTemplateView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[base].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[base].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[dates].Member[ArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[dates].Member[BuildableArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[dates].Member[BuildableDayArchiveView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[dates].Member[BuildableMonthArchiveView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[dates].Member[BuildableYearArchiveView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[dates].Member[DayArchiveView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[dates].Member[MonthArchiveView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[dates].Member[YearArchiveView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[detail].Member[BuildableDetailView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[detail].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[list].Member[BuildableListView]
+  - - Django.Views.View~Subclass
+    - bakery
+    - Member[views].Member[list].Member[ListView]
+  - - Django.db.models.Model~Subclass
+    - bakery
+    - Member[models].Member[AutoPublishingBuildableModel]
+  - - Django.db.models.Model~Subclass
+    - bakery
+    - Member[models].Member[BuildableModel]
   - - Django.db.models.Model~Subclass
     - bakery
     - Member[tasks].Member[ContentType]
+  - - django.http.response.HttpResponseNotModified~Subclass
+    - bakery
+    - Member[static_views].Member[HttpResponseNotModified]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - bakery
+    - Member[static_views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - bakery
+    - Member[static_views].Member[HttpResponse]

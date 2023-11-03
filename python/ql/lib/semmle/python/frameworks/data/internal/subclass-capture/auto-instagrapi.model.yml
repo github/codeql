@@ -1,0 +1,387 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Comment]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[DirectMedia]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[DirectMessage]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[DirectResponse]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[DirectShortThread]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[DirectThread]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Guide]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Hashtag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Highlight]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[MediaOembed]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[MediaXma]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[ReplyMessage]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[StoryLink]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[StoryMedia]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[StoryMention]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Story]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Track]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[UserShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[extractors].Member[Usertag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[account].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[account].Member[UserShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[album].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[album].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[album].Member[Usertag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[clip].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[clip].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[clip].Member[Track]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[clip].Member[Usertag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[collection].Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[collection].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[comment].Member[Comment]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[direct].Member[DirectMessage]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[direct].Member[DirectShortThread]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[direct].Member[DirectThread]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[direct].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[direct].Member[UserShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[fbsearch].Member[Hashtag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[fbsearch].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[fbsearch].Member[Track]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[fbsearch].Member[UserShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[hashtag].Member[Hashtag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[hashtag].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[highlight].Member[Highlight]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[igtv].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[igtv].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[igtv].Member[Usertag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[location].Member[Guide]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[location].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[location].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[media].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[media].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[media].Member[UserShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[media].Member[Usertag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[note].Member[Note]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[StoryHashtag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[StoryLink]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[StoryLocation]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[StoryMedia]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[StoryMention]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[StorySticker]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[Story]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[photo].Member[Usertag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[share].Member[Share]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[story].Member[Story]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[story].Member[UserShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[timeline].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[track].Member[Track]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[user].Member[RelationshipShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[user].Member[Relationship]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[user].Member[UserShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[DirectMessage]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[StoryHashtag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[StoryLink]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[StoryLocation]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[StoryMedia]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[StoryMention]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[StorySticker]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[Story]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[mixins].Member[video].Member[Usertag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[story].Member[StoryBuild]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[story].Member[StoryMention]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[story].Member[StorySticker]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Account]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Collection]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Comment]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[DirectMedia]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[DirectMessage]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[DirectResponse]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[DirectShortThread]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[DirectThread]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Guide]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Hashtag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Highlight]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[MediaOembed]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[MediaXma]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Media]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Note]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[RelationshipShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Relationship]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[ReplyMessage]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Share]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[StoryBuild]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[StoryHashtag]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[StoryLink]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[StoryLocation]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[StoryMedia]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[StoryMention]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[StoryStickerLink]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[StorySticker]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Story]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Track]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[UserShort]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - instagrapi
+    - Member[types].Member[Usertag]

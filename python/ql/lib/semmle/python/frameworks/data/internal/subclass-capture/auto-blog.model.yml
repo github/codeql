@@ -42,7 +42,28 @@ extensions:
     - Member[views].Member[DeleteView]
   - - Django.Views.View~Subclass
     - blog
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[HitCountDetailView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - blog
     - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[PostCountHitDetailView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[PostDetailJSONView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[PostDetailView]
+  - - Django.Views.View~Subclass
+    - blog
+    - Member[views].Member[TemplateView]
   - - Django.Views.View~Subclass
     - blog
     - Member[views].Member[UpdateView]
@@ -51,7 +72,16 @@ extensions:
     - Member[admin].Member[Blog]
   - - Django.db.models.Model~Subclass
     - blog
+    - Member[admin].Member[Post]
+  - - Django.db.models.Model~Subclass
+    - blog
     - Member[models].Member[Blog]
+  - - Django.db.models.Model~Subclass
+    - blog
+    - Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - blog
+    - Member[models].Member[Post]
   - - Django.db.models.Model~Subclass
     - blog
     - Member[models].Member[User]
@@ -61,3 +91,6 @@ extensions:
   - - Django.db.models.Model~Subclass
     - blog
     - Member[views].Member[Blog]
+  - - Django.db.models.Model~Subclass
+    - blog
+    - Member[views].Member[Post]

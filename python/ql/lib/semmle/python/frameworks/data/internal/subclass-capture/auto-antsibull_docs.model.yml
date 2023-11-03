@@ -6,6 +6,15 @@ extensions:
   data:
   - - pydantic.BaseModel~Subclass
     - antsibull_docs
+    - Member[DocsAppContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[app_context].Member[DocsAppContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[cli].Member[antsibull_docs].Member[DocsAppContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
     - Member[cli].Member[doc_commands].Member[plugin].Member[CollectionLinks]
   - - pydantic.BaseModel~Subclass
     - antsibull_docs
@@ -82,6 +91,12 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - antsibull_docs
     - Member[schemas].Member[ansible_doc].Member[VarsPluginSchema]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[app_context].Member[CoreAppContext]
+  - - pydantic.BaseModel~Subclass
+    - antsibull_docs
+    - Member[schemas].Member[app_context].Member[DocsAppContext]
   - - pydantic.BaseModel~Subclass
     - antsibull_docs
     - Member[schemas].Member[collection_config].Member[CollectionConfig]

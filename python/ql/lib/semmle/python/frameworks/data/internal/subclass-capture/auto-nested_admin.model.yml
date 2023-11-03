@@ -7,3 +7,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - nested_admin
     - Member[formsets].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - nested_admin
+    - Member[polymorphic].Member[PolymorphicModel]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - nested_admin
+    - Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponse~Subclass
+    - nested_admin
+    - Member[views].Member[HttpResponse]

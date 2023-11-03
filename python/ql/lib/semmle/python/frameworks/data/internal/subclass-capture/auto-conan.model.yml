@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - conan
+    - Member[api].Member[subapi].Member[cache].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - conan
+    - Member[tools].Member[apple].Member[apple].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conan
+    - Member[tools].Member[gnu].Member[pkgconfig].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conan
+    - Member[tools].Member[qbs].Member[qbsprofile].Member[StringIO]

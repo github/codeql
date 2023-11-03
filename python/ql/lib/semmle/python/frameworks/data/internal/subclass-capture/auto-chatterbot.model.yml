@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - chatterbot
+    - Member[ext].Member[django_chatterbot].Member[abstract_models].Member[AbstractBaseStatement]
+  - - Django.db.models.Model~Subclass
+    - chatterbot
+    - Member[ext].Member[django_chatterbot].Member[abstract_models].Member[AbstractBaseTag]
+  - - Django.db.models.Model~Subclass
+    - chatterbot
+    - Member[ext].Member[django_chatterbot].Member[admin].Member[Statement]
+  - - Django.db.models.Model~Subclass
+    - chatterbot
+    - Member[ext].Member[django_chatterbot].Member[admin].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - chatterbot
+    - Member[ext].Member[django_chatterbot].Member[models].Member[AbstractBaseStatement]
+  - - Django.db.models.Model~Subclass
+    - chatterbot
+    - Member[ext].Member[django_chatterbot].Member[models].Member[AbstractBaseTag]
+  - - Django.db.models.Model~Subclass
+    - chatterbot
+    - Member[ext].Member[django_chatterbot].Member[models].Member[Statement]
+  - - Django.db.models.Model~Subclass
+    - chatterbot
+    - Member[ext].Member[django_chatterbot].Member[models].Member[Tag]

@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - mdeditor
+    - Member[fields].Member[MDTextFormField]
+  - - Django.Views.View~Subclass
+    - mdeditor
+    - Member[urls].Member[UploadView]
+  - - Django.Views.View~Subclass
+    - mdeditor
+    - Member[views].Member[UploadView]
+  - - django.http.response.JsonResponse~Subclass
+    - mdeditor
+    - Member[views].Member[JsonResponse]

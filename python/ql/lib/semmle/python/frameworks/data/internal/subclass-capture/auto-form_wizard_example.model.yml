@@ -13,3 +13,24 @@ extensions:
   - - Django.Views.View~Subclass
     - form_wizard_example
     - Member[views].Member[SongLyricsWizard]
+  - - Django.db.models.Model~Subclass
+    - form_wizard_example
+    - Member[models].Member[FormWizardTempFile]
+  - - django.forms.BaseForm~Subclass
+    - form_wizard_example
+    - Member[forms].Member[SongLyricsForm1]
+  - - django.forms.BaseForm~Subclass
+    - form_wizard_example
+    - Member[forms].Member[SongLyricsForm2]
+  - - django.forms.BaseForm~Subclass
+    - form_wizard_example
+    - Member[forms].Member[SongLyricsForm3]
+  - - django.forms.BaseForm~Subclass
+    - form_wizard_example
+    - Member[views].Member[SongLyricsForm1]
+  - - django.forms.BaseForm~Subclass
+    - form_wizard_example
+    - Member[views].Member[SongLyricsForm2]
+  - - django.forms.BaseForm~Subclass
+    - form_wizard_example
+    - Member[views].Member[SongLyricsForm3]

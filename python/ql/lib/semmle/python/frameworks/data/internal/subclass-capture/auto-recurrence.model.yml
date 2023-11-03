@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - recurrence
+    - Member[forms].Member[RecurrenceField]
+  - - Django.db.models.Model~Subclass
+    - recurrence
+    - Member[models].Member[Date]
+  - - Django.db.models.Model~Subclass
+    - recurrence
+    - Member[models].Member[Param]
+  - - Django.db.models.Model~Subclass
+    - recurrence
+    - Member[models].Member[Recurrence]
+  - - Django.db.models.Model~Subclass
+    - recurrence
+    - Member[models].Member[Rule]

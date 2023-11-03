@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - uuslug
+    - Member[models].Member[AnotherSlug]
+  - - Django.db.models.Model~Subclass
+    - uuslug
+    - Member[models].Member[AutoTruncatedSlug]
+  - - Django.db.models.Model~Subclass
+    - uuslug
+    - Member[models].Member[CoolSlugDifferentSeparator]
+  - - Django.db.models.Model~Subclass
+    - uuslug
+    - Member[models].Member[CoolSlug]
+  - - Django.db.models.Model~Subclass
+    - uuslug
+    - Member[models].Member[SmartTruncatedExactWordBoundarySlug]
+  - - Django.db.models.Model~Subclass
+    - uuslug
+    - Member[models].Member[SmartTruncatedSlug]
+  - - Django.db.models.Model~Subclass
+    - uuslug
+    - Member[models].Member[TruncatedSlugDifferentSeparator]
+  - - Django.db.models.Model~Subclass
+    - uuslug
+    - Member[models].Member[TruncatedSlug]

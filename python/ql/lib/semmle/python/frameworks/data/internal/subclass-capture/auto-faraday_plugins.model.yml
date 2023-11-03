@@ -1,0 +1,147 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[manager].Member[StringIO]
+  - - io.StringIO~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[ip360].Member[plugin].Member[StringIO]
+  - - io.StringIO~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[nmap].Member[plugin].Member[BytesIO]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[acunetix360].Member[plugin].Member[etree]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[acunetix].Member[plugin].Member[etree]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[acunetix_json].Member[plugin].Member[etree]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[crowdstrike].Member[plugin].Member[etree]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[invicti].Member[plugin].Member[etree]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[junit].Member[plugin].Member[etree]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[nmap].Member[plugin].Member[etree]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[openscap].Member[plugin].Member[etree]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[reconng].Member[plugin].Member[ET]
+  - - lxml.etree~Alias
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[sslyze].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[manager].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[appscan].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[appspider].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[arachni].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[bandit].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[burp].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[checkmarx].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[cis].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[dnsenum].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[dnsrecon].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[impact].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[maltego].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[metasploit].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[ncrack].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[ndiff].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[nessus].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[netsparker].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[netsparkercloud].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[nexpose_full].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[nikto].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[nipper].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[openvas].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[qualysguard].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[qualyswebapp].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[reconng].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[retina].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[sslyze].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[syhunt].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[w3af].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[wapiti].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[wcscan].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[webinspect].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[x1].Member[plugin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - faraday_plugins
+    - Member[plugins].Member[repo].Member[zap].Member[plugin].Member[ET]

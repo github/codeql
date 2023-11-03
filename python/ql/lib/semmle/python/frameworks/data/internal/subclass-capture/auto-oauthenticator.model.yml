@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - pickle~Alias
+    - oauthenticator
+    - Member[globus].Member[pickle]
   - - tornado.web.RequestHandler~Subclass
     - oauthenticator
     - Member[BaseHandler]

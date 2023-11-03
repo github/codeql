@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - connector
+    - Member[bind_upload_agent].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - connector
+    - Member[connection].Member[StringIO]
+  - - io.StringIO~Subclass
+    - connector
+    - Member[file_util].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - connector
+    - Member[storage_client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - connector
+    - Member[util_text].Member[StringIO]
+  - - io.StringIO~Subclass
+    - connector
+    - Member[vendored].Member[requests].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - connector
+    - Member[vendored].Member[urllib3].Member[filepost].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - connector
+    - Member[vendored].Member[urllib3].Member[packages].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - connector
+    - Member[vendored].Member[urllib3].Member[packages].Member[six].Member[StringIO]
+  - - pickle~Alias
+    - connector
+    - Member[cache].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - connector
+    - Member[azure_storage_client].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - connector
+    - Member[s3_storage_client].Member[ET]

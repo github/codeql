@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - allensdk
+    - Member[brain_observatory].Member[behavior].Member[stimulus_processing].Member[pickle]
+  - - pickle~Alias
+    - allensdk
+    - Member[core].Member[pickle_utils].Member[pickle]

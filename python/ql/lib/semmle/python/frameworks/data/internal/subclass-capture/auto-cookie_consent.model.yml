@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[urls].Member[CookieGroupAcceptView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[urls].Member[CookieGroupDeclineView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[urls].Member[CookieGroupListView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[urls].Member[CookieStatusView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[views].Member[CookieGroupAcceptView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[views].Member[CookieGroupBaseProcessView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[views].Member[CookieGroupDeclineView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[views].Member[CookieGroupListView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[views].Member[CookieStatusView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - cookie_consent
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - cookie_consent
+    - Member[admin].Member[CookieGroup]
+  - - Django.db.models.Model~Subclass
+    - cookie_consent
+    - Member[admin].Member[Cookie]
+  - - Django.db.models.Model~Subclass
+    - cookie_consent
+    - Member[admin].Member[LogItem]
+  - - Django.db.models.Model~Subclass
+    - cookie_consent
+    - Member[models].Member[CookieGroup]
+  - - Django.db.models.Model~Subclass
+    - cookie_consent
+    - Member[models].Member[Cookie]
+  - - Django.db.models.Model~Subclass
+    - cookie_consent
+    - Member[models].Member[LogItem]
+  - - Django.db.models.Model~Subclass
+    - cookie_consent
+    - Member[util].Member[LogItem]
+  - - Django.db.models.Model~Subclass
+    - cookie_consent
+    - Member[views].Member[CookieGroup]
+  - - django.http.request.HttpRequest~Subclass
+    - cookie_consent
+    - Member[views].Member[HttpRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - cookie_consent
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - cookie_consent
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - cookie_consent
+    - Member[views].Member[JsonResponse]

@@ -7,3 +7,6 @@ extensions:
   - - logging.Logger~Subclass
     - efficientdet
     - Member[tensorflow].Member[coco_90metric].Member[MMLogger]
+  - - lxml.etree~Alias
+    - efficientdet
+    - Member[dataset].Member[create_pascal_tfrecord].Member[etree]

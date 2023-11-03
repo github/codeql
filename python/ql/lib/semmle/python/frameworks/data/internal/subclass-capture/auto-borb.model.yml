@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - borb
+    - Member[io].Member[read].Member[metadata].Member[xmp_metadata_transformer].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - borb
+    - Member[io].Member[read].Member[types].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - borb
+    - Member[io].Member[write].Member[document].Member[information_dictionary_transformer].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - borb
+    - Member[io].Member[write].Member[xmp].Member[xmp_transformer].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - borb
+    - Member[toolkit].Member[export].Member[html_to_pdf].Member[html_to_pdf].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - borb
+    - Member[toolkit].Member[export].Member[markdown_to_pdf].Member[markdown_to_pdf].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - borb
+    - Member[toolkit].Member[export].Member[pdf_to_svg].Member[ET]

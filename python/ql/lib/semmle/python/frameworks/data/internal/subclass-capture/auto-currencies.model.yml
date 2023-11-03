@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - currencies
+    - Member[admin].Member[Currency]
+  - - Django.db.models.Model~Subclass
+    - currencies
+    - Member[context_processors].Member[Currency]
+  - - Django.db.models.Model~Subclass
+    - currencies
+    - Member[management].Member[commands].Member[currencies].Member[Currency]
+  - - Django.db.models.Model~Subclass
+    - currencies
+    - Member[management].Member[commands].Member[updatecurrencies].Member[Currency]
+  - - Django.db.models.Model~Subclass
+    - currencies
+    - Member[models].Member[Currency]
+  - - Django.db.models.Model~Subclass
+    - currencies
+    - Member[templatetags].Member[currency].Member[Currency]
+  - - Django.db.models.Model~Subclass
+    - currencies
+    - Member[utils].Member[C]
+  - - Django.db.models.Model~Subclass
+    - currencies
+    - Member[views].Member[Currency]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - currencies
+    - Member[views].Member[HttpResponseRedirect]
+  - - xml.etree.ElementTree~Subclass
+    - currencies
+    - Member[management].Member[commands].Member[_currencyiso].Member[ET]

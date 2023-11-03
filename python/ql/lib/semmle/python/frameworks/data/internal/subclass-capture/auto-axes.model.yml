@@ -1,0 +1,78 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[admin].Member[AccessAttempt]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[admin].Member[AccessFailureLog]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[admin].Member[AccessLog]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[attempts].Member[AccessAttempt]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[handlers].Member[cache].Member[AccessAttempt]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[handlers].Member[database].Member[AccessAttempt]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[handlers].Member[database].Member[AccessFailureLog]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[handlers].Member[database].Member[AccessLog]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[helpers].Member[AccessBase]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[management].Member[commands].Member[axes_list_attempts].Member[AccessAttempt]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[models].Member[AccessAttempt]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[models].Member[AccessBase]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[models].Member[AccessFailureLog]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[models].Member[AccessLog]
+  - - Django.db.models.Model~Subclass
+    - axes
+    - Member[signals].Member[AccessAttempt]
+  - - django.http.request.HttpRequest~Subclass
+    - axes
+    - Member[admin].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - axes
+    - Member[attempts].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - axes
+    - Member[backends].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - axes
+    - Member[helpers].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - axes
+    - Member[middleware].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - axes
+    - Member[utils].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - axes
+    - Member[helpers].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - axes
+    - Member[middleware].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - axes
+    - Member[helpers].Member[JsonResponse]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - sqlalchemy.engine.Connection~Subclass
+    - autodynatrace
+    - Member[wrappers].Member[sqlalchemy].Member[wrapper].Member[Connection]
+  - - sqlalchemy.engine.Engine~Subclass
+    - autodynatrace
+    - Member[wrappers].Member[sqlalchemy].Member[wrapper].Member[Engine]

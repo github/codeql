@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - datacube
+    - Member[ui].Member[task_app].Member[pickle]
+  - - sqlalchemy.engine.Engine~Subclass
+    - datacube
+    - Member[drivers].Member[postgis].Member[_connections].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - datacube
+    - Member[drivers].Member[postgis].Member[_core].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - datacube
+    - Member[drivers].Member[postgres].Member[_connections].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - datacube
+    - Member[drivers].Member[postgres].Member[_core].Member[Engine]
+  - - sqlalchemy.orm.Session~Subclass
+    - datacube
+    - Member[drivers].Member[postgis].Member[_spatial].Member[Session]

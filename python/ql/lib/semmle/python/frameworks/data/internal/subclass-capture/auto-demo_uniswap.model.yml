@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[factory].Member[pool_created].Member[PoolCreated]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[pool].Member[burn].Member[Burn]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[pool].Member[flash].Member[Flash]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[pool].Member[initialize].Member[Initialize]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[pool].Member[mint].Member[Mint]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[pool].Member[swap].Member[Swap]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[position_manager].Member[collect].Member[Collect]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[position_manager].Member[decrease_liquidity].Member[DecreaseLiquidity]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[position_manager].Member[increase_liquidity].Member[IncreaseLiquidity]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[handlers].Member[position_manager].Member[transfer].Member[Transfer]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[models].Member[pool].Member[Burn]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[models].Member[pool].Member[Mint]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[factory].Member[evm_events].Member[pool_created].Member[PoolCreated]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[pool].Member[evm_events].Member[burn].Member[Burn]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[pool].Member[evm_events].Member[collect].Member[Collect]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[pool].Member[evm_events].Member[flash].Member[Flash]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[pool].Member[evm_events].Member[initialize].Member[Initialize]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[pool].Member[evm_events].Member[mint].Member[Mint]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[pool].Member[evm_events].Member[swap].Member[Swap]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[position_manager].Member[evm_events].Member[collect].Member[Collect]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[position_manager].Member[evm_events].Member[decrease_liquidity].Member[DecreaseLiquidity]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[position_manager].Member[evm_events].Member[increase_liquidity].Member[IncreaseLiquidity]
+  - - pydantic.BaseModel~Subclass
+    - demo_uniswap
+    - Member[types].Member[position_manager].Member[evm_events].Member[transfer].Member[Transfer]

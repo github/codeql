@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - djmail
+    - Member[admin].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - djmail
+    - Member[core].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - djmail
+    - Member[management].Member[commands].Member[djmail_delete_old_messages].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - djmail
+    - Member[models].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - djmail
+    - Member[signals].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - djmail
+    - Member[template_mail].Member[Message]

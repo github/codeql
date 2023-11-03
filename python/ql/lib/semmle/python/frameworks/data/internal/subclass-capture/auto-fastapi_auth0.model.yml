@@ -6,6 +6,15 @@ extensions:
   data:
   - - pydantic.BaseModel~Subclass
     - fastapi_auth0
+    - Member[Auth0User]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_auth0
+    - Member[auth].Member[Auth0User]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_auth0
+    - Member[auth].Member[HTTPAuth0Error]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_auth0
     - Member[auth].Member[HTTPAuthorizationCredentials]
   - - pydantic.BaseModel~Subclass
     - fastapi_auth0

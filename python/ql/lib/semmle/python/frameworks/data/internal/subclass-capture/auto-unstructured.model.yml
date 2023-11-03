@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - unstructured
+    - Member[partition].Member[common].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - unstructured
+    - Member[partition].Member[xml].Member[BytesIO]
+  - - lxml.etree~Alias
+    - unstructured
+    - Member[documents].Member[html].Member[etree]
+  - - lxml.etree~Alias
+    - unstructured
+    - Member[documents].Member[xml].Member[etree]
+  - - lxml.etree~Alias
+    - unstructured
+    - Member[partition].Member[xml].Member[etree]
   - - pydantic.BaseModel~Subclass
     - unstructured
     - Member[staging].Member[argilla].Member[Text2TextRecord]
@@ -13,3 +28,6 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - unstructured
     - Member[staging].Member[argilla].Member[TokenClassificationRecord]
+  - - xml.etree.ElementTree~Subclass
+    - unstructured
+    - Member[ingest].Member[connector].Member[slack].Member[ET]

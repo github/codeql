@@ -6,19 +6,235 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - cmsplugin_cascade
+    - Member[bootstrap4].Member[accordion].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[accordion].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[accordion].Member[IntegerField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[buttons].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[buttons].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[buttons].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[buttons].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[carousel].Member[BootstrapMultiSizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[carousel].Member[IntegerField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[carousel].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[container].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[container].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[container].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[embeds].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[embeds].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
     - Member[bootstrap4].Member[embeds].Member[EntangledField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[embeds].Member[URLField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[fields].Member[BootstrapMultiSizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[fields].Member[MultiSizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[icon].Member[BorderChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[icon].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[icon].Member[ColorField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[icon].Member[SizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[image].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[image].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[image].Member[SizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[jumbotron].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[jumbotron].Member[BootstrapMultiSizeField]
   - - Django.Forms.Field~Subclass
     - cmsplugin_cascade
     - Member[bootstrap4].Member[jumbotron].Member[CascadeImageField]
   - - Django.Forms.Field~Subclass
     - cmsplugin_cascade
+    - Member[bootstrap4].Member[jumbotron].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[jumbotron].Member[ColorField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[jumbotron].Member[MultiSizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[mixins].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[picture].Member[BootstrapMultiSizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[picture].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[secondary_menu].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[secondary_menu].Member[IntegerField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[tabs].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[tabs].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[bootstrap4].Member[tabs].Member[IntegerField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[cms_plugins].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[cms_plugins].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[SizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[mixins].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[mixins].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[mixins].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[mixins].Member[SizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
     - Member[fields].Member[AdminImageFormField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[BorderChoiceField]
   - - Django.Forms.Field~Subclass
     - cmsplugin_cascade
     - Member[fields].Member[CascadeImageField]
   - - Django.Forms.Field~Subclass
     - cmsplugin_cascade
+    - Member[fields].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[ColorField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[Field]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[HiddenDictField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[MultiSizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[MultiValueField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[SelectOverflowField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[SelectTextAlignField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[fields].Member[SizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[generic].Member[heading].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[generic].Member[heading].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[generic].Member[mixins].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[generic].Member[simple_wrapper].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[generic].Member[text_image].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[generic].Member[text_image].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[generic].Member[text_image].Member[SizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[hide_plugins].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[icon].Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[icon].Member[forms].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
     - Member[image].Member[CascadeImageField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[image].Member[CharField]
   - - Django.Forms.Field~Subclass
     - cmsplugin_cascade
     - Member[image].Member[EntangledField]
@@ -27,13 +243,73 @@ extensions:
     - Member[leaflet].Member[map].Member[AdminImageFormField]
   - - Django.Forms.Field~Subclass
     - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
     - Member[leaflet].Member[map].Member[HTMLFormField]
   - - Django.Forms.Field~Subclass
     - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[HiddenDictField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[MultiSizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[SizeField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[link].Member[forms].Member[LinkSearchField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[link].Member[forms].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
     - Member[link].Member[forms].Member[PhoneNumberField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[link].Member[forms].Member[SectionChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[render_template].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[segmentation].Member[cms_plugins].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[segmentation].Member[cms_plugins].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[fields].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[fields].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[fields].Member[MultiValueField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[fields].Member[SharedSettingsField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[forms].Member[SharedSettingsField]
+  - - Django.Forms.Field~Subclass
+    - cmsplugin_cascade
+    - Member[utils].Member[MultipleChoiceField]
+  - - Django.Views.View~Subclass
+    - cmsplugin_cascade
+    - Member[sphinx].Member[cms_apps].Member[SphinxDocsView]
+  - - Django.Views.View~Subclass
+    - cmsplugin_cascade
+    - Member[sphinx].Member[cms_apps].Member[TemplateView]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
     - Member[admin].Member[CascadePage]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[admin].Member[IconFont]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
     - Member[admin].Member[Page]
@@ -42,13 +318,52 @@ extensions:
     - Member[bootstrap4].Member[secondary_menu].Member[Page]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
+    - Member[clipboard].Member[admin].Member[CascadeClipboard]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[admin].Member[PlaceholderReference]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[cms_plugins].Member[CascadeClipboard]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[forms].Member[CascadeClipboard]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
     - Member[clipboard].Member[forms].Member[Placeholder]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[utils].Member[CascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[utils].Member[PlaceholderReference]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
     - Member[cms_toolbars].Member[CascadePage]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[IconFont]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[PluginExtraFields]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[TextEditorConfigFields]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
     - Member[generic].Member[mixins].Member[CascadePage]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[icon].Member[admin].Member[IconFont]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[icon].Member[forms].Member[IconFont]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[icon].Member[plugin_base].Member[IconFont]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[InlineCascadeElement]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
     - Member[link].Member[forms].Member[FilerFileModel]
@@ -60,31 +375,157 @@ extensions:
     - Member[link].Member[plugin_base].Member[FilerFileModel]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
+    - Member[mixins].Member[InlineCascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[mixins].Member[SortableInlineCascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[CascadeClipboard]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[CascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[CascadeModelBase]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
     - Member[models].Member[CascadePage]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[IconFont]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[InlineCascadeElement]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
     - Member[models].Member[PageExtension]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
+    - Member[models].Member[PluginExtraFields]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[Segmentation]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[SharableCascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[SharedGlossary]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
     - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[SortableInlineCascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models].Member[TextEditorConfigFields]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models_base].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[models_base].Member[CascadeModelBase]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[plugin_base].Member[CascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[plugin_base].Member[CascadeModelBase]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[plugin_base].Member[SharableCascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[segmentation].Member[admin].Member[Segmentation]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[admin].Member[IconFont]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[admin].Member[SharableCascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[admin].Member[SharedGlossary]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[forms].Member[CascadeElement]
+  - - Django.db.models.Model~Subclass
+    - cmsplugin_cascade
+    - Member[sharable].Member[forms].Member[SharedGlossary]
   - - Django.db.models.Model~Subclass
     - cmsplugin_cascade
     - Member[sphinx].Member[link_plugin].Member[Page]
   - - django.forms.BaseForm~Subclass
     - cmsplugin_cascade
+    - Member[clipboard].Member[cms_plugins].Member[ClipboardBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[clipboard].Member[forms].Member[ClipboardBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
     - Member[extra_fields].Member[admin].Member[EntangledModelForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[ModelForm]
   - - django.forms.BaseForm~Subclass
     - cmsplugin_cascade
     - Member[extra_fields].Member[admin].Member[PluginExtraFieldsForm]
   - - django.forms.BaseForm~Subclass
     - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[TextEditorConfigForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[forms].Member[CascadeModelForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
     - Member[forms].Member[EntangledModelForm]
   - - django.forms.BaseForm~Subclass
     - cmsplugin_cascade
+    - Member[forms].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[icon].Member[admin].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[icon].Member[admin].Member[UploadIconsForms]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[CascadeModelForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[leaflet].Member[map].Member[MarkerForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
+    - Member[plugin_base].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - cmsplugin_cascade
     - Member[sharable].Member[admin].Member[EntangledModelForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - cmsplugin_cascade
+    - Member[segmentation].Member[mixins].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - cmsplugin_cascade
+    - Member[admin].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - cmsplugin_cascade
+    - Member[admin].Member[HttpResponseNotFound]
   - - django.http.response.HttpResponse~Subclass
     - cmsplugin_cascade
     - Member[clipboard].Member[cms_plugins].Member[TemplateResponse]
   - - django.http.response.HttpResponse~Subclass
     - cmsplugin_cascade
+    - Member[extra_fields].Member[admin].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cmsplugin_cascade
+    - Member[segmentation].Member[mixins].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cmsplugin_cascade
     - Member[segmentation].Member[mixins].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - cmsplugin_cascade
+    - Member[sphinx].Member[cms_apps].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - cmsplugin_cascade
+    - Member[admin].Member[JsonResponse]

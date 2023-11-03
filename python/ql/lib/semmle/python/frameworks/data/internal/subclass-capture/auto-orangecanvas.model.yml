@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - orangecanvas
+    - Member[document].Member[suggestions].Member[pickle]
+  - - pickle~Alias
+    - orangecanvas
+    - Member[main].Member[pickle]
+  - - pickle~Alias
+    - orangecanvas
+    - Member[registry].Member[cache].Member[pickle]
+  - - pickle~Alias
+    - orangecanvas
+    - Member[scheme].Member[readwrite].Member[pickle]
+  - - pickle~Alias
+    - orangecanvas
+    - Member[utils].Member[pickle].Member[pickle]

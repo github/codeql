@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - localtileserver
+    - Member[web].Member[blueprint].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - localtileserver
+    - Member[web].Member[application].Member[Flask]
   - - flask.MethodView~Subclass
     - localtileserver
     - Member[web].Member[rest].Member[BaseImageView]
@@ -52,3 +58,21 @@ extensions:
   - - flask.MethodView~Subclass
     - localtileserver
     - Member[web].Member[rest].Member[View]
+  - - flask.View~Subclass
+    - localtileserver
+    - Member[web].Member[views].Member[BaseViewer]
+  - - flask.View~Subclass
+    - localtileserver
+    - Member[web].Member[views].Member[CesiumSplitViewer]
+  - - flask.View~Subclass
+    - localtileserver
+    - Member[web].Member[views].Member[CesiumViewer]
+  - - flask.View~Subclass
+    - localtileserver
+    - Member[web].Member[views].Member[GeoJSViewer]
+  - - flask.View~Subclass
+    - localtileserver
+    - Member[web].Member[views].Member[SplitViewForm]
+  - - flask.View~Subclass
+    - localtileserver
+    - Member[web].Member[views].Member[View]

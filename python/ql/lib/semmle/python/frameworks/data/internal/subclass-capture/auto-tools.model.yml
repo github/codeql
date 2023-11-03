@@ -4,12 +4,45 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - tools
+    - Member[linter].Member[adapters].Member[nativefunctions_linter].Member[StringIO]
+  - - io.StringIO~Subclass
+    - tools
+    - Member[rst2prettyhtml].Member[StringIO]
+  - - pickle~Alias
+    - tools
+    - Member[export_center].Member[pickle]
+  - - pickle~Alias
+    - tools
+    - Member[preprocess_utils].Member[dataset_analyzer].Member[pickle]
+  - - pickle~Alias
+    - tools
+    - Member[preprocess_utils].Member[experiment_planner].Member[pickle]
+  - - pickle~Alias
+    - tools
+    - Member[preprocess_utils].Member[file_and_folder_operations].Member[pickle]
+  - - pickle~Alias
+    - tools
+    - Member[preprocess_utils].Member[image_crop].Member[pickle]
+  - - pickle~Alias
+    - tools
+    - Member[preprocess_utils].Member[pickle]
+  - - pickle~Alias
+    - tools
+    - Member[preprocess_utils].Member[preprocessing].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - tools
+    - Member[collapse_code].Member[etree]
   - - xml.etree.ElementTree~Subclass
     - tools
     - Member[languages].Member[language_names].Member[ET]
   - - xml.etree.ElementTree~Subclass
     - tools
     - Member[languages_meta].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tools
+    - Member[linter].Member[adapters].Member[bazel_linter].Member[ET]
   - - xml.etree.ElementTree~Subclass
     - tools
     - Member[readers].Member[ET]

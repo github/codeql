@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.MethodView~Subclass
+    - flask_apispec
+    - Member[MethodResource]
+  - - flask.MethodView~Subclass
+    - flask_apispec
+    - Member[views].Member[MethodResource]
+  - - flask.Response~Subclass
+    - flask_apispec
+    - Member[wrapper].Member[Response]

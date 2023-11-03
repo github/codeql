@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - nyoka
+    - Member[PMML44].Member[doc].Member[source].Member[scripts].Member[PMML44].Member[etree_]
+  - - lxml.etree~Alias
+    - nyoka
+    - Member[PMML44].Member[doc].Member[source].Member[scripts].Member[arima].Member[etree_]
+  - - lxml.etree~Alias
+    - nyoka
+    - Member[PMML44].Member[doc].Member[source].Member[scripts].Member[exponential_smoothing].Member[etree_]
+  - - lxml.etree~Alias
+    - nyoka
+    - Member[PMML44].Member[etree_]
+  - - lxml.etree~Alias
+    - nyoka
+    - Member[PMML44].Member[pmml44].Member[etree_]
+  - - lxml.etree~Alias
+    - nyoka
+    - Member[PMML44].Member[process_includes].Member[etree]
+  - - lxml.etree~Alias
+    - nyoka
+    - Member[statsmodels].Member[exponential_smoothing].Member[etree_]
+  - - lxml.etree~Alias
+    - nyoka
+    - Member[statsmodels].Member[statsmodels_to_pmml].Member[etree_]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - ape_cache
+    - Member[query].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape_cache
+    - Member[query].Member[BlockAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_cache
+    - Member[query].Member[BlockQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape_cache
+    - Member[query].Member[BlockTransactionQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape_cache
+    - Member[query].Member[ContractEventQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape_cache
+    - Member[query].Member[ContractLog]

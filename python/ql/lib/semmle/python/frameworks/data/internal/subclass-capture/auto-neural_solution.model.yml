@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - neural_solution
+    - Member[frontend].Member[fastapi].Member[main_server].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - neural_solution
+    - Member[frontend].Member[task_submitter].Member[Task]
+  - - starlette.websockets.WebSocket~Subclass
+    - neural_solution
+    - Member[frontend].Member[fastapi].Member[main_server].Member[WebSocket]

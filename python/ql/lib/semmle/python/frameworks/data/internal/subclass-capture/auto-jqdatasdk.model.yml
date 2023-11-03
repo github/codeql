@@ -6,4 +6,7 @@ extensions:
   data:
   - - pickle~Alias
     - jqdatasdk
+    - Member[compat].Member[pickle_compat].Member[pickle]
+  - - pickle~Alias
+    - jqdatasdk
     - Member[compat].Member[pickle_compat].Member[pkl]

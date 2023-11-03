@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - bigger_applications
+    - Member[app].Member[internal].Member[admin].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - bigger_applications
+    - Member[app].Member[routers].Member[items].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - bigger_applications
+    - Member[app].Member[routers].Member[users].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - bigger_applications
+    - Member[app_an].Member[internal].Member[admin].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - bigger_applications
+    - Member[app_an].Member[routers].Member[items].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - bigger_applications
+    - Member[app_an].Member[routers].Member[users].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - bigger_applications
+    - Member[app_an_py39].Member[internal].Member[admin].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - bigger_applications
+    - Member[app_an_py39].Member[routers].Member[items].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - bigger_applications
+    - Member[app_an_py39].Member[routers].Member[users].Member[APIRouter]

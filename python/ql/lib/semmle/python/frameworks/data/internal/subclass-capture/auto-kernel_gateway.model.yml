@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.RequestHandler~Subclass
+    - kernel_gateway
+    - Member[base].Member[handlers].Member[NotFoundHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kernel_gateway
+    - Member[notebook_http].Member[NotebookAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kernel_gateway
+    - Member[notebook_http].Member[SwaggerSpecHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kernel_gateway
+    - Member[notebook_http].Member[handlers].Member[NotebookAPIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - kernel_gateway
+    - Member[notebook_http].Member[swagger].Member[handlers].Member[SwaggerSpecHandler]

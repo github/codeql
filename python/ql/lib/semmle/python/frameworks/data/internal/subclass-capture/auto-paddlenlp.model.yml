@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - paddlenlp
+    - Member[server].Member[http_router].Member[router].Member[APIRouter]
+  - - io.StringIO~Subclass
+    - paddlenlp
+    - Member[transformers].Member[utils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - paddlenlp
+    - Member[utils].Member[doc_parser].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - paddlenlp
+    - Member[utils].Member[ie_utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - paddlenlp
+    - Member[utils].Member[image_utils].Member[BytesIO]
+  - - pickle~Alias
+    - paddlenlp
+    - Member[taskflow].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - paddlenlp
+    - Member[transformers].Member[ernie].Member[static_to_dygraph_params].Member[match_static_to_dygraph].Member[pickle]
+  - - pickle~Alias
+    - paddlenlp
+    - Member[transformers].Member[unified_transformer].Member[convert].Member[pickle]
+  - - pickle~Alias
+    - paddlenlp
+    - Member[utils].Member[serialization].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - paddlenlp
+    - Member[server].Member[http_router].Member[router].Member[RequestBase]
+  - - pydantic.BaseModel~Subclass
+    - paddlenlp
+    - Member[server].Member[http_router].Member[router].Member[ResponseBase]

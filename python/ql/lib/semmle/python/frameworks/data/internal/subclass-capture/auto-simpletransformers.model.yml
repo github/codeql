@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - simpletransformers
+    - Member[language_modeling].Member[language_modeling_utils].Member[pickle]
+  - - pickle~Alias
+    - simpletransformers
+    - Member[retrieval].Member[retrieval_utils].Member[pickle]
+  - - pickle~Alias
+    - simpletransformers
+    - Member[seq2seq].Member[seq2seq_utils].Member[pickle]
+  - - pickle~Alias
+    - simpletransformers
+    - Member[t5].Member[t5_utils].Member[pickle]

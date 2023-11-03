@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - csrf
+    - Member[api].Member[v1].Member[urls].Member[CsrfTokenView]
+  - - Django.Views.View~Subclass
+    - csrf
+    - Member[api].Member[v1].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - csrf
+    - Member[api].Member[v1].Member[views].Member[CsrfTokenView]
+  - - django.http.response.HttpResponse~Subclass
+    - csrf
+    - Member[api].Member[v1].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - csrf
+    - Member[api].Member[v1].Member[views].Member[Response]

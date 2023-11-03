@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - fcm
+    - Member[management].Member[commands].Member[fcm_urls].Member[DeviceViewSet]
+  - - Django.Views.View~Subclass
+    - fcm
+    - Member[urls].Member[DeviceViewSet]
+  - - Django.Views.View~Subclass
+    - fcm
+    - Member[views].Member[DeviceViewSet]
+  - - Django.db.models.Model~Subclass
+    - fcm
+    - Member[models].Member[AbstractDevice]
+  - - Django.db.models.Model~Subclass
+    - fcm
+    - Member[models].Member[Device]
+  - - django.forms.BaseForm~Subclass
+    - fcm
+    - Member[admin].Member[MessageForm]
+  - - django.forms.BaseForm~Subclass
+    - fcm
+    - Member[forms].Member[MessageForm]
+  - - django.forms.BaseForm~Subclass
+    - fcm
+    - Member[forms].Member[RegisterDeviceForm]
+  - - django.forms.BaseForm~Subclass
+    - fcm
+    - Member[forms].Member[UnregisterDeviceForm]

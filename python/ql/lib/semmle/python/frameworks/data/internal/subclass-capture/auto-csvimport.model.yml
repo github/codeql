@@ -6,4 +6,13 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - csvimport
+    - Member[admin].Member[CSVImport]
+  - - Django.db.models.Model~Subclass
+    - csvimport
     - Member[management].Member[commands].Member[importcsv].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - csvimport
+    - Member[models].Member[CSVImport]
+  - - Django.db.models.Model~Subclass
+    - csvimport
+    - Member[models].Member[ImportModel]

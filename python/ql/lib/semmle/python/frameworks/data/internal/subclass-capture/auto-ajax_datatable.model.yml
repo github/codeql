@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - ajax_datatable
+    - Member[AjaxDatatableView]
+  - - Django.Views.View~Subclass
+    - ajax_datatable
+    - Member[views].Member[AjaxDatatableView]
+  - - Django.Views.View~Subclass
+    - ajax_datatable
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - ajax_datatable
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - ajax_datatable
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - ajax_datatable
+    - Member[views].Member[JsonResponse]

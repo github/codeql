@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - clickhouse_driver.client.Client~Subclass
+    - clickhouse_sqlalchemy
+    - Member[drivers].Member[native].Member[connector].Member[DriverClient]
+  - - sqlalchemy.orm.Session~Subclass
+    - clickhouse_sqlalchemy
+    - Member[orm].Member[session].Member[Session]

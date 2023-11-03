@@ -12,7 +12,25 @@ extensions:
     - Member[admin].Member[ContributingModelsModel]
   - - Django.db.models.Model~Subclass
     - computedfields
+    - Member[graph].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - computedfields
+    - Member[handlers].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - computedfields
+    - Member[helper].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - computedfields
+    - Member[management].Member[commands].Member[updatedata].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - computedfields
     - Member[models].Member[ComputedFieldsAdminModel]
   - - Django.db.models.Model~Subclass
     - computedfields
+    - Member[models].Member[ComputedFieldsModel]
+  - - Django.db.models.Model~Subclass
+    - computedfields
     - Member[models].Member[ContributingModelsModel]
+  - - Django.db.models.Model~Subclass
+    - computedfields
+    - Member[resolver].Member[Model]

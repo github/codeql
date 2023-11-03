@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - waybackpy
+    - Member[availability_api].Member[Response]
+  - - requests.models.Response~Subclass
+    - waybackpy
+    - Member[save_api].Member[Response]

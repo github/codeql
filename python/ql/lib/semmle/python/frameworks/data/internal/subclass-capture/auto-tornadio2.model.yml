@@ -13,3 +13,24 @@ extensions:
   - - tornado.web.RequestHandler~Subclass
     - tornadio2
     - Member[persistent].Member[WebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tornadio2
+    - Member[polling].Member[TornadioHtmlFileHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tornadio2
+    - Member[polling].Member[TornadioJSONPHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tornadio2
+    - Member[polling].Member[TornadioPollingHandlerBase]
+  - - tornado.web.RequestHandler~Subclass
+    - tornadio2
+    - Member[polling].Member[TornadioXHRPollingHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tornadio2
+    - Member[preflight].Member[PreflightHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tornadio2
+    - Member[preflight].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - tornadio2
+    - Member[router].Member[HandshakeHandler]

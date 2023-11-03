@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - thumbnails
+    - Member[backends].Member[metadata].Member[Source]
+  - - Django.db.models.Model~Subclass
+    - thumbnails
+    - Member[backends].Member[metadata].Member[ThumbnailMeta]
+  - - Django.db.models.Model~Subclass
+    - thumbnails
+    - Member[models].Member[Source]
+  - - Django.db.models.Model~Subclass
+    - thumbnails
+    - Member[models].Member[ThumbnailMeta]
+  - - django.db.models.FileField~Subclass
+    - thumbnails
+    - Member[fields].Member[DjangoImageField]
+  - - django.db.models.FileField~Subclass
+    - thumbnails
+    - Member[fields].Member[ImageField]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - websockify
+    - Member[ProxyRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - websockify
+    - Member[websocketproxy].Member[ProxyRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - websockify
+    - Member[websocketserver].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - websockify
+    - Member[websocketserver].Member[WebSocketRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - websockify
+    - Member[websockifyserver].Member[SimpleHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - websockify
+    - Member[websockifyserver].Member[WebSockifyRequestHandler]

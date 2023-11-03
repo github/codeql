@@ -4,12 +4,69 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - hitcount
+    - Member[urls].Member[HitCountJSONView]
+  - - Django.Views.View~Subclass
+    - hitcount
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - hitcount
+    - Member[views].Member[HitCountDetailView]
+  - - Django.Views.View~Subclass
+    - hitcount
+    - Member[views].Member[HitCountJSONView]
+  - - Django.Views.View~Subclass
+    - hitcount
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[admin].Member[BlacklistIP]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[admin].Member[BlacklistUserAgent]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[admin].Member[Hit]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[management].Member[commands].Member[hitcount_cleanup].Member[Hit]
   - - Django.db.models.Model~Subclass
     - hitcount
     - Member[managers].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - hitcount
+    - Member[models].Member[BlacklistIP]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[models].Member[BlacklistUserAgent]
+  - - Django.db.models.Model~Subclass
+    - hitcount
     - Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - hitcount
+    - Member[models].Member[HitCountBase]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[models].Member[HitCount]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[models].Member[Hit]
+  - - Django.db.models.Model~Subclass
+    - hitcount
     - Member[templatetags].Member[hitcount_tags].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[views].Member[BlacklistIP]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[views].Member[BlacklistUserAgent]
+  - - Django.db.models.Model~Subclass
+    - hitcount
+    - Member[views].Member[Hit]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - hitcount
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.JsonResponse~Subclass
+    - hitcount
+    - Member[views].Member[JsonResponse]

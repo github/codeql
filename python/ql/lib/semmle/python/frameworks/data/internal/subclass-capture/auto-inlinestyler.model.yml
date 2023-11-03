@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - inlinestyler
+    - Member[converter].Member[etree]
+  - - lxml.etree~Alias
+    - inlinestyler
+    - Member[utils].Member[etree]

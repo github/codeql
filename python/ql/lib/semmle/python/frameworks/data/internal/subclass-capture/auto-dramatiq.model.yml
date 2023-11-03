@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - dramatiq
+    - Member[middleware].Member[prometheus].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - dramatiq
+    - Member[middleware].Member[prometheus].Member[_metrics_handler]
+  - - pickle~Alias
+    - dramatiq
+    - Member[encoder].Member[pickle]

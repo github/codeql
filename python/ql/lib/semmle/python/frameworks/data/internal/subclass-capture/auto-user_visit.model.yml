@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - user_visit
+    - Member[admin].Member[UserVisit]
+  - - Django.db.models.Model~Subclass
+    - user_visit
+    - Member[middleware].Member[UserVisit]
+  - - Django.db.models.Model~Subclass
+    - user_visit
+    - Member[models].Member[UserVisit]
+  - - django.http.request.HttpRequest~Subclass
+    - user_visit
+    - Member[middleware].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - user_visit
+    - Member[models].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - user_visit
+    - Member[settings].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - user_visit
+    - Member[middleware].Member[HttpResponse]

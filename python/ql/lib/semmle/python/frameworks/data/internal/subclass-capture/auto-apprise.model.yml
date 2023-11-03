@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - apprise
+    - Member[logger].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - apprise
+    - Member[plugins].Member[NotifySES].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - apprise
+    - Member[plugins].Member[NotifySNS].Member[ElementTree]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - json_field
+    - Member[fields].Member[JSONFormField]
+  - - Django.Forms.Field~Subclass
+    - json_field
+    - Member[forms].Member[JSONFormField]

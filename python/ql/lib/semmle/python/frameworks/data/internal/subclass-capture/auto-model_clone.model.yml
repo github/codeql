@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - model_clone
+    - Member[models].Member[CloneModel]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - model_clone
+    - Member[admin].Member[HttpResponseRedirect]

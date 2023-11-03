@@ -7,3 +7,6 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - snscrape
     - Member[base].Member[_HTTPSConnection]
+  - - logging.Logger~Subclass
+    - snscrape
+    - Member[_cli].Member[Logger]

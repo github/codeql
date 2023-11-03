@@ -4,6 +4,78 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[CreateView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[DetailView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[FormView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[GenericModelView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[GenericView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[ListView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[View]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[model_views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[model_views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[model_views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[model_views].Member[GenericModelView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[model_views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[model_views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[model_views].Member[View]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[views].Member[GenericView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - vanilla
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - vanilla
+    - Member[model_views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - vanilla
+    - Member[views].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponse~Subclass
     - vanilla
     - Member[model_views].Member[TemplateResponse]

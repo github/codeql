@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - lettuce
+    - Member[django].Member[server].Member[MutedRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - lettuce
+    - Member[django].Member[server].Member[WSGIRequestHandler]
   - - wsgiref.simple_server.WSGIServer~Subclass
     - lettuce
     - Member[django].Member[server].Member[WSGIServer]

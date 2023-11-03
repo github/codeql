@@ -9,4 +9,10 @@ extensions:
     - Member[utils].Member[file].Member[BytesIO]
   - - tornado.web.RequestHandler~Subclass
     - cactus
+    - Member[server].Member[ShutdownHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - cactus
+    - Member[server].Member[StaticSingleFileHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - cactus
     - Member[server].Member[WebSocketHandler]

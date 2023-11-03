@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - django_private_chat
+    - Member[views].Member[DialogListView]
   - - Django.db.models.Model~Subclass
     - django_private_chat
     - Member[admin].Member[Dialog]

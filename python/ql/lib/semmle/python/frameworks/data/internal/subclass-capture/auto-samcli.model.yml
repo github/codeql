@@ -4,6 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - samcli
+    - Member[local].Member[apigw].Member[local_apigw_service].Member[Flask]
+  - - flask.Flask~Subclass
+    - samcli
+    - Member[local].Member[lambda_service].Member[local_lambda_invoke_service].Member[Flask]
+  - - flask.Response~Subclass
+    - samcli
+    - Member[local].Member[apigw].Member[service_error_responses].Member[Response]
+  - - flask.Response~Subclass
+    - samcli
+    - Member[local].Member[services].Member[base_local_service].Member[Response]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - samcli
     - Member[local].Member[apigw].Member[local_apigw_service].Member[WSGIRequestHandler]
+  - - io.StringIO~Subclass
+    - samcli
+    - Member[lib].Member[package].Member[ecr_uploader].Member[StringIO]
+  - - io.StringIO~Subclass
+    - samcli
+    - Member[local].Member[apigw].Member[local_apigw_service].Member[StringIO]

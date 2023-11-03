@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - prettyprinter
+    - Member[extras].Member[django].Member[Model]
+  - - io.StringIO~Subclass
+    - prettyprinter
+    - Member[extras].Member[python].Member[StringIO]
+  - - io.StringIO~Subclass
+    - prettyprinter
+    - Member[render].Member[StringIO]

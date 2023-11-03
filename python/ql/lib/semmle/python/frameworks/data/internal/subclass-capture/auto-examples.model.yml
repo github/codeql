@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - logging.Logger~Subclass
+    - examples
+    - Member[util].Member[repeater].Member[Logger]
   - - lxml.etree~Alias
     - examples
     - Member[tensorflow_examples].Member[lite].Member[model_maker].Member[core].Member[data_util].Member[object_detector_dataloader_util].Member[etree]

@@ -4,6 +4,48 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[BaseSocialAuthView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[GenericAPIView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[SocialJWTPairOnlyAuthView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[SocialJWTPairUserAuthView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[SocialJWTSlidingOnlyAuthView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[SocialJWTSlidingUserAuthView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[SocialKnoxOnlyAuthView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[SocialKnoxUserAuthView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[SocialSessionAuthView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[SocialTokenOnlyAuthView]
+  - - Django.Views.View~Subclass
+    - rest_social_auth
+    - Member[views].Member[SocialTokenUserAuthView]
   - - Django.db.models.Model~Subclass
     - rest_social_auth
     - Member[serializers].Member[Token]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_social_auth
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_social_auth
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_social_auth
+    - Member[views].Member[Response]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - freebox_api
+    - Member[access].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - freebox_api
+    - Member[aiofreepybox].Member[ClientSession]

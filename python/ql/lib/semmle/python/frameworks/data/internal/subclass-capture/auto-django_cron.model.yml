@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_cron
+    - Member[admin].Member[CronJobLock]
+  - - Django.db.models.Model~Subclass
+    - django_cron
+    - Member[admin].Member[CronJobLog]
+  - - Django.db.models.Model~Subclass
+    - django_cron
+    - Member[backends].Member[lock].Member[database].Member[CronJobLock]
+  - - Django.db.models.Model~Subclass
+    - django_cron
+    - Member[cron].Member[CronJobLog]
+  - - Django.db.models.Model~Subclass
+    - django_cron
+    - Member[management].Member[commands].Member[runcrons].Member[CronJobLog]
+  - - Django.db.models.Model~Subclass
+    - django_cron
+    - Member[models].Member[CronJobLock]
+  - - Django.db.models.Model~Subclass
+    - django_cron
+    - Member[models].Member[CronJobLog]

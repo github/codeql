@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - aioxmpp
+    - Member[utils].Member[etree]
+  - - lxml.etree~Alias
+    - aioxmpp
+    - Member[vcard].Member[xso].Member[etree]
+  - - lxml.etree~Alias
+    - aioxmpp
+    - Member[xso].Member[model].Member[etree]

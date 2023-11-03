@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - torchmeta
+    - Member[datasets].Member[miniimagenet].Member[pickle]
+  - - pickle~Alias
+    - torchmeta
+    - Member[datasets].Member[tieredimagenet].Member[pickle]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - rdflib
+    - Member[plugins].Member[sparql].Member[results].Member[xmlresults].Member[BytesIO]
+  - - lxml.etree~Alias
+    - rdflib
+    - Member[plugins].Member[sparql].Member[results].Member[xmlresults].Member[lxml_etree]
+  - - xml.etree.ElementTree~Subclass
+    - rdflib
+    - Member[plugins].Member[sparql].Member[results].Member[xmlresults].Member[xml_etree]

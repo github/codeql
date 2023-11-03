@@ -7,6 +7,45 @@ extensions:
   - - Django.Views.View~Subclass
     - drf_social_oauth2
     - Member[urls].Member[AuthorizationView]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[urls].Member[ConvertTokenView]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[urls].Member[DisconnectBackendView]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[urls].Member[InvalidateRefreshTokens]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[urls].Member[InvalidateSessions]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[urls].Member[RevokeTokenView]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[urls].Member[TokenView]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[ConvertTokenView]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[DisconnectBackendView]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[InvalidateRefreshTokens]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[InvalidateSessions]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[RevokeTokenView]
+  - - Django.Views.View~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[TokenView]
   - - Django.db.models.Model~Subclass
     - drf_social_oauth2
     - Member[management].Member[commands].Member[createapp].Member[Application]
@@ -19,3 +58,18 @@ extensions:
   - - Django.db.models.Model~Subclass
     - drf_social_oauth2
     - Member[views].Member[RefreshToken]
+  - - django.http.request.HttpRequest~Subclass
+    - drf_social_oauth2
+    - Member[oauth2_endpoints].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - drf_social_oauth2
+    - Member[authentication].Member[AuthenticationFailed]
+  - - rest_framework.request.Request~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[Request]
+  - - rest_framework.response.Response~Subclass
+    - drf_social_oauth2
+    - Member[views].Member[Response]

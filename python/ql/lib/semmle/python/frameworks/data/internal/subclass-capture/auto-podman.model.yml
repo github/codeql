@@ -10,3 +10,21 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - podman
     - Member[api].Member[uds].Member[UDSConnection]
+  - - requests.models.Response~Subclass
+    - podman
+    - Member[api].Member[parse_utils].Member[Response]
+  - - requests.models.Response~Subclass
+    - podman
+    - Member[errors].Member[exceptions].Member[Response]
+  - - urllib3.PoolManager~Subclass
+    - podman
+    - Member[api].Member[ssh].Member[SSHConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - podman
+    - Member[api].Member[ssh].Member[SSHPoolManager]
+  - - urllib3.PoolManager~Subclass
+    - podman
+    - Member[api].Member[uds].Member[UDSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - podman
+    - Member[api].Member[uds].Member[UDSPoolManager]

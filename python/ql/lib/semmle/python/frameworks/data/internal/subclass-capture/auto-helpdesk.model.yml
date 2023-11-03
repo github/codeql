@@ -4,6 +4,174 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[urls].Member[CreateUserView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[urls].Member[DirectTemplateView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[urls].Member[FollowUpAttachmentViewSet]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[urls].Member[FollowUpViewSet]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[urls].Member[TicketViewSet]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[api].Member[CreateUserView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[api].Member[FollowUpAttachmentViewSet]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[api].Member[FollowUpViewSet]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[api].Member[GenericViewSet]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[api].Member[TicketViewSet]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[BaseCreateTicketView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[CreateTicketIframeView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[CreateTicketView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[FormView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[Homepage]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[SuccessIframeView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[CreateTicketView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[EditUserSettingsView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[FormView]
+  - - Django.Views.View~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[ChecklistTask]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[ChecklistTemplate]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[Checklist]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[CustomField]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[EmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[EscalationExclusion]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[FollowUpAttachment]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[FollowUp]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[IgnoreEmail]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[KBCategory]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[KBIAttachment]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[KBItem]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[PreSetReply]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[TicketChange]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[admin].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[email].Member[FollowUp]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[email].Member[IgnoreEmail]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[email].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[email].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[ChecklistTemplate]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[Checklist]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[CustomField]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[FollowUp]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[IgnoreEmail]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[KBItem]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[TicketCC]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[TicketCustomFieldValue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[TicketDependency]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[forms].Member[UserSettings]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[create_escalation_exclusions].Member[EscalationExclusion]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[create_escalation_exclusions].Member[Queue]
   - - Django.db.models.Model~Subclass
     - helpdesk
     - Member[management].Member[commands].Member[create_queue_permissions].Member[ContentType]
@@ -12,16 +180,334 @@ extensions:
     - Member[management].Member[commands].Member[create_queue_permissions].Member[Permission]
   - - Django.db.models.Model~Subclass
     - helpdesk
+    - Member[management].Member[commands].Member[create_queue_permissions].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[create_usersettings].Member[UserSettings]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[escalate_tickets].Member[EscalationExclusion]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[escalate_tickets].Member[FollowUp]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[escalate_tickets].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[escalate_tickets].Member[TicketChange]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[management].Member[commands].Member[escalate_tickets].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[ChecklistTask]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[ChecklistTemplate]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[Checklist]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[CustomField]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[EmailTemplate]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[EscalationExclusion]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[FollowUpAttachment]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[FollowUp]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[IgnoreEmail]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[KBCategory]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[KBIAttachment]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[KBItem]
   - - Django.db.models.Model~Subclass
     - helpdesk
     - Member[models].Member[Permission]
   - - Django.db.models.Model~Subclass
     - helpdesk
+    - Member[models].Member[PreSetReply]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[SavedSearch]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[TicketCC]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[TicketChange]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[TicketCustomFieldValue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[TicketDependency]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[models].Member[UserSettings]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[serializers].Member[CustomField]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[serializers].Member[FollowUpAttachment]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[serializers].Member[FollowUp]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[serializers].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
     - Member[serializers].Member[User]
   - - Django.db.models.Model~Subclass
     - helpdesk
+    - Member[templatetags].Member[saved_queries].Member[SavedSearch]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[templatetags].Member[ticket_to_link].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[user].Member[KBCategory]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[user].Member[KBItem]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[user].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[user].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[abstract_views].Member[CustomField]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[abstract_views].Member[KBItem]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[abstract_views].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[api].Member[FollowUpAttachment]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[api].Member[FollowUp]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[api].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[feeds].Member[FollowUp]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[feeds].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[feeds].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[kb].Member[KBCategory]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[kb].Member[KBItem]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[UserSettings]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[ChecklistTask]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[ChecklistTemplate]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[Checklist]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
     - Member[views].Member[staff].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[CustomField]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[FollowUpAttachment]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[FollowUp]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[IgnoreEmail]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[KBItem]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[PreSetReply]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[Queue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[SavedSearch]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[TicketCC]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[TicketChange]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[TicketCustomFieldValue]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[TicketDependency]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[Ticket]
+  - - Django.db.models.Model~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[UserSettings]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[AbstractTicketForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[ChecklistForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[ChecklistTemplateForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[CreateChecklistForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[EditFollowUpForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[EditTicketForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[EmailIgnoreForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[MultipleTicketSelectForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[PublicTicketForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[TicketCCEmailForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[TicketCCForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[TicketCCUserForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[TicketDependencyForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[TicketForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[forms].Member[UserSettingsForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[serializers].Member[TicketForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[ChecklistForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[ChecklistTemplateForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[CreateChecklistForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[EditFollowUpForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[EditTicketForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[EmailIgnoreForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[MultipleTicketSelectForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[TicketCCEmailForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[TicketCCForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[TicketCCUserForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[TicketDependencyForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[TicketForm]
+  - - django.forms.BaseForm~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[UserSettingsForm]
   - - django.http.request.HttpRequest~Subclass
     - helpdesk
     - Member[views].Member[staff].Member[WSGIRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - helpdesk
+    - Member[views].Member[kb].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - helpdesk
+    - Member[views].Member[public].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - helpdesk
+    - Member[views].Member[staff].Member[JsonResponse]
+  - - io.StringIO~Subclass
+    - helpdesk
+    - Member[models].Member[StringIO]
+  - - rest_framework.exceptions.APIException~Subclass
+    - helpdesk
+    - Member[serializers].Member[ValidationError]

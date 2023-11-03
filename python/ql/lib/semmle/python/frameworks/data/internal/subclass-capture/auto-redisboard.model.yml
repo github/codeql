@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.db.models.Model~Subclass
+    - redisboard
+    - Member[admin].Member[RedisServer]
+  - - Django.db.models.Model~Subclass
+    - redisboard
+    - Member[data].Member[RedisServer]
+  - - Django.db.models.Model~Subclass
+    - redisboard
+    - Member[models].Member[RedisServer]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - redisboard
+    - Member[admin].Member[HttpResponseForbidden]
   - - django.http.response.HttpResponse~Subclass
     - redisboard
     - Member[admin].Member[TemplateResponse]
+  - - pickle~Alias
+    - redisboard
+    - Member[data].Member[pickle]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - cltk
+    - Member[tokenizers].Member[lat].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - cltk
+    - Member[tokenizers].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - cltk
+    - Member[utils].Member[file_operations].Member[pickle]

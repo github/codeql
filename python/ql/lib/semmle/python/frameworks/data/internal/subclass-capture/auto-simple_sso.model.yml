@@ -4,6 +4,48 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - simple_sso
+    - Member[sso_client].Member[client].Member[AuthenticateView]
+  - - Django.Views.View~Subclass
+    - simple_sso
+    - Member[sso_client].Member[client].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - simple_sso
+    - Member[sso_client].Member[client].Member[View]
+  - - Django.Views.View~Subclass
+    - simple_sso
+    - Member[sso_server].Member[server].Member[AuthorizeView]
+  - - Django.Views.View~Subclass
+    - simple_sso
+    - Member[sso_server].Member[server].Member[VerificationProvider]
+  - - Django.Views.View~Subclass
+    - simple_sso
+    - Member[sso_server].Member[server].Member[View]
   - - Django.db.models.Model~Subclass
     - simple_sso
     - Member[sso_client].Member[client].Member[User]
+  - - Django.db.models.Model~Subclass
+    - simple_sso
+    - Member[sso_server].Member[models].Member[Consumer]
+  - - Django.db.models.Model~Subclass
+    - simple_sso
+    - Member[sso_server].Member[models].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - simple_sso
+    - Member[sso_server].Member[server].Member[Consumer]
+  - - Django.db.models.Model~Subclass
+    - simple_sso
+    - Member[sso_server].Member[server].Member[Token]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - simple_sso
+    - Member[sso_server].Member[server].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - simple_sso
+    - Member[sso_server].Member[server].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - simple_sso
+    - Member[sso_client].Member[client].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - simple_sso
+    - Member[sso_server].Member[server].Member[HttpResponseRedirect]

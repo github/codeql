@@ -4,6 +4,15 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - tensor2tensor
+    - Member[insights].Member[server].Member[Flask]
+  - - io.StringIO~Subclass
+    - tensor2tensor
+    - Member[data_generators].Member[allen_brain].Member[BytesIO]
   - - io.StringIO~Subclass
     - tensor2tensor
     - Member[data_generators].Member[function_docstring].Member[StringIO]
+  - - pickle~Alias
+    - tensor2tensor
+    - Member[envs].Member[trajectory].Member[pickle]

@@ -7,3 +7,12 @@ extensions:
   - - io.StringIO~Subclass
     - tw2
     - Member[core].Member[command].Member[StringIO]
+  - - markupsafe.Markup~Subclass
+    - tw2
+    - Member[core].Member[resources].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - tw2
+    - Member[core].Member[templating].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - tw2
+    - Member[core].Member[widgets].Member[Markup]

@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - djgeojson
+    - Member[fields].Member[GeoJSONFormField]
+  - - Django.Forms.Field~Subclass
+    - djgeojson
+    - Member[fields].Member[JSONFormField]
+  - - Django.Views.View~Subclass
+    - djgeojson
+    - Member[views].Member[GeoJSONLayerView]
+  - - Django.Views.View~Subclass
+    - djgeojson
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - djgeojson
+    - Member[views].Member[TiledGeoJSONLayerView]
+  - - Django.db.models.Model~Subclass
+    - djgeojson
+    - Member[serializers].Member[Model]
+  - - django.http.response.HttpResponse~Subclass
+    - djgeojson
+    - Member[http].Member[HttpGeoJSONResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - djgeojson
+    - Member[http].Member[HttpJSONResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - djgeojson
+    - Member[http].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - djgeojson
+    - Member[views].Member[HttpGeoJSONResponse]
+  - - io.StringIO~Subclass
+    - djgeojson
+    - Member[serializers].Member[StringIO]

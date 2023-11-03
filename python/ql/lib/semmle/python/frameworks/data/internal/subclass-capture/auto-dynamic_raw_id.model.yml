@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.forms.BaseForm~Subclass
+    - dynamic_raw_id
+    - Member[filters].Member[DynamicRawIDFilterForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - dynamic_raw_id
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - dynamic_raw_id
+    - Member[views].Member[HttpResponseForbidden]

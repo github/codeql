@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - robot
+    - Member[running].Member[outputcapture].Member[StringIO]
+  - - io.StringIO~Subclass
+    - robot
+    - Member[utils].Member[etreewrapper].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - robot
+    - Member[utils].Member[filereader].Member[StringIO]
+  - - io.StringIO~Subclass
+    - robot
+    - Member[variables].Member[evaluation].Member[StringIO]
+  - - lxml.etree~Alias
+    - robot
+    - Member[libraries].Member[XML].Member[lxml_etree]
+  - - xml.etree.ElementTree~Subclass
+    - robot
+    - Member[libdocpkg].Member[xmlbuilder].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - robot
+    - Member[libraries].Member[XML].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - robot
+    - Member[result].Member[resultbuilder].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - robot
+    - Member[utils].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - robot
+    - Member[utils].Member[etreewrapper].Member[ET]

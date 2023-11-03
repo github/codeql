@@ -4,6 +4,27 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - django_auth_adfs
+    - Member[views].Member[OAuth2CallbackView]
+  - - Django.Views.View~Subclass
+    - django_auth_adfs
+    - Member[views].Member[OAuth2LoginForceMFA]
+  - - Django.Views.View~Subclass
+    - django_auth_adfs
+    - Member[views].Member[OAuth2LoginNoSSOView]
+  - - Django.Views.View~Subclass
+    - django_auth_adfs
+    - Member[views].Member[OAuth2LoginView]
+  - - Django.Views.View~Subclass
+    - django_auth_adfs
+    - Member[views].Member[OAuth2LogoutView]
+  - - Django.Views.View~Subclass
+    - django_auth_adfs
+    - Member[views].Member[View]
   - - Django.db.models.Model~Subclass
     - django_auth_adfs
     - Member[backend].Member[Group]
+  - - xml.etree.ElementTree~Subclass
+    - django_auth_adfs
+    - Member[config].Member[ElementTree]

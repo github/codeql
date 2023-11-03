@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_tutorial
+    - Member[polls].Member[admin].Member[Question]
+  - - Django.db.models.Model~Subclass
+    - django_tutorial
+    - Member[polls].Member[models].Member[Choice]
+  - - Django.db.models.Model~Subclass
+    - django_tutorial
+    - Member[polls].Member[models].Member[Question]
+  - - django.http.response.HttpResponse~Subclass
+    - django_tutorial
+    - Member[polls].Member[views].Member[HttpResponse]

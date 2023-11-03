@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - trino
+    - Member[auth].Member[Response]
+  - - sqlalchemy.engine.Connection~Subclass
+    - trino
+    - Member[sqlalchemy].Member[dialect].Member[Connection]
+  - - sqlalchemy.engine.Engine~Subclass
+    - trino
+    - Member[sqlalchemy].Member[dialect].Member[Engine]

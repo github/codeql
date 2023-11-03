@@ -4,6 +4,33 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - django_libs
+    - Member[views].Member[HybridView]
+  - - Django.Views.View~Subclass
+    - django_libs
+    - Member[views].Member[PaginatedCommentAJAXView]
+  - - Django.Views.View~Subclass
+    - django_libs
+    - Member[views].Member[RapidPrototypingView]
+  - - Django.Views.View~Subclass
+    - django_libs
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - django_libs
+    - Member[views].Member[UpdateCookieAJAXView]
+  - - Django.Views.View~Subclass
+    - django_libs
+    - Member[views].Member[UpdateSessionAJAXView]
+  - - Django.Views.View~Subclass
+    - django_libs
+    - Member[views].Member[View]
+  - - Django.Views.View~Subclass
+    - django_libs
+    - Member[views_mixins].Member[DetailViewWithPostAction]
+  - - Django.Views.View~Subclass
+    - django_libs
+    - Member[views_mixins].Member[DetailView]
   - - Django.db.models.Model~Subclass
     - django_libs
     - Member[decorators].Member[User]
@@ -22,3 +49,18 @@ extensions:
   - - Django.db.models.Model~Subclass
     - django_libs
     - Member[views].Member[Comment]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - django_libs
+    - Member[views].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_libs
+    - Member[middleware].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_libs
+    - Member[views_mixins].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - django_libs
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_libs
+    - Member[views_mixins].Member[HttpResponse]

@@ -4,6 +4,30 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - categories
+    - Member[admin].Member[NullTreeNodeChoiceField]
+  - - Django.Views.View~Subclass
+    - categories
+    - Member[urls].Member[ListView]
+  - - Django.Views.View~Subclass
+    - categories
+    - Member[views].Member[CategoryDetailView]
+  - - Django.Views.View~Subclass
+    - categories
+    - Member[views].Member[CategoryRelatedDetail]
+  - - Django.Views.View~Subclass
+    - categories
+    - Member[views].Member[CategoryRelatedList]
+  - - Django.Views.View~Subclass
+    - categories
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - categories
+    - Member[views].Member[ListView]
+  - - Django.db.models.Model~Subclass
+    - categories
+    - Member[admin].Member[CategoryRelation]
   - - Django.db.models.Model~Subclass
     - categories
     - Member[admin].Member[Category]
@@ -24,6 +48,9 @@ extensions:
     - Member[models].Member[CategoryBase]
   - - Django.db.models.Model~Subclass
     - categories
+    - Member[models].Member[CategoryRelation]
+  - - Django.db.models.Model~Subclass
+    - categories
     - Member[models].Member[Category]
   - - Django.db.models.Model~Subclass
     - categories
@@ -40,3 +67,18 @@ extensions:
   - - Django.db.models.Model~Subclass
     - categories
     - Member[views].Member[Category]
+  - - django.forms.BaseForm~Subclass
+    - categories
+    - Member[admin].Member[CategoryAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - categories
+    - Member[admin].Member[CategoryBaseAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - categories
+    - Member[base].Member[CategoryBaseAdminForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - categories
+    - Member[editor].Member[tree_editor].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - categories
+    - Member[views].Member[HttpResponse]

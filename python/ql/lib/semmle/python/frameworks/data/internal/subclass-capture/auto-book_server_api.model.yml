@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - fastapi.APIRouter~Subclass
+    - book_server_api
+    - Member[routers].Member[assessment].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - book_server_api
+    - Member[routers].Member[auth].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - book_server_api
+    - Member[routers].Member[books].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - book_server_api
+    - Member[routers].Member[coach].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - book_server_api
+    - Member[routers].Member[course].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - book_server_api
+    - Member[routers].Member[discuss].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - book_server_api
+    - Member[routers].Member[rslogging].Member[APIRouter]
+  - - fastapi.APIRouter~Subclass
+    - book_server_api
+    - Member[routers].Member[rsproxy].Member[APIRouter]
+  - - io.StringIO~Subclass
+    - book_server_api
+    - Member[routers].Member[rsproxy].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - book_server_api
+    - Member[routers].Member[assessment].Member[ExamRequest]
+  - - pydantic.BaseModel~Subclass
+    - book_server_api
+    - Member[routers].Member[assessment].Member[HistoryRequest]
+  - - starlette.websockets.WebSocket~Subclass
+    - book_server_api
+    - Member[routers].Member[discuss].Member[WebSocket]

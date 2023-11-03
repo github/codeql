@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - recommenders
+    - Member[datasets].Member[amazon_reviews].Member[cPickle]
+  - - pickle~Alias
+    - recommenders
+    - Member[models].Member[deeprec].Member[deeprec_utils].Member[pkl]

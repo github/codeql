@@ -4,9 +4,84 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - panel
+    - Member[chat].Member[feed].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - panel
+    - Member[chat].Member[message].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - panel
+    - Member[io].Member[mime_render].Member[WriteCallbackStream]
+  - - io.StringIO~Subclass
+    - panel
+    - Member[io].Member[pyodide].Member[WriteCallbackStream]
+  - - io.StringIO~Subclass
+    - panel
+    - Member[pane].Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - panel
+    - Member[pane].Member[media].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - panel
+    - Member[pane].Member[plot].Member[BytesIO]
+  - - markupsafe.Markup~Subclass
+    - panel
+    - Member[io].Member[resources].Member[Markup]
+  - - pickle~Alias
+    - panel
+    - Member[io].Member[cache].Member[pickle]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[Auth0Handler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[AzureAdLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[AzureAdV2LoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[BasicLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[BitbucketLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[CodeChallengeLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[GenericLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[GitLabLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[GithubLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[GoogleLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[LogoutHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[OAuthLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[OktaLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[PasswordLoginHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[auth].Member[RequestHandler]
   - - tornado.web.RequestHandler~Subclass
     - panel
     - Member[auth].Member[WebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[command].Member[serve].Member[LivenessHandler]
   - - tornado.web.RequestHandler~Subclass
     - panel
     - Member[io].Member[jupyter_executor].Member[PanelExecutor]
@@ -27,6 +102,15 @@ extensions:
     - Member[io].Member[jupyter_server_extension].Member[WSHandler]
   - - tornado.web.RequestHandler~Subclass
     - panel
+    - Member[io].Member[liveness].Member[LivenessHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[rest].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[rest].Member[ParamHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
     - Member[io].Member[server].Member[AutoloadJsHandler]
   - - tornado.web.RequestHandler~Subclass
     - panel
@@ -40,6 +124,15 @@ extensions:
   - - tornado.web.RequestHandler~Subclass
     - panel
     - Member[io].Member[server].Member[DocHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[server].Member[LivenessHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[server].Member[ProxyFallbackHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - panel
+    - Member[io].Member[server].Member[RequestHandler]
   - - tornado.web.RequestHandler~Subclass
     - panel
     - Member[io].Member[server].Member[RootHandler]

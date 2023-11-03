@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - benchmark
+    - Member[libs].Member[pydantic_v2].Member[common].Member[IssueLabel]
+  - - pydantic.BaseModel~Subclass
+    - benchmark
+    - Member[libs].Member[pydantic_v2].Member[common].Member[Issue]
+  - - pydantic.BaseModel~Subclass
+    - benchmark
+    - Member[libs].Member[pydantic_v2].Member[common].Member[Milestone]
+  - - pydantic.BaseModel~Subclass
+    - benchmark
+    - Member[libs].Member[pydantic_v2].Member[common].Member[Reactions]
+  - - pydantic.BaseModel~Subclass
+    - benchmark
+    - Member[libs].Member[pydantic_v2].Member[common].Member[User]

@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - jalali_date
+    - Member[admin].Member[JalaliDateField]
+  - - Django.Forms.Field~Subclass
+    - jalali_date
+    - Member[admin].Member[SplitJalaliDateTimeField]
+  - - Django.Forms.Field~Subclass
+    - jalali_date
+    - Member[fields].Member[DateField]
+  - - Django.Forms.Field~Subclass
+    - jalali_date
+    - Member[fields].Member[DateTimeField]
+  - - Django.Forms.Field~Subclass
+    - jalali_date
+    - Member[fields].Member[JalaliDateField]
+  - - Django.Forms.Field~Subclass
+    - jalali_date
+    - Member[fields].Member[JalaliDateTimeField]
+  - - Django.Forms.Field~Subclass
+    - jalali_date
+    - Member[fields].Member[SplitDateTimeField]
+  - - Django.Forms.Field~Subclass
+    - jalali_date
+    - Member[fields].Member[SplitJalaliDateTimeField]
+  - - Django.Forms.Field~Subclass
+    - jalali_date
+    - Member[fields].Member[TimeField]

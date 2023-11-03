@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pyexcel_io
+    - Member[_compact].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyexcel_io
+    - Member[_compact].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyexcel_io
+    - Member[manager].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyexcel_io
+    - Member[manager].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyexcel_io
+    - Member[readers].Member[csvz].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyexcel_io
+    - Member[readers].Member[csvz].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pyexcel_io
+    - Member[writers].Member[csvz_sheet].Member[StringIO]

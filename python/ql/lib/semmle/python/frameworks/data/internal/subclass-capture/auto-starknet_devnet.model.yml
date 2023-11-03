@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - starknet_devnet
+    - Member[blueprints].Member[base].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - starknet_devnet
+    - Member[blueprints].Member[feeder_gateway].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - starknet_devnet
+    - Member[blueprints].Member[gateway].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - starknet_devnet
+    - Member[blueprints].Member[postman].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - starknet_devnet
+    - Member[blueprints].Member[rpc].Member[routes].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - starknet_devnet
+    - Member[server].Member[Flask]
+  - - flask.Response~Subclass
+    - starknet_devnet
+    - Member[blueprints].Member[base].Member[Response]
+  - - flask.Response~Subclass
+    - starknet_devnet
+    - Member[blueprints].Member[feeder_gateway].Member[Response]

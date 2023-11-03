@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - djangocms_snippet
+    - Member[admin].Member[Snippet]
+  - - Django.db.models.Model~Subclass
+    - djangocms_snippet
+    - Member[cms_plugins].Member[SnippetPtr]
+  - - Django.db.models.Model~Subclass
+    - djangocms_snippet
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_snippet
+    - Member[models].Member[SnippetPtr]
+  - - Django.db.models.Model~Subclass
+    - djangocms_snippet
+    - Member[models].Member[Snippet]
+  - - Django.db.models.Model~Subclass
+    - djangocms_snippet
+    - Member[templatetags].Member[snippet_tags].Member[Snippet]

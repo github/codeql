@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - gftools
+    - Member[packager].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - gftools
+    - Member[packager].Member[StringIO]
+  - - io.StringIO~Subclass
+    - gftools
+    - Member[scripts].Member[check_sandbox_family].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - gftools
+    - Member[scripts].Member[fix_vertical_metrics].Member[StringIO]
+  - - io.StringIO~Subclass
+    - gftools
+    - Member[utils].Member[BytesIO]
+  - - lxml.etree~Alias
+    - gftools
+    - Member[scripts].Member[lang].Member[etree]
+  - - lxml.etree~Alias
+    - gftools
+    - Member[scripts].Member[lang_sample_text].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - gftools
+    - Member[util].Member[glyphdata].Member[etree]

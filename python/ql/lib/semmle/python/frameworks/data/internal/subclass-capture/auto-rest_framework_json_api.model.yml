@@ -4,6 +4,57 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - rest_framework_json_api
+    - Member[views].Member[ModelViewSet]
+  - - Django.Views.View~Subclass
+    - rest_framework_json_api
+    - Member[views].Member[ReadOnlyModelViewSet]
+  - - Django.Views.View~Subclass
+    - rest_framework_json_api
+    - Member[views].Member[RelationshipView]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_json_api
+    - Member[views].Member[Model]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework_json_api
+    - Member[pagination].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework_json_api
+    - Member[views].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[django_filters].Member[backends].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[exceptions].Member[Conflict]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[filters].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[parsers].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[relations].Member[Conflict]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[serializers].Member[Conflict]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[serializers].Member[ParseError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[utils].Member[APIException]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[views].Member[Conflict]
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_json_api
+    - Member[views].Member[NotFound]
   - - rest_framework.response.Response~Subclass
     - rest_framework_json_api
     - Member[pagination].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_framework_json_api
+    - Member[views].Member[Response]

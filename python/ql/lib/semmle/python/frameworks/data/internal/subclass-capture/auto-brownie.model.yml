@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - brownie
+    - Member[_cli].Member[console].Member[StringIO]
+  - - io.StringIO~Subclass
+    - brownie
+    - Member[project].Member[main].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - brownie
+    - Member[_cli].Member[analyze].Member[AnalysisSubmissionRequest]
+  - - pydantic.BaseModel~Subclass
+    - brownie
+    - Member[_cli].Member[analyze].Member[AnalysisSubmissionResponse]
+  - - pydantic.BaseModel~Subclass
+    - brownie
+    - Member[_cli].Member[analyze].Member[DetectedIssuesResponse]

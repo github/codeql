@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - config_models
+    - Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - config_models
+    - Member[views].Member[ConfigurationModelCurrentAPIView]
+  - - Django.Views.View~Subclass
+    - config_models
+    - Member[views].Member[CreateAPIView]
+  - - Django.Views.View~Subclass
+    - config_models
+    - Member[views].Member[RetrieveAPIView]
+  - - Django.db.models.Model~Subclass
+    - config_models
+    - Member[models].Member[ConfigurationModel]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - config_models
+    - Member[decorators].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - config_models
+    - Member[admin].Member[HttpResponseRedirect]

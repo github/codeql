@@ -4,9 +4,54 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - sitetree
+    - Member[admin].Member[TreeItemChoiceField]
+  - - Django.Forms.Field~Subclass
+    - sitetree
+    - Member[fields].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - sitetree
+    - Member[fields].Member[TreeItemChoiceField]
+  - - Django.Forms.Field~Subclass
+    - sitetree
+    - Member[forms].Member[TreeItemChoiceField]
+  - - Django.Forms.Field~Subclass
+    - sitetree
+    - Member[toolbox].Member[TreeItemChoiceField]
   - - Django.db.models.Model~Subclass
     - sitetree
     - Member[models].Member[Permission]
   - - Django.db.models.Model~Subclass
     - sitetree
+    - Member[models].Member[TreeBase]
+  - - Django.db.models.Model~Subclass
+    - sitetree
+    - Member[models].Member[TreeItemBase]
+  - - Django.db.models.Model~Subclass
+    - sitetree
+    - Member[models].Member[TreeItem]
+  - - Django.db.models.Model~Subclass
+    - sitetree
+    - Member[models].Member[Tree]
+  - - Django.db.models.Model~Subclass
+    - sitetree
     - Member[utils].Member[Permission]
+  - - django.forms.BaseForm~Subclass
+    - sitetree
+    - Member[admin].Member[TreeItemForm]
+  - - django.forms.BaseForm~Subclass
+    - sitetree
+    - Member[forms].Member[TreeItemForm]
+  - - django.forms.BaseForm~Subclass
+    - sitetree
+    - Member[toolbox].Member[TreeItemForm]
+  - - django.http.request.HttpRequest~Subclass
+    - sitetree
+    - Member[admin].Member[HttpRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - sitetree
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - sitetree
+    - Member[admin].Member[HttpResponse]

@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[CurrentWeather]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[DailyForecastUnits]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[DailyForecast]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[Forecast]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[GeocodingResult]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[Geocoding]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[HourlyForecastUnits]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[HourlyForecast]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[models].Member[CurrentWeather]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[models].Member[DailyForecastUnits]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[models].Member[DailyForecast]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[models].Member[Forecast]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[models].Member[GeocodingResult]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[models].Member[Geocoding]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[models].Member[HourlyForecastUnits]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[models].Member[HourlyForecast]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[open_meteo].Member[Forecast]
+  - - pydantic.BaseModel~Subclass
+    - open_meteo
+    - Member[open_meteo].Member[Geocoding]

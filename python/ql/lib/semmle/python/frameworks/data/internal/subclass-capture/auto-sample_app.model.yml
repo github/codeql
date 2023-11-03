@@ -7,3 +7,21 @@ extensions:
   - - Django.Views.View~Subclass
     - sample_app
     - Member[urls].Member[ActorsView]
+  - - Django.db.models.Model~Subclass
+    - sample_app
+    - Member[admin].Member[ArrayModel]
+  - - Django.db.models.Model~Subclass
+    - sample_app
+    - Member[admin].Member[Company]
+  - - Django.db.models.Model~Subclass
+    - sample_app
+    - Member[models].Member[ArrayModel]
+  - - Django.db.models.Model~Subclass
+    - sample_app
+    - Member[models].Member[Company]
+  - - flask.Blueprint~Subclass
+    - sample_app
+    - Member[frontend].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - sample_app
+    - Member[Flask]

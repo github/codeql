@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - notebook
+    - Member[api].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - notebook
+    - Member[frontend].Member[client].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - notebook
+    - Member[Flask]

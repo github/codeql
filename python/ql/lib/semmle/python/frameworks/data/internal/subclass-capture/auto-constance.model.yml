@@ -4,6 +4,30 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.db.models.Model~Subclass
+    - constance
+    - Member[management].Member[commands].Member[constance].Member[Constance]
+  - - Django.db.models.Model~Subclass
+    - constance
+    - Member[models].Member[Constance]
+  - - django.forms.BaseForm~Subclass
+    - constance
+    - Member[admin].Member[ConstanceForm]
+  - - django.forms.BaseForm~Subclass
+    - constance
+    - Member[forms].Member[ConstanceForm]
+  - - django.forms.BaseForm~Subclass
+    - constance
+    - Member[management].Member[commands].Member[constance].Member[ConstanceForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - constance
+    - Member[admin].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponse~Subclass
     - constance
     - Member[admin].Member[TemplateResponse]
+  - - pickle.loads~Alias
+    - constance
+    - Member[backends].Member[redisd].Member[loads]
+  - - pickle~Alias
+    - constance
+    - Member[settings].Member[pickle]

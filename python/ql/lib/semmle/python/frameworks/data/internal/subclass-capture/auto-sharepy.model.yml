@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - sharepy
+    - Member[session].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - sharepy
+    - Member[auth].Member[adfs].Member[et]
+  - - xml.etree.ElementTree~Subclass
+    - sharepy
+    - Member[auth].Member[detect].Member[et]
+  - - xml.etree.ElementTree~Subclass
+    - sharepy
+    - Member[auth].Member[spol].Member[et]

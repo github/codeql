@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - petl
+    - Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - petl
+    - Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - petl
+    - Member[io].Member[sources].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - petl
+    - Member[io].Member[sources].Member[StringIO]
+  - - io.StringIO~Subclass
+    - petl
+    - Member[io].Member[xls].Member[BytesIO]
+  - - lxml.etree~Alias
+    - petl
+    - Member[io].Member[xml].Member[etree]
+  - - pickle~Alias
+    - petl
+    - Member[compat].Member[pickle]
+  - - pickle~Alias
+    - petl
+    - Member[io].Member[json].Member[pickle]
+  - - pickle~Alias
+    - petl
+    - Member[io].Member[pickle].Member[pickle]
+  - - pickle~Alias
+    - petl
+    - Member[transform].Member[sorts].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - petl
+    - Member[io].Member[xml].Member[etree]

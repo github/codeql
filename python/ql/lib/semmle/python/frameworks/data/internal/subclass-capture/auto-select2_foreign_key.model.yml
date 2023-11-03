@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - select2_foreign_key
+    - Member[admin].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_foreign_key
+    - Member[forms].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_foreign_key
+    - Member[models].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_foreign_key
+    - Member[urls].Member[TModel]
+  - - django.forms.BaseForm~Subclass
+    - select2_foreign_key
+    - Member[admin].Member[TForm]
+  - - django.forms.BaseForm~Subclass
+    - select2_foreign_key
+    - Member[forms].Member[TForm]

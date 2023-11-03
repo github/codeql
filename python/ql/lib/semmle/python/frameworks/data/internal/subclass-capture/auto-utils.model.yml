@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - utils
+    - Member[dataset_manifest].Member[core].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - utils
+    - Member[dataset_manifest].Member[core].Member[StringIO]
+  - - pickle~Alias
+    - utils
+    - Member[pickle]
   - - pickle~Alias
     - utils
     - Member[plots].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - utils
+    - Member[Dialogue]

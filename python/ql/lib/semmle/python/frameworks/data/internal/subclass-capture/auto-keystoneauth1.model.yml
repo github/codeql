@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - keystoneauth1
+    - Member[extras].Member[_saml2].Member[v3].Member[adfs].Member[etree]
+  - - lxml.etree~Alias
+    - keystoneauth1
+    - Member[extras].Member[_saml2].Member[v3].Member[base].Member[etree]
+  - - lxml.etree~Alias
+    - keystoneauth1
+    - Member[extras].Member[_saml2].Member[v3].Member[saml2].Member[etree]

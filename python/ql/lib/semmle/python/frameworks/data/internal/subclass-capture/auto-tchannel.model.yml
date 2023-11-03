@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - tchannel
+    - Member[frame].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tchannel
+    - Member[io].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tchannel
+    - Member[tornado].Member[connection].Member[BytesIO]

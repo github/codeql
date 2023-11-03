@@ -4,9 +4,30 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - reactpy
+    - Member[backend].Member[flask].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - reactpy
+    - Member[backend].Member[flask].Member[Flask]
+  - - lxml.etree~Alias
+    - reactpy
+    - Member[utils].Member[etree]
+  - - starlette.websockets.WebSocket~Subclass
+    - reactpy
+    - Member[backend].Member[starlette].Member[WebSocket]
+  - - tornado.web.Application~Subclass
+    - reactpy
+    - Member[backend].Member[tornado].Member[Application]
+  - - tornado.web.RequestHandler~Subclass
+    - reactpy
+    - Member[backend].Member[tornado].Member[IndexHandler]
   - - tornado.web.RequestHandler~Subclass
     - reactpy
     - Member[backend].Member[tornado].Member[ModelStreamHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - reactpy
+    - Member[backend].Member[tornado].Member[RequestHandler]
   - - tornado.web.RequestHandler~Subclass
     - reactpy
     - Member[backend].Member[tornado].Member[WebSocketHandler]

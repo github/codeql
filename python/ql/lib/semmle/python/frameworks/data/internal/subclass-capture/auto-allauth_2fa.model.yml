@@ -4,6 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - allauth_2fa
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - allauth_2fa
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - allauth_2fa
+    - Member[views].Member[TwoFactorAuthenticate]
+  - - Django.Views.View~Subclass
+    - allauth_2fa
+    - Member[views].Member[TwoFactorBackupTokens]
+  - - Django.Views.View~Subclass
+    - allauth_2fa
+    - Member[views].Member[TwoFactorRemove]
+  - - Django.Views.View~Subclass
+    - allauth_2fa
+    - Member[views].Member[TwoFactorSetup]
   - - Django.db.models.Model~Subclass
     - allauth_2fa
     - Member[forms].Member[TOTPDevice]
@@ -16,3 +34,51 @@ extensions:
   - - Django.db.models.Model~Subclass
     - allauth_2fa
     - Member[views].Member[TOTPDevice]
+  - - django.forms.BaseForm~Subclass
+    - allauth_2fa
+    - Member[forms].Member[TOTPAuthenticateForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth_2fa
+    - Member[forms].Member[TOTPDeviceForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth_2fa
+    - Member[forms].Member[TOTPDeviceRemoveForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth_2fa
+    - Member[views].Member[TOTPAuthenticateForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth_2fa
+    - Member[views].Member[TOTPDeviceForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth_2fa
+    - Member[views].Member[TOTPDeviceRemoveForm]
+  - - django.http.request.HttpRequest~Subclass
+    - allauth_2fa
+    - Member[adapter].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - allauth_2fa
+    - Member[middleware].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - allauth_2fa
+    - Member[mixins].Member[HttpRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth_2fa
+    - Member[adapter].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth_2fa
+    - Member[mixins].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth_2fa
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - allauth_2fa
+    - Member[adapter].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - allauth_2fa
+    - Member[middleware].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - allauth_2fa
+    - Member[mixins].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - allauth_2fa
+    - Member[utils].Member[BytesIO]

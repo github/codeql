@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - snowpenguin
+    - Member[django].Member[recaptcha2].Member[fields].Member[ReCaptchaField]
+  - - Django.Forms.Field~Subclass
+    - snowpenguin
+    - Member[django].Member[recaptcha3].Member[fields].Member[ReCaptchaField]

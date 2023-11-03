@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - errbot
+    - Member[core_plugins].Member[Flask]
+  - - flask.Flask~Subclass
+    - errbot
+    - Member[core_plugins].Member[wsview].Member[Flask]
+  - - flask.View~Subclass
+    - errbot
+    - Member[core_plugins].Member[wsview].Member[View]
+  - - flask.View~Subclass
+    - errbot
+    - Member[core_plugins].Member[wsview].Member[WebView]

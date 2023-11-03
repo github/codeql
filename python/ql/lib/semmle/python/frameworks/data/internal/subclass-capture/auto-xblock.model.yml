@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponse~Subclass
+    - xblock
+    - Member[django].Member[request].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - xblock
+    - Member[runtime].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - xblock
+    - Member[runtime].Member[StringIO]
+  - - lxml.etree~Alias
+    - xblock
+    - Member[mixins].Member[etree]
+  - - lxml.etree~Alias
+    - xblock
+    - Member[runtime].Member[etree]

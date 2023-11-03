@@ -1,0 +1,243 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_divest_liquidity].Member[DivestLiquidityParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_divest_liquidity].Member[Fa12TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_divest_liquidity].Member[QuipuFa12Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_divest_liquidity].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_invest_liquidity].Member[Fa12TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_invest_liquidity].Member[InvestLiquidityParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_invest_liquidity].Member[QuipuFa12Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_invest_liquidity].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_origination].Member[QuipuFa12Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_tez_to_token].Member[Fa12TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_tez_to_token].Member[QuipuFa12Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_tez_to_token].Member[TezToTokenPaymentParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_tez_to_token].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_token_to_tez].Member[Fa12TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_token_to_tez].Member[QuipuFa12Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_token_to_tez].Member[TokenToTezPaymentParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_token_to_tez].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_transfer].Member[QuipuFa12Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_withdraw_profit].Member[QuipuFa12Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa12_withdraw_profit].Member[WithdrawProfitParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_divest_liquidity].Member[DivestLiquidityParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_divest_liquidity].Member[Fa2TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_divest_liquidity].Member[QuipuFa2Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_divest_liquidity].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_invest_liquidity].Member[Fa2TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_invest_liquidity].Member[InvestLiquidityParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_invest_liquidity].Member[QuipuFa2Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_invest_liquidity].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_origination].Member[QuipuFa2Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_tez_to_token].Member[Fa2TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_tez_to_token].Member[QuipuFa2Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_tez_to_token].Member[TezToTokenPaymentParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_tez_to_token].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_token_to_tez].Member[Fa2TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_token_to_tez].Member[QuipuFa2Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_token_to_tez].Member[TokenToTezPaymentParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_token_to_tez].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_transfer].Member[QuipuFa2Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_withdraw_profit].Member[QuipuFa2Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[handlers].Member[on_fa2_withdraw_profit].Member[WithdrawProfitParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa12_token].Member[tezos_parameters].Member[transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa12_token].Member[tezos_storage].Member[Balances]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa12_token].Member[tezos_storage].Member[Fa12TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa12_token].Member[tezos_storage].Member[TokenMetadata]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa2_token].Member[tezos_parameters].Member[transfer].Member[TransferParameterItem]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa2_token].Member[tezos_parameters].Member[transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa2_token].Member[tezos_parameters].Member[transfer].Member[Tx]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa2_token].Member[tezos_storage].Member[Fa2TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa2_token].Member[tezos_storage].Member[Key1]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa2_token].Member[tezos_storage].Member[Key]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa2_token].Member[tezos_storage].Member[LedgerItem]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa2_token].Member[tezos_storage].Member[Operator]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[fa2_token].Member[tezos_storage].Member[TokenMetadata]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_parameters].Member[divest_liquidity].Member[DivestLiquidityParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_parameters].Member[invest_liquidity].Member[InvestLiquidityParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_parameters].Member[tez_to_token_payment].Member[TezToTokenPaymentParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_parameters].Member[token_to_tez_payment].Member[TokenToTezPaymentParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_parameters].Member[transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_parameters].Member[withdraw_profit].Member[WithdrawProfitParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_storage].Member[Ledger]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_storage].Member[QuipuFa12Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_storage].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_storage].Member[UserRewards]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa12].Member[tezos_storage].Member[Voters]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_parameters].Member[divest_liquidity].Member[DivestLiquidityParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_parameters].Member[invest_liquidity].Member[InvestLiquidityParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_parameters].Member[tez_to_token_payment].Member[TezToTokenPaymentParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_parameters].Member[token_to_tez_payment].Member[TokenToTezPaymentParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_parameters].Member[transfer].Member[TransferParameterItem]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_parameters].Member[transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_parameters].Member[transfer].Member[Tx]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_parameters].Member[withdraw_profit].Member[WithdrawProfitParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_storage].Member[Ledger]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_storage].Member[QuipuFa2Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_storage].Member[Storage]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_storage].Member[UserRewards]
+  - - pydantic.BaseModel~Subclass
+    - demo_dex
+    - Member[types].Member[quipu_fa2].Member[tezos_storage].Member[Voters]

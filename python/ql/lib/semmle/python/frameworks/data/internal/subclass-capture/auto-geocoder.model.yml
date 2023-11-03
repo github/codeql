@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - geocoder
+    - Member[base].Member[StringIO]
+  - - io.StringIO~Subclass
+    - geocoder
+    - Member[bing_batch].Member[csv_io]
+  - - io.StringIO~Subclass
+    - geocoder
+    - Member[bing_batch_forward].Member[csv_io]
+  - - io.StringIO~Subclass
+    - geocoder
+    - Member[bing_batch_reverse].Member[csv_io]
+  - - io.StringIO~Subclass
+    - geocoder
+    - Member[uscensus_batch].Member[csv_io]

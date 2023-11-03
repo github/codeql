@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - sphinx_immaterial
+    - Member[custom_admonitions].Member[CustomAdmonitionConfig]
+  - - xml.etree.ElementTree~Subclass
+    - sphinx_immaterial
+    - Member[apidoc].Member[cpp].Member[cppreference].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - sphinx_immaterial
+    - Member[graphviz].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - sphinx_immaterial
+    - Member[postprocess_html].Member[ElementTree]

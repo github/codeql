@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - psrp
+    - Member[_connection].Member[out_of_proc].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - psrp
+    - Member[_connection].Member[wsman].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - psrp
+    - Member[_winrs].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - psrp
+    - Member[_wsman].Member[ElementTree]

@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pydantic_settings
+    - Member[load].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_settings
+    - Member[BaseSettingsModel]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_settings
+    - Member[base].Member[BaseSettingsModel]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_settings
+    - Member[load].Member[BaseSettingsModel]

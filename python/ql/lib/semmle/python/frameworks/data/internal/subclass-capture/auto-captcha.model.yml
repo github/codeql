@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - captcha
+    - Member[fields].Member[CaptchaField]
+  - - Django.Forms.Field~Subclass
+    - captcha
+    - Member[fields].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - captcha
+    - Member[fields].Member[MultiValueField]
+  - - Django.Forms.Field~Subclass
+    - captcha
+    - Member[fields].Member[ReCaptchaField]
+  - - Django.db.models.Model~Subclass
+    - captcha
+    - Member[fields].Member[CaptchaStore]
+  - - Django.db.models.Model~Subclass
+    - captcha
+    - Member[management].Member[commands].Member[captcha_create_pool].Member[CaptchaStore]
+  - - Django.db.models.Model~Subclass
+    - captcha
+    - Member[models].Member[CaptchaStore]
+  - - Django.db.models.Model~Subclass
+    - captcha
+    - Member[views].Member[CaptchaStore]
+  - - django.http.response.FileResponse~Subclass
+    - captcha
+    - Member[views].Member[RangedFileResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - captcha
+    - Member[views].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - captcha
+    - Member[views].Member[BytesIO]

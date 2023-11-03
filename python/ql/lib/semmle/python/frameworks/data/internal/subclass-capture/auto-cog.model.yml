@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - cog
+    - Member[predictor].Member[BaseInput]
+  - - pydantic.BaseModel~Subclass
+    - cog
+    - Member[schema].Member[PredictionBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - cog
+    - Member[schema].Member[PredictionRequest]
+  - - pydantic.BaseModel~Subclass
+    - cog
+    - Member[schema].Member[PredictionResponse]

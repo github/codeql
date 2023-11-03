@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[BoardConfig]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[CameraInfo]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[CameraSettings]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[DeviceConfig]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[EepromData]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[Extrinsics]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[Options]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[RotationType]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[StereoConfig]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[TVCalibrationSettings]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[TranslationType]
+  - - pydantic.BaseModel~Subclass
+    - depthai_boards
+    - Member[boards_reader].Member[VariantConfig]

@@ -1,0 +1,159 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - alibi_detect
+    - Member[datasets].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - alibi_detect
+    - Member[utils].Member[fetching].Member[fetching].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - alibi_detect
+    - Member[utils].Member[perturbation].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[CVMDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[CVMDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[CVMDriftOnlineConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[CVMDriftOnlineConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[ChiSquareDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[ChiSquareDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[ClassifierDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[ClassifierDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[ClassifierUncertaintyDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[ClassifierUncertaintyDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[ContextMMDDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[ContextMMDDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[CustomBaseModelWithKwargs]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[CustomBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[DeepKernelConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[DetectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[DriftDetectorConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[DriftDetectorConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[EmbeddingConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[FETDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[FETDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[FETDriftOnlineConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[FETDriftOnlineConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[KSDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[KSDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[KernelConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[LSDDDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[LSDDDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[LSDDDriftOnlineConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[LSDDDriftOnlineConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[LearnedKernelDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[LearnedKernelDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[MMDDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[MMDDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[MMDDriftOnlineConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[MMDDriftOnlineConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[MetaData]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[ModelConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[OptimizerConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[PreprocessConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[RegressorUncertaintyDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[RegressorUncertaintyDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[SpotTheDiffDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[SpotTheDiffDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[TabularDriftConfigResolved]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[TabularDriftConfig]
+  - - pydantic.BaseModel~Subclass
+    - alibi_detect
+    - Member[saving].Member[schemas].Member[TokenizerConfig]
+  - - xml.etree.ElementTree~Subclass
+    - alibi_detect
+    - Member[datasets].Member[ElementTree]

@@ -7,24 +7,243 @@ extensions:
   - - Django.Views.View~Subclass
     - newsletter
     - Member[admin].Member[JavaScriptCatalog]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[urls].Member[ActionTemplateView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[urls].Member[NewsletterDetailView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[urls].Member[NewsletterListView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[urls].Member[SubmissionArchiveDetailView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[urls].Member[SubmissionArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[urls].Member[SubscribeRequestView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[urls].Member[UnsubscribeRequestView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[urls].Member[UpdateRequestView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[urls].Member[UpdateSubscriptionView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[ActionFormView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[ActionRequestView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[ActionTemplateView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[ActionUserView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[ArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[DateDetailView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[NewsletterDetailView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[NewsletterListView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[SubmissionArchiveDetailView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[SubmissionArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[SubscribeRequestView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[SubscribeUserView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[UnsubscribeRequestView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[UnsubscribeUserView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[UpdateRequestView]
+  - - Django.Views.View~Subclass
+    - newsletter
+    - Member[views].Member[UpdateSubscriptionView]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[addressimport].Member[parsers].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin].Member[Newsletter]
   - - Django.db.models.Model~Subclass
     - newsletter
     - Member[admin].Member[Site]
   - - Django.db.models.Model~Subclass
     - newsletter
+    - Member[admin].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin_forms].Member[Newsletter]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin_forms].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin_forms].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[admin_utils].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[forms].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[management].Member[commands].Member[submit_newsletter].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[models].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[models].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[models].Member[Message]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[models].Member[Newsletter]
+  - - Django.db.models.Model~Subclass
+    - newsletter
     - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[models].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[models].Member[Subscription]
   - - Django.db.models.Model~Subclass
     - newsletter
     - Member[utils].Member[Site]
   - - Django.db.models.Model~Subclass
     - newsletter
+    - Member[views].Member[Newsletter]
+  - - Django.db.models.Model~Subclass
+    - newsletter
     - Member[views].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[views].Member[Submission]
+  - - Django.db.models.Model~Subclass
+    - newsletter
+    - Member[views].Member[Subscription]
+  - - django.db.models.FileField~Subclass
+    - newsletter
+    - Member[fields].Member[ImageField]
   - - django.db.models.FileField~Subclass
     - newsletter
     - Member[fields].Member[ParentClass]
   - - django.db.models.FileField~Subclass
     - newsletter
     - Member[fields].Member[ThumbnailerImageField]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[admin].Member[ConfirmForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[admin].Member[ImportForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[admin].Member[SubmissionAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[admin].Member[SubscriptionAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[admin_forms].Member[ConfirmForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[admin_forms].Member[ImportForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[admin_forms].Member[SubmissionAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[admin_forms].Member[SubscriptionAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[forms].Member[NewsletterForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[forms].Member[SubscribeRequestForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[forms].Member[UnsubscribeRequestForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[forms].Member[UpdateForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[forms].Member[UpdateRequestForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[forms].Member[UserUpdateForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[views].Member[SubscribeRequestForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[views].Member[UnsubscribeRequestForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[views].Member[UpdateForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[views].Member[UpdateRequestForm]
+  - - django.forms.BaseForm~Subclass
+    - newsletter
+    - Member[views].Member[UserUpdateForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - newsletter
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - newsletter
+    - Member[admin].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - newsletter
     - Member[views].Member[SimpleTemplateResponse]

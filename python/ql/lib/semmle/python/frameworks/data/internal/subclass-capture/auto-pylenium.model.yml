@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - pylenium
+    - Member[driver].Member[Logger]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[config].Member[DriverConfig]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[config].Member[LoggingConfig]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[config].Member[PyleniumConfig]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[config].Member[ViewportConfig]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[driver].Member[PyleniumConfig]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[performance].Member[NavigationTiming]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[performance].Member[PaintTiming]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[performance].Member[ResourceTiming]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[performance].Member[WebPerformance]
+  - - pydantic.BaseModel~Subclass
+    - pylenium
+    - Member[webdriver_factory].Member[PyleniumConfig]

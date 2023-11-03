@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - spectree
+    - Member[plugins].Member[flask_plugin].Member[Blueprint]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[ExternalDocs]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[SecuritySchemeData]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[config].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[config].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[config].Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[config].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[models].Member[ExternalDocs]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[models].Member[SecuritySchemeData]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[models].Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[models].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[models].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[models].Member[ValidationErrorElement]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[models].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[plugins].Member[starlette_plugin].Member[_PydanticResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[spec].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - spectree
+    - Member[spec].Member[ValidationError]

@@ -1,0 +1,87 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app].Member[schemas].Member[ItemBase]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app].Member[schemas].Member[ItemCreate]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app].Member[schemas].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app].Member[schemas].Member[UserBase]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app].Member[schemas].Member[UserCreate]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app].Member[schemas].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py310].Member[schemas].Member[ItemBase]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py310].Member[schemas].Member[ItemCreate]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py310].Member[schemas].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py310].Member[schemas].Member[UserBase]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py310].Member[schemas].Member[UserCreate]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py310].Member[schemas].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py39].Member[schemas].Member[ItemBase]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py39].Member[schemas].Member[ItemCreate]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py39].Member[schemas].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py39].Member[schemas].Member[UserBase]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py39].Member[schemas].Member[UserCreate]
+  - - pydantic.BaseModel~Subclass
+    - sql_databases
+    - Member[sql_app_py39].Member[schemas].Member[User]
+  - - sqlalchemy.orm.Session~Subclass
+    - sql_databases
+    - Member[sql_app].Member[alt_main].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sql_databases
+    - Member[sql_app].Member[crud].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sql_databases
+    - Member[sql_app].Member[main].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sql_databases
+    - Member[sql_app_py310].Member[alt_main].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sql_databases
+    - Member[sql_app_py310].Member[crud].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sql_databases
+    - Member[sql_app_py310].Member[main].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sql_databases
+    - Member[sql_app_py39].Member[alt_main].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sql_databases
+    - Member[sql_app_py39].Member[crud].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sql_databases
+    - Member[sql_app_py39].Member[main].Member[Session]

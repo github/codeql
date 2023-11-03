@@ -4,9 +4,87 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - mitmproxy
+    - Member[addons].Member[onboardingapp].Member[Flask]
+  - - io.StringIO~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[BytesIO]
+  - - tornado.web.Application~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[Application]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[ClearAll]
   - - tornado.web.RequestHandler~Subclass
     - mitmproxy
     - Member[tools].Member[web].Member[app].Member[ClientConnection]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[Commands]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[DnsRebind]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[DumpFlows]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[DuplicateFlow]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[Events]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[ExecuteCommand]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[FilterHelp]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[FlowContentView]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[FlowContent]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[FlowHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[Flows]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[IndexHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[KillFlow]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[KillFlows]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[Options]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[ReplayFlow]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[ResumeFlow]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[ResumeFlows]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[RevertFlow]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[SaveOptions]
+  - - tornado.web.RequestHandler~Subclass
+    - mitmproxy
+    - Member[tools].Member[web].Member[app].Member[State]
   - - tornado.web.RequestHandler~Subclass
     - mitmproxy
     - Member[tools].Member[web].Member[app].Member[WebSocketEventBroadcaster]

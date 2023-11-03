@@ -1,0 +1,111 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pydantic_yaml
+    - Member[dumper].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pydantic_yaml
+    - Member[loader].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pydantic_yaml
+    - Member[loader].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[A]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[B]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[CustomRootListObj]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[CustomRootListStr]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[Empty]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[HasEnums]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[Recursive]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[SecretTstModelDumpable]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[SecretTstModel]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[base_models].Member[UsesRefs]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[A]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[B]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[CustomRootListObj]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[CustomRootListStr]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[Empty]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[HasEnums]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[Recursive]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[SecretTstModelDumpable]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[SecretTstModel]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[UsesRefs]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v1].Member[base_models].Member[_Name]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[A]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[B]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[CustomRootListObj]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[CustomRootListStr]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[Empty]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[HasEnums]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[Recursive]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[SecretTstModelDumpable]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[SecretTstModel]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[UsesRefs]
+  - - pydantic.BaseModel~Subclass
+    - pydantic_yaml
+    - Member[examples].Member[v2].Member[base_models].Member[_Name]

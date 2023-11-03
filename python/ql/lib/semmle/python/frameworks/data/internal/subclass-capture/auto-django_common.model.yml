@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponsePermanentRedirect~Subclass
+    - django_common
+    - Member[middleware].Member[HttpResponsePermanentRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_common
+    - Member[decorators].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_common
+    - Member[middleware].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - django_common
+    - Member[http].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_common
+    - Member[http].Member[JsonResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_common
+    - Member[http].Member[JsonpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_common
+    - Member[http].Member[XMLResponse]

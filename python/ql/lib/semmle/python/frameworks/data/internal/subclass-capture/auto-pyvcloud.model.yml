@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - pyvcloud
+    - Member[vcd].Member[client].Member[etree]
+  - - lxml.etree~Alias
+    - pyvcloud
+    - Member[vcd].Member[org].Member[etree]
+  - - lxml.etree~Alias
+    - pyvcloud
+    - Member[vcd].Member[utils].Member[etree]
+  - - lxml.etree~Alias
+    - pyvcloud
+    - Member[vcd].Member[vapp].Member[etree]
+  - - lxml.etree~Alias
+    - pyvcloud
+    - Member[vcd].Member[vdc].Member[etree]

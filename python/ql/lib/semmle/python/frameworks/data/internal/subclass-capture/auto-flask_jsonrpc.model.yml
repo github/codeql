@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - flask_jsonrpc
+    - Member[contrib].Member[browse].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - flask_jsonrpc
+    - Member[app].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_jsonrpc
+    - Member[contrib].Member[browse].Member[Flask]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[JSONRPCView]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[app].Member[JSONRPCView]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[app].Member[default_jsonrpc_site_api]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[blueprints].Member[JSONRPCView]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[blueprints].Member[default_jsonrpc_site_api]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[globals].Member[JSONRPCView]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[globals].Member[default_jsonrpc_site_api]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[views].Member[JSONRPCView]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[views].Member[MethodView]
+  - - flask.MethodView~Subclass
+    - flask_jsonrpc
+    - Member[wrappers].Member[JSONRPCView]

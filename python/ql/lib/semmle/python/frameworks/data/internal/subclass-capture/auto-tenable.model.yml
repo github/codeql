@@ -1,0 +1,72 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[dl].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[io].Member[editor].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[io].Member[policies].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[io].Member[scans].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[io].Member[workbenches].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[nessus].Member[editor].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[nessus].Member[files].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[nessus].Member[policies].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[nessus].Member[scans].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[nessus].Member[tokens].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[sc].Member[asset_lists].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[sc].Member[audit_files].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[sc].Member[policies].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[sc].Member[scan_instances].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tenable
+    - Member[sc].Member[system].Member[BytesIO]
+  - - requests.models.Response~Subclass
+    - tenable
+    - Member[io].Member[Response]
+  - - requests.models.Response~Subclass
+    - tenable
+    - Member[io].Member[v3].Member[base].Member[endpoints].Member[explore].Member[Response]
+  - - requests.models.Response~Subclass
+    - tenable
+    - Member[io].Member[v3].Member[base].Member[iterators].Member[explore_iterator].Member[Response]
+  - - requests.models.Response~Subclass
+    - tenable
+    - Member[io].Member[v3].Member[explore].Member[assets].Member[api].Member[Response]
+  - - requests.models.Response~Subclass
+    - tenable
+    - Member[io].Member[v3].Member[explore].Member[findings].Member[api].Member[Response]
+  - - requests.models.Response~Subclass
+    - tenable
+    - Member[nessus].Member[files].Member[Response]
+  - - requests.models.Response~Subclass
+    - tenable
+    - Member[nessus].Member[tokens].Member[Response]

@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponse~Subclass
+    - socketio
+    - Member[sdjango].Member[HttpResponse]
+  - - pickle~Alias
+    - socketio
+    - Member[async_aiopika_manager].Member[pickle]
+  - - pickle~Alias
+    - socketio
+    - Member[async_pubsub_manager].Member[pickle]
+  - - pickle~Alias
+    - socketio
+    - Member[async_redis_manager].Member[pickle]
+  - - pickle~Alias
+    - socketio
+    - Member[kafka_manager].Member[pickle]
+  - - pickle~Alias
+    - socketio
+    - Member[kombu_manager].Member[pickle]
+  - - pickle~Alias
+    - socketio
+    - Member[pubsub_manager].Member[pickle]
+  - - pickle~Alias
+    - socketio
+    - Member[redis_manager].Member[pickle]
+  - - pickle~Alias
+    - socketio
+    - Member[zmq_manager].Member[pickle]

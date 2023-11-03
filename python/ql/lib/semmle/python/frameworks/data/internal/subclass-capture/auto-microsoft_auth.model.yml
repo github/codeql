@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - microsoft_auth
+    - Member[views].Member[AuthenticateCallbackRedirect]
+  - - Django.Views.View~Subclass
+    - microsoft_auth
+    - Member[views].Member[AuthenticateCallbackView]
+  - - Django.Views.View~Subclass
+    - microsoft_auth
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - microsoft_auth
+    - Member[backends].Member[MicrosoftAccount]
+  - - Django.db.models.Model~Subclass
+    - microsoft_auth
+    - Member[backends].Member[XboxLiveAccount]
   - - Django.db.models.Model~Subclass
     - microsoft_auth
     - Member[client].Member[Site]
@@ -12,4 +27,13 @@ extensions:
     - Member[context_processors].Member[Site]
   - - Django.db.models.Model~Subclass
     - microsoft_auth
+    - Member[models].Member[MicrosoftAccount]
+  - - Django.db.models.Model~Subclass
+    - microsoft_auth
+    - Member[models].Member[XboxLiveAccount]
+  - - Django.db.models.Model~Subclass
+    - microsoft_auth
     - Member[views].Member[Site]
+  - - django.http.response.HttpResponse~Subclass
+    - microsoft_auth
+    - Member[views].Member[HttpResponse]

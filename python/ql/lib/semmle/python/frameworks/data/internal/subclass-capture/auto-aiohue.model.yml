@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - aiohue
+    - Member[discovery].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - aiohue
+    - Member[util].Member[ClientSession]
+  - - logging.Logger~Subclass
+    - aiohue
+    - Member[v1].Member[groups].Member[Logger]
+  - - logging.Logger~Subclass
+    - aiohue
+    - Member[v1].Member[lights].Member[Logger]

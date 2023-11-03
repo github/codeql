@@ -4,6 +4,45 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - datasets
+    - Member[arrow_dataset].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - datasets
+    - Member[common_dataset].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - datasets
+    - Member[dataset_dict].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - datasets
+    - Member[download].Member[streaming_download_manager].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - datasets
+    - Member[features].Member[audio].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - datasets
+    - Member[features].Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - datasets
+    - Member[packaged_modules].Member[text].Member[text].Member[StringIO]
+  - - io.StringIO~Subclass
+    - datasets
+    - Member[utils].Member[py_utils].Member[StringIO]
+  - - pickle~Alias
+    - datasets
+    - Member[common_dataset].Member[pickle]
+  - - pickle~Alias
+    - datasets
+    - Member[dataset_gaze].Member[pickle]
   - - pickle~Alias
     - datasets
     - Member[dataset_synthetics].Member[pickle]
+  - - pickle~Alias
+    - datasets
+    - Member[kv_helper].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - datasets
+    - Member[commands].Member[dummy_data].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - datasets
+    - Member[download].Member[streaming_download_manager].Member[ET]

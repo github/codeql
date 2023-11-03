@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - fastapi_azure_auth
+    - Member[openid_config].Member[AsyncClient]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_azure_auth
+    - Member[auth].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_azure_auth
+    - Member[user].Member[Claims]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_azure_auth
+    - Member[user].Member[User]

@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - versatileimagefield
+    - Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - versatileimagefield
+    - Member[forms].Member[ImageField]
+  - - Django.Forms.Field~Subclass
+    - versatileimagefield
+    - Member[forms].Member[MultiValueField]
+  - - Django.Forms.Field~Subclass
+    - versatileimagefield
+    - Member[forms].Member[SizedImageCenterpointClickBootstrap3Field]
+  - - Django.Forms.Field~Subclass
+    - versatileimagefield
+    - Member[forms].Member[SizedImageCenterpointClickDjangoAdminField]
+  - - Django.Forms.Field~Subclass
+    - versatileimagefield
+    - Member[forms].Member[VersatileImageFormField]
+  - - Django.Forms.Field~Subclass
+    - versatileimagefield
+    - Member[forms].Member[VersatileImagePPOIClickField]
+  - - Django.db.models.Model~Subclass
+    - versatileimagefield
+    - Member[image_warmer].Member[Model]
+  - - django.db.models.FileField~Subclass
+    - versatileimagefield
+    - Member[fields].Member[VersatileImageField]
+  - - io.StringIO~Subclass
+    - versatileimagefield
+    - Member[versatileimagefield].Member[BytesIO]

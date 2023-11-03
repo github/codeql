@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[bert_service].Member[Flask]
+  - - flask.Flask~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[combo_retrieval_server].Member[Flask]
+  - - flask.Flask~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[dynamic_retrieval_server].Member[Flask]
+  - - flask.Flask~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[static_retrieval_server].Member[Flask]
+  - - flask.Flask~Subclass
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[text_generation_server].Member[Flask]
   - - flask.MethodView~Subclass
     - nemo
     - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[bert_service].Member[Resource]
@@ -34,3 +49,30 @@ extensions:
   - - flask.MethodView~Subclass
     - nemo
     - Member[collections].Member[nlp].Member[modules].Member[common].Member[text_generation_server].Member[Resource]
+  - - pickle~Alias
+    - nemo
+    - Member[collections].Member[nlp].Member[data].Member[machine_translation].Member[preproc_mt_data].Member[pickle]
+  - - pickle~Alias
+    - nemo
+    - Member[collections].Member[nlp].Member[data].Member[question_answering].Member[dataset].Member[qa_dataset].Member[pickle]
+  - - pickle~Alias
+    - nemo
+    - Member[collections].Member[nlp].Member[data].Member[token_classification].Member[punctuation_capitalization_tarred_dataset].Member[pickle]
+  - - pickle~Alias
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[bert_service].Member[pickle]
+  - - pickle~Alias
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[combo_retrieval_server].Member[pickle]
+  - - pickle~Alias
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[dynamic_retrieval_server].Member[pickle]
+  - - pickle~Alias
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[megatron].Member[retrieval_services].Member[static_retrieval_server].Member[pickle]
+  - - pickle~Alias
+    - nemo
+    - Member[collections].Member[nlp].Member[modules].Member[common].Member[retro_inference_strategies].Member[pickle]
+  - - pickle~Alias
+    - nemo
+    - Member[collections].Member[tts].Member[data].Member[dataset].Member[pickle]

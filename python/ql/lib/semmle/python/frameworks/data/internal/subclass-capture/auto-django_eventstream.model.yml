@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_eventstream
+    - Member[models].Member[EventCounter]
+  - - Django.db.models.Model~Subclass
+    - django_eventstream
+    - Member[models].Member[Event]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - django_eventstream
+    - Member[consumers].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - django_eventstream
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - django_eventstream
+    - Member[eventresponse].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_eventstream
+    - Member[utils].Member[HttpResponse]

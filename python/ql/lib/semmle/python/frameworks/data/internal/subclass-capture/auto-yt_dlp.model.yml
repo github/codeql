@@ -10,3 +10,24 @@ extensions:
   - - http.client.HTTPConnection~Subclass
     - yt_dlp
     - Member[networking].Member[_requests].Member[SocksHTTPSConnection]
+  - - io.StringIO~Subclass
+    - yt_dlp
+    - Member[downloader].Member[f4m].Member[FlvReader]
+  - - urllib3.PoolManager~Subclass
+    - yt_dlp
+    - Member[networking].Member[_requests].Member[SocksHTTPConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - yt_dlp
+    - Member[networking].Member[_requests].Member[SocksHTTPSConnectionPool]
+  - - urllib3.PoolManager~Subclass
+    - yt_dlp
+    - Member[networking].Member[_requests].Member[SocksProxyManager]
+  - - xml.etree.ElementTree~Subclass
+    - yt_dlp
+    - Member[compat].Member[_legacy].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - yt_dlp
+    - Member[compat].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - yt_dlp
+    - Member[extractor].Member[adobepass].Member[etree]

@@ -1,0 +1,102 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - spacy
+    - Member[compat].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[cli].Member[debug_config].Member[ConfigSchemaInit]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[cli].Member[debug_config].Member[ConfigSchemaTraining]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[cli].Member[debug_data].Member[ConfigSchemaTraining]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[cli].Member[debug_model].Member[ConfigSchemaTraining]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[cli].Member[init_config].Member[RecommendationSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[cli].Member[package].Member[ModelMetaSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[language].Member[ConfigSchemaInit]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[language].Member[ConfigSchemaNlp]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[language].Member[ConfigSchemaPretrain]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[language].Member[ConfigSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[pipeline].Member[_edit_tree_internals].Member[schemas].Member[EditTreeSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[pipeline].Member[_edit_tree_internals].Member[schemas].Member[MatchNodeSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[pipeline].Member[_edit_tree_internals].Member[schemas].Member[SubstNodeSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[ConfigSchemaInit]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[ConfigSchemaNlp]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[ConfigSchemaPretrainEmpty]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[ConfigSchemaPretrain]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[ConfigSchemaTraining]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[ConfigSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[DocJSONSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[ModelMetaSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[RecommendationSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[RecommendationTrfItem]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[RecommendationTrf]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[TokenPatternNumber]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[TokenPatternSchema]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[TokenPatternString]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[schemas].Member[TokenPattern]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[training].Member[initialize].Member[ConfigSchemaTraining]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[training].Member[loop].Member[ConfigSchemaTraining]
+  - - pydantic.BaseModel~Subclass
+    - spacy
+    - Member[training].Member[pretrain].Member[ConfigSchemaPretrain]

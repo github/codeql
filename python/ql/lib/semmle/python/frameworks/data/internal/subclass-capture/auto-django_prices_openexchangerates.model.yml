@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_prices_openexchangerates
+    - Member[admin].Member[ConversionRate]
+  - - Django.db.models.Model~Subclass
+    - django_prices_openexchangerates
+    - Member[models].Member[ConversionRate]
+  - - Django.db.models.Model~Subclass
+    - django_prices_openexchangerates
+    - Member[tasks].Member[ConversionRate]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - schemathesis
+    - Member[extra].Member[_flask].Member[Flask]
+  - - io.StringIO~Subclass
+    - schemathesis
+    - Member[_xml].Member[StringIO]
+  - - io.StringIO~Subclass
+    - schemathesis
+    - Member[serializers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - schemathesis
+    - Member[service].Member[report].Member[BytesIO]
+  - - requests.models.Response~Subclass
+    - schemathesis
+    - Member[transports].Member[responses].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - schemathesis
+    - Member[_xml].Member[ElementTree]

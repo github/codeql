@@ -1,0 +1,300 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - mlflow
+    - Member[server].Member[Flask]
+  - - flask.Flask~Subclass
+    - mlflow
+    - Member[server].Member[auth].Member[Flask]
+  - - flask.Response~Subclass
+    - mlflow
+    - Member[server].Member[Response]
+  - - flask.Response~Subclass
+    - mlflow
+    - Member[server].Member[auth].Member[Response]
+  - - flask.Response~Subclass
+    - mlflow
+    - Member[server].Member[handlers].Member[Response]
+  - - io.StringIO~Subclass
+    - mlflow
+    - Member[projects].Member[utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mlflow
+    - Member[pyfunc].Member[scoring_server].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mlflow
+    - Member[recipes].Member[cards].Member[StringIO]
+  - - pickle~Alias
+    - mlflow
+    - Member[models].Member[evaluation].Member[_shap_patch].Member[pickle]
+  - - pickle~Alias
+    - mlflow
+    - Member[models].Member[evaluation].Member[artifacts].Member[pickle]
+  - - pickle~Alias
+    - mlflow
+    - Member[models].Member[evaluation].Member[default_evaluator].Member[pickle]
+  - - pickle~Alias
+    - mlflow
+    - Member[pmdarima].Member[pickle]
+  - - pickle~Alias
+    - mlflow
+    - Member[recipes].Member[cards].Member[pickle]
+  - - pickle~Alias
+    - mlflow
+    - Member[sklearn].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[app].Member[GatewayConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[app].Member[HealthResponse]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[app].Member[LimitsConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[app].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[app].Member[Route]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[app].Member[SearchRoutesResponse]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[app].Member[SetLimitsModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[ConfigModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[LimitModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[RequestModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[ResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[SetLimitsModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[client].Member[LimitsConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[client].Member[Route]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[AI21LabsConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[AWSBaseConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[AWSBedrockConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[AWSIdAndKey]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[AWSRole]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[AnthropicConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[CohereConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[ConfigModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[GatewayConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[HuggingFaceTextGenerationInferenceConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[LimitModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[Limit]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[LimitsConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[MlflowModelServingConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[ModelInfo]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[MosaicMLConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[OpenAIConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[PaLMConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[ResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[RouteModelInfo]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[Route]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[fluent].Member[LimitsConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[fluent].Member[Route]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[ai21labs].Member[AI21LabsConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[ai21labs].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[anthropic].Member[AnthropicConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[anthropic].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[base].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[bedrock].Member[AWSBedrockConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[bedrock].Member[AWSIdAndKey]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[bedrock].Member[AWSRole]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[bedrock].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[cohere].Member[CohereConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[cohere].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[huggingface].Member[HuggingFaceTextGenerationInferenceConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[huggingface].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[mlflow].Member[EmbeddingsResponse]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[mlflow].Member[MlflowModelServingConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[mlflow].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[mlflow].Member[ServingTextResponse]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[mosaicml].Member[MosaicMLConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[mosaicml].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[openai].Member[OpenAIConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[openai].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[palm].Member[PaLMConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[providers].Member[palm].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[BaseRequestPayload]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[CandidateMetadata]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[Candidate]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[Metadata]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[RequestMessage]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[RequestModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[RequestPayload]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[ResponseMessage]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[ResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[chat].Member[ResponsePayload]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[completions].Member[BaseRequestPayload]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[completions].Member[CandidateMetadata]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[completions].Member[Candidate]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[completions].Member[Metadata]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[completions].Member[RequestPayload]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[completions].Member[ResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[completions].Member[ResponsePayload]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[embeddings].Member[Metadata]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[embeddings].Member[RequestModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[embeddings].Member[RequestPayload]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[embeddings].Member[ResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[schemas].Member[embeddings].Member[ResponsePayload]

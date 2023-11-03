@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - xml.etree.ElementTree~Subclass
+    - pyang
+    - Member[plugins].Member[jsonxsl].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - pyang
+    - Member[scripts].Member[json2xml].Member[ET]

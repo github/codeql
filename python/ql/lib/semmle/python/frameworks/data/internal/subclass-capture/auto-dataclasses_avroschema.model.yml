@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - dataclasses_avroschema
+    - Member[pydantic].Member[AvroBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dataclasses_avroschema
+    - Member[pydantic].Member[main].Member[AvroBaseModel]

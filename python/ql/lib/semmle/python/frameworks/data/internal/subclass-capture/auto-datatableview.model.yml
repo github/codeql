@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[DatatableView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[MultipleDatatableView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[XEditableDatatableView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[base].Member[DatatableView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[base].Member[ListView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[base].Member[MultipleDatatableView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[base].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[legacy].Member[LegacyDatatableView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[legacy].Member[ListView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[xeditable].Member[DatatableView]
+  - - Django.Views.View~Subclass
+    - datatableview
+    - Member[views].Member[xeditable].Member[XEditableDatatableView]
+  - - Django.db.models.Model~Subclass
+    - datatableview
+    - Member[columns].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - datatableview
+    - Member[helpers].Member[Model]
+  - - django.forms.BaseForm~Subclass
+    - datatableview
+    - Member[forms].Member[XEditableUpdateForm]
+  - - django.forms.BaseForm~Subclass
+    - datatableview
+    - Member[views].Member[xeditable].Member[XEditableUpdateForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - datatableview
+    - Member[views].Member[xeditable].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - datatableview
+    - Member[views].Member[base].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - datatableview
+    - Member[views].Member[xeditable].Member[HttpResponse]

@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - snowflake
+    - Member[hooks].Member[snowflake].Member[StringIO]
   - - tornado.web.Application~Subclass
     - snowflake
     - Member[server].Member[SnowflakeApplication]

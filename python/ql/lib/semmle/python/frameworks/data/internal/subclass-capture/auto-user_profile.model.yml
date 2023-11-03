@@ -12,6 +12,9 @@ extensions:
     - Member[urls].Member[LogoutView]
   - - Django.db.models.Model~Subclass
     - user_profile
+    - Member[api].Member[serializers].Member[UserProfile]
+  - - Django.db.models.Model~Subclass
+    - user_profile
     - Member[api].Member[serializers].Member[User]
   - - Django.db.models.Model~Subclass
     - user_profile
@@ -21,7 +24,25 @@ extensions:
     - Member[forms].Member[User]
   - - Django.db.models.Model~Subclass
     - user_profile
+    - Member[models].Member[UserProfile]
+  - - Django.db.models.Model~Subclass
+    - user_profile
     - Member[models].Member[User]
   - - Django.db.models.Model~Subclass
     - user_profile
     - Member[views].Member[User]
+  - - django.forms.BaseForm~Subclass
+    - user_profile
+    - Member[forms].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - user_profile
+    - Member[forms].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - user_profile
+    - Member[views].Member[SignupForm]
+  - - django.http.response.HttpResponse~Subclass
+    - user_profile
+    - Member[api].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - user_profile
+    - Member[api].Member[views].Member[Response]

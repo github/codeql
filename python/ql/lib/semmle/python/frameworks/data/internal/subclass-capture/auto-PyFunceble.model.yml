@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[checker].Member[availability].Member[base].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[checker].Member[base].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[checker].Member[reputation].Member[base].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[checker].Member[syntax].Member[base].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[checker].Member[syntax].Member[domain].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[checker].Member[utils].Member[whois].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[cli].Member[migrators].Member[alembic].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[cli].Member[migrators].Member[base].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[cli].Member[processes].Member[migrator].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[cli].Member[system].Member[launcher].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - PyFunceble
+    - Member[dataset].Member[sql_base].Member[Session]

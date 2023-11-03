@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[locomotion].Member[walkers].Member[assets].Member[build_fruitfly].Member[fuse_fruitfly].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[locomotion].Member[walkers].Member[assets].Member[build_fruitfly].Member[make_fruitfly].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[locomotion].Member[walkers].Member[assets].Member[dog_v2].Member[build_dog].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[mjcf].Member[debugging].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[mjcf].Member[element].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[mjcf].Member[parser].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[mjcf].Member[schema].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[suite].Member[cartpole].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[suite].Member[dog].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[suite].Member[lqr].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[suite].Member[manipulator].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[suite].Member[quadruped].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[suite].Member[stacker].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[suite].Member[swimmer].Member[etree]
+  - - lxml.etree~Alias
+    - dm_control
+    - Member[utils].Member[xml_tools].Member[etree]

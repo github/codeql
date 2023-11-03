@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - covid
+    - Member[john_hopkins].Member[covid].Member[CountryModel]
+  - - pydantic.BaseModel~Subclass
+    - covid
+    - Member[john_hopkins].Member[covid].Member[CovidModel]
+  - - pydantic.BaseModel~Subclass
+    - covid
+    - Member[john_hopkins].Member[models].Member[CountryModel]
+  - - pydantic.BaseModel~Subclass
+    - covid
+    - Member[john_hopkins].Member[models].Member[CovidModel]
+  - - pydantic.BaseModel~Subclass
+    - covid
+    - Member[worldometers].Member[covid].Member[CovidModel]
+  - - pydantic.BaseModel~Subclass
+    - covid
+    - Member[worldometers].Member[models].Member[CovidModel]

@@ -1,0 +1,180 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - shazamio
+    - Member[signature].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - shazamio
+    - Member[utils].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[factory_misc].Member[ArtistAttribute]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[factory_misc].Member[ArtistV3]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[full_albums].Member[AttributeName]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[full_albums].Member[AttributesFullAlbums]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[full_albums].Member[BaseDataModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[full_albums].Member[EditorialArtwork]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[full_albums].Member[EditorialNotes]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[full_albums].Member[FullAlbumsModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[full_albums].Member[ImageModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[full_albums].Member[PlayParams]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[last_release].Member[AttributeLastRelease]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[last_release].Member[AttributeName]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[last_release].Member[BaseDataModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[last_release].Member[ImageModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[last_release].Member[LastReleaseModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[last_release].Member[PlayParams]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[simular_artists].Member[AttributeName]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[simular_artists].Member[Attributes]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[simular_artists].Member[BaseIdTypeHref]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[simular_artists].Member[Datum]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[simular_artists].Member[EditorialArtwork]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[simular_artists].Member[ImageModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[simular_artists].Member[Relationships]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[simular_artists].Member[SimularArtist]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_music].Member[AttributeName]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_music].Member[Attributes]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_music].Member[BaseDataModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_music].Member[ImageModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_music].Member[PlayParams]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_music].Member[Preview]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_music].Member[TopMusicVideosView]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_song].Member[AttributeName]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_song].Member[BaseDataModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_song].Member[ImageModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_song].Member[PlayParams]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_song].Member[TopSong]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artist].Member[views].Member[top_song].Member[UrlDTO]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[AlbumRelationshipElement]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[AlbumRelationship]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[ArtistAttribute]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[ArtistRelationships]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[ArtistResponse]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[ArtistV3]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[ArtistViews]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[FullAlbumsModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[LastReleaseModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[SimularArtist]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[TopMusicVideosView]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[artists].Member[TopSong]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[attributes].Member[ArtistAttribute]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[attributes].Member[AttributeName]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[base].Member[BaseDataModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[base].Member[BaseIdTypeHref]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[photos].Member[ImageModel]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[schemas].Member[urls].Member[UrlDTO]
+  - - pydantic.BaseModel~Subclass
+    - shazamio
+    - Member[serializers].Member[ArtistResponse]

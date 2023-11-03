@@ -4,6 +4,15 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - ai2thor
+    - Member[mock_real_server].Member[Flask]
+  - - flask.Flask~Subclass
+    - ai2thor
+    - Member[wsgi_server].Member[Flask]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - ai2thor
     - Member[wsgi_server].Member[ThorRequestHandler]
+  - - pickle~Alias
+    - ai2thor
+    - Member[offline_controller].Member[pickle]

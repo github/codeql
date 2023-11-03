@@ -1,0 +1,81 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[client].Member[Key]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[client].Member[KeysResults]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[client].Member[TaskInfo]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[client].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[index].Member[Faceting]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[index].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[index].Member[TaskInfo]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[index].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[index].Member[TypoTolerance]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[index].Member[CamelBase]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[index].Member[Faceting]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[index].Member[MinWordSizeForTypos]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[index].Member[Pagination]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[index].Member[TypoTolerance]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[key].Member[CamelBase]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[key].Member[KeyUpdate]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[key].Member[Key]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[key].Member[KeysResults]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[key].Member[_KeyBase]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[task].Member[CamelBase]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[task].Member[TaskInfo]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[models].Member[task].Member[Task]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[task].Member[TaskInfo]
+  - - pydantic.BaseModel~Subclass
+    - meilisearch
+    - Member[task].Member[Task]
+  - - requests.models.Response~Subclass
+    - meilisearch
+    - Member[errors].Member[Response]

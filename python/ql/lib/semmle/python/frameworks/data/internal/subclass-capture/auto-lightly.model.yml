@@ -1,0 +1,2418 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - lightly
+    - Member[api].Member[serve].Member[SimpleHTTPRequestHandler]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_artifacts].Member[DockerRunArtifactData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_artifacts].Member[DockerRunData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_client].Member[DatasetData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_collaboration].Member[SharedAccessConfigCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_collaboration].Member[SharedAccessConfigData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[CreateDockerWorkerRegistryEntryRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[DockerRunData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[DockerRunScheduledCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[DockerRunScheduledData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[DockerWorkerConfigV3CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[DockerWorkerConfigV3Docker]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[DockerWorkerConfigV3Lightly]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[DockerWorkerConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[DockerWorkerRegistryEntryData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[SelectionConfigEntryInput]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[SelectionConfigEntryStrategy]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[SelectionConfigEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[SelectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_compute_worker].Member[TagData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_datasets].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_datasets].Member[DatasetCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_datasets].Member[DatasetData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_datasources].Member[DatasourceConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_datasources].Member[DatasourceProcessedUntilTimestampRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_datasources].Member[DatasourceProcessedUntilTimestampResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_datasources].Member[DatasourceRawSamplesDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_datasources].Member[DatasourceRawSamplesData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_download_dataset].Member[DatasetEmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_export].Member[LabelBoxDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_export].Member[LabelBoxV4DataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_export].Member[LabelStudioTask]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_predictions].Member[PredictionSingleton]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_predictions].Member[PredictionTaskSchema]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_selection].Member[ActiveLearningScoreCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_selection].Member[JobStatusData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_selection].Member[SamplingConfigStoppingCondition]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_selection].Member[SamplingConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_selection].Member[SamplingCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_selection].Member[TagData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_tags].Member[TagArithmeticsRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_tags].Member[TagBitMaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_tags].Member[TagCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_tags].Member[TagData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_upload_embeddings].Member[DatasetEmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_upload_embeddings].Member[Trigger2dEmbeddingJobRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_upload_embeddings].Member[WriteCSVUrlData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_upload_metadata].Member[ConfigurationEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_upload_metadata].Member[ConfigurationSetRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_upload_metadata].Member[SampleDataModes]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_upload_metadata].Member[SampleUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[ActiveLearningScoreCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[ActiveLearningScoreData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[ApiErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[AsyncTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[ConfigurationData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[ConfigurationEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[ConfigurationSetRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[CreateCFBucketActivityRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[CreateDockerWorkerRegistryEntryRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[CreateSampleWithWriteUrlsResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[CreateTeamMembershipRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[CropData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasetCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasetDataEnriched]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasetData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasetEmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasetUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigAzureAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigAzure]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigBaseFullPath]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigGCSAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigGCS]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigLIGHTLY]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigLOCALAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigLOCAL]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigOBSAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigOBS]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigS3AllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigS3DelegatedAccessAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigS3DelegatedAccess]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigS3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigVerifyDataErrors]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfigVerifyData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceProcessedUntilTimestampRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceProcessedUntilTimestampResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceRawSamplesDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceRawSamplesData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceRawSamplesMetadataDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceRawSamplesMetadataData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceRawSamplesPredictionsDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DatasourceRawSamplesPredictionsData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerLicenseInformation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunArtifactCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunArtifactCreatedData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunArtifactData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunLogData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunLogEntryData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunScheduledCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunScheduledData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunScheduledUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerRunUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerTaskDescription]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerUserStats]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2Data]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2DockerObjectLevel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2DockerStoppingCondition]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2Docker]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2LightlyCollate]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2LightlyModel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2LightlyTrainer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2Lightly]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV2]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3Data]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3DockerCorruptnessCheck]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3DockerDatasource]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3DockerTraining]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3Docker]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3LightlyCheckpointCallback]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3LightlyCollate]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3LightlyCriterion]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3LightlyLoader]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3LightlyModel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3LightlyOptimizer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3LightlyTrainer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3Lightly]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[DockerWorkerRegistryEntryData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[Embedding2dCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[Embedding2dData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[EmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[FilenameAndReadUrl]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[InitialTagCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[JobStatusDataResult]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[JobStatusData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[JobStatusMeta]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[JobsData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[LabelBoxDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[LabelBoxV4DataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[LabelStudioTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[LabelStudioTask]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonClassificationAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonClassification]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonInstanceSegmentationAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonInstanceSegmentation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonKeypointDetectionAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonKeypointDetection]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonObjectDetectionAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonObjectDetection]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonSemanticSegmentationAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingletonSemanticSegmentation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionSingleton]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchemaBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchemaCategoryKeypointsAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchemaCategoryKeypoints]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchemaCategory]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchemaKeypointAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchemaKeypoint]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchemaSimpleAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchemaSimple]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchema]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[PredictionTaskSchemas]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[QuestionnaireData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SamaTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SamaTask]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SampleCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SampleDataModes]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SampleData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SampleMetaData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SampleUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SampleWriteUrls]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SamplingConfigStoppingCondition]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SamplingConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SamplingCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigEntryInput]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigEntryStrategy]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigV3AllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigV3EntryInput]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigV3EntryStrategyAllOfTargetRange]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigV3EntryStrategyAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigV3EntryStrategy]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigV3Entry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SelectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[ServiceAccountBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SetEmbeddingsIsProcessedFlagByIdBodyRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SharedAccessConfigCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[SharedAccessConfigData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagActiveLearningScoresData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagArithmeticsRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagArithmeticsResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagBitMaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeDataArithmetics]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeDataInitial]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeDataMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeDataRename]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeDataSampler]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeDataSamples]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeDataScatterplot]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeDataUpsize]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagChangeEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TagUpsizeRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TeamBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[TeamData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[Trigger2dEmbeddingJobRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[UpdateDockerWorkerRegistryEntryRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[UpdateTeamMembershipRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[VideoFrameData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[WriteCSVUrlData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[collaboration_api].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[collaboration_api].Member[SharedAccessConfigCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[collaboration_api].Member[SharedAccessConfigData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasets_api].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasets_api].Member[DatasetCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasets_api].Member[DatasetDataEnriched]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasets_api].Member[DatasetData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasets_api].Member[DatasetUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasets_api].Member[JobStatusMeta]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasources_api].Member[DatasourceConfigVerifyData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasources_api].Member[DatasourceConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasources_api].Member[DatasourceProcessedUntilTimestampRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasources_api].Member[DatasourceProcessedUntilTimestampResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasources_api].Member[DatasourceRawSamplesData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasources_api].Member[DatasourceRawSamplesMetadataData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[datasources_api].Member[DatasourceRawSamplesPredictionsData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[CreateDockerWorkerRegistryEntryRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerAuthorizationRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerAuthorizationResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerLicenseInformation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerRunArtifactCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerRunArtifactCreatedData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerRunCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerRunData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerRunLogData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerRunScheduledCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerRunScheduledData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerRunScheduledUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerRunUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerUserStats]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerWorkerAuthorizationRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerWorkerConfigCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerWorkerConfigData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerWorkerConfigV2CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerWorkerConfigV2Data]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerWorkerConfigV3CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerWorkerConfigV3Data]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[DockerWorkerRegistryEntryData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[TagData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[docker_api].Member[UpdateDockerWorkerRegistryEntryRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[embeddings2d_api].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[embeddings2d_api].Member[Embedding2dCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[embeddings2d_api].Member[Embedding2dData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[embeddings_api].Member[DatasetEmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[embeddings_api].Member[EmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[embeddings_api].Member[SetEmbeddingsIsProcessedFlagByIdBodyRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[embeddings_api].Member[Trigger2dEmbeddingJobRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[embeddings_api].Member[WriteCSVUrlData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[jobs_api].Member[JobStatusData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[jobs_api].Member[JobsData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[meta_data_configurations_api].Member[ConfigurationData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[meta_data_configurations_api].Member[ConfigurationSetRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[meta_data_configurations_api].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[predictions_api].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[predictions_api].Member[PredictionSingleton]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[predictions_api].Member[PredictionTaskSchema]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[predictions_api].Member[PredictionTaskSchemas]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[samples_api].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[samples_api].Member[CreateSampleWithWriteUrlsResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[samples_api].Member[SampleCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[samples_api].Member[SampleDataModes]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[samples_api].Member[SampleData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[samples_api].Member[SampleUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[samples_api].Member[SampleWriteUrls]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[samplings_api].Member[AsyncTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[samplings_api].Member[SamplingCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[scores_api].Member[ActiveLearningScoreCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[scores_api].Member[ActiveLearningScoreData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[scores_api].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[scores_api].Member[TagActiveLearningScoresData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[FilenameAndReadUrl]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[InitialTagCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[LabelBoxDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[LabelBoxV4DataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[LabelStudioTask]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[SamaTask]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[TagArithmeticsRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[TagArithmeticsResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[TagBitMaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[TagCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[TagData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[TagUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[tags_api].Member[TagUpsizeRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[teams_api].Member[CreateTeamMembershipRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[teams_api].Member[ProfileBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[teams_api].Member[ServiceAccountBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[teams_api].Member[TeamData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[api].Member[teams_api].Member[UpdateTeamMembershipRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[ActiveLearningScoreCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[ActiveLearningScoreData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[ApiErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[AsyncTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[ConfigurationData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[ConfigurationEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[ConfigurationSetRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[CreateCFBucketActivityRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[CreateDockerWorkerRegistryEntryRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[CreateSampleWithWriteUrlsResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[CreateTeamMembershipRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[CropData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasetCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasetDataEnriched]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasetData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasetEmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasetUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigAzureAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigAzure]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigBaseFullPath]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigGCSAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigGCS]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigLIGHTLY]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigLOCALAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigLOCAL]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigOBSAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigOBS]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigS3AllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigS3DelegatedAccessAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigS3DelegatedAccess]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigS3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigVerifyDataErrors]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfigVerifyData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceProcessedUntilTimestampRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceProcessedUntilTimestampResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceRawSamplesDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceRawSamplesData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceRawSamplesMetadataDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceRawSamplesMetadataData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceRawSamplesPredictionsDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DatasourceRawSamplesPredictionsData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerLicenseInformation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunArtifactCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunArtifactCreatedData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunArtifactData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunLogData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunLogEntryData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunScheduledCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunScheduledData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunScheduledUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerRunUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerTaskDescription]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerUserStats]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2Data]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2DockerObjectLevel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2DockerStoppingCondition]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2Docker]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2LightlyCollate]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2LightlyModel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2LightlyTrainer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2Lightly]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV2]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3Data]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3DockerCorruptnessCheck]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3DockerDatasource]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3DockerTraining]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3Docker]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3LightlyCheckpointCallback]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3LightlyCollate]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3LightlyCriterion]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3LightlyLoader]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3LightlyModel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3LightlyOptimizer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3LightlyTrainer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3Lightly]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[DockerWorkerRegistryEntryData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[Embedding2dCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[Embedding2dData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[EmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[FilenameAndReadUrl]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[InitialTagCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[JobStatusDataResult]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[JobStatusData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[JobStatusMeta]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[JobsData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[LabelBoxDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[LabelBoxV4DataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[LabelStudioTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[LabelStudioTask]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonClassificationAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonClassification]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonInstanceSegmentationAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonInstanceSegmentation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonKeypointDetectionAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonKeypointDetection]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonObjectDetectionAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonObjectDetection]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonSemanticSegmentationAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingletonSemanticSegmentation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionSingleton]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchemaBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchemaCategoryKeypointsAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchemaCategoryKeypoints]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchemaCategory]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchemaKeypointAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchemaKeypoint]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchemaSimpleAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchemaSimple]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchema]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[PredictionTaskSchemas]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[QuestionnaireData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SamaTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SamaTask]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SampleCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SampleDataModes]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SampleData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SampleMetaData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SampleUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SampleWriteUrls]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SamplingConfigStoppingCondition]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SamplingConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SamplingCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigEntryInput]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigEntryStrategy]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigV3AllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigV3EntryInput]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigV3EntryStrategyAllOfTargetRange]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigV3EntryStrategyAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigV3EntryStrategy]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigV3Entry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SelectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[ServiceAccountBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SetEmbeddingsIsProcessedFlagByIdBodyRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SharedAccessConfigCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[SharedAccessConfigData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagActiveLearningScoresData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagArithmeticsRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagArithmeticsResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagBitMaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeDataArithmetics]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeDataInitial]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeDataMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeDataRename]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeDataSampler]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeDataSamples]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeDataScatterplot]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeDataUpsize]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagChangeEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TagUpsizeRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TeamBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[TeamData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[Trigger2dEmbeddingJobRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[UpdateDockerWorkerRegistryEntryRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[UpdateTeamMembershipRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[VideoFrameData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[WriteCSVUrlData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[active_learning_score_create_request].Member[ActiveLearningScoreCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[active_learning_score_data].Member[ActiveLearningScoreData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[api_error_response].Member[ApiErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[async_task_data].Member[AsyncTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[auth0_on_sign_up_request].Member[Auth0OnSignUpRequestUser]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[auth0_on_sign_up_request].Member[Auth0OnSignUpRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[auth0_on_sign_up_request_user].Member[Auth0OnSignUpRequestUser]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[configuration_data].Member[ConfigurationData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[configuration_data].Member[ConfigurationEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[configuration_entry].Member[ConfigurationEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[configuration_set_request].Member[ConfigurationEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[configuration_set_request].Member[ConfigurationSetRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[create_cf_bucket_activity_request].Member[CreateCFBucketActivityRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[create_docker_worker_registry_entry_request].Member[CreateDockerWorkerRegistryEntryRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[create_entity_response].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[create_sample_with_write_urls_response].Member[CreateSampleWithWriteUrlsResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[create_sample_with_write_urls_response].Member[SampleWriteUrls]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[create_team_membership_request].Member[CreateTeamMembershipRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[crop_data].Member[CropData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[dataset_create_request].Member[DatasetCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[dataset_data].Member[DatasetData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[dataset_data_enriched].Member[DatasetDataEnriched]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[dataset_embedding_data].Member[DatasetEmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[dataset_update_request].Member[DatasetUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config].Member[DatasourceConfigAzure]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config].Member[DatasourceConfigGCS]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config].Member[DatasourceConfigLIGHTLY]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config].Member[DatasourceConfigLOCAL]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config].Member[DatasourceConfigOBS]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config].Member[DatasourceConfigS3DelegatedAccess]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config].Member[DatasourceConfigS3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config].Member[DatasourceConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_azure].Member[DatasourceConfigAzure]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_azure].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_azure_all_of].Member[DatasourceConfigAzureAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_base].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_base_full_path].Member[DatasourceConfigBaseFullPath]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_gcs].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_gcs].Member[DatasourceConfigGCS]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_gcs_all_of].Member[DatasourceConfigGCSAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_lightly].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_lightly].Member[DatasourceConfigLIGHTLY]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_local].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_local].Member[DatasourceConfigLOCAL]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_local_all_of].Member[DatasourceConfigLOCALAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_obs].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_obs].Member[DatasourceConfigOBS]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_obs_all_of].Member[DatasourceConfigOBSAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_s3].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_s3].Member[DatasourceConfigS3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_s3_all_of].Member[DatasourceConfigS3AllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_s3_delegated_access].Member[DatasourceConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_s3_delegated_access].Member[DatasourceConfigS3DelegatedAccess]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_s3_delegated_access_all_of].Member[DatasourceConfigS3DelegatedAccessAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_verify_data].Member[DatasourceConfigVerifyDataErrors]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_verify_data].Member[DatasourceConfigVerifyData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_config_verify_data_errors].Member[DatasourceConfigVerifyDataErrors]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_processed_until_timestamp_request].Member[DatasourceProcessedUntilTimestampRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_processed_until_timestamp_response].Member[DatasourceProcessedUntilTimestampResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_raw_samples_data].Member[DatasourceRawSamplesDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_raw_samples_data].Member[DatasourceRawSamplesData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_raw_samples_data_row].Member[DatasourceRawSamplesDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_raw_samples_metadata_data].Member[DatasourceRawSamplesMetadataDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_raw_samples_metadata_data].Member[DatasourceRawSamplesMetadataData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_raw_samples_metadata_data_row].Member[DatasourceRawSamplesMetadataDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_raw_samples_predictions_data].Member[DatasourceRawSamplesPredictionsDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_raw_samples_predictions_data].Member[DatasourceRawSamplesPredictionsData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[datasource_raw_samples_predictions_data_row].Member[DatasourceRawSamplesPredictionsDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_authorization_request].Member[DockerAuthorizationRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_authorization_request].Member[DockerTaskDescription]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_authorization_response].Member[DockerAuthorizationResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_license_information].Member[DockerLicenseInformation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_artifact_create_request].Member[DockerRunArtifactCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_artifact_created_data].Member[DockerRunArtifactCreatedData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_artifact_data].Member[DockerRunArtifactData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_create_request].Member[DockerRunCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_data].Member[DockerRunArtifactData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_data].Member[DockerRunData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_log_data].Member[DockerRunLogData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_log_data].Member[DockerRunLogEntryData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_log_entry_data].Member[DockerRunLogEntryData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_scheduled_create_request].Member[DockerRunScheduledCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_scheduled_data].Member[DockerRunScheduledData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_scheduled_update_request].Member[DockerRunScheduledUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_run_update_request].Member[DockerRunUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_task_description].Member[DockerTaskDescription]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_task_description].Member[SamplingConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_user_stats].Member[DockerUserStats]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_authorization_request].Member[DockerWorkerAuthorizationRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config].Member[DockerWorkerConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config].Member[SelectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_create_request].Member[DockerWorkerConfigCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_create_request].Member[DockerWorkerConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_data].Member[DockerWorkerConfigData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_data].Member[DockerWorkerConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2].Member[DockerWorkerConfigV2Docker]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2].Member[DockerWorkerConfigV2Lightly]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2].Member[DockerWorkerConfigV2]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2].Member[SelectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_create_request].Member[DockerWorkerConfigV2CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_create_request].Member[DockerWorkerConfigV2]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_data].Member[DockerWorkerConfigV2Data]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_data].Member[DockerWorkerConfigV2]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_docker].Member[DockerWorkerConfigV2DockerObjectLevel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_docker].Member[DockerWorkerConfigV2DockerStoppingCondition]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_docker].Member[DockerWorkerConfigV2Docker]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_docker].Member[DockerWorkerConfigV3DockerCorruptnessCheck]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_docker].Member[DockerWorkerConfigV3DockerDatasource]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_docker_object_level].Member[DockerWorkerConfigV2DockerObjectLevel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_docker_stopping_condition].Member[DockerWorkerConfigV2DockerStoppingCondition]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly].Member[DockerWorkerConfigV2LightlyCollate]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly].Member[DockerWorkerConfigV2LightlyModel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly].Member[DockerWorkerConfigV2LightlyTrainer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly].Member[DockerWorkerConfigV2Lightly]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly].Member[DockerWorkerConfigV3LightlyCriterion]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly].Member[DockerWorkerConfigV3LightlyLoader]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly].Member[DockerWorkerConfigV3LightlyOptimizer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly_collate].Member[DockerWorkerConfigV2LightlyCollate]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly_model].Member[DockerWorkerConfigV2LightlyModel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v2_lightly_trainer].Member[DockerWorkerConfigV2LightlyTrainer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3].Member[DockerWorkerConfigV3Docker]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3].Member[DockerWorkerConfigV3Lightly]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3].Member[DockerWorkerConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3].Member[SelectionConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_create_request].Member[DockerWorkerConfigV3CreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_create_request].Member[DockerWorkerConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_data].Member[DockerWorkerConfigV3Data]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_data].Member[DockerWorkerConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_docker].Member[DockerWorkerConfigV3DockerCorruptnessCheck]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_docker].Member[DockerWorkerConfigV3DockerDatasource]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_docker].Member[DockerWorkerConfigV3DockerTraining]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_docker].Member[DockerWorkerConfigV3Docker]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_docker_corruptness_check].Member[DockerWorkerConfigV3DockerCorruptnessCheck]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_docker_datasource].Member[DockerWorkerConfigV3DockerDatasource]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_docker_training].Member[DockerWorkerConfigV3DockerTraining]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly].Member[DockerWorkerConfigV3LightlyCheckpointCallback]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly].Member[DockerWorkerConfigV3LightlyCollate]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly].Member[DockerWorkerConfigV3LightlyCriterion]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly].Member[DockerWorkerConfigV3LightlyLoader]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly].Member[DockerWorkerConfigV3LightlyModel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly].Member[DockerWorkerConfigV3LightlyOptimizer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly].Member[DockerWorkerConfigV3LightlyTrainer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly].Member[DockerWorkerConfigV3Lightly]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly_checkpoint_callback].Member[DockerWorkerConfigV3LightlyCheckpointCallback]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly_collate].Member[DockerWorkerConfigV3LightlyCollate]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly_criterion].Member[DockerWorkerConfigV3LightlyCriterion]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly_loader].Member[DockerWorkerConfigV3LightlyLoader]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly_model].Member[DockerWorkerConfigV3LightlyModel]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly_optimizer].Member[DockerWorkerConfigV3LightlyOptimizer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_config_v3_lightly_trainer].Member[DockerWorkerConfigV3LightlyTrainer]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[docker_worker_registry_entry_data].Member[DockerWorkerRegistryEntryData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[embedding2d_create_request].Member[Embedding2dCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[embedding2d_data].Member[Embedding2dData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[embedding_data].Member[EmbeddingData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[filename_and_read_url].Member[FilenameAndReadUrl]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[initial_tag_create_request].Member[InitialTagCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[internal_debug_latency].Member[InternalDebugLatencyMongodb]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[internal_debug_latency].Member[InternalDebugLatency]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[internal_debug_latency_mongodb].Member[InternalDebugLatencyMongodb]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[job_status_data].Member[JobStatusDataResult]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[job_status_data].Member[JobStatusData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[job_status_data].Member[JobStatusMeta]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[job_status_data_result].Member[JobStatusDataResult]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[job_status_meta].Member[JobStatusMeta]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[jobs_data].Member[JobsData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[label_box_data_row].Member[LabelBoxDataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[label_box_v4_data_row].Member[LabelBoxV4DataRow]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[label_studio_task].Member[LabelStudioTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[label_studio_task].Member[LabelStudioTask]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[label_studio_task_data].Member[LabelStudioTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[label_studio_task_data].Member[SampleData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton].Member[PredictionSingletonClassification]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton].Member[PredictionSingletonInstanceSegmentation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton].Member[PredictionSingletonKeypointDetection]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton].Member[PredictionSingletonObjectDetection]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton].Member[PredictionSingletonSemanticSegmentation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton].Member[PredictionSingleton]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_base].Member[PredictionSingletonBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_classification].Member[PredictionSingletonBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_classification].Member[PredictionSingletonClassification]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_classification_all_of].Member[PredictionSingletonClassificationAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_instance_segmentation].Member[PredictionSingletonBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_instance_segmentation].Member[PredictionSingletonInstanceSegmentation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_instance_segmentation_all_of].Member[PredictionSingletonInstanceSegmentationAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_keypoint_detection].Member[PredictionSingletonBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_keypoint_detection].Member[PredictionSingletonKeypointDetection]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_keypoint_detection_all_of].Member[PredictionSingletonKeypointDetectionAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_object_detection].Member[PredictionSingletonBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_object_detection].Member[PredictionSingletonObjectDetection]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_object_detection_all_of].Member[PredictionSingletonObjectDetectionAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_semantic_segmentation].Member[PredictionSingletonBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_semantic_segmentation].Member[PredictionSingletonSemanticSegmentation]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_singleton_semantic_segmentation_all_of].Member[PredictionSingletonSemanticSegmentationAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema].Member[PredictionTaskSchemaKeypoint]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema].Member[PredictionTaskSchemaSimple]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema].Member[PredictionTaskSchema]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_base].Member[PredictionTaskSchemaBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_category].Member[PredictionTaskSchemaCategory]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_category_keypoints].Member[PredictionTaskSchemaCategoryKeypoints]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_category_keypoints_all_of].Member[PredictionTaskSchemaCategoryKeypointsAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_keypoint].Member[PredictionTaskSchemaBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_keypoint].Member[PredictionTaskSchemaCategoryKeypoints]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_keypoint].Member[PredictionTaskSchemaKeypoint]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_keypoint_all_of].Member[PredictionTaskSchemaCategoryKeypoints]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_keypoint_all_of].Member[PredictionTaskSchemaKeypointAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_simple].Member[PredictionTaskSchemaBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_simple].Member[PredictionTaskSchemaCategory]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_simple].Member[PredictionTaskSchemaSimple]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_simple_all_of].Member[PredictionTaskSchemaCategory]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schema_simple_all_of].Member[PredictionTaskSchemaSimpleAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schemas].Member[PredictionTaskSchema]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[prediction_task_schemas].Member[PredictionTaskSchemas]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[profile_basic_data].Member[ProfileBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[profile_basic_data].Member[TeamBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[profile_me_data].Member[ProfileMeDataSettings]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[profile_me_data].Member[ProfileMeData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[profile_me_data].Member[TeamBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[profile_me_data_settings].Member[ProfileMeDataSettings]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[questionnaire_data].Member[QuestionnaireData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sama_task].Member[SamaTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sama_task].Member[SamaTask]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sama_task_data].Member[SamaTaskData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_create_request].Member[CropData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_create_request].Member[SampleCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_create_request].Member[SampleMetaData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_create_request].Member[VideoFrameData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_data].Member[CropData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_data].Member[SampleData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_data].Member[SampleMetaData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_data].Member[VideoFrameData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_data_modes].Member[CropData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_data_modes].Member[SampleDataModes]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_data_modes].Member[SampleMetaData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_data_modes].Member[VideoFrameData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_meta_data].Member[SampleMetaData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_update_request].Member[SampleMetaData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_update_request].Member[SampleUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sample_write_urls].Member[SampleWriteUrls]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sampling_config].Member[SamplingConfigStoppingCondition]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sampling_config].Member[SamplingConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sampling_config_stopping_condition].Member[SamplingConfigStoppingCondition]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sampling_create_request].Member[SamplingConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[sampling_create_request].Member[SamplingCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config].Member[SelectionConfigEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config].Member[SelectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_all_of].Member[SelectionConfigAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_all_of].Member[SelectionConfigEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_base].Member[SelectionConfigBase]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_entry].Member[SelectionConfigEntryInput]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_entry].Member[SelectionConfigEntryStrategy]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_entry].Member[SelectionConfigEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_entry_input].Member[SelectionConfigEntryInput]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_entry_strategy].Member[SelectionConfigEntryStrategy]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3].Member[SelectionConfigV3Entry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3].Member[SelectionConfigV3]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_all_of].Member[SelectionConfigV3AllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_all_of].Member[SelectionConfigV3Entry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_entry].Member[SelectionConfigV3EntryInput]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_entry].Member[SelectionConfigV3EntryStrategy]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_entry].Member[SelectionConfigV3Entry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_entry_input].Member[SelectionConfigV3EntryInput]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_entry_strategy].Member[SelectionConfigV3EntryStrategyAllOfTargetRange]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_entry_strategy].Member[SelectionConfigV3EntryStrategy]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_entry_strategy_all_of].Member[SelectionConfigV3EntryStrategyAllOfTargetRange]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_entry_strategy_all_of].Member[SelectionConfigV3EntryStrategyAllOf]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[selection_config_v3_entry_strategy_all_of_target_range].Member[SelectionConfigV3EntryStrategyAllOfTargetRange]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[service_account_basic_data].Member[ServiceAccountBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[set_embeddings_is_processed_flag_by_id_body_request].Member[SetEmbeddingsIsProcessedFlagByIdBodyRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[shared_access_config_create_request].Member[SharedAccessConfigCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[shared_access_config_data].Member[SharedAccessConfigData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_active_learning_scores_data].Member[TagActiveLearningScoresData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_arithmetics_request].Member[TagArithmeticsRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_arithmetics_response].Member[CreateEntityResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_arithmetics_response].Member[TagArithmeticsResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_arithmetics_response].Member[TagBitMaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_bit_mask_response].Member[TagBitMaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data].Member[TagChangeDataArithmetics]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data].Member[TagChangeDataInitial]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data].Member[TagChangeDataMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data].Member[TagChangeDataRename]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data].Member[TagChangeDataSampler]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data].Member[TagChangeDataSamples]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data].Member[TagChangeDataScatterplot]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data].Member[TagChangeDataUpsize]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data].Member[TagChangeData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data_arithmetics].Member[TagChangeDataArithmetics]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data_initial].Member[TagChangeDataInitial]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data_metadata].Member[TagChangeDataMetadata]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data_rename].Member[TagChangeDataRename]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data_sampler].Member[TagChangeDataSampler]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data_samples].Member[TagChangeDataSamples]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data_scatterplot].Member[TagChangeDataScatterplot]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_data_upsize].Member[TagChangeDataUpsize]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_entry].Member[TagChangeData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_change_entry].Member[TagChangeEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_create_request].Member[TagChangeData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_create_request].Member[TagCreateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_data].Member[TagChangeEntry]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_data].Member[TagData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_update_request].Member[TagChangeData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_update_request].Member[TagUpdateRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[tag_upsize_request].Member[TagUpsizeRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[team_basic_data].Member[TeamBasicData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[team_data].Member[TeamData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[trigger2d_embedding_job_request].Member[Trigger2dEmbeddingJobRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[update_docker_worker_registry_entry_request].Member[UpdateDockerWorkerRegistryEntryRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[update_team_membership_request].Member[UpdateTeamMembershipRequest]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[video_frame_data].Member[VideoFrameData]
+  - - pydantic.BaseModel~Subclass
+    - lightly
+    - Member[openapi_generated].Member[swagger_client].Member[models].Member[write_csv_url_data].Member[WriteCSVUrlData]
+  - - requests.models.Response~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_client].Member[Response]
+  - - requests.models.Response~Subclass
+    - lightly
+    - Member[api].Member[api_workflow_upload_metadata].Member[Response]

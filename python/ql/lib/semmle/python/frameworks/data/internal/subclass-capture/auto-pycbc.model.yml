@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pycbc
+    - Member[inference].Member[io].Member[base_hdf].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pycbc
+    - Member[types].Member[config].Member[StringIO]
+  - - pickle~Alias
+    - pycbc
+    - Member[workflow].Member[core].Member[pickle]
+  - - pickle~Alias
+    - pycbc
+    - Member[workflow].Member[pickle]

@@ -1,0 +1,147 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[urls].Member[ActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[urls].Member[ApprovalView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[urls].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[urls].Member[ResendActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[views].Member[ActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[views].Member[ApprovalView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[views].Member[BaseActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[views].Member[BaseApprovalView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[views].Member[BaseRegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[views].Member[BaseResendActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[views].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[views].Member[ResendActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[urls].Member[ActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[urls].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[urls].Member[ResendActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[views].Member[ActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[views].Member[BaseActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[views].Member[BaseRegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[views].Member[BaseResendActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[views].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[default].Member[views].Member[ResendActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[simple].Member[urls].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[simple].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[simple].Member[views].Member[BaseRegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[backends].Member[simple].Member[views].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[views].Member[ActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[views].Member[ApprovalView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[views].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[views].Member[ResendActivationView]
+  - - Django.Views.View~Subclass
+    - registration
+    - Member[views].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - registration
+    - Member[admin].Member[RegistrationProfile]
+  - - Django.db.models.Model~Subclass
+    - registration
+    - Member[backends].Member[admin_approval].Member[views].Member[SupervisedRegistrationProfile]
+  - - Django.db.models.Model~Subclass
+    - registration
+    - Member[backends].Member[default].Member[views].Member[RegistrationProfile]
+  - - Django.db.models.Model~Subclass
+    - registration
+    - Member[management].Member[commands].Member[cleanupregistration].Member[RegistrationProfile]
+  - - Django.db.models.Model~Subclass
+    - registration
+    - Member[models].Member[RegistrationProfile]
+  - - Django.db.models.Model~Subclass
+    - registration
+    - Member[models].Member[SupervisedRegistrationProfile]
+  - - django.forms.BaseForm~Subclass
+    - registration
+    - Member[forms].Member[RegistrationFormNoFreeEmail]
+  - - django.forms.BaseForm~Subclass
+    - registration
+    - Member[forms].Member[RegistrationFormTermsOfService]
+  - - django.forms.BaseForm~Subclass
+    - registration
+    - Member[forms].Member[RegistrationFormUniqueEmail]
+  - - django.forms.BaseForm~Subclass
+    - registration
+    - Member[forms].Member[RegistrationFormUsernameLowercase]
+  - - django.forms.BaseForm~Subclass
+    - registration
+    - Member[forms].Member[RegistrationForm]
+  - - django.forms.BaseForm~Subclass
+    - registration
+    - Member[forms].Member[ResendActivationForm]
+  - - django.forms.BaseForm~Subclass
+    - registration
+    - Member[forms].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - registration
+    - Member[views].Member[ResendActivationForm]

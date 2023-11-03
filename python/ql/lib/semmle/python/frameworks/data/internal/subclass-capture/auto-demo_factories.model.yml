@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[handlers].Member[on_transfer].Member[TokenStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[handlers].Member[on_transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[factory].Member[tezos_storage].Member[FactoryStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[factory].Member[tezos_storage].Member[Key]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[factory].Member[tezos_storage].Member[Ledger]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[factory].Member[tezos_storage].Member[TokenList]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[factory].Member[tezos_storage].Member[TokenToExchangeItem]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[factory].Member[tezos_storage].Member[UserRewards]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[factory].Member[tezos_storage].Member[Voters]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[token].Member[tezos_parameters].Member[transfer].Member[TransferParameterItem]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[token].Member[tezos_parameters].Member[transfer].Member[TransferParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[token].Member[tezos_parameters].Member[transfer].Member[Tx]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[token].Member[tezos_storage].Member[Key1]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[token].Member[tezos_storage].Member[Key]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[token].Member[tezos_storage].Member[LedgerItem]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[token].Member[tezos_storage].Member[Operator]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[token].Member[tezos_storage].Member[TokenMetadata]
+  - - pydantic.BaseModel~Subclass
+    - demo_factories
+    - Member[types].Member[token].Member[tezos_storage].Member[TokenStorage]

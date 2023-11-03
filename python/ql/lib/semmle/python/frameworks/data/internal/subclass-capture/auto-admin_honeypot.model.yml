@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - admin_honeypot
+    - Member[views].Member[AdminHoneypot]
+  - - Django.db.models.Model~Subclass
+    - admin_honeypot
+    - Member[admin].Member[LoginAttempt]
+  - - Django.db.models.Model~Subclass
+    - admin_honeypot
+    - Member[models].Member[LoginAttempt]
+  - - Django.db.models.Model~Subclass
+    - admin_honeypot
+    - Member[views].Member[LoginAttempt]
+  - - django.forms.BaseForm~Subclass
+    - admin_honeypot
+    - Member[forms].Member[AdminAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_honeypot
+    - Member[forms].Member[HoneypotLoginForm]
+  - - django.forms.BaseForm~Subclass
+    - admin_honeypot
+    - Member[views].Member[HoneypotLoginForm]

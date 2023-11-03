@@ -4,9 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - rio_tiler
+    - Member[utils].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[io].Member[base].Member[BandStatistics]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[io].Member[base].Member[Info]
   - - pydantic.BaseModel~Subclass
     - rio_tiler
     - Member[io].Member[base].Member[TileMatrixSet]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[io].Member[rasterio].Member[BandStatistics]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[io].Member[rasterio].Member[Info]
   - - pydantic.BaseModel~Subclass
     - rio_tiler
     - Member[io].Member[rasterio].Member[TileMatrixSet]
@@ -15,4 +30,25 @@ extensions:
     - Member[io].Member[stac].Member[TileMatrixSet]
   - - pydantic.BaseModel~Subclass
     - rio_tiler
+    - Member[io].Member[xarray].Member[BandStatistics]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[io].Member[xarray].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
     - Member[io].Member[xarray].Member[TileMatrixSet]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[models].Member[BandStatistics]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[models].Member[Bounds]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[models].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[models].Member[RioTilerBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - rio_tiler
+    - Member[models].Member[SpatialInfo]

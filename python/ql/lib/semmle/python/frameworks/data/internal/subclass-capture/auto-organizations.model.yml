@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - organizations
+    - Member[v0].Member[urls].Member[OrganizationsViewSet]
+  - - Django.Views.View~Subclass
+    - organizations
+    - Member[v0].Member[views].Member[OrganizationsViewSet]
   - - Django.db.models.Model~Subclass
     - organizations
     - Member[admin].Member[OrganizationCourse]
@@ -22,3 +28,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - organizations
     - Member[v0].Member[views].Member[Organization]
+  - - django.http.response.HttpResponse~Subclass
+    - organizations
+    - Member[v0].Member[views].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - organizations
+    - Member[v0].Member[views].Member[ValidationError]
+  - - rest_framework.response.Response~Subclass
+    - organizations
+    - Member[v0].Member[views].Member[Response]

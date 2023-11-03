@@ -1,0 +1,378 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[cli].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[config].Member[ClassOverride]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[config].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[parser].Member[openapi].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[parser].Member[properties].Member[model_property].Member[Config]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[OpenAPI]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Components]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Discriminator]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Encoding]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[OAuthFlow]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[OAuthFlows]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[OpenAPI]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[XML]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[callback].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[Components]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[components].Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[contact].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[discriminator].Member[Discriminator]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[encoding].Member[Encoding]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[encoding].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[encoding].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[example].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[external_documentation].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[header].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[header].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[info].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[info].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[info].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[license].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[link].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[link].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[media_type].Member[Encoding]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[media_type].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[media_type].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[media_type].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[media_type].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[oauth_flow].Member[OAuthFlow]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[oauth_flows].Member[OAuthFlow]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[oauth_flows].Member[OAuthFlows]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[open_api].Member[Components]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[open_api].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[open_api].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[open_api].Member[OpenAPI]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[open_api].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[open_api].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[open_api].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[operation].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[operation].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[operation].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[operation].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[operation].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[operation].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[operation].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[operation].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[parameter].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[parameter].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[parameter].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[parameter].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[parameter].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[path_item].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[path_item].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[path_item].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[path_item].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[path_item].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[paths].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[reference].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[request_body].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[request_body].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[response].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[response].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[response].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[response].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[response].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[responses].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[responses].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[schema].Member[Discriminator]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[schema].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[schema].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[schema].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[schema].Member[XML]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[security_scheme].Member[OAuthFlows]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[security_scheme].Member[SecurityScheme]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[server].Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[server].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[server_variable].Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[tag].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[tag].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - openapi_python_client
+    - Member[schema].Member[openapi_schema_pydantic].Member[xml].Member[XML]

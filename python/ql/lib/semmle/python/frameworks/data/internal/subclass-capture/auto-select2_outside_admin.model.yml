@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - select2_outside_admin
+    - Member[urls].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - select2_outside_admin
+    - Member[views].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - select2_outside_admin
+    - Member[views].Member[TModel]
+  - - django.forms.BaseForm~Subclass
+    - select2_outside_admin
+    - Member[views].Member[TForm]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - eventtools
+    - Member[models].Member[BaseEvent]
+  - - Django.db.models.Model~Subclass
+    - eventtools
+    - Member[models].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - eventtools
+    - Member[models].Member[BaseOccurrence]

@@ -1,0 +1,153 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[__main__].Member[OVOCarbonIntensity]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[__main__].Member[OVODailyUsage]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[__main__].Member[OVOFootprint]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[__main__].Member[OVOHalfHourUsage]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[__main__].Member[OVOPlan]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVOBase]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVOCost]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVODailyElectricity]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVODailyGas]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVODailyUsage]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVOHalfHourUsage]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVOHalfHour]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVOInterval]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVOMeterReadings]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[OVOPlan]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[carbon_intensity].Member[OVOBase]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[carbon_intensity].Member[OVOCarbonIntensityForecast]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[carbon_intensity].Member[OVOCarbonIntensity]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[footprint].Member[OVOBase]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[footprint].Member[OVOCarbonFootprint]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[footprint].Member[OVOFootprintBreakdown]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[footprint].Member[OVOFootprintElectricity]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[footprint].Member[OVOFootprintGas]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[footprint].Member[OVOFootprint]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[plan].Member[OVOBase]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[plan].Member[OVOPlanElectricity]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[plan].Member[OVOPlanGas]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[plan].Member[OVOPlanRate]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[plan].Member[OVOPlanStatus]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[plan].Member[OVOPlanUnitRate]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models].Member[plan].Member[OVOPlan]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVOBase]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVOCost]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVODailyElectricity]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVODailyGas]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVODailyUsage]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVOHalfHourUsage]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVOHalfHour]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVOInterval]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVOMeterReadings]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[models]Member[OVOPlan]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[ovoenergy].Member[OVOCarbonIntensity]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[ovoenergy].Member[OVODailyElectricity]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[ovoenergy].Member[OVODailyGas]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[ovoenergy].Member[OVODailyUsage]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[ovoenergy].Member[OVOFootprint]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[ovoenergy].Member[OVOHalfHourUsage]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[ovoenergy].Member[OVOHalfHour]
+  - - pydantic.BaseModel~Subclass
+    - ovoenergy
+    - Member[ovoenergy].Member[OVOPlan]

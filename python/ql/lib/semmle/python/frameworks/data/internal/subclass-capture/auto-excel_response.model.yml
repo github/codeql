@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - excel_response
+    - Member[ExcelView]
+  - - Django.Views.View~Subclass
+    - excel_response
+    - Member[views].Member[ExcelView]
+  - - Django.Views.View~Subclass
+    - excel_response
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponse~Subclass
+    - excel_response
+    - Member[ExcelResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - excel_response
+    - Member[response].Member[ExcelResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - excel_response
+    - Member[response].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - excel_response
+    - Member[views].Member[ExcelResponse]

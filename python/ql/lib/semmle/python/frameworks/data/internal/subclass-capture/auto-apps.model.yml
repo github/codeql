@@ -4,12 +4,54 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[urls].Member[ArticleViewSet]
+  - - Django.Views.View~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[urls].Member[CollectionViewSet]
+  - - Django.Views.View~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[urls].Member[TaskViewSet]
+  - - Django.Views.View~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[views].Member[ArticleViewSet]
+  - - Django.Views.View~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[views].Member[CollectionViewSet]
+  - - Django.Views.View~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[views].Member[TaskViewSet]
   - - Django.db.models.Model~Subclass
     - apps
     - Member[languages].Member[backend].Member[import_data].Member[Article]
   - - Django.db.models.Model~Subclass
     - apps
     - Member[languages].Member[backend].Member[import_data].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[admin].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[models].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[models].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[models].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[resources].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[serializers].Member[Article]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[serializers].Member[Collection]
+  - - Django.db.models.Model~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[serializers].Member[Task]
   - - Django.db.models.Model~Subclass
     - apps
     - Member[languages].Member[backend].Member[languages].Member[views].Member[Article]
@@ -19,3 +61,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - apps
     - Member[languages].Member[backend].Member[languages].Member[views].Member[Task]
+  - - django.http.response.HttpResponse~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[views].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - apps
+    - Member[service].Member[service].Member[views].Member[JsonResponse]
+  - - rest_framework.response.Response~Subclass
+    - apps
+    - Member[languages].Member[backend].Member[languages].Member[views].Member[Response]

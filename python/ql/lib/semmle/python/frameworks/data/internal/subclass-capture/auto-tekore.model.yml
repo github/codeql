@@ -1,0 +1,1275 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - tekore
+    - Member[_sender].Member[concrete].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - tekore
+    - Member[_sender].Member[concrete].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[album].Member[FullAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[album].Member[SimpleTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[artist].Member[FullArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[artist].Member[FullTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[artist].Member[SimpleAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[audiobook].Member[FullAudiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[audiobook].Member[SimpleChapterPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[browse].Member[CategoryPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[browse].Member[Category]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[browse].Member[Recommendations]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[browse].Member[SimpleAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[browse].Member[SimplePlaylistPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[chapter].Member[FullChapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[episode].Member[FullEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[follow].Member[FullArtistCursorPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[library].Member[SavedAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[library].Member[SavedEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[library].Member[SavedShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[library].Member[SavedTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[personalisation].Member[FullArtistOffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[personalisation].Member[FullTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[player].Member[view].Member[CurrentlyPlayingContext]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[player].Member[view].Member[CurrentlyPlaying]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[player].Member[view].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[player].Member[view].Member[PlayHistoryPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[player].Member[view].Member[Queue]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[playlist].Member[modify].Member[FullPlaylist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[playlist].Member[view].Member[FullPlaylist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[playlist].Member[view].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[playlist].Member[view].Member[PlaylistTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[playlist].Member[view].Member[SimplePlaylistPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[search].Member[FullArtistOffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[search].Member[FullTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[search].Member[SimpleAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[search].Member[SimpleAudiobookPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[search].Member[SimpleEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[search].Member[SimplePlaylistPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[search].Member[SimpleShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[show].Member[FullShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[show].Member[SimpleEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[track].Member[AudioAnalysis]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[track].Member[AudioFeatures]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[track].Member[FullTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[user].Member[PrivateUser]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[api].Member[user].Member[PublicUser]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[paging].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[paging].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[paging].Member[Paging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_client].Member[process].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Actions]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Album]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Artist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[AudioAnalysis]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[AudioFeatures]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Audiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Author]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[CategoryPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Category]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Chapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Context]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Copyright]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[CurrentlyPlayingContext]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[CurrentlyPlaying]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[CursorPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Cursor]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Disallows]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Episode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[ExplicitContent]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Followers]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullArtistCursorPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullArtistOffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullAudiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullChapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullPlaylistEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullPlaylistTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullPlaylist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[FullTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Identifiable]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[LocalAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[LocalArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[LocalItem]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[LocalPlaylistTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[LocalTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Narrator]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Paging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[PlayHistoryCursor]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[PlayHistoryPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[PlayHistory]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[PlaylistTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[PlaylistTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Playlist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[PrivateUser]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[PublicUser]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Queue]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[RecommendationSeed]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Recommendations]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Restrictions]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[ResumePoint]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SavedAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SavedAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SavedEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SavedEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SavedShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SavedShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SavedTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SavedTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Section]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Segment]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Show]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleAudiobookPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleAudiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleChapterPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleChapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimplePlaylistPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimplePlaylist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[SimpleTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[TimeInterval]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[TrackLink]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Track]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[Tracks]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[Album]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[SimpleAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[SimpleAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[base].Member[Album]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[base].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[base].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[base].Member[SimpleArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[full].Member[Album]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[full].Member[Copyright]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[full].Member[FullAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[full].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[full].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[full].Member[SavedAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[full].Member[SavedAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album].Member[full].Member[SimpleTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album]Member[SimpleAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[album]Member[SimpleAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[Artist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[CursorPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[Followers]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[FullArtistCursorPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[FullArtistOffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[FullArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[artist].Member[SimpleArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audio_analysis].Member[AudioAnalysis]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audio_analysis].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audio_analysis].Member[Section]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audio_analysis].Member[Segment]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audio_analysis].Member[TimeInterval]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audio_features].Member[AudioFeatures]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audio_features].Member[Identifiable]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[Audiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[Author]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[Narrator]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[SimpleAudiobookPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[SimpleAudiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[base].Member[Audiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[base].Member[Author]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[base].Member[Copyright]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[base].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[base].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[base].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[base].Member[Narrator]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[full].Member[Audiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[full].Member[FullAudiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook].Member[full].Member[SimpleChapterPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook]Member[SimpleAudiobookPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[audiobook]Member[SimpleAudiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[base].Member[Identifiable]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[base].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[base].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[category].Member[CategoryPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[category].Member[Category]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[category].Member[Identifiable]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[category].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[category].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[Chapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[SimpleChapterPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[SimpleChapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[base].Member[Chapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[base].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[base].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[base].Member[Restrictions]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[base].Member[ResumePoint]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[full].Member[Chapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[full].Member[FullChapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter].Member[full].Member[SimpleAudiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter]Member[SimpleChapterPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[chapter]Member[SimpleChapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[context].Member[Context]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[context].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[Actions]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[Context]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[CurrentlyPlayingContext]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[CurrentlyPlaying]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[Disallows]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[FullEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[FullTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[LocalTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[currently_playing].Member[Queue]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[device].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[device].Member[Identifiable]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[Episode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[FullEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[ResumePoint]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[SavedEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[SavedEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[SimpleEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[SimpleEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[episode].Member[SimpleShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[local].Member[LocalAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[local].Member[LocalArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[local].Member[LocalItem]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[local].Member[LocalTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[local].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[member].Member[Copyright]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[member].Member[Followers]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[member].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[member].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[member].Member[Restrictions]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[member].Member[ResumePoint]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[paging].Member[CursorPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[paging].Member[Cursor]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[paging].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[paging].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[paging].Member[Paging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[play_history].Member[Context]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[play_history].Member[CursorPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[play_history].Member[Cursor]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[play_history].Member[FullTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[play_history].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[play_history].Member[PlayHistoryCursor]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[play_history].Member[PlayHistoryPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[play_history].Member[PlayHistory]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[Followers]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[FullEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[FullPlaylistEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[FullPlaylistTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[FullPlaylist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[FullTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[LocalPlaylistTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[LocalTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[PlaylistTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[PlaylistTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[Playlist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[PublicUser]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[SimplePlaylistPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[SimplePlaylist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[playlist].Member[Tracks]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[recommendations].Member[FullTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[recommendations].Member[Identifiable]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[recommendations].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[recommendations].Member[RecommendationSeed]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[recommendations].Member[Recommendations]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[serialise].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[SavedShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[SavedShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[Show]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[SimpleShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[SimpleShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[base].Member[Copyright]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[base].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[base].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[base].Member[Show]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[full].Member[FullShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[full].Member[Show]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show].Member[full].Member[SimpleEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show]Member[SavedShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show]Member[SavedShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show]Member[SimpleShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[show]Member[SimpleShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[FullTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[FullTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[Restrictions]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[SavedTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[SavedTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[SimpleAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[SimpleArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[SimpleTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[SimpleTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[TrackLink]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[Track]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[track].Member[Tracks]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[user].Member[ExplicitContent]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[user].Member[Followers]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[user].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[user].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[user].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[user].Member[PrivateUser]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[user].Member[PublicUser]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[_model].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Actions]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Album]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Artist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[AudioAnalysis]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[AudioFeatures]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Audiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Author]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[CategoryPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Category]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Chapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Context]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Copyright]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[CurrentlyPlayingContext]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[CurrentlyPlaying]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[CursorPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Cursor]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Disallows]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Episode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[ExplicitContent]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Followers]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullArtistCursorPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullArtistOffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullAudiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullChapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullPlaylistEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullPlaylistTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullPlaylist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[FullTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Identifiable]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Image]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[LocalAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[LocalArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[LocalItem]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[LocalPlaylistTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[LocalTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Narrator]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[OffsetPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Paging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[PlayHistoryCursor]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[PlayHistoryPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[PlayHistory]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[PlaylistTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[PlaylistTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Playlist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[PrivateUser]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[PublicUser]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Queue]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[RecommendationSeed]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Recommendations]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Restrictions]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[ResumePoint]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SavedAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SavedAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SavedEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SavedEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SavedShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SavedShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SavedTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SavedTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Section]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Segment]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Show]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleAlbumPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleAlbum]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleArtist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleAudiobookPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleAudiobook]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleChapterPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleChapter]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleEpisodePaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleEpisode]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimplePlaylistPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimplePlaylist]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleShowPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleShow]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleTrackPaging]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[SimpleTrack]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[TimeInterval]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[TrackLink]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Track]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[Tracks]
+  - - pydantic.BaseModel~Subclass
+    - tekore
+    - Member[model].Member[User]

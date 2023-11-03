@@ -6,7 +6,22 @@ extensions:
   data:
   - - tornado.web.RequestHandler~Subclass
     - wdb_server
+    - Member[ActionHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - wdb_server
     - Member[BaseWebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - wdb_server
+    - Member[DebugHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - wdb_server
+    - Member[HomeHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - wdb_server
+    - Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - wdb_server
+    - Member[StyleHandler]
   - - tornado.web.RequestHandler~Subclass
     - wdb_server
     - Member[SyncWebSocketHandler]

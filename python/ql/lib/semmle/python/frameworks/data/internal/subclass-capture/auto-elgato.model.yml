@@ -1,0 +1,69 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[BatteryInfo]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[BatterySettings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[EnergySavingAdjustBrightnessSettings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[EnergySavingSettings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[State]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[Wifi]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[elgato].Member[BatteryInfo]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[elgato].Member[BatterySettings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[elgato].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[elgato].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[elgato].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[models].Member[BatteryInfo]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[models].Member[BatterySettings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[models].Member[EnergySavingAdjustBrightnessSettings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[models].Member[EnergySavingSettings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[models].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[models].Member[Settings]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[models].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - elgato
+    - Member[models].Member[Wifi]

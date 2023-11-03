@@ -6,6 +6,12 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - smartmin
+    - Member[csv_imports].Member[views].Member[SmartListView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[csv_imports].Member[views].Member[SmartReadView]
+  - - Django.Views.View~Subclass
+    - smartmin
     - Member[users].Member[urls].Member[Login]
   - - Django.Views.View~Subclass
     - smartmin
@@ -18,7 +24,88 @@ extensions:
     - Member[users].Member[views].Member[Login]
   - - Django.Views.View~Subclass
     - smartmin
+    - Member[users].Member[views].Member[SmartCreateView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[SmartFormView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[SmartListView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[SmartUpdateView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - smartmin
     - Member[views].Member[ProcessFormView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartCSVImportView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartCreateView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartCsvView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartDeleteView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartFormView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartListView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartModelActionView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartMultiFormView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartReadView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartTemplateView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartUpdateView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[SmartXlsView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - smartmin
+    - Member[views].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[csv_imports].Member[models].Member[ImportTask]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[csv_imports].Member[models].Member[SmartModel]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[csv_imports].Member[tasks].Member[ImportTask]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[csv_imports].Member[views].Member[ImportTask]
   - - Django.db.models.Model~Subclass
     - smartmin
     - Member[management].Member[ContentType]
@@ -30,7 +117,73 @@ extensions:
     - Member[management].Member[Permission]
   - - Django.db.models.Model~Subclass
     - smartmin
+    - Member[models].Member[SmartModel]
+  - - Django.db.models.Model~Subclass
+    - smartmin
     - Member[perms].Member[Permission]
   - - Django.db.models.Model~Subclass
     - smartmin
+    - Member[users].Member[middleware].Member[PasswordHistory]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[users].Member[models].Member[FailedLogin]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[users].Member[models].Member[PasswordHistory]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[users].Member[models].Member[RecoveryToken]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[FailedLogin]
+  - - Django.db.models.Model~Subclass
+    - smartmin
     - Member[users].Member[views].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[PasswordHistory]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[RecoveryToken]
+  - - Django.db.models.Model~Subclass
+    - smartmin
+    - Member[views].Member[ImportTask]
+  - - django.forms.BaseForm~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[SetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[UserForgetForm]
+  - - django.forms.BaseForm~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[UserForm]
+  - - django.forms.BaseForm~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[UserProfileForm]
+  - - django.forms.BaseForm~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[UserUpdateForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - smartmin
+    - Member[users].Member[middleware].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - smartmin
+    - Member[users].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - smartmin
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - smartmin
+    - Member[pdf].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - smartmin
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - smartmin
+    - Member[views].Member[JsonResponse]
+  - - io.StringIO~Subclass
+    - smartmin
+    - Member[csv_imports].Member[tasks].Member[StringIO]
+  - - io.StringIO~Subclass
+    - smartmin
+    - Member[pdf].Member[StringIO]

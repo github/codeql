@@ -54,7 +54,13 @@ extensions:
     - Member[admin].Member[Post]
   - - Django.db.models.Model~Subclass
     - djangocms_blog
+    - Member[cms_plugins].Member[AuthorEntriesPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
     - Member[cms_plugins].Member[BlogCategory]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[cms_plugins].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - djangocms_blog
     - Member[cms_plugins].Member[Post]
@@ -66,7 +72,13 @@ extensions:
     - Member[feeds].Member[Site]
   - - Django.db.models.Model~Subclass
     - djangocms_blog
+    - Member[models].Member[AuthorEntriesPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
     - Member[models].Member[BlogCategory]
+  - - Django.db.models.Model~Subclass
+    - djangocms_blog
+    - Member[models].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - djangocms_blog
     - Member[models].Member[Post]

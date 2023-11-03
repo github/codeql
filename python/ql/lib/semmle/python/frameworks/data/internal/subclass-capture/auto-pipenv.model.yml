@@ -1,0 +1,87 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPConnection~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[distlib].Member[util].Member[HTTPSConnection]
+  - - http.client.HTTPResponse~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[cachecontrol].Member[filewrapper].Member[HTTPResponse]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_internal].Member[utils].Member[misc].Member[StreamWrapper]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[distlib].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[distlib].Member[locators].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[distlib].Member[scripts].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[distlib].Member[util].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[msgpack].Member[fallback].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[pyparsing].Member[diagram].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[requests].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[six].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[urllib3].Member[filepost].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[urllib3].Member[packages].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_vendor].Member[urllib3].Member[packages].Member[six].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[click].Member[_termui_impl].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[dparse].Member[parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[pexpect].Member[spawnbase].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[pexpect].Member[spawnbase].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[ruamel].Member[yaml].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[ruamel].Member[yaml].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[ruamel].Member[yaml].Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[ruamel].Member[yaml].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[ruamel].Member[yaml].Member[main].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pipenv
+    - Member[vendor].Member[ruamel].Member[yaml].Member[main].Member[StringIO]
+  - - logging.Logger~Subclass
+    - pipenv
+    - Member[patched].Member[pip].Member[_internal].Member[utils].Member[_log].Member[VerboseLogger]
+  - - pickle~Alias
+    - pipenv
+    - Member[vendor].Member[pydantic].Member[parse].Member[pickle]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - knox_project
+    - Member[urls].Member[RootView]
+  - - Django.Views.View~Subclass
+    - knox_project
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - knox_project
+    - Member[views].Member[RootView]
+  - - django.http.response.HttpResponse~Subclass
+    - knox_project
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - knox_project
+    - Member[views].Member[Response]

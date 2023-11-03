@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - openml
+    - Member[datasets].Member[dataset].Member[pickle]
+  - - pickle~Alias
+    - openml
+    - Member[runs].Member[run].Member[pickle]
+  - - pickle~Alias
+    - openml
+    - Member[tasks].Member[split].Member[pickle]
+  - - urllib3.PoolManager~Subclass
+    - openml
+    - Member[_api_calls].Member[ProxyManager]

@@ -4,6 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - pickle~Alias
+    - distributed
+    - Member[client].Member[pickle]
+  - - pickle~Alias
+    - distributed
+    - Member[protocol].Member[pickle].Member[pickle]
+  - - pickle~Alias
+    - distributed
+    - Member[scheduler].Member[pickle]
+  - - pickle~Alias
+    - distributed
+    - Member[shuffle].Member[_rechunk].Member[pickle]
+  - - tornado.web.Application~Subclass
+    - distributed
+    - Member[http].Member[routing].Member[RoutingApplication]
+  - - tornado.web.Application~Subclass
+    - distributed
+    - Member[node].Member[RoutingApplication]
   - - tornado.web.RequestHandler~Subclass
     - distributed
     - Member[comm].Member[ws].Member[WSHandler]
@@ -12,7 +30,103 @@ extensions:
     - Member[comm].Member[ws].Member[WebSocketHandler]
   - - tornado.web.RequestHandler~Subclass
     - distributed
+    - Member[http].Member[health].Member[HealthHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[prometheus].Member[PrometheusNotAvailableHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[prometheus].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[proxy].Member[GlobalProxyHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[routing].Member[DirectoryHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[api].Member[APIHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[api].Member[AdaptiveTargetHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[api].Member[CheckIdleHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[api].Member[GetWorkersHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[api].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[api].Member[RetireWorkersHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
     - Member[http].Member[scheduler].Member[info].Member[EventstreamHandler]
   - - tornado.web.RequestHandler~Subclass
     - distributed
+    - Member[http].Member[scheduler].Member[info].Member[Exceptions]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[info].Member[IndividualPlots]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[info].Member[Logs]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[info].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[info].Member[TaskCallStack]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[info].Member[Task]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
     - Member[http].Member[scheduler].Member[info].Member[WebSocketHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[info].Member[WorkerCallStacks]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[info].Member[WorkerLogs]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[info].Member[Worker]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[info].Member[Workers]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[json].Member[CountsJSON]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[json].Member[IdentityJSON]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[json].Member[IndexJSON]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[json].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[missing_bokeh].Member[MissingBokeh]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[missing_bokeh].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[prometheus].Member[core].Member[PrometheusHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[scheduler].Member[prometheus].Member[core].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[utils].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[worker].Member[prometheus].Member[core].Member[PrometheusHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - distributed
+    - Member[http].Member[worker].Member[prometheus].Member[core].Member[RequestHandler]

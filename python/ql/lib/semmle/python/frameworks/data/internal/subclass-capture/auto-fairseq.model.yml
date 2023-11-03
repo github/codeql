@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - fairseq
+    - Member[distributed].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - fairseq
+    - Member[model_parallel].Member[megatron].Member[data_utils].Member[lazy_loader].Member[pkl]

@@ -4,6 +4,201 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AnswerStreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncAgentsLanarkyCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncAgentsStreamingCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncAgentsStreamingJSONCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncAgentsWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncBaseRetrievalQAStreamingCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncBaseRetrievalQAStreamingJSONCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncBaseRetrievalQAWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncLLMChainStreamingCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncLLMChainStreamingJSONCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncLLMChainWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncLanarkyCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncStreamingJSONResponseCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncStreamingResponseCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[AsyncWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[BaseRetrievalQAStreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[StreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[agents].Member[AsyncAgentsLanarkyCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[agents].Member[AsyncAgentsStreamingCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[agents].Member[AsyncAgentsStreamingJSONCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[agents].Member[AsyncAgentsWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[agents].Member[AsyncLLMChainStreamingCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[agents].Member[AsyncLLMChainStreamingJSONCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[agents].Member[AsyncLLMChainWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[agents].Member[AsyncLanarkyCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[agents].Member[StreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[base].Member[AsyncLanarkyCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[base].Member[AsyncStreamingJSONResponseCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[base].Member[AsyncStreamingResponseCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[base].Member[AsyncWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[base].Member[StreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[base].Member[WebsocketResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[llm].Member[AnswerStreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[llm].Member[AsyncLLMChainStreamingCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[llm].Member[AsyncLLMChainStreamingJSONCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[llm].Member[AsyncLLMChainWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[llm].Member[AsyncStreamingJSONResponseCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[llm].Member[AsyncStreamingResponseCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[llm].Member[AsyncWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[llm].Member[StreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[retrieval_qa].Member[AsyncBaseRetrievalQAStreamingCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[retrieval_qa].Member[AsyncBaseRetrievalQAStreamingJSONCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[retrieval_qa].Member[AsyncBaseRetrievalQAWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[retrieval_qa].Member[AsyncLLMChainStreamingCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[retrieval_qa].Member[AsyncLLMChainStreamingJSONCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[retrieval_qa].Member[AsyncLLMChainWebsocketCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[callbacks].Member[retrieval_qa].Member[BaseRetrievalQAStreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[responses].Member[streaming].Member[AsyncLanarkyCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[routing].Member[utils].Member[WebsocketConnection]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[schemas].Member[AnswerStreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[schemas].Member[BaseRetrievalQAStreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[schemas].Member[StreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[schemas].Member[WebsocketResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[schemas].Member[callbacks].Member[AnswerStreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[schemas].Member[callbacks].Member[BaseRetrievalQAStreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[schemas].Member[callbacks].Member[StreamingJSONResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[schemas].Member[websockets].Member[WebsocketResponse]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[websockets].Member[WebsocketConnection]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[websockets].Member[base].Member[AsyncLanarkyCallback]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[websockets].Member[base].Member[BaseWebsocketConnection]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[websockets].Member[base].Member[WebsocketConnection]
+  - - pydantic.BaseModel~Subclass
+    - lanarky
+    - Member[websockets].Member[base].Member[WebsocketResponse]
+  - - starlette.websockets.WebSocket~Subclass
+    - lanarky
+    - Member[callbacks].Member[base].Member[WebSocket]
   - - starlette.websockets.WebSocket~Subclass
     - lanarky
     - Member[routing].Member[langchain].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - lanarky
+    - Member[routing].Member[utils].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - lanarky
+    - Member[websockets].Member[base].Member[WebSocket]

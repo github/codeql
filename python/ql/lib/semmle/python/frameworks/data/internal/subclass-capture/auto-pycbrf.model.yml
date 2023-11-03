@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pycbrf
+    - Member[banks].Member[BytesIO]
+  - - xml.etree.ElementTree~Subclass
+    - pycbrf
+    - Member[banks].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - pycbrf
+    - Member[rates].Member[basic].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - pycbrf
+    - Member[rates].Member[currencies].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - pycbrf
+    - Member[rates].Member[dynamics].Member[ElementTree]

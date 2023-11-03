@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPResponse~Subclass
+    - grab
+    - Member[transport].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - grab
+    - Member[util].Member[cookies].Member[HTTPResponse]
+  - - io.StringIO~Subclass
+    - grab
+    - Member[document].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - grab
+    - Member[document].Member[StringIO]
+  - - io.StringIO~Subclass
+    - grab
+    - Member[response].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - grab
+    - Member[response].Member[StringIO]
+  - - lxml.etree~Alias
+    - grab
+    - Member[document].Member[etree]
+  - - lxml.etree~Alias
+    - grab
+    - Member[response].Member[etree]
+  - - pickle~Alias
+    - grab
+    - Member[spider].Member[queue_backend].Member[mongodb].Member[pickle]
+  - - pickle~Alias
+    - grab
+    - Member[spider].Member[queue_backend].Member[redis].Member[pickle]
+  - - urllib.parse.SplitResult~Subclass
+    - grab
+    - Member[document].Member[SplitResult]
+  - - urllib.parse.SplitResult~Subclass
+    - grab
+    - Member[response].Member[SplitResult]
+  - - urllib3.PoolManager~Subclass
+    - grab
+    - Member[transport].Member[PoolManager]
+  - - urllib3.PoolManager~Subclass
+    - grab
+    - Member[transport].Member[ProxyManager]

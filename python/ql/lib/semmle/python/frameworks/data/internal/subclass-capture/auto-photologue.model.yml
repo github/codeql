@@ -4,12 +4,216 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[GalleryArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[GalleryDateDetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[GalleryDayArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[GalleryDetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[GalleryListView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[GalleryMonthArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[GalleryYearArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[PhotoArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[PhotoDateDetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[PhotoDayArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[PhotoDetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[PhotoListView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[PhotoMonthArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[PhotoYearArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[urls].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[ArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[DateDetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[DayArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[GalleryArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[GalleryDateDetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[GalleryDayArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[GalleryDetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[GalleryListView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[GalleryMonthArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[GalleryYearArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[MonthArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[PhotoArchiveIndexView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[PhotoDateDetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[PhotoDayArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[PhotoDetailView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[PhotoListView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[PhotoMonthArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[PhotoYearArchiveView]
+  - - Django.Views.View~Subclass
+    - photologue
+    - Member[views].Member[YearArchiveView]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[admin].Member[Gallery]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[admin].Member[PhotoEffect]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[admin].Member[PhotoSize]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[admin].Member[Photo]
   - - Django.db.models.Model~Subclass
     - photologue
     - Member[admin].Member[Site]
   - - Django.db.models.Model~Subclass
     - photologue
+    - Member[admin].Member[Watermark]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[forms].Member[Gallery]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[forms].Member[Photo]
+  - - Django.db.models.Model~Subclass
+    - photologue
     - Member[forms].Member[Site]
   - - Django.db.models.Model~Subclass
     - photologue
+    - Member[management].Member[commands].Member[PhotoSize]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[management].Member[commands].Member[plcache].Member[ImageModel]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[management].Member[commands].Member[plcache].Member[PhotoSize]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[management].Member[commands].Member[plflush].Member[ImageModel]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[management].Member[commands].Member[plflush].Member[PhotoSize]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[models].Member[BaseEffect]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[models].Member[Gallery]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[models].Member[ImageModel]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[models].Member[PhotoEffect]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[models].Member[PhotoSize]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[models].Member[Photo]
+  - - Django.db.models.Model~Subclass
+    - photologue
     - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[models].Member[Watermark]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[sitemaps].Member[Gallery]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[sitemaps].Member[Photo]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[templatetags].Member[photologue_tags].Member[Gallery]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[templatetags].Member[photologue_tags].Member[Photo]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[views].Member[Gallery]
+  - - Django.db.models.Model~Subclass
+    - photologue
+    - Member[views].Member[Photo]
+  - - django.forms.BaseForm~Subclass
+    - photologue
+    - Member[admin].Member[GalleryAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - photologue
+    - Member[admin].Member[PhotoAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - photologue
+    - Member[admin].Member[UploadZipForm]
+  - - django.forms.BaseForm~Subclass
+    - photologue
+    - Member[forms].Member[UploadZipForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - photologue
+    - Member[admin].Member[HttpResponseRedirect]
+  - - io.StringIO~Subclass
+    - photologue
+    - Member[forms].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - photologue
+    - Member[models].Member[BytesIO]

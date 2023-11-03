@@ -4,6 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - httpbin
+    - Member[Flask]
+  - - flask.Flask~Subclass
+    - httpbin
+    - Member[core].Member[Flask]
+  - - flask.Flask~Subclass
+    - httpbin
+    - Member[filters].Member[Flask]
+  - - flask.Response~Subclass
+    - httpbin
+    - Member[Response]
+  - - flask.Response~Subclass
+    - httpbin
+    - Member[core].Member[Response]
+  - - flask.Response~Subclass
+    - httpbin
+    - Member[filters].Member[Response]
   - - io.StringIO~Subclass
     - httpbin
     - Member[filters].Member[BytesIO]

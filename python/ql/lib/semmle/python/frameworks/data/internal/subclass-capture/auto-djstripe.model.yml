@@ -1,0 +1,474 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - djstripe
+    - Member[admin].Member[views].Member[ConfirmCustomAction]
+  - - Django.Views.View~Subclass
+    - djstripe
+    - Member[admin].Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - djstripe
+    - Member[views].Member[ProcessWebhookView]
+  - - Django.Views.View~Subclass
+    - djstripe
+    - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[management].Member[commands].Member[djstripe_init_customers].Member[Customer]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[management].Member[commands].Member[djstripe_sync_models].Member[StripeBaseModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[management].Member[commands].Member[djstripe_update_invoiceitem_ids].Member[InvoiceItem]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[mixins].Member[Customer]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[mixins].Member[Plan]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[APIKey]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[ApplicationFeeRefund]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[ApplicationFee]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[BalanceTransaction]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[BankAccount]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Card]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Charge]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[CountrySpec]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Coupon]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Customer]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Discount]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Dispute]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[DjstripePaymentMethod]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[FileLink]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[FileUpload]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[File]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[IdempotencyKey]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[InvoiceItem]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Invoice]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[LineItem]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Mandate]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[PaymentIntent]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[PaymentMethod]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Payout]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Plan]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Price]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Refund]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[ScheduledQueryRun]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Session]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[SetupIntent]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[ShippingRate]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[SourceTransaction]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Source]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[SubscriptionItem]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[SubscriptionSchedule]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[TaxCode]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[TaxId]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[TaxRate]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[TransferReversal]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[Transfer]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[UpcomingInvoice]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[UsageRecordSummary]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[UsageRecord]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[VerificationReport]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[VerificationSession]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[WebhookEndpoint]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[WebhookEventTrigger]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[account].Member[APIKey]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[account].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[account].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[api].Member[APIKey]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[api].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[base].Member[IdempotencyKey]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[base].Member[StripeBaseModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[base].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[BaseInvoice]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[Coupon]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[Customer]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[Discount]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[DjstripeInvoiceTotalTaxAmount]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[DjstripeUpcomingInvoiceTotalTaxAmount]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[InvoiceItem]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[Invoice]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[LineItem]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[Plan]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[ShippingRate]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[SubscriptionItem]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[SubscriptionSchedule]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[TaxCode]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[TaxId]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[TaxRate]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[UpcomingInvoice]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[UsageRecordSummary]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[billing].Member[UsageRecord]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[checkout].Member[Session]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[checkout].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[checkout].Member[Subscription]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[connect].Member[ApplicationFeeRefund]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[connect].Member[ApplicationFee]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[connect].Member[CountrySpec]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[connect].Member[StripeBaseModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[connect].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[connect].Member[TransferReversal]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[connect].Member[Transfer]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[BalanceTransaction]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[Charge]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[Customer]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[Dispute]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[FileLink]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[FileUpload]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[File]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[IdempotencyKey]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[Mandate]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[PaymentIntent]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[Payout]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[Price]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[Refund]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[SetupIntent]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[core].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[identity].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[identity].Member[VerificationReport]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[identity].Member[VerificationSession]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[orders].Member[Discount]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[orders].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[orders].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[payment_methods].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[payment_methods].Member[BankAccount]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[payment_methods].Member[Card]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[payment_methods].Member[Customer]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[payment_methods].Member[DjstripePaymentMethod]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[payment_methods].Member[PaymentMethod]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[payment_methods].Member[SourceTransaction]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[payment_methods].Member[Source]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[payment_methods].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[sigma].Member[ScheduledQueryRun]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[sigma].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[webhooks].Member[Event]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[webhooks].Member[StripeModel]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[webhooks].Member[WebhookEndpoint]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[models].Member[webhooks].Member[WebhookEventTrigger]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[sync].Member[Customer]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[views].Member[WebhookEndpoint]
+  - - Django.db.models.Model~Subclass
+    - djstripe
+    - Member[views].Member[WebhookEventTrigger]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[actions].Member[CustomActionForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[admin].Member[APIKeyAdminCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[admin].Member[CustomActionForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[admin].Member[WebhookEndpointAdminCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[admin].Member[WebhookEndpointAdminEditForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[forms].Member[APIKeyAdminCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[forms].Member[CustomActionForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[forms].Member[WebhookEndpointAdminBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[forms].Member[WebhookEndpointAdminCreateForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[forms].Member[WebhookEndpointAdminEditForm]
+  - - django.forms.BaseForm~Subclass
+    - djstripe
+    - Member[admin].Member[views].Member[CustomActionForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - djstripe
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - djstripe
+    - Member[admin].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - djstripe
+    - Member[views].Member[HttpResponse]

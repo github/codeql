@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - fabio
+    - Member[compression].Member[agi_bitfield].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fabio
+    - Member[fabioutils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fabio
+    - Member[fabioutils].Member[_BytesIO]
+  - - io.StringIO~Subclass
+    - fabio
+    - Member[openimage].Member[BytesIO]
+  - - lxml.etree~Alias
+    - fabio
+    - Member[xsdimage].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - fabio
+    - Member[xsdimage].Member[etree]

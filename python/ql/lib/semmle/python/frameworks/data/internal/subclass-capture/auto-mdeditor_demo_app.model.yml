@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - mdeditor_demo_app
+    - Member[forms].Member[MDTextFormField]
+  - - Django.Views.View~Subclass
+    - mdeditor_demo_app
+    - Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - mdeditor_demo_app
+    - Member[views].Member[MDEditorFormView]
+  - - Django.Views.View~Subclass
+    - mdeditor_demo_app
+    - Member[views].Member[MDEditorModleForm]
+  - - Django.Views.View~Subclass
+    - mdeditor_demo_app
+    - Member[views].Member[ShowView]
+  - - Django.db.models.Model~Subclass
+    - mdeditor_demo_app
+    - Member[forms].Member[ExampleModel]
+  - - Django.db.models.Model~Subclass
+    - mdeditor_demo_app
+    - Member[models].Member[ExampleModel]
+  - - django.forms.BaseForm~Subclass
+    - mdeditor_demo_app
+    - Member[forms].Member[MDEditorForm]
+  - - django.forms.BaseForm~Subclass
+    - mdeditor_demo_app
+    - Member[forms].Member[MDEditorModleForm]

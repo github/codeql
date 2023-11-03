@@ -6,4 +6,19 @@ extensions:
   data:
   - - pydantic.BaseModel~Subclass
     - rio_cogeo
+    - Member[models].Member[BandMetadata]
+  - - pydantic.BaseModel~Subclass
+    - rio_cogeo
+    - Member[models].Member[Geo]
+  - - pydantic.BaseModel~Subclass
+    - rio_cogeo
+    - Member[models].Member[IFD]
+  - - pydantic.BaseModel~Subclass
+    - rio_cogeo
+    - Member[models].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - rio_cogeo
+    - Member[models].Member[Profile]
+  - - pydantic.BaseModel~Subclass
+    - rio_cogeo
     - Member[scripts].Member[cli].Member[TileMatrixSet]

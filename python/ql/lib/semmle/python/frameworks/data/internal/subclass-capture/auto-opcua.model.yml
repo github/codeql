@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - opcua
+    - Member[server].Member[address_space].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - opcua
+    - Member[common].Member[type_dictionary_buider].Member[Et]
+  - - xml.etree.ElementTree~Subclass
+    - opcua
+    - Member[common].Member[xmlexporter].Member[Et]
+  - - xml.etree.ElementTree~Subclass
+    - opcua
+    - Member[common].Member[xmlparser].Member[ET]

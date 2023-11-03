@@ -1,0 +1,69 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[alerting_profiles].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[dashboard].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[endpoint].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[extensions].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[maintenance_windows].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[metric_events].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[notifications].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[oneagent_environment_wide_configuration].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[oneagent_in_a_hostgroup].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[oneagent_on_a_host].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[configuration_v1].Member[plugins].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[dynatrace_object].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[environment_v1].Member[deployment].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[environment_v1].Member[event].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[environment_v2].Member[activegates_autoupdate_configuration].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[environment_v2].Member[logs].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[environment_v2].Member[metrics].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[environment_v2].Member[monitored_entities].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[environment_v2].Member[problems].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[environment_v2].Member[service_level_objectives].Member[Response]
+  - - requests.models.Response~Subclass
+    - dynatrace
+    - Member[environment_v2].Member[tokens_api].Member[Response]

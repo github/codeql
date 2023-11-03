@@ -4,12 +4,210 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - paypal
+    - Member[pro].Member[fields].Member[CountryField]
+  - - Django.Forms.Field~Subclass
+    - paypal
+    - Member[pro].Member[fields].Member[CreditCardCVV2Field]
+  - - Django.Forms.Field~Subclass
+    - paypal
+    - Member[pro].Member[fields].Member[CreditCardExpiryField]
+  - - Django.Forms.Field~Subclass
+    - paypal
+    - Member[pro].Member[fields].Member[CreditCardField]
+  - - Django.Forms.Field~Subclass
+    - paypal
+    - Member[pro].Member[forms].Member[CountryField]
+  - - Django.Forms.Field~Subclass
+    - paypal
+    - Member[pro].Member[forms].Member[CreditCardCVV2Field]
+  - - Django.Forms.Field~Subclass
+    - paypal
+    - Member[pro].Member[forms].Member[CreditCardExpiryField]
+  - - Django.Forms.Field~Subclass
+    - paypal
+    - Member[pro].Member[forms].Member[CreditCardField]
+  - - Django.Forms.Field~Subclass
+    - paypal
+    - Member[standard].Member[forms].Member[PayPalDateTimeField]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express].Member[dashboard].Member[views].Member[TransactionDetailView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express].Member[dashboard].Member[views].Member[TransactionListView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express].Member[views].Member[CancelResponseView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express].Member[views].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express].Member[views].Member[ShippingOptionsView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express].Member[views].Member[View]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express_checkout].Member[dashboard].Member[views].Member[TransactionDetailView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express_checkout].Member[dashboard].Member[views].Member[TransactionListView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express_checkout].Member[views].Member[CancelResponseView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express_checkout].Member[views].Member[PaypalRedirectView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[express_checkout].Member[views].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[payflow].Member[dashboard].Member[views].Member[TransactionDetailView]
+  - - Django.Views.View~Subclass
+    - paypal
+    - Member[payflow].Member[dashboard].Member[views].Member[TransactionListView]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[base].Member[ResponseModel]
   - - Django.db.models.Model~Subclass
     - paypal
     - Member[express].Member[facade].Member[Site]
   - - Django.db.models.Model~Subclass
     - paypal
+    - Member[express].Member[facade].Member[Transaction]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[express].Member[models].Member[ExpressTransaction]
+  - - Django.db.models.Model~Subclass
+    - paypal
     - Member[express_checkout].Member[facade].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[express_checkout].Member[facade].Member[Transaction]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[express_checkout].Member[models].Member[ExpressCheckoutTransaction]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[models].Member[ExpressCheckoutTransaction]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[models].Member[ExpressTransaction]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[models].Member[PayflowTransaction]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[payflow].Member[models].Member[PayflowTransaction]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[pro].Member[admin].Member[PayPalNVP]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[pro].Member[helpers].Member[PayPalNVP]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[pro].Member[models].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[pro].Member[models].Member[PayPalNVP]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[ipn].Member[admin].Member[PayPalIPN]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[ipn].Member[forms].Member[PayPalIPN]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[ipn].Member[models].Member[PayPalIPN]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[ipn].Member[models].Member[PayPalStandardBase]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[ipn].Member[views].Member[PayPalIPN]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[models].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[models].Member[PayPalStandardBase]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[pdt].Member[admin].Member[PayPalPDT]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[pdt].Member[forms].Member[PayPalPDT]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[pdt].Member[models].Member[PayPalPDT]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[pdt].Member[models].Member[PayPalStandardBase]
+  - - Django.db.models.Model~Subclass
+    - paypal
+    - Member[standard].Member[pdt].Member[views].Member[PayPalPDT]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[pro].Member[forms].Member[ConfirmForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[pro].Member[forms].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[pro].Member[views].Member[ConfirmForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[pro].Member[views].Member[PaymentForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[forms].Member[PayPalEncryptedPaymentsForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[forms].Member[PayPalPaymentsForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[forms].Member[PayPalSharedSecretEncryptedPaymentsForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[forms].Member[PayPalStandardBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[ipn].Member[forms].Member[PayPalIPNForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[ipn].Member[forms].Member[PayPalStandardBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[ipn].Member[views].Member[PayPalIPNForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[pdt].Member[forms].Member[PayPalPDTForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[pdt].Member[forms].Member[PayPalStandardBaseForm]
+  - - django.forms.BaseForm~Subclass
+    - paypal
+    - Member[standard].Member[pdt].Member[views].Member[PayPalPDTForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - paypal
+    - Member[express].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - paypal
+    - Member[express_checkout].Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - paypal
+    - Member[pro].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - paypal
+    - Member[express].Member[views].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - paypal
     - Member[pro].Member[views].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - paypal
+    - Member[standard].Member[ipn].Member[views].Member[HttpResponse]

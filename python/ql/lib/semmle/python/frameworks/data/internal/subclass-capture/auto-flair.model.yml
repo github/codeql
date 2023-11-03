@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - flair
+    - Member[embeddings].Member[transformer].Member[BytesIO]
+  - - lxml.etree~Alias
+    - flair
+    - Member[datasets].Member[biomedical].Member[etree]
+  - - pickle~Alias
+    - flair
+    - Member[inference_utils].Member[pickle]
+  - - pickle~Alias
+    - flair
+    - Member[models].Member[clustering].Member[pickle]

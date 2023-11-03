@@ -64,6 +64,12 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - apiview
     - Member[view].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - apiview
+    - Member[view].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - apiview
+    - Member[views].Member[rest_framework].Member[Response]
   - - io.StringIO~Subclass
     - apiview
     - Member[views].Member[models].Member[BytesIO]

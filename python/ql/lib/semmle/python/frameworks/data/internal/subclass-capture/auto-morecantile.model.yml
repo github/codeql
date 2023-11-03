@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - morecantile
+    - Member[TileMatrixSet]
+  - - pydantic.BaseModel~Subclass
+    - morecantile
+    - Member[defaults].Member[TileMatrixSet]
+  - - pydantic.BaseModel~Subclass
+    - morecantile
+    - Member[models].Member[CRSUri]
+  - - pydantic.BaseModel~Subclass
+    - morecantile
+    - Member[models].Member[CRSWKT]
+  - - pydantic.BaseModel~Subclass
+    - morecantile
+    - Member[models].Member[TMSBoundingBox]
+  - - pydantic.BaseModel~Subclass
+    - morecantile
+    - Member[models].Member[TileMatrixSet]
+  - - pydantic.BaseModel~Subclass
+    - morecantile
+    - Member[models].Member[TileMatrix]
+  - - pydantic.BaseModel~Subclass
+    - morecantile
+    - Member[models].Member[variableMatrixWidth]

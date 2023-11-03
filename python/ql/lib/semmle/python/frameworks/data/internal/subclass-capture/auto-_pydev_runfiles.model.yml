@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - _pydev_runfiles
+    - Member[pydev_runfiles].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydev_runfiles
+    - Member[pydev_runfiles_nose].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydev_runfiles
+    - Member[pydev_runfiles_xml_rpc].Member[StringIO]

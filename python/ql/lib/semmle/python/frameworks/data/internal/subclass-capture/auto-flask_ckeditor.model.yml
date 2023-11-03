@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - flask_ckeditor
+    - Member[Blueprint]
+  - - markupsafe.Markup~Subclass
+    - flask_ckeditor
+    - Member[Markup]

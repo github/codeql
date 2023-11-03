@@ -4,6 +4,378 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[contrib].Member[auth].Member[ProfileView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[contrib].Member[plotly].Member[DashboardView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[contrib].Member[plotly].Member[views].Member[DashboardView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[contrib].Member[plotly].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[fsm].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[fsm].Member[views].Member[FlowGraphView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[fsm].Member[viewset].Member[ModelTransitionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[fsm].Member[viewset].Member[UpdateModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[urls].Member[base].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[urls].Member[base].Member[_IndexRedirectView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[urls].Member[model].Member[CreateModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[urls].Member[model].Member[DeleteBulkActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[urls].Member[model].Member[DeleteModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[urls].Member[model].Member[DetailModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[urls].Member[model].Member[ListModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[urls].Member[model].Member[UpdateModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[BaseBulkActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[CreateModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[DeleteBulkActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[DeleteModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[DetailModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[ListModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[UpdateModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[actions].Member[BaseBulkActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[actions].Member[DeleteBulkActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[create].Member[CreateModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[delete].Member[DeleteModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[detail].Member[DetailModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[list].Member[BaseListModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[list].Member[ListModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[views].Member[update].Member[UpdateModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[AssignTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[BulkAssignTasksActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[BulkUnassignTasksActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[CancelProcessView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[CancelTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[CreateArtifactView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[CreateProcessView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[DashboardProcessListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[DashboardTaskListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[DashboardView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[DetailProcessView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[DetailTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[FlowArchiveListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[FlowChartView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[FlowInboxListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[FlowQueueListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[IndexTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[ReviveTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[UnassignTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[UndoTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[UpdateArtifactView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[UpdateProcessView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[UserIndexTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[WorkflowArchiveListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[WorkflowInboxListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[WorkflowQueueListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[AssignTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[BaseBulkActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[BulkAssignTasksActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[BulkUnassignTasksActionView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[CancelProcessView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[CancelTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[ReviveTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[UnassignTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[UndoTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[chart].Member[FlowChartView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[create].Member[CreateArtifactView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[create].Member[CreateProcessView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[dashboard].Member[DashboardProcessListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[dashboard].Member[DashboardTaskListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[dashboard].Member[DashboardView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[dashboard].Member[ListModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[detail].Member[DetailProcessView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[detail].Member[DetailSubprocessView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[detail].Member[DetailTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[detail].Member[IndexTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[detail].Member[UserIndexTaskView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[list].Member[FlowArchiveListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[list].Member[FlowInboxListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[list].Member[FlowQueueListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[list].Member[ListModelView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[list].Member[WorkflowArchiveListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[list].Member[WorkflowInboxListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[list].Member[WorkflowQueueListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[list].Member[WorkflowTaskListView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[update].Member[UpdateArtifactView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[update].Member[UpdateProcessView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[viewset].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[viewset].Member[_IndexRedirectView]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[templatetags].Member[viewflow].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[admin].Member[Process]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[admin].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[filters].Member[Process]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[filters].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[list].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[viewset].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[models].Member[AbstractProcess]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[models].Member[AbstractTask]
   - - Django.db.models.Model~Subclass
     - viewflow
     - Member[workflow].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[models].Member[Process]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[models].Member[Task]
+  - - Django.db.models.Model~Subclass
+    - viewflow
+    - Member[workflow].Member[nodes].Member[subprocess].Member[Process]
+  - - django.forms.BaseForm~Subclass
+    - viewflow
+    - Member[contrib].Member[auth].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - viewflow
+    - Member[forms].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - viewflow
+    - Member[fsm].Member[viewset].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - viewflow
+    - Member[views].Member[BulkActionForm]
+  - - django.forms.BaseForm~Subclass
+    - viewflow
+    - Member[views].Member[actions].Member[BulkActionForm]
+  - - django.forms.BaseForm~Subclass
+    - viewflow
+    - Member[views].Member[base].Member[BulkActionForm]
+  - - django.forms.BaseForm~Subclass
+    - viewflow
+    - Member[views].Member[create].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - viewflow
+    - Member[views].Member[update].Member[ModelForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - viewflow
+    - Member[fsm].Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - viewflow
+    - Member[fsm].Member[viewset].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - viewflow
+    - Member[views].Member[actions].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - viewflow
+    - Member[views].Member[delete].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[actions].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[create].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[update].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - viewflow
+    - Member[contrib].Member[plotly].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - viewflow
+    - Member[fsm].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - viewflow
+    - Member[workflow].Member[flow].Member[views].Member[chart].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - viewflow
+    - Member[contrib].Member[plotly].Member[views].Member[JsonResponse]
+  - - rest_framework.response.Response~Subclass
+    - viewflow
+    - Member[fsm].Member[views].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - viewflow
+    - Member[forms].Member[renderers].Member[ElementTree]

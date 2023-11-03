@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - aerich
+    - Member[coder].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - aerich
+    - Member[inspectdb].Member[Column]
+  - - pydantic.BaseModel~Subclass
+    - aerich
+    - Member[inspectdb].Member[mysql].Member[Column]
+  - - pydantic.BaseModel~Subclass
+    - aerich
+    - Member[inspectdb].Member[postgres].Member[Column]
+  - - pydantic.BaseModel~Subclass
+    - aerich
+    - Member[inspectdb].Member[sqlite].Member[Column]
+  - - pydantic.BaseModel~Subclass
+    - aerich
+    - Member[inspectdb]Member[Column]

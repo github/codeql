@@ -7,3 +7,21 @@ extensions:
   - - io.StringIO~Subclass
     - client
     - Member[openapi].Member[StringIO]
+  - - pickle~Alias
+    - client
+    - Member[protocols].Member[analytics].Member[pickle]
+  - - pickle~Alias
+    - client
+    - Member[protocols].Member[backup].Member[pickle]
+  - - pickle~Alias
+    - client
+    - Member[utils].Member[auth].Member[pickle]
+  - - requests.models.Response~Subclass
+    - client
+    - Member[_api].Member[diagrams].Member[Response]
+  - - requests.models.Response~Subclass
+    - client
+    - Member[_api_client].Member[Response]
+  - - requests.models.Response~Subclass
+    - client
+    - Member[_cognite_client].Member[Response]

@@ -4,6 +4,105 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - moin
+    - Member[apps].Member[admin].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - moin
+    - Member[apps].Member[feed].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - moin
+    - Member[apps].Member[frontend].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - moin
+    - Member[apps].Member[misc].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - moin
+    - Member[apps].Member[serve].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - moin
+    - Member[app].Member[Flask]
+  - - flask.Response~Subclass
+    - moin
+    - Member[apps].Member[admin].Member[views].Member[Response]
+  - - flask.Response~Subclass
+    - moin
+    - Member[apps].Member[feed].Member[views].Member[Response]
+  - - flask.Response~Subclass
+    - moin
+    - Member[apps].Member[frontend].Member[views].Member[Response]
+  - - flask.Response~Subclass
+    - moin
+    - Member[apps].Member[misc].Member[views].Member[Response]
+  - - flask.Response~Subclass
+    - moin
+    - Member[apps].Member[serve].Member[views].Member[Response]
+  - - flask.Response~Subclass
+    - moin
+    - Member[items].Member[Response]
+  - - flask.Response~Subclass
+    - moin
+    - Member[items].Member[content].Member[Response]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - moin
     - Member[utils].Member[monkeypatch].Member[WSGIRequestHandler]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[apps].Member[frontend].Member[views].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[cli].Member[migration].Member[moin19].Member[import19].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[items].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[items].Member[content].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[log].Member[StringIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[storage].Member[backends].Member[fileserver].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[storage].Member[stores].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[storage].Member[stores].Member[wrappers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[user].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - moin
+    - Member[utils].Member[notifications].Member[BytesIO]
+  - - markupsafe.Markup~Subclass
+    - moin
+    - Member[apps].Member[feed].Member[views].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - moin
+    - Member[apps].Member[frontend].Member[views].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - moin
+    - Member[auth].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - moin
+    - Member[converters].Member[moinwiki_out].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - moin
+    - Member[items].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - moin
+    - Member[items].Member[content].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - moin
+    - Member[items].Member[ticket].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - moin
+    - Member[utils].Member[forms].Member[Markup]
+  - - pickle~Alias
+    - moin
+    - Member[utils].Member[pickle]

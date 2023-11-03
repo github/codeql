@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - bzt
+    - Member[modules].Member[blazemeter].Member[blazemeter_reporter].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - bzt
+    - Member[modules].Member[console].Member[StringIONotifying]
+  - - io.StringIO~Subclass
+    - bzt
+    - Member[modules].Member[console].Member[StringIO]
+  - - io.StringIO~Subclass
+    - bzt
+    - Member[modules].Member[jmeter].Member[StringIO]
+  - - io.StringIO~Subclass
+    - bzt
+    - Member[resources].Member[robot_runner].Member[StringIO]
+  - - logging.Logger~Subclass
+    - bzt
+    - Member[modules].Member[monitoring].Member[Logger]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[jmx].Member[base].Member[etree]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[jmx].Member[grpc].Member[etree]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[jmx].Member[http].Member[etree]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[jmx].Member[mqtt].Member[etree]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[jmx].Member[rte].Member[etree]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[jmx].Member[tools].Member[etree]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[modules].Member[jmeter].Member[etree]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[modules].Member[reporting].Member[etree]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[modules].Member[tsung].Member[etree]
+  - - lxml.etree~Alias
+    - bzt
+    - Member[utils].Member[etree]

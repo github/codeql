@@ -6,10 +6,28 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - translations
+    - Member[admin].Member[Translation]
+  - - Django.db.models.Model~Subclass
+    - translations
+    - Member[forms].Member[Translation]
+  - - Django.db.models.Model~Subclass
+    - translations
     - Member[management].Member[commands].Member[synctranslations].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - translations
+    - Member[management].Member[commands].Member[synctranslations].Member[Translatable]
+  - - Django.db.models.Model~Subclass
+    - translations
+    - Member[management].Member[commands].Member[synctranslations].Member[Translation]
+  - - Django.db.models.Model~Subclass
+    - translations
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - translations
+    - Member[models].Member[Translatable]
+  - - Django.db.models.Model~Subclass
+    - translations
+    - Member[models].Member[Translation]
   - - Django.db.models.Model~Subclass
     - translations
     - Member[utils].Member[ContentType]

@@ -4,6 +4,15 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - enterprise_learner_portal
+    - Member[api].Member[v1].Member[urls].Member[EnterpriseCourseEnrollmentView]
+  - - Django.Views.View~Subclass
+    - enterprise_learner_portal
+    - Member[api].Member[v1].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - enterprise_learner_portal
+    - Member[api].Member[v1].Member[views].Member[EnterpriseCourseEnrollmentView]
   - - Django.db.models.Model~Subclass
     - enterprise_learner_portal
     - Member[api].Member[v1].Member[serializers].Member[EnterpriseCustomerUser]
@@ -13,3 +22,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - enterprise_learner_portal
     - Member[api].Member[v1].Member[views].Member[EnterpriseCustomerUser]
+  - - django.http.response.HttpResponse~Subclass
+    - enterprise_learner_portal
+    - Member[api].Member[v1].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - enterprise_learner_portal
+    - Member[api].Member[v1].Member[views].Member[Response]

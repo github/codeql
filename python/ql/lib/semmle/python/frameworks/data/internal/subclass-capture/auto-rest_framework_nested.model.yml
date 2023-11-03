@@ -1,0 +1,9 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - rest_framework.exceptions.APIException~Subclass
+    - rest_framework_nested
+    - Member[relations].Member[ValidationError]

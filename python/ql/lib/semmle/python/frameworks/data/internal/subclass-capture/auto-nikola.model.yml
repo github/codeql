@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - nikola
+    - Member[plugins].Member[command].Member[serve].Member[OurHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - nikola
+    - Member[plugins].Member[command].Member[serve].Member[SimpleHTTPRequestHandler]
+  - - io.StringIO~Subclass
+    - nikola
+    - Member[plugins].Member[command].Member[serve].Member[StringIO]
+  - - lxml.etree~Alias
+    - nikola
+    - Member[plugins].Member[basic_import].Member[etree]
+  - - lxml.etree~Alias
+    - nikola
+    - Member[plugins].Member[command].Member[import_wordpress].Member[etree]
+  - - markupsafe.Markup~Subclass
+    - nikola
+    - Member[plugins].Member[template].Member[mako].Member[Markup]
+  - - xml.etree.ElementTree~Subclass
+    - nikola
+    - Member[plugins].Member[compile].Member[markdown].Member[mdx_gist].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - nikola
+    - Member[plugins].Member[compile].Member[markdown].Member[mdx_podcast].Member[etree]

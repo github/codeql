@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pandas_datareader
+    - Member[base].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas_datareader
+    - Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas_datareader
+    - Member[enigma].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas_datareader
+    - Member[famafrench].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas_datareader
+    - Member[io].Member[sdmx].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pandas_datareader
+    - Member[moex].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas_datareader
+    - Member[nasdaq_trader].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - pandas_datareader
+    - Member[naver].Member[ElementTree]

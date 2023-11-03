@@ -12,6 +12,18 @@ extensions:
     - Member[views].Member[report].Member[ModelChoiceField]
   - - Django.Views.View~Subclass
     - wagtail_localize
+    - Member[locales].Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[locales].Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[locales].Member[views].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[locales].Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
     - Member[modeladmin].Member[helpers].Member[InspectView]
   - - Django.Views.View~Subclass
     - wagtail_localize
@@ -57,6 +69,12 @@ extensions:
     - Member[modeladmin].Member[views].Member[InspectView]
   - - Django.Views.View~Subclass
     - wagtail_localize
+    - Member[modeladmin].Member[views].Member[SubmitModelAdminTranslationView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[views].Member[SubmitTranslationView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
     - Member[modeladmin].Member[views].Member[TranslatableChooseParentView]
   - - Django.Views.View~Subclass
     - wagtail_localize
@@ -76,6 +94,36 @@ extensions:
   - - Django.Views.View~Subclass
     - wagtail_localize
     - Member[modeladmin].Member[views].Member[TranslatableInspectView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[wagtail_hooks].Member[SubmitModelAdminTranslationView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[views].Member[report].Member[ReportView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[views].Member[report].Member[TranslationsReportView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[views].Member[snippets_api].Member[SnippetViewSet]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[views].Member[submit_translations].Member[SubmitPageTranslationView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[views].Member[submit_translations].Member[SubmitSnippetTranslationView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[views].Member[submit_translations].Member[SubmitTranslationView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[views].Member[submit_translations].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[views].Member[update_translations].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - wagtail_localize
+    - Member[views].Member[update_translations].Member[UpdateTranslationsView]
   - - Django.Views.View~Subclass
     - wagtail_localize
     - Member[wagtail_hooks].Member[JavaScriptCatalog]
@@ -105,6 +153,9 @@ extensions:
     - Member[locales].Member[wagtail_hooks].Member[Permission]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
+    - Member[management].Member[commands].Member[sync_locale_trees].Member[LocaleSynchronization]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
     - Member[modeladmin].Member[helpers].Member[Locale]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
@@ -112,6 +163,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - wagtail_localize
     - Member[modeladmin].Member[helpers].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[modeladmin].Member[helpers].Member[TranslationSource]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
     - Member[modeladmin].Member[options].Member[TranslatableMixin]
@@ -123,10 +177,22 @@ extensions:
     - Member[modeladmin].Member[views].Member[TranslatableMixin]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
+    - Member[modeladmin].Member[views].Member[Translation]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[BaseSegment]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
     - Member[models].Member[ClusterableModel]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[LocaleSynchronization]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[OverridableSegment]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
     - Member[models].Member[PageLogEntry]
@@ -135,10 +201,52 @@ extensions:
     - Member[models].Member[Page]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
+    - Member[models].Member[RelatedObjectSegment]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[SegmentOverride]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[StringSegment]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[StringTranslation]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[String]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[TemplateSegment]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[Template]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
     - Member[models].Member[TranslatableMixin]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
+    - Member[models].Member[TranslatableObject]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[TranslationContext]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[TranslationLog]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[TranslationSource]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[models].Member[Translation]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
     - Member[operations].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[operations].Member[TranslationSource]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[operations].Member[Translation]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
     - Member[segments].Member[extract].Member[Page]
@@ -165,19 +273,46 @@ extensions:
     - Member[views].Member[convert].Member[TranslatableMixin]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
+    - Member[views].Member[convert].Member[TranslationSource]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[convert].Member[Translation]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
     - Member[views].Member[edit_translation].Member[AbstractDocument]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
     - Member[views].Member[edit_translation].Member[AbstractImage]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
+    - Member[views].Member[edit_translation].Member[OverridableSegment]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
     - Member[views].Member[edit_translation].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[SegmentOverride]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[StringSegment]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[StringTranslation]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
     - Member[views].Member[edit_translation].Member[TranslatableMixin]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
+    - Member[views].Member[edit_translation].Member[TranslationSource]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[Translation]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
     - Member[views].Member[report].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[views].Member[report].Member[Translation]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
     - Member[views].Member[submit_translations].Member[Locale]
@@ -192,6 +327,9 @@ extensions:
     - Member[views].Member[update_translations].Member[Page]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
+    - Member[views].Member[update_translations].Member[TranslationSource]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
     - Member[wagtail_hooks].Member[Locale]
   - - Django.db.models.Model~Subclass
     - wagtail_localize
@@ -202,6 +340,51 @@ extensions:
   - - Django.db.models.Model~Subclass
     - wagtail_localize
     - Member[wagtail_hooks].Member[TranslatableMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[wagtail_hooks].Member[TranslationSource]
+  - - Django.db.models.Model~Subclass
+    - wagtail_localize
+    - Member[wagtail_hooks].Member[Translation]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[components].Member[WagtailAdminModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[locales].Member[components].Member[LocaleComponentModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[locales].Member[components].Member[WagtailAdminModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[locales].Member[forms].Member[LocaleForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[locales].Member[views].Member[LocaleComponentModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[locales].Member[views].Member[LocaleForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[models].Member[LocaleComponentModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[models].Member[LocaleSynchronizationModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[views].Member[submit_translations].Member[SubmitTranslationForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail_localize
+    - Member[views].Member[update_translations].Member[UpdateTranslationsForm]
   - - django.http.response.HttpResponse~Subclass
     - wagtail_localize
     - Member[views].Member[convert].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail_localize
+    - Member[views].Member[edit_translation].Member[Response]

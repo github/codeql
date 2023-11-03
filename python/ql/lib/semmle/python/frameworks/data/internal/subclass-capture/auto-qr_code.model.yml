@@ -7,3 +7,6 @@ extensions:
   - - Django.db.models.Model~Subclass
     - qr_code
     - Member[qrcode].Member[serve].Member[User]
+  - - django.http.response.HttpResponse~Subclass
+    - qr_code
+    - Member[views].Member[HttpResponse]

@@ -1,0 +1,375 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pandasdmx
+    - Member[remote].Member[BytesIO]
+  - - lxml.etree~Alias
+    - pandasdmx
+    - Member[reader].Member[sdmxml].Member[etree]
+  - - lxml.etree~Alias
+    - pandasdmx
+    - Member[writer].Member[xml].Member[etree]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[api].Member[DataStructureDefinition]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[api].Member[MaintainableArtefact]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[api].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[message].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[message].Member[DataMessage]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[message].Member[ErrorMessage]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[message].Member[Footer]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[message].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[message].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[message].Member[StructureMessage]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[AnnotableArtefact]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Annotation]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[AttachmentConstraint]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[AttributeRelationship]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[AttributeValue]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Categorisation]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[ComponentList]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[ComponentValue]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Component]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[ConstrainableArtefact]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[ConstraintRole]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Constraint]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[ContentConstraint]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[CubeRegion]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DataAttribute]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DataConsumer]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DataKeySet]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DataKey]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DataProvider]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DataSet]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DataStructureDefinition]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DataflowDefinition]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Datasource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DimensionComponent]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[DimensionRelationship]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Dimension]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[FacetType]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Facet]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[GenericDataSet]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[GenericTimeSeriesDataSet]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[GroupKey]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[GroupRelationship]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[ISOConceptReference]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[IdentifiableArtefact]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[ItemScheme]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[KeyValue]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Key]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[MaintainableArtefact]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[MeasureDimension]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[MemberSelection]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[MemberValue]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[NameableArtefact]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Period]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[PrimaryMeasure]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[ProvisionAgreement]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[QueryDatasource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[RESTDatasource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[RangePeriod]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[ReportingYearStartDay]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Representation]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[SelectionValue]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[SeriesKey]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[SimpleDatasource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[StructureSpecificDataSet]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[StructureSpecificTimeSeriesDataSet]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[StructureUsage]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[Structure]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[TimeDimension]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[TimeKeyValue]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[TimeRangeValue]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[VersionableArtefact]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[_NoSpecifiedRelationship]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[model].Member[_PrimaryMeasureRelationship]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[reader].Member[sdmxjson].Member[AttributeValue]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[reader].Member[sdmxjson].Member[DataMessage]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[reader].Member[sdmxjson].Member[DataSet]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[reader].Member[sdmxjson].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[reader].Member[sdmxjson].Member[KeyValue]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[reader].Member[sdmxjson].Member[Key]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[reader].Member[sdmxjson].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[reader].Member[sdmxjson].Member[SeriesKey]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[DataStructureDefinition]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[_NoSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[abs].Member[BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[abs].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ec_base].Member[BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ec_base].Member[EC_BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ec_comp].Member[EC_BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ec_comp].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ec_empl].Member[EC_BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ec_empl].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ec_grow].Member[EC_BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ec_grow].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[estat].Member[EC_BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[estat].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ilo].Member[BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[ilo].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[lsd].Member[BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[lsd].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[sgr].Member[BaseSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source].Member[sgr].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source]Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[source]Member[_NoSource]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[urn].Member[MaintainableArtefact]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[util].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[writer].Member[pandas].Member[DataAttribute]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[writer].Member[pandas].Member[DataSet]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[writer].Member[pandas].Member[DataStructureDefinition]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[writer].Member[pandas].Member[DimensionComponent]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[writer].Member[pandas].Member[Dimension]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[writer].Member[pandas].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[writer].Member[pandas].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[writer].Member[pandas].Member[SeriesKey]
+  - - pydantic.BaseModel~Subclass
+    - pandasdmx
+    - Member[writer].Member[pandas].Member[TimeDimension]

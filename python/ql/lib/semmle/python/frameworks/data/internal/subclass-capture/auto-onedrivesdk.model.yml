@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - onedrivesdk
+    - Member[helpers].Member[GetAuthCodeServer].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - onedrivesdk
+    - Member[helpers].Member[GetAuthCodeServer].Member[GetAuthCodeRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - onedrivesdk
+    - Member[helpers].Member[get_access_token_server].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - onedrivesdk
+    - Member[helpers].Member[get_access_token_server].Member[GetAccessTokenRequestHandler]

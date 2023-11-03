@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - markupsafe.Markup~Subclass
+    - mkdocstrings
+    - Member[handlers].Member[base].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - mkdocstrings
+    - Member[handlers].Member[rendering].Member[Markup]

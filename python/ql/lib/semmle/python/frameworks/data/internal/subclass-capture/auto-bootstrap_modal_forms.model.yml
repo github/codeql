@@ -6,7 +6,34 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - bootstrap_modal_forms
+    - Member[generic].Member[BSModalCreateView]
+  - - Django.Views.View~Subclass
+    - bootstrap_modal_forms
+    - Member[generic].Member[BSModalDeleteView]
+  - - Django.Views.View~Subclass
+    - bootstrap_modal_forms
+    - Member[generic].Member[BSModalFormView]
+  - - Django.Views.View~Subclass
+    - bootstrap_modal_forms
     - Member[generic].Member[BSModalLoginView]
   - - Django.Views.View~Subclass
     - bootstrap_modal_forms
+    - Member[generic].Member[BSModalReadView]
+  - - Django.Views.View~Subclass
+    - bootstrap_modal_forms
+    - Member[generic].Member[BSModalUpdateView]
+  - - Django.Views.View~Subclass
+    - bootstrap_modal_forms
     - Member[generic].Member[LoginView]
+  - - django.forms.BaseForm~Subclass
+    - bootstrap_modal_forms
+    - Member[forms].Member[BSModalForm]
+  - - django.forms.BaseForm~Subclass
+    - bootstrap_modal_forms
+    - Member[forms].Member[BSModalModelForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - bootstrap_modal_forms
+    - Member[mixins].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - bootstrap_modal_forms
+    - Member[mixins].Member[HttpResponse]

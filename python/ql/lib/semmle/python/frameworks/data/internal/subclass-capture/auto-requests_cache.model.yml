@@ -1,0 +1,72 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - requests_cache
+    - Member[models].Member[raw_response].Member[BytesIO]
+  - - pickle~Alias
+    - requests_cache
+    - Member[serializers].Member[preconf].Member[pickle]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[CachedResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[OriginalResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[Response]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[backends].Member[base].Member[CachedResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[backends].Member[base].Member[Response]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[backends].Member[sqlite].Member[CachedResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[models].Member[CachedResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[models].Member[OriginalResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[models].Member[Response]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[models].Member[raw_response].Member[CachedResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[models].Member[raw_response].Member[Response]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[models].Member[response].Member[BaseResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[models].Member[response].Member[CachedResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[models].Member[response].Member[OriginalResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[models].Member[response].Member[Response]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[policy].Member[Response]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[policy].Member[actions].Member[CachedResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[policy].Member[actions].Member[Response]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[serializers].Member[cattrs].Member[CachedResponse]
+  - - requests.models.Response~Subclass
+    - requests_cache
+    - Member[serializers].Member[pipeline].Member[CachedResponse]

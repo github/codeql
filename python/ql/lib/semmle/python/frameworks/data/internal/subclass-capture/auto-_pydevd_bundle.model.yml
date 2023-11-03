@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - _pydevd_bundle
+    - Member[pydevd_code_to_source].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydevd_bundle
+    - Member[pydevd_collect_bytecode_info].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydevd_bundle
+    - Member[pydevd_comm].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydevd_bundle
+    - Member[pydevd_constants].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydevd_bundle
+    - Member[pydevd_net_command_factory_json].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydevd_bundle
+    - Member[pydevd_net_command_factory_xml].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydevd_bundle
+    - Member[pydevd_process_net_command].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydevd_bundle
+    - Member[pydevd_resolver].Member[StringIO]
+  - - io.StringIO~Subclass
+    - _pydevd_bundle
+    - Member[pydevd_vars].Member[StringIO]
+  - - pickle~Alias
+    - _pydevd_bundle
+    - Member[pydevd_vars].Member[pickle]

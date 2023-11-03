@@ -6,7 +6,25 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - custom_field
+    - Member[admin].Member[CustomField]
+  - - Django.db.models.Model~Subclass
+    - custom_field
     - Member[custom_field].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - custom_field
+    - Member[custom_field].Member[CustomFieldValue]
+  - - Django.db.models.Model~Subclass
+    - custom_field
+    - Member[custom_field].Member[CustomField]
+  - - Django.db.models.Model~Subclass
+    - custom_field
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - custom_field
+    - Member[models].Member[CustomFieldValue]
+  - - Django.db.models.Model~Subclass
+    - custom_field
+    - Member[models].Member[CustomField]
+  - - django.forms.BaseForm~Subclass
+    - custom_field
+    - Member[custom_field].Member[CustomFieldValueForm]

@@ -6,4 +6,19 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - graphene_django_extras
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - graphene_django_extras
+    - Member[views].Member[AuthenticatedGraphQLView]
+  - - Django.Views.View~Subclass
+    - graphene_django_extras
+    - Member[views].Member[ExtraGraphQLView]
+  - - Django.Views.View~Subclass
+    - graphene_django_extras
     - Member[views].Member[GraphQLView]
+  - - Django.db.models.Model~Subclass
+    - graphene_django_extras
+    - Member[utils].Member[Model]
+  - - rest_framework.request.Request~Subclass
+    - graphene_django_extras
+    - Member[views].Member[Request]

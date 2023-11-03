@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - markupsafe.Markup~Subclass
+    - tg
+    - Member[render].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - tg
+    - Member[support].Member[paginate].Member[Markup]
+  - - sqlalchemy.orm.Session~Subclass
+    - tg
+    - Member[configuration].Member[sqla].Member[balanced_session].Member[BalancedSession]
+  - - sqlalchemy.orm.Session~Subclass
+    - tg
+    - Member[configuration].Member[sqla].Member[balanced_session].Member[Session]

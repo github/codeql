@@ -39,7 +39,13 @@ extensions:
     - Member[urls].Member[RegisterView]
   - - Django.Views.View~Subclass
     - users
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - users
     - Member[views].Member[ActivateView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[BaseDetailView]
   - - Django.Views.View~Subclass
     - users
     - Member[views].Member[ContactFormView]
@@ -54,7 +60,22 @@ extensions:
     - Member[views].Member[EmailVerificationView]
   - - Django.Views.View~Subclass
     - users
+    - Member[views].Member[HomeJWTView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[HomeKnoxView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[HomeSessionView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[HomeTokenView]
+  - - Django.Views.View~Subclass
+    - users
     - Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[LogoutSessionView]
   - - Django.Views.View~Subclass
     - users
     - Member[views].Member[MailingView]
@@ -75,7 +96,19 @@ extensions:
     - Member[views].Member[ReviewView]
   - - Django.Views.View~Subclass
     - users
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - users
     - Member[views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[UserJWTDetailView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[UserKnoxDetailView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[UserList]
   - - Django.Views.View~Subclass
     - users
     - Member[views].Member[UserLoginView]
@@ -85,6 +118,12 @@ extensions:
   - - Django.Views.View~Subclass
     - users
     - Member[views].Member[UserRegistrationView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[UserSessionDetailView]
+  - - Django.Views.View~Subclass
+    - users
+    - Member[views].Member[UserTokenDetailView]
   - - Django.Views.View~Subclass
     - users
     - Member[views].Member[View]
@@ -157,6 +196,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - users
     - Member[serializers].Member[Review]
+  - - Django.db.models.Model~Subclass
+    - users
+    - Member[serializers].Member[Snippet]
   - - Django.db.models.Model~Subclass
     - users
     - Member[serializers].Member[User]
@@ -253,3 +295,15 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - users
     - Member[views].Member[UserRegistrationForm]
+  - - django.http.response.HttpResponse~Subclass
+    - users
+    - Member[social_pipeline].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - users
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - users
+    - Member[social_pipeline].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - users
+    - Member[views].Member[Response]

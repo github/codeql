@@ -1,0 +1,123 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - translate
+    - Member[convert].Member[convert].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[convert].Member[idml2po].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[convert].Member[mozfunny2prop].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[convert].Member[odf2xliff].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[convert].Member[po2idml].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[convert].Member[po2web2py].Member[StringIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[convert].Member[prop2mozfunny].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[convert].Member[xliff2odf].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[misc].Member[optrecurse].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[misc].Member[wStringIO].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[misc].Member[wStringIO].Member[CatchStringOutput]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[services].Member[tmserver].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[storage].Member[base].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[storage].Member[dtd].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[storage].Member[ical].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[storage].Member[ini].Member[StringIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[storage].Member[oo].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[storage].Member[subtitles].Member[StringIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[storage].Member[tiki].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - translate
+    - Member[storage].Member[zip].Member[BytesIO]
+  - - lxml.etree~Alias
+    - translate
+    - Member[convert].Member[po2idml].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[convert].Member[xliff2odf].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[misc].Member[xml_helpers].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[aresource].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[dtd].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[flatxml].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[lisa].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[poxliff].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[properties].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[qph].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[resx].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[tbx].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[tmx].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[ts2].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[xliff].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[xml_extract].Member[extract].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[storage].Member[xml_extract].Member[generate].Member[etree]
+  - - lxml.etree~Alias
+    - translate
+    - Member[tools].Member[junitmsgfmt].Member[etree]
+  - - pickle~Alias
+    - translate
+    - Member[storage].Member[base].Member[pickle]

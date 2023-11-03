@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[config].Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[config].Member[views].Member[ResetView]
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[posts].Member[apis].Member[QuillPostViewSet]
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[posts].Member[views].Member[QuillFieldFormHtmlInitialView]
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[posts].Member[views].Member[QuillFieldFormTextInitialView]
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[posts].Member[views].Member[QuillFieldFormView]
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[posts].Member[views].Member[QuillPostCreateView]
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[posts].Member[views].Member[QuillPostDetailView]
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[posts].Member[views].Member[QuillPostListView]
+  - - Django.Views.View~Subclass
+    - playground
+    - Member[posts].Member[views].Member[QuillPostUpdateView]
+  - - Django.db.models.Model~Subclass
+    - playground
+    - Member[posts].Member[models].Member[NonQuillPost]
+  - - Django.db.models.Model~Subclass
+    - playground
+    - Member[posts].Member[models].Member[QuillPost]
+  - - django.forms.BaseForm~Subclass
+    - playground
+    - Member[config].Member[admin].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - playground
+    - Member[posts].Member[forms].Member[QuillFieldForm]
+  - - django.forms.BaseForm~Subclass
+    - playground
+    - Member[posts].Member[forms].Member[QuillPostForm]

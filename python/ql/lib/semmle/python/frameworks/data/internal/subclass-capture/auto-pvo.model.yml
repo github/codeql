@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pvo
+    - Member[Status]
+  - - pydantic.BaseModel~Subclass
+    - pvo
+    - Member[System]
+  - - pydantic.BaseModel~Subclass
+    - pvo
+    - Member[models].Member[Status]
+  - - pydantic.BaseModel~Subclass
+    - pvo
+    - Member[models].Member[System]
+  - - pydantic.BaseModel~Subclass
+    - pvo
+    - Member[pvoutput].Member[Status]
+  - - pydantic.BaseModel~Subclass
+    - pvo
+    - Member[pvoutput].Member[System]

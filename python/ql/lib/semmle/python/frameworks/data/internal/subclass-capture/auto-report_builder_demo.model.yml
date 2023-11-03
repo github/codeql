@@ -1,0 +1,66 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[admin].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[admin].Member[Bar]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[admin].Member[Child]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[admin].Member[Foo]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[admin].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[admin].Member[Place]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[admin].Member[Restaurant]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[admin].Member[Waiter]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[Account]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[Bar]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[Child]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[Comment]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[FooExclude]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[Foo]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[Person]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[Place]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[Restaurant]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_models].Member[models].Member[Waiter]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_second_app].Member[admin].Member[Bar]
+  - - Django.db.models.Model~Subclass
+    - report_builder_demo
+    - Member[demo_second_app].Member[models].Member[Bar]

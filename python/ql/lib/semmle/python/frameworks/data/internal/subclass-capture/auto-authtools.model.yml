@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - authtools
+    - Member[forms].Member[ReadOnlyPasswordHashField]
   - - Django.db.models.Model~Subclass
     - authtools
     - Member[admin].Member[User]
@@ -22,3 +25,36 @@ extensions:
   - - Django.db.models.Model~Subclass
     - authtools
     - Member[models].Member[User]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[admin].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[admin].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[forms].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[forms].Member[CaseInsensitiveEmailUserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[forms].Member[CaseInsensitiveUsernameFieldCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[forms].Member[DjangoAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[forms].Member[DjangoUserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[forms].Member[FriendlyPasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[forms].Member[OldPasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[forms].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - authtools
+    - Member[forms].Member[UserCreationForm]

@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[handlers].Member[on_bid].Member[BidParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[handlers].Member[on_bid].Member[TzcolorsAuctionStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[handlers].Member[on_create_auction].Member[CreateAuctionParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[handlers].Member[on_create_auction].Member[TzcolorsAuctionStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[handlers].Member[on_withdraw].Member[TzcolorsAuctionStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[handlers].Member[on_withdraw].Member[WithdrawParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[types].Member[tzcolors_auction].Member[tezos_parameters].Member[bid].Member[BidParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[types].Member[tzcolors_auction].Member[tezos_parameters].Member[create_auction].Member[CreateAuctionParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[types].Member[tzcolors_auction].Member[tezos_parameters].Member[withdraw].Member[WithdrawParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[types].Member[tzcolors_auction].Member[tezos_storage].Member[TzcolorsAuctionStorage1]
+  - - pydantic.BaseModel~Subclass
+    - demo_auction
+    - Member[types].Member[tzcolors_auction].Member[tezos_storage].Member[TzcolorsAuctionStorage]

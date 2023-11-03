@@ -6,7 +6,40 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - attachments
+    - Member[admin].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - attachments
+    - Member[forms].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - attachments
     - Member[forms].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - attachments
+    - Member[management].Member[commands].Member[delete_stale_attachments].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - attachments
+    - Member[models].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - attachments
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - attachments
+    - Member[templatetags].Member[attachments_tags].Member[Attachment]
+  - - Django.db.models.Model~Subclass
+    - attachments
+    - Member[views].Member[Attachment]
+  - - django.forms.BaseForm~Subclass
+    - attachments
+    - Member[forms].Member[AttachmentForm]
+  - - django.forms.BaseForm~Subclass
+    - attachments
+    - Member[templatetags].Member[attachments_tags].Member[AttachmentForm]
+  - - django.forms.BaseForm~Subclass
+    - attachments
+    - Member[views].Member[AttachmentForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - attachments
+    - Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.JsonResponse~Subclass
+    - attachments
+    - Member[views].Member[JsonResponse]

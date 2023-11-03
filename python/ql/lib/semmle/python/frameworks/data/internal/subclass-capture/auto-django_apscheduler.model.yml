@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_apscheduler
+    - Member[admin].Member[DjangoJobExecution]
+  - - Django.db.models.Model~Subclass
+    - django_apscheduler
+    - Member[admin].Member[DjangoJob]
+  - - Django.db.models.Model~Subclass
+    - django_apscheduler
+    - Member[jobstores].Member[DjangoJobExecution]
+  - - Django.db.models.Model~Subclass
+    - django_apscheduler
+    - Member[jobstores].Member[DjangoJob]
+  - - Django.db.models.Model~Subclass
+    - django_apscheduler
+    - Member[models].Member[DjangoJobExecution]
+  - - Django.db.models.Model~Subclass
+    - django_apscheduler
+    - Member[models].Member[DjangoJob]
+  - - pickle~Alias
+    - django_apscheduler
+    - Member[jobstores].Member[pickle]

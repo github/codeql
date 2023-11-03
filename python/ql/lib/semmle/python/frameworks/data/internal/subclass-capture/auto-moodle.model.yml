@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - moodle
+    - Member[urls].Member[MoodleConfigurationViewSet]
+  - - Django.Views.View~Subclass
+    - moodle
+    - Member[views].Member[MoodleConfigurationViewSet]
   - - Django.db.models.Model~Subclass
     - moodle
     - Member[serializers].Member[MoodleEnterpriseCustomerConfiguration]

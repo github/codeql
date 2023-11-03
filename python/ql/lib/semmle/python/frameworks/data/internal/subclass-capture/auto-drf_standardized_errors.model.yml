@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - drf_standardized_errors
+    - Member[openapi_utils].Member[APIView]
+  - - Django.Views.View~Subclass
+    - drf_standardized_errors
+    - Member[openapi_validation_errors].Member[APIView]
+  - - Django.Views.View~Subclass
+    - drf_standardized_errors
+    - Member[types].Member[APIView]
+  - - django.http.response.HttpResponse~Subclass
+    - drf_standardized_errors
+    - Member[handler].Member[Response]
+  - - rest_framework.request.Request~Subclass
+    - drf_standardized_errors
+    - Member[handler].Member[Request]
+  - - rest_framework.request.Request~Subclass
+    - drf_standardized_errors
+    - Member[types].Member[Request]
+  - - rest_framework.response.Response~Subclass
+    - drf_standardized_errors
+    - Member[handler].Member[Response]

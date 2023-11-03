@@ -1,0 +1,120 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - synapse
+    - Member[handlers].Member[send_email].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - synapse
+    - Member[http].Member[client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - synapse
+    - Member[http].Member[federation].Member[well_known_resolver].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - synapse
+    - Member[http].Member[matrixfederationclient].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - synapse
+    - Member[http].Member[matrixfederationclient].Member[StringIO]
+  - - io.StringIO~Subclass
+    - synapse
+    - Member[logging].Member[formatter].Member[StringIO]
+  - - io.StringIO~Subclass
+    - synapse
+    - Member[media].Member[media_repository].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - synapse
+    - Member[media].Member[thumbnailer].Member[BytesIO]
+  - - lxml.etree~Alias
+    - synapse
+    - Member[media].Member[oembed].Member[etree]
+  - - lxml.etree~Alias
+    - synapse
+    - Member[media].Member[preview_html].Member[etree]
+  - - markupsafe.Markup~Subclass
+    - synapse
+    - Member[push].Member[mailer].Member[Markup]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[config].Member[workers].Member[ConfigModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[config].Member[workers].Member[InstanceTcpLocationConfig]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[config].Member[workers].Member[InstanceUnixLocationConfig]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[events].Member[validator].Member[Mentions]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[events].Member[validator].Member[RequestBodyModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[http].Member[proxyagent].Member[InstanceTcpLocationConfig]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[http].Member[proxyagent].Member[InstanceUnixLocationConfig]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[http].Member[replicationagent].Member[InstanceTcpLocationConfig]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[http].Member[replicationagent].Member[InstanceUnixLocationConfig]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[account].Member[AuthenticationData]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[account].Member[EmailRequestTokenBody]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[account].Member[MsisdnRequestTokenBody]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[account].Member[RequestBodyModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[devices].Member[AuthenticationData]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[devices].Member[DehydratedDeviceDataModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[devices].Member[RequestBodyModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[directory].Member[RequestBodyModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[models].Member[AuthenticationData]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[models].Member[EmailRequestTokenBody]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[models].Member[MsisdnRequestTokenBody]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[models].Member[RequestBodyModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[client].Member[models].Member[ThreepidRequestTokenBody]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[key].Member[v2].Member[remote_key_resource].Member[RequestBodyModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[key].Member[v2].Member[remote_key_resource].Member[_KeyQueryCriteriaDataModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[rest].Member[models].Member[RequestBodyModel]
+  - - pydantic.BaseModel~Subclass
+    - synapse
+    - Member[storage].Member[background_updates].Member[ValidateConstraintProgress]
+  - - xml.etree.ElementTree~Subclass
+    - synapse
+    - Member[handlers].Member[cas].Member[ET]

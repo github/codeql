@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - siphon
+    - Member[cdmr].Member[cdmremote].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - siphon
+    - Member[cdmr].Member[cdmremotefeature].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - siphon
+    - Member[http_util].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - siphon
+    - Member[ncss].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - siphon
+    - Member[simplewebservice].Member[igra2].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - siphon
+    - Member[simplewebservice].Member[igra2].Member[StringIO]
+  - - io.StringIO~Subclass
+    - siphon
+    - Member[simplewebservice].Member[ndbc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - siphon
+    - Member[simplewebservice].Member[wyoming].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - siphon
+    - Member[catalog].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - siphon
+    - Member[ncss].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - siphon
+    - Member[radarserver].Member[ET]

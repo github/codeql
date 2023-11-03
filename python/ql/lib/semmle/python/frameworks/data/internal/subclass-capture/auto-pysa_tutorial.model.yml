@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - pysa_tutorial
+    - Member[exercise1].Member[views].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - pysa_tutorial
+    - Member[exercise2].Member[views].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - pysa_tutorial
+    - Member[exercise3].Member[views].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - pysa_tutorial
+    - Member[exercise4].Member[views].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - pysa_tutorial
+    - Member[exercise1].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - pysa_tutorial
+    - Member[exercise2].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - pysa_tutorial
+    - Member[exercise3].Member[views].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - pysa_tutorial
+    - Member[exercise4].Member[views].Member[HttpResponse]

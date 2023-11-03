@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - gptcache
+    - Member[adapter].Member[diffusers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - gptcache
+    - Member[adapter].Member[openai].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - gptcache
+    - Member[adapter].Member[stability_sdk].Member[BytesIO]
+  - - pickle~Alias
+    - gptcache
+    - Member[manager].Member[data_manager].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - gptcache
+    - Member[adapter].Member[langchain_models].Member[LangChainChat]
+  - - pydantic.BaseModel~Subclass
+    - gptcache
+    - Member[adapter].Member[langchain_models].Member[LangChainLLMs]

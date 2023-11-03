@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - djangocms_style
+    - Member[cms_plugins].Member[Style]
+  - - Django.db.models.Model~Subclass
+    - djangocms_style
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_style
+    - Member[models].Member[Style]

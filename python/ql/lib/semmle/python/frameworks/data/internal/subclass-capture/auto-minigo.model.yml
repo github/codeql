@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - minigo
+    - Member[minigui].Member[serve].Member[Flask]
+  - - flask.Flask~Subclass
+    - minigo
+    - Member[oneoffs].Member[joseki].Member[joseki_query].Member[Flask]
+  - - pickle~Alias
+    - minigo
+    - Member[ml_perf].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - minigo
+    - Member[oneoffs].Member[embeddings].Member[pickle]
+  - - pickle~Alias
+    - minigo
+    - Member[oneoffs].Member[embeddings_graphs].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - minigo
+    - Member[ml_perf].Member[utils].Member[ElementTree]

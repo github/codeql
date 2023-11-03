@@ -1,0 +1,123 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[color].Member[LightResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[AirPurifierResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[ApiResourceResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[BlindResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[DeviceInfoResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[DeviceResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[LightResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[SignalRepeaterResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[SocketResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[air_purifier].Member[AirPurifierResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[air_purifier].Member[BaseResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[air_purifier_control].Member[AirPurifierResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[base_controller].Member[BaseResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[blind].Member[BaseResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[blind].Member[BlindResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[blind_control].Member[BlindResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[light].Member[BaseResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[light].Member[LightResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[light_control].Member[LightResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[signal_repeater].Member[BaseResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[signal_repeater].Member[SignalRepeaterResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[signal_repeater_control].Member[SignalRepeaterResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[socket].Member[BaseResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[socket].Member[SocketResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device].Member[socket_control].Member[SocketResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device]Member[DeviceInfoResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[device]Member[DeviceResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[gateway].Member[GatewayInfoResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[group].Member[ApiResourceResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[group].Member[GroupResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[resource].Member[ApiResourceResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[resource].Member[BaseResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[smart_task].Member[ApiResourceResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[smart_task].Member[BaseResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[smart_task].Member[RootStartActionResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[smart_task].Member[SmartTaskMixin]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[smart_task].Member[SmartTaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[smart_task].Member[StartActionResponse]
+  - - pydantic.BaseModel~Subclass
+    - pytradfri
+    - Member[smart_task].Member[TimeIntervalResponse]

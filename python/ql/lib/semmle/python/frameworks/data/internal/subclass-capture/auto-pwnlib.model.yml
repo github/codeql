@@ -6,4 +6,13 @@ extensions:
   data:
   - - io.StringIO~Subclass
     - pwnlib
+    - Member[elf].Member[corefile].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pwnlib
+    - Member[elf].Member[corefile].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pwnlib
+    - Member[internal].Member[dochelper].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pwnlib
     - Member[util].Member[fiddling].Member[BytesIO]

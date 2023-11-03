@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[Country]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[Language]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[Station]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[Stats]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[models].Member[Country]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[models].Member[Language]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[models].Member[Station]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[models].Member[Stats]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[models].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[radio_browser].Member[Country]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[radio_browser].Member[Language]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[radio_browser].Member[Station]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[radio_browser].Member[Stats]
+  - - pydantic.BaseModel~Subclass
+    - radios
+    - Member[radio_browser].Member[Tag]

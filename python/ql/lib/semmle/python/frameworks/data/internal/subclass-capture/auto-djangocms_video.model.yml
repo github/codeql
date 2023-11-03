@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - djangocms_video
+    - Member[models].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_video
+    - Member[models].Member[VideoPlayer]
+  - - Django.db.models.Model~Subclass
+    - djangocms_video
+    - Member[models].Member[VideoSource]
+  - - Django.db.models.Model~Subclass
+    - djangocms_video
+    - Member[models].Member[VideoTrack]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_video
+    - Member[forms].Member[VideoPlayerPluginForm]

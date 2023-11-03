@@ -1,0 +1,81 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - djcelery
+    - Member[admin].Member[TaskChoiceField]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[admin].Member[CrontabSchedule]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[admin].Member[IntervalSchedule]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[admin].Member[PeriodicTask]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[admin].Member[PeriodicTasks]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[admin].Member[TaskState]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[admin].Member[WorkerState]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[backends].Member[database].Member[TaskMeta]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[backends].Member[database].Member[TaskSetMeta]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[models].Member[CrontabSchedule]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[models].Member[IntervalSchedule]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[models].Member[PeriodicTask]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[models].Member[PeriodicTasks]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[models].Member[TaskMeta]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[models].Member[TaskSetMeta]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[models].Member[TaskState]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[models].Member[WorkerState]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[schedulers].Member[CrontabSchedule]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[schedulers].Member[IntervalSchedule]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[schedulers].Member[PeriodicTask]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[schedulers].Member[PeriodicTasks]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[snapshot].Member[TaskState]
+  - - Django.db.models.Model~Subclass
+    - djcelery
+    - Member[snapshot].Member[WorkerState]
+  - - django.forms.BaseForm~Subclass
+    - djcelery
+    - Member[admin].Member[PeriodicTaskForm]
+  - - django.http.response.HttpResponse~Subclass
+    - djcelery
+    - Member[views].Member[HttpResponse]

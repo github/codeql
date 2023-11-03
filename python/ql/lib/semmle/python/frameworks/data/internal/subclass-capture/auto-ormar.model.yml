@@ -1,0 +1,174 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[decorators].Member[signals].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[fields].Member[base].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[fields].Member[base].Member[NewBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[fields].Member[foreign_key].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[fields].Member[foreign_key].Member[NewBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[fields].Member[many_to_many].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[fields].Member[through_field].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[ModelRow]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[NewBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[descriptors].Member[descriptors].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[excludable].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[helpers].Member[models].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[helpers].Member[pydantic].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[helpers].Member[related_names_validation].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[helpers].Member[relations].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[helpers].Member[sqlalchemy].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[helpers].Member[sqlalchemy].Member[NewBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[helpers].Member[validation].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[metaclass].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[mixins].Member[excludable_mixin].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[mixins].Member[merge_mixin].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[mixins].Member[save_mixin].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[model].Member[ModelRow]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[model].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[model].Member[NewBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[model_row].Member[ModelRow]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[model_row].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[model_row].Member[NewBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[newbasemodel].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[models].Member[newbasemodel].Member[NewBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[protocols].Member[queryset_protocol].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[protocols].Member[relation_protocol].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[actions].Member[filter_action].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[actions].Member[order_action].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[actions].Member[query_action].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[actions].Member[select_action].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[clause].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[field_accessor].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[join].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[queries].Member[prefetch_query].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[queries].Member[query].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[queryset].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[reverse_alias_resolver].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[queryset].Member[utils].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[relations].Member[alias_manager].Member[ModelRow]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[relations].Member[alias_manager].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[relations].Member[querysetproxy].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[relations].Member[relation].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[relations].Member[relation].Member[NewBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[relations].Member[relation_manager].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[relations].Member[relation_manager].Member[NewBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[relations].Member[relation_proxy].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[relations].Member[utils].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - ormar
+    - Member[signals].Member[signal].Member[Model]

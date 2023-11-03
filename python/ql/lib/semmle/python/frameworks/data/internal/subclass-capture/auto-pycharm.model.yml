@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pycharm
+    - Member[teamcity].Member[common].Member[FlushingStringIO]
+  - - io.StringIO~Subclass
+    - pycharm
+    - Member[teamcity].Member[common].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pycharm
+    - Member[teamcity].Member[flake8_v3_plugin].Member[BytesIO]

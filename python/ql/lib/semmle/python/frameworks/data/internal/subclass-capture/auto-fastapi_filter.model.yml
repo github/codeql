@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_filter
+    - Member[base].Member[filter].Member[BaseFilterModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_filter
+    - Member[contrib].Member[mongoengine].Member[Filter]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_filter
+    - Member[contrib].Member[mongoengine].Member[filter].Member[BaseFilterModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_filter
+    - Member[contrib].Member[mongoengine].Member[filter].Member[Filter]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_filter
+    - Member[contrib].Member[sqlalchemy].Member[Filter]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_filter
+    - Member[contrib].Member[sqlalchemy].Member[filter].Member[BaseFilterModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_filter
+    - Member[contrib].Member[sqlalchemy].Member[filter].Member[Filter]

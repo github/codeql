@@ -6,19 +6,76 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - easyaudit
+    - Member[admin].Member[CRUDEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
     - Member[admin].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[admin].Member[LoginEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[admin].Member[RequestEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[backends].Member[CRUDEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[backends].Member[LoginEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[backends].Member[RequestEvent]
   - - Django.db.models.Model~Subclass
     - easyaudit
     - Member[crudhistory_admin_mixin].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - easyaudit
+    - Member[crudhistory_admin_mixin].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[models].Member[CRUDEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
     - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[models].Member[LoginEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[models].Member[RequestEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[settings].Member[CRUDEvent]
   - - Django.db.models.Model~Subclass
     - easyaudit
     - Member[settings].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - easyaudit
+    - Member[settings].Member[LoginEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
     - Member[settings].Member[Permission]
   - - Django.db.models.Model~Subclass
     - easyaudit
+    - Member[settings].Member[RequestEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[signals].Member[auth_signals].Member[LoginEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
+    - Member[signals].Member[model_signals].Member[CRUDEvent]
+  - - Django.db.models.Model~Subclass
+    - easyaudit
     - Member[signals].Member[model_signals].Member[ContentType]
+  - - django.http.request.HttpRequest~Subclass
+    - easyaudit
+    - Member[crudhistory_admin_mixin].Member[HttpRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - easyaudit
+    - Member[admin_helpers].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - easyaudit
+    - Member[crudhistory_admin_mixin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - easyaudit
+    - Member[admin].Member[HttpResponse]

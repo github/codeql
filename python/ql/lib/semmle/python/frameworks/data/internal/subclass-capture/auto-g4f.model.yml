@@ -4,6 +4,114 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Acytoo].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[AiAsk].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Aichat].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Ails].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Bing].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[ChatBase].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Chatgpt4Online].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[ChatgptAi].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[ChatgptDemo].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[ChatgptFree].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[ChatgptLogin].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[ChatgptX].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Cromicle].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[DeepInfra].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[FakeGpt].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[GPTalk].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[GptForLove].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[GptGo].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[GptGod].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Hashnode].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Liaobots].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Llama2].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[NoowAi].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[Opchatgpts].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[deprecated].Member[CodeLinkAva].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[deprecated].Member[H2o].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[deprecated].Member[Myshell].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[deprecated].Member[Vitalentum].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[deprecated].Member[Wewordle].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[needs_auth].Member[Bard].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[needs_auth].Member[HuggingChat].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[needs_auth].Member[OpenAssistant].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[unfinished].Member[ChatAiGpt].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - g4f
+    - Member[Provider].Member[unfinished].Member[TalkAi].Member[ClientSession]
+  - - flask.Flask~Subclass
+    - g4f
+    - Member[api].Member[Flask]
+  - - flask.Flask~Subclass
+    - g4f
+    - Member[gui].Member[server].Member[app].Member[Flask]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - g4f
     - Member[api].Member[WSGIRequestHandler]

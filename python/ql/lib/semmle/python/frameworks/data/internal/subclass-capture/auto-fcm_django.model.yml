@@ -4,6 +4,48 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - fcm_django
+    - Member[fields].Member[HexadecimalField]
+  - - Django.Views.View~Subclass
+    - fcm_django
+    - Member[api].Member[rest_framework].Member[FCMDeviceAuthorizedViewSet]
+  - - Django.Views.View~Subclass
+    - fcm_django
+    - Member[api].Member[rest_framework].Member[FCMDeviceCreateOnlyViewSet]
+  - - Django.Views.View~Subclass
+    - fcm_django
+    - Member[api].Member[rest_framework].Member[FCMDeviceViewSet]
+  - - Django.Views.View~Subclass
+    - fcm_django
+    - Member[api].Member[rest_framework].Member[GenericViewSet]
+  - - Django.Views.View~Subclass
+    - fcm_django
+    - Member[api].Member[rest_framework].Member[ModelViewSet]
+  - - Django.db.models.Model~Subclass
+    - fcm_django
+    - Member[admin].Member[FCMDevice]
+  - - Django.db.models.Model~Subclass
+    - fcm_django
+    - Member[api].Member[rest_framework].Member[FCMDevice]
+  - - Django.db.models.Model~Subclass
+    - fcm_django
+    - Member[api].Member[tastypie].Member[FCMDevice]
+  - - Django.db.models.Model~Subclass
+    - fcm_django
+    - Member[models].Member[AbstractFCMDevice]
+  - - Django.db.models.Model~Subclass
+    - fcm_django
+    - Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - fcm_django
+    - Member[models].Member[FCMDevice]
+  - - django.http.response.HttpResponse~Subclass
+    - fcm_django
+    - Member[api].Member[rest_framework].Member[Response]
   - - rest_framework.exceptions.APIException~Subclass
     - fcm_django
     - Member[api].Member[rest_framework].Member[ValidationError]
+  - - rest_framework.response.Response~Subclass
+    - fcm_django
+    - Member[api].Member[rest_framework].Member[Response]

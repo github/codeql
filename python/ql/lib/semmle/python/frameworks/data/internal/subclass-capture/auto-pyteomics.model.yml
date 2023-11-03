@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - pyteomics
+    - Member[mass].Member[unimod].Member[etree]
+  - - lxml.etree~Alias
+    - pyteomics
+    - Member[mzml].Member[etree]
+  - - lxml.etree~Alias
+    - pyteomics
+    - Member[pepxml].Member[etree]
+  - - lxml.etree~Alias
+    - pyteomics
+    - Member[xml].Member[etree]
+  - - pickle~Alias
+    - pyteomics
+    - Member[auxiliary].Member[file_helpers].Member[pickle]
+  - - pickle~Alias
+    - pyteomics
+    - Member[auxiliary].Member[file_helpers].Member[serializer]
+  - - pickle~Alias
+    - pyteomics
+    - Member[auxiliary].Member[serializer]

@@ -7,9 +7,111 @@ extensions:
   - - Django.Views.View~Subclass
     - django_otp
     - Member[views].Member[LoginView]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[forms].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[middleware].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[models].Member[SideChannelDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[models].Member[ThrottlingMixin]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_email].Member[admin].Member[EmailDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_email].Member[models].Member[EmailDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_email].Member[models].Member[SideChannelDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_email].Member[models].Member[ThrottlingMixin]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_hotp].Member[admin].Member[HOTPDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_hotp].Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_hotp].Member[models].Member[HOTPDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_hotp].Member[models].Member[ThrottlingMixin]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[admin].Member[StaticDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[admin].Member[StaticToken]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[lib].Member[StaticDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[lib].Member[StaticToken]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[models].Member[StaticDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[models].Member[StaticToken]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[models].Member[ThrottlingMixin]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_totp].Member[admin].Member[TOTPDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_totp].Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_totp].Member[models].Member[TOTPDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_totp].Member[models].Member[ThrottlingMixin]
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[admin].Member[AdminAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[admin].Member[OTPAdminAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[forms].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[forms].Member[OTPAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[forms].Member[OTPTokenForm]
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[views].Member[OTPAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[views].Member[OTPTokenForm]
+  - - django.http.response.HttpResponse~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_hotp].Member[admin].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - django_otp
     - Member[plugins].Member[otp_hotp].Member[admin].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_totp].Member[admin].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - django_otp
     - Member[plugins].Member[otp_totp].Member[admin].Member[TemplateResponse]

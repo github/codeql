@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - streamlink
+    - Member[buffers].Member[Chunk]
+  - - io.StringIO~Subclass
+    - streamlink
+    - Member[packages].Member[requests_file].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - streamlink
+    - Member[plugins].Member[rtve].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - streamlink
+    - Member[logger].Member[StreamlinkLogger]
+  - - logging.Logger~Subclass
+    - streamlink
+    - Member[stream].Member[hls].Member[m3u8].Member[StreamlinkLogger]
+  - - requests.models.Response~Subclass
+    - streamlink
+    - Member[packages].Member[requests_file].Member[Response]
+  - - requests.models.Response~Subclass
+    - streamlink
+    - Member[plugins].Member[abematv].Member[Response]
+  - - requests.models.Response~Subclass
+    - streamlink
+    - Member[plugins].Member[ustreamtv].Member[Response]
+  - - requests.models.Response~Subclass
+    - streamlink
+    - Member[stream].Member[dash].Member[dash].Member[Response]
+  - - requests.models.Response~Subclass
+    - streamlink
+    - Member[stream].Member[hls].Member[hls].Member[Response]
+  - - requests.models.Response~Subclass
+    - streamlink
+    - Member[stream].Member[hls].Member[m3u8].Member[Response]

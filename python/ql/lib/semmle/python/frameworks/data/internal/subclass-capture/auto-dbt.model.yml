@@ -7,3 +7,21 @@ extensions:
   - - io.StringIO~Subclass
     - dbt
     - Member[adapters].Member[snowflake].Member[impl].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[adapters].Member[athena].Member[impl].Member[LfGrantsConfig]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[adapters].Member[athena].Member[impl].Member[LfTagsConfig]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[adapters].Member[athena].Member[lakeformation].Member[DataCellFiltersConfig]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[adapters].Member[athena].Member[lakeformation].Member[FilterConfig]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[adapters].Member[athena].Member[lakeformation].Member[LfGrantsConfig]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[adapters].Member[athena].Member[lakeformation].Member[LfTagsConfig]

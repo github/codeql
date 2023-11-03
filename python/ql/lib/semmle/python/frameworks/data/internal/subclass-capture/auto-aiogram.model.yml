@@ -1,0 +1,3900 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - aiogram
+    - Member[client].Member[session].Member[aiohttp].Member[ClientSession]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotCommandScopeAllChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotCommandScopeAllGroupChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotCommandScopeAllPrivateChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotCommandScopeChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotCommandScopeChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotCommandScopeChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotCommandScopeDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotCommand]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotDescription]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotName]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[BotShortDescription]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ChatAdministratorRights]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ChatInviteLink]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ChatMemberAdministrator]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ChatMemberBanned]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ChatMemberLeft]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ChatMemberMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ChatMemberOwner]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ChatMemberRestricted]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ChatPermissions]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ForumTopic]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[GameHighScore]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultArticle]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultCachedAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultCachedDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultCachedGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultCachedMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultCachedPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultCachedSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultCachedVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultCachedVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultContact]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultLocation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultVenue]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InlineQueryResultsButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InputMediaAnimation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InputMediaAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InputMediaDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InputMediaPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InputMediaVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[InputSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[MaskPosition]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[MenuButtonCommands]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[MenuButtonDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[MenuButtonWebApp]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[MessageId]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[PassportElementErrorDataField]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[PassportElementErrorFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[PassportElementErrorFiles]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[PassportElementErrorFrontSide]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[PassportElementErrorReverseSide]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[PassportElementErrorSelfie]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[PassportElementErrorTranslationFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[PassportElementErrorTranslationFiles]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[PassportElementErrorUnspecified]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[Poll]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[SentWebAppMessage]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[ShippingOption]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[StickerSet]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[Sticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[Update]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[UserProfilePhotos]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[bot].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[context_controller].Member[BotContextController]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[session].Member[aiohttp].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[session].Member[base].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[session].Member[base].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[session].Member[middlewares].Member[base].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[session].Member[middlewares].Member[base].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[session].Member[middlewares].Member[request_logging].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[client].Member[session].Member[middlewares].Member[request_logging].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[dispatcher].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[dispatcher].Member[Update]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[dispatcher].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[event].Member[bases].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[event].Member[telegram].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[middlewares].Member[base].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[middlewares].Member[error].Member[ErrorEvent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[middlewares].Member[error].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[middlewares].Member[error].Member[Update]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[middlewares].Member[manager].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[middlewares].Member[user_context].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[middlewares].Member[user_context].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[middlewares].Member[user_context].Member[Update]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[middlewares].Member[user_context].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[dispatcher].Member[router].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[exceptions].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[callback_data].Member[CallbackData]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[callback_data].Member[CallbackQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[chat_member_updated].Member[ChatMemberUpdated]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[chat_member_updated].Member[ChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[command].Member[BotCommand]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[command].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[exception].Member[ErrorEvent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[exception].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[magic_data].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[filters].Member[state].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[fsm].Member[middleware].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[fsm].Member[state].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[base].Member[Update]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[callback_query].Member[CallbackQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[callback_query].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[callback_query].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[chat_member].Member[ChatMemberUpdated]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[chat_member].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[chosen_inline_result].Member[ChosenInlineResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[chosen_inline_result].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[inline_query].Member[InlineQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[inline_query].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[message].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[message].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[message].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[poll].Member[PollOption]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[poll].Member[Poll]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[pre_checkout_query].Member[PreCheckoutQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[pre_checkout_query].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[shipping_query].Member[ShippingQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[handlers].Member[shipping_query].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[add_sticker_to_set].Member[InputSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[add_sticker_to_set].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_callback_query].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultArticle]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultCachedAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultCachedDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultCachedGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultCachedMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultCachedPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultCachedSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultCachedVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultCachedVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultContact]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultLocation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultVenue]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[InlineQueryResultsButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_inline_query].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_pre_checkout_query].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_shipping_query].Member[ShippingOption]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_shipping_query].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultArticle]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultCachedAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultCachedDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultCachedGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultCachedMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultCachedPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultCachedSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultCachedVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultCachedVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultContact]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultLocation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultVenue]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[InlineQueryResultVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[SentWebAppMessage]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[answer_web_app_query].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[approve_chat_join_request].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[ban_chat_member].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[ban_chat_sender_chat].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[base].Member[BotContextController]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[base].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[base].Member[ResponseParameters]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[base].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[base].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[close].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[close_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[close_general_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[copy_message].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[copy_message].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[copy_message].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[copy_message].Member[MessageId]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[copy_message].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[copy_message].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[copy_message].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[create_chat_invite_link].Member[ChatInviteLink]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[create_chat_invite_link].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[create_forum_topic].Member[ForumTopic]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[create_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[create_invoice_link].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[create_invoice_link].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[create_new_sticker_set].Member[InputSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[create_new_sticker_set].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[decline_chat_join_request].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_chat_photo].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_chat_sticker_set].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_message].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_my_commands].Member[BotCommandScopeAllChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_my_commands].Member[BotCommandScopeAllGroupChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_my_commands].Member[BotCommandScopeAllPrivateChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_my_commands].Member[BotCommandScopeChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_my_commands].Member[BotCommandScopeChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_my_commands].Member[BotCommandScopeChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_my_commands].Member[BotCommandScopeDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_my_commands].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_sticker_from_set].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_sticker_set].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[delete_webhook].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_chat_invite_link].Member[ChatInviteLink]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_chat_invite_link].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_general_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_caption].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_caption].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_caption].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_caption].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_live_location].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_live_location].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_live_location].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_media].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_media].Member[InputMediaAnimation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_media].Member[InputMediaAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_media].Member[InputMediaDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_media].Member[InputMediaPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_media].Member[InputMediaVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_media].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_media].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_reply_markup].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_reply_markup].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_reply_markup].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_text].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_text].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_text].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[edit_message_text].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[export_chat_invite_link].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[forward_message].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[forward_message].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_administrators].Member[ChatMemberAdministrator]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_administrators].Member[ChatMemberBanned]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_administrators].Member[ChatMemberLeft]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_administrators].Member[ChatMemberMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_administrators].Member[ChatMemberOwner]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_administrators].Member[ChatMemberRestricted]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_administrators].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_member].Member[ChatMemberAdministrator]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_member].Member[ChatMemberBanned]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_member].Member[ChatMemberLeft]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_member].Member[ChatMemberMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_member].Member[ChatMemberOwner]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_member].Member[ChatMemberRestricted]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_member].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_member_count].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_menu_button].Member[MenuButtonCommands]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_menu_button].Member[MenuButtonDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_menu_button].Member[MenuButtonWebApp]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_chat_menu_button].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_custom_emoji_stickers].Member[Sticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_custom_emoji_stickers].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_file].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_file].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_forum_topic_icon_stickers].Member[Sticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_forum_topic_icon_stickers].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_game_high_scores].Member[GameHighScore]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_game_high_scores].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_me].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_me].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_commands].Member[BotCommandScopeAllChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_commands].Member[BotCommandScopeAllGroupChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_commands].Member[BotCommandScopeAllPrivateChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_commands].Member[BotCommandScopeChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_commands].Member[BotCommandScopeChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_commands].Member[BotCommandScopeChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_commands].Member[BotCommandScopeDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_commands].Member[BotCommand]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_commands].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_default_administrator_rights].Member[ChatAdministratorRights]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_default_administrator_rights].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_description].Member[BotDescription]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_description].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_name].Member[BotName]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_name].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_short_description].Member[BotShortDescription]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_my_short_description].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_sticker_set].Member[StickerSet]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_sticker_set].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_updates].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_updates].Member[Update]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_user_profile_photos].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_user_profile_photos].Member[UserProfilePhotos]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_webhook_info].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[get_webhook_info].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[hide_general_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[leave_chat].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[log_out].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[pin_chat_message].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[promote_chat_member].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[reopen_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[reopen_general_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[restrict_chat_member].Member[ChatPermissions]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[restrict_chat_member].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[revoke_chat_invite_link].Member[ChatInviteLink]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[revoke_chat_invite_link].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_animation].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_animation].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_animation].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_animation].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_animation].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_animation].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_animation].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_audio].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_audio].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_audio].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_audio].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_audio].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_audio].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_audio].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_chat_action].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_contact].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_contact].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_contact].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_contact].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_contact].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_contact].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_dice].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_dice].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_dice].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_dice].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_dice].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_dice].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_document].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_document].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_document].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_document].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_document].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_document].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_document].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_game].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_game].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_game].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_invoice].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_invoice].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_invoice].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_invoice].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_location].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_location].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_location].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_location].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_location].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_location].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_media_group].Member[InputMediaAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_media_group].Member[InputMediaDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_media_group].Member[InputMediaPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_media_group].Member[InputMediaVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_media_group].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_media_group].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_message].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_message].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_message].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_message].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_message].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_message].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_message].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_photo].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_photo].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_photo].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_photo].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_photo].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_photo].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_photo].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_poll].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_poll].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_poll].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_poll].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_poll].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_poll].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_poll].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_sticker].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_sticker].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_sticker].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_sticker].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_sticker].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_sticker].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_venue].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_venue].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_venue].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_venue].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_venue].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_venue].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video_note].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video_note].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video_note].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video_note].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video_note].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_video_note].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_voice].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_voice].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_voice].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_voice].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_voice].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_voice].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[send_voice].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_administrator_custom_title].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_description].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_menu_button].Member[MenuButtonCommands]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_menu_button].Member[MenuButtonDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_menu_button].Member[MenuButtonWebApp]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_menu_button].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_permissions].Member[ChatPermissions]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_permissions].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_photo].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_sticker_set].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_chat_title].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_custom_emoji_sticker_set_thumbnail].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_game_score].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_game_score].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_commands].Member[BotCommandScopeAllChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_commands].Member[BotCommandScopeAllGroupChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_commands].Member[BotCommandScopeAllPrivateChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_commands].Member[BotCommandScopeChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_commands].Member[BotCommandScopeChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_commands].Member[BotCommandScopeChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_commands].Member[BotCommandScopeDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_commands].Member[BotCommand]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_commands].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_default_administrator_rights].Member[ChatAdministratorRights]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_default_administrator_rights].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_description].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_name].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_my_short_description].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[PassportElementErrorDataField]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[PassportElementErrorFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[PassportElementErrorFiles]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[PassportElementErrorFrontSide]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[PassportElementErrorReverseSide]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[PassportElementErrorSelfie]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[PassportElementErrorTranslationFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[PassportElementErrorTranslationFiles]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[PassportElementErrorUnspecified]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_passport_data_errors].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_sticker_emoji_list].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_sticker_keywords].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_sticker_mask_position].Member[MaskPosition]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_sticker_mask_position].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_sticker_position_in_set].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_sticker_set_thumbnail].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_sticker_set_title].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[set_webhook].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[stop_message_live_location].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[stop_message_live_location].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[stop_message_live_location].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[stop_poll].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[stop_poll].Member[Poll]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[stop_poll].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[unban_chat_member].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[unban_chat_sender_chat].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[unhide_general_forum_topic].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[unpin_all_chat_messages].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[unpin_all_forum_topic_messages].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[unpin_all_general_forum_topic_messages].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[unpin_chat_message].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[upload_sticker_file].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[methods].Member[upload_sticker_file].Member[TelegramMethod]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Animation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Audio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotCommandScopeAllChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotCommandScopeAllGroupChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotCommandScopeAllPrivateChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotCommandScopeChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotCommandScopeChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotCommandScopeChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotCommandScopeDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotCommandScope]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotCommand]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotDescription]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotName]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[BotShortDescription]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[CallbackGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[CallbackQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatAdministratorRights]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatInviteLink]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatJoinRequest]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatLocation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatMemberAdministrator]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatMemberBanned]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatMemberLeft]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatMemberMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatMemberOwner]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatMemberRestricted]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatMemberUpdated]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatPermissions]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChatShared]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ChosenInlineResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Dice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[EncryptedCredentials]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[EncryptedPassportElement]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ErrorEvent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ForumTopicClosed]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ForumTopicCreated]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ForumTopicEdited]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ForumTopicReopened]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ForumTopic]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[GameHighScore]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Game]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[GeneralForumTopicHidden]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[GeneralForumTopicUnhidden]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineKeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultArticle]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultCachedAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultCachedDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultCachedGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultCachedMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultCachedPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultCachedSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultCachedVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultCachedVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultContact]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultLocation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultVenue]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQueryResultsButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InlineQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputMediaAnimation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputMediaAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputMediaDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputMediaPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputMediaVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputMedia]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Invoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[KeyboardButtonPollType]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[KeyboardButtonRequestChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[KeyboardButtonRequestUser]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[KeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[LoginUrl]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[MaskPosition]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[MenuButtonCommands]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[MenuButtonDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[MenuButtonWebApp]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[MenuButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[MessageAutoDeleteTimerChanged]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[MessageId]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[OrderInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportData]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementErrorDataField]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementErrorFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementErrorFiles]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementErrorFrontSide]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementErrorReverseSide]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementErrorSelfie]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementErrorTranslationFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementErrorTranslationFiles]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementErrorUnspecified]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PassportFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PollAnswer]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PollOption]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Poll]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[PreCheckoutQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ProximityAlertTriggered]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ResponseParameters]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[SentWebAppMessage]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ShippingAddress]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ShippingOption]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[ShippingQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[StickerSet]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Sticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Story]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[SuccessfulPayment]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[SwitchInlineQueryChosenChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Update]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[UserProfilePhotos]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[UserShared]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Venue]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[VideoChatEnded]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[VideoChatParticipantsInvited]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[VideoChatScheduled]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[VideoChatStarted]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[VideoNote]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Video]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[WebAppData]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[WebAppInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[WriteAccessAllowed]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[animation].Member[Animation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[animation].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[animation].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[audio].Member[Audio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[audio].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[audio].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[base].Member[BotContextController]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[base].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[base].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command].Member[BotCommand]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope].Member[BotCommandScope]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_all_chat_administrators].Member[BotCommandScopeAllChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_all_chat_administrators].Member[BotCommandScope]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_all_group_chats].Member[BotCommandScopeAllGroupChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_all_group_chats].Member[BotCommandScope]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_all_private_chats].Member[BotCommandScopeAllPrivateChats]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_all_private_chats].Member[BotCommandScope]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_chat].Member[BotCommandScopeChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_chat].Member[BotCommandScope]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_chat_administrators].Member[BotCommandScopeChatAdministrators]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_chat_administrators].Member[BotCommandScope]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_chat_member].Member[BotCommandScopeChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_chat_member].Member[BotCommandScope]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_default].Member[BotCommandScopeDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_command_scope_default].Member[BotCommandScope]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_description].Member[BotDescription]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_description].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_name].Member[BotName]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_name].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_short_description].Member[BotShortDescription]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[bot_short_description].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[callback_game].Member[CallbackGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[callback_game].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[callback_query].Member[CallbackQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[callback_query].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[callback_query].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[callback_query].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat].Member[ChatLocation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat].Member[ChatPermissions]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat].Member[ChatPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_administrator_rights].Member[ChatAdministratorRights]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_administrator_rights].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_invite_link].Member[ChatInviteLink]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_invite_link].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_invite_link].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[ChatInviteLink]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[ChatJoinRequest]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[InputMediaAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[InputMediaDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[InputMediaPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[InputMediaVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_join_request].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_location].Member[ChatLocation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_location].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_location].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member].Member[ChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_administrator].Member[ChatMemberAdministrator]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_administrator].Member[ChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_administrator].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_banned].Member[ChatMemberBanned]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_banned].Member[ChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_banned].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_left].Member[ChatMemberLeft]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_left].Member[ChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_left].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_member].Member[ChatMemberMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_member].Member[ChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_member].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_owner].Member[ChatMemberOwner]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_owner].Member[ChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_owner].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_restricted].Member[ChatMemberRestricted]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_restricted].Member[ChatMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_restricted].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ChatInviteLink]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ChatMemberAdministrator]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ChatMemberBanned]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ChatMemberLeft]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ChatMemberMember]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ChatMemberOwner]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ChatMemberRestricted]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ChatMemberUpdated]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[InputMediaAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[InputMediaDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[InputMediaPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[InputMediaVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_member_updated].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_permissions].Member[ChatPermissions]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_permissions].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_photo].Member[ChatPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_photo].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_shared].Member[ChatShared]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chat_shared].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chosen_inline_result].Member[ChosenInlineResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chosen_inline_result].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chosen_inline_result].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[chosen_inline_result].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[contact].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[contact].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[dice].Member[Dice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[dice].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[document].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[document].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[document].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[encrypted_credentials].Member[EncryptedCredentials]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[encrypted_credentials].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[encrypted_passport_element].Member[EncryptedPassportElement]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[encrypted_passport_element].Member[PassportFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[encrypted_passport_element].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[error_event].Member[ErrorEvent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[error_event].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[error_event].Member[Update]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[file].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[file].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[force_reply].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[force_reply].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic].Member[ForumTopic]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic_closed].Member[ForumTopicClosed]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic_closed].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic_created].Member[ForumTopicCreated]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic_created].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic_edited].Member[ForumTopicEdited]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic_edited].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic_reopened].Member[ForumTopicReopened]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[forum_topic_reopened].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[game].Member[Animation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[game].Member[Game]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[game].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[game].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[game].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[game_high_score].Member[GameHighScore]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[game_high_score].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[game_high_score].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[general_forum_topic_hidden].Member[GeneralForumTopicHidden]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[general_forum_topic_hidden].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[general_forum_topic_unhidden].Member[GeneralForumTopicUnhidden]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[general_forum_topic_unhidden].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_keyboard_button].Member[CallbackGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_keyboard_button].Member[InlineKeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_keyboard_button].Member[LoginUrl]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_keyboard_button].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_keyboard_button].Member[SwitchInlineQueryChosenChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_keyboard_button].Member[WebAppInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_keyboard_markup].Member[InlineKeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_keyboard_markup].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_keyboard_markup].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultArticle]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultCachedAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultCachedDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultCachedGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultCachedMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultCachedPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultCachedSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultCachedVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultCachedVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultContact]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultLocation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultVenue]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQueryResultsButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[InlineQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_article].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_article].Member[InlineQueryResultArticle]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_article].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_article].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_article].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_article].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_article].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_article].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_audio].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_audio].Member[InlineQueryResultAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_audio].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_audio].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_audio].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_audio].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_audio].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_audio].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_audio].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_audio].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_audio].Member[InlineQueryResultCachedAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_audio].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_audio].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_audio].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_audio].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_audio].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_audio].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_audio].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_document].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_document].Member[InlineQueryResultCachedDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_document].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_document].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_document].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_document].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_document].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_document].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_document].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_gif].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_gif].Member[InlineQueryResultCachedGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_gif].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_gif].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_gif].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_gif].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_gif].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_gif].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_gif].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_mpeg4_gif].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_mpeg4_gif].Member[InlineQueryResultCachedMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_mpeg4_gif].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_mpeg4_gif].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_mpeg4_gif].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_mpeg4_gif].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_mpeg4_gif].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_mpeg4_gif].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_mpeg4_gif].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_photo].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_photo].Member[InlineQueryResultCachedPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_photo].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_photo].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_photo].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_photo].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_photo].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_photo].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_photo].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_sticker].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_sticker].Member[InlineQueryResultCachedSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_sticker].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_sticker].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_sticker].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_sticker].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_sticker].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_sticker].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_video].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_video].Member[InlineQueryResultCachedVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_video].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_video].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_video].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_video].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_video].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_video].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_video].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_voice].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_voice].Member[InlineQueryResultCachedVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_voice].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_voice].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_voice].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_voice].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_voice].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_voice].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_cached_voice].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_contact].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_contact].Member[InlineQueryResultContact]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_contact].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_contact].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_contact].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_contact].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_contact].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_contact].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_document].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_document].Member[InlineQueryResultDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_document].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_document].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_document].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_document].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_document].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_document].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_document].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_game].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_game].Member[InlineQueryResultGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_game].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_gif].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_gif].Member[InlineQueryResultGif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_gif].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_gif].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_gif].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_gif].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_gif].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_gif].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_gif].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_location].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_location].Member[InlineQueryResultLocation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_location].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_location].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_location].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_location].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_location].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_location].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_mpeg4_gif].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_mpeg4_gif].Member[InlineQueryResultMpeg4Gif]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_mpeg4_gif].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_mpeg4_gif].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_mpeg4_gif].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_mpeg4_gif].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_mpeg4_gif].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_mpeg4_gif].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_mpeg4_gif].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_photo].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_photo].Member[InlineQueryResultPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_photo].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_photo].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_photo].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_photo].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_photo].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_photo].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_photo].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_venue].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_venue].Member[InlineQueryResultVenue]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_venue].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_venue].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_venue].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_venue].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_venue].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_venue].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_video].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_video].Member[InlineQueryResultVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_video].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_video].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_video].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_video].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_video].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_video].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_video].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_voice].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_voice].Member[InlineQueryResultVoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_voice].Member[InlineQueryResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_voice].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_voice].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_voice].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_voice].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_voice].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_result_voice].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_results_button].Member[InlineQueryResultsButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_results_button].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[inline_query_results_button].Member[WebAppInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_contact_message_content].Member[InputContactMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_contact_message_content].Member[InputMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_invoice_message_content].Member[InputInvoiceMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_invoice_message_content].Member[InputMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_invoice_message_content].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_location_message_content].Member[InputLocationMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_location_message_content].Member[InputMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media].Member[InputMedia]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_animation].Member[InputMediaAnimation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_animation].Member[InputMedia]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_animation].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_audio].Member[InputMediaAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_audio].Member[InputMedia]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_audio].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_document].Member[InputMediaDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_document].Member[InputMedia]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_document].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_photo].Member[InputMediaPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_photo].Member[InputMedia]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_photo].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_video].Member[InputMediaVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_video].Member[InputMedia]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_media_video].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_message_content].Member[InputMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_message_content].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_sticker].Member[InputSticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_sticker].Member[MaskPosition]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_sticker].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_text_message_content].Member[InputMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_text_message_content].Member[InputTextMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_text_message_content].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_venue_message_content].Member[InputMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[input_venue_message_content].Member[InputVenueMessageContent]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[invoice].Member[Invoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[invoice].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button].Member[KeyboardButtonPollType]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button].Member[KeyboardButtonRequestChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button].Member[KeyboardButtonRequestUser]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button].Member[KeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button].Member[WebAppInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button_poll_type].Member[KeyboardButtonPollType]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button_poll_type].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button_request_chat].Member[ChatAdministratorRights]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button_request_chat].Member[KeyboardButtonRequestChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button_request_chat].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button_request_user].Member[KeyboardButtonRequestUser]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[keyboard_button_request_user].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[labeled_price].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[labeled_price].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[location].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[location].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[login_url].Member[LoginUrl]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[login_url].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[mask_position].Member[MaskPosition]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[mask_position].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button].Member[MenuButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button].Member[WebAppInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button_commands].Member[MenuButtonCommands]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button_commands].Member[MenuButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button_default].Member[MenuButtonDefault]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button_default].Member[MenuButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button_web_app].Member[MenuButtonWebApp]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button_web_app].Member[MenuButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[menu_button_web_app].Member[WebAppInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Animation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Audio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[ChatShared]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Dice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[ForceReply]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[ForumTopicClosed]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[ForumTopicCreated]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[ForumTopicEdited]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[ForumTopicReopened]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Game]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[GeneralForumTopicHidden]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[GeneralForumTopicUnhidden]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[InputMediaAnimation]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[InputMediaAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[InputMediaDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[InputMediaPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[InputMediaVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Invoice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[MessageAutoDeleteTimerChanged]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[PassportData]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Poll]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[ProximityAlertTriggered]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Sticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Story]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[SuccessfulPayment]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[UserShared]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Venue]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[VideoChatEnded]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[VideoChatParticipantsInvited]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[VideoChatScheduled]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[VideoChatStarted]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[VideoNote]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Video]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[WebAppData]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message].Member[WriteAccessAllowed]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message_auto_delete_timer_changed].Member[MessageAutoDeleteTimerChanged]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message_auto_delete_timer_changed].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message_entity].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message_entity].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message_entity].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message_id].Member[MessageId]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[message_id].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[order_info].Member[OrderInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[order_info].Member[ShippingAddress]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[order_info].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_data].Member[EncryptedCredentials]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_data].Member[EncryptedPassportElement]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_data].Member[PassportData]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_data].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_data_field].Member[PassportElementErrorDataField]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_data_field].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_file].Member[PassportElementErrorFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_file].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_files].Member[PassportElementErrorFiles]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_files].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_front_side].Member[PassportElementErrorFrontSide]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_front_side].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_reverse_side].Member[PassportElementErrorReverseSide]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_reverse_side].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_selfie].Member[PassportElementErrorSelfie]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_selfie].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_translation_file].Member[PassportElementErrorTranslationFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_translation_file].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_translation_files].Member[PassportElementErrorTranslationFiles]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_translation_files].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_unspecified].Member[PassportElementErrorUnspecified]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_element_error_unspecified].Member[PassportElementError]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_file].Member[PassportFile]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[passport_file].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[photo_size].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[photo_size].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll].Member[PollOption]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll].Member[Poll]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll_answer].Member[Chat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll_answer].Member[PollAnswer]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll_answer].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll_answer].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll_option].Member[PollOption]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[poll_option].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[pre_checkout_query].Member[OrderInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[pre_checkout_query].Member[PreCheckoutQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[pre_checkout_query].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[pre_checkout_query].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[proximity_alert_triggered].Member[ProximityAlertTriggered]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[proximity_alert_triggered].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[proximity_alert_triggered].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[reply_keyboard_markup].Member[KeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[reply_keyboard_markup].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[reply_keyboard_markup].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[reply_keyboard_remove].Member[MutableTelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[reply_keyboard_remove].Member[ReplyKeyboardRemove]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[response_parameters].Member[ResponseParameters]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[response_parameters].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sent_web_app_message].Member[SentWebAppMessage]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sent_web_app_message].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_address].Member[ShippingAddress]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_address].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_option].Member[LabeledPrice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_option].Member[ShippingOption]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_option].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_query].Member[ShippingAddress]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_query].Member[ShippingOption]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_query].Member[ShippingQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_query].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[shipping_query].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sticker].Member[File]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sticker].Member[MaskPosition]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sticker].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sticker].Member[Sticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sticker].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sticker_set].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sticker_set].Member[StickerSet]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sticker_set].Member[Sticker]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[sticker_set].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[story].Member[Story]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[story].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[successful_payment].Member[OrderInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[successful_payment].Member[SuccessfulPayment]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[successful_payment].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[switch_inline_query_chosen_chat].Member[SwitchInlineQueryChosenChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[switch_inline_query_chosen_chat].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[CallbackQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[ChatJoinRequest]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[ChatMemberUpdated]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[ChosenInlineResult]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[InlineQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[PollAnswer]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[Poll]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[PreCheckoutQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[ShippingQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[update].Member[Update]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[user].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[user_profile_photos].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[user_profile_photos].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[user_profile_photos].Member[UserProfilePhotos]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[user_shared].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[user_shared].Member[UserShared]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[venue].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[venue].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[venue].Member[Venue]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video].Member[Video]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_chat_ended].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_chat_ended].Member[VideoChatEnded]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_chat_participants_invited].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_chat_participants_invited].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_chat_participants_invited].Member[VideoChatParticipantsInvited]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_chat_scheduled].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_chat_scheduled].Member[VideoChatScheduled]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_chat_started].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_chat_started].Member[VideoChatStarted]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_note].Member[PhotoSize]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_note].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[video_note].Member[VideoNote]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[voice].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[voice].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[web_app_data].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[web_app_data].Member[WebAppData]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[web_app_info].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[web_app_info].Member[WebAppInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[webhook_info].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[webhook_info].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[write_access_allowed].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[types].Member[write_access_allowed].Member[WriteAccessAllowed]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[callback_answer].Member[CallbackQuery]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[callback_answer].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[chat_action].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[chat_action].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[formatting].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[formatting].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[i18n].Member[middleware].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[i18n].Member[middleware].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[CallbackData]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[CallbackGame]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[InlineKeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[InlineKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[KeyboardButtonPollType]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[KeyboardButton]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[LoginUrl]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[ReplyKeyboardMarkup]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[SwitchInlineQueryChosenChat]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[keyboard].Member[WebAppInfo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[media_group].Member[InputMediaAudio]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[media_group].Member[InputMediaDocument]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[media_group].Member[InputMediaPhoto]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[media_group].Member[InputMediaVideo]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[media_group].Member[InputMedia]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[media_group].Member[MessageEntity]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[web_app].Member[TelegramObject]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[web_app].Member[WebAppInitData]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[utils].Member[web_app].Member[WebAppUser]
+  - - pydantic.BaseModel~Subclass
+    - aiogram
+    - Member[webhook].Member[aiohttp_server].Member[TelegramMethod]

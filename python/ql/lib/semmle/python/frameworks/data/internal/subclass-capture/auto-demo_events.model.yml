@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_events
+    - Member[handlers].Member[on_move_event].Member[MovePayload]
+  - - pydantic.BaseModel~Subclass
+    - demo_events
+    - Member[handlers].Member[on_roll_event].Member[RollPayload]
+  - - pydantic.BaseModel~Subclass
+    - demo_events
+    - Member[types].Member[events_contract].Member[tezos_events].Member[move].Member[MovePayload]
+  - - pydantic.BaseModel~Subclass
+    - demo_events
+    - Member[types].Member[events_contract].Member[tezos_events].Member[roll].Member[RollPayload]

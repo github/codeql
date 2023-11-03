@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - cme
+    - Member[servers].Member[http].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - cme
+    - Member[servers].Member[http].Member[RequestHandler]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[modules].Member[gpp_autologin].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[modules].Member[gpp_password].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[modules].Member[keepass_trigger].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[modules].Member[keepass_trigger].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[modules].Member[winscp_dump].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[protocols].Member[mssql].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[protocols].Member[smb].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[protocols].Member[ssh].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[protocols].Member[winrm].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[protocols].Member[wmi].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cme
+    - Member[protocols].Member[wmi].Member[wmiexec_event].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - cme
+    - Member[modules].Member[gpp_autologin].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - cme
+    - Member[modules].Member[gpp_password].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - cme
+    - Member[modules].Member[keepass_trigger].Member[ElementTree]

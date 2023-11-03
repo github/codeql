@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - pickle~Alias
+    - dvc
+    - Member[repo].Member[experiments].Member[executor].Member[base].Member[pickle]
   - - pydantic.BaseModel~Subclass
     - dvc
     - Member[repo].Member[artifacts].Member[GTOTag]
+  - - requests.models.Response~Subclass
+    - dvc
+    - Member[utils].Member[studio].Member[Response]

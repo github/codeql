@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - sqlite_web
+    - Member[sqlite_web].Member[Flask]
+  - - io.StringIO~Subclass
+    - sqlite_web
+    - Member[sqlite_web].Member[StringIO]
+  - - markupsafe.Markup~Subclass
+    - sqlite_web
+    - Member[sqlite_web].Member[Markup]

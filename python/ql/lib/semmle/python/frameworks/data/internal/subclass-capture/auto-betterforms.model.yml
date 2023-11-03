@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - betterforms
+    - Member[views].Member[BrowseView]
+  - - Django.Views.View~Subclass
+    - betterforms
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - betterforms
+    - Member[views].Member[ListView]
+  - - django.forms.BaseForm~Subclass
+    - betterforms
+    - Member[changelist].Member[BaseChangeListForm]
+  - - django.forms.BaseForm~Subclass
+    - betterforms
+    - Member[changelist].Member[BetterForm]
+  - - django.forms.BaseForm~Subclass
+    - betterforms
+    - Member[changelist].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - betterforms
+    - Member[changelist].Member[SortFormBase]
+  - - django.forms.BaseForm~Subclass
+    - betterforms
+    - Member[changelist].Member[SortForm]
+  - - django.forms.BaseForm~Subclass
+    - betterforms
+    - Member[forms].Member[BetterForm]
+  - - django.forms.BaseForm~Subclass
+    - betterforms
+    - Member[forms].Member[BetterModelForm]

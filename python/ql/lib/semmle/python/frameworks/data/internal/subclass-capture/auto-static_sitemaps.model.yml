@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - static_sitemaps
+    - Member[urls].Member[SitemapView]
+  - - Django.Views.View~Subclass
+    - static_sitemaps
+    - Member[views].Member[SitemapView]
+  - - Django.Views.View~Subclass
+    - static_sitemaps
+    - Member[views].Member[View]
+  - - django.http.response.HttpResponse~Subclass
+    - static_sitemaps
+    - Member[views].Member[HttpResponse]
   - - io.StringIO~Subclass
     - static_sitemaps
     - Member[generator].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - static_sitemaps
+    - Member[generator].Member[StringIO]

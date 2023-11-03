@@ -4,12 +4,51 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - djangocms_history
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - djangocms_history
+    - Member[views].Member[UndoRedoView]
+  - - Django.db.models.Model~Subclass
+    - djangocms_history
+    - Member[action_handlers].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_history
+    - Member[admin].Member[PlaceholderOperation]
+  - - Django.db.models.Model~Subclass
+    - djangocms_history
+    - Member[datastructures].Member[CMSPlugin]
+  - - Django.db.models.Model~Subclass
+    - djangocms_history
+    - Member[helpers].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - djangocms_history
     - Member[helpers].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - djangocms_history
+    - Member[models].Member[PlaceholderAction]
+  - - Django.db.models.Model~Subclass
+    - djangocms_history
+    - Member[models].Member[PlaceholderOperation]
   - - Django.db.models.Model~Subclass
     - djangocms_history
     - Member[models].Member[Placeholder]
   - - Django.db.models.Model~Subclass
     - djangocms_history
     - Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - djangocms_history
+    - Member[views].Member[PlaceholderOperation]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_history
+    - Member[forms].Member[UndoRedoForm]
+  - - django.forms.BaseForm~Subclass
+    - djangocms_history
+    - Member[views].Member[UndoRedoForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - djangocms_history
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - djangocms_history
+    - Member[views].Member[HttpResponse]

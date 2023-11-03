@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - scrapli_netconf
+    - Member[transport].Member[plugins].Member[system].Member[transport].Member[BytesIO]
+  - - lxml.etree~Alias
+    - scrapli_netconf
+    - Member[channel].Member[base_channel].Member[etree]
+  - - lxml.etree~Alias
+    - scrapli_netconf
+    - Member[driver].Member[base_driver].Member[etree]
+  - - lxml.etree~Alias
+    - scrapli_netconf
+    - Member[response].Member[etree]

@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - scrapy
+    - Member[core].Member[downloader].Member[handlers].Member[ftp].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - scrapy
+    - Member[core].Member[downloader].Member[handlers].Member[http11].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - scrapy
+    - Member[core].Member[http2].Member[stream].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - scrapy
+    - Member[mail].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - scrapy
+    - Member[pipelines].Member[files].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - scrapy
+    - Member[pipelines].Member[images].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - scrapy
+    - Member[responsetypes].Member[StringIO]
+  - - io.StringIO~Subclass
+    - scrapy
+    - Member[utils].Member[gz].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - scrapy
+    - Member[utils].Member[iterators].Member[StringIO]
+  - - logging.Logger~Subclass
+    - scrapy
+    - Member[downloadermiddlewares].Member[retry].Member[Logger]
+  - - lxml.etree~Alias
+    - scrapy
+    - Member[linkextractors].Member[lxmlhtml].Member[etree]
+  - - pickle~Alias
+    - scrapy
+    - Member[extensions].Member[httpcache].Member[pickle]
+  - - pickle~Alias
+    - scrapy
+    - Member[extensions].Member[spiderstate].Member[pickle]
+  - - pickle~Alias
+    - scrapy
+    - Member[squeues].Member[pickle]

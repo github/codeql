@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - tornado.web.Application~Subclass
+    - http_tools
+    - Member[web].Member[server].Member[Application]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[controllers].Member[dashboard].Member[DashboardHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[controllers].Member[dashboard].Member[FlowMetaHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[controllers].Member[dashboard].Member[RepeatHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[controllers].Member[index].Member[KillHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[controllers].Member[index].Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[server].Member[DashboardHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[server].Member[FlowMetaHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[server].Member[KillHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[server].Member[MainHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - http_tools
+    - Member[web].Member[server].Member[RepeatHandler]

@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - ir_datasets
+    - Member[commands].Member[build_c4_checkpoints].Member[pickle]
+  - - pickle~Alias
+    - ir_datasets
+    - Member[datasets].Member[aol_ia].Member[pickle]
+  - - pickle~Alias
+    - ir_datasets
+    - Member[datasets].Member[c4].Member[pickle]
+  - - pickle~Alias
+    - ir_datasets
+    - Member[indices].Member[indexed_tsv_docstore].Member[pickle]
+  - - pickle~Alias
+    - ir_datasets
+    - Member[indices].Member[lz4_pickle].Member[pickle]
+  - - pickle~Alias
+    - ir_datasets
+    - Member[indices].Member[zpickle_docstore].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - ir_datasets
+    - Member[datasets].Member[clinicaltrials].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - ir_datasets
+    - Member[datasets].Member[pmc].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - ir_datasets
+    - Member[formats].Member[trec].Member[ET]

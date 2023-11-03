@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - aiohttp_devtools
+    - Member[runserver].Member[watch].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - aiohttp_devtools
+    - Member[logs].Member[StringIO]

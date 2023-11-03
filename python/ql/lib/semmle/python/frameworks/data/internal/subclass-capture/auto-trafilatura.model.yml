@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle.load~Alias
+    - trafilatura
+    - Member[external].Member[load_pickle]
+  - - pickle.load~Alias
+    - trafilatura
+    - Member[xml].Member[load_pickle]

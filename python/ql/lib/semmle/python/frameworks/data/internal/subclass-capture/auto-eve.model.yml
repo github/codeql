@@ -4,6 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - eve
+    - Member[Eve]
+  - - flask.Flask~Subclass
+    - eve
+    - Member[flaskapp].Member[Eve]
+  - - flask.Flask~Subclass
+    - eve
+    - Member[flaskapp].Member[Flask]
+  - - flask.Flask~Subclass
+    - eve
+    - Member[io].Member[mongo].Member[media].Member[Flask]
+  - - flask.Response~Subclass
+    - eve
+    - Member[endpoints].Member[Response]
+  - - flask.Response~Subclass
+    - eve
+    - Member[render].Member[Response]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - eve
     - Member[flaskapp].Member[EveWSGIRequestHandler]

@@ -1,0 +1,312 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[_vendor].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[_vendor].Member[six].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[common].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[common].Member[io].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[common].Member[io].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[common].Member[pkg_formats].Member[python].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[exports].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[gateways].Member[connection].Member[adapters].Member[ftp].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[gateways].Member[connection].Member[adapters].Member[ftp].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[poetry].Member[core].Member[_vendor].Member[jsonschema].Member[compat].Member[NativeIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[poetry].Member[core].Member[masonry].Member[builders].Member[sdist].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[poetry].Member[core].Member[masonry].Member[builders].Member[wheel].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[_vendor].Member[poetry].Member[core].Member[masonry].Member[builders].Member[wheel].Member[StringIO]
+  - - io.StringIO~Subclass
+    - conda_lock
+    - Member[scripts].Member[vendor_poetry].Member[vendor_helpers].Member[BytesIO]
+  - - pickle~Alias
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[core].Member[subdir_data].Member[pickle]
+  - - pickle~Alias
+    - conda_lock
+    - Member[_vendor].Member[poetry].Member[core].Member[_vendor].Member[lark].Member[lark].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_lock].Member[Channel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_lock].Member[GitMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_lock].Member[InputMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_lock].Member[LockMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_lock].Member[LockSpecification]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_lock].Member[LockedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_lock].Member[Lockfile]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_lock].Member[PipRepository]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_lock].Member[TimeMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_solver].Member[Channel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_solver].Member[HashModel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_solver].Member[LockedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[conda_solver].Member[VersionedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[invoke_conda].Member[Channel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[LockedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[LockfileV1]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[Lockfile]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[BaseLockedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[Channel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[DependencySource]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[GitMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[HashModel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[InputMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[LockMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[LockedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[Lockfile]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[StrictModel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v1].Member[models].Member[TimeMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v2prelim].Member[models].Member[DependencySource]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v2prelim].Member[models].Member[GitMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v2prelim].Member[models].Member[HashModel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v2prelim].Member[models].Member[InputMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v2prelim].Member[models].Member[LockMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v2prelim].Member[models].Member[LockedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v2prelim].Member[models].Member[Lockfile]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[lockfile].Member[v2prelim].Member[models].Member[TimeMeta]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[StrictModel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[channel].Member[Channel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[channel].Member[CondaUrl]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[channel].Member[ZeroValRepr]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[Channel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[FakeRepoData]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[LockSpecification]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[Package]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[PipRepository]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[PoetryMappedDependencySpec]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[StrictModel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[URLDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[VCSDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[VersionedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[lock_spec].Member[_BaseDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models].Member[pip_repository].Member[PipRepository]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[models]Member[StrictModel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[pypi_solver].Member[DependencySource]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[pypi_solver].Member[HashModel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[pypi_solver].Member[LockedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[pypi_solver].Member[PipRepository]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[scripts].Member[vendor_poetry].Member[migration].Member[Requirement]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[scripts].Member[vendor_poetry].Member[vendor_helpers].Member[DependencyData]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[scripts].Member[vendor_poetry].Member[vendor_helpers].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[scripts].Member[vendor_poetry].Member[vendor_helpers].Member[Requirement]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[Channel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[FakeRepoData]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[LockSpecification]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[PipRepository]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[aggregation].Member[Channel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[aggregation].Member[LockSpecification]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[aggregation].Member[PipRepository]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[conda_common].Member[VersionedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[environment_yaml].Member[LockSpecification]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[meta_yaml].Member[LockSpecification]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[pyproject_toml].Member[LockSpecification]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[pyproject_toml].Member[PoetryMappedDependencySpec]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[pyproject_toml].Member[URLDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[pyproject_toml].Member[VCSDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[src_parser].Member[pyproject_toml].Member[VersionedDependency]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[virtual_package].Member[Channel]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[virtual_package].Member[FakePackage]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[virtual_package].Member[FakeRepoData]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[virtual_package].Member[VirtualPackageSpecSubdir]
+  - - pydantic.BaseModel~Subclass
+    - conda_lock
+    - Member[virtual_package].Member[VirtualPackageSpec]
+  - - requests.models.Response~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[gateways].Member[connection].Member[Response]
+  - - requests.models.Response~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[gateways].Member[connection].Member[adapters].Member[ftp].Member[Response]
+  - - requests.models.Response~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[gateways].Member[connection].Member[adapters].Member[localfs].Member[Response]
+  - - requests.models.Response~Subclass
+    - conda_lock
+    - Member[_vendor].Member[conda].Member[gateways].Member[connection].Member[adapters].Member[s3].Member[Response]
+  - - urllib.parse.SplitResult~Subclass
+    - conda_lock
+    - Member[_vendor].Member[poetry].Member[core].Member[_vendor].Member[jsonschema].Member[compat].Member[SplitResult]

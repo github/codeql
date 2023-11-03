@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - martor
+    - Member[fields].Member[MartorFormField]
+  - - Django.Forms.Field~Subclass
+    - martor
+    - Member[models].Member[MartorFormField]
+  - - django.http.response.HttpResponse~Subclass
+    - martor
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - martor
+    - Member[views].Member[JsonResponse]

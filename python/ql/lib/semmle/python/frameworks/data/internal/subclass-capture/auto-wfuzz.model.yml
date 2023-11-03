@@ -6,4 +6,16 @@ extensions:
   data:
   - - io.StringIO~Subclass
     - wfuzz
+    - Member[externals].Member[reqresp].Member[Response].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - wfuzz
+    - Member[myhttp].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - wfuzz
     - Member[ui].Member[console].Member[output].Member[StringIO]
+  - - pickle~Alias
+    - wfuzz
+    - Member[fuzzqueues].Member[pickle]
+  - - pickle~Alias
+    - wfuzz
+    - Member[plugins].Member[payloads].Member[wfuzzp].Member[pickle]

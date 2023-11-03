@@ -106,6 +106,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - myapp
     - Member[views].Member[Person]
+  - - django.http.response.HttpResponse~Subclass
+    - myapp
+    - Member[views].Member[Response]
   - - rest_framework.response.Response~Subclass
     - myapp
     - Member[views].Member[Response]

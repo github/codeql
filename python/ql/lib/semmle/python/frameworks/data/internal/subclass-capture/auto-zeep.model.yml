@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - zeep
+    - Member[xsd].Member[printer].Member[StringIO]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[helpers].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[loader].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[utils].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsa].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsdl].Member[bindings].Member[http].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsdl].Member[bindings].Member[soap].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsdl].Member[definitions].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsdl].Member[messages].Member[multiref].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsdl].Member[parse].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsdl].Member[utils].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsdl].Member[wsdl].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsse].Member[signature].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[wsse].Member[utils].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[xsd].Member[const].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[xsd].Member[schema].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[xsd].Member[types].Member[unresolved].Member[etree]
+  - - lxml.etree~Alias
+    - zeep
+    - Member[xsd].Member[visitor].Member[etree]

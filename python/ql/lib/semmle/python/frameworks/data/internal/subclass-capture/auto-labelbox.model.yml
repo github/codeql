@@ -1,0 +1,1722 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[raster].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - labelbox
+    - Member[schema].Member[batch].Member[StringIO]
+  - - io.StringIO~Subclass
+    - labelbox
+    - Member[schema].Member[dataset].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[DataRowMetadataField]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[DataRowMetadata]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[DeleteDataRowMetadata]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[AudioData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ClassificationAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ConversationData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ConversationEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[DICOMMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[DICOMObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[DicomData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[DocumentData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[DocumentEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[DocumentRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[DocumentTextSelection]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[EPSGTransformer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[HTMLData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[MaskFrame]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[MaskInstance]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[RelationshipAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Relationship]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[TileLayer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[TiledBounds]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[TiledImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[VideoClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[VideoMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[VideoObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[annotation].Member[BaseAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[annotation].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[annotation].Member[ConfidenceMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[annotation].Member[ConversationEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[annotation].Member[DocumentEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[annotation].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[annotation].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[annotation].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[base_annotation].Member[BaseAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[base_annotation].Member[FeatureSchema]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[ClassificationAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[BaseAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[ClassificationAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[ConfidenceMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[FeatureSchema]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[classification].Member[classification].Member[_TempName]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[collection].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[AudioData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[ConversationData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[DicomData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[DocumentData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[HTMLData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[audio].Member[AudioData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[audio].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[base_data].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[conversation].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[conversation].Member[ConversationData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[dicom].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[dicom].Member[DicomData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[document].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[document].Member[DocumentData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[html].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[html].Member[HTMLData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[raster].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[raster].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[raster].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[raster].Member[RasterData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[text].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[text].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[EPSGTransformer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[RasterData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[TileLayer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[TiledBounds]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[tiled_image].Member[TiledImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[video].Member[BaseData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[data].Member[video].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[feature].Member[FeatureSchema]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[DocumentRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[geometry].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[line].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[line].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[line].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[mask].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[mask].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[mask].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[point].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[point].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[polygon].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[polygon].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[polygon].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[rectangle].Member[DocumentRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[rectangle].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[rectangle].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[geometry].Member[rectangle].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[AudioData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[ClassificationAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[ConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[ConversationData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[DicomData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[DocumentData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[HTMLData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[RelationshipAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[ScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[TiledImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[VideoClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[VideoMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[label].Member[VideoObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[metrics].Member[ConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[metrics].Member[ScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[metrics].Member[base].Member[BaseMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[metrics].Member[confusion_matrix].Member[BaseMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[metrics].Member[confusion_matrix].Member[ConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[metrics].Member[scalar].Member[BaseMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[metrics].Member[scalar].Member[ScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[ConversationEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[DocumentEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[DocumentTextSelection]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[conversation_entity].Member[ConversationEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[conversation_entity].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[conversation_entity].Member[_CamelCaseMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[document_entity].Member[DocumentEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[document_entity].Member[DocumentTextSelection]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[document_entity].Member[_CamelCaseMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[ner].Member[text_entity].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[relationship].Member[BaseAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[relationship].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[relationship].Member[RelationshipAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[relationship].Member[Relationship]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[DICOMMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[DICOMObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[FeatureSchema]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[MaskFrame]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[MaskInstance]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[VideoClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[VideoMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[VideoObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[annotation_types].Member[video].Member[_CamelCaseMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[ConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[calculation].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[calculation].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[calculation].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[calculation].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[calculation].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[calculation].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[calculation].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[confusion_matrix].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[confusion_matrix].Member[ConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[confusion_matrix].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[confusion_matrix].Member[confusion_matrix].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[group].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[group].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[group].Member[ClassificationAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[group].Member[FeatureSchema]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[group].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[group].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[group].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[group].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[ScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[calculation].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[iou].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[iou].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[iou].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[metrics].Member[iou].Member[iou].Member[ScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[mixins].Member[ConfidenceMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[ontology].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[annotation].Member[COCOObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[annotation].Member[PanopticAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[annotation].Member[PathSerializerMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[annotation].Member[RLE]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[annotation].Member[SegmentInfo]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[categories].Member[Categories]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[converter].Member[CocoInstanceDataset]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[converter].Member[CocoPanopticDataset]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[image].Member[CocoImage]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[image].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[image].Member[PathSerializerMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[COCOObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[Categories]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[CocoImage]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[CocoInstanceDataset]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[RLE]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[instance_dataset].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[Categories]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[CocoImage]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[CocoPanopticDataset]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[PanopticAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[panoptic_dataset].Member[SegmentInfo]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[coco].Member[path].Member[PathSerializerMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[ClassificationAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[LBV1Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[LBV1ClassificationAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[LBV1Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[LBV1Feature]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[LBV1Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[LBV1Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[classification].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[converter].Member[LBV1Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[converter].Member[LBV1Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[feature].Member[LBV1Feature]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[LBV1LabelAnnotationsVideo]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[LBV1LabelAnnotations]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[LBV1Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[LBV1Objects]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[LBV1TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[Review]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[TiledImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[VideoClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[label].Member[VideoObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Feature]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1ObjectBase]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Objects]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1TILine]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1TIPoint]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1TIPolygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1TIRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[LBV1Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[TILineCoordinate]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[TIPointCoordinate]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[TIPolygonCoordinate]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[TIRectangleCoordinate]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[_Box]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[_Location]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[_Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[labelbox_v1].Member[objects].Member[_TextPoint]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[base].Member[DataRow]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[base].Member[NDAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[base].Member[NDJsonBase]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[base].Member[_CamelCaseMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[ClassificationAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[ConfidenceMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[DataRow]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[FrameLocation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[NDAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[NDAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[NDChecklistSubclass]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[NDChecklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[NDRadioSubclass]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[NDRadio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[NDTextSubclass]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[NDText]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[VideoClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[classification].Member[VideoSupported]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[converter].Member[NDLabel]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[ConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[ConversationEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[DICOMObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[DataRow]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[DicomData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDChecklistSubclass]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDDicomMasks]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDDicomSegments]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDLabel]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDRadioSubclass]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDRelationship]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDSegments]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[NDVideoMasks]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[RelationshipAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[ScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[VideoClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[VideoMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[label].Member[VideoObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[metric].Member[BaseNDMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[metric].Member[ConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[metric].Member[DataRow]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[metric].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[metric].Member[NDConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[metric].Member[NDJsonBase]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[metric].Member[NDScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[metric].Member[ScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[metric].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[Bbox]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[ConfidenceMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[ConversationEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[DICOMMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[DICOMObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[DataRow]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[DicomSupported]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[DocumentEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[DocumentRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[DocumentTextSelection]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[Location]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[MaskFrame]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[MaskInstance]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDBaseObject]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDConversationEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDDicomLine]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDDicomMasks]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDDicomObjectType]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDDicomSegment]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDDicomSegments]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDDocumentEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDDocumentRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDFrameLine]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDFramePoint]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDFrameRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDJsonBase]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDLine]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDMask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDPoint]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDPolygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDSegment]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDSegments]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDTextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDVideoMasksFramesInstances]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[NDVideoMasks]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[VideoMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[VideoObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[VideoSupported]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[_PNGMask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[_Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[objects].Member[_URIMask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[relationship].Member[DataRow]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[relationship].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[relationship].Member[NDAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[relationship].Member[NDRelationship]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[relationship].Member[RelationshipAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[relationship].Member[Relationship]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[relationship].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[data].Member[serialization].Member[ndjson].Member[relationship].Member[_Relationship]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[annotation_import].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[Bbox]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[DataRow]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[EntityLocation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[FrameLocation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDBaseTool]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDBase]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDChecklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDFeatureSchema]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDMask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDPoint]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDPolygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDPolyline]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDRadio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDTextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[NDText]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[PNGMaskFeatures]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[RLEMaskFeatures]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[URIMaskFeatures]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[bulk_import_request].Member[VideoSupported]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[consensus_settings].Member[ConsensusSettings]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[consensus_settings].Member[_CamelCaseMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row].Member[DataRowMetadataField]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[DataRowMetadataBatchResponse]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[DataRowMetadataField]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[DataRowMetadataSchema]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[DataRowMetadata]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[DeleteDataRowMetadata]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[_CamelCaseMixin]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[_DeleteBatchDataRowMetadata]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[_UpsertBatchDataRowMetadata]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[_UpsertCustomMetadataSchemaEnumOptionInput]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[_UpsertCustomMetadataSchemaInput]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[data_row_metadata].Member[_UpsertDataRowMetadataInput]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[model_run].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[project].Member[ConsensusSettings]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[schema].Member[serialization].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[AudioData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Checklist]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[ClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[ClassificationAnswer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[ConfusionMatrixMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[ConversationData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[ConversationEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[DICOMMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[DICOMObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[DicomData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[DocumentData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[DocumentEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[DocumentRectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[DocumentTextSelection]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Dropdown]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[EPSGTransformer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Geometry]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[HTMLData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[ImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Label]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Line]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[MaskData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[MaskFrame]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[MaskInstance]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Mask]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[ObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Radio]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Rectangle]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[RelationshipAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Relationship]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[ScalarMetric]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[TextData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[TextEntity]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[Text]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[TileLayer]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[TiledBounds]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[TiledImageData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[VideoClassificationAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[VideoData]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[VideoMaskAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[types].Member[VideoObjectAnnotation]
+  - - pydantic.BaseModel~Subclass
+    - labelbox
+    - Member[utils].Member[_CamelCaseMixin]

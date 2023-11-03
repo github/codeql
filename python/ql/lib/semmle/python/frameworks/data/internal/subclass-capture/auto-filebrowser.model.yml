@@ -4,6 +4,27 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - filebrowser
+    - Member[fields].Member[FileBrowseFormField]
+  - - Django.Forms.Field~Subclass
+    - filebrowser
+    - Member[fields].Member[FileBrowseUploadFormField]
+  - - django.forms.BaseForm~Subclass
+    - filebrowser
+    - Member[forms].Member[ChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - filebrowser
+    - Member[forms].Member[CreateDirForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - filebrowser
+    - Member[sites].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - filebrowser
+    - Member[decorators].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - filebrowser
+    - Member[sites].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponse~Subclass
     - filebrowser
     - Member[sites].Member[HttpResponse]

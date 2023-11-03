@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - rest_framework_tracking
+    - Member[admin].Member[APIRequestLog]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_tracking
+    - Member[base_models].Member[BaseAPIRequestLog]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_tracking
+    - Member[management].Member[commands].Member[clearapilogs].Member[APIRequestLog]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_tracking
+    - Member[mixins].Member[APIRequestLog]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_tracking
+    - Member[models].Member[APIRequestLog]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_tracking
+    - Member[models].Member[BaseAPIRequestLog]
+  - - django.http.response.JsonResponse~Subclass
+    - rest_framework_tracking
+    - Member[admin].Member[JsonResponse]

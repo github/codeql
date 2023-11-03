@@ -10,3 +10,6 @@ extensions:
   - - Django.Views.View~Subclass
     - training
     - Member[urls].Member[TemplateView]
+  - - pickle~Alias
+    - training
+    - Member[misc].Member[pickle]

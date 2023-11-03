@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - baton
+    - Member[urls].Member[GetAppListJsonView]
+  - - Django.Views.View~Subclass
+    - baton
+    - Member[urls].Member[GetGravatartUrlJsonView]
+  - - Django.Views.View~Subclass
+    - baton
+    - Member[views].Member[GetAppListJsonView]
+  - - Django.Views.View~Subclass
+    - baton
+    - Member[views].Member[GetGravatartUrlJsonView]
+  - - Django.Views.View~Subclass
+    - baton
+    - Member[views].Member[View]
+  - - django.http.response.JsonResponse~Subclass
+    - baton
+    - Member[views].Member[JsonResponse]

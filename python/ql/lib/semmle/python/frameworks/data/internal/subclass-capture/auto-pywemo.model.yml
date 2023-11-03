@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - pywemo
+    - Member[subscribe].Member[BaseHTTPRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - pywemo
+    - Member[subscribe].Member[RequestHandler]
+  - - lxml.etree~Alias
+    - pywemo
+    - Member[exceptions].Member[et]
+  - - lxml.etree~Alias
+    - pywemo
+    - Member[ouimeaux_device].Member[api].Member[attributes].Member[et]
+  - - lxml.etree~Alias
+    - pywemo
+    - Member[ouimeaux_device].Member[api].Member[service].Member[et]
+  - - lxml.etree~Alias
+    - pywemo
+    - Member[ouimeaux_device].Member[api].Member[xsd_types].Member[et]
+  - - lxml.etree~Alias
+    - pywemo
+    - Member[ouimeaux_device].Member[bridge].Member[et]
+  - - lxml.etree~Alias
+    - pywemo
+    - Member[subscribe].Member[et]

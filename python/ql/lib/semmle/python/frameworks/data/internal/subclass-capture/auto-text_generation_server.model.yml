@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - text_generation_server
+    - Member[models].Member[custom_modeling].Member[idefics_image_processing].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - text_generation_server
+    - Member[models].Member[idefics_causal_lm].Member[BytesIO]

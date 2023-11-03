@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - prawcore
+    - Member[Response]
+  - - requests.models.Response~Subclass
+    - prawcore
+    - Member[auth].Member[Response]
+  - - requests.models.Response~Subclass
+    - prawcore
+    - Member[exceptions].Member[Response]
+  - - requests.models.Response~Subclass
+    - prawcore
+    - Member[rate_limit].Member[Response]
+  - - requests.models.Response~Subclass
+    - prawcore
+    - Member[requestor].Member[Response]
+  - - requests.models.Response~Subclass
+    - prawcore
+    - Member[sessions].Member[Response]
+  - - requests.models.Response~Subclass
+    - prawcore
+    - Member[util].Member[Response]

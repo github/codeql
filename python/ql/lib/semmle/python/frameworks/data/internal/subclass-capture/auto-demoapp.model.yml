@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - demoapp
+    - Member[urls].Member[NoteCreateView]
+  - - Django.Views.View~Subclass
+    - demoapp
+    - Member[urls].Member[NoteEditView]
+  - - Django.Views.View~Subclass
+    - demoapp
+    - Member[urls].Member[NoteListView]
+  - - Django.Views.View~Subclass
+    - demoapp
+    - Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - demoapp
+    - Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - demoapp
+    - Member[views].Member[NoteCreateView]
+  - - Django.Views.View~Subclass
+    - demoapp
+    - Member[views].Member[NoteEditView]
+  - - Django.Views.View~Subclass
+    - demoapp
+    - Member[views].Member[NoteListView]
+  - - Django.Views.View~Subclass
+    - demoapp
+    - Member[views].Member[UpdateView]
+  - - Django.db.models.Model~Subclass
+    - demoapp
+    - Member[admin].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - demoapp
+    - Member[admin].Member[Note]
+  - - Django.db.models.Model~Subclass
+    - demoapp
+    - Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - demoapp
+    - Member[models].Member[EmptyModel]
+  - - Django.db.models.Model~Subclass
+    - demoapp
+    - Member[models].Member[Note]
+  - - Django.db.models.Model~Subclass
+    - demoapp
+    - Member[models].Member[Related]
+  - - Django.db.models.Model~Subclass
+    - demoapp
+    - Member[views].Member[Note]

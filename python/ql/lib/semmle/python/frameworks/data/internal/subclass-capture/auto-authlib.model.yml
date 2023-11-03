@@ -1,0 +1,72 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.request.HttpRequest~Subclass
+    - authlib
+    - Member[integrations].Member[django_oauth2].Member[requests].Member[HttpRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - authlib
+    - Member[integrations].Member[django_client].Member[apps].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - authlib
+    - Member[integrations].Member[django_oauth1].Member[authorization_server].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - authlib
+    - Member[integrations].Member[django_oauth2].Member[authorization_server].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - authlib
+    - Member[integrations].Member[django_oauth1].Member[resource_protector].Member[JsonResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - authlib
+    - Member[integrations].Member[django_oauth2].Member[resource_protector].Member[JsonResponse]
+  - - flask.Response~Subclass
+    - authlib
+    - Member[integrations].Member[flask_oauth1].Member[authorization_server].Member[Response]
+  - - flask.Response~Subclass
+    - authlib
+    - Member[integrations].Member[flask_oauth1].Member[resource_protector].Member[Response]
+  - - flask.Response~Subclass
+    - authlib
+    - Member[integrations].Member[flask_oauth2].Member[authorization_server].Member[Response]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[AssertionClient]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[AsyncAssertionClient]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[AsyncOAuth1Client]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[AsyncOAuth2Client]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[OAuth2Client]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[assertion_client].Member[AssertionClient]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[assertion_client].Member[AsyncAssertionClient]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[oauth1_client].Member[AsyncOAuth1Client]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[oauth1_client].Member[OAuth1Client]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[oauth2_client].Member[AsyncOAuth2Client]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[httpx_client].Member[oauth2_client].Member[OAuth2Client]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[starlette_client].Member[apps].Member[AsyncOAuth1Client]
+  - - httpx.Client~Subclass
+    - authlib
+    - Member[integrations].Member[starlette_client].Member[apps].Member[AsyncOAuth2Client]

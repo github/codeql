@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - deepspeed
+    - Member[ops].Member[transformer].Member[inference].Member[triton].Member[matmul_ext].Member[pickle]
+  - - pickle~Alias
+    - deepspeed
+    - Member[runtime].Member[pipe].Member[p2p].Member[pickle]

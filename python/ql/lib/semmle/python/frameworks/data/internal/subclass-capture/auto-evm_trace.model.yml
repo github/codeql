@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[ParityTraceList]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[ParityTrace]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[TraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[base].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[base].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[base].Member[_BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[display].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[gas].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[geth].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[geth].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[geth].Member[TraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[geth].Member[TraceMemory]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[ActionResult]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[CallAction]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[CallResult]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[CreateAction]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[CreateResult]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[ParityTraceList]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[ParityTrace]
+  - - pydantic.BaseModel~Subclass
+    - evm_trace
+    - Member[parity].Member[SelfDestructAction]

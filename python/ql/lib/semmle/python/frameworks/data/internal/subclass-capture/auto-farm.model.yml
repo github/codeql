@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - farm
+    - Member[inference_rest_api].Member[Flask]
+  - - pickle~Alias
+    - farm
+    - Member[utils].Member[pickle]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - scripts
+    - Member[utils].Member[pickle]
+  - - pydantic.BaseModel~Subclass
+    - scripts
+    - Member[generate_playbook_descriptions].Member[PlaybookDescription]
+  - - pydantic.BaseModel~Subclass
+    - scripts
+    - Member[verify_flavor_url_valid].Member[SqlZenStore]
+  - - requests.models.Response~Subclass
+    - scripts
+    - Member[verify_flavor_url_valid].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - scripts
+    - Member[ci_summary].Member[ElementTree]

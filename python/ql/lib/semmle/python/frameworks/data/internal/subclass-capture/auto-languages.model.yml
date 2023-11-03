@@ -55,6 +55,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - languages
     - Member[views].Member[Task]
+  - - django.http.response.HttpResponse~Subclass
+    - languages
+    - Member[views].Member[Response]
   - - rest_framework.response.Response~Subclass
     - languages
     - Member[views].Member[Response]

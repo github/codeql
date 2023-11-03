@@ -1,0 +1,150 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[Ethereum]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ForkedNetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[NetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[WeiConversions]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[_converters].Member[ConverterAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[_converters].Member[WeiConversions]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[ABIType]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[AccessListTransaction]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[AutoGasLimit]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[BaseTransaction]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[BlockAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[Block]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[ConstructorABI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[DynamicFeeTransaction]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[EcosystemAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[Ethereum]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[EventABI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[ProxyInfo]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[Receipt]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[StaticFeeTransaction]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[ecosystem].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[multicall].Member[handlers].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[multicall].Member[handlers].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[multicall].Member[handlers].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[multicall].Member[handlers].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[proxies].Member[ABIType]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[proxies].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[proxies].Member[ProxyInfoAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[proxies].Member[ProxyInfo]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[AccessListTransaction]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[AccessList]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[BaseTransaction]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[DynamicFeeTransaction]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[EventABI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[Receipt]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[SourceTraceback]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[StaticFeeTransaction]
+  - - pydantic.BaseModel~Subclass
+    - ape_ethereum
+    - Member[transactions].Member[TransactionAPI]

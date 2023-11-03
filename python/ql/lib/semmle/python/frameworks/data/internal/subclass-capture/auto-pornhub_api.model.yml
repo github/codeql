@@ -1,0 +1,57 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[exceptions].Member[response].Member[_ErrorParser]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[category].Member[CategoriesResult]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[category].Member[Category]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[pornstart].Member[Pornstar]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[search].Member[VideoSearchResult]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[search].Member[Video]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[star].Member[StarDetailedResult]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[star].Member[StarDetailedSchema]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[star].Member[StarResult]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[star].Member[StarSchema]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[tag].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[tag].Member[TagsResult]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[thumb].Member[Thumb]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[video].Member[Category]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[video].Member[IsVideoActiveResult]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[video].Member[VideoResult]
+  - - pydantic.BaseModel~Subclass
+    - pornhub_api
+    - Member[schemas].Member[video].Member[Video]

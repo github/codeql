@@ -1,0 +1,72 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[FeatureCollection]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[Feature]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[GeometryCollection]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[LineString]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[MultiLineString]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[MultiPoint]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[MultiPolygon]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[base].Member[_GeoJsonBase]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[features].Member[FeatureCollection]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[features].Member[Feature]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[features].Member[_GeoJsonBase]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[geometries].Member[GeometryCollection]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[geometries].Member[LineString]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[geometries].Member[MultiLineString]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[geometries].Member[MultiPoint]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[geometries].Member[MultiPolygon]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[geometries].Member[Point]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[geometries].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[geometries].Member[_GeoJsonBase]
+  - - pydantic.BaseModel~Subclass
+    - geojson_pydantic
+    - Member[geometries].Member[_GeometryBase]

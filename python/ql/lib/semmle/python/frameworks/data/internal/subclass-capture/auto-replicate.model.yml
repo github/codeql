@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[base_model].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[client].Member[Version]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[collection].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[deployment].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[deployment].Member[Deployment]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[deployment].Member[Prediction]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[model].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[model].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[model].Member[Prediction]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[model].Member[Version]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[prediction].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[prediction].Member[Prediction]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[prediction].Member[Version]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[training].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[training].Member[Training]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[training].Member[Version]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[version].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[version].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - replicate
+    - Member[version].Member[Version]

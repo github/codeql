@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - pyyoutube
+    - Member[api].Member[Response]
+  - - requests.models.Response~Subclass
+    - pyyoutube
+    - Member[client].Member[Response]
+  - - requests.models.Response~Subclass
+    - pyyoutube
+    - Member[media].Member[Response]
+  - - requests.models.Response~Subclass
+    - pyyoutube
+    - Member[resources].Member[captions].Member[Response]

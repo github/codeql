@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - markupsafe.Markup~Subclass
+    - flask_table
+    - Member[columns].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_table
+    - Member[html].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_table
+    - Member[table].Member[Markup]

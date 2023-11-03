@@ -6,16 +6,88 @@ extensions:
   data:
   - - tornado.web.RequestHandler~Subclass
     - sockjs
+    - Member[tornado].Member[basehandler].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[basehandler].Member[PreflightHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[basehandler].Member[RequestHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[static].Member[BaseHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[static].Member[GreetingsHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[static].Member[IFrameHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[static].Member[InfoHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[static].Member[PreflightHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[EventSourceTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[HtmlFileTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[JSONPSendHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[JSONPTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
     - Member[tornado].Member[transports].Member[RawWebSocketTransport]
   - - tornado.web.RequestHandler~Subclass
     - sockjs
     - Member[tornado].Member[transports].Member[WebSocketTransport]
   - - tornado.web.RequestHandler~Subclass
     - sockjs
+    - Member[tornado].Member[transports].Member[XhrPollingTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[XhrSendHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[XhrStreamingTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[eventsource].Member[EventSourceTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[htmlfile].Member[HtmlFileTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[jsonp].Member[JSONPSendHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[jsonp].Member[JSONPTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[pollingbase].Member[PollingTransportBase]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
     - Member[tornado].Member[transports].Member[rawwebsocket].Member[RawWebSocketTransport]
   - - tornado.web.RequestHandler~Subclass
     - sockjs
+    - Member[tornado].Member[transports].Member[streamingbase].Member[StreamingTransportBase]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
     - Member[tornado].Member[transports].Member[websocket].Member[WebSocketTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[xhr].Member[XhrPollingTransport]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[xhr].Member[XhrSendHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - sockjs
+    - Member[tornado].Member[transports].Member[xhrstreaming].Member[XhrStreamingTransport]
   - - tornado.web.RequestHandler~Subclass
     - sockjs
     - Member[tornado].Member[websocket].Member[SockJSWebSocketHandler]

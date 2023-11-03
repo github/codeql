@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - fastapi_mqtt
+    - Member[MQTTConfig]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_mqtt
+    - Member[config].Member[MQTTConfig]
+  - - pydantic.BaseModel~Subclass
+    - fastapi_mqtt
+    - Member[fastmqtt].Member[MQTTConfig]

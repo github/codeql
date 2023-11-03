@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - adrf
+    - Member[decorators].Member[APIView]
+  - - Django.Views.View~Subclass
+    - adrf
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - adrf
+    - Member[views].Member[DRFAPIView]
+  - - Django.Views.View~Subclass
+    - adrf
+    - Member[viewsets].Member[APIView]
+  - - Django.Views.View~Subclass
+    - adrf
+    - Member[viewsets].Member[ViewSet]

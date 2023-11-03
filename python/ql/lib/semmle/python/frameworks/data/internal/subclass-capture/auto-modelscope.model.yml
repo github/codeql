@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - modelscope
+    - Member[fileio].Member[io].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - modelscope
+    - Member[fileio].Member[io].Member[StringIO]
+  - - io.StringIO~Subclass
+    - modelscope
+    - Member[utils].Member[input_output].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - modelscope
+    - Member[utils].Member[service_utils].Member[BytesIO]
+  - - pickle~Alias
+    - modelscope
+    - Member[hub].Member[api].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[hub].Member[utils].Member[caching].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[audio].Member[tts].Member[voice].Member[pkl]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[cv].Member[human3d_animation].Member[generate_skeleton].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[cv].Member[object_detection_3d].Member[depe].Member[result_vis].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[cv].Member[referring_video_object_segmentation].Member[utils].Member[misc].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[cv].Member[tinynas_detection].Member[detector].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[cv].Member[vop_retrieval].Member[basic_utils].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[multi_modal].Member[videocomposer].Member[utils].Member[distributed].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[nlp].Member[mglm].Member[data_utils].Member[lazy_loader].Member[pkl]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[nlp].Member[mglm].Member[tasks].Member[data_utils].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[models].Member[science].Member[unifold].Member[data].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[ops].Member[image_control_3d_portrait].Member[torch_utils].Member[persistence].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[pipelines].Member[cv].Member[vop_retrieval_pipeline].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[preprocessors].Member[nlp].Member[space_T_en].Member[fields].Member[process_dataset].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[trainers].Member[audio].Member[kws_farfield_trainer].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[trainers].Member[utils].Member[inference].Member[pickle]
+  - - pickle~Alias
+    - modelscope
+    - Member[utils].Member[torch_utils].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - modelscope
+    - Member[models].Member[cv].Member[image_defrcn_fewshot].Member[utils].Member[voc_register].Member[ET]

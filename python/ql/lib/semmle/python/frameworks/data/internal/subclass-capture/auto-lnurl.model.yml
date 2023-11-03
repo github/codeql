@@ -1,0 +1,81 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[LnurlChannelResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[LnurlErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[LnurlHostedChannelResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[LnurlPayActionResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[LnurlPayResponseComment]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[LnurlPayResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[LnurlSuccessResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[LnurlWithdrawResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[core].Member[LnurlAuthResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[core].Member[LnurlResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[AesAction]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlAuthResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlChannelResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlHostedChannelResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlPayActionResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlPayResponseComment]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlPayResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlPayRouteHop]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlPaySuccessAction]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlSuccessResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[LnurlWithdrawResponse]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[MessageAction]
+  - - pydantic.BaseModel~Subclass
+    - lnurl
+    - Member[models].Member[UrlAction]

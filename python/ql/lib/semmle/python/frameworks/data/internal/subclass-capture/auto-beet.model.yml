@@ -1,0 +1,171 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[PackConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[PackFilterBlockConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[PackFilterConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[PackMatchOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[PackSelectOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[PackageablePath]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[PathSpecOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[PluginOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[ProjectConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[RegexFlagsOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[RegexOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[autosave].Member[AutosaveOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[babelbox].Member[BabelboxOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[clear].Member[ClearOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[copy_files].Member[CopyFilesOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[dbg].Member[DbgOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[error_message].Member[ErrorMessageOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[extra_files].Member[ExtraFilesOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[find_replace].Member[FindReplaceOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[find_replace].Member[RenderSubstitutionOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[find_replace].Member[SubstitutionOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[find_replace].Member[TextSubstitutionOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[format_json].Member[FormatJsonOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[function_header].Member[FunctionHeaderOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[hangman].Member[HangmanOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[installation_advancement].Member[InstallationAdvancementOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[json_log].Member[JsonLogEntry]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[json_reporter].Member[JsonReporterOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[line_endings].Member[LineEndingsOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[load].Member[LoadOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[load_yaml].Member[LoadYamlOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[log_level].Member[LogLevelOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[output].Member[OutputOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[rename_files].Member[RenameFilesOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[rename_files].Member[RenameOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[rename_files].Member[RenderRenameOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[rename_files].Member[TextRenameOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[render].Member[RenderOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[sandstone].Member[SandstoneOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[scoreboard].Member[ScoreboardOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[stdin].Member[ProjectConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[strip_final_newlines].Member[StripFinalNewlinesOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[text_encoding].Member[TextEncodingOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[contrib].Member[vanilla].Member[VanillaOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[config].Member[PackConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[config].Member[PackFilterBlockConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[config].Member[PackFilterConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[config].Member[PackageablePath]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[config].Member[ProjectConfig]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[context].Member[PluginOptions]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[select].Member[PackMatchOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[select].Member[PackSelectOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[select].Member[PathSpecOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[select].Member[RegexFlagsOption]
+  - - pydantic.BaseModel~Subclass
+    - beet
+    - Member[toolchain].Member[select].Member[RegexOption]

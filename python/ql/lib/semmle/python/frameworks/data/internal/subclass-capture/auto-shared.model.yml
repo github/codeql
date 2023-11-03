@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - shared
+    - Member[storage].Member[aws].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - shared
+    - Member[storage].Member[gcp].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - shared
+    - Member[storage].Member[minio].Member[BytesIO]
+  - - pickle~Alias
+    - shared
+    - Member[helpers].Member[cache].Member[pickle]

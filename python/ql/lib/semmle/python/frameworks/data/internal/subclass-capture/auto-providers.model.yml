@@ -1,0 +1,57 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[datadog_provider].Member[datadog_alert_format_description].Member[DatadogAlertFormatDescription]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[datadog_provider].Member[datadog_alert_format_description].Member[DatadogOptions]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[datadog_provider].Member[datadog_alert_format_description].Member[EvaluationWindow]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[datadog_provider].Member[datadog_alert_format_description].Member[SchedulingOptions]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[datadog_provider].Member[datadog_alert_format_description].Member[ThresholdWindows]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[datadog_provider].Member[datadog_alert_format_description].Member[Thresholds]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[Condition]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[Datasource]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[Datum]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[Evaluator]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[GrafanaAlertFormatDescription]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[Model1]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[Operator]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[Query]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[Reducer]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[grafana_provider].Member[grafana_alert_format_description].Member[RelativeTimeRange]
+  - - pydantic.BaseModel~Subclass
+    - providers
+    - Member[opsgenie_provider].Member[opsgenie_provider].Member[OpsGenieRecipient]

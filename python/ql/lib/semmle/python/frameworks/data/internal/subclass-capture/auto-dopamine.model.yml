@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - dopamine
+    - Member[colab].Member[utils].Member[pickle]
+  - - pickle~Alias
+    - dopamine
+    - Member[discrete_domains].Member[checkpointer].Member[pickle]
+  - - pickle~Alias
+    - dopamine
+    - Member[discrete_domains].Member[logger].Member[pickle]
+  - - pickle~Alias
+    - dopamine
+    - Member[labs].Member[atari_100k].Member[replay_memory].Member[subsequence_replay_buffer].Member[pickle]
+  - - pickle~Alias
+    - dopamine
+    - Member[metrics].Member[pickle_collector].Member[pickle]
+  - - pickle~Alias
+    - dopamine
+    - Member[replay_memory].Member[circular_replay_buffer].Member[pickle]

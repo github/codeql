@@ -7,3 +7,6 @@ extensions:
   - - logging.Logger~Subclass
     - mim
     - Member[_internal].Member[export].Member[pack_cfg].Member[MMLogger]
+  - - requests.models.Response~Subclass
+    - mim
+    - Member[utils].Member[utils].Member[Response]

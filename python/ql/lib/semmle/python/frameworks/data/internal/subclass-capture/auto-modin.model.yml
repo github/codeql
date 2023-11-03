@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - modin
+    - Member[core].Member[io].Member[text].Member[excel_dispatcher].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - modin
+    - Member[core].Member[io].Member[text].Member[json_dispatcher].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - modin
+    - Member[core].Member[storage_formats].Member[cudf].Member[parser].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - modin
+    - Member[core].Member[storage_formats].Member[pandas].Member[parsers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - modin
+    - Member[experimental].Member[core].Member[storage_formats].Member[pyarrow].Member[parsers].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - modin
+    - Member[logging].Member[logger_decorator].Member[Logger]
+  - - pickle~Alias
+    - modin
+    - Member[experimental].Member[pandas].Member[io].Member[pickle]
+  - - pickle~Alias
+    - modin
+    - Member[pandas].Member[base].Member[pkl]

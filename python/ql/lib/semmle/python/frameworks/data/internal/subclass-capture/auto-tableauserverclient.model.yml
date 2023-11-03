@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - tableauserverclient
+    - Member[models].Member[view_item].Member[Response]
+  - - requests.models.Response~Subclass
+    - tableauserverclient
+    - Member[server].Member[endpoint].Member[endpoint].Member[Response]
+  - - requests.models.Response~Subclass
+    - tableauserverclient
+    - Member[server].Member[endpoint].Member[favorites_endpoint].Member[Response]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[datasource_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[flow_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[metric_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[permissions_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[project_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[schedule_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[site_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[tag_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[user_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[webhook_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[models].Member[workbook_item].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - tableauserverclient
+    - Member[server].Member[request_factory].Member[ET]

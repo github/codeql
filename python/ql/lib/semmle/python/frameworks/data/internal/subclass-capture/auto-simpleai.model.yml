@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - simpleai
+    - Member[search].Member[web_viewer_server].Member[Flask]
+  - - flask.Response~Subclass
+    - simpleai
+    - Member[search].Member[web_viewer_server].Member[Response]
+  - - pickle~Alias
+    - simpleai
+    - Member[machine_learning].Member[classifiers].Member[pickle]
+  - - pickle~Alias
+    - simpleai
+    - Member[machine_learning].Member[models].Member[pickle]
+  - - pickle~Alias
+    - simpleai
+    - Member[machine_learning].Member[reinforcement_learning].Member[pickle]

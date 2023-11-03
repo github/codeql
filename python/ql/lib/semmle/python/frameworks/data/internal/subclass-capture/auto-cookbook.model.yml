@@ -6,7 +6,58 @@ extensions:
   data:
   - - pydantic.BaseModel~Subclass
     - cookbook
+    - Member[apps].Member[agent].Member[Agent]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[apps].Member[chatbot].Member[Chatbot]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[apps].Member[multi_agent].Member[AIApplication]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[apps].Member[todo].Member[ToDoApp]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[apps].Member[todo].Member[ToDoState]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[apps].Member[todo].Member[ToDo]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[docs_writer].Member[AIApplication]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
     - Member[flows].Member[github_digest].Member[Secret]
   - - pydantic.BaseModel~Subclass
     - cookbook
+    - Member[slackbot].Member[bots].Member[AIApplication]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[slackbot].Member[bots].Member[DiscoursePost]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[slackbot].Member[bots].Member[DuckDuckGoSearch]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[slackbot].Member[bots].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[slackbot].Member[bots].Member[Notes]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[slackbot].Member[bots].Member[SearchGitHubIssues]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
     - Member[slackbot].Member[handler].Member[Event]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[slackbot].Member[handler].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[slackbot].Member[handler].Member[Message]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[slackbot].Member[start].Member[AIApplication]
+  - - pydantic.BaseModel~Subclass
+    - cookbook
+    - Member[slackbot].Member[start].Member[Deployment]

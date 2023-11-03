@@ -1,0 +1,555 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - aws_lambda_powertools
+    - Member[shared].Member[cookies].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[batch].Member[types].Member[DynamoDBStreamRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[batch].Member[types].Member[KinesisDataStreamRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[batch].Member[types].Member[SqsRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[apigw].Member[APIGatewayProxyEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[apigwv2].Member[APIGatewayProxyEventV2Model]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[cloudwatch].Member[CloudWatchLogsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[dynamodb].Member[DynamoDBStreamModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[event_bridge].Member[EventBridgeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[kafka].Member[KafkaMskEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[kafka].Member[KafkaSelfManagedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[kinesis].Member[KinesisDataStreamModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[kinesis_firehose].Member[KinesisFirehoseModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[lambda_function_url].Member[LambdaFunctionUrlModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[sns].Member[SnsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[sns].Member[SnsNotificationModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[sns].Member[SqsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[sqs].Member[SqsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[envelopes].Member[vpc_lattice].Member[VpcLatticeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[APIGatewayEventAuthorizer]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[APIGatewayEventIdentity]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[APIGatewayEventRequestContext]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[APIGatewayProxyEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[APIGatewayProxyEventV2Model]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[AlbModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[AlbRequestContextData]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[AlbRequestContext]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[CloudFormationCustomResourceBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[CloudFormationCustomResourceCreateModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[CloudFormationCustomResourceDeleteModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[CloudFormationCustomResourceUpdateModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[CloudWatchLogsData]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[CloudWatchLogsDecode]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[CloudWatchLogsLogEvent]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[CloudWatchLogsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[DynamoDBStreamChangedRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[DynamoDBStreamModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[DynamoDBStreamRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[EventBridgeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KafkaBaseEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KafkaMskEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KafkaRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KafkaSelfManagedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KinesisDataStreamModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KinesisDataStreamRecordPayload]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KinesisDataStreamRecord]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KinesisFirehoseModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KinesisFirehoseRecordMetadata]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KinesisFirehoseRecord]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KinesisFirehoseSqsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[KinesisFirehoseSqsRecord]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[LambdaFunctionUrlModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[RequestContextV2AuthorizerIamCognito]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[RequestContextV2AuthorizerIam]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[RequestContextV2AuthorizerJwt]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[RequestContextV2Authorizer]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[RequestContextV2Http]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[RequestContextV2]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3EventNotificationEventBridgeDetailModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3EventNotificationEventBridgeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3EventNotificationObjectModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3Model]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3ObjectConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3ObjectContext]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3ObjectLambdaEvent]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3ObjectSessionAttributes]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3ObjectSessionContext]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3ObjectSessionIssuer]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3ObjectUserIdentity]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3ObjectUserRequest]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3RecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3SqsEventNotificationModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[S3SqsEventNotificationRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SesMailCommonHeaders]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SesMailHeaders]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SesMail]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SesMessage]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SesModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SesReceiptAction]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SesReceiptVerdict]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SesReceipt]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SesRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SnsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SnsNotificationModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SnsRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SqsAttributesModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SqsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SqsMsgAttributeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[SqsRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[VpcLatticeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[alb].Member[AlbModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[alb].Member[AlbRequestContextData]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[alb].Member[AlbRequestContext]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigw].Member[APIGatewayEventAuthorizer]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigw].Member[APIGatewayEventIdentity]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigw].Member[APIGatewayEventRequestContext]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigw].Member[APIGatewayProxyEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigw].Member[ApiGatewayUserCertValidity]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigw].Member[ApiGatewayUserCert]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigwv2].Member[APIGatewayProxyEventV2Model]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigwv2].Member[RequestContextV2AuthorizerIamCognito]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigwv2].Member[RequestContextV2AuthorizerIam]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigwv2].Member[RequestContextV2AuthorizerJwt]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigwv2].Member[RequestContextV2Authorizer]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigwv2].Member[RequestContextV2Http]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[apigwv2].Member[RequestContextV2]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[cloudformation_custom_resource].Member[CloudFormationCustomResourceBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[cloudformation_custom_resource].Member[CloudFormationCustomResourceCreateModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[cloudformation_custom_resource].Member[CloudFormationCustomResourceDeleteModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[cloudformation_custom_resource].Member[CloudFormationCustomResourceUpdateModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[cloudwatch].Member[CloudWatchLogsData]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[cloudwatch].Member[CloudWatchLogsDecode]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[cloudwatch].Member[CloudWatchLogsLogEvent]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[cloudwatch].Member[CloudWatchLogsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[dynamodb].Member[DynamoDBStreamChangedRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[dynamodb].Member[DynamoDBStreamModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[dynamodb].Member[DynamoDBStreamRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[dynamodb].Member[UserIdentity]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[event_bridge].Member[EventBridgeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kafka].Member[KafkaBaseEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kafka].Member[KafkaMskEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kafka].Member[KafkaRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kafka].Member[KafkaSelfManagedEventModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis].Member[CloudWatchLogsDecode]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis].Member[KinesisDataStreamModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis].Member[KinesisDataStreamRecordPayload]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis].Member[KinesisDataStreamRecord]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis_firehose].Member[KinesisFirehoseModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis_firehose].Member[KinesisFirehoseRecordMetadata]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis_firehose].Member[KinesisFirehoseRecord]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis_firehose_sqs].Member[KinesisFirehoseRecordMetadata]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis_firehose_sqs].Member[KinesisFirehoseSqsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis_firehose_sqs].Member[KinesisFirehoseSqsRecord]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[kinesis_firehose_sqs].Member[SqsRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[lambda_function_url].Member[APIGatewayProxyEventV2Model]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[lambda_function_url].Member[LambdaFunctionUrlModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[EventBridgeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3Bucket]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3EventNotificationEventBridgeBucketModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3EventNotificationEventBridgeDetailModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3EventNotificationEventBridgeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3EventNotificationObjectModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3EventRecordGlacierEventData]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3EventRecordGlacierRestoreEventData]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3Identity]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3Message]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3Model]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3Object]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3OwnerIdentify]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3RecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3RequestParameters]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3].Member[S3ResponseElements]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_event_notification].Member[S3Model]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_event_notification].Member[S3SqsEventNotificationModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_event_notification].Member[S3SqsEventNotificationRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_event_notification].Member[SqsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_event_notification].Member[SqsRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_object_event].Member[S3ObjectConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_object_event].Member[S3ObjectContext]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_object_event].Member[S3ObjectLambdaEvent]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_object_event].Member[S3ObjectSessionAttributes]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_object_event].Member[S3ObjectSessionContext]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_object_event].Member[S3ObjectSessionIssuer]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_object_event].Member[S3ObjectUserIdentity]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[s3_object_event].Member[S3ObjectUserRequest]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[ses].Member[SesMailCommonHeaders]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[ses].Member[SesMailHeaders]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[ses].Member[SesMail]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[ses].Member[SesMessage]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[ses].Member[SesModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[ses].Member[SesReceiptAction]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[ses].Member[SesReceiptVerdict]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[ses].Member[SesReceipt]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[ses].Member[SesRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[sns].Member[SnsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[sns].Member[SnsMsgAttributeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[sns].Member[SnsNotificationModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[sns].Member[SnsRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[sqs].Member[SqsAttributesModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[sqs].Member[SqsModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[sqs].Member[SqsMsgAttributeModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[sqs].Member[SqsRecordModel]
+  - - pydantic.BaseModel~Subclass
+    - aws_lambda_powertools
+    - Member[utilities].Member[parser].Member[models].Member[vpc_lattice].Member[VpcLatticeModel]

@@ -1,0 +1,66 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.ClientSession~Subclass
+    - aries_cloudagent
+    - Member[transport].Member[outbound].Member[http].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - aries_cloudagent
+    - Member[transport].Member[outbound].Member[ws].Member[ClientSession]
+  - - aiohttp.ClientSession~Subclass
+    - aries_cloudagent
+    - Member[utils].Member[http].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - aries_cloudagent
+    - Member[ledger].Member[indy].Member[StringIO]
+  - - io.StringIO~Subclass
+    - aries_cloudagent
+    - Member[ledger].Member[indy_vdr].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[connections].Member[base_manager].Member[DIDCommService]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[connections].Member[base_manager].Member[Ed25519VerificationKey2018]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[connections].Member[base_manager].Member[Ed25519VerificationKey2020]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[connections].Member[base_manager].Member[JsonWebKey2020]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[connections].Member[base_manager].Member[VerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[messaging].Member[jsonld].Member[routes].Member[Ed25519VerificationKey2018]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[protocols].Member[didexchange].Member[v1_0].Member[manager].Member[DIDCommService]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[resolver].Member[default].Member[indy].Member[Ed25519VerificationKey2018]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[resolver].Member[default].Member[indy].Member[VerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[resolver].Member[default].Member[web].Member[DIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[resolver].Member[did_resolver].Member[BaseDIDDocument]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[resolver].Member[did_resolver].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[resolver].Member[did_resolver].Member[VerificationMethod]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[wallet].Member[jwt].Member[Resource]
+  - - pydantic.BaseModel~Subclass
+    - aries_cloudagent
+    - Member[wallet].Member[jwt].Member[VerificationMethod]

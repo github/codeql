@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - shareplum
+    - Member[list].Member[etree]
+  - - lxml.etree~Alias
+    - shareplum
+    - Member[office365].Member[etree]
+  - - lxml.etree~Alias
+    - shareplum
+    - Member[site].Member[etree]
+  - - lxml.etree~Alias
+    - shareplum
+    - Member[soap].Member[etree]

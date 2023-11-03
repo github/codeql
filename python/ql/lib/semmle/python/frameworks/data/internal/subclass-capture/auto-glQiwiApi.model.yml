@@ -1,0 +1,813 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - aiohttp.web.View~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[BaseWebhookView]
+  - - aiohttp.web.View~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[views].Member[base].Member[BaseWebhookView]
+  - - aiohttp.web.View~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[views].Member[bill_view].Member[BaseWebhookView]
+  - - aiohttp.web.View~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[views].Member[transaction_view].Member[BaseWebhookView]
+  - - io.StringIO~Subclass
+    - glQiwiApi
+    - Member[utils].Member[certificates].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[abc].Member[api_method].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[class_based].Member[base].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[class_based].Member[bill].Member[Bill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[class_based].Member[bill].Member[PlainAmount]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[class_based].Member[transaction].Member[AmountWithCurrency]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[class_based].Member[transaction].Member[Transaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[class_based].Member[webhook_transaction].Member[TransactionWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[class_based].Member[webhook_transaction].Member[WebhookPayment]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[dispatcher].Member[BillWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[dispatcher].Member[TransactionWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[dispatcher].Member[Transaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[executor].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[app].Member[BillWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[app].Member[TransactionWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[dto].Member[errors].Member[WebhookAPIError]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[views].Member[base].Member[HashableBase]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[views].Member[bill_view].Member[BillWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[core].Member[event_fetching].Member[webhooks].Member[views].Member[transaction_view].Member[TransactionWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[client].Member[Partner]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[client].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[client].Member[Terminal]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[methods].Member[get_partners].Member[Partner]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[methods].Member[get_terminals].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[methods].Member[get_terminals].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[methods].Member[get_terminals].Member[Terminal]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[types].Member[polygon].Member[Polygon]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[types].Member[terminal].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[types].Member[terminal].Member[Coordinate]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[maps].Member[types].Member[terminal].Member[Terminal]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[client].Member[Bill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[client].Member[Customer]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[client].Member[PairOfP2PKeys]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[client].Member[PlainAmount]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[client].Member[RefundedBill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[methods].Member[create_p2p_bill].Member[Bill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[methods].Member[create_p2p_bill].Member[Customer]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[methods].Member[create_p2p_bill].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[methods].Member[create_p2p_key_pair].Member[PairOfP2PKeys]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[methods].Member[get_bill_by_id].Member[Bill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[methods].Member[refund_bill].Member[PlainAmount]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[methods].Member[refund_bill].Member[RefundedBill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[methods].Member[refund_bill].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[methods].Member[reject_p2p_bill].Member[Bill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[BillError]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[BillStatus]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[BillWebhookPayload]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[BillWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[Bill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[CustomFields]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[Customer]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[InvoiceStatus]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[PairOfP2PKeys]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[p2p].Member[types].Member[RefundedBill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[AmountWithCurrency]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[AvailableBalance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[Balance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[Bill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[Card]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[Commission]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[CrossRate]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[Identification]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[InvoiceStatus]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[Limit]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[MobileOperator]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[NickName]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[OrderDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[PaymentDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[PaymentInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[PaymentMethod]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[QiwiMasterCardRequisites]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[Restriction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[Statistic]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[Transaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[UserProfile]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[client].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[check_restriction].Member[Restriction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[create_new_balance].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[detect_mobile_number].Member[MobileOperator]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[fetch_statistics].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[fetch_statistics].Member[Statistic]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_account_info].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_account_info].Member[UserProfile]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_available_balances].Member[AvailableBalance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_available_balances].Member[Balance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_balances].Member[Balance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_cards].Member[Card]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_cross_rates].Member[CrossRate]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_identification].Member[Identification]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_limits].Member[Limit]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_limits].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[get_nickname].Member[NickName]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[history].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[history].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[list_of_invoices].Member[Bill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[pay_invoice].Member[InvoiceStatus]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[payment_by_details].Member[AmountWithCurrency]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[payment_by_details].Member[PaymentDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[payment_by_details].Member[PaymentInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[payment_by_details].Member[PaymentMethod]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[predict_comission].Member[Commission]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[qiwi_master].Member[buy_qiwi_card].Member[OrderDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[qiwi_master].Member[buy_qiwi_master].Member[PaymentInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[qiwi_master].Member[confirm_qiwi_master].Member[OrderDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[qiwi_master].Member[create_card_purchase_order].Member[OrderDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[qiwi_master].Member[get_card_requisites].Member[QiwiMasterCardRequisites]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[reveal_card_id].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[transaction_info].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[transaction_info].Member[Transaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[transfer_money].Member[PaymentInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[transfer_money_to_card].Member[PaymentInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[transfer_money_to_card].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[webhook].Member[delete_current_webhook].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[webhook].Member[get_current_webhook].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[webhook].Member[register_webhook].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[methods].Member[webhook].Member[register_webhook].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[Balance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[Card]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[Commission]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[CrossRate]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[Identification]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[Limit]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[OrderDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[Partner]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[PaymentDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[PaymentInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[PaymentMethod]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[QiwiPayment]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[Restriction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[Statistic]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[TransactionWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[Transaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[UserProfile]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[AuthInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[ContractInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[Feature]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[IdentificationInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[MobilePinInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[NickName]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[PassInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[PinInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[SmsNotification]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[UserInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[account_info].Member[UserProfile]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[balance].Member[AmountWithCurrency]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[balance].Member[AvailableBalance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[balance].Member[Balance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[balance].Member[CurrencyModel]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[balance].Member[HashableBase]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[commission].Member[AmountWithCurrency]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[commission].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[commission].Member[Commission]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[identification].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[identification].Member[Identification]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[limit].Member[Interval]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[limit].Member[Limit]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[mobile_operator].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[mobile_operator].Member[Code]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[mobile_operator].Member[MobileOperator]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[nickname].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[nickname].Member[NickName]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[other].Member[CrossRate]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[other].Member[PaymentDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[other].Member[PaymentMethod]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[partner].Member[Partner]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[payment_info].Member[Fields]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[payment_info].Member[PaymentInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[payment_info].Member[PaymentMethod]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[payment_info].Member[QiwiPayment]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[payment_info].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[payment_info].Member[TransactionInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[AmountWithCurrency]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[CardCredentials]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[CardInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[Card]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[Details]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[HashableBase]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[OrderDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[QiwiMasterCardRequisites]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[qiwi_master].Member[Requisite]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[restriction].Member[Restriction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[stats].Member[Statistic]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[transaction].Member[AmountWithCurrency]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[transaction].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[transaction].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[transaction].Member[Provider]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[transaction].Member[Transaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[webhooks].Member[HookParameters]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[webhooks].Member[TransactionWebhook]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[webhooks].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wallet].Member[types].Member[webhooks].Member[WebhookPayment]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[AmountWithCurrency]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[AvailableBalance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Balance]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Bill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Card]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Commission]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[CrossRate]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Customer]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Identification]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[InvoiceStatus]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Limit]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[MobileOperator]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[NickName]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[OrderDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[PairOfP2PKeys]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[PaymentDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[PaymentInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[PaymentMethod]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[PlainAmount]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[RefundedBill]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Restriction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Statistic]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[Transaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[UserProfile]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[qiwi].Member[clients].Member[wrapper].Member[WebhookInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[_currencies].Member[CurrencyModel]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[amount].Member[AmountWithCurrency]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[amount].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[amount].Member[CurrencyModel]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[amount].Member[HashableBase]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[amount].Member[HashablePlainAmount]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[amount].Member[HashableSum]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[amount].Member[PlainAmount]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[amount].Member[Type]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[base].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[types].Member[base].Member[HashableBase]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[utils].Member[currency_util].Member[CurrencyModel]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[client].Member[AccountInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[client].Member[IncomingTransaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[client].Member[OperationDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[client].Member[OperationHistory]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[client].Member[Payment]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[client].Member[RequestPaymentResponse]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[exceptions].Member[YooMoneyErrorSchema]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[methods].Member[acccept_incoming_transfer].Member[IncomingTransaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[methods].Member[build_auth_url].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[methods].Member[operation_details].Member[OperationDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[methods].Member[operation_history].Member[OperationHistory]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[methods].Member[operation_history].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[methods].Member[process_payment].Member[Payment]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[methods].Member[request_payment].Member[RequestPaymentResponse]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[methods].Member[retrieve_account_info].Member[AccountInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[AccountInfo]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[BalanceDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[Base]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[Card]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[CardsLinked]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[DigitalGoods]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[IncomingTransaction]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[MoneySource]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[OperationDetails]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[OperationHistory]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[Payment]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[RequestPaymentResponse]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[Wallet]
+  - - pydantic.BaseModel~Subclass
+    - glQiwiApi
+    - Member[yoo_money].Member[types].Member[YooMoneyErrorSchema]

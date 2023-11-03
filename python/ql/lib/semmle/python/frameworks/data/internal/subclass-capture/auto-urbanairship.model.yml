@@ -1,0 +1,45 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[automation].Member[core].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[attributes].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[channel_uninstall].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[email].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[named_users].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[open_channel].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[segment].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[sms].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[static_lists].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[subscription_lists].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[devices].Member[tag_lists].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[push].Member[core].Member[Response]
+  - - requests.models.Response~Subclass
+    - urbanairship
+    - Member[push].Member[template].Member[Response]

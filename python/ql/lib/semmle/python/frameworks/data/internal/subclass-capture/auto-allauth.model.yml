@@ -4,12 +4,36 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[PasswordField]
+  - - Django.Forms.Field~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[SetPasswordField]
+  - - Django.Views.View~Subclass
+    - allauth
+    - Member[account].Member[views].Member[ConfirmEmailView]
+  - - Django.Views.View~Subclass
+    - allauth
+    - Member[account].Member[views].Member[View]
   - - Django.db.models.Model~Subclass
     - allauth
     - Member[account].Member[adapter].Member[Site]
   - - Django.db.models.Model~Subclass
     - allauth
     - Member[account].Member[forms].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[management].Member[commands].Member[account_emailconfirmationmigration].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[management].Member[commands].Member[account_emailconfirmationmigration].Member[EmailConfirmation]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[models].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[models].Member[EmailConfirmation]
   - - Django.db.models.Model~Subclass
     - allauth
     - Member[account].Member[models].Member[Site]
@@ -21,7 +45,145 @@ extensions:
     - Member[account].Member[views].Member[Site]
   - - Django.db.models.Model~Subclass
     - allauth
+    - Member[socialaccount].Member[forms].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
     - Member[socialaccount].Member[models].Member[Site]
   - - Django.db.models.Model~Subclass
     - allauth
+    - Member[socialaccount].Member[models].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[models].Member[SocialApp]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[models].Member[SocialToken]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[base].Member[SocialApp]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[facebook].Member[provider].Member[SocialApp]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[facebook].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[facebook].Member[views].Member[SocialToken]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[github].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[google].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[linkedin].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[oauth2].Member[views].Member[SocialToken]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[oauth].Member[views].Member[SocialToken]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[openid].Member[models].Member[OpenIDNonce]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[openid].Member[models].Member[OpenIDStore]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[openid].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[persona].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[soundcloud].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[stackexchange].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[twitter].Member[views].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
     - Member[socialaccount].Member[views].Member[Site]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[AddEmailForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[BaseSignupForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[ChangePasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[ResetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[ResetPasswordKeyForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[SetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[UserForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[_DummyCustomSignupForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[socialaccount].Member[forms].Member[BaseSignupForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[socialaccount].Member[forms].Member[DisconnectForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[socialaccount].Member[forms].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[facebook].Member[forms].Member[FacebookConnectForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[openid].Member[forms].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[stackexchange].Member[forms].Member[StackExchangeConnectForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[account].Member[utils].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[account].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[socialaccount].Member[helpers].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[oauth2].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[oauth].Member[client].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[oauth].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[openid].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[socialaccount].Member[views].Member[HttpResponseRedirect]
+  - - xml.etree.ElementTree~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[linkedin].Member[views].Member[ElementTree]

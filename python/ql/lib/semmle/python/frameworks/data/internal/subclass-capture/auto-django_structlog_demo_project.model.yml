@@ -4,9 +4,60 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[views].Member[ListView]
+  - - Django.Views.View~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[views].Member[RedirectView]
+  - - Django.Views.View~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[views].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[views].Member[UserDetailView]
+  - - Django.Views.View~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[views].Member[UserListView]
+  - - Django.Views.View~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[views].Member[UserRedirectView]
+  - - Django.Views.View~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[views].Member[UserUpdateView]
   - - Django.db.models.Model~Subclass
     - django_structlog_demo_project
     - Member[users].Member[models].Member[AbstractUser]
   - - Django.db.models.Model~Subclass
     - django_structlog_demo_project
     - Member[users].Member[models].Member[User]
+  - - django.forms.BaseForm~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[admin].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[admin].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[forms].Member[UserChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[forms].Member[UserCreationForm]
+  - - django.http.request.HttpRequest~Subclass
+    - django_structlog_demo_project
+    - Member[users].Member[adapters].Member[HttpRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - django_structlog_demo_project
+    - Member[home].Member[api_views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - django_structlog_demo_project
+    - Member[home].Member[views].Member[HttpResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - django_structlog_demo_project
+    - Member[home].Member[views].Member[StreamingHttpResponse]
+  - - rest_framework.response.Response~Subclass
+    - django_structlog_demo_project
+    - Member[home].Member[api_views].Member[Response]

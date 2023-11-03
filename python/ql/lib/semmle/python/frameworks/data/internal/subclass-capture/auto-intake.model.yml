@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - intake
+    - Member[container].Member[serializer].Member[pickle]
+  - - tornado.web.RequestHandler~Subclass
+    - intake
+    - Member[cli].Member[server].Member[server].Member[ServerInfoHandler]
+  - - tornado.web.RequestHandler~Subclass
+    - intake
+    - Member[cli].Member[server].Member[server].Member[ServerSourceHandler]

@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - dipdup
+    - Member[datasources].Member[evm_subsquid].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dipdup
+    - Member[yaml].Member[StringIO]
+  - - logging.Logger~Subclass
+    - dipdup
+    - Member[context].Member[FormattedLogger]
+  - - logging.Logger~Subclass
+    - dipdup
+    - Member[datasources].Member[FormattedLogger]
+  - - logging.Logger~Subclass
+    - dipdup
+    - Member[index].Member[FormattedLogger]
+  - - logging.Logger~Subclass
+    - dipdup
+    - Member[scheduler].Member[FormattedLogger]
+  - - logging.Logger~Subclass
+    - dipdup
+    - Member[utils].Member[FormattedLogger]
+  - - logging.Logger~Subclass
+    - dipdup
+    - Member[utils].Member[Logger]

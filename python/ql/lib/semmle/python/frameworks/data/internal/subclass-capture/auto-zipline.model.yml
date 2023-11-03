@@ -6,4 +6,13 @@ extensions:
   data:
   - - io.StringIO~Subclass
     - zipline
+    - Member[data].Member[bundles].Member[quandl].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - zipline
+    - Member[pipeline].Member[visualize].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - zipline
     - Member[sources].Member[requests_csv].Member[StringIO]
+  - - pickle~Alias
+    - zipline
+    - Member[utils].Member[cache].Member[pickle]

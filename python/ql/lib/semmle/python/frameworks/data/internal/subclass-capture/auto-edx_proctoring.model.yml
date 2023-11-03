@@ -4,6 +4,90 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[utils].Member[APIView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[utils].Member[AuthenticatedAPIView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ActiveExamsForUserView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[AnonymousReviewCallback]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[AuthenticatedAPIView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[BackendUserManagementAPI]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ExamAllowanceView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ExamBulkAllowanceView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ExamReadyCallback]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[GroupedExamAllowancesByStudent]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[InstructorDashboard]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredAPIView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamActiveAttemptView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamAttemptReviewStatus]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamAttemptView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamReviewCallback]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamReviewPolicyView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredExamView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[ProctoredSettingsView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[RegisterProctoredExamsView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[StudentOnboardingStatusByCourseView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[StudentOnboardingStatusView]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[StudentProctoredExamAttemptCollection]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[StudentProctoredExamAttempt]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[StudentProctoredExamResetAttempts]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[StudentProctoredGroupedExamAttemptsByCourse]
+  - - Django.Views.View~Subclass
+    - edx_proctoring
+    - Member[views].Member[UserRetirement]
   - - Django.db.models.Model~Subclass
     - edx_proctoring
     - Member[admin].Member[ProctoredExamReviewPolicy]
@@ -112,3 +196,24 @@ extensions:
   - - Django.db.models.Model~Subclass
     - edx_proctoring
     - Member[views].Member[ProctoredExam]
+  - - django.forms.BaseForm~Subclass
+    - edx_proctoring
+    - Member[admin].Member[ProctoredExamAttemptForm]
+  - - django.forms.BaseForm~Subclass
+    - edx_proctoring
+    - Member[admin].Member[ProctoredExamForm]
+  - - django.forms.BaseForm~Subclass
+    - edx_proctoring
+    - Member[admin].Member[ProctoredExamSoftwareSecureReviewForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - edx_proctoring
+    - Member[callbacks].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - edx_proctoring
+    - Member[callbacks].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - edx_proctoring
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - edx_proctoring
+    - Member[views].Member[Response]

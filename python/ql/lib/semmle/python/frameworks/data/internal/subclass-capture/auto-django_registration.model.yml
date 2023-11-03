@@ -1,0 +1,63 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[backends].Member[activation].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[backends].Member[activation].Member[views].Member[ActivationView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[backends].Member[activation].Member[views].Member[BaseActivationView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[backends].Member[activation].Member[views].Member[BaseRegistrationView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[backends].Member[activation].Member[views].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[backends].Member[one_step].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[backends].Member[one_step].Member[views].Member[BaseRegistrationView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[backends].Member[one_step].Member[views].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[views].Member[ActivationView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[views].Member[RegistrationView]
+  - - Django.Views.View~Subclass
+    - django_registration
+    - Member[views].Member[TemplateView]
+  - - django.forms.BaseForm~Subclass
+    - django_registration
+    - Member[forms].Member[RegistrationFormCaseInsensitive]
+  - - django.forms.BaseForm~Subclass
+    - django_registration
+    - Member[forms].Member[RegistrationFormTermsOfService]
+  - - django.forms.BaseForm~Subclass
+    - django_registration
+    - Member[forms].Member[RegistrationFormUniqueEmail]
+  - - django.forms.BaseForm~Subclass
+    - django_registration
+    - Member[forms].Member[RegistrationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_registration
+    - Member[forms].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_registration
+    - Member[views].Member[RegistrationForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django_registration
+    - Member[views].Member[HttpResponseRedirect]

@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[fields].Member[CidrAddressFormField]
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[fields].Member[InetAddressFormField]
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[fields].Member[MACAddress8FormField]
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[fields].Member[MACAddressFormField]
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[fields].Member[NoPrefixInetAddressFormField]
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[forms].Member[CidrAddressFormField]
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[forms].Member[InetAddressFormField]
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[forms].Member[MACAddress8FormField]
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[forms].Member[MACAddressFormField]
+  - - Django.Forms.Field~Subclass
+    - netfields
+    - Member[forms].Member[NoPrefixInetAddressFormField]

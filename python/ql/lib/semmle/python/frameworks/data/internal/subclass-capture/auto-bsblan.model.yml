@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[State]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[StaticState]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[bsblan].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[bsblan].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[bsblan].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[bsblan].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[bsblan].Member[StaticState]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[models].Member[Device]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[models].Member[EntityInfo]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[models].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[models].Member[Sensor]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[models].Member[State]
+  - - pydantic.BaseModel~Subclass
+    - bsblan
+    - Member[models].Member[StaticState]

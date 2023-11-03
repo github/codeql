@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - werobot
+    - Member[contrib].Member[django].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - werobot
+    - Member[contrib].Member[django].Member[HttpResponseNotAllowed]
+  - - django.http.response.HttpResponse~Subclass
+    - werobot
+    - Member[contrib].Member[django].Member[HttpResponse]
+  - - tornado.web.RequestHandler~Subclass
+    - werobot
+    - Member[contrib].Member[tornado].Member[RequestHandler]

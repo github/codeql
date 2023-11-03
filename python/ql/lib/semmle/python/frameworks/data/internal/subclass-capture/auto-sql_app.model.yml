@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - sql_app
+    - Member[schemas].Member[ItemBase]
+  - - pydantic.BaseModel~Subclass
+    - sql_app
+    - Member[schemas].Member[ItemCreate]
+  - - pydantic.BaseModel~Subclass
+    - sql_app
+    - Member[schemas].Member[Item]
+  - - pydantic.BaseModel~Subclass
+    - sql_app
+    - Member[schemas].Member[UserBase]
+  - - pydantic.BaseModel~Subclass
+    - sql_app
+    - Member[schemas].Member[UserCreate]
+  - - pydantic.BaseModel~Subclass
+    - sql_app
+    - Member[schemas].Member[User]

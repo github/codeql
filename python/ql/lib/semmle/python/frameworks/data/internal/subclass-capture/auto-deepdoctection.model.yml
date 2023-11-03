@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - lxml.etree~Alias
+    - deepdoctection
+    - Member[datasets].Member[instances].Member[iiitar13k].Member[etree]
+  - - lxml.etree~Alias
+    - deepdoctection
+    - Member[datasets].Member[instances].Member[pubtables1m].Member[etree]
+  - - lxml.etree~Alias
+    - deepdoctection
+    - Member[eval].Member[etree]
+  - - lxml.etree~Alias
+    - deepdoctection
+    - Member[eval].Member[tedsmetric].Member[etree]
+  - - lxml.etree~Alias
+    - deepdoctection
+    - Member[mapper].Member[etree]
+  - - lxml.etree~Alias
+    - deepdoctection
+    - Member[mapper].Member[misc].Member[etree]
+  - - pickle~Alias
+    - deepdoctection
+    - Member[dataflow].Member[pickle]
+  - - pickle~Alias
+    - deepdoctection
+    - Member[dataflow].Member[serialize].Member[pickle]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPResponse~Subclass
+    - pyodata
+    - Member[v2].Member[service].Member[HTTPResponse]
+  - - io.StringIO~Subclass
+    - pyodata
+    - Member[v2].Member[service].Member[BytesIO]
+  - - lxml.etree~Alias
+    - pyodata
+    - Member[v2].Member[model].Member[etree]

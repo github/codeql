@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - pickle~Alias
+    - docarray
+    - Member[array].Member[mixins].Member[io].Member[binary].Member[pickle]
+  - - pickle~Alias
+    - docarray
+    - Member[document].Member[mixins].Member[porting].Member[pickle]
   - - pydantic.BaseModel~Subclass
     - docarray
     - Member[array].Member[storage].Member[qdrant].Member[backend].Member[CreateCollection]
@@ -28,3 +34,15 @@ extensions:
   - - pydantic.BaseModel~Subclass
     - docarray
     - Member[array].Member[storage].Member[qdrant].Member[getsetdel].Member[VectorParams]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[document].Member[mixins].Member[pydantic].Member[PydanticDocument]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[document].Member[pydantic_model].Member[PydanticDocument]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[document].Member[pydantic_model].Member[_MetadataModel]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[document].Member[pydantic_model].Member[_NamedScore]

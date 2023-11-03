@@ -49,6 +49,9 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - views
     - Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - views
+    - Member[Response]
   - - rest_framework.response.Response~Subclass
     - views
     - Member[Response]

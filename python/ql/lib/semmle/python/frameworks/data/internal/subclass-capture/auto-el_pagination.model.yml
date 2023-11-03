@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - el_pagination
+    - Member[views].Member[AjaxListView]
+  - - Django.Views.View~Subclass
+    - el_pagination
+    - Member[views].Member[BaseListView]
+  - - Django.Views.View~Subclass
+    - el_pagination
+    - Member[views].Member[View]

@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - schema_salad
+    - Member[dotnet_codegen].Member[StringIO]
+  - - io.StringIO~Subclass
+    - schema_salad
+    - Member[java_codegen].Member[StringIO]
+  - - io.StringIO~Subclass
+    - schema_salad
+    - Member[makedoc].Member[StringIO]
+  - - io.StringIO~Subclass
+    - schema_salad
+    - Member[metaschema].Member[StringIO]
+  - - io.StringIO~Subclass
+    - schema_salad
+    - Member[python_codegen].Member[StringIO]
+  - - io.StringIO~Subclass
+    - schema_salad
+    - Member[python_codegen_support].Member[StringIO]
+  - - io.StringIO~Subclass
+    - schema_salad
+    - Member[ref_resolver].Member[StringIO]
+  - - io.StringIO~Subclass
+    - schema_salad
+    - Member[typescript_codegen].Member[StringIO]

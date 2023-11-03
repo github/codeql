@@ -1,0 +1,858 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - ape
+    - Member[utils].Member[github].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - ape
+    - Member[api].Member[providers].Member[Logger]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[AccountAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[AccountContainerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[BlockAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[CompilerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[ConfigDict]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[ConverterAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[DependencyAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[EcosystemAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[ExplorerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[ForkedNetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[ImpersonatedAccount]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[NetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[ProjectAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[ProviderAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[SubprocessProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[UpstreamProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[Web3Provider]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[accounts].Member[AccountAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[accounts].Member[AccountContainerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[accounts].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[accounts].Member[ImpersonatedAccount]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[accounts].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[accounts].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[address].Member[AccountHistory]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[address].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[address].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[compiler].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[compiler].Member[CompilerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[compiler].Member[Content]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[compiler].Member[ContractSourceCoverage]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[compiler].Member[ContractSource]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[compiler].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[compiler].Member[SourceTraceback]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[compiler].Member[TraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[config].Member[ConfigDict]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[convert].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[convert].Member[ConverterAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[explorers].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[explorers].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[explorers].Member[ExplorerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ABIType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[AutoGasLimit]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[BlockAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ConstructorABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[EcosystemAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[EventABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ExplorerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ExtraModelAttributes]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ForkedNetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[NetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ProviderAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ProxyInfoAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[networks].Member[UpstreamProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[projects].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[projects].Member[Checksum]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[projects].Member[Content]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[projects].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[projects].Member[DependencyAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[projects].Member[ExtraModelAttributes]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[projects].Member[PackageManifest]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[projects].Member[ProjectAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[projects].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[AutoGasLimit]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[BlockAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[BlockTransactionQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[LogFilter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[NetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[ProviderAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[SourceTraceback]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[SubprocessProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[TraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[UpstreamProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[providers].Member[Web3Provider]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[AccountTransactionQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[BlockQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[BlockTransactionQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[ContractCreationQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[ContractEventQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[ContractMethodQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[EventABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[_BaseBlockQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[query].Member[_BaseQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[AutoGasLimit]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[BlockAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[EventABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[ExplorerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[ExtraModelAttributes]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[SourceTraceback]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[TraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[api].Member[transactions].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[cli].Member[choices].Member[AccountAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[cli].Member[options].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[AccountAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[ConstructorABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[ContractEventQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[ErrorABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[EventABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[LogFilter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[MockContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[contracts].Member[base].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[exceptions].Member[ConstructorABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[exceptions].Member[ErrorABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[exceptions].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[exceptions].Member[NetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[exceptions].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[exceptions].Member[SourceTraceback]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[exceptions].Member[SubprocessProvider]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[exceptions].Member[TraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[exceptions].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[ConfigManager]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[accounts].Member[AccountAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[accounts].Member[AccountContainerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[accounts].Member[ImpersonatedAccount]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[AccountHistory]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[AccountTransactionQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[BlockAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[BlockQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[ContractCreationQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[NetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[ProxyInfoAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[chain].Member[SourceTraceback]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[compilers].Member[CompilerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[compilers].Member[Content]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[compilers].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[config].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[config].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[config].Member[ConfigDict]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[config].Member[ConfigManager]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[config].Member[DependencyAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[config].Member[DeploymentConfigCollection]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[config].Member[PackageMeta]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[AddressAPIConverter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[BytesAddressConverter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[ConverterAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[HexAddressConverter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[HexConverter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[HexIntConverter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[IntAddressConverter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[ListTupleConverter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[StringIntConverter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[TimestampConverter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[converters].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[networks].Member[EcosystemAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[networks].Member[NetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[networks].Member[ProviderAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[ApeProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[BaseProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[BrownieProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[GithubDependency]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[LocalDependency]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[dependency].Member[DependencyAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[dependency].Member[GithubDependency]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[dependency].Member[LocalDependency]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[dependency].Member[NpmDependency]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[dependency].Member[PackageManifest]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[ApeProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[BrownieProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[Compiler]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[ContractSource]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[DependencyAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[EthPMContractInstance]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[PackageManifest]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[PackageMeta]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[ProjectAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[manager].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[types].Member[ApeProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[types].Member[BaseProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[types].Member[BrownieProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[types].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[types].Member[PackageManifest]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[types].Member[ProjectAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[project].Member[types].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[AccountTransactionQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[BlockQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[BlockTransactionQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[ContractCreationQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[ContractEventQuery]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[LogFilter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[ReceiptAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[managers].Member[query].Member[TransactionAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[account].Member[AccountAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[account].Member[AccountContainerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[compiler].Member[CompilerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[converter].Member[ConverterAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[network].Member[EcosystemAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[network].Member[ExplorerAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[network].Member[NetworkAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[network].Member[ProviderAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[project].Member[DependencyAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[plugins].Member[project].Member[ProjectAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[Bytecode]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[Checksum]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[Closure]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[Compiler]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[ContractCoverage]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[ContractSourceCoverage]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[ControlFlow]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[CoverageProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[CoverageReport]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[CoverageStatement]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[PackageManifest]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[PackageMeta]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[SourceTraceback]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[Source]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[TraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[coverage].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[coverage].Member[ContractCoverage]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[coverage].Member[ContractSourceCoverage]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[coverage].Member[ContractSource]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[coverage].Member[CoverageProject]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[coverage].Member[CoverageReport]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[coverage].Member[CoverageStatement]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[coverage].Member[FunctionCoverage]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[ASTNode]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[Closure]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[Content]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[ContractType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[ControlFlow]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[Function]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[SourceStatement]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[SourceTraceback]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[Statement]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types].Member[trace].Member[TraceFrame]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types]Member[AutoGasLimit]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types]Member[BaseContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types]Member[ContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types]Member[LogFilter]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[types]Member[MockContractLog]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[ExtraModelAttributes]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[abi].Member[ABIType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[abi].Member[ConstructorABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[abi].Member[EventABIType]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[abi].Member[EventABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[abi].Member[MethodABI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[basemodel].Member[BaseInterfaceModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[basemodel].Member[BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[basemodel].Member[ConfigManager]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[basemodel].Member[ExtraModelAttributes]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[basemodel].Member[ProviderAPI]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[basemodel].Member[_BaseModel]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[trace].Member[CallTreeNode]
+  - - pydantic.BaseModel~Subclass
+    - ape
+    - Member[utils].Member[trace].Member[CoverageReport]

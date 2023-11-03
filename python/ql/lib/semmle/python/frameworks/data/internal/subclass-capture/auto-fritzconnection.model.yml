@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - fritzconnection
+    - Member[core].Member[fritzconnection].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - fritzconnection
+    - Member[core].Member[fritzconnection].Member[ElementTree]
+  - - xml.etree.ElementTree~Subclass
+    - fritzconnection
+    - Member[core].Member[fritzhttp].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - fritzconnection
+    - Member[core].Member[soaper].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - fritzconnection
+    - Member[core].Member[utils].Member[etree]
+  - - xml.etree.ElementTree~Subclass
+    - fritzconnection
+    - Member[lib].Member[fritzhomeauto].Member[etree]

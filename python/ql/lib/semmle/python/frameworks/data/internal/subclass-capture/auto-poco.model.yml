@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - poco
+    - Member[utils].Member[simplerpc].Member[jsonrpc].Member[backend].Member[django].Member[HttpResponseNotAllowed]
+  - - django.http.response.HttpResponse~Subclass
+    - poco
+    - Member[utils].Member[simplerpc].Member[jsonrpc].Member[backend].Member[django].Member[HttpResponse]
+  - - flask.Blueprint~Subclass
+    - poco
+    - Member[utils].Member[simplerpc].Member[jsonrpc].Member[backend].Member[flask].Member[Blueprint]
+  - - flask.Response~Subclass
+    - poco
+    - Member[utils].Member[simplerpc].Member[jsonrpc].Member[backend].Member[flask].Member[Response]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - poco
+    - Member[utils].Member[net].Member[transport].Member[simple_wss].Member[HTTPRequest]
+  - - io.StringIO~Subclass
+    - poco
+    - Member[utils].Member[simplerpc].Member[jsonrpc].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - poco
+    - Member[utils].Member[simplerpc].Member[jsonrpc].Member[six].Member[StringIO]
+  - - io.StringIO~Subclass
+    - poco
+    - Member[utils].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - poco
+    - Member[utils].Member[six].Member[StringIO]
+  - - xml.etree.ElementTree~Subclass
+    - poco
+    - Member[drivers].Member[ios].Member[ET]

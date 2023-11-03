@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - webdataset
+    - Member[autodecode].Member[pickle]
+  - - pickle~Alias
+    - webdataset
+    - Member[filters].Member[pickle]
+  - - pickle~Alias
+    - webdataset
+    - Member[multi].Member[pickle]
+  - - pickle~Alias
+    - webdataset
+    - Member[wids].Member[wids].Member[pickle]
+  - - pickle~Alias
+    - webdataset
+    - Member[wids].Member[wids_tar].Member[pickle]
+  - - pickle~Alias
+    - webdataset
+    - Member[writer].Member[pickle]

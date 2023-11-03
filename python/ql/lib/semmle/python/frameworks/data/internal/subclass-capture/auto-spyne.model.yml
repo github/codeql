@@ -1,0 +1,93 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - spyne
+    - Member[server].Member[django].Member[HttpResponseNotAllowed]
+  - - django.http.response.HttpResponse~Subclass
+    - spyne
+    - Member[server].Member[django].Member[HttpResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - spyne
+    - Member[server].Member[django].Member[StreamingHttpResponse]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[model].Member[binary].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[model].Member[binary].Member[StringIO]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[protocol].Member[cloth].Member[_base].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[protocol].Member[csv].Member[StringIO]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[protocol].Member[http].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[store].Member[relational].Member[document].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[store].Member[relational].Member[document].Member[StringIO]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[util].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[util].Member[six].Member[StringIO]
+  - - io.StringIO~Subclass
+    - spyne
+    - Member[util].Member[xml].Member[BytesIO]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[interface].Member[wsdl].Member[wsdl11].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[interface].Member[xml_schema].Member[_base].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[interface].Member[xml_schema].Member[model].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[interface].Member[xml_schema].Member[parser].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[protocol].Member[_inbase].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[protocol].Member[_outbase].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[protocol].Member[cloth].Member[_base].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[protocol].Member[cloth].Member[to_cloth].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[protocol].Member[cloth].Member[to_parent].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[protocol].Member[html].Member[_base].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[protocol].Member[soap].Member[mime].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[protocol].Member[soap].Member[soap11].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[protocol].Member[xml].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[store].Member[relational].Member[document].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[util].Member[etreeconv].Member[etree]
+  - - lxml.etree~Alias
+    - spyne
+    - Member[util].Member[xml].Member[etree]

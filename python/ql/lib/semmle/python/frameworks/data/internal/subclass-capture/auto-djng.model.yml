@@ -1,0 +1,141 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[DateField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[DateTimeField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[DecimalField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[DurationField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[EmailField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[Field]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[FileField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[FloatField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[ImageField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[IntegerField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[ModelMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[NullBooleanField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[SlugField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[TimeField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[TypedChoiceField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[TypedMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[URLField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[forms].Member[fields].Member[UUIDField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[views].Member[upload].Member[FileField]
+  - - Django.Forms.Field~Subclass
+    - djng
+    - Member[views].Member[upload].Member[ImageField]
+  - - Django.Views.View~Subclass
+    - djng
+    - Member[views].Member[crud].Member[FormView]
+  - - Django.Views.View~Subclass
+    - djng
+    - Member[views].Member[crud].Member[NgCRUDView]
+  - - Django.Views.View~Subclass
+    - djng
+    - Member[views].Member[upload].Member[FileUploadView]
+  - - Django.Views.View~Subclass
+    - djng
+    - Member[views].Member[upload].Member[View]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[forms].Member[BaseForm]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[forms].Member[BaseModelForm]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[forms].Member[NgForm]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[forms].Member[NgModelForm]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[forms]Member[NgForm]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[forms]Member[NgModelForm]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[styling].Member[bootstrap3].Member[forms].Member[BaseForm]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[styling].Member[bootstrap3].Member[forms].Member[BaseModelForm]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[styling].Member[bootstrap3].Member[forms].Member[Bootstrap3Form]
+  - - django.forms.BaseForm~Subclass
+    - djng
+    - Member[styling].Member[bootstrap3].Member[forms].Member[Bootstrap3ModelForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - djng
+    - Member[views].Member[mixins].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - djng
+    - Member[views].Member[mixins].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponsePermanentRedirect~Subclass
+    - djng
+    - Member[urls].Member[HttpResponsePermanentRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - djng
+    - Member[views].Member[mixins].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - djng
+    - Member[views].Member[upload].Member[JsonResponse]

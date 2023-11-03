@@ -6,4 +6,22 @@ extensions:
   data:
   - - Django.db.models.Model~Subclass
     - select2_generic_foreign_key
+    - Member[admin].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_generic_foreign_key
     - Member[forms].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - select2_generic_foreign_key
+    - Member[forms].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_generic_foreign_key
+    - Member[models].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_generic_foreign_key
+    - Member[models].Member[TProxyModel]
+  - - Django.db.models.Model~Subclass
+    - select2_generic_foreign_key
+    - Member[urls].Member[TModel]
+  - - Django.db.models.Model~Subclass
+    - select2_generic_foreign_key
+    - Member[views].Member[TModel]

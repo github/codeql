@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pickle~Alias
+    - convergence_rate
+    - Member[utils].Member[data_download_raw].Member[pickle]
+  - - pickle~Alias
+    - convergence_rate
+    - Member[utils].Member[data_preprocess].Member[pkl]

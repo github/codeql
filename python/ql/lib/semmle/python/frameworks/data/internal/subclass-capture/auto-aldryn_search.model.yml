@@ -4,9 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - aldryn_search
+    - Member[urls].Member[AldrynSearchView]
+  - - Django.Views.View~Subclass
+    - aldryn_search
+    - Member[views].Member[AldrynSearchView]
+  - - Django.Views.View~Subclass
+    - aldryn_search
+    - Member[views].Member[ListView]
   - - Django.db.models.Model~Subclass
     - aldryn_search
     - Member[receivers].Member[Title]
+  - - Django.db.models.Model~Subclass
+    - aldryn_search
+    - Member[search_indexes].Member[CMSPlugin]
   - - Django.db.models.Model~Subclass
     - aldryn_search
     - Member[search_indexes].Member[Title]

@@ -22,3 +22,15 @@ extensions:
   - - Django.Views.View~Subclass
     - hvad
     - Member[views].Member[TranslatableUpdateView]
+  - - Django.db.models.Model~Subclass
+    - hvad
+    - Member[models].Member[BaseTranslationModel]
+  - - Django.db.models.Model~Subclass
+    - hvad
+    - Member[models].Member[TranslatableModel]
+  - - django.forms.BaseForm~Subclass
+    - hvad
+    - Member[forms].Member[BaseTranslatableModelForm]
+  - - rest_framework.exceptions.APIException~Subclass
+    - hvad
+    - Member[contrib].Member[restframework].Member[utils].Member[ValidationError]

@@ -1,0 +1,78 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_cancel_swap].Member[CancelSwapParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_cancel_swap].Member[HenMinterStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_collect].Member[CollectParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_collect].Member[HenMinterStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_mint].Member[HenMinterStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_mint].Member[HenObjktsStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_mint].Member[MintOBJKTParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_mint].Member[MintParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_swap].Member[HenMinterStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[handlers].Member[on_swap].Member[SwapParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_minter].Member[tezos_parameters].Member[cancel_swap].Member[CancelSwapParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_minter].Member[tezos_parameters].Member[collect].Member[CollectParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_minter].Member[tezos_parameters].Member[mint_objkt].Member[MintOBJKTParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_minter].Member[tezos_parameters].Member[swap].Member[SwapParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_minter].Member[tezos_storage].Member[HenMinterStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_minter].Member[tezos_storage].Member[Royalties]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_minter].Member[tezos_storage].Member[Swaps]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_objkts].Member[tezos_parameters].Member[mint].Member[MintParameter]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_objkts].Member[tezos_storage].Member[HenObjktsStorage]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_objkts].Member[tezos_storage].Member[Key1]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_objkts].Member[tezos_storage].Member[Key]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_objkts].Member[tezos_storage].Member[LedgerItem]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_objkts].Member[tezos_storage].Member[Operator]
+  - - pydantic.BaseModel~Subclass
+    - demo_nft_marketplace
+    - Member[types].Member[hen_objkts].Member[tezos_storage].Member[TokenMetadata]

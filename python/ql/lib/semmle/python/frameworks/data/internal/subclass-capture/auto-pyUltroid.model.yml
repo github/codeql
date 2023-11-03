@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pyUltroid
+    - Member[_misc].Member[_decorators].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pyUltroid
+    - Member[functions].Member[tools].Member[BytesIO]
+  - - logging.Logger~Subclass
+    - pyUltroid
+    - Member[loader].Member[Logger]
+  - - logging.Logger~Subclass
+    - pyUltroid
+    - Member[startup].Member[BaseClient].Member[Logger]

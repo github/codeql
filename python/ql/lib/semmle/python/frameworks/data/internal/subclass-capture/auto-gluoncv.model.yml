@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - gluoncv
+    - Member[utils].Member[metrics].Member[coco_detection].Member[StringIO]
+  - - pickle~Alias
+    - gluoncv
+    - Member[auto].Member[estimators].Member[base_estimator].Member[pickle]
+  - - pickle~Alias
+    - gluoncv
+    - Member[auto].Member[estimators].Member[torch_image_classification].Member[torch_image_classification].Member[pickle]
+  - - pickle~Alias
+    - gluoncv
+    - Member[data].Member[dataloader].Member[pickle]
+  - - pickle~Alias
+    - gluoncv
+    - Member[data].Member[mscoco].Member[segmentation].Member[pickle]
+  - - pickle~Alias
+    - gluoncv
+    - Member[torch].Member[data].Member[gluoncv_motion_dataset].Member[dataset].Member[pickle]
+  - - pickle~Alias
+    - gluoncv
+    - Member[torch].Member[data].Member[gluoncv_motion_dataset].Member[ingestion].Member[video_chunker].Member[pickle]
+  - - pickle~Alias
+    - gluoncv
+    - Member[torch].Member[data].Member[gluoncv_motion_dataset].Member[utils].Member[serialization_utils].Member[pickle]
+  - - pickle~Alias
+    - gluoncv
+    - Member[torch].Member[utils].Member[comm].Member[pickle]
+  - - pickle~Alias
+    - gluoncv
+    - Member[torch].Member[utils].Member[eval_utils].Member[coco_eval].Member[pickle]
+  - - xml.etree.ElementTree~Subclass
+    - gluoncv
+    - Member[auto].Member[data].Member[dataset].Member[ET]
+  - - xml.etree.ElementTree~Subclass
+    - gluoncv
+    - Member[data].Member[pascal_voc].Member[detection].Member[ET]

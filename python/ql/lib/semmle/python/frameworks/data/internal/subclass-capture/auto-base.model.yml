@@ -4,6 +4,126 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Views.View~Subclass
+    - base
+    - Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[ContactView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[ProfileFormView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[ProfileListView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[RecordFormView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[RecordListView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[contact].Member[ContactView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[contact].Member[MultiFormView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[profile].Member[ListView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[profile].Member[MultiModelFormView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[profile].Member[ProfileFormView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[profile].Member[ProfileListView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[record].Member[ListView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[record].Member[MultiModelFormView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[record].Member[RecordFormView]
+  - - Django.Views.View~Subclass
+    - base
+    - Member[views].Member[record].Member[RecordListView]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[forms].Member[Photo]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[forms].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[forms].Member[Record]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[models].Member[Photo]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[models].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[models].Member[Record]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[views].Member[profile].Member[Photo]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[views].Member[profile].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[views].Member[record].Member[Photo]
+  - - Django.db.models.Model~Subclass
+    - base
+    - Member[views].Member[record].Member[Record]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[forms].Member[ContactForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[forms].Member[PhotoForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[forms].Member[ProfileForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[forms].Member[RecordForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[forms].Member[UserForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[views].Member[contact].Member[ContactForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[views].Member[contact].Member[UserForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[views].Member[profile].Member[PhotoForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[views].Member[profile].Member[ProfileForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[views].Member[record].Member[PhotoForm]
+  - - django.forms.BaseForm~Subclass
+    - base
+    - Member[views].Member[record].Member[RecordForm]
+  - - flask.Blueprint~Subclass
+    - base
+    - Member[app].Member[controllers].Member[interface].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - base
+    - Member[factory].Member[Flask]
+  - - flask.Response~Subclass
+    - base
+    - Member[exception_handler].Member[Response]
   - - pydantic.BaseModel~Subclass
     - base
     - Member[ConversationFilter]

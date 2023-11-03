@@ -6,10 +6,19 @@ extensions:
   data:
   - - io.StringIO~Subclass
     - github3
+    - Member[decorators].Member[RequestsStringIO]
+  - - io.StringIO~Subclass
+    - github3
+    - Member[decorators].Member[StringIO]
+  - - io.StringIO~Subclass
+    - github3
     - Member[src].Member[github3].Member[decorators].Member[RequestsStringIO]
   - - io.StringIO~Subclass
     - github3
     - Member[src].Member[github3].Member[decorators].Member[StringIO]
+  - - requests.models.Response~Subclass
+    - github3
+    - Member[decorators].Member[Response]
   - - requests.models.Response~Subclass
     - github3
     - Member[src].Member[github3].Member[decorators].Member[Response]

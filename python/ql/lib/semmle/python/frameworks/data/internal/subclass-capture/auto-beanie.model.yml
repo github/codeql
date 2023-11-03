@@ -1,0 +1,168 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[TimeSeriesConfig]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[View]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[migrations].Member[controllers].Member[base].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[migrations].Member[controllers].Member[free_fall].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[migrations].Member[controllers].Member[iterative].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[migrations].Member[models].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[migrations].Member[models].Member[MigrationLog]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[migrations].Member[runner].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[migrations].Member[runner].Member[MigrationLog]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[actions].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[bulk].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[cache].Member[CachedItem]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[documents].Member[DocumentSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[documents].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[documents].Member[InspectionError]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[documents].Member[InspectionResult]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[documents].Member[LazyModel]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[documents].Member[LinkInfo]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[documents].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[fields].Member[LinkInfo]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[interfaces].Member[find].Member[ItemSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[interfaces].Member[getters].Member[ItemSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[interfaces].Member[setters].Member[DocumentSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[models].Member[InspectionError]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[models].Member[InspectionResult]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[queries].Member[delete].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[queries].Member[find].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[queries].Member[update].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[settings].Member[base].Member[ItemSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[settings].Member[document].Member[DocumentSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[settings].Member[document].Member[ItemSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[settings].Member[document].Member[TimeSeriesConfig]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[settings].Member[timeseries].Member[TimeSeriesConfig]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[settings].Member[union_doc].Member[ItemSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[settings].Member[union_doc].Member[UnionDocSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[settings].Member[view].Member[ItemSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[settings].Member[view].Member[ViewSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[union_doc].Member[UnionDocSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[dump].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[find].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[find].Member[LinkInfo]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[init].Member[DocumentSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[init].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[init].Member[LinkInfo]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[init].Member[Output]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[init].Member[UnionDocSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[init].Member[ViewSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[init].Member[View]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[parsing].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[utils].Member[relations].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[views].Member[LinkInfo]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[views].Member[ViewSettings]
+  - - pydantic.BaseModel~Subclass
+    - beanie
+    - Member[odm].Member[views].Member[View]

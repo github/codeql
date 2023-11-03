@@ -1,0 +1,156 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[TTS]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[VoiceClone]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[VoiceSettings]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[Voices]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[API]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[FeedbackItem]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[HistoryItem]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[Models]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[Subscription]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[TTS]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[VoiceClone]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[VoiceDesign]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[VoiceSample]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[VoiceSettings]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[Voices]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[base].Member[API]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[history].Member[API]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[history].Member[FeedbackItem]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[history].Member[HistoryItem]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[history].Member[History]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[history].Member[VoiceSettings]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[model].Member[API]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[model].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[model].Member[Models]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[tts].Member[API]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[tts].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[tts].Member[TTS]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[tts].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[user].Member[API]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[user].Member[Subscription]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[user].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[voice].Member[API]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[voice].Member[VoiceClone]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[voice].Member[VoiceDesign]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[voice].Member[VoiceSample]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[voice].Member[VoiceSettings]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[voice].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[api].Member[voice].Member[Voices]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[simple].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[simple].Member[TTS]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[simple].Member[VoiceClone]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[simple].Member[VoiceSettings]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[simple].Member[Voice]
+  - - pydantic.BaseModel~Subclass
+    - elevenlabs
+    - Member[simple].Member[Voices]

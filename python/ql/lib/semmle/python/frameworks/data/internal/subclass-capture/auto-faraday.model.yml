@@ -1,0 +1,114 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[activity_feed].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[agent].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[agent_auth_token].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[commandsrun].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[comments].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[credentials].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[custom_fields].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[export_data].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[get_exploits].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[global_commands].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[handlers].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[hosts].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[info].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[licenses].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[preferences].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[search_filter].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[services].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[session].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[settings_dashboard].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[settings_reports].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[swagger].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[token].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[upload_reports].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[vulnerability_template].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[vulns].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[websocket_auth].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[workspaces].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - faraday
+    - Member[server].Member[websockets].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - faraday
+    - Member[server].Member[app].Member[Flask]
+  - - flask.MethodView~Subclass
+    - faraday
+    - Member[utils].Member[faraday_openapi_plugin].Member[MethodView]
+  - - io.StringIO~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[export_data].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - faraday
+    - Member[server].Member[api].Member[modules].Member[hosts].Member[StringIO]
+  - - io.StringIO~Subclass
+    - faraday
+    - Member[server].Member[utils].Member[debug].Member[StringIO]
+  - - io.StringIO~Subclass
+    - faraday
+    - Member[server].Member[utils].Member[export].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - faraday
+    - Member[server].Member[utils].Member[export].Member[StringIO]
+  - - io.StringIO~Subclass
+    - faraday
+    - Member[server].Member[utils].Member[web].Member[IO]

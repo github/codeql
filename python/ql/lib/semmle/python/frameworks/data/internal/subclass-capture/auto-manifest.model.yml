@@ -1,0 +1,219 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - manifest
+    - Member[api].Member[app].Member[Flask]
+  - - flask.Response~Subclass
+    - manifest
+    - Member[api].Member[app].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[caches].Member[cache].Member[DiffusionRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[caches].Member[cache].Member[EmbeddingRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[caches].Member[cache].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[caches].Member[cache].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[ai21].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[azureopenai].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[azureopenai].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[azureopenai_chat].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[client].Member[ArrayModelChoice]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[client].Member[LMChatRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[client].Member[LMModelChoice]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[client].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[client].Member[LMScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[client].Member[ModelChoices]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[client].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[client].Member[Usage]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[client].Member[Usages]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[cohere].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[diffuser].Member[DiffusionRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[dummy].Member[LMChatRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[dummy].Member[LMModelChoice]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[dummy].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[dummy].Member[LMScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[dummy].Member[ModelChoices]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[dummy].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[dummy].Member[Usage]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[dummy].Member[Usages]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[google].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[google].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[google_chat].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[google_chat].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[huggingface].Member[LMModelChoice]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[huggingface].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[huggingface].Member[LMScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[huggingface].Member[ModelChoices]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[huggingface_embedding].Member[EmbeddingRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[openai].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[openai].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[openai_chat].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[openai_embedding].Member[EmbeddingRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[toma].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[clients].Member[toma_diffuser].Member[DiffusionRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[connections].Member[client_pool].Member[ClientConnection]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[connections].Member[client_pool].Member[Timing]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[manifest].Member[ClientConnection]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[manifest].Member[LMChatRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[manifest].Member[LMScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[manifest].Member[ModelChoices]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[manifest].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[manifest].Member[Usage]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[manifest].Member[Usages]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[request].Member[DiffusionRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[request].Member[EmbeddingRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[request].Member[LMChatRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[request].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[request].Member[LMScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[request].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[ArrayModelChoice]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[DiffusionRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[EmbeddingRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[LMChatRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[LMModelChoice]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[LMRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[LMScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[ModelChoices]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[Request]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[Usage]
+  - - pydantic.BaseModel~Subclass
+    - manifest
+    - Member[response].Member[Usages]

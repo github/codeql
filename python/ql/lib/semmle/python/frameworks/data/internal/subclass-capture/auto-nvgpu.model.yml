@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - nvgpu
+    - Member[webapp].Member[Flask]
   - - flask.MethodView~Subclass
     - nvgpu
     - Member[webapp].Member[GpuClusterStatusHTML]
@@ -16,3 +19,6 @@ extensions:
   - - flask.MethodView~Subclass
     - nvgpu
     - Member[webapp].Member[Resource]
+  - - flask.Response~Subclass
+    - nvgpu
+    - Member[webapp].Member[Response]

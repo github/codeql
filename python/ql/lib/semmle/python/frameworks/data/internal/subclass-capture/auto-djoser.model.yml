@@ -1,0 +1,66 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - djoser
+    - Member[social].Member[views].Member[ProviderAuthView]
+  - - Django.Views.View~Subclass
+    - djoser
+    - Member[views].Member[TokenCreateView]
+  - - Django.Views.View~Subclass
+    - djoser
+    - Member[views].Member[TokenDestroyView]
+  - - Django.Views.View~Subclass
+    - djoser
+    - Member[views].Member[UserViewSet]
+  - - Django.Views.View~Subclass
+    - djoser
+    - Member[webauthn].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - djoser
+    - Member[webauthn].Member[views].Member[LoginRequestView]
+  - - Django.Views.View~Subclass
+    - djoser
+    - Member[webauthn].Member[views].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - djoser
+    - Member[webauthn].Member[views].Member[SignupView]
+  - - Django.Views.View~Subclass
+    - djoser
+    - Member[webauthn].Member[views].Member[SingupRequestView]
+  - - Django.db.models.Model~Subclass
+    - djoser
+    - Member[webauthn].Member[models].Member[CredentialOptions]
+  - - Django.db.models.Model~Subclass
+    - djoser
+    - Member[webauthn].Member[serializers].Member[CredentialOptions]
+  - - Django.db.models.Model~Subclass
+    - djoser
+    - Member[webauthn].Member[views].Member[CredentialOptions]
+  - - django.http.response.HttpResponse~Subclass
+    - djoser
+    - Member[social].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - djoser
+    - Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - djoser
+    - Member[webauthn].Member[views].Member[Response]
+  - - rest_framework.exceptions.APIException~Subclass
+    - djoser
+    - Member[serializers].Member[ValidationError]
+  - - rest_framework.exceptions.APIException~Subclass
+    - djoser
+    - Member[views].Member[NotFound]
+  - - rest_framework.response.Response~Subclass
+    - djoser
+    - Member[social].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - djoser
+    - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - djoser
+    - Member[webauthn].Member[views].Member[Response]

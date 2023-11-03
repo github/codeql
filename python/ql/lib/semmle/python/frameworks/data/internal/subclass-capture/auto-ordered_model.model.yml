@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - ordered_model
+    - Member[management].Member[commands].Member[reorder_model].Member[OrderedModelBase]
+  - - Django.db.models.Model~Subclass
+    - ordered_model
+    - Member[models].Member[OrderedModelBase]
+  - - Django.db.models.Model~Subclass
+    - ordered_model
+    - Member[models].Member[OrderedModel]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - ordered_model
+    - Member[admin].Member[HttpResponseRedirect]
