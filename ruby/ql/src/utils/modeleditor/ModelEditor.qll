@@ -132,7 +132,10 @@ string methodClassification(Call method) {
 }
 
 class TestFile extends File {
-  TestFile() { this.getRelativePath().regexpMatch(".*(test|spec).+") }
+  TestFile() {
+    this.getRelativePath().regexpMatch(".*(test|spec).+") and
+    not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
+  }
 }
 
 /**
