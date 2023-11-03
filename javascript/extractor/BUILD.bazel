@@ -1,4 +1,5 @@
-load("@//:common.bzl", "codeql_java_project")
+load("@//:common.bzl", "codeql_fat_jar", "codeql_java_project")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 
 codeql_java_project(
     name = "extractor",
@@ -16,4 +17,40 @@ codeql_java_project(
         "@//util-java7",
         "@//util-java8",
     ],
+)
+
+pkg_files(
+    name = "javascript-extractor-resources",
+    srcs = glob(["resources/**"]),
+    strip_prefix = "resources",
+)
+
+codeql_fat_jar(
+    name = "extractor-javascript",
+    srcs = [
+        ":extractor",
+        "@//extractor:html",
+        "@//extractor:xml-trap-writer",
+        "@//extractor:yaml",
+        "@//resources/lib/java:commons-compress",
+        "@//resources/lib/java:gson",
+        "@//resources/lib/java:jericho-html",
+        "@//resources/lib/java:slf4j-api",
+        "@//resources/lib/java:snakeyaml",
+        "@//third_party:jackson",
+        "@//third_party:logback",
+        "@//util-java7",
+        "@//util-java8",
+    ],
+    files = [":javascript-extractor-resources"],
+    main_class = "com.semmle.js.extractor.Main",
+)
+
+pkg_files(
+    name = "tools-extractor",
+    srcs = [
+        ":extractor-javascript",
+    ],
+    prefix = "tools",
+    visibility = ["//visibility:public"],
 )
