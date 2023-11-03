@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private static string GetPackageName(string package) =>
             package
-                .Split("/")
+                .Split(Path.DirectorySeparatorChar)
                 .First();
 
         /// <summary>
@@ -47,9 +47,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public Dependencies Add(string package, string dependency)
         {
-            var path = Path.Combine(package, ParseFilePath(dependency));
+            var p = package.Replace('/', Path.DirectorySeparatorChar);
+            var d = dependency.Replace('/', Path.DirectorySeparatorChar);
+
+            var path = Path.Combine(p, ParseFilePath(d));
             required.Add(path);
-            usedPackages.Add(GetPackageName(package));
+            usedPackages.Add(GetPackageName(p));
+
             return this;
         }
 
@@ -58,8 +62,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public Dependencies Add(string package)
         {
-            required.Add(package);
-            usedPackages.Add(GetPackageName(package));
+            var p = package.Replace('/', Path.DirectorySeparatorChar);
+
+            required.Add(p);
+            usedPackages.Add(GetPackageName(p));
+
             return this;
         }
     }
