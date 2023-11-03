@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Packages that are used as a part of the required dependencies.
         /// </summary>
-        public IEnumerable<string> UsedPackages => usedPackages;
+        public HashSet<string> UsedPackages => usedPackages;
 
         /// <summary>
         /// Add a dependency inside a package.

@@ -107,10 +107,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     .Required
                     .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
                     .ToList();
-
-                // TODO: Log all packages that are not used as a dependency.
-
                 dllPaths.AddRange(paths);
+
+                LogAllUnusedPackages(dependencies);
                 DownloadMissingPackages(allNonBinaryFiles, dllPaths);
             }
 
@@ -291,6 +290,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .FirstOrDefault()?
                 .FullName;
         }
+
+        private IEnumerable<string> GetAllPackageDirectories()
+        {
+            if (!options.UseNuGet)
+            {
+                return Enumerable.Empty<string>();
+            }
+
+            return new DirectoryInfo(packageDirectory.DirInfo.FullName)
+                .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
+                .Select(d => d.FullName);
+        }
+
+        private void LogAllUnusedPackages(Dependencies dependencies) =>
+            GetAllPackageDirectories()
+                .Where(package => !dependencies.UsedPackages.Contains(package))
+                .ForEach(package => progressMonitor.LogInfo($"Unused package: {package}"));
 
         private void GenerateSourceFileFromImplicitUsings()
         {
