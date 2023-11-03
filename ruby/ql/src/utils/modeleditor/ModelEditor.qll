@@ -40,8 +40,11 @@ class Endpoint extends DataFlow::MethodNode {
    */
   bindingset[this]
   string getNamespace() {
-    // The nearest gemspec to this endpoint
+    // The nearest gemspec to this endpoint, if one exists
     result = min(Gem::GemSpec g, int n | gemFileStep(g, this.getFile(), n) | g order by n).getName()
+    or
+    not exists(Gem::GemSpec g) and
+    result = ""
   }
 
   /**
