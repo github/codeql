@@ -441,7 +441,7 @@ private predicate instanceOfGuarded(Expr e, RefType t) {
 }
 
 /**
- * Holds if `va` is an access to a value that is guarded by `case T t`.
+ * Holds if `e` is an access to a value that is guarded by `case T t`.
  */
 private predicate patternCaseGuarded(Expr e, RefType t) {
   exists(PatternCase pc |

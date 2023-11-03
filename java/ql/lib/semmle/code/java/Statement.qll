@@ -514,7 +514,7 @@ class ConstCase extends SwitchCase {
   Expr getValue() { result.isNthChildOf(this, 0) }
 
   /**
-   * Gets the `case` constant at the specified index.
+   * Gets the `case` constant at index `i`.
    */
   Expr getValue(int i) { result.isNthChildOf(this, i) and i >= 0 }
 
