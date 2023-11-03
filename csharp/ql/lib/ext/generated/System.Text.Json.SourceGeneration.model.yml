@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Text.Json.SourceGeneration", "JsonSourceGenerator", False, "GetSerializableTypes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Text.Json.SourceGeneration", "JsonSourceGenerator", "Execute", "(Microsoft.CodeAnalysis.GeneratorExecutionContext)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "JsonSourceGenerator", "Initialize", "(Microsoft.CodeAnalysis.GeneratorInitializationContext)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "JsonSourceGenerator", "Initialize", "(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)", "summary", "df-generated"]
