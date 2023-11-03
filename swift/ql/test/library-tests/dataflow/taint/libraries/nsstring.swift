@@ -355,7 +355,7 @@ func taintThroughInterpolatedStrings() {
   }))
   sink(arg: sourceNSString().enumerateLines({
     line, stop in
-    sink(arg: line) // $ MISSING: tainted=
+    sink(arg: line) // $ tainted=356
     sink(arg: stop)
   }))
 
@@ -492,6 +492,6 @@ func moreTests() {
 
   sink(arg: myTainted.enumerateSubstrings(in: myRange, options: [], using: {
     substring, substringRange, enclosingRange, stop in
-    sink(arg: substring!) // $ MISSING: tainted=
+    sink(arg: substring!) // $ tainted=490
   }))
 }
