@@ -3,7 +3,8 @@ load("@//:common.bzl", "codeql_java_project")
 codeql_java_project(
     name = "extractor",
     deps = [
-        "@//extractor",
+        "@//extractor:html",
+        "@//extractor:yaml",
         "@//resources/lib/java:commons-compress",
         "@//resources/lib/java:gson",
         "@//resources/lib/java:jericho-html",
