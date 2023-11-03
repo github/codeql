@@ -6643,6 +6643,9 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:729:27:729:32 | endptr | taint.cpp:729:26:729:32 | & ... |  |
 | taint.cpp:731:7:731:12 | ref arg endptr | taint.cpp:732:8:732:13 | endptr |  |
 | taint.cpp:732:8:732:13 | endptr | taint.cpp:732:7:732:13 | * ... | TAINT |
+| taint.cpp:738:17:738:31 | call to indirect_source | taint.cpp:739:30:739:35 | source |  |
+| taint.cpp:739:22:739:28 | call to realloc | taint.cpp:740:7:740:10 | dest |  |
+| taint.cpp:739:30:739:35 | source | taint.cpp:739:22:739:28 | call to realloc | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

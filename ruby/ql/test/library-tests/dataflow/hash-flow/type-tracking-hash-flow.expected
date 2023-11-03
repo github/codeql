@@ -1,9 +1,7 @@
 testFailures
 | hash_flow.rb:65:21:65:40 | # $ hasValueFlow=3.3 | Missing result:hasValueFlow=3.3 |
 | hash_flow.rb:66:21:66:49 | # $ SPURIOUS hasValueFlow=3.3 | Missing result:hasValueFlow=3.3 |
-| hash_flow.rb:114:10:114:17 | ...[...] | Unexpected result: hasValueFlow=7.2 |
 | hash_flow.rb:117:10:117:17 | ...[...] | Unexpected result: hasValueFlow=7.1 |
-| hash_flow.rb:117:10:117:17 | ...[...] | Unexpected result: hasValueFlow=7.2 |
 | hash_flow.rb:119:10:119:17 | ...[...] | Unexpected result: hasValueFlow=7.1 |
 | hash_flow.rb:152:16:152:36 | # $ hasValueFlow=10.1 | Missing result:hasValueFlow=10.1 |
 | hash_flow.rb:163:10:163:17 | ...[...] | Unexpected result: hasValueFlow=9.1 |
@@ -22,7 +20,6 @@ testFailures
 | hash_flow.rb:571:18:571:38 | # $ hasValueFlow=35.1 | Missing result:hasValueFlow=35.1 |
 | hash_flow.rb:591:20:591:60 | # $ hasValueFlow=36.1 $ hasValueFlow=36.2 | Missing result:hasValueFlow=36.1 |
 | hash_flow.rb:591:20:591:60 | # $ hasValueFlow=36.1 $ hasValueFlow=36.2 | Missing result:hasValueFlow=36.2 |
-| hash_flow.rb:670:14:670:18 | value | Unexpected result: hasValueFlow=41.3 |
 | hash_flow.rb:673:10:673:19 | ( ... ) | Unexpected result: hasValueFlow=41.1 |
 | hash_flow.rb:704:22:704:42 | # $ hasValueFlow=42.3 | Missing result:hasValueFlow=42.3 |
 | hash_flow.rb:706:22:706:42 | # $ hasValueFlow=42.4 | Missing result:hasValueFlow=42.4 |

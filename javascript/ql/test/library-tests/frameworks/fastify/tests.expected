@@ -7,6 +7,35 @@ test_RouteSetup
 | src/fastify.js:63:1:70:1 | fastify ... ;\\n  }\\n) |
 | src/fastify.js:74:1:81:1 | fastify ... ;\\n  }\\n) |
 | src/fastify.js:85:1:92:1 | fastify ... ;\\n  }\\n) |
+test_HeaderAccess
+| src/fastify.js:39:5:39:24 | request.headers.name | name |
+test_RouteHandler
+| src/fastify.js:5:17:7:3 | async ( ... nse\\n  } | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:13:28:13:55 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:14:29:14:56 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:15:32:15:59 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:16:29:16:56 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:17:35:17:71 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:18:25:18:61 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:19:29:19:56 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:20:26:20:47 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:26:17:28:3 | (reques ... nse\\n  } | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:34:17:46:3 | functio ... eam\\n  } | src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:54:17:58:3 | functio ... ms;\\n  } | src/fastify.js:50:27:50:46 | require("fastify")() |
+| src/fastify.js:65:17:69:3 | functio ... ms;\\n  } | src/fastify.js:61:27:61:46 | require("fastify")() |
+| src/fastify.js:76:17:80:3 | functio ... ms;\\n  } | src/fastify.js:72:27:72:46 | require("fastify")() |
+| src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:83:27:83:46 | require("fastify")() |
+test_HeaderDefinition
+| src/fastify.js:42:5:42:33 | reply.h ... value") | src/fastify.js:34:17:46:3 | functio ... eam\\n  } |
+| src/fastify.js:43:5:43:36 | reply.h ... lue" }) | src/fastify.js:34:17:46:3 | functio ... eam\\n  } |
+test_ServerDefinition
+| src/fastify.js:1:15:1:34 | require("fastify")() |
+| src/fastify.js:50:27:50:46 | require("fastify")() |
+| src/fastify.js:61:27:61:46 | require("fastify")() |
+| src/fastify.js:72:27:72:46 | require("fastify")() |
+| src/fastify.js:83:27:83:46 | require("fastify")() |
+test_RedirectInvocation
+| src/fastify.js:44:5:44:29 | reply.r ... e, url) | src/fastify.js:34:17:46:3 | functio ... eam\\n  } |
 test_RequestInputAccess
 | src/fastify.js:36:5:36:17 | request.query | parameter | src/fastify.js:34:17:46:3 | functio ... eam\\n  } | false |
 | src/fastify.js:37:5:37:16 | request.body | body | src/fastify.js:34:17:46:3 | functio ... eam\\n  } | false |
@@ -24,15 +53,10 @@ test_RequestInputAccess
 | src/fastify.js:88:5:88:17 | request.query | parameter | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | false |
 | src/fastify.js:89:5:89:16 | request.body | body | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | true |
 | src/fastify.js:90:5:90:18 | request.params | parameter | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | false |
-test_RouteHandler_getAResponseHeader
-| src/fastify.js:34:17:46:3 | functio ... eam\\n  } | name | src/fastify.js:42:5:42:33 | reply.h ... value") |
-| src/fastify.js:34:17:46:3 | functio ... eam\\n  } | name | src/fastify.js:43:5:43:36 | reply.h ... lue" }) |
-test_HeaderDefinition_defines
-| src/fastify.js:42:5:42:33 | reply.h ... value") | name | value |
-| src/fastify.js:43:5:43:36 | reply.h ... lue" }) | name | value |
-test_HeaderDefinition
-| src/fastify.js:42:5:42:33 | reply.h ... value") | src/fastify.js:34:17:46:3 | functio ... eam\\n  } |
-| src/fastify.js:43:5:43:36 | reply.h ... lue" }) | src/fastify.js:34:17:46:3 | functio ... eam\\n  } |
+test_ResponseSendArgument
+| src/fastify.js:6:12:6:29 | { hello: "world" } | src/fastify.js:5:17:7:3 | async ( ... nse\\n  } |
+| src/fastify.js:27:16:27:33 | { hello: "world" } | src/fastify.js:26:17:28:3 | (reques ... nse\\n  } |
+| src/fastify.js:45:16:45:22 | payload | src/fastify.js:34:17:46:3 | functio ... eam\\n  } |
 test_RouteSetup_getServer
 | src/fastify.js:3:1:8:1 | fastify ... e\\n  }\\n) | src/fastify.js:1:15:1:34 | require("fastify")() |
 | src/fastify.js:10:1:21:2 | fastify ... > {}\\n}) | src/fastify.js:1:15:1:34 | require("fastify")() |
@@ -42,17 +66,9 @@ test_RouteSetup_getServer
 | src/fastify.js:63:1:70:1 | fastify ... ;\\n  }\\n) | src/fastify.js:61:27:61:46 | require("fastify")() |
 | src/fastify.js:74:1:81:1 | fastify ... ;\\n  }\\n) | src/fastify.js:72:27:72:46 | require("fastify")() |
 | src/fastify.js:85:1:92:1 | fastify ... ;\\n  }\\n) | src/fastify.js:83:27:83:46 | require("fastify")() |
-test_HeaderDefinition_getAHeaderName
-| src/fastify.js:42:5:42:33 | reply.h ... value") | name |
-| src/fastify.js:43:5:43:36 | reply.h ... lue" }) | name |
-test_ServerDefinition
-| src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:50:27:50:46 | require("fastify")() |
-| src/fastify.js:61:27:61:46 | require("fastify")() |
-| src/fastify.js:72:27:72:46 | require("fastify")() |
-| src/fastify.js:83:27:83:46 | require("fastify")() |
-test_HeaderAccess
-| src/fastify.js:39:5:39:24 | request.headers.name | name |
+test_HeaderDefinition_defines
+| src/fastify.js:42:5:42:33 | reply.h ... value") | name | value |
+| src/fastify.js:43:5:43:36 | reply.h ... lue" }) | name | value |
 test_RouteSetup_getARouteHandler
 | src/fastify.js:3:1:8:1 | fastify ... e\\n  }\\n) | src/fastify.js:5:17:7:3 | async ( ... nse\\n  } |
 | src/fastify.js:10:1:21:2 | fastify ... > {}\\n}) | src/fastify.js:13:28:13:55 | (reques ... ) => {} |
@@ -69,22 +85,6 @@ test_RouteSetup_getARouteHandler
 | src/fastify.js:63:1:70:1 | fastify ... ;\\n  }\\n) | src/fastify.js:65:17:69:3 | functio ... ms;\\n  } |
 | src/fastify.js:74:1:81:1 | fastify ... ;\\n  }\\n) | src/fastify.js:76:17:80:3 | functio ... ms;\\n  } |
 | src/fastify.js:85:1:92:1 | fastify ... ;\\n  }\\n) | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } |
-test_RouteHandler
-| src/fastify.js:5:17:7:3 | async ( ... nse\\n  } | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:13:28:13:55 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:14:29:14:56 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:15:32:15:59 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:16:29:16:56 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:17:35:17:71 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:18:25:18:61 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:19:29:19:56 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:20:26:20:47 | (reques ... ) => {} | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:26:17:28:3 | (reques ... nse\\n  } | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:34:17:46:3 | functio ... eam\\n  } | src/fastify.js:1:15:1:34 | require("fastify")() |
-| src/fastify.js:54:17:58:3 | functio ... ms;\\n  } | src/fastify.js:50:27:50:46 | require("fastify")() |
-| src/fastify.js:65:17:69:3 | functio ... ms;\\n  } | src/fastify.js:61:27:61:46 | require("fastify")() |
-| src/fastify.js:76:17:80:3 | functio ... ms;\\n  } | src/fastify.js:72:27:72:46 | require("fastify")() |
-| src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:83:27:83:46 | require("fastify")() |
 test_RouteHandler_getARequestExpr
 | src/fastify.js:5:17:7:3 | async ( ... nse\\n  } | src/fastify.js:5:24:5:30 | request |
 | src/fastify.js:13:28:13:55 | (reques ... ) => {} | src/fastify.js:13:29:13:35 | request |
@@ -122,9 +122,9 @@ test_RouteHandler_getARequestExpr
 | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:88:5:88:11 | request |
 | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:89:5:89:11 | request |
 | src/fastify.js:87:17:91:3 | functio ... ms;\\n  } | src/fastify.js:90:5:90:11 | request |
-test_ResponseSendArgument
-| src/fastify.js:6:12:6:29 | { hello: "world" } | src/fastify.js:5:17:7:3 | async ( ... nse\\n  } |
-| src/fastify.js:27:16:27:33 | { hello: "world" } | src/fastify.js:26:17:28:3 | (reques ... nse\\n  } |
-| src/fastify.js:45:16:45:22 | payload | src/fastify.js:34:17:46:3 | functio ... eam\\n  } |
-test_RedirectInvocation
-| src/fastify.js:44:5:44:29 | reply.r ... e, url) | src/fastify.js:34:17:46:3 | functio ... eam\\n  } |
+test_HeaderDefinition_getAHeaderName
+| src/fastify.js:42:5:42:33 | reply.h ... value") | name |
+| src/fastify.js:43:5:43:36 | reply.h ... lue" }) | name |
+test_RouteHandler_getAResponseHeader
+| src/fastify.js:34:17:46:3 | functio ... eam\\n  } | name | src/fastify.js:42:5:42:33 | reply.h ... value") |
+| src/fastify.js:34:17:46:3 | functio ... eam\\n  } | name | src/fastify.js:43:5:43:36 | reply.h ... lue" }) |

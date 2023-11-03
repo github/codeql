@@ -4,6 +4,7 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ClosureExpr
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.PatternBindingDecl
+import codeql.swift.elements.decl.VarDecl
 
 module Generated {
   class CaptureListExpr extends Synth::TCaptureListExpr, Expr {
@@ -28,6 +29,23 @@ module Generated {
      * Gets the number of binding declarations of this capture list expression.
      */
     final int getNumberOfBindingDecls() { result = count(int i | exists(this.getBindingDecl(i))) }
+
+    /**
+     * Gets the `index`th variable of this capture list expression (0-based).
+     *
+     * These are the variables introduced by this capture in the closure's scope, not the captured ones.
+     */
+    VarDecl getVariable(int index) { none() }
+
+    /**
+     * Gets any of the variables of this capture list expression.
+     */
+    final VarDecl getAVariable() { result = this.getVariable(_) }
+
+    /**
+     * Gets the number of variables of this capture list expression.
+     */
+    final int getNumberOfVariables() { result = count(int i | exists(this.getVariable(i))) }
 
     /**
      * Gets the closure body of this capture list expression.

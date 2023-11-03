@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Net.Quic.Implementations", "QuicImplementationProvider", "get_IsSupported", "()", "summary", "df-generated"]

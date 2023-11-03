@@ -1,33 +1,113 @@
-test_TypeofTypeExpr
-| tst.ts:70:17:70:24 | typeof N | tst.ts:70:24:70:24 | N |
-| tst.ts:71:17:71:26 | typeof N.x | tst.ts:71:24:71:26 | N.x |
-| tst.ts:72:17:72:35 | typeof qualifiedVar | tst.ts:72:24:72:35 | qualifiedVar |
-| tst.ts:81:43:81:50 | typeof x | tst.ts:81:50:81:50 | x |
-| tst.ts:126:21:126:42 | typeof  ... value") | tst.ts:126:28:126:42 | import("value") |
-| tst.ts:127:30:127:53 | typeof  ... lue").x | tst.ts:127:53:127:53 | x |
-test_FunctionTypeParameters
-| tst.ts:88:20:88:44 | (param: ...  number | 0 | 1 | tst.ts:88:21:88:25 | param |
-| tst.ts:89:20:89:37 | <T>(param: T) => T | 0 | 1 | tst.ts:89:24:89:28 | param |
-| tst.ts:91:23:91:51 | new (pa ...  Object | 0 | 1 | tst.ts:91:28:91:32 | param |
-| tst.ts:92:23:92:49 | new <T> ...  Object | 0 | 1 | tst.ts:92:31:92:35 | param |
-test_IndexedAccessTypeExpr
-| tst.ts:42:18:42:41 | Interfa ... Field'] | tst.ts:42:18:42:26 | Interface | tst.ts:42:28:42:40 | 'numberField' |
-test_UnknownTypeExpr
-| tst.ts:137:18:137:24 | unknown |
-test_MappedTypeExpr
-| tst.ts:113:18:113:46 | { [K in ... umber } | tst.ts:113:21:113:35 | K in keyof Node | tst.ts:113:21:113:21 | K | tst.ts:113:26:113:35 | keyof Node | tst.ts:113:39:113:44 | number |
-| tst.ts:114:18:114:41 | { [K in ... umber } | tst.ts:114:21:114:30 | K in "foo" | tst.ts:114:21:114:21 | K | tst.ts:114:26:114:30 | "foo" | tst.ts:114:34:114:39 | number |
-test_ImportTypeExpr
-| tst.ts:122:19:122:32 | import("type") | type | type |
-| tst.ts:123:26:123:39 | import("type") | type | type |
-| tst.ts:124:28:124:46 | import("namespace") | namespace | namespace |
-| tst.ts:125:35:125:53 | import("namespace") | namespace | namespace |
-| tst.ts:126:28:126:42 | import("value") | value | value |
-| tst.ts:127:37:127:51 | import("value") | value | value |
-| tst.ts:128:38:130:3 | import( ... ce'\\n  ) | awkard-namespace | namespace |
-test_OptionalTypeExpr
-| tst.ts:133:48:133:54 | number? | tst.ts:133:48:133:53 | number |
-| tst.ts:136:48:136:54 | string? | tst.ts:136:48:136:53 | string |
+test_ChildIndex
+test_FieldTypes
+| tst.ts:15:3:15:22 | numberField: number; | tst.ts:15:16:15:21 | number |
+| tst.ts:16:3:16:22 | stringField: string; | tst.ts:16:16:16:21 | string |
+| tst.ts:17:3:17:28 | interfa ... erface; | tst.ts:17:19:17:27 | Interface |
+| tst.ts:18:3:18:18 | thisField: this; | tst.ts:18:14:18:17 | this |
+| tst.ts:83:21:83:30 | x: number; | tst.ts:83:24:83:29 | number |
+| tst.ts:83:32:83:41 | y: number; | tst.ts:83:35:83:40 | number |
+test_Parameters
+| tst.ts:36:27:36:32 | param1 | tst.ts:36:44:36:44 | 1 | tst.ts:36:35:36:40 | number |
+| tst.ts:36:47:36:52 | param2 | tst.ts:36:64:36:66 | '2' | tst.ts:36:55:36:60 | string |
+test_IsTypeExpr
+| tst.ts:75:17:75:28 | this is Leaf | tst.ts:75:17:75:20 | this | tst.ts:75:25:75:28 | Leaf |
+| tst.ts:76:21:76:32 | that is Leaf | tst.ts:76:21:76:24 | that | tst.ts:76:29:76:32 | Leaf |
+| tst.ts:80:36:80:55 | x is Generic<Leaf[]> | tst.ts:80:36:80:36 | x | tst.ts:80:41:80:55 | Generic<Leaf[]> |
+| tst.ts:81:38:81:50 | x is typeof x | tst.ts:81:38:81:38 | x | tst.ts:81:43:81:50 | typeof x |
+| tst.ts:148:36:148:56 | asserts ...  string | tst.ts:148:44:148:46 | val | tst.ts:148:51:148:56 | string |
+test_ReturnTypes
+| tst.ts:20:3:20:31 | returnN ... number; | method returnNumberMethod of interface Interface | tst.ts:20:25:20:30 | number |
+| tst.ts:21:3:21:27 | returnV ... : void; | method returnVoidMethod of interface Interface | tst.ts:21:23:21:26 | void |
+| tst.ts:22:3:22:27 | returnN ... : null; | method returnNullMethod of interface Interface | tst.ts:22:23:22:26 | null |
+| tst.ts:23:3:23:27 | returnT ... : this; | method returnThisMethod of interface Interface | tst.ts:23:23:23:26 | this |
+| tst.ts:30:1:30:53 | functio ... rn 0; } | function returnNumberFunction | tst.ts:30:34:30:39 | number |
+| tst.ts:31:1:31:49 | functio ... rn 0; } | function returnVoidFunction | tst.ts:31:32:31:35 | void |
+| tst.ts:32:1:32:49 | functio ... rn 0; } | function returnNullFunction | tst.ts:32:32:32:35 | null |
+| tst.ts:75:3:75:29 | isThisL ... s Leaf; | method isThisLeaf of interface Node | tst.ts:75:17:75:28 | this is Leaf |
+| tst.ts:76:3:76:33 | isThatL ... s Leaf; | method isThatLeaf of interface Node | tst.ts:76:21:76:32 | that is Leaf |
+| tst.ts:80:1:80:73 | functio ... alse; } | function complexIsType | tst.ts:80:36:80:55 | x is Generic<Leaf[]> |
+| tst.ts:81:1:81:66 | functio ...  true } | function obviousIsType | tst.ts:81:38:81:50 | x is typeof x |
+| tst.ts:85:27:85:40 | foo(): number; | method foo of anonymous interface | tst.ts:85:34:85:39 | number |
+| tst.ts:87:20:87:31 | () => number | anonymous function type | tst.ts:87:26:87:31 | number |
+| tst.ts:88:20:88:44 | (param: ...  number | anonymous function type | tst.ts:88:39:88:44 | number |
+| tst.ts:89:20:89:37 | <T>(param: T) => T | anonymous function type | tst.ts:89:37:89:37 | T |
+| tst.ts:90:23:90:38 | new () => Object | anonymous function type | tst.ts:90:33:90:38 | Object |
+| tst.ts:91:23:91:51 | new (pa ...  Object | anonymous function type | tst.ts:91:46:91:51 | Object |
+| tst.ts:92:23:92:49 | new <T> ...  Object | anonymous function type | tst.ts:92:44:92:49 | Object |
+| tst.ts:94:1:94:37 | functio ... rn x; } | function f1 | tst.ts:94:23:94:23 | S |
+| tst.ts:95:1:95:53 | functio ... x,y]; } | function f2 | tst.ts:95:31:95:35 | [S,T] |
+| tst.ts:96:1:96:52 | functio ... rn x; } | function f3 | tst.ts:96:38:96:38 | S |
+| tst.ts:142:1:146:1 | functio ... )\\n  }\\n} | function assert | tst.ts:142:48:142:64 | asserts condition |
+| tst.ts:148:1:152:1 | functio ... ;\\n  }\\n} | function assertIsString | tst.ts:148:36:148:56 | asserts ...  string |
+| tst.ts:164:1:166:1 | functio ... rr2];\\n} | function concat | tst.ts:164:66:164:77 | [...T, ...U] |
+| tst.ts:169:1:172:1 | functio ...  + b;\\n} | function labelOnTupleElements | tst.ts:169:68:169:73 | number |
+| tst.ts:192:1:194:1 | functio ... rn x;\\n} | function weirdId | tst.ts:192:47:192:70 | [number ... number] |
+test_RestTypeExpr
+| tst.ts:135:36:135:46 | ...string[] | tst.ts:135:39:135:46 | string[] | tst.ts:135:39:135:44 | string |
+| tst.ts:136:57:136:67 | ...number[] | tst.ts:136:60:136:67 | number[] | tst.ts:136:60:136:65 | number |
+test_ArrayTypeExpr
+| tst.ts:38:16:38:23 | string[] | tst.ts:38:16:38:21 | string |
+| tst.ts:39:17:39:24 | string[] | tst.ts:39:17:39:22 | string |
+| tst.ts:39:17:39:26 | string[][] | tst.ts:39:17:39:24 | string[] |
+| tst.ts:40:17:40:24 | string[] | tst.ts:40:17:40:22 | string |
+| tst.ts:40:17:40:26 | string[][] | tst.ts:40:17:40:24 | string[] |
+| tst.ts:40:17:40:28 | string[][][] | tst.ts:40:17:40:26 | string[][] |
+| tst.ts:80:49:80:54 | Leaf[] | tst.ts:80:49:80:52 | Leaf |
+| tst.ts:81:27:81:34 | string[] | tst.ts:81:27:81:32 | string |
+| tst.ts:135:39:135:46 | string[] | tst.ts:135:39:135:44 | string |
+| tst.ts:136:60:136:67 | number[] | tst.ts:136:60:136:65 | number |
+| tst.ts:157:25:157:29 | any[] | tst.ts:157:25:157:27 | any |
+| tst.ts:163:21:163:25 | any[] | tst.ts:163:21:163:23 | any |
+test_KeyofTypeExpr
+| tst.ts:49:16:49:30 | keyof Interface | tst.ts:49:22:49:30 | Interface |
+| tst.ts:113:26:113:35 | keyof Node | tst.ts:113:32:113:35 | Node |
+test_TupleTypeExpr
+| tst.ts:48:16:48:40 | [number ... oolean] | 0 | 3 | tst.ts:48:17:48:22 | number |
+| tst.ts:48:16:48:40 | [number ... oolean] | 1 | 3 | tst.ts:48:25:48:30 | string |
+| tst.ts:48:16:48:40 | [number ... oolean] | 2 | 3 | tst.ts:48:33:48:39 | boolean |
+| tst.ts:95:31:95:35 | [S,T] | 0 | 2 | tst.ts:95:32:95:32 | S |
+| tst.ts:95:31:95:35 | [S,T] | 1 | 2 | tst.ts:95:34:95:34 | T |
+| tst.ts:133:31:133:55 | [number ... umber?] | 0 | 3 | tst.ts:133:32:133:37 | number |
+| tst.ts:133:31:133:55 | [number ... umber?] | 1 | 3 | tst.ts:133:40:133:45 | string |
+| tst.ts:133:31:133:55 | [number ... umber?] | 2 | 3 | tst.ts:133:48:133:54 | number? |
+| tst.ts:135:27:135:47 | [number ... ring[]] | 0 | 2 | tst.ts:135:28:135:33 | number |
+| tst.ts:135:27:135:47 | [number ... ring[]] | 1 | 2 | tst.ts:135:36:135:46 | ...string[] |
+| tst.ts:136:39:136:68 | [number ... mber[]] | 0 | 3 | tst.ts:136:40:136:45 | number |
+| tst.ts:136:39:136:68 | [number ... mber[]] | 1 | 3 | tst.ts:136:48:136:54 | string? |
+| tst.ts:136:39:136:68 | [number ... mber[]] | 2 | 3 | tst.ts:136:57:136:67 | ...number[] |
+| tst.ts:157:46:157:56 | [any, ...T] | 0 | 2 | tst.ts:157:47:157:49 | any |
+| tst.ts:157:46:157:56 | [any, ...T] | 1 | 2 | tst.ts:157:52:157:55 | ...T |
+| tst.ts:164:66:164:77 | [...T, ...U] | 0 | 2 | tst.ts:164:67:164:70 | ...T |
+| tst.ts:164:66:164:77 | [...T, ...U] | 1 | 2 | tst.ts:164:73:164:76 | ...U |
+| tst.ts:169:34:169:64 | [first: ... number] | 0 | 2 | tst.ts:169:42:169:47 | number |
+| tst.ts:169:34:169:64 | [first: ... number] | 1 | 2 | tst.ts:169:58:169:63 | number |
+| tst.ts:175:16:175:31 | [string, string] | 0 | 2 | tst.ts:175:17:175:22 | string |
+| tst.ts:175:16:175:31 | [string, string] | 1 | 2 | tst.ts:175:25:175:30 | string |
+| tst.ts:176:16:176:31 | [number, number] | 0 | 2 | tst.ts:176:17:176:22 | number |
+| tst.ts:176:16:176:31 | [number, number] | 1 | 2 | tst.ts:176:25:176:30 | number |
+| tst.ts:179:21:179:44 | [...Str ... umbers] | 0 | 2 | tst.ts:179:22:179:31 | ...Strings |
+| tst.ts:179:21:179:44 | [...Str ... umbers] | 1 | 2 | tst.ts:179:34:179:43 | ...Numbers |
+| tst.ts:192:21:192:43 | [first: ... number] | 0 | 2 | tst.ts:192:29:192:34 | number |
+| tst.ts:192:21:192:43 | [first: ... number] | 1 | 2 | tst.ts:192:37:192:42 | number |
+| tst.ts:192:47:192:70 | [number ... number] | 0 | 2 | tst.ts:192:48:192:53 | number |
+| tst.ts:192:47:192:70 | [number ... number] | 1 | 2 | tst.ts:192:64:192:69 | number |
+test_TypeArguments
+| tst.ts:102:13:102:29 | f1<string>("foo") | 0 | 1 | tst.ts:102:16:102:21 | string |
+| tst.ts:103:13:103:40 | f2<stri ... oo", 5) | 0 | 2 | tst.ts:103:16:103:21 | string |
+| tst.ts:103:13:103:40 | f2<stri ... oo", 5) | 1 | 2 | tst.ts:103:24:103:29 | number |
+| tst.ts:104:13:104:25 | f3<number>(5) | 0 | 1 | tst.ts:104:16:104:21 | number |
+| tst.ts:106:12:106:27 | new C1<string>() | 0 | 1 | tst.ts:106:19:106:24 | string |
+| tst.ts:107:12:107:35 | new C2< ... mber>() | 0 | 2 | tst.ts:107:19:107:24 | string |
+| tst.ts:107:12:107:35 | new C2< ... mber>() | 1 | 2 | tst.ts:107:27:107:32 | number |
+| tst.ts:108:12:108:27 | new C3<number>() | 0 | 1 | tst.ts:108:19:108:24 | number |
+test_UnionTypeExpr
+| tst.ts:41:16:41:36 | string\| ... boolean | 0 | 3 | tst.ts:41:16:41:21 | string |
+| tst.ts:41:16:41:36 | string\| ... boolean | 1 | 3 | tst.ts:41:23:41:28 | number |
+| tst.ts:41:16:41:36 | string\| ... boolean | 2 | 3 | tst.ts:41:30:41:36 | boolean |
+| tst.ts:47:19:47:33 | string \| number | 0 | 2 | tst.ts:47:19:47:24 | string |
+| tst.ts:47:19:47:33 | string \| number | 1 | 2 | tst.ts:47:28:47:33 | number |
+| tst.ts:47:39:47:54 | boolean \| string | 0 | 2 | tst.ts:47:39:47:45 | boolean |
+| tst.ts:47:39:47:54 | boolean \| string | 1 | 2 | tst.ts:47:49:47:54 | string |
 test_VariableTypes
 | tst.ts:1:5:1:13 | stringVar | stringVar | tst.ts:1:16:1:21 | string |
 | tst.ts:2:5:2:13 | numberVar | numberVar | tst.ts:2:16:2:21 | number |
@@ -117,15 +197,19 @@ test_VariableTypes
 | tst.ts:185:7:185:8 | a2 | a2 | tst.ts:185:12:185:17 | number |
 | tst.ts:186:7:186:8 | a3 | a3 | tst.ts:186:12:186:17 | number |
 | tst.ts:192:18:192:18 | x | x | tst.ts:192:21:192:43 | [first: ... number] |
-test_QualifiedTypeAccess
-| tst.ts:63:19:63:21 | N.I | tst.ts:63:19:63:19 | N | tst.ts:63:21:63:21 | I |
-| tst.ts:64:20:64:24 | N.M.I | tst.ts:64:20:64:22 | N.M | tst.ts:64:24:64:24 | I |
-| tst.ts:66:18:66:32 | N.InnerGeneric1 | tst.ts:66:18:66:18 | N | tst.ts:66:20:66:32 | InnerGeneric1 |
-| tst.ts:67:18:67:34 | N.M.InnerGeneric2 | tst.ts:67:18:67:20 | N.M | tst.ts:67:22:67:34 | InnerGeneric2 |
-| tst.ts:68:26:68:40 | N.InnerGeneric1 | tst.ts:68:26:68:26 | N | tst.ts:68:28:68:40 | InnerGeneric1 |
-| tst.ts:124:48:124:50 | Foo | tst.ts:124:28:124:46 | import("namespace") | tst.ts:124:48:124:50 | Foo |
-| tst.ts:125:55:125:57 | Foo | tst.ts:125:35:125:53 | import("namespace") | tst.ts:125:55:125:57 | Foo |
-| tst.ts:131:4:131:6 | bar | tst.ts:128:38:130:3 | import( ... ce'\\n  ) | tst.ts:131:4:131:6 | bar |
+test_MappedTypeExpr
+| tst.ts:113:18:113:46 | { [K in ... umber } | tst.ts:113:21:113:35 | K in keyof Node | tst.ts:113:21:113:21 | K | tst.ts:113:26:113:35 | keyof Node | tst.ts:113:39:113:44 | number |
+| tst.ts:114:18:114:41 | { [K in ... umber } | tst.ts:114:21:114:30 | K in "foo" | tst.ts:114:21:114:21 | K | tst.ts:114:26:114:30 | "foo" | tst.ts:114:34:114:39 | number |
+test_TypeAssertions
+| tst.ts:110:14:110:24 | 5 as number | tst.ts:110:14:110:14 | 5 | tst.ts:110:19:110:24 | number |
+| tst.ts:111:18:111:31 | <string> 'foo' | tst.ts:111:27:111:31 | 'foo' | tst.ts:111:19:111:24 | string |
+test_TypeofTypeExpr
+| tst.ts:70:17:70:24 | typeof N | tst.ts:70:24:70:24 | N |
+| tst.ts:71:17:71:26 | typeof N.x | tst.ts:71:24:71:26 | N.x |
+| tst.ts:72:17:72:35 | typeof qualifiedVar | tst.ts:72:24:72:35 | qualifiedVar |
+| tst.ts:81:43:81:50 | typeof x | tst.ts:81:50:81:50 | x |
+| tst.ts:126:21:126:42 | typeof  ... value") | tst.ts:126:28:126:42 | import("value") |
+| tst.ts:127:30:127:53 | typeof  ... lue").x | tst.ts:127:53:127:53 | x |
 test_GenericTypeExpr
 | tst.ts:65:18:65:32 | Generic<number> | tst.ts:65:18:65:24 | Generic | 0 | 1 | tst.ts:65:26:65:31 | number |
 | tst.ts:66:18:66:40 | N.Inner ... number> | tst.ts:66:18:66:32 | N.InnerGeneric1 | 0 | 1 | tst.ts:66:34:66:39 | number |
@@ -138,119 +222,15 @@ test_GenericTypeExpr
 | tst.ts:80:41:80:55 | Generic<Leaf[]> | tst.ts:80:41:80:47 | Generic | 0 | 1 | tst.ts:80:49:80:54 | Leaf[] |
 | tst.ts:123:26:123:47 | import( ... string> | tst.ts:123:26:123:39 | import("type") | 0 | 1 | tst.ts:123:41:123:46 | string |
 | tst.ts:125:35:125:65 | import( ... string> | tst.ts:125:55:125:57 | Foo | 0 | 1 | tst.ts:125:59:125:64 | string |
-test_IntersectionTypeExpr
-| tst.ts:43:23:43:43 | string& ... boolean | 0 | 3 | tst.ts:43:23:43:28 | string |
-| tst.ts:43:23:43:43 | string& ... boolean | 1 | 3 | tst.ts:43:30:43:35 | number |
-| tst.ts:43:23:43:43 | string& ... boolean | 2 | 3 | tst.ts:43:37:43:43 | boolean |
-| tst.ts:47:18:47:55 | (string ... string) | 0 | 2 | tst.ts:47:18:47:34 | (string \| number) |
-| tst.ts:47:18:47:55 | (string ... string) | 1 | 2 | tst.ts:47:38:47:55 | (boolean \| string) |
-test_FunctionTypeReturns
-| tst.ts:87:20:87:31 | () => number | tst.ts:87:26:87:31 | number |
-| tst.ts:88:20:88:44 | (param: ...  number | tst.ts:88:39:88:44 | number |
-| tst.ts:89:20:89:37 | <T>(param: T) => T | tst.ts:89:37:89:37 | T |
-| tst.ts:90:23:90:38 | new () => Object | tst.ts:90:33:90:38 | Object |
-| tst.ts:91:23:91:51 | new (pa ...  Object | tst.ts:91:46:91:51 | Object |
-| tst.ts:92:23:92:49 | new <T> ...  Object | tst.ts:92:44:92:49 | Object |
+test_UnknownTypeExpr
+| tst.ts:137:18:137:24 | unknown |
+test_OptionalTypeExpr
+| tst.ts:133:48:133:54 | number? | tst.ts:133:48:133:53 | number |
+| tst.ts:136:48:136:54 | string? | tst.ts:136:48:136:53 | string |
 test_InterfaceTypeExpr
 | tst.ts:83:19:83:43 | { x: nu ... mber; } | tst.ts:83:21:83:30 | x: number; |
 | tst.ts:83:19:83:43 | { x: nu ... mber; } | tst.ts:83:32:83:41 | y: number; |
 | tst.ts:85:25:85:42 | { foo(): number; } | tst.ts:85:27:85:40 | foo(): number; |
-test_IsTypeExpr
-| tst.ts:75:17:75:28 | this is Leaf | tst.ts:75:17:75:20 | this | tst.ts:75:25:75:28 | Leaf |
-| tst.ts:76:21:76:32 | that is Leaf | tst.ts:76:21:76:24 | that | tst.ts:76:29:76:32 | Leaf |
-| tst.ts:80:36:80:55 | x is Generic<Leaf[]> | tst.ts:80:36:80:36 | x | tst.ts:80:41:80:55 | Generic<Leaf[]> |
-| tst.ts:81:38:81:50 | x is typeof x | tst.ts:81:38:81:38 | x | tst.ts:81:43:81:50 | typeof x |
-| tst.ts:148:36:148:56 | asserts ...  string | tst.ts:148:44:148:46 | val | tst.ts:148:51:148:56 | string |
-test_PredicateTypeExpr
-| tst.ts:75:17:75:28 | this is Leaf | tst.ts:75:17:75:20 | this |
-| tst.ts:76:21:76:32 | that is Leaf | tst.ts:76:21:76:24 | that |
-| tst.ts:80:36:80:55 | x is Generic<Leaf[]> | tst.ts:80:36:80:36 | x |
-| tst.ts:81:38:81:50 | x is typeof x | tst.ts:81:38:81:38 | x |
-| tst.ts:142:48:142:64 | asserts condition | tst.ts:142:56:142:64 | condition |
-| tst.ts:148:36:148:56 | asserts ...  string | tst.ts:148:44:148:46 | val |
-test_hasAssertsKeyword
-| tst.ts:142:48:142:64 | asserts condition |
-| tst.ts:148:36:148:56 | asserts ...  string |
-test_ThisParameterTypes
-| function hasThisParam | tst.ts:116:29:116:32 | void |
-| method hasThisParam of interface InterfaceWithThisParam | tst.ts:119:22:119:43 | Interfa ... isParam |
-test_ChildIndex
-test_TypeArguments
-| tst.ts:102:13:102:29 | f1<string>("foo") | 0 | 1 | tst.ts:102:16:102:21 | string |
-| tst.ts:103:13:103:40 | f2<stri ... oo", 5) | 0 | 2 | tst.ts:103:16:103:21 | string |
-| tst.ts:103:13:103:40 | f2<stri ... oo", 5) | 1 | 2 | tst.ts:103:24:103:29 | number |
-| tst.ts:104:13:104:25 | f3<number>(5) | 0 | 1 | tst.ts:104:16:104:21 | number |
-| tst.ts:106:12:106:27 | new C1<string>() | 0 | 1 | tst.ts:106:19:106:24 | string |
-| tst.ts:107:12:107:35 | new C2< ... mber>() | 0 | 2 | tst.ts:107:19:107:24 | string |
-| tst.ts:107:12:107:35 | new C2< ... mber>() | 1 | 2 | tst.ts:107:27:107:32 | number |
-| tst.ts:108:12:108:27 | new C3<number>() | 0 | 1 | tst.ts:108:19:108:24 | number |
-test_ParenthesizedTypeExpr
-| tst.ts:44:24:44:31 | (string) | tst.ts:44:25:44:30 | string | tst.ts:44:25:44:30 | string |
-| tst.ts:45:25:45:34 | ((string)) | tst.ts:45:26:45:33 | (string) | tst.ts:45:27:45:32 | string |
-| tst.ts:45:26:45:33 | (string) | tst.ts:45:27:45:32 | string | tst.ts:45:27:45:32 | string |
-| tst.ts:46:25:46:36 | (((string))) | tst.ts:46:26:46:35 | ((string)) | tst.ts:46:28:46:33 | string |
-| tst.ts:46:26:46:35 | ((string)) | tst.ts:46:27:46:34 | (string) | tst.ts:46:28:46:33 | string |
-| tst.ts:46:27:46:34 | (string) | tst.ts:46:28:46:33 | string | tst.ts:46:28:46:33 | string |
-| tst.ts:47:18:47:34 | (string \| number) | tst.ts:47:19:47:33 | string \| number | tst.ts:47:19:47:33 | string \| number |
-| tst.ts:47:38:47:55 | (boolean \| string) | tst.ts:47:39:47:54 | boolean \| string | tst.ts:47:39:47:54 | boolean \| string |
-test_TupleTypeExpr
-| tst.ts:48:16:48:40 | [number ... oolean] | 0 | 3 | tst.ts:48:17:48:22 | number |
-| tst.ts:48:16:48:40 | [number ... oolean] | 1 | 3 | tst.ts:48:25:48:30 | string |
-| tst.ts:48:16:48:40 | [number ... oolean] | 2 | 3 | tst.ts:48:33:48:39 | boolean |
-| tst.ts:95:31:95:35 | [S,T] | 0 | 2 | tst.ts:95:32:95:32 | S |
-| tst.ts:95:31:95:35 | [S,T] | 1 | 2 | tst.ts:95:34:95:34 | T |
-| tst.ts:133:31:133:55 | [number ... umber?] | 0 | 3 | tst.ts:133:32:133:37 | number |
-| tst.ts:133:31:133:55 | [number ... umber?] | 1 | 3 | tst.ts:133:40:133:45 | string |
-| tst.ts:133:31:133:55 | [number ... umber?] | 2 | 3 | tst.ts:133:48:133:54 | number? |
-| tst.ts:135:27:135:47 | [number ... ring[]] | 0 | 2 | tst.ts:135:28:135:33 | number |
-| tst.ts:135:27:135:47 | [number ... ring[]] | 1 | 2 | tst.ts:135:36:135:46 | ...string[] |
-| tst.ts:136:39:136:68 | [number ... mber[]] | 0 | 3 | tst.ts:136:40:136:45 | number |
-| tst.ts:136:39:136:68 | [number ... mber[]] | 1 | 3 | tst.ts:136:48:136:54 | string? |
-| tst.ts:136:39:136:68 | [number ... mber[]] | 2 | 3 | tst.ts:136:57:136:67 | ...number[] |
-| tst.ts:157:46:157:56 | [any, ...T] | 0 | 2 | tst.ts:157:47:157:49 | any |
-| tst.ts:157:46:157:56 | [any, ...T] | 1 | 2 | tst.ts:157:52:157:55 | ...T |
-| tst.ts:164:66:164:77 | [...T, ...U] | 0 | 2 | tst.ts:164:67:164:70 | ...T |
-| tst.ts:164:66:164:77 | [...T, ...U] | 1 | 2 | tst.ts:164:73:164:76 | ...U |
-| tst.ts:169:34:169:64 | [first: ... number] | 0 | 2 | tst.ts:169:42:169:47 | number |
-| tst.ts:169:34:169:64 | [first: ... number] | 1 | 2 | tst.ts:169:58:169:63 | number |
-| tst.ts:175:16:175:31 | [string, string] | 0 | 2 | tst.ts:175:17:175:22 | string |
-| tst.ts:175:16:175:31 | [string, string] | 1 | 2 | tst.ts:175:25:175:30 | string |
-| tst.ts:176:16:176:31 | [number, number] | 0 | 2 | tst.ts:176:17:176:22 | number |
-| tst.ts:176:16:176:31 | [number, number] | 1 | 2 | tst.ts:176:25:176:30 | number |
-| tst.ts:179:21:179:44 | [...Str ... umbers] | 0 | 2 | tst.ts:179:22:179:31 | ...Strings |
-| tst.ts:179:21:179:44 | [...Str ... umbers] | 1 | 2 | tst.ts:179:34:179:43 | ...Numbers |
-| tst.ts:192:21:192:43 | [first: ... number] | 0 | 2 | tst.ts:192:29:192:34 | number |
-| tst.ts:192:21:192:43 | [first: ... number] | 1 | 2 | tst.ts:192:37:192:42 | number |
-| tst.ts:192:47:192:70 | [number ... number] | 0 | 2 | tst.ts:192:48:192:53 | number |
-| tst.ts:192:47:192:70 | [number ... number] | 1 | 2 | tst.ts:192:64:192:69 | number |
-test_TupleTypeElementName
-| tst.ts:169:34:169:64 | [first: ... number] | 0 | tst.ts:169:35:169:39 | first |
-| tst.ts:169:34:169:64 | [first: ... number] | 1 | tst.ts:169:50:169:55 | second |
-| tst.ts:192:21:192:43 | [first: ... number] | 0 | tst.ts:192:22:192:26 | first |
-| tst.ts:192:47:192:70 | [number ... number] | 1 | tst.ts:192:56:192:61 | second |
-test_FieldTypes
-| tst.ts:15:3:15:22 | numberField: number; | tst.ts:15:16:15:21 | number |
-| tst.ts:16:3:16:22 | stringField: string; | tst.ts:16:16:16:21 | string |
-| tst.ts:17:3:17:28 | interfa ... erface; | tst.ts:17:19:17:27 | Interface |
-| tst.ts:18:3:18:18 | thisField: this; | tst.ts:18:14:18:17 | this |
-| tst.ts:83:21:83:30 | x: number; | tst.ts:83:24:83:29 | number |
-| tst.ts:83:32:83:41 | y: number; | tst.ts:83:35:83:40 | number |
-test_Parameters
-| tst.ts:36:27:36:32 | param1 | tst.ts:36:44:36:44 | 1 | tst.ts:36:35:36:40 | number |
-| tst.ts:36:47:36:52 | param2 | tst.ts:36:64:36:66 | '2' | tst.ts:36:55:36:60 | string |
-test_ArrayTypeExpr
-| tst.ts:38:16:38:23 | string[] | tst.ts:38:16:38:21 | string |
-| tst.ts:39:17:39:24 | string[] | tst.ts:39:17:39:22 | string |
-| tst.ts:39:17:39:26 | string[][] | tst.ts:39:17:39:24 | string[] |
-| tst.ts:40:17:40:24 | string[] | tst.ts:40:17:40:22 | string |
-| tst.ts:40:17:40:26 | string[][] | tst.ts:40:17:40:24 | string[] |
-| tst.ts:40:17:40:28 | string[][][] | tst.ts:40:17:40:26 | string[][] |
-| tst.ts:80:49:80:54 | Leaf[] | tst.ts:80:49:80:52 | Leaf |
-| tst.ts:81:27:81:34 | string[] | tst.ts:81:27:81:32 | string |
-| tst.ts:135:39:135:46 | string[] | tst.ts:135:39:135:44 | string |
-| tst.ts:136:60:136:67 | number[] | tst.ts:136:60:136:65 | number |
-| tst.ts:157:25:157:29 | any[] | tst.ts:157:25:157:27 | any |
-| tst.ts:163:21:163:25 | any[] | tst.ts:163:21:163:23 | any |
 test_TypeAccessHelpers
 | tst.ts:65:18:65:24 | Generic | 1 | 0 | tst.ts:65:26:65:31 | number |
 | tst.ts:66:18:66:32 | N.InnerGeneric1 | 1 | 0 | tst.ts:66:34:66:39 | number |
@@ -263,52 +243,72 @@ test_TypeAccessHelpers
 | tst.ts:80:41:80:47 | Generic | 1 | 0 | tst.ts:80:49:80:54 | Leaf[] |
 | tst.ts:123:26:123:39 | import("type") | 1 | 0 | tst.ts:123:41:123:46 | string |
 | tst.ts:125:55:125:57 | Foo | 1 | 0 | tst.ts:125:59:125:64 | string |
-test_TypeAssertions
-| tst.ts:110:14:110:24 | 5 as number | tst.ts:110:14:110:14 | 5 | tst.ts:110:19:110:24 | number |
-| tst.ts:111:18:111:31 | <string> 'foo' | tst.ts:111:27:111:31 | 'foo' | tst.ts:111:19:111:24 | string |
-test_UnionTypeExpr
-| tst.ts:41:16:41:36 | string\| ... boolean | 0 | 3 | tst.ts:41:16:41:21 | string |
-| tst.ts:41:16:41:36 | string\| ... boolean | 1 | 3 | tst.ts:41:23:41:28 | number |
-| tst.ts:41:16:41:36 | string\| ... boolean | 2 | 3 | tst.ts:41:30:41:36 | boolean |
-| tst.ts:47:19:47:33 | string \| number | 0 | 2 | tst.ts:47:19:47:24 | string |
-| tst.ts:47:19:47:33 | string \| number | 1 | 2 | tst.ts:47:28:47:33 | number |
-| tst.ts:47:39:47:54 | boolean \| string | 0 | 2 | tst.ts:47:39:47:45 | boolean |
-| tst.ts:47:39:47:54 | boolean \| string | 1 | 2 | tst.ts:47:49:47:54 | string |
-test_RestTypeExpr
-| tst.ts:135:36:135:46 | ...string[] | tst.ts:135:39:135:46 | string[] | tst.ts:135:39:135:44 | string |
-| tst.ts:136:57:136:67 | ...number[] | tst.ts:136:60:136:67 | number[] | tst.ts:136:60:136:65 | number |
-test_Containers
-test_ReturnTypes
-| tst.ts:20:3:20:31 | returnN ... number; | method returnNumberMethod of interface Interface | tst.ts:20:25:20:30 | number |
-| tst.ts:21:3:21:27 | returnV ... : void; | method returnVoidMethod of interface Interface | tst.ts:21:23:21:26 | void |
-| tst.ts:22:3:22:27 | returnN ... : null; | method returnNullMethod of interface Interface | tst.ts:22:23:22:26 | null |
-| tst.ts:23:3:23:27 | returnT ... : this; | method returnThisMethod of interface Interface | tst.ts:23:23:23:26 | this |
-| tst.ts:30:1:30:53 | functio ... rn 0; } | function returnNumberFunction | tst.ts:30:34:30:39 | number |
-| tst.ts:31:1:31:49 | functio ... rn 0; } | function returnVoidFunction | tst.ts:31:32:31:35 | void |
-| tst.ts:32:1:32:49 | functio ... rn 0; } | function returnNullFunction | tst.ts:32:32:32:35 | null |
-| tst.ts:75:3:75:29 | isThisL ... s Leaf; | method isThisLeaf of interface Node | tst.ts:75:17:75:28 | this is Leaf |
-| tst.ts:76:3:76:33 | isThatL ... s Leaf; | method isThatLeaf of interface Node | tst.ts:76:21:76:32 | that is Leaf |
-| tst.ts:80:1:80:73 | functio ... alse; } | function complexIsType | tst.ts:80:36:80:55 | x is Generic<Leaf[]> |
-| tst.ts:81:1:81:66 | functio ...  true } | function obviousIsType | tst.ts:81:38:81:50 | x is typeof x |
-| tst.ts:85:27:85:40 | foo(): number; | method foo of anonymous interface | tst.ts:85:34:85:39 | number |
-| tst.ts:87:20:87:31 | () => number | anonymous function type | tst.ts:87:26:87:31 | number |
-| tst.ts:88:20:88:44 | (param: ...  number | anonymous function type | tst.ts:88:39:88:44 | number |
-| tst.ts:89:20:89:37 | <T>(param: T) => T | anonymous function type | tst.ts:89:37:89:37 | T |
-| tst.ts:90:23:90:38 | new () => Object | anonymous function type | tst.ts:90:33:90:38 | Object |
-| tst.ts:91:23:91:51 | new (pa ...  Object | anonymous function type | tst.ts:91:46:91:51 | Object |
-| tst.ts:92:23:92:49 | new <T> ...  Object | anonymous function type | tst.ts:92:44:92:49 | Object |
-| tst.ts:94:1:94:37 | functio ... rn x; } | function f1 | tst.ts:94:23:94:23 | S |
-| tst.ts:95:1:95:53 | functio ... x,y]; } | function f2 | tst.ts:95:31:95:35 | [S,T] |
-| tst.ts:96:1:96:52 | functio ... rn x; } | function f3 | tst.ts:96:38:96:38 | S |
-| tst.ts:142:1:146:1 | functio ... )\\n  }\\n} | function assert | tst.ts:142:48:142:64 | asserts condition |
-| tst.ts:148:1:152:1 | functio ... ;\\n  }\\n} | function assertIsString | tst.ts:148:36:148:56 | asserts ...  string |
-| tst.ts:164:1:166:1 | functio ... rr2];\\n} | function concat | tst.ts:164:66:164:77 | [...T, ...U] |
-| tst.ts:169:1:172:1 | functio ...  + b;\\n} | function labelOnTupleElements | tst.ts:169:68:169:73 | number |
-| tst.ts:192:1:194:1 | functio ... rn x;\\n} | function weirdId | tst.ts:192:47:192:70 | [number ... number] |
-test_KeyofTypeExpr
-| tst.ts:49:16:49:30 | keyof Interface | tst.ts:49:22:49:30 | Interface |
-| tst.ts:113:26:113:35 | keyof Node | tst.ts:113:32:113:35 | Node |
+test_ThisParameterTypes
+| function hasThisParam | tst.ts:116:29:116:32 | void |
+| method hasThisParam of interface InterfaceWithThisParam | tst.ts:119:22:119:43 | Interfa ... isParam |
+test_FunctionTypeReturns
+| tst.ts:87:20:87:31 | () => number | tst.ts:87:26:87:31 | number |
+| tst.ts:88:20:88:44 | (param: ...  number | tst.ts:88:39:88:44 | number |
+| tst.ts:89:20:89:37 | <T>(param: T) => T | tst.ts:89:37:89:37 | T |
+| tst.ts:90:23:90:38 | new () => Object | tst.ts:90:33:90:38 | Object |
+| tst.ts:91:23:91:51 | new (pa ...  Object | tst.ts:91:46:91:51 | Object |
+| tst.ts:92:23:92:49 | new <T> ...  Object | tst.ts:92:44:92:49 | Object |
+test_QualifiedTypeAccess
+| tst.ts:63:19:63:21 | N.I | tst.ts:63:19:63:19 | N | tst.ts:63:21:63:21 | I |
+| tst.ts:64:20:64:24 | N.M.I | tst.ts:64:20:64:22 | N.M | tst.ts:64:24:64:24 | I |
+| tst.ts:66:18:66:32 | N.InnerGeneric1 | tst.ts:66:18:66:18 | N | tst.ts:66:20:66:32 | InnerGeneric1 |
+| tst.ts:67:18:67:34 | N.M.InnerGeneric2 | tst.ts:67:18:67:20 | N.M | tst.ts:67:22:67:34 | InnerGeneric2 |
+| tst.ts:68:26:68:40 | N.InnerGeneric1 | tst.ts:68:26:68:26 | N | tst.ts:68:28:68:40 | InnerGeneric1 |
+| tst.ts:124:48:124:50 | Foo | tst.ts:124:28:124:46 | import("namespace") | tst.ts:124:48:124:50 | Foo |
+| tst.ts:125:55:125:57 | Foo | tst.ts:125:35:125:53 | import("namespace") | tst.ts:125:55:125:57 | Foo |
+| tst.ts:131:4:131:6 | bar | tst.ts:128:38:130:3 | import( ... ce'\\n  ) | tst.ts:131:4:131:6 | bar |
+test_IntersectionTypeExpr
+| tst.ts:43:23:43:43 | string& ... boolean | 0 | 3 | tst.ts:43:23:43:28 | string |
+| tst.ts:43:23:43:43 | string& ... boolean | 1 | 3 | tst.ts:43:30:43:35 | number |
+| tst.ts:43:23:43:43 | string& ... boolean | 2 | 3 | tst.ts:43:37:43:43 | boolean |
+| tst.ts:47:18:47:55 | (string ... string) | 0 | 2 | tst.ts:47:18:47:34 | (string \| number) |
+| tst.ts:47:18:47:55 | (string ... string) | 1 | 2 | tst.ts:47:38:47:55 | (boolean \| string) |
+test_IndexedAccessTypeExpr
+| tst.ts:42:18:42:41 | Interfa ... Field'] | tst.ts:42:18:42:26 | Interface | tst.ts:42:28:42:40 | 'numberField' |
+test_ParenthesizedTypeExpr
+| tst.ts:44:24:44:31 | (string) | tst.ts:44:25:44:30 | string | tst.ts:44:25:44:30 | string |
+| tst.ts:45:25:45:34 | ((string)) | tst.ts:45:26:45:33 | (string) | tst.ts:45:27:45:32 | string |
+| tst.ts:45:26:45:33 | (string) | tst.ts:45:27:45:32 | string | tst.ts:45:27:45:32 | string |
+| tst.ts:46:25:46:36 | (((string))) | tst.ts:46:26:46:35 | ((string)) | tst.ts:46:28:46:33 | string |
+| tst.ts:46:26:46:35 | ((string)) | tst.ts:46:27:46:34 | (string) | tst.ts:46:28:46:33 | string |
+| tst.ts:46:27:46:34 | (string) | tst.ts:46:28:46:33 | string | tst.ts:46:28:46:33 | string |
+| tst.ts:47:18:47:34 | (string \| number) | tst.ts:47:19:47:33 | string \| number | tst.ts:47:19:47:33 | string \| number |
+| tst.ts:47:38:47:55 | (boolean \| string) | tst.ts:47:39:47:54 | boolean \| string | tst.ts:47:39:47:54 | boolean \| string |
+test_FunctionTypeParameters
+| tst.ts:88:20:88:44 | (param: ...  number | 0 | 1 | tst.ts:88:21:88:25 | param |
+| tst.ts:89:20:89:37 | <T>(param: T) => T | 0 | 1 | tst.ts:89:24:89:28 | param |
+| tst.ts:91:23:91:51 | new (pa ...  Object | 0 | 1 | tst.ts:91:28:91:32 | param |
+| tst.ts:92:23:92:49 | new <T> ...  Object | 0 | 1 | tst.ts:92:31:92:35 | param |
 test_TaggedTemplateLiteralTypeArgument
 | tst.ts:139:37:139:58 | someTag ... `Hello` | 0 | tst.ts:139:45:139:50 | number |
 | tst.ts:140:37:140:66 | someTag ... `Hello` | 0 | tst.ts:140:45:140:50 | number |
 | tst.ts:140:37:140:66 | someTag ... `Hello` | 1 | tst.ts:140:53:140:58 | string |
+test_PredicateTypeExpr
+| tst.ts:75:17:75:28 | this is Leaf | tst.ts:75:17:75:20 | this |
+| tst.ts:76:21:76:32 | that is Leaf | tst.ts:76:21:76:24 | that |
+| tst.ts:80:36:80:55 | x is Generic<Leaf[]> | tst.ts:80:36:80:36 | x |
+| tst.ts:81:38:81:50 | x is typeof x | tst.ts:81:38:81:38 | x |
+| tst.ts:142:48:142:64 | asserts condition | tst.ts:142:56:142:64 | condition |
+| tst.ts:148:36:148:56 | asserts ...  string | tst.ts:148:44:148:46 | val |
+test_TupleTypeElementName
+| tst.ts:169:34:169:64 | [first: ... number] | 0 | tst.ts:169:35:169:39 | first |
+| tst.ts:169:34:169:64 | [first: ... number] | 1 | tst.ts:169:50:169:55 | second |
+| tst.ts:192:21:192:43 | [first: ... number] | 0 | tst.ts:192:22:192:26 | first |
+| tst.ts:192:47:192:70 | [number ... number] | 1 | tst.ts:192:56:192:61 | second |
+test_hasAssertsKeyword
+| tst.ts:142:48:142:64 | asserts condition |
+| tst.ts:148:36:148:56 | asserts ...  string |
+test_ImportTypeExpr
+| tst.ts:122:19:122:32 | import("type") | type | type |
+| tst.ts:123:26:123:39 | import("type") | type | type |
+| tst.ts:124:28:124:46 | import("namespace") | namespace | namespace |
+| tst.ts:125:35:125:53 | import("namespace") | namespace | namespace |
+| tst.ts:126:28:126:42 | import("value") | value | value |
+| tst.ts:127:37:127:51 | import("value") | value | value |
+| tst.ts:128:38:130:3 | import( ... ce'\\n  ) | awkard-namespace | namespace |
+test_Containers

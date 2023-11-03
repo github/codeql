@@ -2444,15 +2444,15 @@ cfg.swift:
 #  368|         getBindingDecl(1): [PatternBindingDecl] var ... = ...
 #  368|           getInit(0): [StringLiteralExpr] literal
 #  368|           getPattern(0): [NamedPattern] t
+#  368|         getVariable(0): [ConcreteVarDecl] z
+#  368|             Type = Int
+#  368|         getVariable(1): [ConcreteVarDecl] t
+#  368|             Type = String
 #  368|         getClosureBody(): [ExplicitClosureExpr] { ... }
 #  368|           getBody(): [BraceStmt] { ... }
 #  369|             getElement(0): [ReturnStmt] return ...
 #  369|               getResult(): [DeclRefExpr] z
 #  369|           getCapture(0): [CapturedDecl] z
-#  368| [ConcreteVarDecl] z
-#  368|     Type = Int
-#  368| [ConcreteVarDecl] t
-#  368|     Type = String
 #  373| [NamedFunction] testTupleElement(t:)
 #  373|     InterfaceType = ((a: Int, Int, c: Int)) -> Int
 #  373|   getParam(0): [ParamDecl] t
@@ -4543,6 +4543,86 @@ declarations.swift:
 #  182|       getElement(0): [ReturnStmt] return
 #  183| [TypeAliasDecl] A
 #  184| [TypeAliasDecl] C
+#  186| [ClassDecl] S
+#  187|   getMember(0): [PatternBindingDecl] var ... = ...
+#  187|     getInit(0): [IntegerLiteralExpr] 0
+#  187|     getPattern(0): [NamedPattern] bf1
+#  187|   getMember(1): [ConcreteVarDecl] bf1
+#  187|       Type = Int
+#  187|     getAccessor(0): [Accessor] get
+#  187|         InterfaceType = (S) -> () -> Int
+#  187|       getSelfParam(): [ParamDecl] self
+#  187|           Type = S
+#  187|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .bf1
+#-----|             getBase(): [DeclRefExpr] self
+#  187|     getAccessor(1): [Accessor] set
+#  187|         InterfaceType = (S) -> (Int) -> ()
+#  187|       getSelfParam(): [ParamDecl] self
+#  187|           Type = S
+#  187|       getParam(0): [ParamDecl] value
+#  187|           Type = Int
+#  187|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .bf1
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  187|     getAccessor(2): [Accessor] _modify
+#  187|         InterfaceType = (S) -> () -> ()
+#  187|       getSelfParam(): [ParamDecl] self
+#  187|           Type = S
+#  187|       getBody(): [BraceStmt] { ... }
+#  187|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [MemberRefExpr] .bf1
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
+#  188|   getMember(2): [NamedFunction] captureThis()
+#  188|       InterfaceType = (S) -> () -> ()
+#  188|     getSelfParam(): [ParamDecl] self
+#  188|         Type = S
+#  188|     getBody(): [BraceStmt] { ... }
+#  189|       getVariable(0): [ConcreteVarDecl] x
+#  189|           Type = Int
+#  190|       getVariable(1): [ConcreteVarDecl] f
+#  190|           Type = () -> ()
+#  189|       getElement(0): [PatternBindingDecl] var ... = ...
+#  189|         getInit(0): [IntegerLiteralExpr] 0
+#  189|         getPattern(0): [NamedPattern] x
+#  190|       getElement(1): [PatternBindingDecl] var ... = ...
+#  190|         getInit(0): [CaptureListExpr] { ... }
+#  190|           getBindingDecl(0): [PatternBindingDecl] var ... = ...
+#  190|             getInit(0): [DeclRefExpr] self
+#  190|             getPattern(0): [NamedPattern] self
+#  190|           getBindingDecl(1): [PatternBindingDecl] var ... = ...
+#  190|             getInit(0): [DeclRefExpr] x
+#  190|             getInit(0).getFullyConverted(): [LoadExpr] (Int) ...
+#  190|             getPattern(0): [NamedPattern] x
+#  190|           getVariable(0): [ConcreteVarDecl] self
+#  190|               Type = S
+#  190|           getVariable(1): [ConcreteVarDecl] x
+#  190|               Type = Int
+#  190|           getClosureBody(): [ExplicitClosureExpr] { ... }
+#  190|             getBody(): [BraceStmt] { ... }
+#  191|               getElement(0): [ReturnStmt] return ...
+#  191|                 getResult(): [AssignExpr]  ... = ...
+#  191|                   getDest(): [MemberRefExpr] .bf1
+#  191|                     getBase(): [DeclRefExpr] self
+#  191|                   getSource(): [DeclRefExpr] x
+#  191|             getCapture(0): [CapturedDecl] self
+#  191|             getCapture(1): [CapturedDecl] x
+#  190|         getPattern(0): [NamedPattern] f
+#  186|   getMember(3): [Deinitializer] S.deinit()
+#  186|       InterfaceType = (S) -> () -> ()
+#  186|     getSelfParam(): [ParamDecl] self
+#  186|         Type = S
+#  186|     getBody(): [BraceStmt] { ... }
+#  186|   getMember(4): [Initializer] S.init()
+#  186|       InterfaceType = (S.Type) -> () -> S
+#  186|     getSelfParam(): [ParamDecl] self
+#  186|         Type = S
+#  186|     getBody(): [BraceStmt] { ... }
+#  186|       getElement(0): [ReturnStmt] return
 expressions.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }

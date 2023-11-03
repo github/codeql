@@ -1,3 +1,10 @@
+## 0.11.2
+
+### Minor Analysis Improvements
+
+* Added support for functions decorated with `contextlib.contextmanager`.
+* Namespace packages in the form of regular packages with missing `__init__.py`-files are now allowed. This enables the analysis to resolve modules and functions inside such packages.
+
 ## 0.11.1
 
 ### Minor Analysis Improvements
