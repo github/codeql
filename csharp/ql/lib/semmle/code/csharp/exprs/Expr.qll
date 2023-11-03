@@ -42,7 +42,12 @@ class Expr extends DotNet::Expr, ControlFlowElement, @expr {
   override Location getALocation() { expr_location(this, result) }
 
   /** Gets the type of this expression. */
-  override Type getType() { expressions(this, _, getTypeRef(result)) }
+  override Type getType() {
+    expressions(this, _, result)
+    or
+    not expressions(this, _, any(Type t)) and
+    expressions(this, _, getTypeRef(result))
+  }
 
   /** Gets the annotated type of this expression. */
   final AnnotatedType getAnnotatedType() { result.appliesTo(this) }

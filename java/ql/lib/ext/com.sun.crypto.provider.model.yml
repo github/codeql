@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.sun.crypto.provider", "JceKeyStore", False, "getPreKeyedHash", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["com.sun.crypto.provider", "KeyProtector", False, "KeyProtector", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["com.sun.crypto.provider", "CipherCore", False, "unwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "DESCrypt", False, "expandKey", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "DESKey", False, "DESKey", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "DESKey", False, "DESKey", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "DESKeyGenerator", False, "setParityBit", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "DESedeKey", False, "DESedeKey", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "DESedeKey", False, "DESedeKey", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "DHPrivateKey", False, "DHPrivateKey", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "DHPublicKey", False, "DHPublicKey", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "FeedbackCipher", True, "init", "(boolean,String,byte[],byte[])", "", "Argument[2]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "GaloisCounterMode", False, "init", "(boolean,String,byte[],byte[])", "", "Argument[2]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "GaloisCounterMode", False, "init", "(boolean,String,byte[],byte[],int)", "", "Argument[2]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "PBECipherCore", False, "unwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "PBES1Core", False, "unwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "PKCS12PBECipherCore", False, "implUnwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "SymmetricCipher", True, "init", "(boolean,String,byte[])", "", "Argument[2]", "credentials-key", "hq-generated"]
+      - ["com.sun.crypto.provider", "TlsMasterSecretGenerator$TlsMasterSecretKey", False, "TlsMasterSecretKey", "(byte[],int,int)", "", "Argument[0]", "credentials-key", "hq-generated"]

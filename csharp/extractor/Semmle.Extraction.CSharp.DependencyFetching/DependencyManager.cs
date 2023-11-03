@@ -99,6 +99,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var existsNetCoreRefNugetPackage = false;
             var existsNetFrameworkRefNugetPackage = false;
+            var existsNetstandardLibRefNugetPackage = false;
+            var existsNetstandardLibNugetPackage = false;
 
             // Find DLLs in the .Net / Asp.Net Framework
             // This block needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
@@ -106,8 +108,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 existsNetCoreRefNugetPackage = IsNugetPackageAvailable("microsoft.netcore.app.ref");
                 existsNetFrameworkRefNugetPackage = IsNugetPackageAvailable("microsoft.netframework.referenceassemblies");
+                existsNetstandardLibRefNugetPackage = IsNugetPackageAvailable("netstandard.library.ref");
+                existsNetstandardLibNugetPackage = IsNugetPackageAvailable("netstandard.library");
 
-                if (existsNetCoreRefNugetPackage || existsNetFrameworkRefNugetPackage)
+                if (existsNetCoreRefNugetPackage
+                    || existsNetFrameworkRefNugetPackage
+                    || existsNetstandardLibRefNugetPackage
+                    || existsNetstandardLibNugetPackage)
                 {
                     progressMonitor.LogInfo("Found .NET Core/Framework DLLs in NuGet packages. Not adding installation directory.");
                 }
@@ -125,7 +132,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseReference(filename);
             }
 
-            RemoveUnnecessaryNugetPackages(existsNetCoreRefNugetPackage, existsNetFrameworkRefNugetPackage);
+            RemoveUnnecessaryNugetPackages(existsNetCoreRefNugetPackage, existsNetFrameworkRefNugetPackage, existsNetstandardLibRefNugetPackage, existsNetstandardLibNugetPackage);
             ResolveConflicts();
 
             // Output the findings
@@ -160,7 +167,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 DateTime.Now - startTime);
         }
 
-        private void RemoveUnnecessaryNugetPackages(bool existsNetCoreRefNugetPackage, bool existsNetFrameworkRefNugetPackage)
+        private void RemoveUnnecessaryNugetPackages(bool existsNetCoreRefNugetPackage, bool existsNetFrameworkRefNugetPackage,
+            bool existsNetstandardLibRefNugetPackage, bool existsNetstandardLibNugetPackage)
         {
             RemoveNugetAnalyzerReferences();
             RemoveRuntimeNugetPackageReferences();
@@ -172,10 +180,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 RemoveNugetPackageReference("microsoft.aspnetcore.app.ref");
             }
 
-            if (existsNetCoreRefNugetPackage && existsNetFrameworkRefNugetPackage)
+            // Multiple dotnet framework packages could be present. We keep only one.
+            // The order of the packages is important, we're keeping the first one that is present in the nuget cache.
+            var packagesInPrioOrder = new (bool isPresent, string prefix)[]
             {
-                // Multiple packages are available, we keep only one:
-                RemoveNugetPackageReference("microsoft.netframework.referenceassemblies.");
+                // net7.0, ... net5.0, netcoreapp3.1, netcoreapp3.0
+                (existsNetCoreRefNugetPackage, "microsoft.netcore.app.ref"),
+                // net48, ..., net20
+                (existsNetFrameworkRefNugetPackage, "microsoft.netframework.referenceassemblies."),
+                // netstandard2.1
+                (existsNetstandardLibRefNugetPackage, "netstandard.library.ref"),
+                // netstandard2.0
+                (existsNetstandardLibNugetPackage, "netstandard.library")
+            };
+
+            for (var i = 0; i < packagesInPrioOrder.Length; i++)
+            {
+                var (isPresent, _) = packagesInPrioOrder[i];
+                if (!isPresent)
+                {
+                    continue;
+                }
+
+                // Package is present, remove all the lower priority packages:
+                for (var j = i + 1; j < packagesInPrioOrder.Length; j++)
+                {
+                    var (otherIsPresent, otherPrefix) = packagesInPrioOrder[j];
+                    if (otherIsPresent)
+                    {
+                        RemoveNugetPackageReference(otherPrefix);
+                    }
+                }
+                break;
             }
 
             // TODO: There could be multiple `microsoft.netframework.referenceassemblies` packages,

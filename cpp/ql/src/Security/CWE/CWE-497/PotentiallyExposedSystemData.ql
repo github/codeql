@@ -28,6 +28,7 @@ import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.security.OutputWrite
+import semmle.code.cpp.models.implementations.Memset
 import PotentiallyExposedSystemData::PathGraph
 import SystemData
 
@@ -48,6 +49,10 @@ module PotentiallyExposedSystemDataConfig implements DataFlow::ConfigSig {
       then child = sink.asIndirectExpr()
       else child = sink.asExpr()
     )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.asIndirectArgument() = any(MemsetFunction func).getACallToThisFunction().getAnArgument()
   }
 }
 

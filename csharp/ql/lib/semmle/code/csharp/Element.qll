@@ -3,9 +3,9 @@
  */
 
 import Location
-import Member
 private import semmle.code.csharp.ExprOrStmtParent
 private import dotnet
+private import commons.QualifiedName
 
 /**
  * A program element. Either a control flow element (`ControlFlowElement`), an

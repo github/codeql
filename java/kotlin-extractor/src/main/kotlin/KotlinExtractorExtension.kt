@@ -416,10 +416,12 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
     }
 
     fun getTempWriter(): BufferedWriter {
+        logger.info("Will write TRAP file $realFile")
         if (this::tempFile.isInitialized) {
             logger.error("Temp writer reinitialized for $realFile")
         }
         tempFile = File.createTempFile(realFile.getName() + ".", ".trap.tmp" + extension, parentDir)
+        logger.debug("Writing temporary TRAP file $tempFile")
         return getWriter(tempFile)
     }
 
@@ -442,6 +444,7 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
         if (!tempFile.renameTo(realFile)) {
             logger.warn("Failed to rename $tempFile to $realFile")
         }
+        logger.info("Finished writing TRAP file $realFile")
     }
 }
 
