@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* Switch cases using patterns and both cases and instanceof expressions using record patterns are now supported. The new class `RecordPatternExpr` is introduced to represent patterns, `PatternCase` and `CaseNullDefault` to represent new kinds of case statement, `InstanceOfExpr` gains `getPattern` to replace `getLocalVariableDeclExpr`.
