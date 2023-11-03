@@ -54,10 +54,20 @@ signature module InputSig {
   Node exprNode(DataFlowExpr e);
 
   class DataFlowCall {
+
+    /**
+     * Gets a run-time target of this call. A target is always a source
+     * declaration, and if the callable has both CIL and source code, only
+     * the source code version is returned.
+     */
+    DataFlowCallable getARuntimeTarget();
+
     /** Gets a textual representation of this element. */
     string toString();
 
     DataFlowCallable getEnclosingCallable();
+
+    ArgumentNode getAnArgument();
   }
 
   class DataFlowCallable {
@@ -465,7 +475,11 @@ module DataFlowMake<InputSig Lang> {
      * A `Node` augmented with a call context (except for sinks) and an access path.
      * Only those `PathNode`s that are reachable from a source, and which can reach a sink, are generated.
      */
-    class PathNode;
+    class PathNode{
+      Node getNode();
+
+      PathNode getASuccessor();
+    }
 
     /**
      * Holds if data can flow from `source` to `sink`.
