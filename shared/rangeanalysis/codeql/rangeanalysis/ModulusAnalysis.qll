@@ -264,6 +264,14 @@ module ModulusAnalysis<
       val = remainder(val0 + delta, mod)
     )
     or
+    exists(Sem::Expr mid, int v, int m1, int m2 |
+      exprModulus(mid, b, v, m1) and
+      e = modExpr(mid, m2) and
+      mod = m1.gcd(m2) and
+      mod != 1 and
+      val = remainder(v, mod)
+    )
+    or
     exists(Sem::ConditionalExpr cond, int v1, int v2, int m1, int m2 |
       cond = e and
       condExprBranchModulus(cond, true, b, v1, m1) and
