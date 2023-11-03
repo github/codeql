@@ -110,10 +110,10 @@ A.java:
 #   48|                     0: [ReturnStmt] return ...
 #   50|                 1: [IfStmt] if (...)
 #   50|                   0: [InstanceOfExpr] ...instanceof...
-#-----|                     0: (Single Local Variable Declaration)
+#   50|                     0: [VarAccess] thing
+#-----|                     2: (Single Local Variable Declaration)
 #   50|                       0: [TypeAccess] String
 #   50|                       1: [LocalVariableDeclExpr] s
-#   50|                         0: [VarAccess] thing
 #   50|                   1: [BlockStmt] { ... }
 #   51|                     0: [ThrowStmt] throw ...
 #   51|                       0: [ClassInstanceExpr] new RuntimeException(...)
