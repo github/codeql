@@ -14,20 +14,28 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new ProgressMonitor(new LoggerStub()));
             var json = assetsJson1;
+            var dependencies = new Dependencies();
 
             // Execute
-            var success = assets.TryParse(json, out var dependencies);
+            var success = assets.TryParse(json, dependencies);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(4, dependencies.Count());
+            Assert.Equal(5, dependencies.Required.Count());
+            Assert.Equal(4, dependencies.UsedPackages.Count());
 
-            var normalizedPaths = dependencies.Select(FixExpectedPathOnWindows);
-            // Packages references
+            var normalizedPaths = dependencies.Required.Select(FixExpectedPathOnWindows);
+            // Required references
             Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll", normalizedPaths);
+            Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core2.dll", normalizedPaths);
             Assert.Contains("json.net/1.0.33/lib/netstandard2.0/Json.Net.dll", normalizedPaths);
             Assert.Contains("microsoft.aspnetcore.cryptography.internal/6.0.8/lib/net6.0/Microsoft.AspNetCore.Cryptography.Internal.dll", normalizedPaths);
             Assert.Contains("humanizer.core/2.8.26/lib/netstandard2.0", normalizedPaths);
+            // Used packages
+            Assert.Contains("castle.core", dependencies.UsedPackages);
+            Assert.Contains("json.net", dependencies.UsedPackages);
+            Assert.Contains("microsoft.aspnetcore.cryptography.internal", dependencies.UsedPackages);
+            Assert.Contains("humanizer.core", dependencies.UsedPackages);
         }
 
         [Fact]
@@ -36,15 +44,20 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new ProgressMonitor(new LoggerStub()));
             var json = assetsJson2;
+            var dependencies = new Dependencies();
 
             // Execute
-            var success = assets.TryParse(json, out var dependencies);
+            var success = assets.TryParse(json, dependencies);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(2, dependencies.Count());
-            Assert.Contains("microsoft.netframework.referenceassemblies/1.0.3", dependencies);
-            Assert.Contains("microsoft.netframework.referenceassemblies.net48/1.0.3", dependencies);
+            Assert.Equal(2, dependencies.Required.Count());
+            // Required references
+            Assert.Contains("microsoft.netframework.referenceassemblies/1.0.3", dependencies.Required);
+            Assert.Contains("microsoft.netframework.referenceassemblies.net48/1.0.3", dependencies.Required);
+            // Used packages
+            Assert.Contains("microsoft.netframework.referenceassemblies", dependencies.UsedPackages);
+            Assert.Contains("microsoft.netframework.referenceassemblies.net48", dependencies.UsedPackages);
         }
 
         [Fact]
@@ -53,13 +66,14 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new ProgressMonitor(new LoggerStub()));
             var json = "garbage data";
+            var dependencies = new Dependencies();
 
             // Execute
-            var success = assets.TryParse(json, out var dependencies);
+            var success = assets.TryParse(json, dependencies);
 
             // Verify
             Assert.False(success);
-            Assert.Empty(dependencies);
+            Assert.Empty(dependencies.Required);
         }
 
         private readonly string assetsJson1 = """
@@ -75,6 +89,9 @@ namespace Semmle.Extraction.Tests
                 },
                 "compile": {
                     "lib/netstandard1.5/Castle.Core.dll": {
+                        "related": ".xml"
+                    },
+                    "lib/netstandard1.5/Castle.Core2.dll": {
                         "related": ".xml"
                     }
                 },
