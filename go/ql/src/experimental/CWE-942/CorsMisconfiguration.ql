@@ -103,12 +103,12 @@ predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOriginHW) {
   )
   or
   exists(GinCors::AllowCredentialsWrite allowCredentialsGin |
-    allowCredentialsGin.toString() = "true"
+    allowCredentialsGin.getExpr().getBoolValue() = true
   |
     //flow only goes in one direction so fix this before PR
     allowCredentialsGin.getConfig() = allowOriginHW.(GinCors::AllowOriginsWrite).getConfig() and
     not exists(GinCors::AllowAllOriginsWrite allowAllOrigins |
-      allowAllOrigins.toString() = "true" and
+      allowAllOrigins.getExpr().getBoolValue() = true and
       allowCredentialsGin.getConfig() = allowAllOrigins.getConfig()
     )
   )
@@ -149,8 +149,8 @@ predicate allowOriginIsNull(DataFlow::ExprNode allowOriginHW, string message) {
       .asExpr()
       .(SliceLit)
       .getAnElement()
-      .toString()
-      .toLowerCase() = "\"null\"" and
+      .getStringValue()
+      .toLowerCase() = "null" and
   message =
     headerAllowOrigin() + " header is set to `" + "null" + "`, and " + headerAllowCredentials() +
       " is set to `true`"

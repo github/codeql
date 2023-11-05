@@ -9,6 +9,8 @@ package cors
 
 import (
 	time "time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Config struct {
@@ -36,6 +38,6 @@ func (_ *Config) AddAllowMethods(_ ...string) {}
 
 func (_ *Config) AddExposeHeaders(_ ...string) {}
 
-func New(_ Config) interface{} {
+func New(_ Config) gin.HandlerFunc {
 	return nil
 }
