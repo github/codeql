@@ -34,6 +34,7 @@ import semmle.go.frameworks.Afero
 import semmle.go.frameworks.Beego
 import semmle.go.frameworks.BeegoOrm
 import semmle.go.frameworks.Chi
+import semmle.go.frameworks.RsCors
 import semmle.go.frameworks.Couchbase
 import semmle.go.frameworks.Echo
 import semmle.go.frameworks.ElazarlGoproxy
