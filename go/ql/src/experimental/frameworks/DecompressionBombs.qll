@@ -1,7 +1,15 @@
 import go
 
 module DecompressionBombs {
-  class FlowState = DataFlow::FlowState;
+  class FlowState extends string {
+    FlowState() {
+      this =
+        [
+          "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
+          "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost", ""
+        ]
+    }
+  }
 
   /**
    * The additional taint steps that need for creating taint tracking or dataflow.
