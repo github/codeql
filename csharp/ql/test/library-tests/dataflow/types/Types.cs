@@ -152,4 +152,26 @@ class Types
     {
         public override void M() => Sink(this.Field); // $ hasValueFlow=line:144
     }
+
+    class F
+    {
+        public virtual void M() { }
+
+        class F1<T> : F
+        {
+            public override void M() => Sink(this); // $ hasValueFlow=line:167
+        }
+
+        class F2 : F { }
+
+        F GetF1() => new F1<int>();
+
+        F GetF2() => new F2();
+
+        private void M2()
+        {
+            GetF1().M();
+            GetF2().M();
+        }
+    }
 }
