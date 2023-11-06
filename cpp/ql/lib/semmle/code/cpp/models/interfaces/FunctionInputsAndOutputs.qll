@@ -254,6 +254,8 @@ class InParameterDeref extends FunctionInput, TInParameterDeref {
   /** Gets the zero-based index of the parameter. */
   ParameterIndex getIndex() { result = index }
 
+  override predicate isParameterDeref(ParameterIndex i) { index = i }
+
   override predicate isParameterDeref(ParameterIndex i, int indirection) {
     i = index and indirectionIndex = indirection
   }
