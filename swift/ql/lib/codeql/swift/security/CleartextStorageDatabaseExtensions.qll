@@ -66,10 +66,10 @@ private class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlo
     // any write into a class derived from `RealmSwiftObject` is a sink. For
     // example in `realmObj.data = sensitive` the post-update node corresponding
     // with `realmObj.data` is a sink.
-    exists(NominalType t, Expr e |
-      t.getUnderlyingType().getABaseType*().getName() = "RealmSwiftObject" and
+    exists(NominalType t, Type base, Expr e |
+      base.getName() = "RealmSwiftObject" and
       this.getPreUpdateNode().asExpr() = e and
-      e.getFullyConverted().getType() = t and
+      e.getFullyConverted().getType().getUnderlyingType().getABaseType*() = base and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
