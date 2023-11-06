@@ -19,7 +19,6 @@ func sink(interface{}) {
 
 func fasthttpClient() {
 	userInput := "127.0.0.1:8909"
-	userInputByte := []byte("user Controlled input")
 	fasthttp.DialDualStack(userInput)           // $ SsrfSink=userInput
 	fasthttp.Dial(userInput)                    // $ SsrfSink=userInput
 	fasthttp.DialTimeout(userInput, 5)          // $ SsrfSink=userInput
@@ -27,29 +26,27 @@ func fasthttpClient() {
 
 	res := &fasthttp.Response{}
 	req := &fasthttp.Request{}
-	req.SetHost(source())
+	req.SetHost(source().(string))
 	sink(req) // $ hasTaintFlow="req"
-	req.SetHostBytes(userInputByte)
+	req.SetHostBytes(source().([]byte))
 	sink(req) // $ hasTaintFlow="req"
-	req.SetRequestURI(userInput)
+	req.SetRequestURI(source().(string))
 	sink(req) // $ hasTaintFlow="req"
-	req.SetRequestURIBytes(userInputByte)
+	req.SetRequestURIBytes(source().([]byte))
 	sink(req) // $ hasTaintFlow="req"
 
 	uri := fasthttp.AcquireURI()
 	userInput = "UserControlled.com:80"
-	userInputByte = []byte("UserControlled.com:80")
-	uri.SetHost(source())
+	uri.SetHost(source().(string))
 	sink(uri) // $ hasTaintFlow="uri"
-	uri.SetHostBytes(source())
+	uri.SetHostBytes(source().([]byte))
 	sink(uri) // $ hasTaintFlow="uri"
 	userInput = "http://UserControlled.com"
-	userInputByte = []byte("http://UserControlled.com")
-	uri.Update(source())
+	uri.Update(source().(string))
 	sink(uri) // $ hasTaintFlow="uri"
-	uri.UpdateBytes(source())
+	uri.UpdateBytes(source().([]byte))
 	sink(uri) // $ hasTaintFlow="uri"
-	uri.Parse(source(), source())
+	uri.Parse(source().([]byte), source().([]byte))
 	sink(uri) // $ hasTaintFlow="uri"
 	req.SetURI(uri)
 
