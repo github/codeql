@@ -1657,13 +1657,31 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
 
   /**
    * Gets the switch statement or expression whose pattern declares this identifier, if any.
-   *
-   * Note this only applies to a direct binding pattern, such as `case T t`, not a record pattern.
    */
-  StmtParent getAssociatedSwitch() { result = this.getParent().(PatternCase).getParent() }
+  StmtParent getAssociatedSwitch() {
+    exists(PatternCase pc |
+      pc = result.(SwitchStmt).getAPatternCase()
+      or
+      pc = result.(SwitchExpr).getAPatternCase()
+    |
+      this = pc.getPattern().getAChildExpr*()
+    )
+  }
 
   /** Holds if this is a declaration stemming from a pattern switch case. */
   predicate hasAssociatedSwitch() { exists(this.getAssociatedSwitch()) }
+
+  /**
+   * Gets the instanceof expression whose pattern declares this identifier, if any.
+   */
+  InstanceOfExpr getAssociatedInstanceOfExpr() {
+    result.getPattern().getAChildExpr*() = this
+  }
+
+  /** Holds f this is a declaration stemming from a pattern instanceof expression. */
+  predicate hasAssociatedInstanceOfExpr() {
+    exists(this.getAssociatedInstanceOfExpr())
+  }
 
   /** Gets the initializer expression of this local variable declaration expression, if any. */
   Expr getInit() { result.isNthChildOf(this, 0) }
@@ -1672,7 +1690,8 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   predicate hasImplicitInit() {
     exists(CatchClause cc | cc.getVariable() = this) or
     exists(EnhancedForStmt efs | efs.getVariable() = this) or
-    this.hasAssociatedSwitch()
+    this.hasAssociatedSwitch() or
+    this.hasAssociatedInstanceOfExpr()
   }
 
   /** Gets a printable representation of this expression. */
