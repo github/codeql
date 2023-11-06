@@ -41,27 +41,27 @@ DataFlowType getContentType(ContentSet c) {
 
 /** Gets the type of the parameter at the given position. */
 DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
-  result = c.getParam(pos.(PositionalParameterPosition).getIndex()).getType().getCanonicalType()
+  result.asType() = c.getParam(pos.(PositionalParameterPosition).getIndex()).getType().getCanonicalType()
   or
   pos instanceof ThisParameterPosition and
-  result = c.getSelfParam().getType().getCanonicalType()
+  result.asType() = c.getSelfParam().getType().getCanonicalType()
 }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c]
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
   rk instanceof NormalReturnKind and
-  result = c.getResultType().getCanonicalType()
+  result.asType() = c.getResultType().getCanonicalType()
   or
   exists(ParamDecl p |
     p = c.getParam(rk.(ParamReturnKind).getIndex()) and
-    p.isInout() and
-    result = p.getType().getCanonicalType()
+//    p.isInout() and
+    result.asType() = p.getType().getCanonicalType()
   )
   or
   rk.(ParamReturnKind).getIndex() = -1 and
-  c.getSelfParam().isInout() and
-  result = c.getSelfParam().getType().getCanonicalType()
+//  c.getSelfParam().isInout() and
+  result.asType() = c.getSelfParam().getType().getCanonicalType()
 }
 
 /**
