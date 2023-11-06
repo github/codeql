@@ -24,7 +24,7 @@ Viewing the abstract syntax tree of a source file
       :width: 350
       :alt: Add database source to workspace
 
-2. Navigate to a source file  from a CodeQL database in the File Explorer.
+2. Navigate to a CodeQL database's source file in the File Explorer.
 
    .. image:: ../images/codeql-for-visual-studio-code/open-source-file.png
       :width: 350
