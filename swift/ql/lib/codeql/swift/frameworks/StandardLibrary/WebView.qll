@@ -43,12 +43,7 @@ private class WKScriptMessageBodyInheritsTaint extends TaintInheritingContent,
  */
 private class AdoptsWkNavigationDelegate extends Decl {
   AdoptsWkNavigationDelegate() {
-    exists(ProtocolDecl delegate |
-      this.(ExtensionDecl).getAProtocol().getABaseTypeDecl*() = delegate or
-      this.(NominalTypeDecl).getABaseTypeDecl*() = delegate
-    |
-      delegate.getName() = "WKNavigationDelegate"
-    )
+    this.asNominalTypeDecl().getABaseTypeDecl*().(ProtocolDecl).getName() = "WKNavigationDelegate"
   }
 }
 
