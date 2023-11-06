@@ -1,40 +1,40 @@
 | test.ts:19:20:19:50 | "user.f ... rstName |
 | test.ts:20:23:20:51 | "user.l ... astName |
-| test.ts:83:30:83:37 | BadInput |
-| test.ts:89:31:89:38 | BadInput |
-| test.ts:98:29:98:36 | BadInput |
-| test.ts:112:29:112:36 | BadInput |
-| test.ts:116:13:116:32 | [BadInput, BadInput] |
-| test.ts:117:13:117:22 | [BadInput] |
-| test.ts:123:32:123:39 | BadInput |
-| test.ts:124:16:124:23 | BadInput |
-| test.ts:130:16:130:23 | BadInput |
-| test.ts:135:29:135:36 | BadInput |
-| test.ts:139:17:139:24 | BadInput |
-| test.ts:140:16:140:23 | BadInput |
-| test.ts:144:47:144:54 | BadInput |
-| test.ts:150:66:150:73 | BadInput |
-| test.ts:157:16:165:9 | (qb) => ...       } |
-| test.ts:160:25:160:32 | BadInput |
-| test.ts:162:24:162:31 | BadInput |
-| test.ts:171:92:171:119 | "User2. ... adInput |
-| test.ts:176:17:176:23 | "User2" |
-| test.ts:178:16:178:23 | BadInput |
-| test.ts:183:51:183:78 | "User2. ... adInput |
-| test.ts:186:52:186:59 | BadInput |
-| test.ts:188:53:188:62 | "User2.id" |
-| test.ts:188:72:188:79 | BadInput |
-| test.ts:192:51:192:58 | BadInput |
-| test.ts:196:13:198:14 | new Bra ...      }) |
-| test.ts:197:26:197:33 | BadInput |
-| test.ts:197:44:197:51 | BadInput |
-| test.ts:200:18:200:25 | BadInput |
-| test.ts:200:36:200:43 | BadInput |
-| test.ts:205:25:205:32 | BadInput |
-| test.ts:211:16:211:23 | BadInput |
-| test.ts:213:13:215:14 | new Bra ...      }) |
-| test.ts:214:26:214:33 | BadInput |
-| test.ts:214:44:214:51 | BadInput |
-| test.ts:217:13:219:14 | new Not ...      }) |
-| test.ts:218:26:218:33 | BadInput |
-| test.ts:218:44:218:51 | BadInput |
+| test.ts:80:30:80:37 | 'id > 5' |
+| test.ts:86:31:86:38 | 'id > 5' |
+| test.ts:95:29:95:44 | "LastNameToFind" |
+| test.ts:109:29:109:44 | "LastNameToFind" |
+| test.ts:113:13:113:37 | ["first ... tName"] |
+| test.ts:114:13:114:26 | ["externalId"] |
+| test.ts:120:33:120:43 | "firstname" |
+| test.ts:121:16:121:23 | 'id > 5' |
+| test.ts:127:16:127:23 | 'id > 5' |
+| test.ts:132:29:132:69 | 'SELECT ... id > 5' |
+| test.ts:136:17:136:25 | "name,id" |
+| test.ts:137:16:137:23 | "id > 5" |
+| test.ts:141:47:141:54 | 'id > 5' |
+| test.ts:147:66:147:73 | 'id > 5' |
+| test.ts:154:16:162:9 | (qb) => ...       } |
+| test.ts:157:25:157:33 | "name,id" |
+| test.ts:159:24:159:31 | 'id > 5' |
+| test.ts:168:92:168:108 | "User2.id =:kind" |
+| test.ts:173:17:173:23 | "User2" |
+| test.ts:175:16:175:23 | 'id > 5' |
+| test.ts:180:51:180:78 | "User2. ... id > 5" |
+| test.ts:183:52:183:59 | 'id > 5' |
+| test.ts:185:53:185:62 | "User2.id" |
+| test.ts:185:72:185:79 | 'id > 5' |
+| test.ts:189:51:189:58 | 'id > 5' |
+| test.ts:193:13:195:14 | new Bra ...      }) |
+| test.ts:194:26:194:33 | 'id > 5' |
+| test.ts:194:44:194:51 | 'id > 5' |
+| test.ts:197:18:197:23 | "name" |
+| test.ts:197:34:197:41 | 'id > 5' |
+| test.ts:202:25:202:32 | 'id > 5' |
+| test.ts:208:16:208:23 | 'id > 5' |
+| test.ts:210:13:212:14 | new Bra ...      }) |
+| test.ts:211:26:211:33 | 'id > 5' |
+| test.ts:211:44:211:51 | 'id > 5' |
+| test.ts:214:13:216:14 | new Not ...      }) |
+| test.ts:215:26:215:33 | 'id > 5' |
+| test.ts:215:44:215:51 | 'id > 5' |

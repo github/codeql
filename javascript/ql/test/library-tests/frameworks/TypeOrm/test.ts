@@ -71,151 +71,148 @@ function makePaginationQuery<T>(q: SelectQueryBuilder<T>): SelectQueryBuilder<T>
 }
 
 AppDataSource.initialize().then(async () => {
-    // NOT OK
-    const BadInput = "1=1"
-
     // Active record
-    await UserActiveRecord.findByName(BadInput, "Saw")
-    
+    await UserActiveRecord.findByName("FirstNameToFind", "LastNameToFind")
+
     // data mapper
     const selectQueryBuilder = makePaginationQuery<User>(AppDataSource
         .createQueryBuilder(User, "User").select());
-    selectQueryBuilder.where(BadInput).getMany().then(result => {
+    selectQueryBuilder.where('id > 5').getMany().then(result => {
         console.log(result)
     });
-    
+
     const selectQueryBuilder2 = makePaginationQuery<User>(AppDataSource
         .createQueryBuilder(User, "User"));
-    selectQueryBuilder2.where(BadInput).getMany().then(result => {
+    selectQueryBuilder2.where('id > 5').getMany().then(result => {
         console.log(result)
     });
-    
+
     const insertQueryBuilder: InsertQueryBuilder<User2> = AppDataSource
         .createQueryBuilder(User2, "User2").insert();
     insertQueryBuilder.into(User2)
         .values({
             firstName: "Timber",
-            lastName: () => BadInput,
+            lastName: () => "LastNameToFind",
             age: 33,
         }).execute().then(result => {
-        console.log(result)
-    
-    
-    })
-    
+            console.log(result)
+
+
+        })
+
     AppDataSource
         .createQueryBuilder(User2, "User")
         .insert()
         .into(User2)
         .values({
             firstName: "Timber",
-            lastName: () => BadInput,
+            lastName: () => "LastNameToFind",
             age: 33,
         })
         .orUpdate(
-            [BadInput, BadInput],
-            [BadInput],
+            ["firstName", "lastName"],
+            ["externalId"],
         )
         .getQueryAndParameters()
-    
+
     await AppDataSource.getRepository(User2).createQueryBuilder("user2")
         .update(User2)
-        .set({firstName: () => BadInput, lastName: "Saw2", age: 12})
-        .where(BadInput,)
+        .set({ firstName: () => "firstname", lastName: "Saw2", age: 12 })
+        .where('id > 5')
         .execute()
-    
+
     await AppDataSource.getRepository(User2).createQueryBuilder('user2')
         .delete()
         .from(User2)
-        .where(BadInput)
+        .where('id > 5')
         .execute()
-    
-    
+
+
     const queryRunner = AppDataSource.createQueryRunner()
-    await queryRunner.query(BadInput)
-    
+    await queryRunner.query('SELECT name,id FROM table1 WHERE id > 5')
+
     await queryRunner.manager
         .createQueryBuilder(User2, "User")
-        .select(BadInput)
-        .where(BadInput).execute()
-    
+        .select("name,id")
+        .where("id > 5").execute()
+
     await AppDataSource
         .createQueryBuilder(User, "User")
-        .innerJoin("User.profile", "profile", BadInput, {
+        .innerJoin("User.profile", "profile", 'id > 5', {
             id: 2,
         }).getMany().then(res => console.log(res))
-    
+
     await AppDataSource
         .createQueryBuilder(User, "User")
-        .leftJoinAndMapOne("User.profile", "profile", "profile", BadInput, {
+        .leftJoinAndMapOne("User.profile", "profile", "profile", 'id > 5', {
             id: 2,
         }).getMany().then(res => console.log(res))
-    
-    
+
+
     await AppDataSource
         .createQueryBuilder(User2, "User2")
         .where((qb) => {
             const subQuery = qb
                 .subQuery()
-                .select(BadInput)
+                .select("name,id")
                 .from(User2, "user2")
-                .where(BadInput)
+                .where('id > 5')
                 .getQuery()
             return "User2.id IN " + subQuery
         })
         .setParameter("registered", true)
         .getMany()
-    
-    
+
+
     // Using repository
-    let users = await AppDataSource.getRepository(User2).createQueryBuilder("User2").where("User2.id =:kind" + BadInput, {kind: 1}).getMany()
-    
+    let users = await AppDataSource.getRepository(User2).createQueryBuilder("User2").where("User2.id =:kind", { kind: 1 }).getMany()
+
     // Using DataSource
     users = await AppDataSource
         .createQueryBuilder()
         .select("User2")
         .from(User2, "User2")
-        .where(BadInput, {id: 1})
+        .where('id > 5', { id: 1 })
         .getMany()
-    
+
     // Using entity manager
     await AppDataSource.manager
-        .createQueryBuilder(User2, "User2").where("User2.id =:kind" + BadInput, {kind: '1'}).getMany()
+        .createQueryBuilder(User2, "User2").where("User2.id =:kind and id > 5", { kind: '1' }).getMany()
     await AppDataSource
         .createQueryBuilder(User2, "User2")
-        .leftJoinAndSelect("user.photos", "photo", BadInput).getMany()
+        .leftJoinAndSelect("user.photos", "photo", 'id > 5').getMany()
     await AppDataSource
-        .createQueryBuilder(User2, "User2").groupBy("User2.id").having(BadInput).getMany()
+        .createQueryBuilder(User2, "User2").groupBy("User2.id").having('id > 5').getMany()
     // orderBy
     // it is a little bit restrictive, e.g. sqlite don't support it at all
     await AppDataSource
-        .createQueryBuilder(User2, "User2").where(BadInput, {
+        .createQueryBuilder(User2, "User2").where('id > 5', {
             firstName: "Timber",
         })
         .where(
             new Brackets((qb) => {
-                qb.where(BadInput).orWhere(BadInput);
+                qb.where('id > 5').orWhere('id > 5');
             })
         )
-        .orderBy(BadInput).orWhere(BadInput).getMany()
-    
+        .orderBy("name").orWhere('id > 5').getMany()
+
     // relation
     AppDataSource.createQueryBuilder().relation(User, "name")
         .of(User)
-        .select().where(BadInput).getMany().then(results => {
-        console.log(results)
-    })
-    
+        .select().where('id > 5').getMany().then(results => {
+            console.log(results)
+        })
+
     // Brackets
     await AppDataSource.createQueryBuilder(User2, "User2")
-        .where(BadInput)
+        .where('id > 5')
         .andWhere(
             new Brackets((qb) => {
-                qb.where(BadInput).orWhere(BadInput);
+                qb.where('id > 5').orWhere('id > 5');
             })
         ).andWhere(
             new NotBrackets((qb) => {
-                qb.where(BadInput).orWhere(BadInput)
+                qb.where('id > 5').orWhere('id > 5')
             }),
         ).getMany()
 }).catch(error => console.log(error))
