@@ -34,6 +34,7 @@ namespace Microsoft
                 public static bool IsProduction(this Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment) => throw null;
                 public static bool IsStaging(this Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, Inherited = false, AllowMultiple = true)]
             public sealed class HostingStartupAttribute : System.Attribute
             {
                 public HostingStartupAttribute(System.Type hostingStartupType) => throw null;

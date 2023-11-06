@@ -62,7 +62,7 @@ When telemetry collection is disabled, no data will be sent to GitHub servers.
 
 You can disable telemetry collection by setting ``codeQL.telemetry.enableTelemetry`` to ``false`` in your settings. For more information about CodeQL settings, see ":doc:`Customizing settings <customizing-settings>`." 
 
-Additionally, telemetry collection will be disabled if the global ``telemetry.enableTelemetry`` setting is set to ``false``. For more information about global telemetry collection, see "`Microsoft's documentation <https://code.visualstudio.com/docs/supporting/faq#_how-to-disable-telemetry-reporting>`__."
+Additionally, telemetry collection will be disabled if the global ``telemetry.telemetryLevel`` setting is set to ``off``. For more information about global telemetry collection, see "`Microsoft's documentation <https://code.visualstudio.com/docs/supporting/faq#_how-to-disable-telemetry-reporting>`__."
 
 Further reading
 ----------------

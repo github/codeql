@@ -92,21 +92,6 @@ abstract class Configuration extends string {
   predicate isBarrierOut(Node node) { none() }
 
   /**
-   * DEPRECATED: Use `isBarrier` and `BarrierGuard` module instead.
-   *
-   * Holds if data flow through nodes guarded by `guard` is prohibited.
-   */
-  deprecated predicate isBarrierGuard(BarrierGuard guard) { none() }
-
-  /**
-   * DEPRECATED: Use `isBarrier` and `BarrierGuard` module instead.
-   *
-   * Holds if data flow through nodes guarded by `guard` is prohibited when
-   * the flow state is `state`
-   */
-  deprecated predicate isBarrierGuard(BarrierGuard guard, FlowState state) { none() }
-
-  /**
    * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
    */
   predicate isAdditionalFlowStep(Node node1, Node node2) { none() }
@@ -225,29 +210,6 @@ abstract private class ConfigurationRecursionPrevention extends Configuration {
   }
 }
 
-/** A bridge class to access the deprecated `isBarrierGuard`. */
-private class BarrierGuardGuardedNodeBridge extends Unit {
-  abstract predicate guardedNode(Node n, Configuration config);
-
-  abstract predicate guardedNode(Node n, FlowState state, Configuration config);
-}
-
-private class BarrierGuardGuardedNode extends BarrierGuardGuardedNodeBridge {
-  deprecated override predicate guardedNode(Node n, Configuration config) {
-    exists(BarrierGuard g |
-      config.isBarrierGuard(g) and
-      n = g.getAGuardedNode()
-    )
-  }
-
-  deprecated override predicate guardedNode(Node n, FlowState state, Configuration config) {
-    exists(BarrierGuard g |
-      config.isBarrierGuard(g, state) and
-      n = g.getAGuardedNode()
-    )
-  }
-}
-
 private FlowState relevantState(Configuration config) {
   config.isSource(_, result) or
   config.isSink(_, result) or
@@ -288,9 +250,7 @@ private module Config implements FullStateConfigSig {
 
   predicate isBarrier(Node node, FlowState state) {
     getConfig(state).isBarrier(node, getState(state)) or
-    getConfig(state).isBarrier(node) or
-    any(BarrierGuardGuardedNodeBridge b).guardedNode(node, getState(state), getConfig(state)) or
-    any(BarrierGuardGuardedNodeBridge b).guardedNode(node, getConfig(state))
+    getConfig(state).isBarrier(node)
   }
 
   predicate isBarrierIn(Node node) { any(Configuration config).isBarrierIn(node) }

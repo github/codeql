@@ -30,7 +30,7 @@ deprecated class UnsafeContentResolutionConf extends TaintTracking::Configuratio
  * A taint-tracking configuration to find paths from remote sources to content URI resolutions.
  */
 module UnsafeContentResolutionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ContentUriResolutionSink }
 

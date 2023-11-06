@@ -90,9 +90,6 @@ class ExternalApi extends Callable {
   }
 }
 
-/** DEPRECATED: Alias for ExternalApi */
-deprecated class ExternalAPI = ExternalApi;
-
 /**
  * Gets the limit for the number of results produced by a telemetry query.
  */

@@ -334,7 +334,7 @@ private fun doFile(
                 // Now elevate to a SourceFileTrapWriter, and populate the
                 // file information
                 val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
-                val externalDeclExtractor = ExternalDeclExtractor(logger, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, globalExtensionState, fileTrapWriter.getDiagnosticTrapWriter())
+                val externalDeclExtractor = ExternalDeclExtractor(logger, compression, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, globalExtensionState, fileTrapWriter.getDiagnosticTrapWriter())
                 val linesOfCode = LinesOfCode(logger, sftw, srcFile)
                 val fileExtractor = KotlinFileExtractor(logger, sftw, linesOfCode, srcFilePath, null, externalDeclExtractor, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
 
@@ -362,7 +362,19 @@ private fun doFile(
     }
 }
 
-enum class Compression { NONE, GZIP }
+enum class Compression(val extension: String) {
+    NONE("") {
+        override fun bufferedWriter(file: File): BufferedWriter {
+            return file.bufferedWriter()
+        }
+    },
+    GZIP(".gz") {
+        override fun bufferedWriter(file: File): BufferedWriter {
+            return GZIPOutputStream(file.outputStream()).bufferedWriter()
+        }
+    };
+    abstract fun bufferedWriter(file: File): BufferedWriter
+}
 
 private fun getTrapFileWriter(compression: Compression, logger: FileLogger, trapFileName: String): TrapFileWriter {
     return when (compression) {
@@ -404,10 +416,12 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
     }
 
     fun getTempWriter(): BufferedWriter {
+        logger.info("Will write TRAP file $realFile")
         if (this::tempFile.isInitialized) {
             logger.error("Temp writer reinitialized for $realFile")
         }
         tempFile = File.createTempFile(realFile.getName() + ".", ".trap.tmp" + extension, parentDir)
+        logger.debug("Writing temporary TRAP file $tempFile")
         return getWriter(tempFile)
     }
 
@@ -430,6 +444,7 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
         if (!tempFile.renameTo(realFile)) {
             logger.warn("Failed to rename $tempFile to $realFile")
         }
+        logger.info("Finished writing TRAP file $realFile")
     }
 }
 

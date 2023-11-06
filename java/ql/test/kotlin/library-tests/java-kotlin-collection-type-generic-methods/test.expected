@@ -165,6 +165,8 @@ methodWithDuplicate
 | List | add | int |
 | List | addAll | Collection<? extends E> |
 | List | addAll | int |
+| List | addFirst | E |
+| List | addLast | E |
 | List | contains | Object |
 | List | containsAll | Collection<?> |
 | List | copyOf | Collection<? extends E> |
@@ -213,6 +215,8 @@ methodWithDuplicate
 | List<String> | add | int |
 | List<String> | addAll | Collection<? extends String> |
 | List<String> | addAll | int |
+| List<String> | addFirst | String |
+| List<String> | addLast | String |
 | List<String> | contains | Object |
 | List<String> | containsAll | Collection<?> |
 | List<String> | copyOf | Collection<? extends E> |

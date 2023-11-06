@@ -118,8 +118,6 @@ module Connect {
     override string getCredentialsKind() { result = kind }
   }
 
-  deprecated class RequestExpr = NodeJSLib::RequestExpr;
-
   class RequestNode = NodeJSLib::RequestNode;
 
   /**

@@ -240,6 +240,7 @@ namespace Microsoft
                 public HubMetadata(System.Type hubType) => throw null;
                 public System.Type HubType { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = true)]
             public class HubMethodNameAttribute : System.Attribute
             {
                 public HubMethodNameAttribute(string name) => throw null;

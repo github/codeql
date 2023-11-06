@@ -33,13 +33,6 @@ module RequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for request forgery vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A third-party controllable input, considered as a flow source for request forgery.
    */
   class UntrustedFlowAsSource extends Source, UntrustedFlowSource { }

@@ -44,7 +44,14 @@ private class DataSummaries extends SummaryModelCsv {
         ";Data;true;shuffled();;;Argument[-1];ReturnValue;taint",
         ";Data;true;shuffled(using:);;;Argument[-1];ReturnValue;taint",
         ";Data;true;trimmingPrefix(_:);;;Argument[-1];ReturnValue;taint",
-        ";Data;true;trimmingPrefix(while:);;;Argument[-1];ReturnValue;taint"
+        ";Data;true;trimmingPrefix(while:);;;Argument[-1];ReturnValue;taint",
+        ";Data;true;withUnsafeBytes(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
+        ";Data;true;withUnsafeBytes(_:);;;Argument[-1].CollectionElement;Argument[0].Parameter[0].CollectionElement;taint",
+        ";Data;true;withUnsafeBytes(_:);;;Argument[0].ReturnValue;ReturnValue;value",
+        ";Data;true;withUnsafeMutableBytes(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
+        ";Data;true;withUnsafeMutableBytes(_:);;;Argument[-1].CollectionElement;Argument[0].Parameter[0].CollectionElement;taint",
+        ";Data;true;withUnsafeMutableBytes(_:);;;Argument[0].Parameter[0].CollectionElement;Argument[-1].CollectionElement;value",
+        ";Data;true;withUnsafeMutableBytes(_:);;;Argument[0].ReturnValue;ReturnValue;value",
       ]
   }
 }

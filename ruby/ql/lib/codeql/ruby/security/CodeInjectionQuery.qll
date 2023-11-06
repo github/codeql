@@ -37,10 +37,6 @@ deprecated class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
     node.(Sanitizer).getAFlowState() = state
   }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
 }
 
 private module Config implements DataFlow::StateConfigSig {

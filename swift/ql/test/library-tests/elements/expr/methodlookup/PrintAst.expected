@@ -43,15 +43,7 @@ methodlookup.swift:
 #   11|     getSelfParam(): [ParamDecl] self
 #   11|         Type = Bar.Type
 #   11|     getBody(): [BraceStmt] { ... }
-#-----|   getMember(3): [PatternBindingDecl] var ... = ...
-#-----|     getPattern(0): [TypedPattern] ... as ...
-#-----|       getSubPattern(): [NamedPattern] unownedExecutor
-#    8|   getMember(4): [Deinitializer] Bar.deinit()
-#    8|       InterfaceType = (Bar) -> () -> ()
-#    8|     getSelfParam(): [ParamDecl] self
-#    8|         Type = Bar
-#    8|     getBody(): [BraceStmt] { ... }
-#-----|   getMember(5): [ConcreteVarDecl] unownedExecutor
+#-----|   getMember(3): [ConcreteVarDecl] unownedExecutor
 #-----|       Type = UnownedSerialExecutor
 #-----|     getAccessor(0): [Accessor] get
 #-----|         InterfaceType = (Bar) -> () -> UnownedSerialExecutor
@@ -68,6 +60,14 @@ methodlookup.swift:
 #-----|                 getFunction(): [DeclRefExpr] buildDefaultActorExecutorRef(_:)
 #-----|                 getArgument(0): [Argument] : self
 #-----|                   getExpr(): [DeclRefExpr] self
+#-----|   getMember(4): [PatternBindingDecl] var ... = ...
+#-----|     getPattern(0): [TypedPattern] ... as ...
+#-----|       getSubPattern(): [NamedPattern] unownedExecutor
+#    8|   getMember(5): [Deinitializer] Bar.deinit()
+#    8|       InterfaceType = (Bar) -> () -> ()
+#    8|     getSelfParam(): [ParamDecl] self
+#    8|         Type = Bar
+#    8|     getBody(): [BraceStmt] { ... }
 #   15| [ClassDecl] Baz
 #   16|   getMember(0): [Initializer] Baz.init()
 #   16|       InterfaceType = (Baz.Type) -> () -> Baz

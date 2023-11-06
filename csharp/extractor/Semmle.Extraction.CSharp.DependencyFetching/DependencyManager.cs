@@ -47,9 +47,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor = new ProgressMonitor(logger);
             this.sourceDir = new DirectoryInfo(srcDir);
 
+            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+            tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
+
             try
             {
-                this.dotnet = DotNet.Make(options, progressMonitor);
+                this.dotnet = DotNet.Make(options, progressMonitor, tempWorkingDirectory);
             }
             catch
             {
@@ -59,8 +62,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             this.progressMonitor.FindingFiles(srcDir);
 
-            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
-            tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
 
             var allFiles = GetAllFiles();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
@@ -76,21 +77,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var dllDirNames = options.DllDirs.Count == 0
                 ? allFiles.SelectFileNamesByExtension(".dll").ToList()
                 : options.DllDirs.Select(Path.GetFullPath).ToList();
-
-            // Find DLLs in the .Net / Asp.Net Framework
-            if (options.ScanNetFrameworkDlls)
-            {
-                var runtime = new Runtime(dotnet);
-                var runtimeLocation = runtime.GetRuntime(options.UseSelfContainedDotnet);
-                progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
-                dllDirNames.Add(runtimeLocation);
-
-                if (fileContent.UseAspNetDlls && runtime.GetAspRuntime() is string aspRuntime)
-                {
-                    progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspRuntime}");
-                    dllDirNames.Add(aspRuntime);
-                }
-            }
 
             if (options.UseNuGet)
             {
@@ -111,6 +97,33 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 DownloadMissingPackages(allNonBinaryFiles);
             }
 
+            var existsNetCoreRefNugetPackage = false;
+            var existsNetFrameworkRefNugetPackage = false;
+            var existsNetstandardLibRefNugetPackage = false;
+            var existsNetstandardLibNugetPackage = false;
+
+            // Find DLLs in the .Net / Asp.Net Framework
+            // This block needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
+            if (options.ScanNetFrameworkDlls)
+            {
+                existsNetCoreRefNugetPackage = IsNugetPackageAvailable("microsoft.netcore.app.ref");
+                existsNetFrameworkRefNugetPackage = IsNugetPackageAvailable("microsoft.netframework.referenceassemblies");
+                existsNetstandardLibRefNugetPackage = IsNugetPackageAvailable("netstandard.library.ref");
+                existsNetstandardLibNugetPackage = IsNugetPackageAvailable("netstandard.library");
+
+                if (existsNetCoreRefNugetPackage
+                    || existsNetFrameworkRefNugetPackage
+                    || existsNetstandardLibRefNugetPackage
+                    || existsNetstandardLibNugetPackage)
+                {
+                    progressMonitor.LogInfo("Found .NET Core/Framework DLLs in NuGet packages. Not adding installation directory.");
+                }
+                else
+                {
+                    AddNetFrameworkDlls(dllDirNames);
+                }
+            }
+
             assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
             AnalyseSolutions(solutions);
 
@@ -119,7 +132,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseReference(filename);
             }
 
-            RemoveRuntimeNugetPackageReferences();
+            RemoveUnnecessaryNugetPackages(existsNetCoreRefNugetPackage, existsNetFrameworkRefNugetPackage, existsNetstandardLibRefNugetPackage, existsNetstandardLibNugetPackage);
             ResolveConflicts();
 
             // Output the findings
@@ -154,7 +167,59 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 DateTime.Now - startTime);
         }
 
-        private void RemoveRuntimeNugetPackageReferences()
+        private void RemoveUnnecessaryNugetPackages(bool existsNetCoreRefNugetPackage, bool existsNetFrameworkRefNugetPackage,
+            bool existsNetstandardLibRefNugetPackage, bool existsNetstandardLibNugetPackage)
+        {
+            RemoveNugetAnalyzerReferences();
+            RemoveRuntimeNugetPackageReferences();
+
+            if (fileContent.IsNewProjectStructureUsed
+                && !fileContent.UseAspNetCoreDlls)
+            {
+                // This might have been restored by the CLI even though the project isn't an asp.net core one.
+                RemoveNugetPackageReference("microsoft.aspnetcore.app.ref");
+            }
+
+            // Multiple dotnet framework packages could be present. We keep only one.
+            // The order of the packages is important, we're keeping the first one that is present in the nuget cache.
+            var packagesInPrioOrder = new (bool isPresent, string prefix)[]
+            {
+                // net7.0, ... net5.0, netcoreapp3.1, netcoreapp3.0
+                (existsNetCoreRefNugetPackage, "microsoft.netcore.app.ref"),
+                // net48, ..., net20
+                (existsNetFrameworkRefNugetPackage, "microsoft.netframework.referenceassemblies."),
+                // netstandard2.1
+                (existsNetstandardLibRefNugetPackage, "netstandard.library.ref"),
+                // netstandard2.0
+                (existsNetstandardLibNugetPackage, "netstandard.library")
+            };
+
+            for (var i = 0; i < packagesInPrioOrder.Length; i++)
+            {
+                var (isPresent, _) = packagesInPrioOrder[i];
+                if (!isPresent)
+                {
+                    continue;
+                }
+
+                // Package is present, remove all the lower priority packages:
+                for (var j = i + 1; j < packagesInPrioOrder.Length; j++)
+                {
+                    var (otherIsPresent, otherPrefix) = packagesInPrioOrder[j];
+                    if (otherIsPresent)
+                    {
+                        RemoveNugetPackageReference(otherPrefix);
+                    }
+                }
+                break;
+            }
+
+            // TODO: There could be multiple `microsoft.netframework.referenceassemblies` packages,
+            // we could keep the newest one, but this is covered by the conflict resolution logic
+            // (if the file names match)
+        }
+
+        private void RemoveNugetAnalyzerReferences()
         {
             if (!options.UseNuGet)
             {
@@ -162,28 +227,125 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
-            var runtimePackageNamePrefixes = new[]
+            if (packageFolder == null)
             {
-                Path.Combine(packageFolder, "microsoft.netcore.app.runtime"),
-                Path.Combine(packageFolder, "microsoft.aspnetcore.app.runtime"),
-                Path.Combine(packageFolder, "microsoft.windowsdesktop.app.runtime"),
-
-                // legacy runtime packages:
-                Path.Combine(packageFolder, "runtime.linux-x64.microsoft.netcore.app"),
-                Path.Combine(packageFolder, "runtime.osx-x64.microsoft.netcore.app"),
-                Path.Combine(packageFolder, "runtime.win-x64.microsoft.netcore.app"),
-            };
+                return;
+            }
 
             foreach (var filename in usedReferences.Keys)
             {
                 var lowerFilename = filename.ToLowerInvariant();
 
-                if (runtimePackageNamePrefixes.Any(prefix => lowerFilename.StartsWith(prefix)))
+                if (lowerFilename.StartsWith(packageFolder))
+                {
+                    var firstDirectorySeparatorCharIndex = lowerFilename.IndexOf(Path.DirectorySeparatorChar, packageFolder.Length + 1);
+                    if (firstDirectorySeparatorCharIndex == -1)
+                    {
+                        continue;
+                    }
+                    var secondDirectorySeparatorCharIndex = lowerFilename.IndexOf(Path.DirectorySeparatorChar, firstDirectorySeparatorCharIndex + 1);
+                    if (secondDirectorySeparatorCharIndex == -1)
+                    {
+                        continue;
+                    }
+                    var subFolderIndex = secondDirectorySeparatorCharIndex + 1;
+                    var isInAnalyzersFolder = lowerFilename.IndexOf("analyzers", subFolderIndex) == subFolderIndex;
+                    if (isInAnalyzersFolder)
+                    {
+                        usedReferences.Remove(filename);
+                        progressMonitor.RemovedReference(filename);
+                    }
+                }
+            }
+        }
+        private void AddNetFrameworkDlls(List<string> dllDirNames)
+        {
+            var runtime = new Runtime(dotnet);
+            string? runtimeLocation = null;
+
+            if (options.UseSelfContainedDotnet)
+            {
+                runtimeLocation = runtime.ExecutingRuntime;
+            }
+            else if (fileContent.IsNewProjectStructureUsed)
+            {
+                runtimeLocation = runtime.NetCoreRuntime;
+            }
+            else if (fileContent.IsLegacyProjectStructureUsed)
+            {
+                runtimeLocation = runtime.DesktopRuntime;
+            }
+
+            runtimeLocation ??= runtime.ExecutingRuntime;
+
+            progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
+            dllDirNames.Add(runtimeLocation);
+
+            if (fileContent.IsNewProjectStructureUsed
+                && fileContent.UseAspNetCoreDlls
+                && runtime.AspNetCoreRuntime is string aspRuntime)
+            {
+                progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspRuntime}");
+                dllDirNames.Add(aspRuntime);
+            }
+        }
+
+        private void RemoveRuntimeNugetPackageReferences()
+        {
+            var runtimePackagePrefixes = new[]
+            {
+                "microsoft.netcore.app.runtime",
+                "microsoft.aspnetcore.app.runtime",
+                "microsoft.windowsdesktop.app.runtime",
+
+                // legacy runtime packages:
+                "runtime.linux-x64.microsoft.netcore.app",
+                "runtime.osx-x64.microsoft.netcore.app",
+                "runtime.win-x64.microsoft.netcore.app",
+
+                // Internal implementation packages not meant for direct consumption:
+                "runtime."
+            };
+            RemoveNugetPackageReference(runtimePackagePrefixes);
+        }
+
+        private void RemoveNugetPackageReference(params string[] packagePrefixes)
+        {
+            if (!options.UseNuGet)
+            {
+                return;
+            }
+
+            var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
+            if (packageFolder == null)
+            {
+                return;
+            }
+
+            var packagePathPrefixes = packagePrefixes.Select(p => Path.Combine(packageFolder, p.ToLowerInvariant()));
+
+            foreach (var filename in usedReferences.Keys)
+            {
+                var lowerFilename = filename.ToLowerInvariant();
+
+                if (packagePathPrefixes.Any(prefix => lowerFilename.StartsWith(prefix)))
                 {
                     usedReferences.Remove(filename);
                     progressMonitor.RemovedReference(filename);
                 }
             }
+        }
+
+        private bool IsNugetPackageAvailable(string packagePrefix)
+        {
+            if (!options.UseNuGet)
+            {
+                return false;
+            }
+
+            return new DirectoryInfo(packageDirectory.DirInfo.FullName)
+                .EnumerateDirectories(packagePrefix + "*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
+                .Any();
         }
 
         private void GenerateSourceFileFromImplicitUsings()
@@ -198,7 +360,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             usings.UnionWith(new[] { "System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Net.Http", "System.Threading",
                 "System.Threading.Tasks" });
 
-            if (fileContent.UseAspNetDlls)
+            if (fileContent.UseAspNetCoreDlls)
             {
                 usings.UnionWith(new[] { "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
                     "Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Routing", "Microsoft.Extensions.Configuration",
@@ -322,7 +484,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var emptyVersion = new Version(0, 0);
-            sortedReferences = sortedReferences.OrderBy(r => r.NetCoreVersion ?? emptyVersion).ThenBy(r => r.Version ?? emptyVersion).ToList();
+            sortedReferences = sortedReferences
+                .OrderBy(r => r.NetCoreVersion ?? emptyVersion)
+                .ThenBy(r => r.Version ?? emptyVersion)
+                .ThenBy(r => r.Filename)
+                .ToList();
 
             var finalAssemblyList = new Dictionary<string, AssemblyInfo>();
 
@@ -457,11 +623,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         }
 
-        private bool RestoreProject(string project, string? pathToNugetConfig = null) =>
-            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, pathToNugetConfig);
+        private bool RestoreProject(string project, bool forceDotnetRefAssemblyFetching, string? pathToNugetConfig = null) =>
+            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching, pathToNugetConfig);
 
         private bool RestoreSolution(string solution, out IEnumerable<string> projects) =>
-            dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, out projects);
+            dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out projects);
 
         /// <summary>
         /// Executes `dotnet restore` on all solution files in solutions.
@@ -487,7 +653,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
-                RestoreProject(project);
+                RestoreProject(project, forceDotnetRefAssemblyFetching: true);
             });
         }
 
@@ -532,7 +698,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     return;
                 }
 
-                success = RestoreProject(tempDir.DirInfo.FullName, nugetConfig);
+                success = RestoreProject(tempDir.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, pathToNugetConfig: nugetConfig);
                 // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
                 if (!success)
                 {
@@ -560,9 +726,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public void Dispose()
         {
-            packageDirectory?.Dispose();
+            try
+            {
+                packageDirectory?.Dispose();
+            }
+            catch (Exception exc)
+            {
+                progressMonitor.LogInfo("Couldn't delete package directory: " + exc.Message);
+            }
             if (cleanupTempWorkingDirectory)
-                tempWorkingDirectory?.Dispose();
+            {
+                try
+                {
+                    tempWorkingDirectory?.Dispose();
+                }
+                catch (Exception exc)
+                {
+                    progressMonitor.LogInfo("Couldn't delete temporary working directory: " + exc.Message);
+                }
+            }
         }
     }
 }

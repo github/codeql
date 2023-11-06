@@ -1,3 +1,35 @@
+## 0.11.0
+
+### Breaking Changes
+
+* The `Container` and `Folder` classes now derive from `ElementBase` instead of `Locatable`, and no longer expose the `getLocation` predicate. Use `getURL` instead.
+
+### New Features
+
+* Added a new class `AdditionalCallTarget` for specifying additional call targets.
+
+### Minor Analysis Improvements
+
+* More field accesses are identified as `ImplicitThisFieldAccess`.
+* Added support for new floating-point types in C23 and C++23.
+
+## 0.10.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `AnalysedString` class, use the new name `AnalyzedString`.
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+
+## 0.10.0
+
+### Minor Analysis Improvements
+
+* Functions that do not return due to calling functions that don't return (e.g. `exit`) are now detected as
+ non-returning in the IR and dataflow.
+* Treat functions that reach the end of the function as returning in the IR.
+  They used to be treated as unreachable but it is allowed in C. 
+* The `DataFlow::asDefiningArgument` predicate now takes its argument from the range starting at `1` instead of `2`. Queries that depend on the single-parameter version of `DataFlow::asDefiningArgument` should have their arguments updated accordingly.
+
 ## 0.9.3
 
 No user-facing changes.

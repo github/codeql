@@ -405,3 +405,59 @@ attributes.cs:
 #  130|           0: [AssignExpr] ... = ...
 #  130|             0: [FieldAccess] access to field p
 #  130|             1: [ParameterAccess] access to parameter value
+#  134| [Class] Class1
+#  136|   5: [Class] ParamsAttribute
+#-----|     3: (Base types)
+#  136|       0: [TypeMention] Attribute
+#  138|     4: [InstanceConstructor] ParamsAttribute
+#-----|       2: (Parameters)
+#  138|         0: [Parameter] s1
+#  138|           -1: [TypeMention] string
+#  138|         1: [Parameter] s2
+#  138|           -1: [TypeMention] string
+#  138|         2: [Parameter] args
+#  138|           -1: [TypeMention] Int32[]
+#  138|             1: [TypeMention] int
+#  138|       4: [BlockStmt] {...}
+#  142|   6: [Method] M1
+#  142|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#  141|       1: [DefaultAttribute] [Params(...)]
+#  141|         -1: [TypeMention] ParamsAttribute
+#  141|         0: [StringLiteralUtf16] "a"
+#  141|         1: [StringLiteralUtf16] "b"
+#  141|         2: [IntLiteral] 1
+#  141|         3: [IntLiteral] 2
+#  141|         4: [IntLiteral] 3
+#  142|     4: [BlockStmt] {...}
+#  145|   7: [Method] M2
+#  145|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#  144|       1: [DefaultAttribute] [Params(...)]
+#  144|         -1: [TypeMention] ParamsAttribute
+#  144|         0: [StringLiteralUtf16] "a"
+#  144|         1: [StringLiteralUtf16] "b"
+#  144|         2: [IntLiteral] 1
+#  144|         3: [IntLiteral] 2
+#  144|         4: [IntLiteral] 3
+#  145|     4: [BlockStmt] {...}
+#  148|   8: [Method] M3
+#  148|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#  147|       1: [DefaultAttribute] [Params(...)]
+#  147|         -1: [TypeMention] ParamsAttribute
+#  147|         0: [StringLiteralUtf16] "a"
+#  147|         1: [StringLiteralUtf16] "b"
+#  147|         2: [IntLiteral] 1
+#  148|     4: [BlockStmt] {...}
+#  151|   9: [Method] M4
+#  151|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#  150|       1: [DefaultAttribute] [Params(...)]
+#  150|         -1: [TypeMention] ParamsAttribute
+#  150|         0: [StringLiteralUtf16] "a"
+#  150|         1: [StringLiteralUtf16] "b"
+#  150|         2: [ArrayCreation] array creation of type Int32[]
+#  150|           -1: [ArrayInitializer] { ..., ... }
+#  150|             0: [IntLiteral] 1
+#  151|     4: [BlockStmt] {...}

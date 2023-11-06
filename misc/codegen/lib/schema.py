@@ -93,6 +93,7 @@ class Class:
     doc: List[str] = field(default_factory=list)
     default_doc_name: Optional[str] = None
     hideable: bool = False
+    test_with: Optional[str] = None
 
     @property
     def final(self):
@@ -110,6 +111,7 @@ class Class:
             if self.synth.on_arguments is not None:
                 for t in self.synth.on_arguments.values():
                     _check_type(t, known)
+        _check_type(self.test_with, known)
 
 
 @dataclass

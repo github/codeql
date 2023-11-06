@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.security", "KeyStore", False, "getKey", "(String,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore", False, "load", "(InputStream,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore", False, "setKeyEntry", "(String,Key,char[],Certificate[])", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore", False, "setKeyEntry", "(String,byte[],Certificate[])", "", "Argument[1]", "credentials-key", "hq-generated"]
+      - ["java.security", "KeyStore", False, "store", "(OutputStream,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore$PasswordProtection", False, "PasswordProtection", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore$PasswordProtection", False, "PasswordProtection", "(char[],String,AlgorithmParameterSpec)", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineGetKey", "(String,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineLoad", "(InputStream,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineSetKeyEntry", "(String,Key,char[],Certificate[])", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineStore", "(OutputStream,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineSetKeyEntry", "(String,byte[],Certificate[])", "", "Argument[1]", "credentials-key", "hq-generated"]

@@ -9,19 +9,16 @@ private import codeql.swift.elements.decl.VarDecl
  */
 class NamedPattern extends Generated::NamedPattern {
   /**
-   * Holds if this named pattern has a corresponding `VarDecl`.
-   * This will be the case as long as the variable is subsequently used.
+   * Holds if this named pattern has a corresponding `VarDecl`, which is currently always true.
+   *
+   * DEPRECATED: unless there was a compilation error, this will always hold.
    */
-  predicate hasVarDecl() { exists(this.getVarDecl()) }
+  deprecated predicate hasVarDecl() { exists(this.getVarDecl()) }
 
   /**
-   * Gets the `VarDecl` bound by this named pattern, if any.
-   * This will be the case as long as the variable is subsequently used.
+   * Gets the name of the variable bound by this pattern.
    */
-  VarDecl getVarDecl() {
-    this.getImmediateEnclosingPattern*() = result.getImmediateParentPattern() and
-    pragma[only_bind_out](result.getName()) = pragma[only_bind_out](this.getName())
-  }
+  string getName() { result = this.getVarDecl().getName() }
 
   override string toString() { result = this.getName() }
 }

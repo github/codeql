@@ -49,6 +49,7 @@ namespace Microsoft
             public object this[object Index] { get => throw null; }
             public object this[string Key] { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)4, Inherited = false, AllowMultiple = false)]
         public sealed class ComClassAttribute : System.Attribute
         {
             public string ClassID { get => throw null; }
@@ -158,6 +159,7 @@ namespace Microsoft
                 public static decimal FromString(string Value, System.Globalization.NumberFormatInfo NumberFormat) => throw null;
                 public static decimal Parse(string Value, System.Globalization.NumberFormatInfo NumberFormat) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
             public sealed class DesignerGeneratedAttribute : System.Attribute
             {
                 public DesignerGeneratedAttribute() => throw null;
@@ -290,10 +292,12 @@ namespace Microsoft
                 public static object SubtractObject(object Left, object Right) => throw null;
                 public static object XorObject(object Left, object Right) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false, AllowMultiple = false)]
             public sealed class OptionCompareAttribute : System.Attribute
             {
                 public OptionCompareAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4, Inherited = false, AllowMultiple = false)]
             public sealed class OptionTextAttribute : System.Attribute
             {
                 public OptionTextAttribute() => throw null;
@@ -318,6 +322,7 @@ namespace Microsoft
                 public static float FromString(string Value) => throw null;
                 public static float FromString(string Value, System.Globalization.NumberFormatInfo NumberFormat) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4, Inherited = false, AllowMultiple = false)]
             public sealed class StandardModuleAttribute : System.Attribute
             {
                 public StandardModuleAttribute() => throw null;
@@ -870,6 +875,7 @@ namespace Microsoft
             FirstFourDays = 2,
             FirstFullWeek = 3,
         }
+        [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
         public sealed class HideModuleNameAttribute : System.Attribute
         {
             public HideModuleNameAttribute() => throw null;
@@ -950,6 +956,7 @@ namespace Microsoft
             MsgBoxRight = 524288,
             MsgBoxRtlReading = 1048576,
         }
+        [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
         public sealed class MyGroupCollectionAttribute : System.Attribute
         {
             public string CreateMethod { get => throw null; }
@@ -1078,6 +1085,7 @@ namespace Microsoft
             UserDefinedType = 36,
             Array = 8192,
         }
+        [System.AttributeUsage((System.AttributeTargets)256, Inherited = false, AllowMultiple = false)]
         public sealed class VBFixedArrayAttribute : System.Attribute
         {
             public int[] Bounds { get => throw null; }
@@ -1085,6 +1093,7 @@ namespace Microsoft
             public VBFixedArrayAttribute(int UpperBound1, int UpperBound2) => throw null;
             public int Length { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)256, Inherited = false, AllowMultiple = false)]
         public sealed class VBFixedStringAttribute : System.Attribute
         {
             public VBFixedStringAttribute(int Length) => throw null;

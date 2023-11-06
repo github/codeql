@@ -1,0 +1,7 @@
+| switch.swift:8:4:9:18 | case ... | 0 | switch.swift:8:13:8:13 | x |
+| switch.swift:24:3:25:5 | case ... | 0 | switch.swift:24:17:24:17 | a |
+| switch.swift:24:3:25:5 | case ... | 1 | switch.swift:24:24:24:24 | b |
+| switch.swift:26:3:27:5 | case ... | 0 | switch.swift:26:17:26:17 | c |
+| switch.swift:26:3:27:5 | case ... | 1 | switch.swift:26:24:26:24 | d |
+| switch.swift:28:3:29:5 | case ... | 0 | switch.swift:28:22:28:22 | e |
+| switch.swift:33:3:39:5 | case ... | 0 | switch.swift:33:17:33:17 | a |

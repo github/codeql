@@ -7,7 +7,7 @@ import semmle.code.java.frameworks.javaee.jsf.JSFFacesContextXML
 /**
  * A method that is visible to faces, if the instance type is visible to faces.
  */
-library class FacesVisibleMethod extends Method {
+class FacesVisibleMethod extends Method {
   FacesVisibleMethod() { this.isPublic() and not this.isStatic() }
 }
 

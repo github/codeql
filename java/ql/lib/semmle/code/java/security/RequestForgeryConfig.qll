@@ -20,7 +20,7 @@ deprecated class RequestForgeryConfiguration extends TaintTracking::Configuratio
     // Exclude results of remote HTTP requests: fetching something else based on that result
     // is no worse than following a redirect returned by the remote server, and typically
     // we're requesting a resource via https which we trust to only send us to safe URLs.
-    not source.asExpr().(MethodAccess).getCallee() instanceof UrlConnectionGetInputStreamMethod
+    not source.asExpr().(MethodCall).getCallee() instanceof UrlConnectionGetInputStreamMethod
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RequestForgerySink }
@@ -37,11 +37,11 @@ deprecated class RequestForgeryConfiguration extends TaintTracking::Configuratio
  */
 module RequestForgeryConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource and
+    source instanceof ThreatModelFlowSource and
     // Exclude results of remote HTTP requests: fetching something else based on that result
     // is no worse than following a redirect returned by the remote server, and typically
     // we're requesting a resource via https which we trust to only send us to safe URLs.
-    not source.asExpr().(MethodAccess).getCallee() instanceof UrlConnectionGetInputStreamMethod
+    not source.asExpr().(MethodCall).getCallee() instanceof UrlConnectionGetInputStreamMethod
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RequestForgerySink }

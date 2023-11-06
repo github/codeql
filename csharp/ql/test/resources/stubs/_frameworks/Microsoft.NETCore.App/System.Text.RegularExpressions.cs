@@ -43,6 +43,7 @@ namespace System
                 public object SyncRoot { get => throw null; }
                 public System.Text.RegularExpressions.Capture this[int i] { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = false)]
             public sealed class GeneratedRegexAttribute : System.Attribute
             {
                 public GeneratedRegexAttribute(string pattern) => throw null;

@@ -47,7 +47,7 @@ deprecated class PolynomialRedosConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or
     node.getType() instanceof BoxedType or
-    node.asExpr().(MethodAccess).getMethod() instanceof LengthRestrictedMethod
+    node.asExpr().(MethodCall).getMethod() instanceof LengthRestrictedMethod
   }
 }
 
@@ -66,7 +66,7 @@ deprecated predicate hasPolynomialReDoSResult(
 
 /** A configuration for Polynomial ReDoS queries. */
 module PolynomialRedosConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(SuperlinearBackTracking::PolynomialBackTrackingTerm regexp |
@@ -77,7 +77,7 @@ module PolynomialRedosConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or
     node.getType() instanceof BoxedType or
-    node.asExpr().(MethodAccess).getMethod() instanceof LengthRestrictedMethod
+    node.asExpr().(MethodCall).getMethod() instanceof LengthRestrictedMethod
   }
 }
 

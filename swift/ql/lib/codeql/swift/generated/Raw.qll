@@ -271,6 +271,13 @@ module Raw {
      * Gets the error of this unspecified element.
      */
     string getError() { unspecified_elements(this, _, result) }
+
+    /**
+     * Gets the `index`th child of this unspecified element (0-based).
+     *
+     * These will be present only in certain downgraded databases.
+     */
+    AstNode getChild(int index) { unspecified_element_children(this, index, result) }
   }
 
   /**
@@ -2447,9 +2454,9 @@ module Raw {
     override string toString() { result = "NamedPattern" }
 
     /**
-     * Gets the name of this named pattern.
+     * Gets the variable declaration of this named pattern.
      */
-    string getName() { named_patterns(this, result) }
+    VarDecl getVarDecl() { named_patterns(this, result) }
   }
 
   /**
@@ -2602,11 +2609,6 @@ module Raw {
     override string toString() { result = "CaseStmt" }
 
     /**
-     * Gets the body of this case statement.
-     */
-    Stmt getBody() { case_stmts(this, result) }
-
-    /**
      * Gets the `index`th label of this case statement (0-based).
      */
     CaseLabelItem getLabel(int index) { case_stmt_labels(this, index, result) }
@@ -2615,6 +2617,11 @@ module Raw {
      * Gets the `index`th variable of this case statement (0-based).
      */
     VarDecl getVariable(int index) { case_stmt_variables(this, index, result) }
+
+    /**
+     * Gets the body of this case statement.
+     */
+    Stmt getBody() { case_stmts(this, result) }
   }
 
   /**
@@ -2771,12 +2778,7 @@ module Raw {
     /**
      * Gets the pattern of this for each statement.
      */
-    Pattern getPattern() { for_each_stmts(this, result, _, _) }
-
-    /**
-     * Gets the sequence of this for each statement.
-     */
-    Expr getSequence() { for_each_stmts(this, _, result, _) }
+    Pattern getPattern() { for_each_stmts(this, result, _) }
 
     /**
      * Gets the where of this for each statement, if it exists.
@@ -2784,9 +2786,19 @@ module Raw {
     Expr getWhere() { for_each_stmt_wheres(this, result) }
 
     /**
+     * Gets the iteratorvar of this for each statement, if it exists.
+     */
+    PatternBindingDecl getIteratorVar() { for_each_stmt_iterator_vars(this, result) }
+
+    /**
+     * Gets the nextcall of this for each statement, if it exists.
+     */
+    Expr getNextCall() { for_each_stmt_next_calls(this, result) }
+
+    /**
      * Gets the body of this for each statement.
      */
-    BraceStmt getBody() { for_each_stmts(this, _, _, result) }
+    BraceStmt getBody() { for_each_stmts(this, _, result) }
   }
 
   /**
@@ -2885,6 +2897,12 @@ module Raw {
 
     /**
      * Gets the canonical type of this type.
+     *
+     * This is the unique type we get after resolving aliases and desugaring. For example, given
+     * ```
+     * typealias MyInt = Int
+     * ```
+     * then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
      */
     Type getCanonicalType() { types(this, _, result) }
   }

@@ -184,13 +184,13 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.(MapMethod).hasName(["elements", "search", "searchEntries", "searchValues"])
 }
 
-private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
+private predicate qualifierToMethodStep(Expr tracked, MethodCall sink) {
   taintPreservingQualifierToMethod(sink.getMethod()) and
   tracked = sink.getQualifier()
 }
 
 private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
-  exists(MethodAccess ma, CollectionMethod method |
+  exists(MethodCall ma, CollectionMethod method |
     method = ma.getMethod() and
     (
       // java.util.Vector
@@ -350,7 +350,7 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
 }
 
 private predicate argToQualifierStep(Expr tracked, Expr sink) {
-  exists(Method m, int i, MethodAccess ma |
+  exists(Method m, int i, MethodCall ma |
     taintPreservingArgumentToQualifier(m, i) and
     ma.getMethod() = m and
     tracked = ma.getArgument(i) and
@@ -359,7 +359,7 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
 }
 
 /** Access to a method that passes taint from an argument. */
-private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
+private predicate argToMethodStep(Expr tracked, MethodCall sink) {
   exists(Method m |
     m = sink.getMethod() and
     (
@@ -383,7 +383,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  * between arguments.
  */
 private predicate argToArgStep(Expr tracked, Expr sink) {
-  exists(MethodAccess ma, Method method, int input, int output |
+  exists(MethodCall ma, Method method, int input, int output |
     ma.getMethod() = method and
     ma.getArgument(input) = tracked and
     ma.getArgument(output) = sink and
