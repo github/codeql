@@ -1,7 +1,6 @@
 import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
 
-const unsafe = "unsafe"
 open({
   filename: 'database.sqlite',
   driver: sqlite3.Database
@@ -12,7 +11,7 @@ open({
   db.all('SELECT name,id FROM table1 WHERE id > 5' + " OR id = 1").then(results => {
     console.log(results)
   })
-  db.run('INSERT INTO table1 (name,id) VALUES (' + `"${unsafe}"` + ',100)').then(results => {
+  db.run('SELECT name,id FROM table1 WHERE id > 5').then(results => {
     console.log(results)
   })
   db.prepare('SELECT name,id FROM table1 WHERE id > 5'
