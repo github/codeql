@@ -1,12 +1,19 @@
-# Please notice that any bazel targets and definitions in this repository are currently experimental
-# and for internal use only.
+#TODO this is a mess that can only be properly solved by migrating to bzlmod
 
 workspace(name = "codeql")
 
-load("//misc/bazel:workspace.bzl", "codeql_workspace")
+load("//misc/bazel/workspace:1.bzl", "codeql_workspace_1")
 
-codeql_workspace()
+codeql_workspace_1()
 
-load("//misc/bazel:workspace_deps.bzl", "codeql_workspace_deps")
+load("//misc/bazel/workspace:2.bzl", "codeql_workspace_2")
 
-codeql_workspace_deps()
+codeql_workspace_2()
+
+load("//misc/bazel/workspace:3.bzl", "codeql_workspace_3")
+
+codeql_workspace_3()
+
+load("//misc/bazel/workspace:4.bzl", "codeql_workspace_4")
+
+codeql_workspace_4()

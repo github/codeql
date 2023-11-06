@@ -1,3 +1,4 @@
+# DEPRECATED, leaving here while internal repository is being updated
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 load("@rules_python//python:pip.bzl", "pip_install")
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
