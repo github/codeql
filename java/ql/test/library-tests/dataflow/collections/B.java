@@ -2014,5 +2014,25 @@ public class B {
       SequencedSet out = null;
       SequencedSet in = storeElementNavSet(source()); out = in.reversed(); sink(readElement(out)); // $ hasValueFlow
     }
+    {
+      // ["java.util", "Collections", False, "unmodifiableSequencedCollection", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      SequencedCollection out = null;
+      SequencedCollection in = storeElementList(source()); out = Collections.unmodifiableSequencedCollection(in); sink(readElement(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "Collections", False, "unmodifiableSequencedMap", "", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      SequencedMap out = null;
+      SequencedMap in = (SequencedMap)storeMapKey(source()); out = Collections.unmodifiableSequencedMap(in); sink(readMapKey(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "Collections", False, "unmodifiableSequencedMap", "", "", "Argument[0].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      SequencedMap out = null;
+      SequencedMap in = (SequencedMap)storeMapValue(source()); out = Collections.unmodifiableSequencedMap(in); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // ["java.util", "Collections", False, "unmodifiableSequencedSet", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      SequencedSet out = null;
+      SequencedSet in = storeElementNavSet(source()); out = Collections.unmodifiableSequencedSet(in); sink(readElement(out)); // $ hasValueFlow
+    }
   }
 }
