@@ -1,3 +1,4 @@
+testFailures
 edges
 | Types.cs:7:21:7:25 | this : D | Types.cs:7:32:7:35 | this access : D |
 | Types.cs:7:32:7:35 | this access : D | Types.cs:16:30:16:30 | this : D |
