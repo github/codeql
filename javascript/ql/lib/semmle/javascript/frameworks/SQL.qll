@@ -280,11 +280,7 @@ private module Sqlite3 {
 private module Sqlite {
   /** Gets an expression that constructs or returns a Sqlite database instance. */
   API::Node database() {
-    result =
-      [
-        API::moduleImport("sqlite").getMember("open").getReturn(),
-        API::moduleImport("sqlite").getMember("open").getReturn().getPromised()
-      ]
+    result = API::moduleImport("sqlite").getMember("open").getReturn().getPromised()
   }
 
   /** A call to a Sqlite query method. */
@@ -293,7 +289,7 @@ private module Sqlite {
       this = database().getMember(["all", "each", "exec", "get", "prepare", "run"]).getACall()
     }
 
-    override DataFlow::Node getAResult() { result = this.getReturn().asSource() }
+    override DataFlow::Node getAResult() { result = this }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
@@ -308,21 +304,26 @@ private module Sqlite {
  * Provides classes modeling the `better-sqlite3` package.
  */
 private module BetterSqlite3 {
-  /** Gets an expression that constructs or returns a better-sqlite3 database instance. */
+  /**
+   * Gets an expression that constructs or returns a `better-sqlite3` database instance.
+   */
   API::Node database() {
-    result =
-      [
-        API::moduleImport("better-sqlite3").getMember("Database"),
-        API::moduleImport("better-sqlite3").getReturn()
-      ]
+    // initialDatabaseInstance is an instance of Database that constructed and instantiated in the first step of Database initialization,
+    // not from a return value of the other library functions
+    exists(API::Node initialDatabaseInstance |
+      initialDatabaseInstance =
+        [
+          API::moduleImport("better-sqlite3").getInstance(),
+          API::moduleImport("better-sqlite3").getReturn()
+        ]
+    |
+      result = [initialDatabaseInstance, initialDatabaseInstance.getMember("exec").getReturn()]
+    )
   }
 
   /** A call to a better-sqlite3 query method. */
-  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() {
-      this = database().getMember(["exec", "prepare"]).getACall() or
-      this = database().getMember("exec").getReturn().getMember("prepare").getACall()
-    }
+  private class QueryCall extends DatabaseAccess, API::CallNode {
+    QueryCall() { this = database().getMember(["exec", "prepare"]).getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
