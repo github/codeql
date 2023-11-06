@@ -83,3 +83,24 @@ func AllowAllTrue() {
 	})
 	router.Run()
 }
+
+func NoVariableVulnerable() {
+	router := gin.Default()
+	// CORS for https://foo.com origin, allowing:
+	// - PUT and PATCH methods
+	// - Origin header
+	// - Credentials share
+	// - Preflight requests cached for 12 hours
+	router.Use(cors.New(cors.Config{
+		AllowMethods:     []string{"GET", "POST"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowOrigins:     []string{"null", "https://foo.com"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+	router.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "hello world")
+	})
+	router.Run()
+}

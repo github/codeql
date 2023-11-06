@@ -105,11 +105,16 @@ predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOriginHW) {
   exists(GinCors::AllowCredentialsWrite allowCredentialsGin |
     allowCredentialsGin.getExpr().getBoolValue() = true
   |
-    //flow only goes in one direction so fix this before PR
     allowCredentialsGin.getConfig() = allowOriginHW.(GinCors::AllowOriginsWrite).getConfig() and
     not exists(GinCors::AllowAllOriginsWrite allowAllOrigins |
       allowAllOrigins.getExpr().getBoolValue() = true and
       allowCredentialsGin.getConfig() = allowAllOrigins.getConfig()
+    )
+    or
+    allowCredentialsGin.getBase() = allowOriginHW.(GinCors::AllowOriginsWrite).getBase() and
+    not exists(GinCors::AllowAllOriginsWrite allowAllOrigins |
+      allowAllOrigins.getExpr().getBoolValue() = true and
+      allowCredentialsGin.getBase() = allowAllOrigins.getBase()
     )
   )
 }
