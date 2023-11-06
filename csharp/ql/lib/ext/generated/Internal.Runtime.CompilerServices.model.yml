@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "Add<>", "(System.Void*,System.Int32)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "Add<>", "(T,System.Int32)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "Add<>", "(T,System.IntPtr)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "AddByteOffset<>", "(T,System.IntPtr)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "AreSame<>", "(T,T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "As<,>", "(TFrom)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "As<>", "(System.Object)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "AsPointer<>", "(T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "AsRef<>", "(System.Void*)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "AsRef<>", "(T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "ByteOffset<>", "(T,T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "InitBlockUnaligned", "(System.Byte,System.Byte,System.UInt32)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "IsAddressGreaterThan<>", "(T,T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "IsAddressLessThan<>", "(T,T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "IsNullRef<>", "(T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "NullRef<>", "()", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "Read<>", "(System.Byte)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "Read<>", "(System.Void*)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "ReadUnaligned<>", "(System.Byte)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "ReadUnaligned<>", "(System.Void*)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "SizeOf<>", "()", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "SkipInit<>", "(T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "Write<>", "(System.Byte,T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "Write<>", "(System.Void*,T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "WriteUnaligned<>", "(System.Byte,T)", "summary", "df-generated"]
+      - ["Internal.Runtime.CompilerServices", "Unsafe", "WriteUnaligned<>", "(System.Void*,T)", "summary", "df-generated"]

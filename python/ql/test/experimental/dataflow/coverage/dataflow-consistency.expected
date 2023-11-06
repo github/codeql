@@ -25,18 +25,5 @@ uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
 uniqueContentApprox
 identityLocalStep
-| datamodel.py:84:15:84:15 | ControlFlowNode for x | Node steps to itself |
-| datamodel.py:166:11:166:11 | ControlFlowNode for x | Node steps to itself |
-| test.py:103:10:103:15 | ControlFlowNode for SOURCE | Node steps to itself |
-| test.py:130:10:130:15 | ControlFlowNode for SOURCE | Node steps to itself |
-| test.py:162:13:162:18 | ControlFlowNode for SOURCE | Node steps to itself |
-| test.py:167:13:167:18 | ControlFlowNode for SOURCE | Node steps to itself |
-| test.py:216:10:216:15 | ControlFlowNode for SOURCE | Node steps to itself |
-| test.py:242:9:242:12 | ControlFlowNode for SINK | Node steps to itself |
-| test.py:673:9:673:12 | ControlFlowNode for SINK | Node steps to itself |
-| test.py:674:9:674:14 | ControlFlowNode for SINK_F | Node steps to itself |
-| test.py:682:9:682:12 | ControlFlowNode for SINK | Node steps to itself |
-| test.py:690:9:690:12 | ControlFlowNode for SINK | Node steps to itself |
-| test.py:696:5:696:8 | ControlFlowNode for SINK | Node steps to itself |
 missingArgumentCall
 multipleArgumentCall

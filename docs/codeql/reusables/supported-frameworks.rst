@@ -191,6 +191,7 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    :widths: auto
 
    Name, Category
+   AWS Lambda, Web framework
    aiohttp.web, Web framework
    Django, Web framework
    djangorestframework, Web framework

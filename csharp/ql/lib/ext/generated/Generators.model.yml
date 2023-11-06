@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Generators", "EventSourceGenerator", "Execute", "(Microsoft.CodeAnalysis.GeneratorExecutionContext)", "summary", "df-generated"]
+      - ["Generators", "EventSourceGenerator", "Initialize", "(Microsoft.CodeAnalysis.GeneratorInitializationContext)", "summary", "df-generated"]

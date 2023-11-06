@@ -152,11 +152,15 @@ signature module Semantic {
     Expr asExpr();
 
     predicate directlyControls(BasicBlock controlled, boolean branch);
+
+    predicate isEquality(Expr e1, Expr e2, boolean polarity);
   }
 
   predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2);
 
   predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
+
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
 
   class Type;
 
@@ -226,7 +230,7 @@ signature module SignAnalysisSig<Semantic Sem> {
 signature module ModulusAnalysisSig<Semantic Sem> {
   class ModBound;
 
-  predicate semExprModulus(Sem::Expr e, ModBound b, int val, int mod);
+  predicate exprModulus(Sem::Expr e, ModBound b, int val, int mod);
 }
 
 signature module DeltaSig {
@@ -356,7 +360,7 @@ signature module OverflowSig<Semantic Sem, DeltaSig D> {
 module RangeStage<
   LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
   OverflowSig<Sem, D> OverflowParam, LangSig<Sem, D> LangParam, SignAnalysisSig<Sem> SignAnalysis,
-  ModulusAnalysisSig<Sem> ModulusAnalysis, UtilSig<Sem, D> UtilParam>
+  ModulusAnalysisSig<Sem> ModulusAnalysisParam, UtilSig<Sem, D> UtilParam>
 {
   private import Bounds
   private import LangParam
@@ -364,7 +368,7 @@ module RangeStage<
   private import D
   private import OverflowParam
   private import SignAnalysis
-  private import ModulusAnalysis
+  private import ModulusAnalysisParam
   private import internal.RangeUtils::MakeUtils<Sem, D>
 
   /**
@@ -537,8 +541,8 @@ module RangeStage<
       // strict then the strengthening amount is instead `k - 1` modulo `mod`:
       // `x < y` means `0 <= y - x - 1 =(mod) k - 1` so `k - 1 <= y - x - 1` and
       // thus `k - 1 < y - x` with `0 <= k - 1 < mod`.
-      semExprModulus(comp.getLesserOperand(), b, v1, mod1) and
-      semExprModulus(comp.getGreaterOperand(), b, v2, mod2) and
+      exprModulus(comp.getLesserOperand(), b, v1, mod1) and
+      exprModulus(comp.getGreaterOperand(), b, v2, mod2) and
       mod = mod1.gcd(mod2) and
       mod != 1 and
       (testIsTrue = true or testIsTrue = false) and

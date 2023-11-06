@@ -7,7 +7,7 @@ private import dotnet
 /**
  * A type container. Either a namespace (`Namespace`) or a type (`Type`).
  */
-class TypeContainer extends DotNet::NamedElement, Element, @type_container { }
+class TypeContainer extends Declaration, @type_container { }
 
 /**
  * A namespace, for example
@@ -28,6 +28,10 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
   override TypeContainer getChild(int i) {
     i = 0 and
     parent_namespace(result, this)
+  }
+
+  override predicate hasQualifiedName(string qualifier, string name) {
+    DotNet::Namespace.super.hasQualifiedName(qualifier, name)
   }
 
   /**

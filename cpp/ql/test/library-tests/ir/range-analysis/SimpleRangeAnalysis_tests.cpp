@@ -1077,9 +1077,8 @@ void mask_at_start(int len) {
   }
   // Do something with leftOver
   for (int index = leftOver; index < len; index+=64) {
-    range(index);  // $ range="<=InitializeParameter: len-1"
-    // This should be in bounds
-    range(index + 16); // $ range="<=InitializeParameter: len+15" range="==Phi: index+16" MISSING: range="<=InitializeParameter: len-1"
+    range(index);  // $ range="<=InitializeParameter: len-64" range=">=Store: ... & ... | Store: leftOver+0"
+    range(index + 63); // $ range="<=InitializeParameter: len-1" range="==Phi: index+63" range=">=Store: ... & ... | Store: leftOver+63"
   }
 }
 
@@ -1095,8 +1094,7 @@ void mod_at_start(int len) {
   }
   // Do something with leftOver
   for (int index = leftOver; index < len; index+=64) {
-    range(index);  // $ range="<=InitializeParameter: len-1"
-    // This should be in bounds 
-    range(index + 16); // $ range="<=InitializeParameter: len+15" range="==Phi: index+16" MISSING: range="<=InitializeParameter: len-49"
+    range(index);  // $ range="<=InitializeParameter: len-64" range=">=Store: ... % ... | Store: leftOver+0"
+    range(index + 63); // $ range="<=InitializeParameter: len-1" range="==Phi: index+63" range=">=Store: ... % ... | Store: leftOver+63"
   }
 }
