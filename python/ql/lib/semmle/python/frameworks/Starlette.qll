@@ -175,19 +175,4 @@ module Starlette {
 
     override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "path").asSink() }
   }
-
-  /**
-   * A call to the `baize.asgi.FileResponse` constructor as a sink for Filesystem access.
-   *
-   * it is not contained to Starlette source code but it is mentioned in documents as an alternative to Starlette FileResponse
-   */
-  class BaizeFileResponseCall extends FileSystemAccess::Range, API::CallNode {
-    BaizeFileResponseCall() {
-      this = API::moduleImport("baize").getMember("asgi").getMember("FileResponse").getACall()
-    }
-
-    override DataFlow::Node getAPathArgument() {
-      result = this.getParameter(0, "filepath").asSink()
-    }
-  }
 }
