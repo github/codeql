@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Microsoft.CodeAnalysis;
 
@@ -30,6 +31,7 @@ namespace Semmle.Extraction
     /// <typeparam name="TSymbol">The type of the symbol.</typeparam>
     public abstract class CachedEntity<TSymbol> : CachedEntity where TSymbol : notnull
     {
+        [NotNull]
         public TSymbol Symbol { get; }
 
         protected CachedEntity(Context context, TSymbol symbol) : base(context)
@@ -52,7 +54,7 @@ namespace Semmle.Extraction
 
         public override bool NeedsPopulation { get; }
 
-        public override int GetHashCode() => Symbol is null ? 0 : Symbol.GetHashCode();
+        public override int GetHashCode() => Symbol.GetHashCode();
 
         public override bool Equals(object? obj)
         {
