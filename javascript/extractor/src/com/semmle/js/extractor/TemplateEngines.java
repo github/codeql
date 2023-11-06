@@ -14,7 +14,7 @@ public class TemplateEngines {
 
   /** Pattern for a template tag whose contents should be parsed as an expression */
   public static final Pattern TEMPLATE_EXPR_OPENING_TAG =
-      Pattern.compile("^(?:\\{\\{\\{?|<%[-=])"); // {{, {{{, <%=, <%-
+      Pattern.compile("^(?:\\{\\{[{!]?|<%[-=])"); // {{, {{{, {{!, <%=, <%-
 
   /**
    * Pattern matching a template tag from a supported template engine.
