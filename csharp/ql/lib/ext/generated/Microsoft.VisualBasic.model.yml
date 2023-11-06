@@ -37,7 +37,7 @@ extensions:
       - ["Microsoft.VisualBasic", "ComClassAttribute", "set_InterfaceShadows", "(System.Boolean)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "ControlChars", "ControlChars", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Conversion", "CTypeDynamic", "(System.Object,System.Type)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic", "Conversion", "CTypeDynamic<>", "(System.Object)", "summary", "df-generated"]
+      - ["Microsoft.VisualBasic", "Conversion", "CTypeDynamic<TargetType>", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Conversion", "ErrorToString", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Conversion", "ErrorToString", "(System.Int32)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Conversion", "Fix", "(System.Decimal)", "summary", "df-generated"]

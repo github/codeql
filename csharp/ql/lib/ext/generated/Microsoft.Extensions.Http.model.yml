@@ -23,4 +23,4 @@ extensions:
       - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", "get_Services", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", "set_Name", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", "set_PrimaryHandler", "(System.Net.Http.HttpMessageHandler)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Http", "ITypedHttpClientFactory<>", "CreateClient", "(System.Net.Http.HttpClient)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http", "ITypedHttpClientFactory<TClient>", "CreateClient", "(System.Net.Http.HttpClient)", "summary", "df-generated"]

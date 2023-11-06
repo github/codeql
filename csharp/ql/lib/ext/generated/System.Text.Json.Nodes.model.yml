@@ -3,8 +3,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Text.Json.Nodes", "JsonArray", False, "Add<>", "(T)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Text.Json.Nodes", "JsonArray", False, "Add<>", "(T)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonArray", False, "Add<T>", "(T)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonArray", False, "Add<T>", "(T)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonArray", False, "Create", "(System.Text.Json.JsonElement,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonArray", False, "JsonArray", "(System.Text.Json.Nodes.JsonNodeOptions,System.Text.Json.Nodes.JsonNode[])", "", "Argument[this]", "Argument[1].Element", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonArray", False, "JsonArray", "(System.Text.Json.Nodes.JsonNode[])", "", "Argument[this]", "Argument[0].Element", "taint", "df-generated"]
@@ -18,7 +18,7 @@ extensions:
       - ["System.Text.Json.Nodes", "JsonNode", False, "get_Root", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", False, "set_Parent", "(System.Text.Json.Nodes.JsonNode)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonObject", False, "Create", "(System.Text.Json.JsonElement,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Text.Json.Nodes", "JsonValue", False, "Create<>", "(T,System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonValue", False, "Create<T>", "(T,System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -32,7 +32,7 @@ extensions:
       - ["System.Text.Json.Nodes", "JsonArray", "get_Count", "()", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonArray", "get_IsReadOnly", "()", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", "GetPath", "()", "summary", "df-generated"]
-      - ["System.Text.Json.Nodes", "JsonNode", "GetValue<>", "()", "summary", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonNode", "GetValue<T>", "()", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", "Parse", "(System.IO.Stream,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>,System.Text.Json.JsonDocumentOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", "Parse", "(System.ReadOnlySpan<System.Byte>,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>,System.Text.Json.JsonDocumentOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", "Parse", "(System.String,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>,System.Text.Json.JsonDocumentOptions)", "summary", "df-generated"]
@@ -86,5 +86,5 @@ extensions:
       - ["System.Text.Json.Nodes", "JsonValue", "Create", "(System.UInt16,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonValue", "Create", "(System.UInt32,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonValue", "Create", "(System.UInt64,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "summary", "df-generated"]
-      - ["System.Text.Json.Nodes", "JsonValue", "Create<>", "(T,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "summary", "df-generated"]
-      - ["System.Text.Json.Nodes", "JsonValue", "TryGetValue<>", "(T)", "summary", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonValue", "Create<T>", "(T,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "summary", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonValue", "TryGetValue<T>", "(T)", "summary", "df-generated"]

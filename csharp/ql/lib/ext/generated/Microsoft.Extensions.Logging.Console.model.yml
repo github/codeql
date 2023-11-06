@@ -12,7 +12,7 @@ extensions:
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatter", "ConsoleFormatter", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatter", "Write<>", "(Microsoft.Extensions.Logging.Abstractions.LogEntry<TState>,Microsoft.Extensions.Logging.IExternalScopeProvider,System.IO.TextWriter)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatter", "Write<TState>", "(Microsoft.Extensions.Logging.Abstractions.LogEntry<TState>,Microsoft.Extensions.Logging.IExternalScopeProvider,System.IO.TextWriter)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatter", "get_Name", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatterOptions", "ConsoleFormatterOptions", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatterOptions", "get_IncludeScopes", "()", "summary", "df-generated"]

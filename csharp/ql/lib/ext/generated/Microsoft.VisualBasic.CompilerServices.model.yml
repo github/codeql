@@ -31,7 +31,7 @@ extensions:
       - ["Microsoft.VisualBasic.CompilerServices", "Conversions", "ToDecimal", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "Conversions", "ToDouble", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "Conversions", "ToDouble", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic.CompilerServices", "Conversions", "ToGenericParameter<>", "(System.Object)", "summary", "df-generated"]
+      - ["Microsoft.VisualBasic.CompilerServices", "Conversions", "ToGenericParameter<T>", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "Conversions", "ToInteger", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "Conversions", "ToInteger", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.CompilerServices", "Conversions", "ToLong", "(System.Object)", "summary", "df-generated"]

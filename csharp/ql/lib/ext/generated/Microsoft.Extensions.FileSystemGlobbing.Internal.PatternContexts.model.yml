@@ -3,7 +3,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<>", False, "PushDataFrame", "(TFrame)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", False, "PushDataFrame", "(TFrame)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinear", False, "CalculateStem", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinear+FrameData", False, "get_Stem", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRagged", False, "CalculateStem", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -12,11 +12,11 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<>", "IsStackEmpty", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<>", "PopDirectory", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<>", "PushDirectory", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<>", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<>", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", "IsStackEmpty", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", "PopDirectory", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", "PushDirectory", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinear", "IsLastSegment", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinear", "PatternContextLinear", "(Microsoft.Extensions.FileSystemGlobbing.Internal.ILinearPattern)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinear", "PushDirectory", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
