@@ -3,16 +3,14 @@ from create_database_utils import *
 from diagnostics_test_utils import *
 
 # Ensure we're using an old Java version that won't work with Gradle
-for java_home in ["JAVA_HOME_8_X64", "JAVA_HOME_8_arm64", "JAVA_HOME_8_ARM64"]:
-  if java_home in os.environ:
-    os.environ["JAVA_HOME"] = os.environ[java_home]
-    sep = ";" if platform.system() == "Windows" else ":"
-    os.environ["PATH"] = "".join([os.path.join(os.environ["JAVA_HOME"], "bin"), sep, os.environ["PATH"]])
-    break
+if "JAVA_HOME_8_X64" in os.environ:
+  os.environ["JAVA_HOME"] = os.environ["JAVA_HOME_8_X64"]
+  sep = ";" if platform.system() == "Windows" else ":"
+  os.environ["PATH"] = "".join([os.path.join(os.environ["JAVA_HOME"], "bin"), sep, os.environ["PATH"]])
 
-# Ensure the autobuilder *doesn't* see newer Java versions, which it could switch to in order to build the project:
-for k in os.environ:
-  if re.match(r"^JAVA_HOME_\d\d_", k):
+# Ensure the autobuilder *doesn't* see Java 11 or 17, which it could switch to in order to build the project:
+for k in ["JAVA_HOME_11_X64", "JAVA_HOME_17_X64"]:
+  if k in os.environ:
     del os.environ[k]
 
 # Use a custom, empty toolchains.xml file so the autobuilder doesn't see any Java versions that may be
