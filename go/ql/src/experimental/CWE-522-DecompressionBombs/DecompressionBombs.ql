@@ -49,11 +49,12 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     // here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
-    exists(Function f | f.hasQualifiedName("io", "CopyN") |
-      node = f.getACall().getArgument(1) and
-      TaintTracking::localExprTaint(f.getACall().getResult(0).asExpr(),
-        // only >=, <=,>,<
-        any(RelationalComparisonExpr rce).getAnOperand())
+    exists(Function f, DataFlow::CallNode cn |
+      f.hasQualifiedName("io", "CopyN") and cn = f.getACall()
+    |
+      node = cn.getArgument(1) and
+      TaintTracking::localTaint(cn.getResult(0),
+        any(DataFlow::RelationalComparisonNode rcn).getAnOperand())
     )
   }
 }
