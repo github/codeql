@@ -41,43 +41,54 @@ DataFlowType getContentType(ContentSet c) {
 
 /** Gets the type of the parameter at the given position. */
 DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
-  result.asType() = c.getParam(pos.(PositionalParameterPosition).getIndex()).getType().getCanonicalType()
+  result = getDataFlowType(c.getParam(pos.(PositionalParameterPosition).getIndex()).getType())
   or
   pos instanceof ThisParameterPosition and
-  result.asType() = c.getSelfParam().getType().getCanonicalType()
+  result = getDataFlowType(c.getSelfParam().getType())
 }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c]
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
   rk instanceof NormalReturnKind and
-  result.asType() = c.getResultType().getCanonicalType()
+  result = getDataFlowType(c.getResultType())
   or
   exists(ParamDecl p |
     p = c.getParam(rk.(ParamReturnKind).getIndex()) and
 //    p.isInout() and
-    result.asType() = p.getType().getCanonicalType()
+    result = getDataFlowType(p.getType())
   )
   or
   rk.(ParamReturnKind).getIndex() = -1 and
 //  c.getSelfParam().isInout() and
-  result.asType() = c.getSelfParam().getType().getCanonicalType()
+  result = getDataFlowType(c.getSelfParam().getType())
 }
 
 /**
  * Gets the type of the parameter matching arguments at position `pos` in a
  * synthesized call that targets a callback of type `t`.
  */
-DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { any() }
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
+  exists(t) and 
+  exists(pos) and
+  result.asType() instanceof AnyType
+}
 
 /**
  * Gets the return type of kind `rk` in a synthesized call that targets a
  * callback of type `t`.
  */
-DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { any() }
+DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
+  exists(t) and
+  exists(rk) and
+  result.asType() instanceof AnyType
+}
 
 /** Gets the type of synthetic global `sg`. */
-DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }
+DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) {
+  exists(sg) and
+  result.asType() instanceof AnyType
+}
 
 /**
  * Holds if an external flow summary exists for `c` with input specification
