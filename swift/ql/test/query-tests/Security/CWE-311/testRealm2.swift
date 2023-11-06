@@ -15,7 +15,7 @@ class MyRealmSwiftObject3 : Object {
 
 func test1(o: MyRealmSwiftObject3, myHarmless: String, myPassword : String) {
 	// ...
-	o.data = myPassword // BAD [NOT DETECTED]
+	o.data = myPassword // BAD
 	o.data = myHarmless
 	// ...
 }
