@@ -19,6 +19,14 @@ public class WeakRandomCookies extends HttpServlet {
         int c = r.nextInt();
         // BAD: The cookie value may be predictable.
         Cookie cookie = new Cookie("name", Integer.toString(c)); // $hasWeakRandomFlow
+        cookie.setValue(Integer.toString(c)); // $hasWeakRandomFlow
+
+        io.netty.handler.codec.http.Cookie nettyCookie =
+                new io.netty.handler.codec.http.DefaultCookie("name", Integer.toString(c)); // $hasWeakRandomFlow
+        nettyCookie.setValue(Integer.toString(c)); // $hasWeakRandomFlow
+        io.netty.handler.codec.http.cookie.Cookie nettyCookie2 =
+                new io.netty.handler.codec.http.cookie.DefaultCookie("name", Integer.toString(c)); // $hasWeakRandomFlow
+        nettyCookie2.setValue(Integer.toString(c)); // $hasWeakRandomFlow
 
         Encoder enc = null;
         int c2 = r.nextInt();
