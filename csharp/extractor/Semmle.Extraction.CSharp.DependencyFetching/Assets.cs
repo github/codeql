@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -29,21 +30,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Class needed for deserializing parts of an assets file.
         /// It holds information about a reference.
+        ///
+        /// Type carries the type of the reference.
+        /// We are only interested in package references.
+        ///
+        /// Compile holds information about the files needed for compilation.
+        /// However, if it is a .NET framework reference we assume that all files in the
+        /// package are needed for compilation.
         /// </summary>
-        private class ReferenceInfo
-        {
-            /// <summary>
-            /// This carries the type of the reference.
-            /// We are only interested in package references.
-            /// </summary>
-            public string Type { get; set; } = "";
-
-            /// <summary>
-            /// If not a .NET framework reference we assume that only the files mentioned
-            /// in the compile section are needed for compilation.
-            /// </summary>
-            public Dictionary<string, object> Compile { get; set; } = new();
-        }
+        private record class ReferenceInfo(string? Type, Dictionary<string, object>? Compile);
 
         /// <summary>
         /// Add the package dependencies from the assets file to dependencies.
@@ -74,7 +69,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// }
         /// 
         /// Returns dependencies
-        ///   Required = {
+        ///   RequiredPaths = {
         ///     "castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll",
         ///     "json.net/1.0.33/lib/netstandard2.0/Json.Net.dll"
         ///   }
@@ -83,7 +78,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///     "json.net"
         ///   }
         /// </summary>
-        private Dependencies AddPackageDependencies(JObject json, Dependencies dependencies)
+        private DependencyContainer AddPackageDependencies(JObject json, DependencyContainer dependencies)
         {
             // If there are more than one framework we need to pick just one.
             // To ensure stability we pick one based on the lexicographic order of
@@ -103,23 +98,29 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             // Find all the compile dependencies for each reference and
             // create the relative path to the dependency.
-            return references
-                .Aggregate(dependencies, (deps, r) =>
+            references
+                .ForEach(r =>
                 {
                     var info = r.Value;
                     var name = r.Key.ToLowerInvariant();
                     if (info.Type != "package")
                     {
-                        return deps;
+                        return;
                     }
 
                     // If this is a .NET framework reference then include everything.
-                    return netFrameworks.Any(framework => name.StartsWith(framework))
-                        ? deps.Add(name, "")
-                        : info
-                            .Compile
-                            .Aggregate(deps, (d, p) => d.Add(name, p.Key));
+                    if (netFrameworks.Any(framework => name.StartsWith(framework)))
+                    {
+                        dependencies.Add(name);
+                    }
+                    else
+                    {
+                        info.Compile?
+                            .ForEach(r => dependencies.Add(name, r.Key));
+                    }
                 });
+
+            return dependencies;
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// (together with used package information) required for compilation.
         /// </summary>
         /// <returns>True if parsing succeeds, otherwise false.</returns>
-        public bool TryParse(string json, Dependencies dependencies)
+        public bool TryParse(string json, DependencyContainer dependencies)
         {
             try
             {
@@ -142,15 +143,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public static Dependencies GetCompilationDependencies(ProgressMonitor progressMonitor, IEnumerable<string> assets)
+        public static DependencyContainer GetCompilationDependencies(ProgressMonitor progressMonitor, IEnumerable<string> assets)
         {
             var parser = new Assets(progressMonitor);
-            return assets.Aggregate(new Dependencies(), (dependencies, asset) =>
+            var dependencies = new DependencyContainer();
+            assets.ForEach(asset =>
             {
                 var json = File.ReadAllText(asset);
                 parser.TryParse(json, dependencies);
-                return dependencies;
             });
+            return dependencies;
         }
     }
 

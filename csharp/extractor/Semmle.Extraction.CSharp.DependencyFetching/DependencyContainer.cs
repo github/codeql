@@ -7,9 +7,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// <summary>
     /// Container class for dependencies found in the assets file.
     /// </summary>
-    internal class Dependencies
+    internal class DependencyContainer
     {
-        private readonly List<string> required = new();
+        private readonly List<string> requiredPaths = new();
         private readonly HashSet<string> usedPackages = new();
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .First();
 
         /// <summary>
-        /// Dependencies required for Compilation.
+        /// Paths to dependencies required for compilation.
         /// </summary>
-        public IEnumerable<string> Required => required;
+        public IEnumerable<string> RequiredPaths => requiredPaths;
 
         /// <summary>
         /// Packages that are used as a part of the required dependencies.
@@ -45,29 +45,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Add a dependency inside a package.
         /// </summary>
-        public Dependencies Add(string package, string dependency)
+        public void Add(string package, string dependency)
         {
             var p = package.Replace('/', Path.DirectorySeparatorChar);
             var d = dependency.Replace('/', Path.DirectorySeparatorChar);
 
             var path = Path.Combine(p, ParseFilePath(d));
-            required.Add(path);
+            requiredPaths.Add(path);
             usedPackages.Add(GetPackageName(p));
-
-            return this;
         }
 
         /// <summary>
         /// Add a dependency to an entire package
         /// </summary>
-        public Dependencies Add(string package)
+        public void Add(string package)
         {
             var p = package.Replace('/', Path.DirectorySeparatorChar);
 
-            required.Add(p);
+            requiredPaths.Add(p);
             usedPackages.Add(GetPackageName(p));
-
-            return this;
         }
     }
 }

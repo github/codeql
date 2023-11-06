@@ -14,17 +14,17 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new ProgressMonitor(new LoggerStub()));
             var json = assetsJson1;
-            var dependencies = new Dependencies();
+            var dependencies = new DependencyContainer();
 
             // Execute
             var success = assets.TryParse(json, dependencies);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(5, dependencies.Required.Count());
+            Assert.Equal(5, dependencies.RequiredPaths.Count());
             Assert.Equal(4, dependencies.UsedPackages.Count());
 
-            var normalizedPaths = dependencies.Required.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = dependencies.RequiredPaths.Select(FixExpectedPathOnWindows);
             // Required references
             Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll", normalizedPaths);
             Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core2.dll", normalizedPaths);
@@ -44,16 +44,16 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new ProgressMonitor(new LoggerStub()));
             var json = assetsJson2;
-            var dependencies = new Dependencies();
+            var dependencies = new DependencyContainer();
 
             // Execute
             var success = assets.TryParse(json, dependencies);
 
             // Verify
             Assert.True(success);
-            Assert.Equal(2, dependencies.Required.Count());
+            Assert.Equal(2, dependencies.RequiredPaths.Count());
 
-            var normalizedPaths = dependencies.Required.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = dependencies.RequiredPaths.Select(FixExpectedPathOnWindows);
             // Required references
             Assert.Contains("microsoft.netframework.referenceassemblies/1.0.3", normalizedPaths);
             Assert.Contains("microsoft.netframework.referenceassemblies.net48/1.0.3", normalizedPaths);
@@ -68,14 +68,14 @@ namespace Semmle.Extraction.Tests
             // Setup
             var assets = new Assets(new ProgressMonitor(new LoggerStub()));
             var json = "garbage data";
-            var dependencies = new Dependencies();
+            var dependencies = new DependencyContainer();
 
             // Execute
             var success = assets.TryParse(json, dependencies);
 
             // Verify
             Assert.False(success);
-            Assert.Empty(dependencies.Required);
+            Assert.Empty(dependencies.RequiredPaths);
         }
 
         private readonly string assetsJson1 = """
