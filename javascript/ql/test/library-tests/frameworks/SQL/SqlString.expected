@@ -1,9 +1,9 @@
-| better-sqlite3.js:4:25:4:27 | sql |
-| better-sqlite3.js:5:20:5:22 | sql |
-| better-sqlite3.js:6:14:6:16 | sql |
-| better-sqlite3.mjs:5:25:5:27 | sql |
-| better-sqlite3.mjs:6:20:6:22 | sql |
-| better-sqlite3.mjs:7:14:7:16 | sql |
+| better-sqlite3.js:6:23:6:25 | sql |
+| better-sqlite3.js:7:20:7:22 | sql |
+| better-sqlite3.js:8:14:8:16 | sql |
+| better-sqlite3.js:12:20:12:22 | sql |
+| better-sqlite3.js:13:17:13:19 | sql |
+| better-sqlite3.js:14:14:14:16 | sql |
 | mssql1.js:7:40:7:72 | select  ... e id =  |
 | mssql1.js:7:75:7:79 | value |
 | mssql1.js:10:19:10:30 | 'SELECT 123' |
