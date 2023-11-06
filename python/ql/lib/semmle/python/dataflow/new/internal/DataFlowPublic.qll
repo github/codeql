@@ -400,7 +400,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Scope getScope() { result = mod }
 
   override string toString() {
-    result = "ModuleVariableNode in " + mod.toString() + " for " + var.getId()
+    result = "ModuleVariableNode in " + concat( | | mod.toString(), ",") + " for " + var.getId()
   }
 
   /** Gets the module in which this variable appears. */
@@ -576,32 +576,6 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       guardChecks(g, node, branch) and
       AdjacentUses::useOfDef(def, result.asCfgNode()) and
       g.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
-    )
-  }
-}
-
-/**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-deprecated class BarrierGuard extends GuardNode {
-  /** Holds if this guard validates `node` upon evaluating to `branch`. */
-  abstract predicate checks(ControlFlowNode node, boolean branch);
-
-  /** Gets a node guarded by this guard. */
-  final ExprNode getAGuardedNode() {
-    exists(EssaDefinition def, ControlFlowNode node, boolean branch |
-      AdjacentUses::useOfDef(def, node) and
-      this.checks(node, branch) and
-      AdjacentUses::useOfDef(def, result.asCfgNode()) and
-      this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
     )
   }
 }

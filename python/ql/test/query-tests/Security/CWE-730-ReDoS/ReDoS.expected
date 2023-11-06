@@ -1,5 +1,5 @@
 | KnownCVEs.py:15:20:15:22 | \\d+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
-| KnownCVEs.py:30:21:31:22 | .* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of ','. |
+| KnownCVEs.py:30:21:30:23 | .* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of ','. |
 | KnownCVEs.py:35:18:35:81 | ([-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\))* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '"\\t"'. |
 | redos.py:6:28:6:42 | (?:__\|[\\s\\S])+? | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '__'. |
 | redos.py:6:52:6:68 | (?:\\*\\*\|[\\s\\S])+? | This part of the regular expression may cause exponential backtracking on strings starting with '*' and containing many repetitions of '**'. |

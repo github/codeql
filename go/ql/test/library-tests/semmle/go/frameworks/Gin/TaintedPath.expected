@@ -1,0 +1,17 @@
+edges
+| Gin.go:24:15:24:33 | call to Query | Gin.go:25:10:25:17 | filepath |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:26:39:26:46 | filepath |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:27:20:27:27 | filepath |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:29:32:29:39 | filepath |
+nodes
+| Gin.go:24:15:24:33 | call to Query | semmle.label | call to Query |
+| Gin.go:25:10:25:17 | filepath | semmle.label | filepath |
+| Gin.go:26:39:26:46 | filepath | semmle.label | filepath |
+| Gin.go:27:20:27:27 | filepath | semmle.label | filepath |
+| Gin.go:29:32:29:39 | filepath | semmle.label | filepath |
+subpaths
+#select
+| Gin.go:25:10:25:17 | filepath | Gin.go:24:15:24:33 | call to Query | Gin.go:25:10:25:17 | filepath | This path depends on a $@. | Gin.go:24:15:24:33 | call to Query | user-provided value |
+| Gin.go:26:39:26:46 | filepath | Gin.go:24:15:24:33 | call to Query | Gin.go:26:39:26:46 | filepath | This path depends on a $@. | Gin.go:24:15:24:33 | call to Query | user-provided value |
+| Gin.go:27:20:27:27 | filepath | Gin.go:24:15:24:33 | call to Query | Gin.go:27:20:27:27 | filepath | This path depends on a $@. | Gin.go:24:15:24:33 | call to Query | user-provided value |
+| Gin.go:29:32:29:39 | filepath | Gin.go:24:15:24:33 | call to Query | Gin.go:29:32:29:39 | filepath | This path depends on a $@. | Gin.go:24:15:24:33 | call to Query | user-provided value |

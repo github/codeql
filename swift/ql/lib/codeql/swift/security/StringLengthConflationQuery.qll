@@ -31,6 +31,11 @@ module StringLengthConflationConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof StringLengthConflationBarrier }
 
+  predicate isBarrierOut(DataFlow::Node node) {
+    // make sinks barriers so that we only report the closest instance
+    isSink(node, _)
+  }
+
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(StringLengthConflationAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }

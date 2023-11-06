@@ -1,3 +1,23 @@
+## 1.7.2
+
+No user-facing changes.
+
+## 1.7.1
+
+No user-facing changes.
+
+## 1.7.0
+
+No user-facing changes.
+
+## 1.6.5
+
+No user-facing changes.
+
+## 1.6.4
+
+No user-facing changes.
+
 ## 1.6.3
 
 No user-facing changes.

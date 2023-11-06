@@ -44,14 +44,6 @@ predicate isKnownKind(string kind, AutomodelEndpointTypes::EndpointType type) {
   type instanceof AutomodelEndpointTypes::RemoteSourceType
 }
 
-/** Gets the models-as-data description for the method argument with the index `index`. */
-bindingset[index]
-string getArgumentForIndex(int index) {
-  index = -1 and result = "Argument[this]"
-  or
-  index >= 0 and result = "Argument[" + index + "]"
-}
-
 /**
  * By convention, the subtypes property of the MaD declaration should only be
  * true when there _can_ exist any subtypes with a different implementation.

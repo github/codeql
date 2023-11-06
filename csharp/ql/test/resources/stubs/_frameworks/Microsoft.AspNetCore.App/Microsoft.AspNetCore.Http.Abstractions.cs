@@ -105,6 +105,7 @@ namespace Microsoft
         }
         namespace Http
         {
+            [System.AttributeUsage((System.AttributeTargets)2048, Inherited = false, AllowMultiple = false)]
             public sealed class AsParametersAttribute : System.Attribute
             {
                 public AsParametersAttribute() => throw null;

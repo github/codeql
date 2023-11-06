@@ -12,6 +12,7 @@ namespace System
                 public AssociatedMetadataTypeTypeDescriptionProvider(System.Type type, System.Type associatedMetadataType) => throw null;
                 public override System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(System.Type objectType, object instance) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false, Inherited = true)]
             public sealed class AssociationAttribute : System.Attribute
             {
                 public AssociationAttribute(string name, string thisKey, string otherKey) => throw null;
@@ -22,6 +23,7 @@ namespace System
                 public string ThisKey { get => throw null; }
                 public System.Collections.Generic.IEnumerable<string> ThisKeyMembers { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false)]
             public class CompareAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public CompareAttribute(string otherProperty) => throw null;
@@ -31,15 +33,18 @@ namespace System
                 public string OtherPropertyDisplayName { get => throw null; }
                 public override bool RequiresValidationContext { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false, Inherited = true)]
             public sealed class ConcurrencyCheckAttribute : System.Attribute
             {
                 public ConcurrencyCheckAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public sealed class CreditCardAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public CreditCardAttribute() : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
                 public override bool IsValid(object value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2500, AllowMultiple = true)]
             public sealed class CustomValidationAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public CustomValidationAttribute(System.Type validatorType, string method) => throw null;
@@ -68,6 +73,7 @@ namespace System
                 PostalCode = 15,
                 Upload = 16,
             }
+            [System.AttributeUsage((System.AttributeTargets)2496, AllowMultiple = false)]
             public class DataTypeAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public DataTypeAttribute(System.ComponentModel.DataAnnotations.DataType dataType) => throw null;
@@ -78,6 +84,7 @@ namespace System
                 public virtual string GetDataTypeName() => throw null;
                 public override bool IsValid(object value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2500, AllowMultiple = false)]
             public sealed class DisplayAttribute : System.Attribute
             {
                 public bool AutoGenerateField { get => throw null; set { } }
@@ -99,6 +106,7 @@ namespace System
                 public System.Type ResourceType { get => throw null; set { } }
                 public string ShortName { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)4, Inherited = true, AllowMultiple = false)]
             public class DisplayColumnAttribute : System.Attribute
             {
                 public DisplayColumnAttribute(string displayColumn) => throw null;
@@ -108,6 +116,7 @@ namespace System
                 public string SortColumn { get => throw null; }
                 public bool SortDescending { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
             public class DisplayFormatAttribute : System.Attribute
             {
                 public bool ApplyFormatInEditMode { get => throw null; set { } }
@@ -119,23 +128,27 @@ namespace System
                 public string NullDisplayText { get => throw null; set { } }
                 public System.Type NullDisplayTextResourceType { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false, Inherited = true)]
             public sealed class EditableAttribute : System.Attribute
             {
                 public bool AllowEdit { get => throw null; }
                 public bool AllowInitialValue { get => throw null; set { } }
                 public EditableAttribute(bool allowEdit) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public sealed class EmailAddressAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public EmailAddressAttribute() : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
                 public override bool IsValid(object value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2496, AllowMultiple = false)]
             public sealed class EnumDataTypeAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public EnumDataTypeAttribute(System.Type enumType) : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
                 public System.Type EnumType { get => throw null; }
                 public override bool IsValid(object value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public sealed class FileExtensionsAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public FileExtensionsAttribute() : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
@@ -143,6 +156,7 @@ namespace System
                 public override string FormatErrorMessage(string name) => throw null;
                 public override bool IsValid(object value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
             public sealed class FilterUIHintAttribute : System.Attribute
             {
                 public System.Collections.Generic.IDictionary<string, object> ControlParameters { get => throw null; }
@@ -158,10 +172,12 @@ namespace System
             {
                 System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> Validate(System.ComponentModel.DataAnnotations.ValidationContext validationContext);
             }
+            [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false, Inherited = true)]
             public sealed class KeyAttribute : System.Attribute
             {
                 public KeyAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public class MaxLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public MaxLengthAttribute() => throw null;
@@ -170,11 +186,13 @@ namespace System
                 public override bool IsValid(object value) => throw null;
                 public int Length { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false)]
             public sealed class MetadataTypeAttribute : System.Attribute
             {
                 public MetadataTypeAttribute(System.Type metadataClassType) => throw null;
                 public System.Type MetadataClassType { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public class MinLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public MinLengthAttribute(int length) => throw null;
@@ -182,11 +200,13 @@ namespace System
                 public override bool IsValid(object value) => throw null;
                 public int Length { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public sealed class PhoneAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public PhoneAttribute() : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;
                 public override bool IsValid(object value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public class RangeAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public bool ConvertValueInInvariantCulture { get => throw null; set { } }
@@ -200,6 +220,7 @@ namespace System
                 public System.Type OperandType { get => throw null; }
                 public bool ParseLimitsInInvariantCulture { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public class RegularExpressionAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public RegularExpressionAttribute(string pattern) => throw null;
@@ -209,12 +230,14 @@ namespace System
                 public int MatchTimeoutInMilliseconds { get => throw null; set { } }
                 public string Pattern { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public class RequiredAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public bool AllowEmptyStrings { get => throw null; set { } }
                 public RequiredAttribute() => throw null;
                 public override bool IsValid(object value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
             public class ScaffoldColumnAttribute : System.Attribute
             {
                 public ScaffoldColumnAttribute(bool scaffold) => throw null;
@@ -222,6 +245,7 @@ namespace System
             }
             namespace Schema
             {
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public class ColumnAttribute : System.Attribute
                 {
                     public ColumnAttribute() => throw null;
@@ -230,10 +254,12 @@ namespace System
                     public int Order { get => throw null; set { } }
                     public string TypeName { get => throw null; set { } }
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false)]
                 public class ComplexTypeAttribute : System.Attribute
                 {
                     public ComplexTypeAttribute() => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public class DatabaseGeneratedAttribute : System.Attribute
                 {
                     public DatabaseGeneratedAttribute(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption databaseGeneratedOption) => throw null;
@@ -245,20 +271,24 @@ namespace System
                     Identity = 1,
                     Computed = 2,
                 }
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public class ForeignKeyAttribute : System.Attribute
                 {
                     public ForeignKeyAttribute(string name) => throw null;
                     public string Name { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public class InversePropertyAttribute : System.Attribute
                 {
                     public InversePropertyAttribute(string property) => throw null;
                     public string Property { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)388, AllowMultiple = false)]
                 public class NotMappedAttribute : System.Attribute
                 {
                     public NotMappedAttribute() => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false)]
                 public class TableAttribute : System.Attribute
                 {
                     public TableAttribute(string name) => throw null;
@@ -266,6 +296,7 @@ namespace System
                     public string Schema { get => throw null; set { } }
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public class StringLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public StringLengthAttribute(int maximumLength) => throw null;
@@ -274,10 +305,12 @@ namespace System
                 public int MaximumLength { get => throw null; }
                 public int MinimumLength { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false, Inherited = true)]
             public sealed class TimestampAttribute : System.Attribute
             {
                 public TimestampAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = true)]
             public class UIHintAttribute : System.Attribute
             {
                 public System.Collections.Generic.IDictionary<string, object> ControlParameters { get => throw null; }
@@ -289,6 +322,7 @@ namespace System
                 public string PresentationLayer { get => throw null; }
                 public string UIHint { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public sealed class UrlAttribute : System.ComponentModel.DataAnnotations.DataTypeAttribute
             {
                 public UrlAttribute() : base(default(System.ComponentModel.DataAnnotations.DataType)) => throw null;

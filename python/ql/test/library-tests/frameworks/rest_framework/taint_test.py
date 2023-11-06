@@ -81,7 +81,7 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
     )
     ensure_not_tainted(request.user.password)
 
-    return Response("ok") # $ HttpResponse responseBody="ok"
+    return Response("ok") # $ HttpResponse
 
 
 # class based view
@@ -105,7 +105,7 @@ class MyClass(APIView):
         # same as for standard Django view
         ensure_tainted(self.args, self.kwargs) # $ tainted
 
-        return Response("ok") # $ HttpResponse responseBody="ok"
+        return Response("ok") # $ HttpResponse
 
 
 

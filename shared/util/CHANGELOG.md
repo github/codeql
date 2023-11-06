@@ -1,3 +1,25 @@
+## 0.2.2
+
+### New Features
+
+* Added `FilePath` API for normalizing filepaths.
+
+## 0.2.1
+
+No user-facing changes.
+
+## 0.2.0
+
+No user-facing changes.
+
+## 0.1.5
+
+No user-facing changes.
+
+## 0.1.4
+
+No user-facing changes.
+
 ## 0.1.3
 
 No user-facing changes.

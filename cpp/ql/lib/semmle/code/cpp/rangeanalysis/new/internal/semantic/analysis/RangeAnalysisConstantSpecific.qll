@@ -3,18 +3,11 @@
  */
 
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-private import RangeAnalysisStage
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
+private import RangeAnalysisImpl
+private import codeql.rangeanalysis.RangeAnalysis
 
-module CppLangImplConstant implements LangSig<FloatDelta> {
-  /**
-   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadCopy(SemExpr e) { none() }
-
+module CppLangImplConstant implements LangSig<Sem, FloatDelta> {
   /**
    * Ignore the bound on this expression.
    *
@@ -22,40 +15,6 @@ module CppLangImplConstant implements LangSig<FloatDelta> {
    * removed once we have the new implementation matching the old results exactly.
    */
   predicate ignoreExprBound(SemExpr e) { none() }
-
-  /**
-   * Ignore any inferred zero lower bound on this expression.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreZeroLowerBound(SemExpr e) { none() }
-
-  /**
-   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadArithmeticExpr(SemExpr e) { none() }
-
-  /**
-   * Holds if the specified variable should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadAssignment(SemSsaVariable v) { none() }
-
-  /**
-   * Adds additional results to `ssaRead()` that are specific to Java.
-   *
-   * This predicate handles propagation of offsets for post-increment and post-decrement expressions
-   * in exactly the same way as the old Java implementation. Once the new implementation matches the
-   * old one, we should remove this predicate and propagate deltas for all similar patterns, whether
-   * or not they come from a post-increment/decrement expression.
-   */
-  SemExpr specificSsaRead(SemSsaVariable v, float delta) { none() }
 
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).

@@ -22,7 +22,7 @@ class RunMethod extends Method {
   }
 }
 
-from MethodAccess m, RunMethod run
+from MethodCall m, RunMethod run
 where
   m.getMethod() = run and
   not m.getEnclosingCallable() instanceof RunMethod

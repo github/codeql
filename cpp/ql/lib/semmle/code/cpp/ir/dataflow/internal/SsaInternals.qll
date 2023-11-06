@@ -645,12 +645,24 @@ private predicate adjustForPointerArith(PostUpdateNode pun, UseOrPhi use) {
   )
 }
 
+/**
+ * Holds if `nodeFrom` flows to `nodeTo` because there is `def-use` or
+ * `use-use` flow from `defOrUse` to `use`.
+ *
+ * `uncertain` is `true` if the `defOrUse` is an uncertain definition.
+ */
+private predicate localSsaFlow(
+  SsaDefOrUse defOrUse, Node nodeFrom, UseOrPhi use, Node nodeTo, boolean uncertain
+) {
+  nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
+  adjacentDefRead(defOrUse, use) and
+  useToNode(use, nodeTo) and
+  nodeFrom != nodeTo
+}
+
 private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, boolean uncertain) {
   exists(UseOrPhi use |
-    nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
-    adjacentDefRead(defOrUse, use) and
-    useToNode(use, nodeTo) and
-    nodeFrom != nodeTo
+    localSsaFlow(defOrUse, nodeFrom, use, nodeTo, uncertain)
     or
     // Initial global variable value to a first use
     nodeFrom.(InitialGlobalValue).getGlobalDef() = defOrUse and
@@ -728,15 +740,62 @@ private predicate isArgumentOfCallable(DataFlowCall call, Node n) {
   )
 }
 
-/** Holds if there is def-use or use-use flow from `pun` to `nodeTo`. */
-predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
-  exists(UseOrPhi use, Node preUpdate |
+/**
+ * Holds if there is use-use flow from `pun`'s pre-update node to `n`.
+ */
+private predicate postUpdateNodeToFirstUse(PostUpdateNode pun, Node n) {
+  exists(UseOrPhi use |
     adjustForPointerArith(pun, use) and
-    useToNode(use, nodeTo) and
+    useToNode(use, n)
+  )
+}
+
+private predicate stepUntilNotInCall(DataFlowCall call, Node n1, Node n2) {
+  isArgumentOfCallable(call, n1) and
+  exists(Node mid | localSsaFlow(_, n1, _, mid, _) |
+    isArgumentOfCallable(call, mid) and
+    stepUntilNotInCall(call, mid, n2)
+    or
+    not isArgumentOfCallable(call, mid) and
+    mid = n2
+  )
+}
+
+bindingset[n1, n2]
+pragma[inline_late]
+private predicate isArgumentOfSameCall(DataFlowCall call, Node n1, Node n2) {
+  isArgumentOfCallable(call, n1) and isArgumentOfCallable(call, n2)
+}
+
+/**
+ * Holds if there is def-use or use-use flow from `pun` to `nodeTo`.
+ *
+ * Note: This is more complex than it sounds. Consider a call such as:
+ * ```cpp
+ * write_first_argument(x, x);
+ * sink(x);
+ * ```
+ * Assume flow comes out of the first argument to `write_first_argument`. We
+ * don't want flow to go to the `x` that's also an argument to
+ * `write_first_argument` (because we just flowed out of that function, and we
+ * don't want to flow back into it again).
+ *
+ * We do, however, want flow from the output argument to `x` on the next line, and
+ * similarly we want flow from the second argument of `write_first_argument` to `x`
+ * on the next line.
+ */
+predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
+  exists(Node preUpdate, Node mid |
     preUpdate = pun.getPreUpdateNode() and
-    not exists(DataFlowCall call |
-      isArgumentOfCallable(call, preUpdate) and isArgumentOfCallable(call, nodeTo)
+    postUpdateNodeToFirstUse(pun, mid)
+  |
+    exists(DataFlowCall call |
+      isArgumentOfSameCall(call, preUpdate, mid) and
+      stepUntilNotInCall(call, mid, nodeTo)
     )
+    or
+    not isArgumentOfSameCall(_, preUpdate, mid) and
+    nodeTo = mid
   )
 }
 

@@ -28,7 +28,7 @@ test.kt:
 #    4|       3: [TypeAccess] Unit
 #    4|       5: [BlockStmt] { ... }
 #    4|         0: [ReturnStmt] return ...
-#    4|           0: [MethodAccess] println(...)
+#    4|           0: [MethodCall] println(...)
 #    4|             -1: [TypeAccess] ConsoleKt
 #    4|             0: [StringLiteral] "a"
 #    6|     6: [Method] init
@@ -41,13 +41,13 @@ test.kt:
 #    8|       3: [TypeAccess] Unit
 #    8|       5: [BlockStmt] { ... }
 #    9|         0: [ExprStmt] <Expr>;
-#    9|           0: [MethodAccess] f(...)
-#    9|             -1: [MethodAccess] getTest0$private(...)
+#    9|           0: [MethodCall] f(...)
+#    9|             -1: [MethodCall] getTest0$private(...)
 #    9|               -1: [ThisAccess] this
 #   10|         1: [ExprStmt] <Expr>;
 #   10|           0: [WhenExpr] when ...
 #   10|             0: [WhenBranch] ... -> ...
-#   10|               0: [MethodAccess] isInitialized(...)
+#   10|               0: [MethodCall] isInitialized(...)
 #   10|                 -1: [TypeAccess] LateinitKt
 #   10|                 0: [PropertyRefExpr] ...::...
 #   10|                   -4: [AnonymousClass] new KMutableProperty0<LateInit>(...) { ... }
@@ -66,20 +66,20 @@ test.kt:
 #   10|                     3: [Method] get
 #   10|                       5: [BlockStmt] { ... }
 #   10|                         0: [ReturnStmt] return ...
-#   10|                           0: [MethodAccess] getTest0$private(...)
+#   10|                           0: [MethodCall] getTest0$private(...)
 #   10|                             -1: [VarAccess] this.<dispatchReceiver>
 #   10|                               -1: [ThisAccess] this
 #   10|                     4: [Method] invoke
 #   10|                       5: [BlockStmt] { ... }
 #   10|                         0: [ReturnStmt] return ...
-#   10|                           0: [MethodAccess] get(...)
+#   10|                           0: [MethodCall] get(...)
 #   10|                             -1: [ThisAccess] this
 #   10|                     5: [Method] set
 #-----|                       4: (Parameters)
 #   10|                         0: [Parameter] a0
 #   10|                       5: [BlockStmt] { ... }
 #   10|                         0: [ReturnStmt] return ...
-#   10|                           0: [MethodAccess] setTest0$private(...)
+#   10|                           0: [MethodCall] setTest0$private(...)
 #   10|                             -1: [VarAccess] this.<dispatchReceiver>
 #   10|                               -1: [ThisAccess] this
 #   10|                             0: [VarAccess] a0
@@ -90,5 +90,5 @@ test.kt:
 #   13|         2: [LocalVariableDeclStmt] var ...;
 #   13|           1: [LocalVariableDeclExpr] test1
 #   14|         3: [ExprStmt] <Expr>;
-#   14|           0: [MethodAccess] f(...)
+#   14|           0: [MethodCall] f(...)
 #   14|             -1: [VarAccess] test1

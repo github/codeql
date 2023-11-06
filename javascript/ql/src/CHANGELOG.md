@@ -1,3 +1,36 @@
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* Added modeling for importing `express-rate-limit` using a named import.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Added the `AmdModuleDefinition::Range` class, making it possible to define custom aliases for the AMD `define` function.
+
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+### Bug Fixes
+
+* Fixed an extractor crash that could occur in projects containing TypeScript files larger than 10 MB.
+
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* Files larger than 10 MB are no longer be extracted or analyzed.
+* Imports can now be resolved in more cases, where a non-constant string expression is passed to a `require()` call.
+
+### Bug Fixes
+
+* Fixed an extractor crash that would occur in rare cases when a TypeScript file contains a self-referential namespace alias.
+
 ## 0.7.3
 
 No user-facing changes.

@@ -154,7 +154,7 @@ struct URLResource {
 	let subdirectory: String?
 }
 
-struct URLRequest {
+struct URLRequest : CustomStringConvertible, CustomDebugStringConvertible {
 	enum CachePolicy { case none }
 	enum NetworkServiceType { case none }
 	enum Attribution { case none }
@@ -287,7 +287,7 @@ func taintThroughURL() {
 	let _ = clean.withCString({
 		ptrClean in
 		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrClean, isDirectory: false, relativeTo: nil))
-		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrClean, isDirectory: false, relativeTo: urlTainted)) // $ MISSING: tainted=210
+		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrClean, isDirectory: false, relativeTo: urlTainted)) // $ tainted=210
 	});
 	sink(arg: URL(fileURLWithFileSystemRepresentation: 0 as! UnsafePointer<Int8>, isDirectory: false, relativeTo: urlTainted)) // $ tainted=210
 	let _ = tainted.withCString({
@@ -463,9 +463,9 @@ func taintThroughUrlRequest() {
 	sink(any: clean.attribution)
 	sink(any: tainted.attribution)
 	sink(any: clean.description)
-	sink(any: tainted.description)
+	sink(any: tainted.description) // $ tainted=431
 	sink(any: clean.debugDescription)
-	sink(any: tainted.debugDescription)
+	sink(any: tainted.debugDescription) // $ tainted=431
 	sink(any: clean.customMirror)
 	sink(any: tainted.customMirror)
 	sink(any: clean.hashValue)

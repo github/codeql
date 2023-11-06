@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -13,19 +14,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     {
         private readonly IDotNetCliInvoker dotnetCliInvoker;
         private readonly ProgressMonitor progressMonitor;
+        private readonly TemporaryDirectory? tempWorkingDirectory;
 
-        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor)
+        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor, TemporaryDirectory? tempWorkingDirectory = null)
         {
             this.progressMonitor = progressMonitor;
+            this.tempWorkingDirectory = tempWorkingDirectory;
             this.dotnetCliInvoker = dotnetCliInvoker;
             Info();
         }
 
-        private DotNet(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
+        private DotNet(IDependencyOptions options, ProgressMonitor progressMonitor, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor, tempWorkingDirectory) { }
 
         internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor) => new DotNet(dotnetCliInvoker, progressMonitor);
 
-        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor) => new DotNet(options, progressMonitor);
+        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor, TemporaryDirectory tempWorkingDirectory) => new DotNet(options, progressMonitor, tempWorkingDirectory);
 
         private void Info()
         {
@@ -37,12 +40,29 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private static string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory) =>
-            $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
-
-        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, string? pathToNugetConfig = null)
+        private string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching)
         {
-            var args = GetRestoreArgs(projectFile, packageDirectory);
+            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
+
+            if (forceDotnetRefAssemblyFetching)
+            {
+                // Ugly hack: we set the TargetFrameworkRootPath and NetCoreTargetingPackRoot properties to an empty folder:
+                var path = ".empty";
+                if (tempWorkingDirectory != null)
+                {
+                    path = Path.Combine(tempWorkingDirectory.ToString(), "emptyFakeDotnetRoot");
+                    Directory.CreateDirectory(path);
+                }
+
+                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\"";
+            }
+
+            return args;
+        }
+
+        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, string? pathToNugetConfig = null)
+        {
+            var args = GetRestoreArgs(projectFile, packageDirectory, forceDotnetRefAssemblyFetching);
             if (pathToNugetConfig != null)
             {
                 args += $" --configfile \"{pathToNugetConfig}\"";
@@ -51,9 +71,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return dotnetCliInvoker.RunCommand(args);
         }
 
-        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, out IEnumerable<string> projects)
+        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> projects)
         {
-            var args = GetRestoreArgs(solutionFile, packageDirectory);
+            var args = GetRestoreArgs(solutionFile, packageDirectory, forceDotnetRefAssemblyFetching);
             args += " --verbosity normal";
             if (dotnetCliInvoker.RunCommand(args, out var output))
             {

@@ -19,7 +19,7 @@ abstract class UnsafeUrlForwardSanitizer extends DataFlow::Node { }
 /** An argument to `getRequestDispatcher`. */
 private class RequestDispatcherSink extends UnsafeUrlForwardSink {
   RequestDispatcherSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof GetRequestDispatcherMethod and
       ma.getArgument(0) = this.asExpr()
     )
@@ -93,7 +93,7 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
     or
     sinkNode(this, "get-resource")
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       (
         ma.getMethod() instanceof GetServletResourceAsStreamMethod or
         ma.getMethod() instanceof GetFacesResourceAsStreamMethod or
@@ -109,7 +109,7 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
 /** A sink for methods that load Spring resources. */
 private class SpringResourceSink extends UnsafeUrlForwardSink {
   SpringResourceSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof GetResourceUtilsMethod and
       ma.getArgument(0) = this.asExpr()
     )

@@ -61,7 +61,7 @@ public int M1(string arg1) => throw null;
         var st = CSharpSyntaxTree.ParseText(source);
         var compilation = CSharpCompilation.Create(null, new[] { st });
         var sb = new StringBuilder();
-        var visitor = new StubVisitor(new StringWriter(sb), new RelevantSymbolStub());
+        var visitor = new StubVisitor(new StringWriter(sb) { NewLine = "\n" }, new RelevantSymbolStub());
         compilation.GlobalNamespace.Accept(visitor);
         return sb.ToString();
     }

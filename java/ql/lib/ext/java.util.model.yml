@@ -1,6 +1,13 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.util", "Properties", True, "get", "", "", "ReturnValue", "environment", "manual"]
+      - ["java.util", "Properties", True, "getProperty", "", "", "ReturnValue", "environment", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["java.util", "AbstractMap$SimpleEntry", False, "SimpleEntry", "(Map$Entry)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]

@@ -6,14 +6,17 @@
  * three-valued domain `{negative, zero, positive}`.
  */
 
-private import RangeAnalysisStage
+private import codeql.rangeanalysis.RangeAnalysis
+private import RangeAnalysisImpl
 private import SignAnalysisSpecific as Specific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 private import ConstantAnalysis
 private import RangeUtils
 private import Sign
 
-module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
+module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
+  private import codeql.rangeanalysis.internal.RangeUtils::MakeUtils<Sem, D>
+
   /**
    * An SSA definition for which the analysis can compute the sign.
    *
@@ -296,12 +299,12 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     |
       testIsTrue = true and
       comp.getLesserOperand() = lowerbound and
-      comp.getGreaterOperand() = Utils::semSsaRead(v, D::fromInt(0)) and
+      comp.getGreaterOperand() = ssaRead(v, D::fromInt(0)) and
       (if comp.isStrict() then isStrict = true else isStrict = false)
       or
       testIsTrue = false and
       comp.getGreaterOperand() = lowerbound and
-      comp.getLesserOperand() = Utils::semSsaRead(v, D::fromInt(0)) and
+      comp.getLesserOperand() = ssaRead(v, D::fromInt(0)) and
       (if comp.isStrict() then isStrict = false else isStrict = true)
     )
   }
@@ -320,12 +323,12 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     |
       testIsTrue = true and
       comp.getGreaterOperand() = upperbound and
-      comp.getLesserOperand() = Utils::semSsaRead(v, D::fromInt(0)) and
+      comp.getLesserOperand() = ssaRead(v, D::fromInt(0)) and
       (if comp.isStrict() then isStrict = true else isStrict = false)
       or
       testIsTrue = false and
       comp.getLesserOperand() = upperbound and
-      comp.getGreaterOperand() = Utils::semSsaRead(v, D::fromInt(0)) and
+      comp.getGreaterOperand() = ssaRead(v, D::fromInt(0)) and
       (if comp.isStrict() then isStrict = false else isStrict = true)
     )
   }
@@ -341,7 +344,7 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     exists(SemGuard guard, boolean testIsTrue, boolean polarity, SemExpr e |
       pos.hasReadOfVar(pragma[only_bind_into](v)) and
       semGuardControlsSsaRead(guard, pragma[only_bind_into](pos), testIsTrue) and
-      e = Utils::semSsaRead(pragma[only_bind_into](v), D::fromInt(0)) and
+      e = ssaRead(pragma[only_bind_into](v), D::fromInt(0)) and
       guard.isEquality(eqbound, e, polarity) and
       isEq = polarity.booleanXor(testIsTrue).booleanNot() and
       not unknownSign(eqbound)
@@ -507,4 +510,16 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     not semExprSign(e) = TPos() and
     not semExprSign(e) = TZero()
   }
+
+  /**
+   * Holds if `e` may have positive values. This does not rule out the
+   * possibility for negative values.
+   */
+  predicate semMayBePositive(SemExpr e) { semExprSign(e) = TPos() }
+
+  /**
+   * Holds if `e` may have negative values. This does not rule out the
+   * possibility for positive values.
+   */
+  predicate semMayBeNegative(SemExpr e) { semExprSign(e) = TNeg() }
 }

@@ -1096,10 +1096,7 @@ module Cryptography {
    * extend `CryptographicOperation::Range` instead.
    */
   class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
-  {
-    /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
-    deprecated predicate isWeak() { super.isWeak() }
-  }
+  { }
 
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
   module CryptographicOperation {
@@ -1110,10 +1107,7 @@ module Cryptography {
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `CryptographicOperation` instead.
      */
-    abstract class Range extends SC::CryptographicOperation::Range {
-      /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
-      deprecated predicate isWeak() { this.getAlgorithm().isWeak() or this.getBlockMode().isWeak() }
-    }
+    abstract class Range extends SC::CryptographicOperation::Range { }
   }
 
   class BlockMode = SC::BlockMode;
@@ -1285,5 +1279,94 @@ module LdapBind {
 
     /** Holds if the binding process use SSL. */
     abstract predicate usesSsl();
+  }
+}
+
+/**
+ * A data-flow node that encodes a Jwt token.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `JwtEncoding::Range` instead.
+ */
+class JwtEncoding extends DataFlow::Node instanceof JwtEncoding::Range {
+  /** Gets the argument containing the encoding payload. */
+  DataFlow::Node getPayload() { result = super.getPayload() }
+
+  /** Gets the argument containing the encoding algorithm. */
+  DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
+
+  /** Gets the argument containing the encoding key. */
+  DataFlow::Node getKey() { result = super.getKey() }
+
+  /** Checks if the payloads gets signed while encoding. */
+  predicate signsPayload() { super.signsPayload() }
+}
+
+/** Provides a class for modeling new Jwt token encoding APIs. */
+module JwtEncoding {
+  /**
+   * A data-flow node that encodes a Jwt token.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `JwtEncoding` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument containing the encoding payload. */
+    abstract DataFlow::Node getPayload();
+
+    /** Gets the argument containing the encoding algorithm. */
+    abstract DataFlow::Node getAlgorithm();
+
+    /** Gets the argument containing the encoding key. */
+    abstract DataFlow::Node getKey();
+
+    /** Checks if the payloads gets signed while encoding. */
+    abstract predicate signsPayload();
+  }
+}
+
+/**
+ * A data-flow node that decodes a Jwt token.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `JwtDecoding::Range` instead.
+ */
+class JwtDecoding extends DataFlow::Node instanceof JwtDecoding::Range {
+  /** Gets the argument containing the encoding payload. */
+  DataFlow::Node getPayload() { result = super.getPayload() }
+
+  /** Gets the argument containing the encoding algorithm. */
+  DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
+
+  /** Gets the argument containing the encoding key. */
+  DataFlow::Node getOptions() { result = super.getOptions() }
+
+  /** Checks if the signature gets verified while decoding. */
+  predicate verifiesSignature() { super.verifiesSignature() }
+}
+
+/** Provides a class for modeling new Jwt token encoding APIs. */
+module JwtDecoding {
+  /**
+   * A data-flow node that encodes a Jwt token.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `JwtDecoding` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument containing the encoding payload. */
+    abstract DataFlow::Node getPayload();
+
+    /** Gets the argument containing the encoding algorithm. */
+    abstract DataFlow::Node getAlgorithm();
+
+    /** Gets the argument containing the encoding key. */
+    abstract DataFlow::Node getKey();
+
+    /** Gets the argument containing the encoding options. */
+    abstract DataFlow::Node getOptions();
+
+    /** Checks if the signature gets verified while decoding. */
+    abstract predicate verifiesSignature();
   }
 }

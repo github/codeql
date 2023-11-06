@@ -73,7 +73,7 @@ A.java:
 #   33|       0: [ExprStmt] <Expr>;
 #   33|         0: [AssignExpr] ...=...
 #   33|           0: [VarAccess] counter
-#   33|           1: [MethodAccess] doSomething(...)
+#   33|           1: [MethodCall] doSomething(...)
 #   33|             0: [StringLiteral] "hi"
 #   42|     8: [Method] doSomethingElse
 #-----|       1: (Annotations)

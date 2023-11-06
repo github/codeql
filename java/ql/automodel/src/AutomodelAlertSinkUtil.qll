@@ -96,7 +96,7 @@ class PotentialSinkModelExpr extends Expr {
         or
         this = call.getQualifier() and argIdx = -1
       ) and
-      input = getArgumentForIndex(argIdx) and
+      (if argIdx = -1 then input = "Argument[this]" else input = "Argument[" + argIdx + "]") and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = considerSubtypes(callable) and

@@ -143,5 +143,37 @@ namespace Semmle.Util
             }
             return nested;
         }
+
+        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp)
+        {
+            shouldCleanUp = false;
+            var tempFolder = EnvironmentVariables.GetScratchDirectory();
+
+            if (string.IsNullOrEmpty(tempFolder))
+            {
+                var tempPath = Path.GetTempPath();
+                var name = Guid.NewGuid().ToString("N").ToUpper();
+                tempFolder = Path.Combine(tempPath, "GitHub", name);
+                shouldCleanUp = true;
+            }
+
+            return tempFolder;
+        }
+
+        public static FileInfo CreateTemporaryFile(string extension, out bool shouldCleanUpContainingFolder)
+        {
+            var tempFolder = GetTemporaryWorkingDirectory(out shouldCleanUpContainingFolder);
+            Directory.CreateDirectory(tempFolder);
+            string outputPath;
+            do
+            {
+                outputPath = Path.Combine(tempFolder, Path.GetRandomFileName() + extension);
+            }
+            while (File.Exists(outputPath));
+
+            File.Create(outputPath);
+
+            return new FileInfo(outputPath);
+        }
     }
 }

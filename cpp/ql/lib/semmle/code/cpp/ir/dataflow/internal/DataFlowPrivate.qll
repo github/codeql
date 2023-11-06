@@ -555,7 +555,7 @@ predicate instructionForFullyConvertedCall(Instruction instr, CallInstruction ca
 }
 
 /** Holds if `node` represents the output node for `call`. */
-private predicate simpleOutNode(Node node, CallInstruction call) {
+predicate simpleOutNode(Node node, CallInstruction call) {
   operandForFullyConvertedCall(node.asOperand(), call)
   or
   instructionForFullyConvertedCall(node.asInstruction(), call)

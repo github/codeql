@@ -1,3 +1,33 @@
+## 0.9.2
+
+No user-facing changes.
+
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### New Queries
+
+* The query `py/nosql-injection` for finding NoSQL injection vulnerabilities is now available in the default security suite.
+
+### Minor Analysis Improvements
+
+* Improved _URL redirection from remote source_ (`py/url-redirection`) query to not alert when URL has been checked with `django.utils.http. url_has_allowed_host_and_scheme`.
+* Extended the `py/command-line-injection` query with sinks from Python's `asyncio` module.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Improved _Reflected server-side cross-site scripting_ (`py/reflective-xss`) query to not alert on data passed to `flask.jsonify`. Since these HTTP responses are returned with mime-type `application/json`, they do not pose a security risk for XSS.
+* Updated path explanations for `@kind path-problem` queries to always include left hand side of assignments, making paths easier to understand.
+
 ## 0.8.3
 
 No user-facing changes.

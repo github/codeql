@@ -53,8 +53,14 @@ module MakeImpl<InputSig Lang> {
     /** Holds if data flow into `node` is prohibited. */
     predicate isBarrierIn(Node node);
 
+    /** Holds if data flow into `node` is prohibited when the target flow state is `state`. */
+    predicate isBarrierIn(Node node, FlowState state);
+
     /** Holds if data flow out of `node` is prohibited. */
     predicate isBarrierOut(Node node);
+
+    /** Holds if data flow out of `node` is prohibited when the originating flow state is `state`. */
+    predicate isBarrierOut(Node node, FlowState state);
 
     /**
      * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
@@ -132,6 +138,10 @@ module MakeImpl<InputSig Lang> {
     predicate isSink(Node sink, FlowState state) { Config::isSink(sink) and exists(state) }
 
     predicate isBarrier(Node node, FlowState state) { none() }
+
+    predicate isBarrierIn(Node node, FlowState state) { none() }
+
+    predicate isBarrierOut(Node node, FlowState state) { none() }
 
     predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
       none()
@@ -220,12 +230,33 @@ module MakeImpl<InputSig Lang> {
       )
     }
 
+    pragma[nomagic]
+    private predicate inBarrier(NodeEx node, FlowState state) {
+      exists(Node n |
+        node.asNode() = n and
+        Config::isBarrierIn(n, state) and
+        Config::isSource(n, state)
+      )
+    }
+
     private predicate outBarrier(NodeEx node) {
       exists(Node n |
         node.asNode() = n and
         Config::isBarrierOut(n)
       |
         Config::isSink(n, _)
+        or
+        Config::isSink(n)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate outBarrier(NodeEx node, FlowState state) {
+      exists(Node n |
+        node.asNode() = n and
+        Config::isBarrierOut(n, state)
+      |
+        Config::isSink(n, state)
         or
         Config::isSink(n)
       )
@@ -247,7 +278,16 @@ module MakeImpl<InputSig Lang> {
 
     pragma[nomagic]
     private predicate stateBarrier(NodeEx node, FlowState state) {
-      exists(Node n | node.asNode() = n | Config::isBarrier(n, state))
+      exists(Node n | node.asNode() = n |
+        Config::isBarrier(n, state)
+        or
+        Config::isBarrierIn(n, state) and
+        not Config::isSource(n, state)
+        or
+        Config::isBarrierOut(n, state) and
+        not Config::isSink(n, state) and
+        not Config::isSink(n)
+      )
     }
 
     pragma[nomagic]
@@ -265,12 +305,22 @@ module MakeImpl<InputSig Lang> {
     }
 
     /** Provides the relevant barriers for a step from `node1` to `node2`. */
-    pragma[inline]
+    bindingset[node1, node2]
     private predicate stepFilter(NodeEx node1, NodeEx node2) {
       not outBarrier(node1) and
       not inBarrier(node2) and
       not fullBarrier(node1) and
       not fullBarrier(node2)
+    }
+
+    /** Provides the relevant barriers for a step from `node1,state1` to `node2,state2`, including stateless barriers for `node1` to `node2`. */
+    bindingset[node1, state1, node2, state2]
+    private predicate stateStepFilter(NodeEx node1, FlowState state1, NodeEx node2, FlowState state2) {
+      stepFilter(node1, node2) and
+      not outBarrier(node1, state1) and
+      not inBarrier(node2, state2) and
+      not stateBarrier(node1, state1) and
+      not stateBarrier(node2, state2)
     }
 
     pragma[nomagic]
@@ -325,9 +375,7 @@ module MakeImpl<InputSig Lang> {
         node2.asNode() = n2 and
         Config::isAdditionalFlowStep(pragma[only_bind_into](n1), s1, pragma[only_bind_into](n2), s2) and
         getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
-        stepFilter(node1, node2) and
-        not stateBarrier(node1, s1) and
-        not stateBarrier(node2, s2)
+        stateStepFilter(node1, s1, node2, s2)
       )
     }
 
@@ -364,9 +412,7 @@ module MakeImpl<InputSig Lang> {
         node2.asNode() = n2 and
         Config::isAdditionalFlowStep(pragma[only_bind_into](n1), s1, pragma[only_bind_into](n2), s2) and
         getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
-        stepFilter(node1, node2) and
-        not stateBarrier(node1, s1) and
-        not stateBarrier(node2, s2) and
+        stateStepFilter(node1, s1, node2, s2) and
         not Config::getAFeature() instanceof FeatureEqualSourceSinkCallContext
       )
     }
@@ -1316,7 +1362,7 @@ module MakeImpl<InputSig Lang> {
           )
           or
           // flow into a callable
-          fwdFlowIn(_, _, node, state, _, cc, _, _, _, t, ap, apa, _) and
+          fwdFlowIn(node, apa, state, cc, t, ap) and
           if PrevStage::parameterMayFlowThrough(node, apa)
           then (
             summaryCtx = TParamNodeSome(node.asNode()) and
@@ -1415,75 +1461,148 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
-        bindingset[call, ctx]
-        pragma[inline_late]
-        private DataFlowCallable viableImplCallContextReducedInlineLate(
-          DataFlowCall call, CcCall ctx
-        ) {
-          result = viableImplCallContextReduced(call, ctx)
-        }
-
-        bindingset[arg, ctx]
-        pragma[inline_late]
-        private DataFlowCallable viableImplCallContextReducedInlineLate(
-          DataFlowCall call, ArgNodeEx arg, CcCall ctx
-        ) {
-          call = arg.getCall() and
-          result = viableImplCallContextReducedInlineLate(call, ctx)
-        }
-
-        bindingset[call]
-        pragma[inline_late]
-        private predicate flowIntoCallApaInlineLate(
-          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
-          boolean allowsFieldFlow, ApApprox apa
-        ) {
-          PrevStage::callEdgeArgParam(call, c, arg, p, allowsFieldFlow, apa)
-        }
-
-        bindingset[call, ctx]
-        pragma[inline_late]
-        private predicate viableImplNotCallContextReducedInlineLate(DataFlowCall call, Cc ctx) {
-          viableImplNotCallContextReduced(call, ctx)
-        }
-
-        bindingset[arg, outercc]
-        pragma[inline_late]
-        private predicate viableImplArgNotCallContextReduced(
-          DataFlowCall call, ArgNodeEx arg, Cc outercc
-        ) {
-          call = arg.getCall() and
-          viableImplNotCallContextReducedInlineLate(call, outercc)
-        }
-
         pragma[nomagic]
-        private predicate fwdFlowInCand(
-          DataFlowCall call, DataFlowCallable inner, ParamNodeEx p, FlowState state, Cc outercc,
-          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
+        private predicate fwdFlowIntoArg(
+          ArgNodeEx arg, FlowState state, Cc outercc, ParamNodeOption summaryCtx, TypOption argT,
+          ApOption argAp, Typ t, Ap ap, ApApprox apa, boolean cc
         ) {
-          exists(ArgNodeEx arg, boolean allowsFieldFlow |
-            fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
+          fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
+          if outercc instanceof CcCall then cc = true else cc = false
+        }
+
+        private signature module FwdFlowInInputSig {
+          default predicate callRestriction(DataFlowCall call) { any() }
+
+          bindingset[p, apa]
+          default predicate parameterRestriction(ParamNodeEx p, ApApprox apa) { any() }
+        }
+
+        /**
+         * Exposes the inlined predicate `fwdFlowIn`, which is used to calculate both
+         * flow in and flow through.
+         *
+         * For flow in, only a subset of the columns are needed, specifically we don't
+         * need to record the argument that flows into the parameter.
+         *
+         * For flow through, we do need to record the argument, however, we can restrict
+         * this to arguments that may actually flow through, using `callRestriction` and
+         * `parameterRestriction`, which reduces the argument-to-parameter fan-in
+         * significantly.
+         */
+        private module FwdFlowIn<FwdFlowInInputSig I> {
+          pragma[nomagic]
+          private predicate callEdgeArgParamRestricted(
+            DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
+            boolean allowsFieldFlow, ApApprox apa
+          ) {
+            PrevStage::callEdgeArgParam(call, c, arg, p, allowsFieldFlow, apa) and
+            I::callRestriction(call) and
+            I::parameterRestriction(p, apa)
+          }
+
+          pragma[nomagic]
+          private DataFlowCallable viableImplCallContextReducedRestricted(
+            DataFlowCall call, CcCall ctx
+          ) {
+            result = viableImplCallContextReduced(call, ctx) and
+            callEdgeArgParamRestricted(call, result, _, _, _, _)
+          }
+
+          bindingset[call, ctx]
+          pragma[inline_late]
+          private DataFlowCallable viableImplCallContextReducedInlineLate(
+            DataFlowCall call, CcCall ctx
+          ) {
+            result = viableImplCallContextReducedRestricted(call, ctx)
+          }
+
+          bindingset[arg, ctx]
+          pragma[inline_late]
+          private DataFlowCallable viableImplCallContextReducedInlineLate(
+            DataFlowCall call, ArgNodeEx arg, CcCall ctx
+          ) {
+            callEdgeArgParamRestricted(call, _, arg, _, _, _) and
+            result = viableImplCallContextReducedInlineLate(call, ctx)
+          }
+
+          bindingset[call]
+          pragma[inline_late]
+          private predicate callEdgeArgParamRestrictedInlineLate(
+            DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
+            boolean allowsFieldFlow, ApApprox apa
+          ) {
+            callEdgeArgParamRestricted(call, c, arg, p, allowsFieldFlow, apa)
+          }
+
+          bindingset[call, ctx]
+          pragma[inline_late]
+          private predicate viableImplNotCallContextReducedInlineLate(DataFlowCall call, Cc ctx) {
+            viableImplNotCallContextReduced(call, ctx)
+          }
+
+          bindingset[arg, outercc]
+          pragma[inline_late]
+          private predicate viableImplArgNotCallContextReduced(
+            DataFlowCall call, ArgNodeEx arg, Cc outercc
+          ) {
+            callEdgeArgParamRestricted(call, _, arg, _, _, _) and
+            viableImplNotCallContextReducedInlineLate(call, outercc)
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowInCand(
+            DataFlowCall call, ArgNodeEx arg, Cc outercc, DataFlowCallable inner, ParamNodeEx p,
+            ApApprox apa, boolean allowsFieldFlow, boolean cc
+          ) {
+            fwdFlowIntoArg(arg, _, outercc, _, _, _, _, _, apa, cc) and
             (
               inner = viableImplCallContextReducedInlineLate(call, arg, outercc)
               or
               viableImplArgNotCallContextReduced(call, arg, outercc)
             ) and
-            flowIntoCallApaInlineLate(call, inner, arg, p, allowsFieldFlow, apa)
-          |
-            if allowsFieldFlow = false then ap instanceof ApNil else any()
-          )
+            callEdgeArgParamRestrictedInlineLate(call, inner, arg, p, allowsFieldFlow, apa)
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowInValidEdge(
+            DataFlowCall call, ArgNodeEx arg, Cc outercc, DataFlowCallable inner, ParamNodeEx p,
+            CcCall innercc, ApApprox apa, boolean allowsFieldFlow, boolean cc
+          ) {
+            fwdFlowInCand(call, arg, outercc, inner, p, apa, allowsFieldFlow, cc) and
+            FwdTypeFlow::typeFlowValidEdgeIn(call, inner, cc) and
+            innercc = getCallContextCall(call, inner)
+          }
+
+          pragma[inline]
+          predicate fwdFlowIn(
+            DataFlowCall call, DataFlowCallable inner, ParamNodeEx p, FlowState state, Cc outercc,
+            CcCall innercc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t,
+            Ap ap, ApApprox apa, boolean cc
+          ) {
+            exists(ArgNodeEx arg, boolean allowsFieldFlow |
+              fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa, cc) and
+              fwdFlowInValidEdge(call, arg, outercc, inner, p, innercc, apa, allowsFieldFlow, cc) and
+              if allowsFieldFlow = false then ap instanceof ApNil else any()
+            )
+          }
         }
+
+        private module FwdFlowInNoRestriction implements FwdFlowInInputSig { }
 
         pragma[nomagic]
         private predicate fwdFlowIn(
-          DataFlowCall call, DataFlowCallable inner, ParamNodeEx p, FlowState state, Cc outercc,
-          CcCall innercc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
-          ApApprox apa, boolean cc
+          ParamNodeEx p, ApApprox apa, FlowState state, CcCall innercc, Typ t, Ap ap
         ) {
-          fwdFlowInCand(call, inner, p, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
-          FwdTypeFlow::typeFlowValidEdgeIn(call, inner, cc) and
-          innercc = getCallContextCall(call, inner) and
-          if outercc instanceof CcCall then cc = true else cc = false
+          FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(_, _, p, state, _, innercc, _, _, _, t, ap,
+            apa, _)
+        }
+
+        pragma[nomagic]
+        private DataFlowCallable viableImplCallContextReducedReverseRestricted(
+          DataFlowCall call, CcNoCall ctx
+        ) {
+          result = viableImplCallContextReducedReverse(call, ctx) and
+          PrevStage::callEdgeReturn(call, result, _, _, _, _, _)
         }
 
         bindingset[ctx, result]
@@ -1491,7 +1610,7 @@ module MakeImpl<InputSig Lang> {
         private DataFlowCallable viableImplCallContextReducedReverseInlineLate(
           DataFlowCall call, CcNoCall ctx
         ) {
-          result = viableImplCallContextReducedReverse(call, ctx)
+          result = viableImplCallContextReducedReverseRestricted(call, ctx)
         }
 
         bindingset[call]
@@ -1515,33 +1634,49 @@ module MakeImpl<InputSig Lang> {
         }
 
         pragma[nomagic]
-        private predicate fwdFlowOutCand(
-          DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state,
-          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
+        private predicate fwdFlowIntoRet(
+          RetNodeEx ret, FlowState state, CcNoCall cc, ParamNodeOption summaryCtx, TypOption argT,
+          ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
-          exists(RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc |
-            fwdFlow(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
-            inner = ret.getEnclosingCallable() and
-            (
-              inner = viableImplCallContextReducedReverseInlineLate(call, innercc) and
-              flowOutOfCallApaInlineLate(call, inner, ret, out, allowsFieldFlow, apa)
-              or
-              flowOutOfCallApaNotCallContextReduced(call, inner, ret, out, allowsFieldFlow, apa,
-                innercc)
-            )
-          |
-            if allowsFieldFlow = false then ap instanceof ApNil else any()
+          fwdFlow(ret, state, cc, summaryCtx, argT, argAp, t, ap, apa)
+        }
+
+        pragma[nomagic]
+        private predicate fwdFlowOutCand(
+          DataFlowCall call, RetNodeEx ret, CcNoCall innercc, DataFlowCallable inner, NodeEx out,
+          ApApprox apa, boolean allowsFieldFlow
+        ) {
+          fwdFlowIntoRet(ret, _, innercc, _, _, _, _, _, apa) and
+          inner = ret.getEnclosingCallable() and
+          (
+            inner = viableImplCallContextReducedReverseInlineLate(call, innercc) and
+            flowOutOfCallApaInlineLate(call, inner, ret, out, allowsFieldFlow, apa)
+            or
+            flowOutOfCallApaNotCallContextReduced(call, inner, ret, out, allowsFieldFlow, apa,
+              innercc)
           )
         }
 
         pragma[nomagic]
+        private predicate fwdFlowOutValidEdge(
+          DataFlowCall call, RetNodeEx ret, CcNoCall innercc, DataFlowCallable inner, NodeEx out,
+          CcNoCall outercc, ApApprox apa, boolean allowsFieldFlow
+        ) {
+          fwdFlowOutCand(call, ret, innercc, inner, out, apa, allowsFieldFlow) and
+          FwdTypeFlow::typeFlowValidEdgeOut(call, inner) and
+          outercc = getCallContextReturn(inner, call)
+        }
+
+        pragma[inline]
         private predicate fwdFlowOut(
           DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state, CcNoCall outercc,
           ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
-          fwdFlowOutCand(call, inner, out, state, summaryCtx, argT, argAp, t, ap, apa) and
-          FwdTypeFlow::typeFlowValidEdgeOut(call, inner) and
-          outercc = getCallContextReturn(inner, call)
+          exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow |
+            fwdFlowIntoRet(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
+            fwdFlowOutValidEdge(call, ret, innercc, inner, out, outercc, apa, allowsFieldFlow) and
+            if allowsFieldFlow = false then ap instanceof ApNil else any()
+          )
         }
 
         private module FwdTypeFlowInput implements TypeFlowInput {
@@ -1556,18 +1691,47 @@ module MakeImpl<InputSig Lang> {
           }
 
           pragma[nomagic]
+          private predicate dataFlowTakenCallEdgeIn0(
+            DataFlowCall call, DataFlowCallable c, ParamNodeEx p, FlowState state, CcCall innercc,
+            Typ t, Ap ap, boolean cc
+          ) {
+            FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(call, c, p, state, _, innercc, _, _, _, t,
+              ap, _, cc)
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlow1Param(ParamNodeEx p, FlowState state, CcCall cc, Typ t0, Ap ap) {
+            fwdFlow1(p, state, cc, _, _, _, t0, _, ap, _)
+          }
+
+          pragma[nomagic]
           predicate dataFlowTakenCallEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc) {
-            exists(ParamNodeEx p, FlowState state, Cc innercc, Typ t, Ap ap |
-              fwdFlowIn(call, c, p, state, _, innercc, _, _, _, t, ap, _, cc) and
-              fwdFlow1(p, state, innercc, _, _, _, t, _, ap, _)
+            exists(ParamNodeEx p, FlowState state, CcCall innercc, Typ t, Ap ap |
+              dataFlowTakenCallEdgeIn0(call, c, p, state, innercc, t, ap, cc) and
+              fwdFlow1Param(p, state, innercc, t, ap)
+            )
+          }
+
+          pragma[nomagic]
+          private predicate dataFlowTakenCallEdgeOut0(
+            DataFlowCall call, DataFlowCallable c, NodeEx node, FlowState state, Cc cc, Typ t, Ap ap
+          ) {
+            fwdFlowOut(call, c, node, state, cc, _, _, _, t, ap, _)
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlow1Out(NodeEx node, FlowState state, Cc cc, Typ t0, Ap ap) {
+            exists(ApApprox apa |
+              fwdFlow1(node, state, cc, _, _, _, t0, _, ap, apa) and
+              PrevStage::callEdgeReturn(_, _, _, _, node, _, apa)
             )
           }
 
           pragma[nomagic]
           predicate dataFlowTakenCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
             exists(NodeEx node, FlowState state, Cc cc, Typ t, Ap ap |
-              fwdFlowOut(call, c, node, state, cc, _, _, _, t, ap, _) and
-              fwdFlow1(node, state, cc, _, _, _, t, _, ap, _)
+              dataFlowTakenCallEdgeOut0(call, c, node, state, cc, t, ap) and
+              fwdFlow1Out(node, state, cc, t, ap)
             )
           }
 
@@ -1635,6 +1799,12 @@ module MakeImpl<InputSig Lang> {
             innerArgApa)
         }
 
+        private module FwdFlowThroughRestriction implements FwdFlowInInputSig {
+          predicate callRestriction = PrevStage::callMayFlowThroughRev/1;
+
+          predicate parameterRestriction = PrevStage::parameterMayFlowThrough/2;
+        }
+
         /**
          * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`
          * and data might flow through the target callable and back out at `call`.
@@ -1644,12 +1814,8 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx, TypOption argT,
           ApOption argAp, ParamNodeEx p, Typ t, Ap ap
         ) {
-          exists(ApApprox apa |
-            fwdFlowIn(call, _, pragma[only_bind_into](p), _, cc, innerCc, summaryCtx, argT, argAp,
-              t, ap, pragma[only_bind_into](apa), _) and
-            PrevStage::parameterMayFlowThrough(p, apa) and
-            PrevStage::callMayFlowThroughRev(call)
-          )
+          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, _, p, _, cc, innerCc, summaryCtx,
+            argT, argAp, t, ap, _, _)
         }
 
         pragma[nomagic]
@@ -2351,9 +2517,7 @@ module MakeImpl<InputSig Lang> {
       predicate enableTypeFlow() { none() }
     }
 
-    private module Stage2 implements StageSig {
-      import MkStage<Stage1>::Stage<Stage2Param>
-    }
+    private module Stage2 = MkStage<Stage1>::Stage<Stage2Param>;
 
     pragma[nomagic]
     private predicate flowOutOfCallNodeCand2(
@@ -2474,6 +2638,7 @@ module MakeImpl<InputSig Lang> {
         LocalCallContext cc
       ) {
         not isUnreachableInCall1(node2, cc) and
+        not inBarrier(node2, state) and
         (
           localFlowEntry(node1, pragma[only_bind_into](state)) and
           (
@@ -2488,11 +2653,13 @@ module MakeImpl<InputSig Lang> {
           ) and
           node1 != node2 and
           cc.relevantFor(node1.getEnclosingCallable()) and
-          not isUnreachableInCall1(node1, cc)
+          not isUnreachableInCall1(node1, cc) and
+          not outBarrier(node1, state)
           or
           exists(NodeEx mid |
             localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue, t, cc) and
             localFlowStepNodeCand1(mid, node2) and
+            not outBarrier(mid, state) and
             not mid instanceof FlowCheckNode and
             Stage2::revFlow(node2, pragma[only_bind_into](state))
           )
@@ -2500,6 +2667,7 @@ module MakeImpl<InputSig Lang> {
           exists(NodeEx mid |
             localFlowStepPlus(node1, state, mid, _, _, cc) and
             additionalLocalFlowStepNodeCand2(mid, state, node2, state) and
+            not outBarrier(mid, state) and
             not mid instanceof FlowCheckNode and
             preservesValue = false and
             t = node2.getDataFlowType()
@@ -2610,9 +2778,7 @@ module MakeImpl<InputSig Lang> {
       }
     }
 
-    private module Stage3 implements StageSig {
-      import MkStage<Stage2>::Stage<Stage3Param>
-    }
+    private module Stage3 = MkStage<Stage2>::Stage<Stage3Param>;
 
     bindingset[node, t0]
     private predicate strengthenType(NodeEx node, DataFlowType t0, DataFlowType t) {
@@ -2714,9 +2880,7 @@ module MakeImpl<InputSig Lang> {
       }
     }
 
-    private module Stage4 implements StageSig {
-      import MkStage<Stage3>::Stage<Stage4Param>
-    }
+    private module Stage4 = MkStage<Stage3>::Stage<Stage4Param>;
 
     /**
      * Holds if `argApf` is recorded as the summary context for flow reaching `node`
@@ -3566,11 +3730,14 @@ module MakeImpl<InputSig Lang> {
       }
 
       override PathNodeImpl getASuccessorImpl() {
-        // an intermediate step to another intermediate node
-        result = this.getSuccMid()
-        or
-        // a final step to a sink
-        result = this.getSuccMid().projectToSink()
+        not outBarrier(node, state) and
+        (
+          // an intermediate step to another intermediate node
+          result = this.getSuccMid()
+          or
+          // a final step to a sink
+          result = this.getSuccMid().projectToSink()
+        )
       }
 
       override predicate isSource() {
@@ -3696,7 +3863,8 @@ module MakeImpl<InputSig Lang> {
       exists(DataFlowType t0 |
         pathStep0(mid, node, state, cc, sc, t0, ap) and
         Stage5::revFlow(node, state, ap.getApprox()) and
-        strengthenType(node, t0, t)
+        strengthenType(node, t0, t) and
+        not inBarrier(node, state)
       )
     }
 
@@ -3794,11 +3962,15 @@ module MakeImpl<InputSig Lang> {
       PathNodeMid mid, ReturnPosition pos, FlowState state, CallContext innercc,
       AccessPathApprox apa
     ) {
-      pos = mid.getNodeEx().(RetNodeEx).getReturnPosition() and
-      state = mid.getState() and
-      innercc = mid.getCallContext() and
-      innercc instanceof CallContextNoCall and
-      apa = mid.getAp().getApprox()
+      exists(RetNodeEx retNode |
+        retNode = mid.getNodeEx() and
+        pos = retNode.getReturnPosition() and
+        state = mid.getState() and
+        not outBarrier(retNode, state) and
+        innercc = mid.getCallContext() and
+        innercc instanceof CallContextNoCall and
+        apa = mid.getAp().getApprox()
+      )
     }
 
     pragma[nomagic]
@@ -3830,7 +4002,8 @@ module MakeImpl<InputSig Lang> {
     private predicate pathOutOfCallable(PathNodeMid mid, NodeEx out, FlowState state, CallContext cc) {
       exists(ReturnKindExt kind, DataFlowCall call, AccessPathApprox apa |
         pathOutOfCallable1(mid, call, kind, state, cc, apa) and
-        out = getAnOutNodeFlow(kind, call, apa)
+        out = getAnOutNodeFlow(kind, call, apa) and
+        not inBarrier(out, state)
       )
     }
 
@@ -3844,6 +4017,7 @@ module MakeImpl<InputSig Lang> {
     ) {
       exists(ArgNodeEx arg, ArgumentPosition apos |
         pathNode(mid, arg, state, cc, _, t, ap, _) and
+        not outBarrier(arg, state) and
         arg.asNode().(ArgNode).argumentOf(call, apos) and
         apa = ap.getApprox() and
         parameterMatch(ppos, apos)
@@ -3860,6 +4034,8 @@ module MakeImpl<InputSig Lang> {
       )
     }
 
+    private predicate parameterCandProj(DataFlowCallable c) { parameterCand(c, _, _) }
+
     pragma[nomagic]
     private predicate pathIntoCallable0(
       PathNodeMid mid, DataFlowCallable callable, ParameterPosition pos, FlowState state,
@@ -3868,7 +4044,7 @@ module MakeImpl<InputSig Lang> {
       exists(AccessPathApprox apa |
         pathIntoArg(mid, pragma[only_bind_into](pos), state, outercc, call, t, ap,
           pragma[only_bind_into](apa)) and
-        callable = resolveCall(call, outercc) and
+        callable = ResolveCall<parameterCandProj/1>::resolveCall(call, outercc) and
         parameterCand(callable, pragma[only_bind_into](pos), pragma[only_bind_into](apa))
       )
     }
@@ -3886,6 +4062,7 @@ module MakeImpl<InputSig Lang> {
       exists(ParameterPosition pos, DataFlowCallable callable, DataFlowType t, AccessPath ap |
         pathIntoCallable0(mid, callable, pos, state, outercc, call, t, ap) and
         p.isParameterOf(callable, pos) and
+        not inBarrier(p, state) and
         (
           sc = TSummaryCtxSome(p, state, t, ap)
           or
@@ -4174,7 +4351,29 @@ module MakeImpl<InputSig Lang> {
       tftuples = -1
     }
 
-    module FlowExploration<explorationLimitSig/0 explorationLimit> {
+    private signature predicate flag();
+
+    private predicate flagEnable() { any() }
+
+    private predicate flagDisable() { none() }
+
+    module FlowExplorationFwd<explorationLimitSig/0 explorationLimit> {
+      private import FlowExploration<explorationLimit/0, flagEnable/0, flagDisable/0>
+      import Public
+
+      predicate partialFlow = partialFlowFwd/3;
+    }
+
+    module FlowExplorationRev<explorationLimitSig/0 explorationLimit> {
+      private import FlowExploration<explorationLimit/0, flagDisable/0, flagEnable/0>
+      import Public
+
+      predicate partialFlow = partialFlowRev/3;
+    }
+
+    private module FlowExploration<
+      explorationLimitSig/0 explorationLimit, flag/0 flagFwd, flag/0 flagRev>
+    {
       private predicate callableStep(DataFlowCallable c1, DataFlowCallable c2) {
         exists(NodeEx node1, NodeEx node2 |
           jumpStepEx(node1, node2)
@@ -4343,6 +4542,7 @@ module MakeImpl<InputSig Lang> {
           NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
           TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
         ) {
+          flagFwd() and
           sourceNode(node, state) and
           cc instanceof CallContextAny and
           sc1 = TSummaryCtx1None() and
@@ -4360,6 +4560,7 @@ module MakeImpl<InputSig Lang> {
           NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
           TRevSummaryCtx3 sc3, PartialAccessPath ap
         ) {
+          flagRev() and
           revSinkNode(node, state) and
           sc1 = TRevSummaryCtx1None() and
           sc2 = TRevSummaryCtx2None() and
@@ -4375,6 +4576,7 @@ module MakeImpl<InputSig Lang> {
           ) and
           not fullBarrier(node) and
           not stateBarrier(node, state) and
+          not outBarrier(node, state) and
           distSink(node.getEnclosingCallable()) <= explorationLimit()
         }
 
@@ -4395,6 +4597,7 @@ module MakeImpl<InputSig Lang> {
         partialPathStep0(mid, node, state, cc, sc1, sc2, sc3, sc4, t0, ap) and
         not fullBarrier(node) and
         not stateBarrier(node, state) and
+        not inBarrier(node, state) and
         not clearsContentEx(node, ap.getHead()) and
         (
           notExpectsContent(node) or
@@ -4410,95 +4613,99 @@ module MakeImpl<InputSig Lang> {
         partialPathStep1(_, _, _, _, _, _, _, _, t0, t, ap) and t0 != t
       }
 
-      /**
-       * A `Node` augmented with a call context, an access path, and a configuration.
-       */
-      class PartialPathNode extends TPartialPathNode {
-        /** Gets a textual representation of this element. */
-        string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
+      module Public {
+        /**
+         * A `Node` augmented with a call context, an access path, and a configuration.
+         */
+        class PartialPathNode extends TPartialPathNode {
+          /** Gets a textual representation of this element. */
+          string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
+
+          /**
+           * Gets a textual representation of this element, including a textual
+           * representation of the call context.
+           */
+          string toStringWithContext() {
+            result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
+          }
+
+          /**
+           * Holds if this element is at the specified location.
+           * The location spans column `startcolumn` of line `startline` to
+           * column `endcolumn` of line `endline` in file `filepath`.
+           * For more information, see
+           * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+           */
+          predicate hasLocationInfo(
+            string filepath, int startline, int startcolumn, int endline, int endcolumn
+          ) {
+            this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+          }
+
+          /** Gets the underlying `Node`. */
+          final Node getNode() { this.getNodeEx().projectToNode() = result }
+
+          FlowState getState() { none() }
+
+          private NodeEx getNodeEx() {
+            result = this.(PartialPathNodeFwd).getNodeEx() or
+            result = this.(PartialPathNodeRev).getNodeEx()
+          }
+
+          /** Gets a successor of this node, if any. */
+          PartialPathNode getASuccessor() { none() }
+
+          /**
+           * Gets the approximate distance to the nearest source measured in number
+           * of interprocedural steps.
+           */
+          int getSourceDistance() { result = distSrc(this.getNodeEx().getEnclosingCallable()) }
+
+          /**
+           * Gets the approximate distance to the nearest sink measured in number
+           * of interprocedural steps.
+           */
+          int getSinkDistance() { result = distSink(this.getNodeEx().getEnclosingCallable()) }
+
+          private string ppType() {
+            this instanceof PartialPathNodeRev and result = ""
+            or
+            exists(DataFlowType t | t = this.(PartialPathNodeFwd).getType() |
+              // The `concat` becomes "" if `ppReprType` has no result.
+              result = concat(" : " + ppReprType(t))
+            )
+          }
+
+          private string ppAp() {
+            exists(string s |
+              s = this.(PartialPathNodeFwd).getAp().toString() or
+              s = this.(PartialPathNodeRev).getAp().toString()
+            |
+              if s = "" then result = "" else result = " " + s
+            )
+          }
+
+          private string ppCtx() {
+            result = " <" + this.(PartialPathNodeFwd).getCallContext().toString() + ">"
+          }
+
+          /** Holds if this is a source in a forward-flow path. */
+          predicate isFwdSource() { this.(PartialPathNodeFwd).isSource() }
+
+          /** Holds if this is a sink in a reverse-flow path. */
+          predicate isRevSink() { this.(PartialPathNodeRev).isSink() }
+        }
 
         /**
-         * Gets a textual representation of this element, including a textual
-         * representation of the call context.
+         * Provides the query predicates needed to include a graph in a path-problem query.
          */
-        string toStringWithContext() {
-          result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
+        module PartialPathGraph {
+          /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
+          query predicate edges(PartialPathNode a, PartialPathNode b) { a.getASuccessor() = b }
         }
-
-        /**
-         * Holds if this element is at the specified location.
-         * The location spans column `startcolumn` of line `startline` to
-         * column `endcolumn` of line `endline` in file `filepath`.
-         * For more information, see
-         * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-         */
-        predicate hasLocationInfo(
-          string filepath, int startline, int startcolumn, int endline, int endcolumn
-        ) {
-          this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-        }
-
-        /** Gets the underlying `Node`. */
-        final Node getNode() { this.getNodeEx().projectToNode() = result }
-
-        FlowState getState() { none() }
-
-        private NodeEx getNodeEx() {
-          result = this.(PartialPathNodeFwd).getNodeEx() or
-          result = this.(PartialPathNodeRev).getNodeEx()
-        }
-
-        /** Gets a successor of this node, if any. */
-        PartialPathNode getASuccessor() { none() }
-
-        /**
-         * Gets the approximate distance to the nearest source measured in number
-         * of interprocedural steps.
-         */
-        int getSourceDistance() { result = distSrc(this.getNodeEx().getEnclosingCallable()) }
-
-        /**
-         * Gets the approximate distance to the nearest sink measured in number
-         * of interprocedural steps.
-         */
-        int getSinkDistance() { result = distSink(this.getNodeEx().getEnclosingCallable()) }
-
-        private string ppType() {
-          this instanceof PartialPathNodeRev and result = ""
-          or
-          exists(DataFlowType t | t = this.(PartialPathNodeFwd).getType() |
-            // The `concat` becomes "" if `ppReprType` has no result.
-            result = concat(" : " + ppReprType(t))
-          )
-        }
-
-        private string ppAp() {
-          exists(string s |
-            s = this.(PartialPathNodeFwd).getAp().toString() or
-            s = this.(PartialPathNodeRev).getAp().toString()
-          |
-            if s = "" then result = "" else result = " " + s
-          )
-        }
-
-        private string ppCtx() {
-          result = " <" + this.(PartialPathNodeFwd).getCallContext().toString() + ">"
-        }
-
-        /** Holds if this is a source in a forward-flow path. */
-        predicate isFwdSource() { this.(PartialPathNodeFwd).isSource() }
-
-        /** Holds if this is a sink in a reverse-flow path. */
-        predicate isRevSink() { this.(PartialPathNodeRev).isSink() }
       }
 
-      /**
-       * Provides the query predicates needed to include a graph in a path-problem query.
-       */
-      module PartialPathGraph {
-        /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-        query predicate edges(PartialPathNode a, PartialPathNode b) { a.getASuccessor() = b }
-      }
+      import Public
 
       private class PartialPathNodeFwd extends PartialPathNode, TPartialPathNodeFwd {
         NodeEx node;
@@ -4534,6 +4741,7 @@ module MakeImpl<InputSig Lang> {
         PartialAccessPath getAp() { result = ap }
 
         override PartialPathNodeFwd getASuccessor() {
+          not outBarrier(node, state) and
           partialPathStep(this, result.getNodeEx(), result.getState(), result.getCallContext(),
             result.getSummaryCtx1(), result.getSummaryCtx2(), result.getSummaryCtx3(),
             result.getSummaryCtx4(), result.getType(), result.getAp())
@@ -4573,6 +4781,7 @@ module MakeImpl<InputSig Lang> {
         PartialAccessPath getAp() { result = ap }
 
         override PartialPathNodeRev getASuccessor() {
+          not inBarrier(node, state) and
           revPartialPathStep(result, this.getNodeEx(), this.getState(), this.getSummaryCtx1(),
             this.getSummaryCtx2(), this.getSummaryCtx3(), this.getAp())
         }
@@ -4791,13 +5000,15 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
+      private predicate anyCallable(DataFlowCallable c) { any() }
+
       pragma[nomagic]
       private predicate partialPathIntoCallable0(
         PartialPathNodeFwd mid, DataFlowCallable callable, ParameterPosition pos, FlowState state,
         CallContext outercc, DataFlowCall call, DataFlowType t, PartialAccessPath ap
       ) {
         partialPathIntoArg(mid, pos, state, outercc, call, t, ap) and
-        callable = resolveCall(call, outercc)
+        callable = ResolveCall<anyCallable/1>::resolveCall(call, outercc)
       }
 
       private predicate partialPathIntoCallable(
@@ -5034,7 +5245,7 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      private predicate partialFlow(PartialPathNode source, PartialPathNode node) {
+      private predicate fwdPartialFlow(PartialPathNode source, PartialPathNode node) {
         source.isFwdSource() and
         node = source.getASuccessor+()
       }
@@ -5056,8 +5267,8 @@ module MakeImpl<InputSig Lang> {
        *
        * To use this in a `path-problem` query, import the module `PartialPathGraph`.
        */
-      predicate partialFlow(PartialPathNode source, PartialPathNode node, int dist) {
-        partialFlow(source, node) and
+      predicate partialFlowFwd(PartialPathNode source, PartialPathNode node, int dist) {
+        fwdPartialFlow(source, node) and
         dist = node.getSourceDistance()
       }
 

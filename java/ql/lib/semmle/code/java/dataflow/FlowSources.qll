@@ -29,11 +29,38 @@ import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 private import semmle.code.java.dataflow.ExternalFlow
+private import codeql.threatmodels.ThreatModels
+
+/**
+ * A data flow source.
+ */
+abstract class SourceNode extends DataFlow::Node {
+  /**
+   * Gets a string that represents the source kind with respect to threat modeling.
+   */
+  abstract string getThreatModel();
+}
+
+/**
+ * A class of data flow sources that respects the
+ * current threat model configuration.
+ */
+class ThreatModelFlowSource extends DataFlow::Node {
+  ThreatModelFlowSource() {
+    exists(string kind |
+      // Specific threat model.
+      currentThreatModel(kind) and
+      (this.(SourceNode).getThreatModel() = kind or sourceNode(this, kind))
+    )
+  }
+}
 
 /** A data flow source of remote user input. */
-abstract class RemoteFlowSource extends DataFlow::Node {
+abstract class RemoteFlowSource extends SourceNode {
   /** Gets a string that describes the type of this remote flow source. */
   abstract string getSourceType();
+
+  override string getThreatModel() { result = "remote" }
 }
 
 /**
@@ -95,9 +122,9 @@ private predicate variableStep(Expr tracked, VarAccess sink) {
 private class ReverseDnsSource extends RemoteFlowSource {
   ReverseDnsSource() {
     // Try not to trigger on `localhost`.
-    exists(MethodAccess m | m = this.asExpr() |
+    exists(MethodCall m | m = this.asExpr() |
       m.getMethod() instanceof ReverseDnsMethod and
-      not exists(MethodAccess l |
+      not exists(MethodCall l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
         l.getMethod().getName() = "getLocalHost"
       )
@@ -175,14 +202,44 @@ abstract class UserInput extends DataFlow::Node { }
 private class RemoteUserInput extends UserInput instanceof RemoteFlowSource { }
 
 /** A node with input that may be controlled by a local user. */
-abstract class LocalUserInput extends UserInput { }
+abstract class LocalUserInput extends UserInput, SourceNode {
+  override string getThreatModel() { result = "local" }
+}
 
 /**
+ * DEPRECATED: Use the threat models feature.
+ * That is, use `ThreatModelFlowSource` as the class of nodes for sources
+ * and set up the threat model configuration to filter source nodes.
+ * Alternatively, use `getThreatModel` to filter nodes to create the
+ * class of nodes you need.
+ *
  * A node with input from the local environment, such as files, standard in,
  * environment variables, and main method parameters.
  */
-class EnvInput extends LocalUserInput {
+deprecated class EnvInput extends DataFlow::Node {
   EnvInput() {
+    this instanceof EnvironmentInput or
+    this instanceof CliInput or
+    this instanceof FileInput
+  }
+}
+
+/**
+ * A node with input from the local environment, such as
+ * environment variables.
+ */
+private class EnvironmentInput extends LocalUserInput {
+  EnvironmentInput() { sourceNode(this, "environment") }
+
+  override string getThreatModel() { result = "environment" }
+}
+
+/**
+ * A node with input from the command line, such as standard in
+ * and main method parameters.
+ */
+private class CliInput extends LocalUserInput {
+  CliInput() {
     // Parameters to a main method.
     exists(MainMethod main | this.asParameter() = main.getParameter(0))
     or
@@ -191,23 +248,43 @@ class EnvInput extends LocalUserInput {
       f.getAnAnnotation().getType().getQualifiedName() = "org.kohsuke.args4j.Argument"
     )
     or
-    // Results from various specific methods.
-    this.asExpr().(MethodAccess).getMethod() instanceof EnvReadMethod
-    or
     // Access to `System.in`.
     exists(Field f | this.asExpr() = f.getAnAccess() | f instanceof SystemIn)
-    or
-    // Access to files.
-    this.asExpr()
-        .(ConstructorCall)
-        .getConstructedType()
-        .hasQualifiedName("java.io", "FileInputStream")
   }
+
+  override string getThreatModel() { result = "commandargs" }
 }
 
-/** A node with input from a database. */
-class DatabaseInput extends LocalUserInput {
-  DatabaseInput() { this.asExpr().(MethodAccess).getMethod() instanceof ResultSetGetStringMethod }
+/**
+ * A node with input from the local environment, such as files.
+ */
+private class FileInput extends LocalUserInput {
+  FileInput() {
+    // Access to files.
+    sourceNode(this, "file")
+  }
+
+  override string getThreatModel() { result = "file" }
+}
+
+/**
+ * DEPRECATED: Use the threat models feature.
+ * That is, use `ThreatModelFlowSource` as the class of nodes for sources
+ * and set up the threat model configuration to filter source nodes.
+ * Alternatively, use `getThreatModel` to filter nodes to create the
+ * class of nodes you need.
+ *
+ * A node with input from a database.
+ */
+deprecated class DatabaseInput = DbInput;
+
+/**
+ * A node with input from a database.
+ */
+private class DbInput extends LocalUserInput {
+  DbInput() { sourceNode(this, "database") }
+
+  override string getThreatModel() { result = "database" }
 }
 
 /** A method that reads from the environment, such as `System.getProperty` or `System.getenv`. */
@@ -244,7 +321,7 @@ class AndroidIntentInput extends DataFlow::Node {
   Type receiverType;
 
   AndroidIntentInput() {
-    exists(MethodAccess ma, AndroidGetIntentMethod m |
+    exists(MethodCall ma, AndroidGetIntentMethod m |
       ma.getMethod().overrides*(m) and
       this.asExpr() = ma and
       receiverType = ma.getReceiverType()

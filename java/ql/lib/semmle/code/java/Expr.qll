@@ -530,6 +530,9 @@ class Literal extends Expr, @literal {
    * Gets a string representation of this literal as it appeared
    * in the source code.
    *
+   * For Kotlin the result might not match the exact representation
+   * used in the source code.
+   *
    * **Important:** Unless a query explicitly wants to check how
    * a literal was written in the source code, the predicate
    * `getValue()` (or value predicates of subclasses) should be
@@ -608,9 +611,6 @@ class IntegerLiteral extends Literal, @integerliteral {
 class LongLiteral extends Literal, @longliteral {
   override string getAPrimaryQlClass() { result = "LongLiteral" }
 }
-
-/** DEPRECATED: Alias for FloatLiteral */
-deprecated class FloatingPointLiteral = FloatLiteral;
 
 /**
  * A float literal. For example, `4.2f`.
@@ -1199,15 +1199,15 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   }
 
   /**
-   * Gets a type argument provided to the constructor of this class instance creation expression.
+   * Gets a type argument of the type of the created instance.
    *
-   * This is used for instantiations of parameterized classes.
+   * This is used for instantiations of parameterized classes. For example for
+   * `new ArrayList<String>()` the result would be the expression representing `String`.
    */
   Expr getATypeArgument() { result = this.getTypeName().(TypeAccess).getATypeArgument() }
 
   /**
-   * Gets the type argument provided to the constructor of this class instance creation expression
-   * at the specified (zero-based) position.
+   * Gets the type argument of the type of the created instance, at the specified (zero-based) position.
    */
   Expr getTypeArgument(int index) {
     result = this.getTypeName().(TypeAccess).getTypeArgument(index)
@@ -1253,6 +1253,14 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
 
   override string getAPrimaryQlClass() { result = "ClassInstanceExpr" }
 }
+
+/**
+ * An explicit `new TypeName(...)` expression.
+ *
+ * Note this does not include implicit instance creation such as lambda expressions
+ * or `instanceVar::methodName` references. To include those too, use `ClassInstanceExpr`.
+ */
+class NewClassExpr extends @newexpr, ClassInstanceExpr { }
 
 /** A functional expression is either a lambda expression or a member reference expression. */
 abstract class FunctionalExpr extends ClassInstanceExpr {
@@ -1333,6 +1341,40 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
    */
   override Method asMethod() { result = this.getAnonymousClass().getAMethod() }
 
+  private Expr getResultExpr() {
+    exists(Stmt stmt |
+      stmt = this.asMethod().getBody().(SingletonBlock).getStmt() and
+      (
+        result = stmt.(ReturnStmt).getResult()
+        or
+        // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
+        result = stmt.(ExprStmt).getExpr()
+      )
+    )
+  }
+
+  /**
+   * Gets the expression whose member this member reference refers to, that is, the left
+   * side of the `::`. For example, for the member reference `this::toString` the receiver
+   * expression is the `this` expression.
+   *
+   * This predicate might not have a result in all cases where the receiver expression is
+   * a type access, for example `MyClass::...`.
+   */
+  Expr getReceiverExpr() {
+    exists(Expr resultExpr | resultExpr = this.getResultExpr() |
+      result = resultExpr.(Call).getQualifier() and
+      // Ignore if the qualifier is a parameter of the method of the synthetic anonymous class
+      // (this is the case for method refs of instance methods which don't capture the instance, e.g. `Object::toString`)
+      // Could try to use TypeAccess as result here from child of MemberRefExpr, but that complexity might not be worth it
+      not this.asMethod().getAParameter().getAnAccess() = result
+      or
+      result = resultExpr.(ClassInstanceExpr).getTypeName()
+      // Don't cover array creation because ArrayCreationExpr currently does not have a predicate
+      // to easily get ArrayTypeAccess which should probably be the result here
+    )
+  }
+
   /**
    * Gets the receiver type whose member this expression refers to. The result might not be
    * the type which actually declares the member. For example, for the member reference `ArrayList::toString`,
@@ -1340,16 +1382,8 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
    * `getReferencedCallable` will have `java.util.AbstractCollection.toString` as result, which `ArrayList` inherits.
    */
   RefType getReceiverType() {
-    exists(Stmt stmt, Expr resultExpr |
-      stmt = this.asMethod().getBody().(SingletonBlock).getStmt() and
-      (
-        resultExpr = stmt.(ReturnStmt).getResult()
-        or
-        // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
-        resultExpr = stmt.(ExprStmt).getExpr()
-      )
-    |
-      result = resultExpr.(MethodAccess).getReceiverType() or
+    exists(Expr resultExpr | resultExpr = this.getResultExpr() |
+      result = resultExpr.(MethodCall).getReceiverType() or
       result = resultExpr.(ClassInstanceExpr).getConstructedType() or
       result = resultExpr.(ArrayCreationExpr).getType()
     )
@@ -1745,24 +1779,29 @@ class VarAccess extends Expr, @varaccess {
   Variable getVariable() { variableBinding(this, result) }
 
   /**
-   * Holds if this variable access is an l-value.
+   * Holds if this variable access is a write access.
    *
-   * An l-value is a write access to a variable, which occurs as the destination of an assignment.
+   * That means the access is the destination of an assignment.
    */
-  predicate isLValue() {
+  predicate isVarWrite() {
     exists(Assignment a | a.getDest() = this) or
     exists(UnaryAssignExpr e | e.getExpr() = this)
   }
 
+  /** DEPRECATED: Alias for `isVarWrite`. */
+  deprecated predicate isLValue() { this.isVarWrite() }
+
   /**
-   * Holds if this variable access is an r-value.
+   * Holds if this variable access is a read access.
    *
-   * An r-value is a read access to a variable.
    * In other words, it is a variable access that does _not_ occur as the destination of
    * a simple assignment, but it may occur as the destination of a compound assignment
    * or a unary assignment.
    */
-  predicate isRValue() { not exists(AssignExpr a | a.getDest() = this) }
+  predicate isVarRead() { not exists(AssignExpr a | a.getDest() = this) }
+
+  /** DEPRECATED: Alias for `isVarRead`. */
+  deprecated predicate isRValue() { this.isVarRead() }
 
   /** Gets a printable representation of this expression. */
   override string toString() {
@@ -1808,37 +1847,46 @@ class ExtensionReceiverAccess extends VarAccess {
 }
 
 /**
- * An l-value is a write access to a variable, which occurs as the destination of an assignment.
+ * A write access to a variable, which occurs as the destination of an assignment.
  */
-class LValue extends VarAccess {
-  LValue() { this.isLValue() }
+class VarWrite extends VarAccess {
+  VarWrite() { this.isVarWrite() }
 
   /**
-   * Gets a source expression used in an assignment to this l-value.
+   * Gets a source of the assignment that executes this variable write.
    *
    * For assignments using the `=` operator, the source expression
    * is simply the RHS of the assignment.
    *
-   * Note that for l-values occurring on the LHS of compound assignment operators
+   * Note that for writes occurring on the LHS of compound assignment operators
    * (such as (`+=`), both the RHS and the LHS of the compound assignment
    * are source expressions of the assignment.
    */
-  Expr getRhs() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
+  Expr getASource() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
+
+  /** DEPRECATED: (Inaccurately-named) alias for `getASource` */
+  deprecated Expr getRhs() { result = this.getASource() }
 }
 
+/** DEPRECATED: Alias for `VarWrite`. */
+deprecated class LValue = VarWrite;
+
 /**
- * An r-value is a read access to a variable.
+ * A read access to a variable.
  *
  * In other words, it is a variable access that does _not_ occur as the destination of
  * a simple assignment, but it may occur as the destination of a compound assignment
  * or a unary assignment.
  */
-class RValue extends VarAccess {
-  RValue() { this.isRValue() }
+class VarRead extends VarAccess {
+  VarRead() { this.isVarRead() }
 }
 
-/** A method access is an invocation of a method with a list of arguments. */
-class MethodAccess extends Expr, Call, @methodaccess {
+/** DEPRECATED: Alias for `VarRead`. */
+deprecated class RValue = VarRead;
+
+/** A method call is an invocation of a method with a list of arguments. */
+class MethodCall extends Expr, Call, @methodaccess {
   /** Gets the qualifying expression of this method access, if any. */
   override Expr getQualifier() { result.isNthChildOf(this, -1) }
 
@@ -1886,20 +1934,29 @@ class MethodAccess extends Expr, Call, @methodaccess {
   }
 
   /**
-   * Holds if this is a method access to an instance method of `this`. That is,
+   * Holds if this is a method call to an instance method of `this`. That is,
    * the qualifier is either an explicit or implicit unqualified `this` or `super`.
    */
-  predicate isOwnMethodAccess() { Qualifier::ownMemberAccess(this) }
+  predicate isOwnMethodCall() { Qualifier::ownMemberAccess(this) }
+
+  /** DEPRECATED: Alias for `isOwnMethodCall`. */
+  deprecated predicate isOwnMethodAccess() { this.isOwnMethodCall() }
 
   /**
-   * Holds if this is a method access to an instance method of the enclosing
+   * Holds if this is a method call to an instance method of the enclosing
    * class `t`. That is, the qualifier is either an explicit or implicit
    * `t`-qualified `this` or `super`.
    */
-  predicate isEnclosingMethodAccess(RefType t) { Qualifier::enclosingMemberAccess(this, t) }
+  predicate isEnclosingMethodCall(RefType t) { Qualifier::enclosingMemberAccess(this, t) }
 
-  override string getAPrimaryQlClass() { result = "MethodAccess" }
+  /** DEPRECATED: Alias for `isEnclosingMethodCall`. */
+  deprecated predicate isEnclosingMethodAccess(RefType t) { this.isEnclosingMethodCall(t) }
+
+  override string getAPrimaryQlClass() { result = "MethodCall" }
 }
+
+/** DEPRECATED: Alias for `MethodCall`. */
+deprecated class MethodAccess = MethodCall;
 
 /** A type access is a (possibly qualified) reference to a type. */
 class TypeAccess extends Expr, Annotatable, @typeaccess {
@@ -2062,22 +2119,31 @@ class Call extends ExprParent, @caller {
 }
 
 /** A polymorphic call to an instance method. */
-class VirtualMethodAccess extends MethodAccess {
-  VirtualMethodAccess() {
+class VirtualMethodCall extends MethodCall {
+  VirtualMethodCall() {
     this.getMethod().isVirtual() and
     not this.getQualifier() instanceof SuperAccess
   }
 }
 
+/** DEPRECATED: Alias for `VirtualMethodCall`. */
+deprecated class VirtualMethodAccess = VirtualMethodCall;
+
 /** A static method call. */
-class StaticMethodAccess extends MethodAccess {
-  StaticMethodAccess() { this.getMethod().isStatic() }
+class StaticMethodCall extends MethodCall {
+  StaticMethodCall() { this.getMethod().isStatic() }
 }
 
+/** DEPRECATED: Alias for `StaticMethodCall`. */
+deprecated class StaticMethodAccess = StaticMethodCall;
+
 /** A call to a method in the superclass. */
-class SuperMethodAccess extends MethodAccess {
-  SuperMethodAccess() { this.getQualifier() instanceof SuperAccess }
+class SuperMethodCall extends MethodCall {
+  SuperMethodCall() { this.getQualifier() instanceof SuperAccess }
 }
+
+/** DEPRECATED: Alias for `SuperMethodCall`. */
+deprecated class SuperMethodAccess = SuperMethodCall;
 
 /**
  * A constructor call, which occurs either as a constructor invocation inside a
@@ -2127,23 +2193,23 @@ private module Qualifier {
     TThis() or
     TEnclosing(RefType t)
 
-  /** An expression that accesses a member. That is, either a `FieldAccess` or a `MethodAccess`. */
+  /** An expression that accesses a member. That is, either a `FieldAccess` or a `MethodCall`. */
   class MemberAccess extends Expr {
     MemberAccess() {
       this instanceof FieldAccess or
-      this instanceof MethodAccess
+      this instanceof MethodCall
     }
 
     /** Gets the member accessed by this member access. */
     Member getMember() {
       result = this.(FieldAccess).getField() or
-      result = this.(MethodAccess).getMethod()
+      result = this.(MethodCall).getMethod()
     }
 
     /** Gets the qualifier of this member access, if any. */
     Expr getQualifier() {
       result = this.(FieldAccess).getQualifier() or
-      result = this.(MethodAccess).getQualifier()
+      result = this.(MethodCall).getQualifier()
     }
   }
 
@@ -2213,10 +2279,10 @@ private module Qualifier {
 }
 
 /** An expression that assigns a value to a field. */
-class FieldWrite extends FieldAccess, LValue { }
+class FieldWrite extends FieldAccess, VarWrite { }
 
 /** An expression that reads a field. */
-class FieldRead extends FieldAccess, RValue { }
+class FieldRead extends FieldAccess, VarRead { }
 
 private predicate hasInstantiation(RefType t) {
   t instanceof TypeVariable or

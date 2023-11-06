@@ -47,6 +47,7 @@ class UnspecifiedElement(ErrorElement):
     property: string
     index: optional[int]
     error: string
+    children: list["AstNode"] | child | desc("These will be present only in certain downgraded databases.")
 
 class Comment(Locatable):
     text: string
@@ -76,7 +77,13 @@ class AstNode(Locatable):
 @ql.hideable
 class Type(Element):
     name: string
-    canonical_type: "Type"
+    canonical_type: "Type" | desc("""
+        This is the unique type we get after resolving aliases and desugaring. For example, given
+        ```
+        typealias MyInt = Int
+        ```
+        then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
+    """)
 
 @group("decl")
 class Decl(AstNode):
@@ -106,6 +113,7 @@ class Stmt(AstNode):
 class GenericContext(Element):
     generic_type_params: list["GenericTypeParamDecl"] | child
 
+@qltest.test_with("EnumDecl")
 class EnumCaseDecl(Decl):
     elements: list["EnumElementDecl"]
 
@@ -246,6 +254,7 @@ class Callable(Element):
 class Function(GenericContext, ValueDecl, Callable):
     pass
 
+@qltest.test_with("EnumDecl")
 class EnumElementDecl(ValueDecl):
     name: string
     params: list[ParamDecl] | child
@@ -402,6 +411,9 @@ class CapturedDecl(Decl):
 
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
+    variables: list[VarDecl] | child | synth | desc("""
+        These are the variables introduced by this capture in the closure's scope, not the captured ones.
+    """)
     closure_body: "ClosureExpr" | child
 
 class CollectionExpr(Expr):
@@ -865,7 +877,7 @@ class IsPattern(Pattern):
     sub_pattern: optional[Pattern] | child
 
 class NamedPattern(Pattern):
-    name: string
+    var_decl: VarDecl
 
 class OptionalSomePattern(Pattern):
     sub_pattern: Pattern | child
@@ -881,6 +893,7 @@ class TypedPattern(Pattern):
     type_repr: optional["TypeRepr"] | child
 
 @group("stmt")
+@qltest.test_with("SwitchStmt")
 class CaseLabelItem(AstNode):
     pattern: Pattern | child
     guard: optional[Expr] | child
@@ -945,10 +958,11 @@ class BreakStmt(Stmt):
     target_name: optional[string]
     target: optional[Stmt]
 
+@qltest.test_with("SwitchStmt")
 class CaseStmt(Stmt):
-    body: Stmt | child
     labels: list[CaseLabelItem] | child
-    variables: list[VarDecl]
+    variables: list[VarDecl] | child
+    body: Stmt | child
 
 class ContinueStmt(Stmt):
     target_name: optional[string]
@@ -989,8 +1003,9 @@ class DoStmt(LabeledStmt):
 
 class ForEachStmt(LabeledStmt):
     pattern: Pattern | child
-    sequence: Expr | child
     where: optional[Expr] | child
+    iteratorVar: optional[PatternBindingDecl] | child
+    nextCall: optional[Expr] | child
     body: BraceStmt | child
 
 class LabeledConditionalStmt(LabeledStmt):

@@ -9,10 +9,10 @@ class TestRemoteFlowSource extends RemoteFlowSource {
 }
 
 module TaintFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node n) { n instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 }
 

@@ -185,7 +185,7 @@ module ApiGraphShared<ApiGraphSharedSig S> {
   bindingset[sink]
   pragma[inline_late]
   Node getAValueReachingSinkInline(ApiNode sink) {
-    result = asSinkInline(getAnEpsilonSuccessorInline(sink))
+    backwardStartNode(result) = getAnEpsilonSuccessorInline(sink)
   }
 
   /**

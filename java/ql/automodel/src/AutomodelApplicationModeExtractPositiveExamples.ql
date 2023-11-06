@@ -18,16 +18,14 @@ from
   DollarAtString signature, DollarAtString input, DollarAtString output,
   DollarAtString isVarargsArray, DollarAtString extensibleType
 where
-  // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
-  // certain about in the prompt.
-  not erroneousEndpoints(endpoint, _, _, _, _, false) and
   extensibleType = endpoint.getExtensibleType() and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
   CharacteristicsImpl::isKnownAs(endpoint, endpointType, _) and
   exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
 select endpoint.asNode(),
-  endpointType + "\nrelated locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
+  endpointType + "\nrelated locations: $@, $@, $@." +
+    "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //

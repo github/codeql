@@ -244,15 +244,19 @@ private module Impl {
   private Element getImmediateChildOfUnspecifiedElement(
     UnspecifiedElement e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bErrorElement, int n |
+    exists(int b, int bErrorElement, int n, int nChild |
       b = 0 and
       bErrorElement =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfErrorElement(e, i, _)) | i) and
       n = bErrorElement and
+      nChild = n + 1 + max(int i | i = -1 or exists(e.getImmediateChild(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfErrorElement(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateChild(index - n) and
+        partialPredicateCall = "Child(" + (index - n).toString() + ")"
       )
     )
   }
@@ -1134,12 +1138,13 @@ private module Impl {
   private Element getImmediateChildOfCaptureListExpr(
     CaptureListExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n, int nBindingDecl, int nClosureBody |
+    exists(int b, int bExpr, int n, int nBindingDecl, int nVariable, int nClosureBody |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nBindingDecl = n + 1 + max(int i | i = -1 or exists(e.getBindingDecl(i)) | i) and
-      nClosureBody = nBindingDecl + 1 and
+      nVariable = nBindingDecl + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nClosureBody = nVariable + 1 and
       (
         none()
         or
@@ -1148,7 +1153,10 @@ private module Impl {
         result = e.getBindingDecl(index - n) and
         partialPredicateCall = "BindingDecl(" + (index - n).toString() + ")"
         or
-        index = nBindingDecl and
+        result = e.getVariable(index - nBindingDecl) and
+        partialPredicateCall = "Variable(" + (index - nBindingDecl).toString() + ")"
+        or
+        index = nVariable and
         result = e.getImmediateClosureBody() and
         partialPredicateCall = "ClosureBody()"
       )
@@ -3468,21 +3476,25 @@ private module Impl {
   }
 
   private Element getImmediateChildOfCaseStmt(CaseStmt e, int index, string partialPredicateCall) {
-    exists(int b, int bStmt, int n, int nBody, int nLabel |
+    exists(int b, int bStmt, int n, int nLabel, int nVariable, int nBody |
       b = 0 and
       bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
       n = bStmt and
-      nBody = n + 1 and
-      nLabel = nBody + 1 + max(int i | i = -1 or exists(e.getLabel(i)) | i) and
+      nLabel = n + 1 + max(int i | i = -1 or exists(e.getLabel(i)) | i) and
+      nVariable = nLabel + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nBody = nVariable + 1 and
       (
         none()
         or
         result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getBody() and partialPredicateCall = "Body()"
+        result = e.getLabel(index - n) and
+        partialPredicateCall = "Label(" + (index - n).toString() + ")"
         or
-        result = e.getLabel(index - nBody) and
-        partialPredicateCall = "Label(" + (index - nBody).toString() + ")"
+        result = e.getVariable(index - nLabel) and
+        partialPredicateCall = "Variable(" + (index - nLabel).toString() + ")"
+        or
+        index = nVariable and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }
@@ -3668,15 +3680,19 @@ private module Impl {
   private Element getImmediateChildOfForEachStmt(
     ForEachStmt e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bLabeledStmt, int n, int nPattern, int nSequence, int nWhere, int nBody |
+    exists(
+      int b, int bLabeledStmt, int n, int nPattern, int nWhere, int nIteratorVar, int nNextCall,
+      int nBody
+    |
       b = 0 and
       bLabeledStmt =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
       n = bLabeledStmt and
       nPattern = n + 1 and
-      nSequence = nPattern + 1 and
-      nWhere = nSequence + 1 and
-      nBody = nWhere + 1 and
+      nWhere = nPattern + 1 and
+      nIteratorVar = nWhere + 1 and
+      nNextCall = nIteratorVar + 1 and
+      nBody = nNextCall + 1 and
       (
         none()
         or
@@ -3684,13 +3700,15 @@ private module Impl {
         or
         index = n and result = e.getImmediatePattern() and partialPredicateCall = "Pattern()"
         or
-        index = nPattern and
-        result = e.getImmediateSequence() and
-        partialPredicateCall = "Sequence()"
+        index = nPattern and result = e.getImmediateWhere() and partialPredicateCall = "Where()"
         or
-        index = nSequence and result = e.getImmediateWhere() and partialPredicateCall = "Where()"
+        index = nWhere and result = e.getIteratorVar() and partialPredicateCall = "IteratorVar()"
         or
-        index = nWhere and result = e.getBody() and partialPredicateCall = "Body()"
+        index = nIteratorVar and
+        result = e.getImmediateNextCall() and
+        partialPredicateCall = "NextCall()"
+        or
+        index = nNextCall and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }

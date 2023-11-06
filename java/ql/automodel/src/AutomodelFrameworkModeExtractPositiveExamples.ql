@@ -13,18 +13,17 @@ private import AutomodelEndpointTypes
 private import AutomodelJavaUtil
 
 from
-  Endpoint endpoint, SinkType sinkType, FrameworkModeMetadataExtractor meta, DollarAtString package,
-  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString parameterName
+  Endpoint endpoint, EndpointType endpointType, FrameworkModeMetadataExtractor meta,
+  DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
+  DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString parameterName, DollarAtString extensibleType
 where
-  // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
-  // certain about in the prompt.
-  not erroneousEndpoints(endpoint, _, _, _, _, false) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, parameterName) and
+  endpoint.getExtensibleType() = extensibleType and
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
-  CharacteristicsImpl::isKnownAs(endpoint, sinkType, _)
+  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _)
 select endpoint,
-  sinkType + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
+  endpointType + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package, "package", //
@@ -33,4 +32,6 @@ select endpoint,
   name, "name", //
   signature, "signature", //
   input, "input", //
-  parameterName, "parameterName" //
+  output, "output", //
+  parameterName, "parameterName", //
+  extensibleType, "extensibleType"

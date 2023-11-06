@@ -28,8 +28,8 @@ abstract class PermissionsConstruction extends Top {
   abstract Expr getInput();
 }
 
-private class PermissionsCheckMethodAccess extends MethodAccess, PermissionsConstruction {
-  PermissionsCheckMethodAccess() {
+private class PermissionsCheckMethodCall extends MethodCall, PermissionsConstruction {
+  PermissionsCheckMethodCall() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypeShiroSubject and
       m.getName() = "isPermitted"
