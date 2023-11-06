@@ -1,5 +1,11 @@
 uniqueEnclosingCallable
 uniqueCallEnclosingCallable
+| class_scope.py:16:5:16:10 | func() | Call should have one enclosing callable but has 0. |
+| class_scope.py:16:5:16:10 | func() | Call should have one enclosing callable but has 0. |
+| class_scope.py:18:9:18:14 | func() | Call should have one enclosing callable but has 0. |
+| class_scope.py:18:9:18:14 | func() | Call should have one enclosing callable but has 0. |
+| class_scope.py:22:9:22:14 | func() | Call should have one enclosing callable but has 0. |
+| class_scope.py:22:9:22:14 | func() | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation
