@@ -17,7 +17,7 @@ private import semmle.python.frameworks.Stdlib
  *
  * See https://pypi.org/project/baize.
  */
-module Starlette {
+module Baize {
   /**
    * A call to the `baize.asgi.FileResponse` constructor as a sink for Filesystem access.
    *
