@@ -7,6 +7,10 @@ private import SSA
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.Constants
+private import semmle.code.java.dataflow.RangeAnalysis
+private import codeql.rangeanalysis.internal.RangeUtils
+
+private predicate backEdge = MakeUtils<Sem, IntDelta>::backEdge/3;
 
 /**
  * Holds if `v` is an input to `phi` that is not along a back edge, and the
@@ -179,18 +183,6 @@ Expr ssaRead(SsaVariable v, int delta) {
   v.(SsaExplicitUpdate).getDefiningExpr().(Assignment) = result and delta = 0
   or
   result.(AssignExpr).getSource() = ssaRead(v, delta)
-}
-
-/**
- * Holds if `inp` is an input to `phi` along a back edge.
- */
-predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
-  edge.phiInput(phi, inp) and
-  // Conservatively assume that every edge is a back edge if we don't have dominance information.
-  (
-    phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
-    not hasDominanceInformation(edge.getOrigBlock())
-  )
 }
 
 /**

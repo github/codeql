@@ -142,7 +142,13 @@ signature module Semantic {
     Expr getBranchExpr(boolean branch);
   }
 
-  class BasicBlock;
+  class BasicBlock {
+    /** Holds if this block (transitively) dominates `otherblock`. */
+    predicate bbDominates(BasicBlock otherBlock);
+  }
+
+  /** Gets an immediate successor of basic block `bb`, if any. */
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb);
 
   class Guard {
     string toString();
@@ -176,6 +182,8 @@ signature module Semantic {
 
   class SsaVariable {
     Expr getAUse();
+
+    BasicBlock getBasicBlock();
   }
 
   class SsaPhiNode extends SsaVariable;
@@ -189,14 +197,14 @@ signature module Semantic {
   }
 
   class SsaReadPositionPhiInputEdge extends SsaReadPosition {
+    BasicBlock getOrigBlock();
+
     predicate phiInput(SsaPhiNode phi, SsaVariable inp);
   }
 
   class SsaReadPositionBlock extends SsaReadPosition {
     BasicBlock getBlock();
   }
-
-  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge);
 
   predicate conversionCannotOverflow(Type fromType, Type toType);
 }
@@ -928,7 +936,7 @@ module RangeStage<
       origdelta = D::fromFloat(0) and
       reason = TSemNoReason()
     |
-      if Sem::backEdge(phi, inp, edge)
+      if backEdge(phi, inp, edge)
       then
         fromBackEdge = true and
         (

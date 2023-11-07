@@ -211,7 +211,11 @@ module Sem implements Semantic {
 
   class BasicBlock = J::BasicBlock;
 
-  class Guard extends GL::Guard {
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
+
+  final private class FinalGuard = GL::Guard;
+
+  class Guard extends FinalGuard {
     Expr asExpr() { result = this }
   }
 
@@ -261,15 +265,13 @@ module Sem implements Semantic {
 
   class SsaReadPositionPhiInputEdge extends SsaReadPosition instanceof SsaReadPos::SsaReadPositionPhiInputEdge
   {
+    BasicBlock getOrigBlock() { result = super.getOrigBlock() }
+
     predicate phiInput(SsaPhiNode phi, SsaVariable inp) { super.phiInput(phi, inp) }
   }
 
   class SsaReadPositionBlock extends SsaReadPosition instanceof SsaReadPos::SsaReadPositionBlock {
     BasicBlock getBlock() { result = super.getBlock() }
-  }
-
-  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
-    RU::backEdge(phi, inp, edge)
   }
 
   predicate conversionCannotOverflow = safeCast/2;
