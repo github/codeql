@@ -61,7 +61,13 @@ module SemanticExprConfig {
     private IR::Instruction getInstruction(int n) {
       result =
         rank[n + 1](IR::Instruction instr, int i, IR::IRBlock block |
-          this = Equiv::getEquivalenceClass(instr) and block.getInstruction(i) = instr
+          this = Equiv::getEquivalenceClass(instr) and
+          (
+            block.getInstruction(i) = instr
+            or
+            i = -1 and
+            instr = block.getAPhiInstruction()
+          )
         |
           instr order by i
         )
