@@ -12,7 +12,6 @@ private import dotnet
 // import `TaintedMember` and `AdditionalTaintStep` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.JsonNET
 private import semmle.code.csharp.frameworks.WCF
-private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /**

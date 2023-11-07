@@ -84,12 +84,19 @@ class RazorPageClass extends Class {
   string getSourceFilepath() { result = attr.getArgument(2).(StringLiteral).getValue() }
 }
 
-private class ViewCallFlowStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(ViewCall vc, RazorPageClass rp, PropertyAccess modelProp |
-      viewCallRefersToPage(vc, rp) and
-      node1.asExpr() = vc.getModelArgument() and
-      node2.asExpr() = modelProp and
+private class ViewCallJumpNode extends DataFlow::NonLocalJumpNode {
+  ViewCall vc;
+  RazorPageClass rp;
+
+  ViewCallJumpNode() {
+    viewCallRefersToPage(vc, rp) and
+    this.asExpr() = vc.getModelArgument()
+  }
+
+  override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
+    preservesValue = true and
+    exists(PropertyAccess modelProp |
+      result.asExpr() = modelProp and
       modelProp.getTarget().hasName("Model") and
       modelProp.getEnclosingCallable().getDeclaringType() = rp
     )

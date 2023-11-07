@@ -145,4 +145,11 @@ public class Test4Controller : Controller {
         // Expected to find file /MyAreas/TestArea/Test4/Test22.cshtml
         return View("Test22", tainted22);
     }
+
+    public IActionResult test23(string tainted23) {
+        // Expected to find file /Views/Shared/Test23.cshtml
+        UserData x = new UserData();
+        x.Name = tainted23;
+        return View("Test23", x);
+    }
 }

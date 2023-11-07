@@ -45,6 +45,10 @@ edges
 | Controllers/TestController.cs:131:31:131:39 | access to parameter tainted19 : UserData | Views/Shared/Test19.cshtml:8:16:8:20 | access to property Model : UserData |
 | Controllers/TestController.cs:139:42:139:50 | tainted21 : UserData | Controllers/TestController.cs:141:31:141:39 | access to parameter tainted21 : UserData |
 | Controllers/TestController.cs:141:31:141:39 | access to parameter tainted21 : UserData | Pages/Shared/Test21.cshtml:8:16:8:20 | access to property Model : UserData |
+| Controllers/TestController.cs:149:40:149:48 | tainted23 : String | Controllers/TestController.cs:152:18:152:26 | access to parameter tainted23 : String |
+| Controllers/TestController.cs:152:9:152:9 | [post] access to local variable x : UserData [property Name] : String | Controllers/TestController.cs:153:31:153:31 | access to local variable x : UserData [property Name] : String |
+| Controllers/TestController.cs:152:18:152:26 | access to parameter tainted23 : String | Controllers/TestController.cs:152:9:152:9 | [post] access to local variable x : UserData [property Name] : String |
+| Controllers/TestController.cs:153:31:153:31 | access to local variable x : UserData [property Name] : String | Views/Shared/Test23.cshtml:8:16:8:20 | access to property Model : UserData [property Name] : String |
 | Pages/Shared/Test21.cshtml:8:16:8:20 | access to property Model : UserData | Pages/Shared/Test21.cshtml:8:16:8:25 | access to property Name |
 | Views/Custom2/Test16.cshtml:8:16:8:20 | access to property Model : UserData | Views/Custom2/Test16.cshtml:8:16:8:25 | access to property Name |
 | Views/Custom/Test3/Test15.cshtml:8:16:8:20 | access to property Model : UserData | Views/Custom/Test3/Test15.cshtml:8:16:8:25 | access to property Name |
@@ -56,6 +60,7 @@ edges
 | Views/Shared/Test2.cshtml:8:16:8:20 | access to property Model : UserData | Views/Shared/Test2.cshtml:8:16:8:25 | access to property Name |
 | Views/Shared/Test14.cshtml:8:16:8:20 | access to property Model : UserData | Views/Shared/Test14.cshtml:8:16:8:25 | access to property Name |
 | Views/Shared/Test19.cshtml:8:16:8:20 | access to property Model : UserData | Views/Shared/Test19.cshtml:8:16:8:25 | access to property Name |
+| Views/Shared/Test23.cshtml:8:16:8:20 | access to property Model : UserData [property Name] : String | Views/Shared/Test23.cshtml:8:16:8:25 | access to property Name |
 | Views/Test2/Test10.cshtml:8:16:8:20 | access to property Model : UserData | Views/Test2/Test10.cshtml:8:16:8:25 | access to property Name |
 | Views/Test2/Test11.cshtml:8:16:8:20 | access to property Model : UserData | Views/Test2/Test11.cshtml:8:16:8:25 | access to property Name |
 | Views/Test/Test1.cshtml:8:16:8:20 | access to property Model : UserData | Views/Test/Test1.cshtml:8:16:8:25 | access to property Name |
@@ -111,6 +116,10 @@ nodes
 | Controllers/TestController.cs:131:31:131:39 | access to parameter tainted19 : UserData | semmle.label | access to parameter tainted19 : UserData |
 | Controllers/TestController.cs:139:42:139:50 | tainted21 : UserData | semmle.label | tainted21 : UserData |
 | Controllers/TestController.cs:141:31:141:39 | access to parameter tainted21 : UserData | semmle.label | access to parameter tainted21 : UserData |
+| Controllers/TestController.cs:149:40:149:48 | tainted23 : String | semmle.label | tainted23 : String |
+| Controllers/TestController.cs:152:9:152:9 | [post] access to local variable x : UserData [property Name] : String | semmle.label | [post] access to local variable x : UserData [property Name] : String |
+| Controllers/TestController.cs:152:18:152:26 | access to parameter tainted23 : String | semmle.label | access to parameter tainted23 : String |
+| Controllers/TestController.cs:153:31:153:31 | access to local variable x : UserData [property Name] : String | semmle.label | access to local variable x : UserData [property Name] : String |
 | Pages/Shared/Test21.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
 | Pages/Shared/Test21.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Custom2/Test16.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
@@ -133,6 +142,8 @@ nodes
 | Views/Shared/Test14.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Shared/Test19.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
 | Views/Shared/Test19.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
+| Views/Shared/Test23.cshtml:8:16:8:20 | access to property Model : UserData [property Name] : String | semmle.label | access to property Model : UserData [property Name] : String |
+| Views/Shared/Test23.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Test2/Test10.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
 | Views/Test2/Test10.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
 | Views/Test2/Test11.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
@@ -160,6 +171,7 @@ subpaths
 | Views/Shared/Test2.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:18:41:18:48 | tainted2 : UserData | Views/Shared/Test2.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:18:41:18:48 | tainted2 : UserData | User-provided value |
 | Views/Shared/Test14.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:86:42:86:50 | tainted14 : UserData | Views/Shared/Test14.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:86:42:86:50 | tainted14 : UserData | User-provided value |
 | Views/Shared/Test19.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:129:42:129:50 | tainted19 : UserData | Views/Shared/Test19.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:129:42:129:50 | tainted19 : UserData | User-provided value |
+| Views/Shared/Test23.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:149:40:149:48 | tainted23 : String | Views/Shared/Test23.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:149:40:149:48 | tainted23 : String | User-provided value |
 | Views/Test2/Test10.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:60:42:60:50 | tainted10 : UserData | Views/Test2/Test10.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:60:42:60:50 | tainted10 : UserData | User-provided value |
 | Views/Test2/Test11.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:65:42:65:50 | tainted11 : UserData | Views/Test2/Test11.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:65:42:65:50 | tainted11 : UserData | User-provided value |
 | Views/Test/Test1.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:13:41:13:48 | tainted1 : UserData | Views/Test/Test1.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:13:41:13:48 | tainted1 : UserData | User-provided value |
