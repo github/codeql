@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.owasp.esapi.Encoder;
 
 public class WeakRandomCookies extends HttpServlet {
     HttpServletResponse response;
@@ -20,9 +21,11 @@ public class WeakRandomCookies extends HttpServlet {
         Cookie cookie = new Cookie("name", Integer.toString(c));
         response.addCookie(cookie); // $hasWeakRandomFlow
 
+        Encoder enc = null;
         int c2 = r.nextInt();
+        String value = enc.encodeForHTML(Integer.toString(c2));
         // BAD: The cookie value may be predictable.
-        Cookie cookie2 = new Cookie("name" + c2, "value");
+        Cookie cookie2 = new Cookie("name", value);
         response.addCookie(cookie2); // $hasWeakRandomFlow
 
         byte[] bytes = new byte[16];

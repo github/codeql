@@ -79,6 +79,14 @@ module WeakRandomnessConfig implements DataFlow::ConfigSig {
     n1.asExpr() = n2.asExpr().(BinaryExpr).getAnOperand()
     or
     n1.asExpr() = n2.asExpr().(UnaryExpr).getExpr()
+    or
+    exists(MethodCall mc, string methodName |
+      mc.getMethod().hasQualifiedName("org.owasp.esapi", "Encoder", methodName) and
+      methodName.matches("encode%")
+    |
+      n1.asExpr() = mc.getArgument(0) and
+      n2.asExpr() = mc
+    )
   }
 }
 

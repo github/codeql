@@ -4,4 +4,3 @@ extensions:
       extensible: summaryModel
     data:
       - ["org.owasp.esapi", "Encoder", true, "encodeForHTML", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.owasp.esapi", "Encoder", true, "encodeForBase64", "(byte[],boolean)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
