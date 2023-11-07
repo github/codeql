@@ -31,6 +31,9 @@ abstract class MustFlowConfiguration extends string {
    */
   abstract predicate isSink(Operand sink);
 
+  /**
+   * Holds if data flow through `instr` is prohibited.
+   */
   predicate isBarrier(Instruction instr) { none() }
 
   /**
