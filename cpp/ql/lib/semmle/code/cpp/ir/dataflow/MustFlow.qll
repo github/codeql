@@ -48,7 +48,7 @@ abstract class MustFlowConfiguration extends string {
    */
   final predicate hasFlowPath(MustFlowPathNode source, MustFlowPathSink sink) {
     this.isSource(source.getInstruction()) and
-    source.getASuccessor+() = sink
+    source.getASuccessor*() = sink
   }
 }
 
