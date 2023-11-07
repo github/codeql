@@ -25,30 +25,39 @@ func fasthttpClient() {
 	fasthttp.DialDualStackTimeout(userInput, 5) // $ SsrfSink=userInput
 
 	res := &fasthttp.Response{}
-	req := &fasthttp.Request{}
-	req.SetHost(source().(string))
-	sink(req) // $ hasTaintFlow="req"
-	req.SetHostBytes(source().([]byte))
-	sink(req) // $ hasTaintFlow="req"
-	req.SetRequestURI(source().(string))
-	sink(req) // $ hasTaintFlow="req"
-	req.SetRequestURIBytes(source().([]byte))
-	sink(req) // $ hasTaintFlow="req"
+	req1 := &fasthttp.Request{}
+	req1.SetHost(source().(string))
+	sink(req1) // $ hasTaintFlow="req1"
+	req2 := &fasthttp.Request{}
+	req2.SetHostBytes(source().([]byte))
+	sink(req2) // $ hasTaintFlow="req2"
+	req3 := &fasthttp.Request{}
+	req3.SetRequestURI(source().(string))
+	sink(req3) // $ hasTaintFlow="req3"
+	req4 := &fasthttp.Request{}
+	req4.SetRequestURIBytes(source().([]byte))
+	sink(req4) // $ hasTaintFlow="req4"
 
-	uri := fasthttp.AcquireURI()
+	uri1 := fasthttp.AcquireURI()
 	userInput = "UserControlled.com:80"
-	uri.SetHost(source().(string))
-	sink(uri) // $ hasTaintFlow="uri"
-	uri.SetHostBytes(source().([]byte))
-	sink(uri) // $ hasTaintFlow="uri"
+	uri1.SetHost(source().(string))
+	sink(uri1) // $ hasTaintFlow="uri1"
+	uri2 := fasthttp.AcquireURI()
+	uri2.SetHostBytes(source().([]byte))
+	sink(uri2) // $ hasTaintFlow="uri2"
 	userInput = "http://UserControlled.com"
-	uri.Update(source().(string))
-	sink(uri) // $ hasTaintFlow="uri"
-	uri.UpdateBytes(source().([]byte))
-	sink(uri) // $ hasTaintFlow="uri"
-	uri.Parse(source().([]byte), source().([]byte))
-	sink(uri) // $ hasTaintFlow="uri"
-	req.SetURI(uri)
+	uri3 := fasthttp.AcquireURI()
+	uri3.Update(source().(string))
+	sink(uri3) // $ hasTaintFlow="uri3"
+	uri4 := fasthttp.AcquireURI()
+	uri4.UpdateBytes(source().([]byte))
+	sink(uri4) // $ hasTaintFlow="uri4"
+	uri5 := fasthttp.AcquireURI()
+	uri5.Parse(source().([]byte), source().([]byte))
+	sink(uri5) // $ hasTaintFlow="uri5"
+	req := &fasthttp.Request{}
+	uri6 := fasthttp.AcquireURI()
+	req.SetURI(uri6)
 
 	resByte := make([]byte, 1000)
 	userInput = "http://127.0.0.1:8909"
