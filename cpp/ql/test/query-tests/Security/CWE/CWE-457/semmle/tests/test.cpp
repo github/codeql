@@ -473,3 +473,63 @@ void test44() {
 
 	void(x + y); // BAD
 }
+
+enum class State { StateA, StateB, StateC };
+
+int exhaustive_switch(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		case State::StateB:
+			y = 2;
+			break;
+		case State::StateC:
+			y = 3;
+			break;
+	}
+	return y; // GOOD (y is always initialized)
+}
+
+int exhaustive_switch_2(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		default:
+			y = 2;
+			break;
+	}
+	return y; // GOOD (y is always initialized)
+}
+
+int non_exhaustive_switch(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		case State::StateB:
+			y = 2;
+			break;
+	}
+	return y; // BAD [NOT DETECTED] (y is not initialized when s = StateC)
+}
+
+int non_exhaustive_switch_2(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		case State::StateB:
+			y = 2;
+			break;
+	}
+	if(s != State::StateC) {
+		return y; // GOOD (y is not initialized when s = StateC, but if s = StateC we won't reach this point)
+	}
+	return 0;
+}
