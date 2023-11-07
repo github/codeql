@@ -87,27 +87,15 @@
  */
 
 import csharp
-private import ExternalFlowExtensions as Extensions
-private import internal.AccessPathSyntax
-private import internal.DataFlowDispatch
-private import internal.DataFlowPrivate
-private import internal.DataFlowPublic
-private import internal.FlowSummaryImpl::Public
-private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImplSpecific
+import ExternalFlowExtensions
+private import AccessPathSyntax
+private import DataFlowDispatch
+private import DataFlowPrivate
+private import DataFlowPublic
+private import FlowSummaryImpl::Public
+private import FlowSummaryImpl::Private::External
+private import FlowSummaryImplSpecific
 private import codeql.mad.ModelValidation as SharedModelVal
-
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel = Extensions::sourceModel/9;
-
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel = Extensions::sinkModel/9;
-
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel = Extensions::summaryModel/10;
-
-/** Holds if a neutral model exists for the given parameters. */
-predicate neutralModel = Extensions::neutralModel/6;
 
 private predicate relevantNamespace(string namespace) {
   sourceModel(namespace, _, _, _, _, _, _, _, _) or
@@ -310,10 +298,17 @@ class UnboundCallable extends Callable {
   }
 }
 
+private predicate hasName(Declaration d, string name) {
+  d.(Operator).getFunctionName() = name
+  or
+  not d instanceof Operator and
+  d.hasName(name)
+}
+
 pragma[nomagic]
 private predicate callableSpecInfo(Callable c, string namespace, string type, string name) {
   c.getDeclaringType().hasQualifiedName(namespace, type) and
-  c.getName() = name
+  hasName(c, name)
 }
 
 pragma[nomagic]
@@ -326,7 +321,7 @@ private predicate subtypeSpecCandidate(string name, UnboundValueOrRefType t) {
 
 pragma[nomagic]
 private predicate callableInfo(Callable c, string name, UnboundValueOrRefType decl) {
-  name = c.getName() and
+  hasName(c, name) and
   decl = c.getDeclaringType()
 }
 
@@ -387,7 +382,7 @@ private Element interpretElement0(
         subtypes = true and result.(UnboundCallable).overridesOrImplementsUnbound(m)
       ) and
       m.getDeclaringType() = t and
-      m.hasName(name)
+      hasName(m, name)
     |
       signature = ""
       or
