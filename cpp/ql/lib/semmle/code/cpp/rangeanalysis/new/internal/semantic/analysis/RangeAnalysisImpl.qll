@@ -78,10 +78,6 @@ module Sem implements Semantic {
 
   predicate implies_v2 = semImplies_v2/4;
 
-  predicate guardDirectlyControlsSsaRead = semGuardDirectlyControlsSsaRead/3;
-
-  predicate guardControlsSsaRead = semGuardControlsSsaRead/3;
-
   class Type = SemType;
 
   class IntegerType = SemIntegerType;

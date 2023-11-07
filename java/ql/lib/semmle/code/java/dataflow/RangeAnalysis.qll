@@ -223,14 +223,6 @@ module Sem implements Semantic {
     GL::implies_v2(g1, b1, g2, b2)
   }
 
-  predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    RU::guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
-  }
-
-  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    RU::guardControlsSsaRead(guard, controlled, testIsTrue)
-  }
-
   class Type = J::Type;
 
   class IntegerType extends J::IntegralType {
@@ -266,6 +258,8 @@ module Sem implements Semantic {
   class SsaReadPositionPhiInputEdge extends SsaReadPosition instanceof SsaReadPos::SsaReadPositionPhiInputEdge
   {
     BasicBlock getOrigBlock() { result = super.getOrigBlock() }
+
+    BasicBlock getPhiBlock() { result = super.getPhiBlock() }
 
     predicate phiInput(SsaPhiNode phi, SsaVariable inp) { super.phiInput(phi, inp) }
   }

@@ -36,6 +36,32 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
   }
 
   /**
+   * Holds if `guard` directly controls the position `controlled` with the
+   * value `testIsTrue`.
+   */
+  pragma[nomagic]
+  predicate guardDirectlyControlsSsaRead(Lang::Guard guard, Lang::SsaReadPosition controlled, boolean testIsTrue) {
+    guard.directlyControls(controlled.(Lang::SsaReadPositionBlock).getBlock(), testIsTrue)
+    or
+    exists(Lang::SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
+    )
+  }
+
+  /**
+   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
+   */
+  predicate guardControlsSsaRead(Lang::Guard guard, Lang::SsaReadPosition controlled, boolean testIsTrue) {
+    guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
+    or
+    exists(Lang::Guard guard0, boolean testIsTrue0 |
+      Lang::implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
+      guardControlsSsaRead(guard0, controlled, testIsTrue0)
+    )
+  }
+
+  /**
    * Holds if `inp` is an input to `phi` along a back edge.
    */
   predicate backEdge(
