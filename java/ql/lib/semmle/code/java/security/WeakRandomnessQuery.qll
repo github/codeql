@@ -46,15 +46,17 @@ private class TypeHadoopOsSecureRandom extends SafeRandomImplementation {
 abstract class WeakRandomnessSink extends DataFlow::Node { }
 
 /**
- * A node which creates a cookie.
+ * A node which sets the value of a cookie.
  */
 private class CookieSink extends WeakRandomnessSink {
   CookieSink() {
-    this.getType() instanceof TypeCookie and
-    exists(MethodCall mc |
-      mc.getMethod().hasQualifiedName("javax.servlet.http", "HttpServletResponse", "addCookie")
-    |
-      mc.getArgument(0) = this.asExpr()
+    exists(Call c |
+      c.(ClassInstanceExpr).getConstructedType() instanceof TypeCookie and
+      this.asExpr() = c.getArgument(1)
+      or
+      c.(MethodCall).getMethod().getDeclaringType() instanceof TypeCookie and
+      c.(MethodCall).getMethod().hasName("setValue") and
+      this.asExpr() = c.getArgument(0)
     )
   }
 }

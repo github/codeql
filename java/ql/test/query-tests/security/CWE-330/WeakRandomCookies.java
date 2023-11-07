@@ -18,54 +18,44 @@ public class WeakRandomCookies extends HttpServlet {
 
         int c = r.nextInt();
         // BAD: The cookie value may be predictable.
-        Cookie cookie = new Cookie("name", Integer.toString(c));
-        response.addCookie(cookie); // $hasWeakRandomFlow
+        Cookie cookie = new Cookie("name", Integer.toString(c)); // $hasWeakRandomFlow
 
         Encoder enc = null;
         int c2 = r.nextInt();
         String value = enc.encodeForHTML(Integer.toString(c2));
         // BAD: The cookie value may be predictable.
-        Cookie cookie2 = new Cookie("name", value);
-        response.addCookie(cookie2); // $hasWeakRandomFlow
+        Cookie cookie2 = new Cookie("name", value); // $hasWeakRandomFlow
 
         byte[] bytes = new byte[16];
         r.nextBytes(bytes);
         // BAD: The cookie value may be predictable.
-        Cookie cookie3 = new Cookie("name", new String(bytes));
-        response.addCookie(cookie3); // $hasWeakRandomFlow
+        Cookie cookie3 = new Cookie("name", new String(bytes)); // $hasWeakRandomFlow
 
         SecureRandom sr = new SecureRandom();
 
         byte[] bytes2 = new byte[16];
         sr.nextBytes(bytes2);
         // GOOD: The cookie value is unpredictable.
-        Cookie cookie4 = new Cookie("name", new String(bytes2));
-        response.addCookie(cookie4);
-
+        Cookie cookie4 = new Cookie("name", new String(bytes2)); 
+        
         ThreadLocalRandom tlr = ThreadLocalRandom.current();
 
-        Cookie cookie5 = new Cookie("name", Integer.toString(tlr.nextInt()));
-        response.addCookie(cookie5); // $hasWeakRandomFlow
+        Cookie cookie5 = new Cookie("name", Integer.toString(tlr.nextInt())); // $hasWeakRandomFlow
 
-        Cookie cookie6 = new Cookie("name", RandomStringUtils.random(10));
-        response.addCookie(cookie6); // $hasWeakRandomFlow
+        Cookie cookie6 = new Cookie("name", RandomStringUtils.random(10)); // $hasWeakRandomFlow
 
-        Cookie cookie7 = new Cookie("name", RandomStringUtils.randomAscii(10));
-        response.addCookie(cookie7); // $hasWeakRandomFlow
+        Cookie cookie7 = new Cookie("name", RandomStringUtils.randomAscii(10)); // $hasWeakRandomFlow
 
         long c3 = r.nextLong();
         // BAD: The cookie value may be predictable.
-        Cookie cookie8 = new Cookie("name", Long.toString(c3 * 5));
-        response.addCookie(cookie8); // $hasWeakRandomFlow
+        Cookie cookie8 = new Cookie("name", Long.toString(c3 * 5)); // $hasWeakRandomFlow
 
         double c4 = Math.random();
         // BAD: The cookie value may be predictable.
-        Cookie cookie9 = new Cookie("name", Double.toString(c4));
-        response.addCookie(cookie9); // $hasWeakRandomFlow
+        Cookie cookie9 = new Cookie("name", Double.toString(c4)); // $hasWeakRandomFlow
 
         double c5 = Math.random();
         // BAD: The cookie value may be predictable.
-        Cookie cookie10 = new Cookie("name", Double.toString(++c5));
-        response.addCookie(cookie10); // $hasWeakRandomFlow
+        Cookie cookie10 = new Cookie("name", Double.toString(++c5)); // $hasWeakRandomFlow
     }
 }
