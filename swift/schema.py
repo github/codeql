@@ -1243,6 +1243,6 @@ class AbiSafeConversionExpr(ImplicitConversionExpr):
 
 class SingleValueStmtExpr(Expr):
     """
-    An expression that may wrap a statement which produces a single value.
+    An expression that wraps a statement which produces a single value.
     """
     stmt: Stmt | child
