@@ -3,6 +3,7 @@
  * @description Using tainted data in a call to exec() may allow an attacker to execute arbitrary commands.
  * @problem.severity error
  * @kind path-problem
+ * @security-severity 9.8
  * @precision medium
  * @id java/exec-tainted-environment
  * @tags security
