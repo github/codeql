@@ -21,18 +21,4 @@ predicate localExprTaint(Expr e1, Expr e2) {
 /** A member (property or field) that is tainted if its containing object is tainted. */
 abstract class TaintedMember extends AssignableMember { }
 
-/**
- * A unit class for adding additional taint steps.
- *
- * Extend this class to add additional taint steps that should apply to all
- * taint configurations.
- */
-class AdditionalTaintStep extends Unit {
-  /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for all configurations.
-   */
-  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
-}
-
 predicate localTaintStep = localTaintStepImpl/2;
