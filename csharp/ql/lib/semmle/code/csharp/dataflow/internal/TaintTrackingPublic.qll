@@ -1,6 +1,5 @@
 private import csharp
 private import TaintTrackingPrivate
-private import codeql.util.Unit
 
 /**
  * Holds if taint propagates from `source` to `sink` in zero or more local
