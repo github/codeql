@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* Added basic flow for attributes defined on classes, when the attribute lookup is on a direct reference to that class (so not instance, cls parameter, or self parameter). Example: class definition `class Foo: my_tuples = (dangerous, safe)` and usage `SINK(Foo.my_tuples[0])`.
