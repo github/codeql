@@ -85,12 +85,13 @@ class RazorPageClass extends Class {
 }
 
 private class ViewCallJumpNode extends DataFlow::NonLocalJumpNode {
-  ViewCall vc;
   RazorPageClass rp;
 
   ViewCallJumpNode() {
-    viewCallRefersToPage(vc, rp) and
-    this.asExpr() = vc.getModelArgument()
+    exists(ViewCall vc |
+      viewCallRefersToPage(vc, rp) and
+      this.asExpr() = vc.getModelArgument()
+    )
   }
 
   override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
@@ -108,8 +109,11 @@ private predicate viewCallRefersToPage(ViewCall vc, RazorPageClass rp) {
   viewCallRefersToPageRelative(vc, rp)
 }
 
+bindingset[path]
+private string stripTilde(string path) { result = path.regexpReplaceAll("^~/", "/") }
+
 private predicate viewCallRefersToPageAbsolute(ViewCall vc, RazorPageClass rp) {
-  ["/", ""] + vc.getNameArgument() = ["", "~"] + rp.getSourceFilepath()
+  ["/", ""] + stripTilde(vc.getNameArgument()) = rp.getSourceFilepath()
 }
 
 private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPageClass rp) {
@@ -119,7 +123,7 @@ private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPageClass rp) {
 private predicate matchesViewCallWithIndex(ViewCall vc, RazorPageClass rp, int i) {
   exists(RelativeViewCallFilepath fp |
     fp.hasViewCallWithIndex(vc, i) and
-    fp.getNormalizedPath() = ["", "~"] + rp.getSourceFilepath()
+    fp.getNormalizedPath() = rp.getSourceFilepath()
   )
 }
 
@@ -183,7 +187,7 @@ private class RelativeViewCallFilepath extends NormalizableFilepath {
         else sub1 = sub2
       ) and
       sub0 = sub1.replaceAll("{0}", vc_.getActionName()) and
-      this = sub0
+      this = stripTilde(sub0)
     )
   }
 
