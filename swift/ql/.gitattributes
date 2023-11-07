@@ -837,7 +837,8 @@
 /test/extractor-tests/generated/expr/PropertyWrapperValuePlaceholderExpr/PropertyWrapperValuePlaceholderExpr_getWrappedValue.ql linguist-generated
 /test/extractor-tests/generated/expr/RebindSelfInInitializerExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/RegexLiteralExpr/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/expr/SingleValueStmtExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/SingleValueStmtExpr/SingleValueStmtExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/SingleValueStmtExpr/SingleValueStmtExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/StringLiteralExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/SubscriptExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/SuperRefExpr/MISSING_SOURCE.txt linguist-generated
