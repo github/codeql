@@ -248,15 +248,24 @@ class WithTuple:
         SINK(self.my_tuple[0]) # $ MISSING: flow
         SINK_F(self.my_tuple[1])
 
+    def test_inst_no_call(self):
+        SINK(self.my_tuple[0]) # $ MISSING: flow
+        SINK_F(self.my_tuple[1])
+
     @classmethod
     def test_cm(cls):
-        SINK(cls.my_tuple[0]) # $ MISSING: flow
+        SINK(cls.my_tuple[0]) # $ flow="SOURCE, l:-12 -> cls.my_tuple[0]"
+        SINK_F(cls.my_tuple[1])
+
+    @classmethod
+    def test_cm_no_call(cls):
+        SINK(cls.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-8 -> cls.my_tuple[0]"
         SINK_F(cls.my_tuple[1])
 
 
 @expects(2*4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
 def test_WithTuple():
-    SINK(WithTuple.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-7 -> WithTuple.my_tuple[0]"
+    SINK(WithTuple.my_tuple[0]) # $ flow="SOURCE, l:-23 -> WithTuple.my_tuple[0]"
     SINK_F(WithTuple.my_tuple[1])
 
     WithTuple.test_cm()
@@ -264,7 +273,7 @@ def test_WithTuple():
     inst = WithTuple()
     inst.test_inst()
 
-    SINK(inst.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-18 -> inst.my_tuple[0]"
+    SINK(inst.my_tuple[0]) # $ MISSING: flow
     SINK_F(inst.my_tuple[1])
 
 
@@ -279,7 +288,7 @@ def test_inst_override():
     SINK_F(inst.my_tuple[0])
     SINK(inst.my_tuple[1]) # $ flow="SOURCE, l:-3 -> inst.my_tuple[1]"
 
-    SINK(WithTuple.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-27 -> WithTuple.my_tuple[0]"
+    SINK(WithTuple.my_tuple[0]) # $ flow="SOURCE, l:-46 -> WithTuple.my_tuple[0]"
     SINK_F(WithTuple.my_tuple[1])
 
 
