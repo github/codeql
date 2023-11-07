@@ -3,9 +3,9 @@ from create_database_utils import *
 from diagnostics_test_utils import *
 
 # Ensure we're using an old Java version that won't work with Gradle
-for java_home in ["JAVA_HOME_8_X64", "JAVA_HOME_8_arm64", "JAVA_HOME_8_ARM64"]:
-  if java_home in os.environ:
-    os.environ["JAVA_HOME"] = os.environ[java_home]
+for k in os.environ:
+  if k.upper() in ["JAVA_HOME_8_X64", "JAVA_HOME_8_ARM64"]:
+    os.environ["JAVA_HOME"] = os.environ[k]
     sep = ";" if platform.system() == "Windows" else ":"
     os.environ["PATH"] = "".join([os.path.join(os.environ["JAVA_HOME"], "bin"), sep, os.environ["PATH"]])
     break
