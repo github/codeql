@@ -85,4 +85,4 @@ if __name__ == "__main__":
     # check_tests_valid("module-initialization.test")
     # check_tests_valid("module-initialization.testOnce")
 
-    print("\n🎉 All test passed 🎉")
+    print("\n🎉 All tests passed 🎉")
