@@ -15,14 +15,35 @@ import DataFlow::PathGraph
 
 DataFlow::Node unverifiedDecode() {
   result = API::moduleImport("jsonwebtoken").getMember("decode").getParameter(0).asSink()
+  or
+  exists(API::Node verify | verify = API::moduleImport("jsonwebtoken").getMember("verify") |
+    verify
+        .getParameter(2)
+        .getMember("algorithms")
+        .getUnknownMember()
+        .asSink()
+        .mayHaveStringValue("none") and
+    result = verify.getParameter(0).asSink()
+  )
 }
 
 DataFlow::Node verifiedDecode() {
-  result = API::moduleImport("jsonwebtoken").getMember("verify").getParameter(0).asSink()
+  exists(API::Node verify | verify = API::moduleImport("jsonwebtoken").getMember("verify") |
+    (
+      not verify
+          .getParameter(2)
+          .getMember("algorithms")
+          .getUnknownMember()
+          .asSink()
+          .mayHaveStringValue("none") or
+      not exists(verify.getParameter(2).getMember("algorithms"))
+    ) and
+    result = verify.getParameter(0).asSink()
+  )
 }
 
 class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "jsonwebtoken constant secret key" }
+  Configuration() { this = "jsonwebtoken without any signature verification" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -37,11 +58,8 @@ from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where
   cfg.hasFlowPath(source, sink) and
   sink.getNode() = unverifiedDecode() and
-  not isSafe(source.getNode())
+  not exists(Configuration cfg2 |
+    cfg2.hasFlowPath(source, any(DataFlow::SinkPathNode n | n.getNode() = verifiedDecode()))
+  )
 select source.getNode(), source, sink, "Decoding JWT $@.", sink.getNode(),
   "without signature verification"
-
-// Holds if the source has a flow to a JWT decoding function with signature verification
-predicate isSafe(DataFlow::Node source) {
-  exists(Configuration cfg | cfg.hasFlow(source, verifiedDecode()))
-}

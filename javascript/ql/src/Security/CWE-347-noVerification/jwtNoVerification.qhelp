@@ -19,15 +19,18 @@
      <example>
 
           <p>
-               The following code you can see an Example from a popular Library.
+               In the following code, you can see the proper usage of the most popular JWT libraries.
           </p>
+          <sample src="Examples/Good.js" />
 
-          <sample src="Example.js" />
-
+          <p>
+               In the following code, you can see the improper usage of the most popular JWT libraries.
+          </p>
+          <sample src="Examples/Bad.js" />
      </example>
      <references>
           <li>
-               <a href="https://www.ghostccamm.com/blog/multi_strapi_vulns/#cve-2023-22893-authentication-bypass-for-aws-cognito-login-provider-in-strapi-versions-456">JWT claim had not been verified</a>
+               <a href="https://www.ghostccamm.com/blog/multi_strapi_vulns/#cve-2023-22893-authentication-bypass-for-aws-cognito-login-provider-in-strapi-versions-456">JWT claim has not been verified</a>
           </li>
      </references>
 

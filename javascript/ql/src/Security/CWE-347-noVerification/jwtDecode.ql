@@ -1,7 +1,7 @@
 /**
  * @name JWT missing secret or public key verification
  * @description The application does not verify the JWT payload with a cryptographic secret or public key.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @security-severity 8.0
  * @precision high
@@ -11,9 +11,21 @@
  */
 
 import javascript
+import DataFlow::PathGraph
 
-from DataFlow::Node sink
-where
-  // I must somehow check that following is implemented in server not browser
-  sink = API::moduleImport("jwt-decode").getParameter(0).asSink()
-select sink, "This Token is Decoded in without signature validation"
+DataFlow::Node unverifiedDecode() {
+  result = API::moduleImport("jwt-decode").getParameter(0).asSink()
+}
+
+class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "jsonwebtoken without any signature verification" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink = unverifiedDecode() }
+}
+
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
+select source.getNode(), source, sink, "Decoding JWT $@.", sink.getNode(),
+  "without signature verification"
