@@ -77,6 +77,8 @@ class MustFlow extends MustFlowConfiguration {
   override predicate isSink(Operand sink) { isSinkImpl(sink.getDef(), _) }
 
   override predicate allowInterproceduralFlow() { none() }
+
+  override predicate isBarrier(Instruction instr) { instr instanceof ChiInstruction }
 }
 
 from
