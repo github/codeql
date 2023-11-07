@@ -63,21 +63,221 @@ module TypeTracking<TypeTrackingInput I> {
 
   private class ContentOption = ContentOption::Option;
 
-  private newtype TStepSummary =
-    LevelStep() or
-    CallStep() or
-    ReturnStep() or
-    StoreStep(Content content) { storeStep(_, _, content) } or
-    LoadStep(Content content) { loadStep(_, _, content) } or
-    LoadStoreStep(Content load, Content store) { loadStoreStep(_, _, load, store) } or
-    WithContent(ContentFilter filter) { withContentStep(_, _, filter) } or
-    WithoutContent(ContentFilter filter) { withoutContentStep(_, _, filter) } or
-    JumpStep()
+  cached
+  private module Cached {
+    cached
+    newtype TStepSummary =
+      LevelStep() or
+      CallStep() or
+      ReturnStep() or
+      StoreStep(Content content) { storeStep(_, _, content) } or
+      LoadStep(Content content) { loadStep(_, _, content) } or
+      LoadStoreStep(Content load, Content store) { loadStoreStep(_, _, load, store) } or
+      WithContent(ContentFilter filter) { withContentStep(_, _, filter) } or
+      WithoutContent(ContentFilter filter) { withoutContentStep(_, _, filter) } or
+      JumpStep()
+
+    cached
+    newtype TTypeTracker =
+      MkTypeTracker(Boolean hasCall, ContentOption content) {
+        content.isNone()
+        or
+        // Restrict `content` to those that might eventually match a load.
+        // We can't rely on `basicStoreStep` since `startInContent` might be used with
+        // a content that has no corresponding store.
+        exists(Content loadContents |
+          (
+            loadStep(_, _, loadContents)
+            or
+            loadStoreStep(_, _, loadContents, _)
+          ) and
+          compatibleContents(content.asSome(), loadContents)
+        )
+      }
+
+    cached
+    newtype TTypeBackTracker =
+      MkTypeBackTracker(Boolean hasReturn, ContentOption content) {
+        content.isNone()
+        or
+        // As in MkTypeTracker, restrict `content` to those that might eventually match a store.
+        exists(Content storeContent |
+          (
+            storeStep(_, _, storeContent)
+            or
+            loadStoreStep(_, _, _, storeContent)
+          ) and
+          compatibleContents(storeContent, content.asSome())
+        )
+      }
+
+    /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
+    cached
+    TypeTracker append(TypeTracker tt, StepSummary step) {
+      exists(Boolean hasCall, ContentOption currentContents |
+        tt = MkTypeTracker(hasCall, currentContents)
+      |
+        step = LevelStep() and result = tt
+        or
+        step = CallStep() and result = MkTypeTracker(true, currentContents)
+        or
+        step = ReturnStep() and hasCall = false and result = tt
+        or
+        step = JumpStep() and
+        result = MkTypeTracker(false, currentContents)
+        or
+        exists(ContentFilter filter | result = tt |
+          step = WithContent(filter) and
+          currentContents.asSome() = filter.getAMatchingContent()
+          or
+          step = WithoutContent(filter) and
+          not currentContents.asSome() = filter.getAMatchingContent()
+        )
+      )
+      or
+      exists(Content storeContents, boolean hasCall |
+        exists(Content loadContents |
+          step = LoadStep(pragma[only_bind_into](loadContents)) and
+          tt = contentTypeTracker(hasCall, storeContents) and
+          compatibleContents(storeContents, loadContents) and
+          result = noContentTypeTracker(hasCall)
+        )
+        or
+        step = StoreStep(pragma[only_bind_into](storeContents)) and
+        tt = noContentTypeTracker(hasCall) and
+        result = contentTypeTracker(hasCall, storeContents)
+      )
+      or
+      exists(Content currentContent, Content store, Content load, boolean hasCall |
+        step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
+        compatibleContents(pragma[only_bind_into](currentContent), load) and
+        tt = contentTypeTracker(pragma[only_bind_into](hasCall), currentContent) and
+        result = contentTypeTracker(pragma[only_bind_out](hasCall), store)
+      )
+    }
+
+    /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
+    cached
+    TypeBackTracker prepend(TypeBackTracker tbt, StepSummary step) {
+      exists(Boolean hasReturn, ContentOption content |
+        tbt = MkTypeBackTracker(hasReturn, content)
+      |
+        step = LevelStep() and result = tbt
+        or
+        step = CallStep() and hasReturn = false and result = tbt
+        or
+        step = ReturnStep() and result = MkTypeBackTracker(true, content)
+        or
+        step = JumpStep() and
+        result = MkTypeBackTracker(false, content)
+        or
+        exists(ContentFilter filter | result = tbt |
+          step = WithContent(filter) and
+          content.asSome() = filter.getAMatchingContent()
+          or
+          step = WithoutContent(filter) and
+          not content.asSome() = filter.getAMatchingContent()
+        )
+      )
+      or
+      exists(Content loadContents, boolean hasReturn |
+        exists(Content storeContents |
+          step = StoreStep(pragma[only_bind_into](storeContents)) and
+          tbt = contentTypeBackTracker(hasReturn, loadContents) and
+          compatibleContents(storeContents, loadContents) and
+          result = noContentTypeBackTracker(hasReturn)
+        )
+        or
+        step = LoadStep(pragma[only_bind_into](loadContents)) and
+        tbt = noContentTypeBackTracker(hasReturn) and
+        result = contentTypeBackTracker(hasReturn, loadContents)
+      )
+      or
+      exists(Content currentContent, Content store, Content load, boolean hasCall |
+        step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
+        compatibleContents(store, pragma[only_bind_into](currentContent)) and
+        tbt = contentTypeBackTracker(pragma[only_bind_into](hasCall), currentContent) and
+        result = contentTypeBackTracker(pragma[only_bind_out](hasCall), load)
+      )
+    }
+
+    cached
+    predicate smallStepNoCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+      levelStepNoCall(nodeFrom, nodeTo) and summary = LevelStep()
+      or
+      exists(Content content |
+        storeStepIntoSource(nodeFrom, nodeTo, content) and
+        summary = StoreStep(content)
+      )
+      or
+      exists(Content content |
+        loadStep(nodeFrom, nodeTo, content) and
+        summary = LoadStep(content)
+      )
+      or
+      exists(Content content1, Content content2 |
+        loadStoreStepIntoSource(nodeFrom, nodeTo, content1, content2) and
+        summary = LoadStoreStep(content1, content2)
+      )
+      or
+      exists(ContentFilter filter |
+        withContentStep(nodeFrom, nodeTo, filter) and
+        summary = WithContent(filter)
+      )
+      or
+      exists(ContentFilter filter |
+        withoutContentStep(nodeFrom, nodeTo, filter) and
+        summary = WithoutContent(filter)
+      )
+      or
+      jumpStep(nodeFrom, nodeTo) and summary = JumpStep()
+    }
+
+    cached
+    predicate smallStepCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+      levelStepCall(nodeFrom, nodeTo) and summary = LevelStep()
+      or
+      callStep(nodeFrom, nodeTo) and summary = CallStep()
+      or
+      returnStep(nodeFrom, nodeTo) and summary = ReturnStep()
+    }
+
+    pragma[inline]
+    private predicate isLocalSourceNode(LocalSourceNode n) { any() }
+
+    /**
+     * Holds if there is flow from `localSource` to `dst` using zero or more
+     * `simpleLocalSmallStep`s.
+     */
+    cached
+    predicate flowsTo(Node localSource, Node dst) {
+      // explicit type check in base case to avoid repeated type tests in recursive case
+      isLocalSourceNode(localSource) and
+      dst = localSource
+      or
+      exists(Node mid |
+        flowsTo(localSource, mid) and
+        simpleLocalSmallStep(mid, dst)
+      )
+    }
+
+    cached
+    predicate stepNoCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+      exists(Node mid | flowsTo(nodeFrom, mid) and smallStepNoCall(mid, nodeTo, summary))
+    }
+
+    cached
+    predicate stepCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+      exists(Node mid | flowsTo(nodeFrom, mid) and smallStepCall(mid, nodeTo, summary))
+    }
+  }
+
+  import Cached
 
   /**
    * A description of a step on an inter-procedural data flow path.
    */
-  private class StepSummary extends TStepSummary {
+  class StepSummary extends TStepSummary {
     /** Gets a textual representation of this step summary. */
     string toString() {
       this instanceof LevelStep and result = "level"
@@ -99,91 +299,14 @@ module TypeTracking<TypeTrackingInput I> {
     }
   }
 
-  private newtype TTypeTracker =
-    MkTypeTracker(Boolean hasCall, ContentOption content) {
-      content.isNone()
-      or
-      // Restrict `content` to those that might eventually match a load.
-      // We can't rely on `basicStoreStep` since `startInContent` might be used with
-      // a content that has no corresponding store.
-      exists(Content loadContents |
-        (
-          loadStep(_, _, loadContents)
-          or
-          loadStoreStep(_, _, loadContents, _)
-        ) and
-        compatibleContents(content.asSome(), loadContents)
-      )
-    }
-
-  private newtype TTypeBackTracker =
-    MkTypeBackTracker(Boolean hasReturn, ContentOption content) {
-      content.isNone()
-      or
-      // As in MkTypeTracker, restrict `content` to those that might eventually match a store.
-      exists(Content storeContent |
-        (
-          storeStep(_, _, storeContent)
-          or
-          loadStoreStep(_, _, _, storeContent)
-        ) and
-        compatibleContents(storeContent, content.asSome())
-      )
-    }
-
   pragma[nomagic]
-  private TypeTracker noContentTypeTracker(boolean hasCall) {
+  TypeTracker noContentTypeTracker(boolean hasCall) {
     result = MkTypeTracker(hasCall, any(ContentOption::None c))
   }
 
   pragma[nomagic]
   private TypeTracker contentTypeTracker(boolean hasCall, Content c) {
     result = MkTypeTracker(hasCall, ContentOption::some(c))
-  }
-
-  /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
-  pragma[nomagic]
-  private TypeTracker append(TypeTracker tt, StepSummary step) {
-    exists(Boolean hasCall, ContentOption currentContents |
-      tt = MkTypeTracker(hasCall, currentContents)
-    |
-      step = LevelStep() and result = tt
-      or
-      step = CallStep() and result = MkTypeTracker(true, currentContents)
-      or
-      step = ReturnStep() and hasCall = false and result = tt
-      or
-      step = JumpStep() and
-      result = MkTypeTracker(false, currentContents)
-      or
-      exists(ContentFilter filter | result = tt |
-        step = WithContent(filter) and
-        currentContents.asSome() = filter.getAMatchingContent()
-        or
-        step = WithoutContent(filter) and
-        not currentContents.asSome() = filter.getAMatchingContent()
-      )
-    )
-    or
-    exists(Content storeContents, boolean hasCall |
-      exists(Content loadContents |
-        step = LoadStep(pragma[only_bind_into](loadContents)) and
-        tt = contentTypeTracker(hasCall, storeContents) and
-        compatibleContents(storeContents, loadContents) and
-        result = noContentTypeTracker(hasCall)
-      )
-      or
-      step = StoreStep(pragma[only_bind_into](storeContents)) and
-      tt = noContentTypeTracker(hasCall) and
-      result = contentTypeTracker(hasCall, storeContents)
-    )
-    or
-    exists(Content currentContent, Content store, Content load, boolean hasCall |
-      step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
-      compatibleContents(pragma[only_bind_into](currentContent), load) and
-      tt = contentTypeTracker(pragma[only_bind_into](hasCall), currentContent) and
-      result = contentTypeTracker(pragma[only_bind_out](hasCall), store)
-    )
   }
 
   pragma[nomagic]
@@ -194,68 +317,6 @@ module TypeTracking<TypeTrackingInput I> {
   pragma[nomagic]
   private TypeBackTracker contentTypeBackTracker(boolean hasReturn, Content c) {
     result = MkTypeBackTracker(hasReturn, ContentOption::some(c))
-  }
-
-  /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
-  pragma[nomagic]
-  private TypeBackTracker prepend(TypeBackTracker tbt, StepSummary step) {
-    exists(Boolean hasReturn, ContentOption content | tbt = MkTypeBackTracker(hasReturn, content) |
-      step = LevelStep() and result = tbt
-      or
-      step = CallStep() and hasReturn = false and result = tbt
-      or
-      step = ReturnStep() and result = MkTypeBackTracker(true, content)
-      or
-      step = JumpStep() and
-      result = MkTypeBackTracker(false, content)
-      or
-      exists(ContentFilter filter | result = tbt |
-        step = WithContent(filter) and
-        content.asSome() = filter.getAMatchingContent()
-        or
-        step = WithoutContent(filter) and
-        not content.asSome() = filter.getAMatchingContent()
-      )
-    )
-    or
-    exists(Content loadContents, boolean hasReturn |
-      exists(Content storeContents |
-        step = StoreStep(pragma[only_bind_into](storeContents)) and
-        tbt = contentTypeBackTracker(hasReturn, loadContents) and
-        compatibleContents(storeContents, loadContents) and
-        result = noContentTypeBackTracker(hasReturn)
-      )
-      or
-      step = LoadStep(pragma[only_bind_into](loadContents)) and
-      tbt = noContentTypeBackTracker(hasReturn) and
-      result = contentTypeBackTracker(hasReturn, loadContents)
-    )
-    or
-    exists(Content currentContent, Content store, Content load, boolean hasCall |
-      step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
-      compatibleContents(store, pragma[only_bind_into](currentContent)) and
-      tbt = contentTypeBackTracker(pragma[only_bind_into](hasCall), currentContent) and
-      result = contentTypeBackTracker(pragma[only_bind_out](hasCall), load)
-    )
-  }
-
-  pragma[inline]
-  private predicate isLocalSourceNode(LocalSourceNode n) { any() }
-
-  /**
-   * Holds if there is flow from `localSource` to `dst` using zero or more
-   * `simpleLocalSmallStep`s.
-   */
-  pragma[nomagic]
-  predicate flowsTo(LocalSourceNode localSource, Node dst) {
-    // explicit type check in base case to avoid repeated type tests in recursive case
-    isLocalSourceNode(localSource) and
-    dst = localSource
-    or
-    exists(Node mid |
-      flowsTo(localSource, mid) and
-      simpleLocalSmallStep(mid, dst)
-    )
   }
 
   pragma[nomagic]
@@ -283,74 +344,13 @@ module TypeTracking<TypeTrackingInput I> {
   }
 
   pragma[nomagic]
-  private predicate smallStepNoCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    levelStepNoCall(nodeFrom, nodeTo) and summary = LevelStep()
-    or
-    exists(Content content |
-      storeStepIntoSource(nodeFrom, nodeTo, content) and
-      summary = StoreStep(content)
-    )
-    or
-    exists(Content content |
-      loadStep(nodeFrom, nodeTo, content) and
-      summary = LoadStep(content)
-    )
-    or
-    exists(Content content1, Content content2 |
-      loadStoreStepIntoSource(nodeFrom, nodeTo, content1, content2) and
-      summary = LoadStoreStep(content1, content2)
-    )
-    or
-    exists(ContentFilter filter |
-      withContentStep(nodeFrom, nodeTo, filter) and
-      summary = WithContent(filter)
-    )
-    or
-    exists(ContentFilter filter |
-      withoutContentStep(nodeFrom, nodeTo, filter) and
-      summary = WithoutContent(filter)
-    )
-    or
-    jumpStep(nodeFrom, nodeTo) and summary = JumpStep()
-  }
-
-  pragma[nomagic]
-  private predicate smallStepCall(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    levelStepCall(nodeFrom, nodeTo) and summary = LevelStep()
-    or
-    callStep(nodeFrom, nodeTo) and summary = CallStep()
-    or
-    returnStep(nodeFrom, nodeTo) and summary = ReturnStep()
-  }
-
-  pragma[nomagic]
-  private predicate stepNoCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    exists(Node mid | flowsTo(nodeFrom, mid) and smallStepNoCall(mid, nodeTo, summary))
-  }
-
-  pragma[nomagic]
-  private predicate stepCall(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    exists(Node mid | flowsTo(nodeFrom, mid) and smallStepCall(mid, nodeTo, summary))
-  }
-
-  pragma[inline]
-  private predicate smallStepSplit(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+  predicate smallStep(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     smallStepCall(nodeFrom, nodeTo, summary) or smallStepNoCall(nodeFrom, nodeTo, summary)
   }
 
-  pragma[inline]
-  private predicate stepSplit(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
+  pragma[nomagic]
+  predicate step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
     stepNoCall(nodeFrom, nodeTo, summary) or stepCall(nodeFrom, nodeTo, summary)
-  }
-
-  pragma[nomagic]
-  private predicate smallStep(Node nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    smallStepSplit(nodeFrom, nodeTo, summary)
-  }
-
-  pragma[nomagic]
-  private predicate step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo, StepSummary summary) {
-    stepSplit(nodeFrom, nodeTo, summary)
   }
 
   pragma[nomagic]
@@ -358,31 +358,9 @@ module TypeTracking<TypeTrackingInput I> {
     step(nodeFrom, _, summary)
   }
 
-  bindingset[t, nodeFrom]
-  pragma[inline_late]
-  pragma[noopt]
-  private TypeTracker stepInlineLate(TypeTracker t, LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
-    exists(StepSummary summary |
-      stepProj(nodeFrom, summary) and
-      result = append(t, summary) and
-      step(nodeFrom, nodeTo, summary)
-    )
-  }
-
   pragma[nomagic]
   private predicate smallStepProj(Node nodeFrom, StepSummary summary) {
     smallStep(nodeFrom, _, summary)
-  }
-
-  bindingset[t, nodeFrom]
-  pragma[inline_late]
-  pragma[noopt]
-  private TypeTracker smallStepInlineLate(TypeTracker t, Node nodeFrom, LocalSourceNode nodeTo) {
-    exists(StepSummary summary |
-      smallStepProj(nodeFrom, summary) and
-      result = append(t, summary) and
-      smallStep(nodeFrom, nodeTo, summary)
-    )
   }
 
   /**
@@ -474,9 +452,26 @@ module TypeTracking<TypeTrackingInput I> {
      * Gets the summary that corresponds to having taken a forwards
      * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
      */
-    pragma[inline]
+    bindingset[this, nodeFrom]
+    pragma[inline_late]
+    pragma[noopt]
     TypeTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
-      result = stepInlineLate(this, nodeFrom, nodeTo)
+      exists(StepSummary summary |
+        stepProj(nodeFrom, summary) and
+        result = append(this, summary) and
+        step(nodeFrom, nodeTo, summary)
+      )
+    }
+
+    bindingset[this, nodeFrom]
+    pragma[inline_late]
+    pragma[noopt]
+    private TypeTracker smallstepNoSimpleLocalFlowStep(Node nodeFrom, LocalSourceNode nodeTo) {
+      exists(StepSummary summary |
+        smallStepProj(nodeFrom, summary) and
+        result = append(this, summary) and
+        smallStep(nodeFrom, nodeTo, summary)
+      )
     }
 
     /**
@@ -505,7 +500,7 @@ module TypeTracking<TypeTrackingInput I> {
      */
     pragma[inline]
     TypeTracker smallstep(Node nodeFrom, Node nodeTo) {
-      result = smallStepInlineLate(this, nodeFrom, nodeTo)
+      result = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)
       or
       simpleLocalSmallStep(nodeFrom, nodeTo) and
       result = this
@@ -525,35 +520,9 @@ module TypeTracking<TypeTrackingInput I> {
     step(_, nodeTo, summary)
   }
 
-  bindingset[t, nodeTo]
-  pragma[inline_late]
-  pragma[noopt]
-  private TypeBackTracker backStepInlineLate(
-    TypeBackTracker t, LocalSourceNode nodeFrom, LocalSourceNode nodeTo
-  ) {
-    exists(StepSummary summary |
-      backStepProj(nodeTo, summary) and
-      result = prepend(t, summary) and
-      step(nodeFrom, nodeTo, summary)
-    )
-  }
-
   pragma[nomagic]
   private predicate backSmallStepProj(LocalSourceNode nodeTo, StepSummary summary) {
     smallStep(_, nodeTo, summary)
-  }
-
-  bindingset[t, nodeTo]
-  pragma[inline_late]
-  pragma[noopt]
-  private TypeBackTracker backSmallStepInlineLate(
-    TypeBackTracker t, Node nodeFrom, LocalSourceNode nodeTo
-  ) {
-    exists(StepSummary summary |
-      backSmallStepProj(nodeTo, summary) and
-      result = prepend(t, summary) and
-      smallStep(nodeFrom, nodeTo, summary)
-    )
   }
 
   /**
@@ -627,9 +596,26 @@ module TypeTracking<TypeTrackingInput I> {
      * Gets the summary that corresponds to having taken a backwards
      * heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
      */
-    pragma[inline]
+    bindingset[this, nodeTo]
+    pragma[inline_late]
+    pragma[noopt]
     TypeBackTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
-      result = backStepInlineLate(this, nodeFrom, nodeTo)
+      exists(StepSummary summary |
+        backStepProj(nodeTo, summary) and
+        result = prepend(this, summary) and
+        step(nodeFrom, nodeTo, summary)
+      )
+    }
+
+    bindingset[this, nodeTo]
+    pragma[inline_late]
+    pragma[noopt]
+    private TypeBackTracker smallstepNoSimpleLocalFlowStep(Node nodeFrom, LocalSourceNode nodeTo) {
+      exists(StepSummary summary |
+        backSmallStepProj(nodeTo, summary) and
+        result = prepend(this, summary) and
+        smallStep(nodeFrom, nodeTo, summary)
+      )
     }
 
     /**
@@ -658,7 +644,7 @@ module TypeTracking<TypeTrackingInput I> {
      */
     pragma[inline]
     TypeBackTracker smallstep(Node nodeFrom, Node nodeTo) {
-      result = backSmallStepInlineLate(this, nodeFrom, nodeTo)
+      result = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)
       or
       simpleLocalSmallStep(nodeFrom, nodeTo) and
       result = this
@@ -672,7 +658,14 @@ module TypeTracking<TypeTrackingInput I> {
      * also flow to `sink`.
      */
     TypeTracker getACompatibleTypeTracker() {
-      exists(boolean hasCall | result = MkTypeTracker(hasCall, content) |
+      exists(boolean hasCall, ContentOption c |
+        result = MkTypeTracker(hasCall, c) and
+        (
+          c.isNone() and content.isNone()
+          or
+          compatibleContents(c.asSome(), content.asSome())
+        )
+      |
         hasCall = false or hasReturn = false
       )
     }
@@ -709,7 +702,7 @@ module TypeTracking<TypeTrackingInput I> {
       exists(Node n1, TypeTracker tt0 |
         sourceSimpleLocalSmallSteps(src, n1) and
         tt0.start() and
-        tt = smallStepInlineLate(tt0, n1, n2)
+        tt = tt0.smallstep(n1, n2)
       )
     }
 
@@ -835,6 +828,168 @@ module TypeTracking<TypeTrackingInput I> {
         source.isSource() and
         sink.isSink() and
         (source = sink or stepPlus(source, sink))
+      }
+    }
+  }
+
+  /**
+   * Provides logic for constructing a call graph in mutual recursion with type tracking.
+   *
+   * When type tracking is used to construct a call graph, we cannot use the join-order
+   * from `TypeTracker::step/4`, because `step/3` becomes a recursive call, which means
+   * that we will have a conjunct with 3 recursive calls: the call to `step`, the call to
+   * `stepProj`, and the recursive type tracking call itself. The solution is to split the
+   * three-way non-linear recursion into two non-linear predicates: one that first joins
+   * with the projected `stepCall` relation, followed by a predicate that joins with the full
+   * `stepCall` relation (`stepNoCall` not being recursive, can be join-ordered in the
+   * same way as in `stepInlineLate`).
+   */
+  module CallGraphConstruction {
+    /** The input to call graph construction. */
+    signature module InputSig {
+      /** A state to track during type tracking. */
+      class State;
+
+      /** Holds if type tracking should start at `start` in state `state`. */
+      predicate start(Node start, State state);
+
+      /**
+       * Holds if type tracking should use the step from `nodeFrom` to `nodeTo`,
+       * which _does not_ depend on the call graph.
+       *
+       * Implementing this predicate using `[small]stepNoCall` yields
+       * standard type tracking.
+       */
+      predicate stepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary);
+
+      /**
+       * Holds if type tracking should use the step from `nodeFrom` to `nodeTo`,
+       * which _does_ depend on the call graph.
+       *
+       * Implementing this predicate using `[small]stepCall` yields
+       * standard type tracking.
+       */
+      predicate stepCall(Node nodeFrom, Node nodeTo, StepSummary summary);
+
+      /** A projection of an element from the state space. */
+      class StateProj;
+
+      /** Gets the projection of `state`. */
+      StateProj stateProj(State state);
+
+      /** Holds if type tracking should stop at `n` when we are tracking projected state `stateProj`. */
+      predicate filter(Node n, StateProj stateProj);
+    }
+
+    /** Provides the `track` predicate for use in call graph construction. */
+    module Make<InputSig Input> {
+      pragma[nomagic]
+      private predicate stepNoCallProj(Node nodeFrom, StepSummary summary) {
+        Input::stepNoCall(nodeFrom, _, summary)
+      }
+
+      pragma[nomagic]
+      private predicate stepCallProj(Node nodeFrom, StepSummary summary) {
+        Input::stepCall(nodeFrom, _, summary)
+      }
+
+      bindingset[nodeFrom, t]
+      pragma[inline_late]
+      pragma[noopt]
+      private TypeTracker stepNoCallInlineLate(TypeTracker t, Node nodeFrom, Node nodeTo) {
+        exists(StepSummary summary |
+          stepNoCallProj(nodeFrom, summary) and
+          result = append(t, summary) and
+          Input::stepNoCall(nodeFrom, nodeTo, summary)
+        )
+      }
+
+      bindingset[state]
+      pragma[inline_late]
+      private Input::StateProj stateProjInlineLate(Input::State state) {
+        result = Input::stateProj(state)
+      }
+
+      pragma[nomagic]
+      private Node track(Input::State state, TypeTracker t) {
+        t.start() and Input::start(result, state)
+        or
+        exists(Input::StateProj stateProj |
+          stateProj = stateProjInlineLate(state) and
+          not Input::filter(result, stateProj)
+        |
+          exists(TypeTracker t2 | t = stepNoCallInlineLate(t2, track(state, t2), result))
+          or
+          exists(StepSummary summary |
+            // non-linear recursion
+            Input::stepCall(trackCall(state, t, summary), result, summary)
+          )
+        )
+      }
+
+      bindingset[t, summary]
+      pragma[inline_late]
+      private TypeTracker appendInlineLate(TypeTracker t, StepSummary summary) {
+        result = append(t, summary)
+      }
+
+      pragma[nomagic]
+      private Node trackCall(Input::State state, TypeTracker t, StepSummary summary) {
+        exists(TypeTracker t2 |
+          // non-linear recursion
+          result = track(state, t2) and
+          stepCallProj(result, summary) and
+          t = appendInlineLate(t2, summary)
+        )
+      }
+
+      /** Gets a node that can be reached from _some_ start node in state `state`. */
+      pragma[nomagic]
+      Node track(Input::State state) { result = track(state, TypeTracker::end()) }
+    }
+
+    /** A simple version of `CallGraphConstruction` that uses standard type tracking. */
+    module Simple {
+      /** The input to call graph construction. */
+      signature module InputSig {
+        /** A state to track during type tracking. */
+        class State;
+
+        /** Holds if type tracking should start at `start` in state `state`. */
+        predicate start(Node start, State state);
+
+        /** Holds if type tracking should stop at `n`. */
+        predicate filter(Node n);
+      }
+
+      /** Provides the `track` predicate for use in call graph construction. */
+      module Make<InputSig Input> {
+        private module SimpleInput implements CallGraphConstruction::InputSig {
+          private import codeql.util.Unit
+
+          class State = Input::State;
+
+          predicate start(Node start, State state) { Input::start(start, state) }
+
+          predicate stepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+            Cached::stepNoCall(nodeFrom, nodeTo, summary)
+          }
+
+          predicate stepCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+            Cached::stepCall(nodeFrom, nodeTo, summary)
+          }
+
+          class StateProj = Unit;
+
+          Unit stateProj(State state) { exists(state) and exists(result) }
+
+          predicate filter(Node n, Unit u) {
+            Input::filter(n) and
+            exists(u)
+          }
+        }
+
+        import CallGraphConstruction::Make<SimpleInput>
       }
     }
   }
