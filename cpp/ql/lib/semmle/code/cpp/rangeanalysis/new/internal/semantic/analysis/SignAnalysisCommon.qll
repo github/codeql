@@ -294,7 +294,7 @@ module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
   ) {
     exists(boolean testIsTrue, SemRelationalExpr comp |
       pos.hasReadOfVar(v) and
-      semGuardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
+      guardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
       not unknownSign(lowerbound)
     |
       testIsTrue = true and
@@ -318,7 +318,7 @@ module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
   ) {
     exists(boolean testIsTrue, SemRelationalExpr comp |
       pos.hasReadOfVar(v) and
-      semGuardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
+      guardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
       not unknownSign(upperbound)
     |
       testIsTrue = true and
@@ -343,7 +343,7 @@ module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
   private predicate eqBound(SemExpr eqbound, SemSsaVariable v, SemSsaReadPosition pos, boolean isEq) {
     exists(SemGuard guard, boolean testIsTrue, boolean polarity, SemExpr e |
       pos.hasReadOfVar(pragma[only_bind_into](v)) and
-      semGuardControlsSsaRead(guard, pragma[only_bind_into](pos), testIsTrue) and
+      guardControlsSsaRead(guard, pragma[only_bind_into](pos), testIsTrue) and
       e = ssaRead(pragma[only_bind_into](v), D::fromInt(0)) and
       guard.isEquality(eqbound, e, polarity) and
       isEq = polarity.booleanXor(testIsTrue).booleanNot() and

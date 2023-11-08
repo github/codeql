@@ -5,7 +5,7 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 from string package, string type, string name, string signature, string kind, string provenance
 where

@@ -198,7 +198,7 @@ void test12(unsigned len, unsigned index) {
         return;
     }
     
-    p[index] = '\0'; // $ deref=L195->L201 // BAD
+    p[index] = '\0'; // $ MISSING: deref=L195->L201 // BAD [NOT DETECTED]
 }
 
 void test13(unsigned len, unsigned index) {
@@ -229,14 +229,14 @@ void test15(unsigned index) {
     return;
   }
   int* newname = new int[size];
-  newname[index] = 0; // $ alloc=L231 deref=L232 // GOOD [FALSE POSITIVE]
+  newname[index] = 0; // GOOD
 }
 
 void test16(unsigned index) {
   unsigned size = index + 13;
   if(size >= index) {
     int* newname = new int[size];
-    newname[index] = 0; // $ alloc=L238 deref=L239 // GOOD [FALSE POSITIVE]
+    newname[index] = 0; // GOOD
   }
 }
 

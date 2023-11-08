@@ -5,7 +5,7 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 from
   string namespace, string type, boolean subtypes, string name, string signature, string ext,

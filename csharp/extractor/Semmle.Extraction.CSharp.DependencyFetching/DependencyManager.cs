@@ -82,8 +82,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 ? new[] { options.SolutionFile }
                 : allNonBinaryFiles.SelectFileNamesByExtension(".sln");
             var dllPaths = options.DllDirs.Count == 0
-                ? allFiles.SelectFileNamesByExtension(".dll").ToList()
-                : options.DllDirs.Select(Path.GetFullPath).ToList();
+                ? allFiles.SelectFileNamesByExtension(".dll").ToHashSet()
+                : options.DllDirs.Select(Path.GetFullPath).ToHashSet();
 
             if (options.UseNuGet)
             {
@@ -107,7 +107,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     .RequiredPaths
                     .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
                     .ToList();
-                dllPaths.AddRange(paths);
+                dllPaths.UnionWith(paths);
 
                 LogAllUnusedPackages(dependencies);
                 DownloadMissingPackages(allNonBinaryFiles, dllPaths);
@@ -205,7 +205,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private void AddNetFrameworkDlls(List<string> dllPaths)
+        private void AddNetFrameworkDlls(ISet<string> dllPaths)
         {
             // Multiple dotnet framework packages could be present.
             // The order of the packages is important, we're adding the first one that is present in the nuget cache.
@@ -218,13 +218,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             };
 
             var frameworkPath = packagesInPrioOrder
-                    .Select(GetPackageDirectory)
-                    .FirstOrDefault(dir => dir is not null);
+                    .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
+                    .FirstOrDefault(pair => pair.Path is not null);
 
-            if (frameworkPath is not null)
+            if (frameworkPath.Path is not null)
             {
-                dllPaths.Add(frameworkPath);
-                progressMonitor.LogInfo("Found .NET Core/Framework DLLs in NuGet packages. Not adding installation directory.");
+                dllPaths.Add(frameworkPath.Path);
+                progressMonitor.LogInfo($"Found .NET Core/Framework DLLs in NuGet packages at {frameworkPath.Path}. Not adding installation directory.");
+
+                for (var i = frameworkPath.Index + 1; i < packagesInPrioOrder.Length; i++)
+                {
+                    RemoveNugetPackageReference(packagesInPrioOrder[i], dllPaths);
+                }
+
                 return;
             }
 
@@ -249,7 +255,29 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             dllPaths.Add(runtimeLocation);
         }
 
-        private void AddAspNetCoreFrameworkDlls(List<string> dllPaths)
+        private void RemoveNugetPackageReference(string packagePrefix, ISet<string> dllPaths)
+        {
+            if (!options.UseNuGet)
+            {
+                return;
+            }
+
+            var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
+            if (packageFolder == null)
+            {
+                return;
+            }
+
+            var packagePathPrefix = Path.Combine(packageFolder, packagePrefix.ToLowerInvariant());
+            var toRemove = dllPaths.Where(s => s.ToLowerInvariant().StartsWith(packagePathPrefix));
+            foreach (var path in toRemove)
+            {
+                dllPaths.Remove(path);
+                progressMonitor.RemovedReference(path);
+            }
+        }
+
+        private void AddAspNetCoreFrameworkDlls(ISet<string> dllPaths)
         {
             if (!fileContent.IsNewProjectStructureUsed || !fileContent.UseAspNetCoreDlls)
             {
@@ -269,7 +297,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private void AddMicrosoftWindowsDesktopDlls(List<string> dllPaths)
+        private void AddMicrosoftWindowsDesktopDlls(ISet<string> dllPaths)
         {
             if (GetPackageDirectory("microsoft.windowsdesktop.app.ref") is string windowsDesktopApp)
             {
@@ -628,7 +656,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             assets = assetFiles;
         }
 
-        private void DownloadMissingPackages(List<FileInfo> allFiles, List<string> dllPaths)
+        private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<string> dllPaths)
         {
             var nugetConfigs = allFiles.SelectFileNamesByName("nuget.config").ToArray();
             string? nugetConfig = null;

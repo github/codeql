@@ -9,7 +9,7 @@ private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.Mvc
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * A data flow source for unvalidated URL redirect vulnerabilities.
