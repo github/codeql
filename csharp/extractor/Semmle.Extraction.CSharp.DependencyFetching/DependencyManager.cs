@@ -91,6 +91,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     var nuget = new NugetPackages(sourceDir.FullName, packageDirectory, progressMonitor);
                     nuget.InstallPackages();
+                    dllPaths.UnionWith(GetAllPackageDirectories());
                 }
                 catch (FileNotFoundException)
                 {
