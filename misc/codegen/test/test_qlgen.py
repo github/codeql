@@ -153,6 +153,15 @@ def test_one_empty_class(generate_classes):
     }
 
 
+def test_one_empty_internal_class(generate_classes):
+    assert generate_classes([
+        schema.Class("A", pragmas=["ql_internal"])
+    ]) == {
+        "A.qll": (a_ql_stub(name="A", ql_internal=True),
+                  a_ql_class(name="A", final=True, ql_internal=True)),
+    }
+
+
 def test_hierarchy(generate_classes):
     assert generate_classes([
         schema.Class("D", bases=["B", "C"]),
