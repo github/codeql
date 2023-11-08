@@ -54,7 +54,7 @@ namespace Semmle.Extraction
 
         public override bool NeedsPopulation { get; }
 
-        public override int GetHashCode() => Symbol.GetHashCode();
+        public override int GetHashCode() => Symbol is null ? 0 : Symbol.GetHashCode();
 
         public override bool Equals(object? obj)
         {
