@@ -309,6 +309,17 @@ def test_class_override():
     SINK(WithTuple2.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-10 -> WithTuple2.my_tuple[0]"
     SINK(inst.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-11 -> inst.my_tuple[0]"
 
+
+class Outer:
+    src = SOURCE
+    class Inner:
+        src = SOURCE
+
+@expects(2) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_nested_class():
+    SINK(Outer.src) # $ flow="SOURCE, l:-6 -> Outer.src"
+    SINK(Outer.Inner.src) # $ flow="SOURCE, l:-5 -> Outer.Inner.src"
+
 # --------------------------------------
 # unique classes from functions
 # --------------------------------------
