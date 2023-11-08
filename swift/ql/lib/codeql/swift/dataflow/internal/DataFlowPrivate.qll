@@ -1409,6 +1409,22 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
     commonSub.getABaseType*().getCanonicalType() = stripType(t2.asType())
   )
   or
+  exists(BoundGenericType bound1, BoundGenericType bound2 |
+    stripType(t1.asType()).(BoundGenericType) = bound1 and
+    stripType(t2.asType()).(BoundGenericType) = bound2 and
+    bound1.getDeclaration() = bound2.getDeclaration() and
+    forall(int index | index in [0 .. bound1.getNumberOfArgTypes()-1] |
+    bound1.getArgType(index).getCanonicalType() instanceof AnyType or
+    bound2.getArgType(index).getCanonicalType() instanceof AnyType or
+      bound1.getArgType(index).getCanonicalType() instanceof GenericTypeParamType or
+      bound2.getArgType(index).getCanonicalType() instanceof GenericTypeParamType or
+      bound1.getArgType(index).getCanonicalType() instanceof ArchetypeType or
+      bound2.getArgType(index).getCanonicalType() instanceof ArchetypeType or
+      bound1.getArgType(index).getCanonicalType() instanceof DependentMemberType or
+      bound2.getArgType(index).getCanonicalType() instanceof DependentMemberType
+    )
+  )
+  or
   t1 instanceof TopFunctionType and
   t2 instanceof DataFlowFunctionType
   or
@@ -1423,6 +1439,18 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   stripType(t1.asType()) instanceof AnyType
   or
   stripType(t2.asType()) instanceof AnyType
+  or
+  stripType(t1.asType()) instanceof GenericTypeParamType
+  or
+  stripType(t2.asType()) instanceof GenericTypeParamType
+  or
+  stripType(t1.asType()) instanceof ArchetypeType
+  or
+  stripType(t2.asType()) instanceof ArchetypeType
+  or
+  stripType(t1.asType()) instanceof DependentMemberType
+  or
+  stripType(t2.asType()) instanceof DependentMemberType
 }
 
 Type stripType(Type t) {
