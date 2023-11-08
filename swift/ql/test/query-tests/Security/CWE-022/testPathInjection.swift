@@ -440,3 +440,44 @@ func testBarriers() {
     }
     let _ = fm.contents(atPath: remoteString) // $ hasPathInjection=433
 }
+
+func testPathInjection2(s1: UnsafeMutablePointer<String>, s2: UnsafeMutablePointer<String>, s3: UnsafeMutablePointer<String>, fm: FileManager) throws {
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+
+    var u1 = URL(filePath: "")
+    _ = NSData(contentsOf: u1)
+    _ = NSData(contentsOf: u1.appendingPathComponent(""))
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString)) // $ MISSING: hasPathInjection=445
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent("")) // $ MISSING: hasPathInjection=445
+    u1.appendPathComponent(remoteString)
+    _ = NSData(contentsOf: u1) // $ MISSING: hasPathInjection=445
+
+    let u2 = URL(filePath: remoteString)
+    _ = NSData(contentsOf: u2) // $ MISSING: hasPathInjection=445
+
+    let u3 = NSURL(string: "")!
+    Data("").write(to: u3.filePathURL!, options: [])
+    Data("").write(to: u3.appendingPathComponent("")!, options: [])
+    Data("").write(to: u3.appendingPathComponent(remoteString)!, options: []) // $ MISSING: hasPathInjection=445
+
+    let u4 = NSURL(string: remoteString)!
+    Data("").write(to: u4.filePathURL!, options: []) // $ MISSING: hasPathInjection=445
+    Data("").write(to: u4.appendingPathComponent("")!, options: []) // $ MISSING: hasPathInjection=445
+
+    _ = NSData(contentsOfFile: remoteString)! // $ MISSING: hasPathInjection=445
+    _ = NSData(contentsOfMappedFile: remoteString)! // $ MISSING: hasPathInjection=445
+    _ = NSData.dataWithContentsOfMappedFile(remoteString)! // $ MISSING: hasPathInjection=445
+
+    _ = NSData().write(toFile: s1.pointee, atomically: true)
+    s1.pointee = remoteString
+    _ = NSData().write(toFile: s1.pointee, atomically: true) // $ hasPathInjection=445
+
+    _ = "".completePath(into: s2, caseSensitive: false, matchesInto: nil, filterTypes: nil)
+    _ = NSData().write(toFile: s2.pointee, atomically: true)
+
+    _ = remoteString.completePath(into: s3, caseSensitive: false, matchesInto: nil, filterTypes: nil)
+    _ = NSData().write(toFile: s3.pointee, atomically: true) // $ MISSING: hasPathInjection=445
+
+    _ = fm.fileAttributes(atPath: remoteString, traverseLink: true) // $ MISSING: hasPathInjection=445
+    _ = try fm.attributesOfItem(atPath: remoteString) // $ MISSING: hasPathInjection=445
+}
