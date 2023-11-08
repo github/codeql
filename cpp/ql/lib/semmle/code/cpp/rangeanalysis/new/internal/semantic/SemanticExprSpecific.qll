@@ -128,26 +128,10 @@ module SemanticExprConfig {
 
   int getBasicBlockUniqueId(BasicBlock block) { idOf(block.getFirstInstruction().getAst(), result) }
 
-  newtype TSsaVariable = TSsaInstruction(IR::Instruction instr) { instr.hasMemoryResult() }
+  class SsaVariable extends IR::Instruction {
+    SsaVariable() { this.hasMemoryResult() }
 
-  class SsaVariable extends TSsaVariable {
-    string toString() { none() }
-
-    Location getLocation() { none() }
-
-    IR::Instruction asInstruction() { none() }
-  }
-
-  class SsaInstructionVariable extends SsaVariable, TSsaInstruction {
-    IR::Instruction instr;
-
-    SsaInstructionVariable() { this = TSsaInstruction(instr) }
-
-    final override string toString() { result = instr.toString() }
-
-    final override Location getLocation() { result = instr.getLocation() }
-
-    final override IR::Instruction asInstruction() { result = instr }
+    IR::Instruction asInstruction() { result = this }
   }
 
   predicate explicitUpdate(SsaVariable v, Expr sourceExpr) {
