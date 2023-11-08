@@ -20,7 +20,7 @@ abstract class InsecureRandomnessSource extends DataFlow::Node { }
 private class RandomMethodSource extends InsecureRandomnessSource {
   RandomMethodSource() {
     exists(RandomDataSource s | this.asExpr() = s.getOutput() |
-      not s.getQualifier().getType() instanceof SafeRandomImplementation
+      not s.getSourceOfRandomness() instanceof SafeRandomImplementation
     )
   }
 }
@@ -68,6 +68,8 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureRandomnessSink }
 
   predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
+
+  predicate isBarrierOut(DataFlow::Node n) { isSink(n) }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     n1.asExpr() = n2.asExpr().(BinaryExpr).getAnOperand()
