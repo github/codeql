@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -46,19 +47,17 @@ extensions:
       - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", False, "GetRequiredService", "(System.IServiceProvider,System.Type)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", False, "GetRequiredService<T>", "(System.IServiceProvider)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", False, "GetService<T>", "(System.IServiceProvider)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", False, "GetServices", "(System.IServiceProvider,System.Type)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", False, "GetServices<T>", "(System.IServiceProvider)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.DependencyInjection", "ActivatorUtilities", "CreateFactory", "(System.Type,System.Type[])", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection", "ActivatorUtilities", "CreateFactory<T>", "(System.Type[])", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ActivatorUtilities", "CreateInstance", "(System.IServiceProvider,System.Type,System.Object[])", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ActivatorUtilities", "CreateInstance<T>", "(System.IServiceProvider,System.Object[])", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "AsyncServiceScope", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "AsyncServiceScope", "DisposeAsync", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "DefaultServiceProviderFactory", "CreateServiceProvider", "(Microsoft.Extensions.DependencyInjection.IServiceCollection)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.DependencyInjection", "DefaultServiceProviderFactory", "DefaultServiceProviderFactory", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "HttpClientFactoryServiceCollectionExtensions", "AddHttpClient", "(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "HttpClientFactoryServiceCollectionExtensions", "AddHttpClient<TClient,TImplementation>", "(Microsoft.Extensions.DependencyInjection.IServiceCollection)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "HttpClientFactoryServiceCollectionExtensions", "AddHttpClient<TClient,TImplementation>", "(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)", "summary", "df-generated"]
@@ -76,6 +75,7 @@ extensions:
       - ["Microsoft.Extensions.DependencyInjection", "OptionsServiceCollectionExtensions", "AddOptions<TOptions>", "(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ServiceCollection", "Contains", "(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ServiceCollection", "IndexOf", "(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection", "ServiceCollection", "MakeReadOnly", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ServiceCollection", "Remove", "(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ServiceCollection", "RemoveAt", "(System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ServiceCollection", "get_Count", "()", "summary", "df-generated"]
@@ -110,3 +110,5 @@ extensions:
       - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", "CreateAsyncScope", "(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", "CreateAsyncScope", "(System.IServiceProvider)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", "CreateScope", "(System.IServiceProvider)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", "GetServices", "(System.IServiceProvider,System.Type)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection", "ServiceProviderServiceExtensions", "GetServices<T>", "(System.IServiceProvider)", "summary", "df-generated"]

@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -12,7 +13,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Security.Policy", "AllMembershipCondition", "AllMembershipCondition", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "AllMembershipCondition", "Check", "(System.Security.Policy.Evidence)", "summary", "df-generated"]
       - ["System.Security.Policy", "AllMembershipCondition", "Copy", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "AllMembershipCondition", "Equals", "(System.Object)", "summary", "df-generated"]
@@ -28,7 +28,6 @@ extensions:
       - ["System.Security.Policy", "ApplicationDirectory", "GetHashCode", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationDirectory", "ToString", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationDirectory", "get_Directory", "()", "summary", "df-generated"]
-      - ["System.Security.Policy", "ApplicationDirectoryMembershipCondition", "ApplicationDirectoryMembershipCondition", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationDirectoryMembershipCondition", "Check", "(System.Security.Policy.Evidence)", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationDirectoryMembershipCondition", "Copy", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationDirectoryMembershipCondition", "Equals", "(System.Object)", "summary", "df-generated"]
@@ -38,7 +37,6 @@ extensions:
       - ["System.Security.Policy", "ApplicationDirectoryMembershipCondition", "ToString", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationDirectoryMembershipCondition", "ToXml", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationDirectoryMembershipCondition", "ToXml", "(System.Security.Policy.PolicyLevel)", "summary", "df-generated"]
-      - ["System.Security.Policy", "ApplicationTrust", "ApplicationTrust", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationTrust", "ApplicationTrust", "(System.ApplicationIdentity)", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationTrust", "ApplicationTrust", "(System.Security.PermissionSet,System.Collections.Generic.IEnumerable<System.Security.Policy.StrongName>)", "summary", "df-generated"]
       - ["System.Security.Policy", "ApplicationTrust", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
@@ -112,7 +110,6 @@ extensions:
       - ["System.Security.Policy", "Evidence", "AddHost", "(System.Object)", "summary", "df-generated"]
       - ["System.Security.Policy", "Evidence", "AddHostEvidence<T>", "(T)", "summary", "df-generated"]
       - ["System.Security.Policy", "Evidence", "Clone", "()", "summary", "df-generated"]
-      - ["System.Security.Policy", "Evidence", "Evidence", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "Evidence", "Evidence", "(System.Object[],System.Object[])", "summary", "df-generated"]
       - ["System.Security.Policy", "Evidence", "Evidence", "(System.Security.Policy.Evidence)", "summary", "df-generated"]
       - ["System.Security.Policy", "Evidence", "Evidence", "(System.Security.Policy.EvidenceBase[],System.Security.Policy.EvidenceBase[])", "summary", "df-generated"]
@@ -129,7 +126,6 @@ extensions:
       - ["System.Security.Policy", "Evidence", "get_SyncRoot", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "Evidence", "set_Locked", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Security.Policy", "EvidenceBase", "Clone", "()", "summary", "df-generated"]
-      - ["System.Security.Policy", "EvidenceBase", "EvidenceBase", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "FileCodeGroup", "Copy", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "FileCodeGroup", "CreateXml", "(System.Security.SecurityElement,System.Security.Policy.PolicyLevel)", "summary", "df-generated"]
       - ["System.Security.Policy", "FileCodeGroup", "Equals", "(System.Object)", "summary", "df-generated"]
@@ -149,7 +145,6 @@ extensions:
       - ["System.Security.Policy", "GacInstalled", "Copy", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "GacInstalled", "CreateIdentityPermission", "(System.Security.Policy.Evidence)", "summary", "df-generated"]
       - ["System.Security.Policy", "GacInstalled", "Equals", "(System.Object)", "summary", "df-generated"]
-      - ["System.Security.Policy", "GacInstalled", "GacInstalled", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "GacInstalled", "GetHashCode", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "GacInstalled", "ToString", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "GacMembershipCondition", "Check", "(System.Security.Policy.Evidence)", "summary", "df-generated"]
@@ -157,7 +152,6 @@ extensions:
       - ["System.Security.Policy", "GacMembershipCondition", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.Security.Policy", "GacMembershipCondition", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
       - ["System.Security.Policy", "GacMembershipCondition", "FromXml", "(System.Security.SecurityElement,System.Security.Policy.PolicyLevel)", "summary", "df-generated"]
-      - ["System.Security.Policy", "GacMembershipCondition", "GacMembershipCondition", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "GacMembershipCondition", "GetHashCode", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "GacMembershipCondition", "ToString", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "GacMembershipCondition", "ToXml", "()", "summary", "df-generated"]
@@ -212,7 +206,6 @@ extensions:
       - ["System.Security.Policy", "PermissionRequestEvidence", "get_DeniedPermissions", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "PermissionRequestEvidence", "get_OptionalPermissions", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "PermissionRequestEvidence", "get_RequestedPermissions", "()", "summary", "df-generated"]
-      - ["System.Security.Policy", "PolicyException", "PolicyException", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "PolicyException", "PolicyException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Security.Policy", "PolicyException", "PolicyException", "(System.String)", "summary", "df-generated"]
       - ["System.Security.Policy", "PolicyException", "PolicyException", "(System.String,System.Exception)", "summary", "df-generated"]
@@ -314,7 +307,6 @@ extensions:
       - ["System.Security.Policy", "StrongNameMembershipCondition", "set_Name", "(System.String)", "summary", "df-generated"]
       - ["System.Security.Policy", "StrongNameMembershipCondition", "set_PublicKey", "(System.Security.Permissions.StrongNamePublicKeyBlob)", "summary", "df-generated"]
       - ["System.Security.Policy", "StrongNameMembershipCondition", "set_Version", "(System.Version)", "summary", "df-generated"]
-      - ["System.Security.Policy", "TrustManagerContext", "TrustManagerContext", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "TrustManagerContext", "TrustManagerContext", "(System.Security.Policy.TrustManagerUIContext)", "summary", "df-generated"]
       - ["System.Security.Policy", "TrustManagerContext", "get_IgnorePersistedDecision", "()", "summary", "df-generated"]
       - ["System.Security.Policy", "TrustManagerContext", "get_KeepAlive", "()", "summary", "df-generated"]

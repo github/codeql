@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -44,6 +45,7 @@ extensions:
       - ["System.Diagnostics.Metrics", "Measurement<T>", "get_Value", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Meter", "CreateCounter<T>", "(System.String,System.String,System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Meter", "CreateHistogram<T>", "(System.String,System.String,System.String)", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "Meter", "CreateUpDownCounter<T>", "(System.String,System.String,System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Meter", "Dispose", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Meter", "Meter", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Meter", "Meter", "(System.String,System.String)", "summary", "df-generated"]
@@ -52,7 +54,6 @@ extensions:
       - ["System.Diagnostics.Metrics", "MeterListener", "DisableMeasurementEvents", "(System.Diagnostics.Metrics.Instrument)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "MeterListener", "Dispose", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "MeterListener", "EnableMeasurementEvents", "(System.Diagnostics.Metrics.Instrument,System.Object)", "summary", "df-generated"]
-      - ["System.Diagnostics.Metrics", "MeterListener", "MeterListener", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "MeterListener", "RecordObservableInstruments", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "MeterListener", "Start", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "MeterListener", "get_InstrumentPublished", "()", "summary", "df-generated"]
@@ -62,3 +63,11 @@ extensions:
       - ["System.Diagnostics.Metrics", "ObservableInstrument<T>", "ObservableInstrument", "(System.Diagnostics.Metrics.Meter,System.String,System.String,System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "ObservableInstrument<T>", "Observe", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "ObservableInstrument<T>", "get_IsObservable", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "ObservableUpDownCounter<T>", "Observe", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "UpDownCounter<T>", "Add", "(T)", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "UpDownCounter<T>", "Add", "(T,System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "UpDownCounter<T>", "Add", "(T,System.Collections.Generic.KeyValuePair<System.String,System.Object>,System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "UpDownCounter<T>", "Add", "(T,System.Collections.Generic.KeyValuePair<System.String,System.Object>,System.Collections.Generic.KeyValuePair<System.String,System.Object>,System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "UpDownCounter<T>", "Add", "(T,System.Collections.Generic.KeyValuePair<System.String,System.Object>[])", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "UpDownCounter<T>", "Add", "(T,System.Diagnostics.TagList)", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "UpDownCounter<T>", "Add", "(T,System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "summary", "df-generated"]

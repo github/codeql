@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -21,7 +22,6 @@ extensions:
       - ["System.IO.IsolatedStorage", "IsolatedStorage", "IncreaseQuotaTo", "(System.Int64)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorage", "InitStore", "(System.IO.IsolatedStorage.IsolatedStorageScope,System.Type)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorage", "InitStore", "(System.IO.IsolatedStorage.IsolatedStorageScope,System.Type,System.Type)", "summary", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorage", "IsolatedStorage", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorage", "Remove", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorage", "get_AvailableFreeSpace", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorage", "get_CurrentSize", "()", "summary", "df-generated"]
@@ -33,7 +33,6 @@ extensions:
       - ["System.IO.IsolatedStorage", "IsolatedStorage", "get_UsedSize", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorage", "set_Quota", "(System.Int64)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorage", "set_Scope", "(System.IO.IsolatedStorage.IsolatedStorageScope)", "summary", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageException", "IsolatedStorageException", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageException", "IsolatedStorageException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageException", "IsolatedStorageException", "(System.String)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageException", "IsolatedStorageException", "(System.String,System.Exception)", "summary", "df-generated"]

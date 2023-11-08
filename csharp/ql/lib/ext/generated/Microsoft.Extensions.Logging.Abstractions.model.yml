@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -17,7 +18,6 @@ extensions:
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerFactory", "AddProvider", "(Microsoft.Extensions.Logging.ILoggerProvider)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerFactory", "CreateLogger", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerFactory", "Dispose", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerFactory", "NullLoggerFactory", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerProvider", "CreateLogger", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerProvider", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "NullLoggerProvider", "get_Instance", "()", "summary", "df-generated"]

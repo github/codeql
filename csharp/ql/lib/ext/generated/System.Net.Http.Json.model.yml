@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -9,6 +10,18 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync", "(System.Net.Http.HttpClient,System.String,System.Type,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync", "(System.Net.Http.HttpClient,System.String,System.Type,System.Text.Json.Serialization.JsonSerializerContext,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync", "(System.Net.Http.HttpClient,System.String,System.Type,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync", "(System.Net.Http.HttpClient,System.Uri,System.Type,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync", "(System.Net.Http.HttpClient,System.Uri,System.Type,System.Text.Json.Serialization.JsonSerializerContext,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync", "(System.Net.Http.HttpClient,System.Uri,System.Type,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync<TValue>", "(System.Net.Http.HttpClient,System.String,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync<TValue>", "(System.Net.Http.HttpClient,System.String,System.Text.Json.Serialization.Metadata.JsonTypeInfo<TValue>,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync<TValue>", "(System.Net.Http.HttpClient,System.String,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync<TValue>", "(System.Net.Http.HttpClient,System.Uri,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync<TValue>", "(System.Net.Http.HttpClient,System.Uri,System.Text.Json.Serialization.Metadata.JsonTypeInfo<TValue>,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpClientJsonExtensions", "DeleteFromJsonAsync<TValue>", "(System.Net.Http.HttpClient,System.Uri,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "HttpClientJsonExtensions", "GetFromJsonAsync", "(System.Net.Http.HttpClient,System.String,System.Type,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "HttpClientJsonExtensions", "GetFromJsonAsync", "(System.Net.Http.HttpClient,System.String,System.Type,System.Text.Json.Serialization.JsonSerializerContext,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "HttpClientJsonExtensions", "GetFromJsonAsync", "(System.Net.Http.HttpClient,System.String,System.Type,System.Threading.CancellationToken)", "summary", "df-generated"]
@@ -41,8 +54,10 @@ extensions:
       - ["System.Net.Http.Json", "HttpClientJsonExtensions", "PutAsJsonAsync<TValue>", "(System.Net.Http.HttpClient,System.Uri,TValue,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "HttpContentJsonExtensions", "ReadFromJsonAsync", "(System.Net.Http.HttpContent,System.Type,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "HttpContentJsonExtensions", "ReadFromJsonAsync", "(System.Net.Http.HttpContent,System.Type,System.Text.Json.Serialization.JsonSerializerContext,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpContentJsonExtensions", "ReadFromJsonAsync", "(System.Net.Http.HttpContent,System.Type,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "HttpContentJsonExtensions", "ReadFromJsonAsync<T>", "(System.Net.Http.HttpContent,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "HttpContentJsonExtensions", "ReadFromJsonAsync<T>", "(System.Net.Http.HttpContent,System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Http.Json", "HttpContentJsonExtensions", "ReadFromJsonAsync<T>", "(System.Net.Http.HttpContent,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "JsonContent", "SerializeToStream", "(System.IO.Stream,System.Net.TransportContext,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "JsonContent", "SerializeToStreamAsync", "(System.IO.Stream,System.Net.TransportContext)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "JsonContent", "SerializeToStreamAsync", "(System.IO.Stream,System.Net.TransportContext,System.Threading.CancellationToken)", "summary", "df-generated"]

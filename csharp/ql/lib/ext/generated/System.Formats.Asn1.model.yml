@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -42,7 +43,6 @@ extensions:
       - ["System.Formats.Asn1", "Asn1Tag", "get_TagValue", "()", "summary", "df-generated"]
       - ["System.Formats.Asn1", "Asn1Tag", "op_Equality", "(System.Formats.Asn1.Asn1Tag,System.Formats.Asn1.Asn1Tag)", "summary", "df-generated"]
       - ["System.Formats.Asn1", "Asn1Tag", "op_Inequality", "(System.Formats.Asn1.Asn1Tag,System.Formats.Asn1.Asn1Tag)", "summary", "df-generated"]
-      - ["System.Formats.Asn1", "AsnContentException", "AsnContentException", "()", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnContentException", "AsnContentException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnContentException", "AsnContentException", "(System.String)", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnContentException", "AsnContentException", "(System.String,System.Exception)", "summary", "df-generated"]
@@ -108,7 +108,9 @@ extensions:
       - ["System.Formats.Asn1", "AsnReaderOptions", "get_UtcTimeTwoDigitYearMax", "()", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnReaderOptions", "set_SkipSetSortOrderVerification", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnReaderOptions", "set_UtcTimeTwoDigitYearMax", "(System.Int32)", "summary", "df-generated"]
+      - ["System.Formats.Asn1", "AsnWriter+Scope", "Dispose", "()", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnWriter", "AsnWriter", "(System.Formats.Asn1.AsnEncodingRules)", "summary", "df-generated"]
+      - ["System.Formats.Asn1", "AsnWriter", "AsnWriter", "(System.Formats.Asn1.AsnEncodingRules,System.Int32)", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnWriter", "CopyTo", "(System.Formats.Asn1.AsnWriter)", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnWriter", "Encode", "()", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnWriter", "Encode", "(System.Span<System.Byte>)", "summary", "df-generated"]
@@ -143,4 +145,3 @@ extensions:
       - ["System.Formats.Asn1", "AsnWriter", "WriteUtcTime", "(System.DateTimeOffset,System.Int32,System.Nullable<System.Formats.Asn1.Asn1Tag>)", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnWriter", "WriteUtcTime", "(System.DateTimeOffset,System.Nullable<System.Formats.Asn1.Asn1Tag>)", "summary", "df-generated"]
       - ["System.Formats.Asn1", "AsnWriter", "get_RuleSet", "()", "summary", "df-generated"]
-      - ["System.Formats.Asn1", "AsnWriter+Scope", "Dispose", "()", "summary", "df-generated"]

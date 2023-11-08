@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -13,6 +14,7 @@ extensions:
       - ["System.Text.Unicode", "UnicodeRanges", "get_AlphabeticPresentationForms", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_Arabic", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_ArabicExtendedA", "()", "summary", "df-generated"]
+      - ["System.Text.Unicode", "UnicodeRanges", "get_ArabicExtendedB", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_ArabicPresentationFormsA", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_ArabicPresentationFormsB", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_ArabicSupplement", "()", "summary", "df-generated"]

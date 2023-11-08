@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -224,7 +225,6 @@ extensions:
       - ["System.Xml.Linq", "XDocument", "Save", "(System.String,System.Xml.Linq.SaveOptions)", "summary", "df-generated"]
       - ["System.Xml.Linq", "XDocument", "SaveAsync", "(System.IO.Stream,System.Xml.Linq.SaveOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Xml.Linq", "XDocument", "SaveAsync", "(System.IO.TextWriter,System.Xml.Linq.SaveOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
-      - ["System.Xml.Linq", "XDocument", "XDocument", "()", "summary", "df-generated"]
       - ["System.Xml.Linq", "XDocument", "get_NodeType", "()", "summary", "df-generated"]
       - ["System.Xml.Linq", "XDocumentType", "WriteTo", "(System.Xml.XmlWriter)", "summary", "df-generated"]
       - ["System.Xml.Linq", "XDocumentType", "get_NodeType", "()", "summary", "df-generated"]

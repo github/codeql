@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -19,6 +20,7 @@ extensions:
       - ["Microsoft.Extensions.Logging", "Logger<T>", False, "BeginScope<TState>", "(TState)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerExtensions", False, "BeginScope", "(Microsoft.Extensions.Logging.ILogger,System.String,System.Object[])", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerExternalScopeProvider", False, "Push", "(System.Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Logging", "LoggerFactory", False, "LoggerFactory", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.ILoggerProvider>,Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.LoggerFilterOptions>,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Logging.LoggerFactoryOptions>,Microsoft.Extensions.Logging.IExternalScopeProvider)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggingBuilderExtensions", False, "AddConfiguration", "(Microsoft.Extensions.Logging.ILoggingBuilder,Microsoft.Extensions.Configuration.IConfiguration)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggingBuilderExtensions", False, "AddProvider", "(Microsoft.Extensions.Logging.ILoggingBuilder,Microsoft.Extensions.Logging.ILoggerProvider)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggingBuilderExtensions", False, "ClearProviders", "(Microsoft.Extensions.Logging.ILoggingBuilder)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -80,22 +82,18 @@ extensions:
       - ["Microsoft.Extensions.Logging", "LoggerExtensions", "LogWarning", "(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Logging.EventId,System.String,System.Object[])", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerExtensions", "LogWarning", "(Microsoft.Extensions.Logging.ILogger,System.Exception,System.String,System.Object[])", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerExtensions", "LogWarning", "(Microsoft.Extensions.Logging.ILogger,System.String,System.Object[])", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging", "LoggerExternalScopeProvider", "LoggerExternalScopeProvider", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactory", "AddProvider", "(Microsoft.Extensions.Logging.ILoggerProvider)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactory", "CheckDisposed", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactory", "CreateLogger", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactory", "Dispose", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging", "LoggerFactory", "LoggerFactory", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactory", "LoggerFactory", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.ILoggerProvider>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactory", "LoggerFactory", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.ILoggerProvider>,Microsoft.Extensions.Logging.LoggerFilterOptions)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactory", "LoggerFactory", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.ILoggerProvider>,Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.LoggerFilterOptions>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactory", "LoggerFactory", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.ILoggerProvider>,Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.LoggerFilterOptions>,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Logging.LoggerFactoryOptions>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactoryExtensions", "CreateLogger", "(Microsoft.Extensions.Logging.ILoggerFactory,System.Type)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactoryExtensions", "CreateLogger<T>", "(Microsoft.Extensions.Logging.ILoggerFactory)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging", "LoggerFactoryOptions", "LoggerFactoryOptions", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactoryOptions", "get_ActivityTrackingOptions", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFactoryOptions", "set_ActivityTrackingOptions", "(Microsoft.Extensions.Logging.ActivityTrackingOptions)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging", "LoggerFilterOptions", "LoggerFilterOptions", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFilterOptions", "get_CaptureScopes", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFilterOptions", "get_MinLevel", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerFilterOptions", "get_Rules", "()", "summary", "df-generated"]
@@ -127,7 +125,6 @@ extensions:
       - ["Microsoft.Extensions.Logging", "LoggerMessage", "DefineScope<T1,T2,T3>", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerMessage", "DefineScope<T1,T2>", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerMessage", "DefineScope<T1>", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging", "LoggerMessageAttribute", "LoggerMessageAttribute", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerMessageAttribute", "LoggerMessageAttribute", "(System.Int32,Microsoft.Extensions.Logging.LogLevel,System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerMessageAttribute", "get_EventId", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging", "LoggerMessageAttribute", "get_EventName", "()", "summary", "df-generated"]

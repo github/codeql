@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -16,7 +17,6 @@ extensions:
       - ["System.Threading.Channels", "Channel<TWrite,TRead>", "get_Writer", "()", "summary", "df-generated"]
       - ["System.Threading.Channels", "Channel<TWrite,TRead>", "set_Reader", "(System.Threading.Channels.ChannelReader<TRead>)", "summary", "df-generated"]
       - ["System.Threading.Channels", "Channel<TWrite,TRead>", "set_Writer", "(System.Threading.Channels.ChannelWriter<TWrite>)", "summary", "df-generated"]
-      - ["System.Threading.Channels", "ChannelClosedException", "ChannelClosedException", "()", "summary", "df-generated"]
       - ["System.Threading.Channels", "ChannelClosedException", "ChannelClosedException", "(System.Exception)", "summary", "df-generated"]
       - ["System.Threading.Channels", "ChannelClosedException", "ChannelClosedException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Threading.Channels", "ChannelClosedException", "ChannelClosedException", "(System.String)", "summary", "df-generated"]

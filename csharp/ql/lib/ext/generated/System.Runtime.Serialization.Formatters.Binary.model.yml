@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -15,7 +16,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "BinaryFormatter", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "Deserialize", "(System.IO.Stream)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "Serialize", "(System.IO.Stream,System.Object)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "get_AssemblyFormat", "()", "summary", "df-generated"]

@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -13,7 +14,6 @@ extensions:
       extensible: neutralModel
     data:
       - ["Microsoft.VisualBasic", "Collection", "Add", "(System.Object,System.String,System.Object,System.Object)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic", "Collection", "Collection", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "Contains", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "Contains", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "IndexOf", "(System.Object)", "summary", "df-generated"]
@@ -26,7 +26,6 @@ extensions:
       - ["Microsoft.VisualBasic", "Collection", "get_IsReadOnly", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "get_IsSynchronized", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "get_SyncRoot", "()", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic", "ComClassAttribute", "ComClassAttribute", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "ComClassAttribute", "ComClassAttribute", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "ComClassAttribute", "ComClassAttribute", "(System.String,System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "ComClassAttribute", "ComClassAttribute", "(System.String,System.String,System.String)", "summary", "df-generated"]
@@ -35,7 +34,6 @@ extensions:
       - ["Microsoft.VisualBasic", "ComClassAttribute", "get_InterfaceID", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "ComClassAttribute", "get_InterfaceShadows", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "ComClassAttribute", "set_InterfaceShadows", "(System.Boolean)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic", "ControlChars", "ControlChars", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Conversion", "CTypeDynamic", "(System.Object,System.Type)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Conversion", "CTypeDynamic<TargetType>", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Conversion", "ErrorToString", "()", "summary", "df-generated"]
@@ -216,7 +214,6 @@ extensions:
       - ["Microsoft.VisualBasic", "Financial", "Rate", "(System.Double,System.Double,System.Double,System.Double,Microsoft.VisualBasic.DueDate,System.Double)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Financial", "SLN", "(System.Double,System.Double,System.Double)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Financial", "SYD", "(System.Double,System.Double,System.Double,System.Double)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic", "HideModuleNameAttribute", "HideModuleNameAttribute", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Information", "Erl", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Information", "Err", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Information", "IsArray", "(System.Object)", "summary", "df-generated"]
@@ -317,7 +314,6 @@ extensions:
       - ["Microsoft.VisualBasic", "Strings", "UCase", "(System.Char)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Strings", "UCase", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "VBCodeProvider", "GetConverter", "(System.Type)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic", "VBCodeProvider", "VBCodeProvider", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "VBCodeProvider", "get_FileExtension", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "VBCodeProvider", "get_LanguageOptions", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "VBFixedArrayAttribute", "VBFixedArrayAttribute", "(System.Int32)", "summary", "df-generated"]
