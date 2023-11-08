@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Added missing models for strsafe sprintf variants.
+* Added models for the `sprintf` variants from the `StrSafe.h` header.
