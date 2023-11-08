@@ -7,6 +7,18 @@ private import SSA
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.Constants
+private import semmle.code.java.dataflow.RangeAnalysis
+private import codeql.rangeanalysis.internal.RangeUtils
+
+private module U = MakeUtils<Sem, IntDelta>;
+
+private predicate backEdge = U::backEdge/3;
+
+predicate ssaRead = U::ssaRead/2;
+
+predicate guardDirectlyControlsSsaRead = U::guardDirectlyControlsSsaRead/3;
+
+predicate guardControlsSsaRead = U::guardControlsSsaRead/3;
 
 /**
  * Holds if `v` is an input to `phi` that is not along a back edge, and the
@@ -143,79 +155,6 @@ class ConstantStringExpr extends Expr {
 
   /** Get the string value of this expression. */
   string getStringValue() { constantStringExpr(this, result) }
-}
-
-bindingset[f]
-private predicate okInt(float f) { -2.pow(31) <= f and f <= 2.pow(31) - 1 }
-
-/**
- * Gets an expression that equals `v - d`.
- */
-Expr ssaRead(SsaVariable v, int delta) {
-  result = v.getAUse() and delta = 0
-  or
-  exists(int d1, ConstantIntegerExpr c |
-    result.(AddExpr).hasOperands(ssaRead(v, d1), c) and
-    delta = d1 - c.getIntValue() and
-    okInt(d1.(float) - c.getIntValue().(float))
-  )
-  or
-  exists(SubExpr sub, int d1, ConstantIntegerExpr c |
-    result = sub and
-    sub.getLeftOperand() = ssaRead(v, d1) and
-    sub.getRightOperand() = c and
-    delta = d1 + c.getIntValue() and
-    okInt(d1.(float) + c.getIntValue().(float))
-  )
-  or
-  v.(SsaExplicitUpdate).getDefiningExpr().(PreIncExpr) = result and delta = 0
-  or
-  v.(SsaExplicitUpdate).getDefiningExpr().(PreDecExpr) = result and delta = 0
-  or
-  v.(SsaExplicitUpdate).getDefiningExpr().(PostIncExpr) = result and delta = 1 // x++ === ++x - 1
-  or
-  v.(SsaExplicitUpdate).getDefiningExpr().(PostDecExpr) = result and delta = -1 // x-- === --x + 1
-  or
-  v.(SsaExplicitUpdate).getDefiningExpr().(Assignment) = result and delta = 0
-  or
-  result.(AssignExpr).getSource() = ssaRead(v, delta)
-}
-
-/**
- * Holds if `inp` is an input to `phi` along a back edge.
- */
-predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
-  edge.phiInput(phi, inp) and
-  // Conservatively assume that every edge is a back edge if we don't have dominance information.
-  (
-    phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
-    not hasDominanceInformation(edge.getOrigBlock())
-  )
-}
-
-/**
- * Holds if `guard` directly controls the position `controlled` with the
- * value `testIsTrue`.
- */
-predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-  guard.directlyControls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
-  or
-  exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
-    guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
-    guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
-  )
-}
-
-/**
- * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
- */
-predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-  guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
-  or
-  exists(Guard guard0, boolean testIsTrue0 |
-    implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
-    guardControlsSsaRead(guard0, controlled, testIsTrue0)
-  )
 }
 
 /**

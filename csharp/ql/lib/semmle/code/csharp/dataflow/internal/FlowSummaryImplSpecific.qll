@@ -12,7 +12,7 @@ private import DataFlowImplCommon
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import semmle.code.csharp.Unification
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 
 /**

@@ -7,7 +7,7 @@ private import Remote
 private import semmle.code.csharp.commons.Loggers
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.IO
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * An external location sink.

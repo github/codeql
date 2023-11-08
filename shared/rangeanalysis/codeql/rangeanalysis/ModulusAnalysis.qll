@@ -17,6 +17,8 @@ module ModulusAnalysis<
   LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
   UtilSig<Sem, D> U>
 {
+  private import internal.RangeUtils::MakeUtils<Sem, D>
+
   bindingset[pos, v]
   pragma[inline_late]
   private predicate hasReadOfVarInlineLate(Sem::SsaReadPosition pos, Sem::SsaVariable v) {
@@ -35,7 +37,7 @@ module ModulusAnalysis<
     exists(Sem::Guard guard, boolean testIsTrue |
       hasReadOfVarInlineLate(pos, v) and
       guard = U::semEqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
-      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue)
+      guardDirectlyControlsSsaRead(guard, pos, testIsTrue)
     )
   }
 
@@ -107,7 +109,7 @@ module ModulusAnalysis<
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = moduloCheck(v, val, mod, testIsTrue) and
-      Sem::guardControlsSsaRead(guard, pos, testIsTrue)
+      guardControlsSsaRead(guard, pos, testIsTrue)
     )
   }
 
