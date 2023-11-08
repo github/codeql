@@ -121,15 +121,16 @@ func fasthttpServer() {
 	requestHandler := func(requestCtx *fasthttp.RequestCtx) {
 		filePath := requestCtx.QueryArgs().Peek("filePath") // $ UntrustedFlowSource="call to Peek"
 		// File System Access
-		_ = requestCtx.Response.SendFile(string(filePath)) // $ FileSystemAccess=string(filePath)
-		requestCtx.SendFile(string(filePath))              // $ FileSystemAccess=string(filePath)
-		requestCtx.SendFileBytes(filePath)                 // $ FileSystemAccess=filePath
+		filePath_string := string(filePath)
+		_ = requestCtx.Response.SendFile(filePath_string) // $ FileSystemAccess=filePath_string
+		requestCtx.SendFile(filePath_string)              // $ FileSystemAccess=filePath_string
+		requestCtx.SendFileBytes(filePath)                // $ FileSystemAccess=filePath
 		fileHeader, _ := requestCtx.FormFile("file")
-		_ = fasthttp.SaveMultipartFile(fileHeader, string(filePath)) // $ FileSystemAccess=string(filePath)
-		fasthttp.ServeFile(requestCtx, string(filePath))             // $ FileSystemAccess=string(filePath)
-		fasthttp.ServeFileUncompressed(requestCtx, string(filePath)) // $ FileSystemAccess=string(filePath)
-		fasthttp.ServeFileBytes(requestCtx, filePath)                // $ FileSystemAccess=filePath
-		fasthttp.ServeFileBytesUncompressed(requestCtx, filePath)    // $ FileSystemAccess=filePath
+		_ = fasthttp.SaveMultipartFile(fileHeader, filePath_string) // $ FileSystemAccess=filePath_string
+		fasthttp.ServeFile(requestCtx, filePath_string)             // $ FileSystemAccess=filePath_string
+		fasthttp.ServeFileUncompressed(requestCtx, filePath_string) // $ FileSystemAccess=filePath_string
+		fasthttp.ServeFileBytes(requestCtx, filePath)               // $ FileSystemAccess=filePath
+		fasthttp.ServeFileBytesUncompressed(requestCtx, filePath)   // $ FileSystemAccess=filePath
 
 		dstReader := &bufio.Reader{}
 		// user controlled methods as source

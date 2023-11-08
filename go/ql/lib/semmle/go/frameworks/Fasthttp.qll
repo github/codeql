@@ -75,8 +75,6 @@ module Fasthttp {
 
     /**
      * A function that sends HTTP requests.
-     * First argument of following functions need Additional steps.
-     * look at URI module, additional steps part for more information.
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
@@ -134,6 +132,8 @@ module Fasthttp {
   module Args {
     /**
      * The methods as Remote user controllable source which are part of the incoming URL Parameters.
+     *
+     * When support for lambdas has been implemented we should model "VisitAll"
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
@@ -195,8 +195,6 @@ module Fasthttp {
 
     /**
      * A method that sends HTTP requests.
-     * First argument of following methods need Additional steps.
-     * Look at Request module, additional steps part for more information.
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
@@ -220,8 +218,6 @@ module Fasthttp {
   module PipelineClient {
     /**
      * A method that sends HTTP requests.
-     * First argument of following methods need Additional steps.
-     * Look at Request module, additional steps part for more information.
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
@@ -264,8 +260,6 @@ module Fasthttp {
 
     /**
      * A method that sends HTTP requests.
-     * first argument of following methods need Additional steps.
-     * Look at Request module, additional steps part for more information.
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
@@ -289,8 +283,6 @@ module Fasthttp {
   module LBClient {
     /**
      * A method that sends HTTP requests.
-     * first argument of following methods need Additional steps.
-     * Look at Request module, additional steps part for more information.
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
@@ -379,10 +371,7 @@ module Fasthttp {
         )
       }
 
-      override DataFlow::Node getAPathArgument() {
-        this.getTarget().getName() = ["SendFile", "SendFileBytes"] and
-        result = this.getArgument(0)
-      }
+      override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
     }
 
     /**
@@ -402,7 +391,9 @@ module Fasthttp {
     }
 
     /**
-     * The methods as Remote user controllable source which are generally related to HTTP request
+     * The methods as Remote user controllable source which are generally related to HTTP request.
+     *
+     * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer"
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
@@ -436,7 +427,9 @@ module Fasthttp {
    */
   module RequestHeader {
     /**
-     * The methods as Remote user controllable source which are mostly related to HTTP Request Headers
+     * The methods as Remote user controllable source which are mostly related to HTTP Request Headers.
+     *
+     * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer"
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
