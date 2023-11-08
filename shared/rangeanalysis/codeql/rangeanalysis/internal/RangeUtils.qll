@@ -34,4 +34,63 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
     or
     result.(Lang::CopyValueExpr).getOperand() = ssaRead(v, delta)
   }
+
+  /**
+   * Holds if `guard` directly controls the position `controlled` with the
+   * value `testIsTrue`.
+   */
+  pragma[nomagic]
+  predicate guardDirectlyControlsSsaRead(Lang::Guard guard, Lang::SsaReadPosition controlled, boolean testIsTrue) {
+    guard.directlyControls(controlled.(Lang::SsaReadPositionBlock).getBlock(), testIsTrue)
+    or
+    exists(Lang::SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
+    )
+  }
+
+  /**
+   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
+   */
+  predicate guardControlsSsaRead(Lang::Guard guard, Lang::SsaReadPosition controlled, boolean testIsTrue) {
+    guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
+    or
+    exists(Lang::Guard guard0, boolean testIsTrue0 |
+      Lang::implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
+      guardControlsSsaRead(guard0, controlled, testIsTrue0)
+    )
+  }
+
+  /**
+   * Holds if `inp` is an input to `phi` along a back edge.
+   */
+  predicate backEdge(
+    Lang::SsaPhiNode phi, Lang::SsaVariable inp, Lang::SsaReadPositionPhiInputEdge edge
+  ) {
+    edge.phiInput(phi, inp) and
+    (
+      phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
+      irreducibleSccEdge(edge.getOrigBlock(), phi.getBasicBlock())
+    )
+  }
+
+  /**
+   * Holds if the edge from b1 to b2 is part of a multiple-entry cycle in an irreducible control flow
+   * graph. Or if the edge is part of a cycle in unreachable code.
+   *
+   * An irreducible control flow graph is one where the usual dominance-based back edge detection does
+   * not work, because there is a cycle with multiple entry points, meaning there are
+   * mutually-reachable basic blocks where neither dominates the other. For such a graph, we first
+   * remove all detectable back-edges using the normal condition that the predecessor block is
+   * dominated by the successor block, then mark all edges in a cycle in the resulting graph as back
+   * edges.
+   */
+  private predicate irreducibleSccEdge(Lang::BasicBlock b1, Lang::BasicBlock b2) {
+    trimmedEdge(b1, b2) and trimmedEdge+(b2, b1)
+  }
+
+  private predicate trimmedEdge(Lang::BasicBlock pred, Lang::BasicBlock succ) {
+    Lang::getABasicBlockSuccessor(pred) = succ and
+    not succ.bbDominates(pred)
+  }
 }

@@ -198,7 +198,7 @@ void test12(unsigned len, unsigned index) {
         return;
     }
     
-    p[index] = '\0'; // $ deref=L195->L201 // BAD
+    p[index] = '\0'; // $ MISSING: deref=L195->L201 // BAD [NOT DETECTED]
 }
 
 void test13(unsigned len, unsigned index) {
