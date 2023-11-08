@@ -3158,6 +3158,80 @@ private module StdlibPrivate {
   }
 
   /**
+   * A flow summary for `re` methods not returning a `re.Match` object
+   *
+   * See https://docs.python.org/3/library/re.html#functions
+   */
+  class ReFunctionsSummary extends SummarizedCallable {
+    string methodName;
+
+    ReFunctionsSummary() {
+      methodName in ["split", "findall", "finditer", "sub", "subn"] and
+      this = ["re.", "compiled re."] + methodName
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      this = "re." + methodName and
+      result = API::moduleImport("re").getMember(methodName).getACall()
+      or
+      this = "compiled re." + methodName and
+      result =
+        any(RePatternSummary c)
+            .getACall()
+            .(API::CallNode)
+            .getReturn()
+            .getMember(methodName)
+            .getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(int offset |
+        // for non-compiled regex the first argument is the pattern, so we need to
+        // account for this difference
+        this = "re." + methodName and offset = 0
+        or
+        this = "compiled re." + methodName and offset = 1
+      |
+        // flow from input string to results
+        exists(int arg | arg = methodName.(RegexExecutionMethod).getStringArgIndex() - offset |
+          preservesValue = false and
+          input in ["Argument[" + arg + "]", "Argument[string:]"] and
+          (
+            methodName in ["split", "findall", "finditer"] and
+            output = "ReturnValue.ListElement"
+            or
+            // TODO: Since we currently model lists as tainted, the result of findall and split needs to be tainted
+            methodName in ["split", "findall"] and
+            output = "ReturnValue"
+            or
+            methodName = "sub" and
+            output = "ReturnValue"
+            or
+            methodName = "subn" and
+            output = "ReturnValue.TupleElement[0]"
+          )
+        )
+        or
+        // flow from replacement value for substitution
+        exists(string argumentSpec |
+          argumentSpec in ["Argument[" + (1 - offset) + "]", "Argument[repl:]"] and
+          // `repl` can also be a function
+          input = [argumentSpec, argumentSpec + ".ReturnValue"]
+        |
+          (
+            methodName = "sub" and output = "ReturnValue"
+            or
+            methodName = "subn" and output = "ReturnValue.TupleElement[0]"
+          ) and
+          preservesValue = false
+        )
+      )
+    }
+  }
+
+  /**
    * A call to 're.escape'.
    * See https://docs.python.org/3/library/re.html#re.escape
    */

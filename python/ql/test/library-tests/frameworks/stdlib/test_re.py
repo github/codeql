@@ -13,29 +13,30 @@ ensure_tainted(
     re.fullmatch(pat, ts), # $ MISSING: tainted
 
     # other functions not returning Match objects
-    re.split(pat, ts), # $ MISSING: tainted
-    re.split(pat, ts)[0], # $ MISSING: tainted
+    re.split(pat, ts), # $ tainted
+    re.split(pat, ts)[0], # $ tainted
 
-    re.findall(pat, ts), # $ MISSING: tainted
+    re.findall(pat, ts), # $ tainted
+    re.findall(pat, ts)[0], # $ tainted
 
     re.finditer(pat, ts), # $ MISSING: tainted
-    [x for x in re.finditer(pat, ts)], # $ MISSING: tainted
+    [x for x in re.finditer(pat, ts)], # $ tainted
 
-    re.sub(pat, repl="safe", string=ts), # $ MISSING: tainted
-    re.sub(pat, repl=lambda m: ..., string=ts), # $ MISSING: tainted
-    re.sub(pat, repl=ts, string="safe"), # $ MISSING: tainted
-    re.sub(pat, repl=lambda m: ts, string="safe"), # $ MISSING: tainted
+    re.sub(pat, repl="safe", string=ts), # $ tainted
+    re.sub(pat, repl=lambda m: ..., string=ts), # $ tainted
+    re.sub(pat, repl=ts, string="safe"), # $ tainted
+    re.sub(pat, repl=lambda m: ts, string="safe"), # $ tainted
 
     re.subn(pat, repl="safe", string=ts), # $ MISSING: tainted
-    re.subn(pat, repl="safe", string=ts)[0], # $ MISSING: tainted // the string
+    re.subn(pat, repl="safe", string=ts)[0], # $ tainted // the string
 
     # same for compiled patterns
     compiled_pat.search(ts), # $ MISSING: tainted
     compiled_pat.match(ts), # $ MISSING: tainted
     compiled_pat.fullmatch(ts), # $ MISSING: tainted
 
-    compiled_pat.split(ts), # $ MISSING: tainted
-    compiled_pat.split(ts)[0], # $ MISSING: tainted
+    compiled_pat.split(ts), # $ tainted
+    compiled_pat.split(ts)[0], # $ tainted
 
     # ...
 
