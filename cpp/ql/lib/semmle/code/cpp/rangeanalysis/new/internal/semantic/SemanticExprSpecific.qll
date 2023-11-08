@@ -128,9 +128,7 @@ module SemanticExprConfig {
 
   int getBasicBlockUniqueId(BasicBlock block) { idOf(block.getFirstInstruction().getAst(), result) }
 
-  newtype TSsaVariable =
-    TSsaInstruction(IR::Instruction instr) { instr.hasMemoryResult() } or
-    TSsaOperand(IR::Operand op) { op.isDefinitionInexact() }
+  newtype TSsaVariable = TSsaInstruction(IR::Instruction instr) { instr.hasMemoryResult() }
 
   class SsaVariable extends TSsaVariable {
     string toString() { none() }
@@ -138,8 +136,6 @@ module SemanticExprConfig {
     Location getLocation() { none() }
 
     IR::Instruction asInstruction() { none() }
-
-    IR::Operand asOperand() { none() }
   }
 
   class SsaInstructionVariable extends SsaVariable, TSsaInstruction {
@@ -152,18 +148,6 @@ module SemanticExprConfig {
     final override Location getLocation() { result = instr.getLocation() }
 
     final override IR::Instruction asInstruction() { result = instr }
-  }
-
-  class SsaOperand extends SsaVariable, TSsaOperand {
-    IR::Operand op;
-
-    SsaOperand() { this = TSsaOperand(op) }
-
-    final override string toString() { result = op.toString() }
-
-    final override Location getLocation() { result = op.getLocation() }
-
-    final override IR::Operand asOperand() { result = op }
   }
 
   predicate explicitUpdate(SsaVariable v, Expr sourceExpr) {
@@ -181,8 +165,6 @@ module SemanticExprConfig {
   SsaVariable getAPhiInput(SsaVariable v) {
     exists(IR::PhiInstruction instr | v.asInstruction() = instr |
       result.asInstruction() = instr.getAnInput()
-      or
-      result.asOperand() = instr.getAnInputOperand()
     )
   }
 
@@ -192,11 +174,7 @@ module SemanticExprConfig {
     result = getSemanticType(v.asInstruction().getResultIRType())
   }
 
-  BasicBlock getSsaVariableBasicBlock(SsaVariable v) {
-    result = v.asInstruction().getBlock()
-    or
-    result = v.asOperand().getUse().getBlock()
-  }
+  BasicBlock getSsaVariableBasicBlock(SsaVariable v) { result = v.asInstruction().getBlock() }
 
   private newtype TReadPosition =
     TReadPositionBlock(IR::IRBlock block) or
@@ -263,11 +241,7 @@ module SemanticExprConfig {
       pos = TReadPositionPhiInputEdge(operand.getPredecessorBlock(), operand.getUse().getBlock())
     |
       phi.asInstruction() = operand.getUse() and
-      (
-        input.asInstruction() = operand.getDef()
-        or
-        input.asOperand() = operand
-      )
+      input.asInstruction() = operand.getDef()
     )
   }
 
