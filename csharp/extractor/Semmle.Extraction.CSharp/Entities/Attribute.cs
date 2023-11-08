@@ -91,7 +91,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     // The current argument is not named
                     // so the previous ones were also not named
                     // so the child index matches the parameter index.
-                    isParamsParameter = Symbol?.AttributeConstructor?.Parameters[childIndex].IsParams == true;
+                    isParamsParameter = Symbol.AttributeConstructor?.Parameters[childIndex].IsParams == true;
                     argSyntax = ctorArguments[childIndex];
                 }
 
