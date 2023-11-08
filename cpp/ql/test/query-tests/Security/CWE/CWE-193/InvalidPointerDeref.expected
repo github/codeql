@@ -22,10 +22,6 @@ edges
 | test.cpp:52:19:52:37 | call to malloc | test.cpp:53:12:53:23 | ... + ... |
 | test.cpp:53:12:53:23 | ... + ... | test.cpp:51:33:51:35 | end |
 | test.cpp:60:34:60:37 | mk_array output argument | test.cpp:67:9:67:14 | ... = ... |
-| test.cpp:194:15:194:33 | call to malloc | test.cpp:195:17:195:23 | ... + ... |
-| test.cpp:195:17:195:23 | ... + ... | test.cpp:195:17:195:23 | ... + ... |
-| test.cpp:195:17:195:23 | ... + ... | test.cpp:201:5:201:19 | ... = ... |
-| test.cpp:195:17:195:23 | ... + ... | test.cpp:201:5:201:19 | ... = ... |
 | test.cpp:205:15:205:33 | call to malloc | test.cpp:206:17:206:23 | ... + ... |
 | test.cpp:206:17:206:23 | ... + ... | test.cpp:206:17:206:23 | ... + ... |
 | test.cpp:206:17:206:23 | ... + ... | test.cpp:213:5:213:13 | ... = ... |
@@ -125,10 +121,6 @@ nodes
 | test.cpp:53:12:53:23 | ... + ... | semmle.label | ... + ... |
 | test.cpp:60:34:60:37 | mk_array output argument | semmle.label | mk_array output argument |
 | test.cpp:67:9:67:14 | ... = ... | semmle.label | ... = ... |
-| test.cpp:194:15:194:33 | call to malloc | semmle.label | call to malloc |
-| test.cpp:195:17:195:23 | ... + ... | semmle.label | ... + ... |
-| test.cpp:195:17:195:23 | ... + ... | semmle.label | ... + ... |
-| test.cpp:201:5:201:19 | ... = ... | semmle.label | ... = ... |
 | test.cpp:205:15:205:33 | call to malloc | semmle.label | call to malloc |
 | test.cpp:206:17:206:23 | ... + ... | semmle.label | ... + ... |
 | test.cpp:206:17:206:23 | ... + ... | semmle.label | ... + ... |
@@ -214,7 +206,6 @@ subpaths
 | test.cpp:30:14:30:15 | * ... | test.cpp:28:15:28:37 | call to malloc | test.cpp:30:14:30:15 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:28:15:28:37 | call to malloc | call to malloc | test.cpp:29:20:29:27 | ... + ... | ... + ... |
 | test.cpp:32:14:32:21 | * ... | test.cpp:28:15:28:37 | call to malloc | test.cpp:32:14:32:21 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:28:15:28:37 | call to malloc | call to malloc | test.cpp:29:20:29:27 | ... + ... | ... + ... |
 | test.cpp:67:9:67:14 | ... = ... | test.cpp:52:19:52:37 | call to malloc | test.cpp:67:9:67:14 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:52:19:52:37 | call to malloc | call to malloc | test.cpp:53:20:53:23 | size | size |
-| test.cpp:201:5:201:19 | ... = ... | test.cpp:194:15:194:33 | call to malloc | test.cpp:201:5:201:19 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:194:15:194:33 | call to malloc | call to malloc | test.cpp:195:21:195:23 | len | len |
 | test.cpp:213:5:213:13 | ... = ... | test.cpp:205:15:205:33 | call to malloc | test.cpp:213:5:213:13 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:205:15:205:33 | call to malloc | call to malloc | test.cpp:206:21:206:23 | len | len |
 | test.cpp:264:13:264:14 | * ... | test.cpp:260:13:260:24 | new[] | test.cpp:264:13:264:14 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:260:13:260:24 | new[] | new[] | test.cpp:261:19:261:21 | len | len |
 | test.cpp:274:5:274:10 | ... = ... | test.cpp:270:13:270:24 | new[] | test.cpp:274:5:274:10 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:270:13:270:24 | new[] | new[] | test.cpp:271:19:271:21 | len | len |
