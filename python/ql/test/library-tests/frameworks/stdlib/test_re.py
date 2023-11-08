@@ -41,7 +41,7 @@ ensure_tainted(
 
     # user-controlled compiled pattern
     re.compile(ts), # $ tainted
-    re.compile(ts).pattern, # $ MISSING: tainted
+    re.compile(ts).pattern, # $ tainted
 )
 
 ensure_not_tainted(
@@ -52,25 +52,26 @@ ensure_not_tainted(
 tainted_match = re.match(pat, ts)
 safe_match = re.match(pat, "safe")
 ensure_tainted(
-    tainted_match.expand("Hello \1"), # $ MISSING: tainted
-    safe_match.expand(ts), # $ MISSING: tainted
-    tainted_match.group(), # $ MISSING: tainted
-    tainted_match.group(1, 2), # $ MISSING: tainted
-    tainted_match.group(1, 2)[0], # $ MISSING: tainted
-    tainted_match[0], # $ MISSING: tainted
+    tainted_match.expand("Hello \1"), # $ tainted
+    safe_match.expand(ts), # $ tainted
+    tainted_match.group(), # $ tainted
+    tainted_match.group(1, 2), # $ tainted
+    tainted_match.group(1, 2)[0], # $ tainted
+    tainted_match[0], # $ tainted
+    tainted_match["key"], # $ tainted
 
     tainted_match.groups(), # $ MISSING: tainted
-    tainted_match.groups()[0], # $ MISSING: tainted
+    tainted_match.groups()[0], # $ tainted
     tainted_match.groupdict(), # $ MISSING: tainted
-    tainted_match.groupdict()["key"], # $ MISSING: tainted
+    tainted_match.groupdict()["key"], # $ tainted
 
-    re.match(pat, ts).string, # $ MISSING: tainted
+    re.match(pat, ts).string, # $ tainted
     re.match(ts, "safe").re, # $ MISSING: tainted
-    re.match(ts, "safe").re.pattern, # $ MISSING: tainted
+    re.match(ts, "safe").re.pattern, # $ tainted
 
-    compiled_pat.match(ts).string, # $ MISSING: tainted
+    compiled_pat.match(ts).string, # $ tainted
     re.compile(ts).match("safe").re, # $ MISSING: tainted
-    re.compile(ts).match("safe").re.pattern, # $ MISSING: tainted
+    re.compile(ts).match("safe").re.pattern, # $ tainted
 )
 ensure_not_tainted(
     safe_match.expand("Hello \1"),

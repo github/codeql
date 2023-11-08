@@ -3027,6 +3027,137 @@ private module StdlibPrivate {
   }
 
   /**
+   * A flow summary for compiled regex objects
+   *
+   * See https://docs.python.org/3.11/library/re.html#re-objects
+   */
+  class RePatternSummary extends SummarizedCallable {
+    RePatternSummary() { this = "re.Pattern" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("re").getMember("compile").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::moduleImport("re").getMember("compile").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input in ["Argument[0]", "Argument[pattern:]"] and
+      output = "ReturnValue.Attribute[pattern]" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for methods returning a `re.Match` object
+   *
+   * See https://docs.python.org/3/library/re.html#re.Match
+   */
+  class ReMatchSummary extends SummarizedCallable {
+    ReMatchSummary() { this = ["re.Match", "compiled re.Match"] }
+
+    override DataFlow::CallCfgNode getACall() {
+      this = "re.Match" and
+      result = API::moduleImport("re").getMember(["match", "search", "fullmatch"]).getACall()
+      or
+      this = "compiled re.Match" and
+      result =
+        any(RePatternSummary c)
+            .getACall()
+            .(API::CallNode)
+            .getReturn()
+            .getMember(["match", "search", "fullmatch"])
+            .getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(string arg |
+        this = "re.Match" and arg = "Argument[1]"
+        or
+        this = "compiled re.Match" and arg = "Argument[0]"
+      |
+        input in [arg, "Argument[string:]"] and
+        (
+          output = "ReturnValue.Attribute[string]" and
+          preservesValue = true
+          or
+          // indexing such as `match[g]` is the same as `match.group(g)`
+          // since you can index with both integers and strings, we model it as
+          // both list element and dictionary... a bit of a hack, but no way to model
+          // subscript operators directly with flow-summaries :|
+          output in ["ReturnValue.ListElement", "ReturnValue.DictionaryElementAny"] and
+          preservesValue = false
+        )
+      )
+      or
+      // regex pattern
+      (
+        this = "re.Match" and input in ["Argument[0]", "Argument[pattern:]"]
+        or
+        // for compiled regexes, this it is already stored in the `pattern` attribute
+        this = "compiled re.Match" and input = "Argument[self].Attribute[pattern]"
+      ) and
+      output = "ReturnValue.Attribute[re].Attribute[pattern]" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for methods on a `re.Match` object
+   *
+   * See https://docs.python.org/3/library/re.html#re.Match
+   */
+  class ReMatchMethodsSummary extends SummarizedCallable {
+    string methodName;
+
+    ReMatchMethodsSummary() {
+      this = "re.Match." + methodName and
+      methodName in ["expand", "group", "groups", "groupdict"]
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      result =
+        any(ReMatchSummary c)
+            .getACall()
+            .(API::CallNode)
+            .getReturn()
+            .getMember(methodName)
+            .getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      methodName = "expand" and
+      preservesValue = false and
+      (
+        input = "Argument[0]" and output = "ReturnValue"
+        or
+        input = "Argument[self].Attribute[string]" and
+        output = "ReturnValue"
+      )
+      or
+      methodName = "group" and
+      input = "Argument[self].Attribute[string]" and
+      output in ["ReturnValue", "ReturnValue.ListElement"] and
+      preservesValue = false
+      or
+      methodName = "groups" and
+      input = "Argument[self].Attribute[string]" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = false
+      or
+      methodName = "groupdict" and
+      input = "Argument[self].Attribute[string]" and
+      output = "ReturnValue.DictionaryElementAny" and
+      preservesValue = false
+    }
+  }
+
+  /**
    * A call to 're.escape'.
    * See https://docs.python.org/3/library/re.html#re.escape
    */
