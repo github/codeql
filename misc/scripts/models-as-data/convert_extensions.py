@@ -7,7 +7,6 @@ import subprocess
 import sys
 import tempfile
 
-
 def quote_if_needed(v):
     # string columns
     if type(v) is str:
@@ -15,26 +14,13 @@ def quote_if_needed(v):
     # bool column
     return str(v)
 
-def insert_update(rows, key, value):
-    if key in rows:
-        rows[key] += value
-    else:
-        rows[key] = value
-
-def merge(*dicts):
-    merged = {}
-    for d in dicts:
-        for entry in d:
-            insert_update(merged, entry, d[entry])
-    return merged
-
 def parseData(data):
     rows = [{ }, { }]
     for row in data:
         d = map(quote_if_needed, row)
         provenance = row[-1]
         targetRows = rows[1] if provenance.endswith("generated") else rows[0]
-        insert_update(targetRows, row[0], "      - [" + ', '.join(d) + ']\n')
+        helpers.insert_update(targetRows, row[0], "      - [" + ', '.join(d) + ']\n')
 
     return rows
 
@@ -78,7 +64,7 @@ class Converter:
         sources = self.getAddsTo("ExtractSources.ql", helpers.sourceModelPredicate)
         sinks = self.getAddsTo("ExtractSinks.ql", helpers.sinkModelPredicate)
         neutrals = self.getAddsTo("ExtractNeutrals.ql", helpers.neutralModelPredicate)
-        return [merge(sources[0], sinks[0], summaries[0], neutrals[0]), merge(sources[1], sinks[1], summaries[1], neutrals[1])]
+        return [helpers.merge(sources[0], sinks[0], summaries[0], neutrals[0]), helpers.merge(sources[1], sinks[1], summaries[1], neutrals[1])]
 
 
     def save(self, extensions):
