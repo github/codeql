@@ -164,7 +164,7 @@ module SemanticExprConfig {
 
   SsaVariable getAPhiInput(SsaVariable v) {
     exists(IR::PhiInstruction instr | v.asInstruction() = instr |
-      result.asInstruction() = instr.getAnInput()
+      result.asInstruction() = instr.getAnInputOperand().getAnyDef()
     )
   }
 
@@ -241,7 +241,7 @@ module SemanticExprConfig {
       pos = TReadPositionPhiInputEdge(operand.getPredecessorBlock(), operand.getUse().getBlock())
     |
       phi.asInstruction() = operand.getUse() and
-      input.asInstruction() = operand.getDef()
+      input.asInstruction() = operand.getAnyDef()
     )
   }
 
