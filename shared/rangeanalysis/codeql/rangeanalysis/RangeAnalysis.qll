@@ -142,7 +142,13 @@ signature module Semantic {
     Expr getBranchExpr(boolean branch);
   }
 
-  class BasicBlock;
+  class BasicBlock {
+    /** Holds if this block (transitively) dominates `otherblock`. */
+    predicate bbDominates(BasicBlock otherBlock);
+  }
+
+  /** Gets an immediate successor of basic block `bb`, if any. */
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb);
 
   class Guard {
     string toString();
@@ -154,13 +160,11 @@ signature module Semantic {
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
+
+    predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
 
   predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2);
-
-  predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
-
-  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
 
   class Type;
 
@@ -176,6 +180,8 @@ signature module Semantic {
 
   class SsaVariable {
     Expr getAUse();
+
+    BasicBlock getBasicBlock();
   }
 
   class SsaPhiNode extends SsaVariable;
@@ -189,14 +195,16 @@ signature module Semantic {
   }
 
   class SsaReadPositionPhiInputEdge extends SsaReadPosition {
+    BasicBlock getOrigBlock();
+
+    BasicBlock getPhiBlock();
+
     predicate phiInput(SsaPhiNode phi, SsaVariable inp);
   }
 
   class SsaReadPositionBlock extends SsaReadPosition {
     BasicBlock getBlock();
   }
-
-  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge);
 
   predicate conversionCannotOverflow(Type fromType, Type toType);
 }
@@ -691,7 +699,7 @@ module RangeStage<
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = boundFlowCond(v, e, delta, upper, testIsTrue) and
-      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
+      guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
   }
@@ -704,7 +712,7 @@ module RangeStage<
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = semEqFlowCond(v, e, delta, false, testIsTrue) and
-      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
+      guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
   }
@@ -928,7 +936,7 @@ module RangeStage<
       origdelta = D::fromFloat(0) and
       reason = TSemNoReason()
     |
-      if Sem::backEdge(phi, inp, edge)
+      if backEdge(phi, inp, edge)
       then
         fromBackEdge = true and
         (

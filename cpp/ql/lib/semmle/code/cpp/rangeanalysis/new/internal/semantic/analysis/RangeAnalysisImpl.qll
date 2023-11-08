@@ -72,13 +72,11 @@ module Sem implements Semantic {
 
   class BasicBlock = SemBasicBlock;
 
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+
   class Guard = SemGuard;
 
   predicate implies_v2 = semImplies_v2/4;
-
-  predicate guardDirectlyControlsSsaRead = semGuardDirectlyControlsSsaRead/3;
-
-  predicate guardControlsSsaRead = semGuardControlsSsaRead/3;
 
   class Type = SemType;
 
@@ -99,8 +97,6 @@ module Sem implements Semantic {
   class SsaReadPositionPhiInputEdge = SemSsaReadPositionPhiInputEdge;
 
   class SsaReadPositionBlock = SemSsaReadPositionBlock;
-
-  predicate backEdge = semBackEdge/3;
 
   predicate conversionCannotOverflow(Type fromType, Type toType) {
     SemanticType::conversionCannotOverflow(fromType, toType)

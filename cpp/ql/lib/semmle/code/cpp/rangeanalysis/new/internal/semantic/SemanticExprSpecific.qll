@@ -122,8 +122,6 @@ module SemanticExprConfig {
     dominator.dominates(dominated)
   }
 
-  predicate hasDominanceInformation(BasicBlock block) { any() }
-
   private predicate id(Cpp::Locatable x, Cpp::Locatable y) { x = y }
 
   private predicate idOf(Cpp::Locatable x, int y) = equivalenceRelation(id/2)(x, y)
