@@ -26,7 +26,7 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
         "_mbsncat_l", // _mbsncat_l(dst, src, max_amount, locale)
         "_mbsnbcat", // _mbsnbcat(dest, src, count)
         "_mbsnbcat_l", // _mbsnbcat_l(dest, src, count, locale)
-        "strlcat" // strncat(dst, src, dst_size)
+        "strlcat" // strlcat(dst, src, dst_size)
       ])
   }
 
