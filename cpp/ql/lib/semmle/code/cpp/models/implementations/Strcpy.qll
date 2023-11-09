@@ -32,7 +32,8 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
         "wcsxfrm_l", // _strxfrm_l(dest, src, max_amount, locale)
         "_mbsnbcpy", // _mbsnbcpy(dest, src, max_amount)
         "stpcpy", // stpcpy(dest, src)
-        "stpncpy" // stpcpy(dest, src, max_amount)
+        "stpncpy", // stpcpy(dest, src, max_amount)
+        "strlcpy" // strlcpy(dst, src, dst_size)
       ])
     or
     (
@@ -60,7 +61,7 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
     if this.isSVariant()
     then result = 1
     else (
-      this.getName().matches(["%ncpy%", "%nbcpy%", "%xfrm%"]) and
+      this.getName().matches(["%ncpy%", "%nbcpy%", "%xfrm%", "%lcpy%"]) and
       result = 2
     )
   }

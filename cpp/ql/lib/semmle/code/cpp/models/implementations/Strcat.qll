@@ -25,7 +25,8 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
         "_mbsncat", // _mbsncat(dst, src, max_amount)
         "_mbsncat_l", // _mbsncat_l(dst, src, max_amount, locale)
         "_mbsnbcat", // _mbsnbcat(dest, src, count)
-        "_mbsnbcat_l" // _mbsnbcat_l(dest, src, count, locale)
+        "_mbsnbcat_l", // _mbsnbcat_l(dest, src, count, locale)
+        "strlcat" // strncat(dst, src, dst_size)
       ])
   }
 
@@ -51,7 +52,7 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     (
-      this.getName() = ["strncat", "wcsncat", "_mbsncat", "_mbsncat_l"] and
+      this.getName() = ["strncat", "strlcat", "wcsncat", "_mbsncat", "_mbsncat_l"] and
       input.isParameter(2)
       or
       this.getName() = ["_mbsncat_l", "_mbsnbcat_l"] and
