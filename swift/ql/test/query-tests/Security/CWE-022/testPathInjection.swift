@@ -481,3 +481,37 @@ func testPathInjection2(s1: UnsafeMutablePointer<String>, s2: UnsafeMutablePoint
     _ = fm.fileAttributes(atPath: remoteString, traverseLink: true) // $ MISSING: hasPathInjection=445
     _ = try fm.attributesOfItem(atPath: remoteString) // $ MISSING: hasPathInjection=445
 }
+
+// ---
+
+func myOpenFile1(atPath path: String) { }
+func myOpenFile2(_ filePath: String) { }
+func myFindFiles(ofType type: Int, inDirectory dir: String) { }
+
+class MyClass {
+    init(contentsOfFile: String) { }
+    func doSomething(keyPath: String) { }
+    func write(toFile: String) { }
+}
+
+class MyFile {
+    init(path: String) { }
+}
+
+func testPathInjectionHeuristics() {
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+
+    myOpenFile1(atPath: remoteString) // $ MISSING: hasPathInjection=
+    myOpenFile2(remoteString) // $ MISSING: hasPathInjection=
+    myFindFiles(ofType: 0, inDirectory: remoteString) // $ MISSING: hasPathInjection=
+
+    let mc = MyClass(contentsOfFile: remoteString) // $ MISSING: hasPathInjection=
+    mc.doSomething(keyPath: remoteString) // good - not a path
+    mc.write(toFile: remoteString) // $ MISSING: hasPathInjection=
+
+    let mf1 = MyFile(path: "")
+    let mf2 = MyFile(path: remoteString) // $ MISSING: hasPathInjection=
+
+    _ = NSSortDescriptor(key: remoteString, ascending: true) // good - not a path
+    _ = NSSortDescriptor(keyPath: remoteString as! KeyPath<Int, Int>, ascending: true) // good - not a path
+}
