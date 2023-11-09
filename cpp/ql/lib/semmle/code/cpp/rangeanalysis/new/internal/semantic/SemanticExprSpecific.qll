@@ -130,7 +130,7 @@ module SemanticExprConfig {
 
   newtype TSsaVariable =
     TSsaInstruction(IR::Instruction instr) { instr.hasMemoryResult() } or
-    TSsaOperand(IR::Operand op) { op.isDefinitionInexact() }
+    TSsaOperand(IR::PhiInputOperand op) { op.isDefinitionInexact() }
 
   class SsaVariable extends TSsaVariable {
     string toString() { none() }
@@ -139,7 +139,7 @@ module SemanticExprConfig {
 
     IR::Instruction asInstruction() { none() }
 
-    IR::Operand asOperand() { none() }
+    IR::PhiInputOperand asOperand() { none() }
   }
 
   class SsaInstructionVariable extends SsaVariable, TSsaInstruction {
@@ -155,7 +155,7 @@ module SemanticExprConfig {
   }
 
   class SsaOperand extends SsaVariable, TSsaOperand {
-    IR::Operand op;
+    IR::PhiInputOperand op;
 
     SsaOperand() { this = TSsaOperand(op) }
 
@@ -163,7 +163,7 @@ module SemanticExprConfig {
 
     final override Location getLocation() { result = op.getLocation() }
 
-    final override IR::Operand asOperand() { result = op }
+    final override IR::PhiInputOperand asOperand() { result = op }
   }
 
   predicate explicitUpdate(SsaVariable v, Expr sourceExpr) {
@@ -190,12 +190,14 @@ module SemanticExprConfig {
 
   SemType getSsaVariableType(SsaVariable v) {
     result = getSemanticType(v.asInstruction().getResultIRType())
+    or
+    result = getSemanticType(v.asOperand().getUse().getResultIRType())
   }
 
   BasicBlock getSsaVariableBasicBlock(SsaVariable v) {
     result = v.asInstruction().getBlock()
     or
-    result = v.asOperand().getUse().getBlock()
+    result = v.asOperand().getAnyDef().getBlock()
   }
 
   /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
