@@ -57,6 +57,33 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
     )
   }
 
+  /**
+   * Holds if `v` is an `SsaExplicitUpdate` that equals `e + delta`.
+   */
+  predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, D::Delta delta) {
+    exists(Expr defExpr | defExpr = v.getDefiningExpr() |
+      defExpr.(CopyValueExpr).getOperand() = e and delta = D::fromFloat(0)
+      or
+      defExpr.(PostIncExpr).getOperand() = e and delta = D::fromFloat(1)
+      or
+      defExpr.(PreIncExpr).getOperand() = e and delta = D::fromFloat(1)
+      or
+      defExpr.(PostDecExpr).getOperand() = e and delta = D::fromFloat(-1)
+      or
+      defExpr.(PreDecExpr).getOperand() = e and delta = D::fromFloat(-1)
+      or
+      e = defExpr and
+      not (
+        defExpr instanceof CopyValueExpr or
+        defExpr instanceof PostIncExpr or
+        defExpr instanceof PreIncExpr or
+        defExpr instanceof PostDecExpr or
+        defExpr instanceof PreDecExpr
+      ) and
+      delta = D::fromFloat(0)
+    )
+  }
+
   private newtype TSsaReadPosition =
     TSsaReadPositionBlock(BasicBlock bb) {
       exists(SsaVariable v | v.getAUse().getBasicBlock() = bb)

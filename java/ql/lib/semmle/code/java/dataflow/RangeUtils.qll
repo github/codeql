@@ -15,6 +15,8 @@ private predicate backEdge = U::backEdge/3;
 
 predicate ssaRead = U::ssaRead/2;
 
+predicate ssaUpdateStep = U::ssaUpdateStep/3;
+
 predicate guardDirectlyControlsSsaRead = U::guardDirectlyControlsSsaRead/3;
 
 predicate guardControlsSsaRead = U::guardControlsSsaRead/3;
@@ -156,23 +158,6 @@ class ConstantStringExpr extends Expr {
 
   /** Get the string value of this expression. */
   string getStringValue() { constantStringExpr(this, result) }
-}
-
-/**
- * Holds if `v` is an `SsaExplicitUpdate` that equals `e + delta`.
- */
-predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, int delta) {
-  v.getDefiningExpr().(VariableAssign).getSource() = e and delta = 0
-  or
-  v.getDefiningExpr().(PostIncExpr).getExpr() = e and delta = 1
-  or
-  v.getDefiningExpr().(PreIncExpr).getExpr() = e and delta = 1
-  or
-  v.getDefiningExpr().(PostDecExpr).getExpr() = e and delta = -1
-  or
-  v.getDefiningExpr().(PreDecExpr).getExpr() = e and delta = -1
-  or
-  v.getDefiningExpr().(AssignOp) = e and delta = 0
 }
 
 /**

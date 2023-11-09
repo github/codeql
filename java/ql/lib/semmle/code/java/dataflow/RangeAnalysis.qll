@@ -372,10 +372,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 module Utils implements UtilSig<Sem, IntDelta> {
   private import RangeUtils as RU
 
-  predicate semSsaUpdateStep(Sem::SsaExplicitUpdate v, Sem::Expr e, int delta) {
-    RU::ssaUpdateStep(v, e, delta)
-  }
-
   predicate semValueFlowStep = RU::valueFlowStep/3;
 
   Sem::Type getTrackedTypeForSsaVariable(Sem::SsaVariable var) {

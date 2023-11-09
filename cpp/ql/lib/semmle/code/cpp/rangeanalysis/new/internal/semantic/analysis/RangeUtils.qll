@@ -10,30 +10,6 @@ private import ConstantAnalysis
 
 module RangeUtil<DeltaSig D, LangSig<Sem, D> Lang> implements UtilSig<Sem, D> {
   /**
-   * Holds if `v` is an `SsaExplicitUpdate` that equals `e + delta`.
-   */
-  predicate semSsaUpdateStep(SemSsaExplicitUpdate v, SemExpr e, D::Delta delta) {
-    exists(SemExpr defExpr | defExpr = v.getSourceExpr() |
-      defExpr.(SemCopyValueExpr).getOperand() = e and delta = D::fromFloat(0)
-      or
-      defExpr.(SemStoreExpr).getOperand() = e and delta = D::fromFloat(0)
-      or
-      defExpr.(SemAddOneExpr).getOperand() = e and delta = D::fromFloat(1)
-      or
-      defExpr.(SemSubOneExpr).getOperand() = e and delta = D::fromFloat(-1)
-      or
-      e = defExpr and
-      not (
-        defExpr instanceof SemCopyValueExpr or
-        defExpr instanceof SemStoreExpr or
-        defExpr instanceof SemAddOneExpr or
-        defExpr instanceof SemSubOneExpr
-      ) and
-      delta = D::fromFloat(0)
-    )
-  }
-
-  /**
    * Holds if `e1 + delta` equals `e2`.
    */
   predicate semValueFlowStep(SemExpr e2, SemExpr e1, D::Delta delta) {

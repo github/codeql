@@ -30,7 +30,7 @@ module ModulusAnalysis<
    */
   pragma[nomagic]
   private predicate valueFlowStepSsa(Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, int delta) {
-    U::semSsaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
+    ssaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
     or
     exists(Sem::Guard guard, boolean testIsTrue |
       hasReadOfVarInlineLate(pos, v) and
