@@ -458,11 +458,11 @@ func testPathInjection2(s1: UnsafeMutablePointer<String>, s2: UnsafeMutablePoint
     let u3 = NSURL(string: "")!
     Data("").write(to: u3.filePathURL!, options: [])
     Data("").write(to: u3.appendingPathComponent("")!, options: [])
-    Data("").write(to: u3.appendingPathComponent(remoteString)!, options: []) // $ MISSING: hasPathInjection=445
+    Data("").write(to: u3.appendingPathComponent(remoteString)!, options: []) // $ hasPathInjection=445
 
     let u4 = NSURL(string: remoteString)!
-    Data("").write(to: u4.filePathURL!, options: []) // $ MISSING: hasPathInjection=445
-    Data("").write(to: u4.appendingPathComponent("")!, options: []) // $ MISSING: hasPathInjection=445
+    Data("").write(to: u4.filePathURL!, options: []) // $ hasPathInjection=445
+    Data("").write(to: u4.appendingPathComponent("")!, options: []) // $ hasPathInjection=445
 
     _ = NSData(contentsOfFile: remoteString)! // $ MISSING: hasPathInjection=445
     _ = NSData(contentsOfMappedFile: remoteString)! // $ MISSING: hasPathInjection=445
