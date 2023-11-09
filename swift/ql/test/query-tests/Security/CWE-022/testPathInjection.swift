@@ -479,7 +479,7 @@ func testPathInjection2(s1: UnsafeMutablePointer<String>, s2: UnsafeMutablePoint
 
     _ = remoteString.completePath(into: s3, caseSensitive: false, matchesInto: nil, filterTypes: nil)
     _ = NSData().write(toFile: s3.pointee, atomically: true) // $ MISSING: hasPathInjection=445
-    _ = NSData().write(toFile: s3[0], atomically: true) // $ MISSING: hasPathInjection=445
+    _ = NSData().write(toFile: s3[0], atomically: true) // $ hasPathInjection=445
 
     _ = fm.fileAttributes(atPath: remoteString, traverseLink: true) // $ hasPathInjection=445
     _ = try fm.attributesOfItem(atPath: remoteString) // $ hasPathInjection=445
