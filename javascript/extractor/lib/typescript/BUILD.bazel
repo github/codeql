@@ -9,7 +9,7 @@ genrule(
         "package-lock.json",
     ] + glob(["src/**"]),
     outs = ["javascript.zip"],
-    cmd = " && ".join([
+    cmd = "\n".join([
         # the original working directory is not preserved anywhere, but needs to be accessible, as
         # all paths are relative to this
         # unfortunately, we need to change the working directory to run npm.
