@@ -1417,6 +1417,15 @@ module Exprs {
     }
   }
 
+  /** Control-flow for a `SingleValueStmtExpr`. See the QLDoc for `SingleValueStmtExpr` for the semantics of a `SingleValueStmtExpr`. */
+  private class SingleValueStmtExprTree extends AstStandardPostOrderTree {
+    override SingleValueStmtExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getStmt()
+    }
+  }
+
   private class OpaqueValueExprTree extends AstLeafTree {
     override OpaqueValueExpr ast;
   }

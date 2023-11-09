@@ -195,6 +195,8 @@
 /lib/codeql/swift/elements/expr/SelfApplyExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/SequenceExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/SequenceExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/SingleValueStmtExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/SingleValueStmtExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/StringLiteralExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/StringToPointerExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/StringToPointerExprConstructor.qll linguist-generated
@@ -533,6 +535,7 @@
 /lib/codeql/swift/generated/expr/RegexLiteralExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/SelfApplyExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/SequenceExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/SingleValueStmtExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/StringLiteralExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/StringToPointerExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/SubscriptExpr.qll linguist-generated
@@ -834,6 +837,8 @@
 /test/extractor-tests/generated/expr/PropertyWrapperValuePlaceholderExpr/PropertyWrapperValuePlaceholderExpr_getWrappedValue.ql linguist-generated
 /test/extractor-tests/generated/expr/RebindSelfInInitializerExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/RegexLiteralExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/SingleValueStmtExpr/SingleValueStmtExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/SingleValueStmtExpr/SingleValueStmtExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/StringLiteralExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/SubscriptExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/SuperRefExpr/MISSING_SOURCE.txt linguist-generated

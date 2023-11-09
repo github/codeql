@@ -10,6 +10,7 @@ import com.semmle.js.ast.AST2JSON;
 import com.semmle.js.ast.Program;
 import com.semmle.util.files.FileUtil;
 import com.semmle.util.io.WholeIO;
+import com.semmle.util.tests.TestPaths;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import org.junit.runners.Parameterized.Parameters;
  */
 @RunWith(Parameterized.class)
 public class JSXTests extends ASTMatchingTests {
-  private static final File BASE = new File("parser-tests/jcorn-jsx").getAbsoluteFile();
+  private static final File BASE = TestPaths.get("parser-tests/jcorn-jsx").toAbsolutePath().toFile();
 
   @Parameters(name = "{0}")
   public static Iterable<Object[]> tests() {
