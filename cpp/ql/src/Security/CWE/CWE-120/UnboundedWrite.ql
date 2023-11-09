@@ -89,7 +89,7 @@ module Config implements DataFlow::ConfigSig {
   predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 
   predicate isBarrier(DataFlow::Node node) {
-    // Block flow is the node is guarded by any <, <= or = operations.
+    // Block flow if the node is guarded by any <, <= or = operations.
     node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode()
   }
 }
