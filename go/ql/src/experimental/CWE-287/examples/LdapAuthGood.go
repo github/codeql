@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-
-	"github.com/go-ldap/ldap"
 )
 
 func good() interface{} {
