@@ -113,22 +113,12 @@ private newtype TDefOrUseImpl =
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
     // the assignment to a global variable isn't ruled out as dead.
-    exists(VariableAddressInstruction vai, int defIndex |
-      vai.getEnclosingIRFunction() = f and
-      vai.getAstVariable() = v and
-      isDef(_, _, _, vai, _, defIndex) and
-      indirectionIndex = [0 .. defIndex] + 1
-    )
+    isGlobalUse(v, f, _, indirectionIndex)
   } or
   TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents the initial "definition" of a global variable when entering
     // a function body.
-    exists(VariableAddressInstruction vai |
-      vai.getEnclosingIRFunction() = f and
-      vai.getAstVariable() = v and
-      isUse(_, _, vai, _, indirectionIndex) and
-      not isDef(_, _, vai.getAUse(), _, _, _)
-    )
+    isGlobalDefImpl(v, f, _, indirectionIndex)
   } or
   TIteratorDef(
     Operand iteratorDerefAddress, BaseSourceVariableInstruction container, int indirectionIndex
@@ -149,6 +139,28 @@ private newtype TDefOrUseImpl =
       unspecifiedTypeIsModifiableAt(p.getUnspecifiedType(), indirectionIndex)
     )
   }
+
+private predicate isGlobalUse(
+  GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
+) {
+  exists(VariableAddressInstruction vai, int defIndex |
+    vai.getEnclosingIRFunction() = f and
+    vai.getAstVariable() = v and
+    isDef(_, _, _, vai, indirection, defIndex) and
+    indirectionIndex = [0 .. defIndex] + 1
+  )
+}
+
+private predicate isGlobalDefImpl(
+  GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
+) {
+  exists(VariableAddressInstruction vai |
+    vai.getEnclosingIRFunction() = f and
+    vai.getAstVariable() = v and
+    isUse(_, _, vai, indirection, indirectionIndex) and
+    not isDef(_, _, vai.getAUse(), _, _, _)
+  )
+}
 
 private predicate unspecifiedTypeIsModifiableAt(Type unspecified, int indirectionIndex) {
   indirectionIndex = [1 .. getIndirectionForUnspecifiedType(unspecified).getNumberOfIndirections()] and
@@ -438,7 +450,7 @@ class GlobalUse extends UseImpl, TGlobalUse {
 
   override FinalGlobalValue getNode() { result.getGlobalUse() = this }
 
-  override int getIndirection() { result = ind + 1 }
+  override int getIndirection() { isGlobalUse(global, f, result, ind) }
 
   /** Gets the global variable associated with this use. */
   GlobalLikeVariable getVariable() { result = global }
