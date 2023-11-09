@@ -10,56 +10,6 @@ private import ConstantAnalysis
 
 module RangeUtil<DeltaSig D, LangSig<Sem, D> Lang> implements UtilSig<Sem, D> {
   /**
-   * Gets an expression that equals `v - d`.
-   */
-  private SemExpr semSsaRead(SemSsaVariable v, D::Delta delta) {
-    // There are various language-specific extension points that can be removed once we no longer
-    // expect to match the original Java implementation's results exactly.
-    result = v.getAUse() and delta = D::fromInt(0)
-    or
-    exists(D::Delta d1, SemConstantIntegerExpr c |
-      result.(SemAddExpr).hasOperands(semSsaRead(v, d1), c) and
-      delta = D::fromFloat(D::toFloat(d1) - c.getIntValue())
-    )
-    or
-    exists(SemSubExpr sub, D::Delta d1, SemConstantIntegerExpr c |
-      result = sub and
-      sub.getLeftOperand() = semSsaRead(v, d1) and
-      sub.getRightOperand() = c and
-      delta = D::fromFloat(D::toFloat(d1) + c.getIntValue())
-    )
-    or
-    result = v.(SemSsaExplicitUpdate).getSourceExpr() and
-    delta = D::fromFloat(0)
-    or
-    result.(SemCopyValueExpr).getOperand() = semSsaRead(v, delta)
-    or
-    result.(SemStoreExpr).getOperand() = semSsaRead(v, delta)
-  }
-
-  /**
-   * Gets a condition that tests whether `v` equals `e + delta`.
-   *
-   * If the condition evaluates to `testIsTrue`:
-   * - `isEq = true`  : `v == e + delta`
-   * - `isEq = false` : `v != e + delta`
-   */
-  pragma[nomagic]
-  SemGuard semEqFlowCond(
-    SemSsaVariable v, SemExpr e, D::Delta delta, boolean isEq, boolean testIsTrue
-  ) {
-    exists(boolean eqpolarity |
-      result.isEquality(semSsaRead(v, delta), e, eqpolarity) and
-      (testIsTrue = true or testIsTrue = false) and
-      eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
-    )
-    or
-    exists(boolean testIsTrue0 |
-      semImplies_v2(result, testIsTrue, semEqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0)
-    )
-  }
-
-  /**
    * Holds if `v` is an `SsaExplicitUpdate` that equals `e + delta`.
    */
   predicate semSsaUpdateStep(SemSsaExplicitUpdate v, SemExpr e, D::Delta delta) {

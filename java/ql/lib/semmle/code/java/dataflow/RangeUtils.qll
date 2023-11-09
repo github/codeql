@@ -19,6 +19,8 @@ predicate guardDirectlyControlsSsaRead = U::guardDirectlyControlsSsaRead/3;
 
 predicate guardControlsSsaRead = U::guardControlsSsaRead/3;
 
+predicate eqFlowCond = U::eqFlowCond/5;
+
 /**
  * Holds if `v` is an input to `phi` that is not along a back edge, and the
  * only other input to `phi` is a `null` value.
@@ -154,25 +156,6 @@ class ConstantStringExpr extends Expr {
 
   /** Get the string value of this expression. */
   string getStringValue() { constantStringExpr(this, result) }
-}
-
-/**
- * Gets a condition that tests whether `v` equals `e + delta`.
- *
- * If the condition evaluates to `testIsTrue`:
- * - `isEq = true`  : `v == e + delta`
- * - `isEq = false` : `v != e + delta`
- */
-Guard eqFlowCond(SsaVariable v, Expr e, int delta, boolean isEq, boolean testIsTrue) {
-  exists(boolean eqpolarity |
-    result.isEquality(ssaRead(v, delta), e, eqpolarity) and
-    (testIsTrue = true or testIsTrue = false) and
-    eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
-  )
-  or
-  exists(boolean testIsTrue0 |
-    implies_v2(result, testIsTrue, eqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0)
-  )
 }
 
 /**

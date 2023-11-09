@@ -372,12 +372,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 module Utils implements UtilSig<Sem, IntDelta> {
   private import RangeUtils as RU
 
-  Sem::Guard semEqFlowCond(
-    Sem::SsaVariable v, Sem::Expr e, int delta, boolean isEq, boolean testIsTrue
-  ) {
-    result = RU::eqFlowCond(v, e, delta, isEq, testIsTrue)
-  }
-
   predicate semSsaUpdateStep(Sem::SsaExplicitUpdate v, Sem::Expr e, int delta) {
     RU::ssaUpdateStep(v, e, delta)
   }

@@ -304,10 +304,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
 }
 
 signature module UtilSig<Semantic Sem, DeltaSig DeltaParam> {
-  Sem::Guard semEqFlowCond(
-    Sem::SsaVariable v, Sem::Expr e, DeltaParam::Delta delta, boolean isEq, boolean testIsTrue
-  );
-
   predicate semSsaUpdateStep(Sem::SsaExplicitUpdate v, Sem::Expr e, DeltaParam::Delta delta);
 
   predicate semValueFlowStep(Sem::Expr e2, Sem::Expr e1, DeltaParam::Delta delta);
@@ -447,7 +443,7 @@ module RangeStage<
      */
     cached
     predicate possibleReason(Sem::Guard guard) {
-      guard = boundFlowCond(_, _, _, _, _) or guard = semEqFlowCond(_, _, _, _, _)
+      guard = boundFlowCond(_, _, _, _, _) or guard = eqFlowCond(_, _, _, _, _)
     }
   }
 
@@ -609,7 +605,7 @@ module RangeStage<
         testIsTrue0)
     )
     or
-    result = semEqFlowCond(v, e, delta, true, testIsTrue) and
+    result = eqFlowCond(v, e, delta, true, testIsTrue) and
     (upper = true or upper = false)
     or
     // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
@@ -630,7 +626,7 @@ module RangeStage<
     Sem::SsaVariable v1, Sem::SsaVariable v2, float delta
   ) {
     exists(Sem::Guard guardEq, D::Delta d1, D::Delta d2, boolean eqIsTrue |
-      guardEq = semEqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
+      guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
       delta = D::toFloat(d2) - D::toFloat(d1) and
       guardEq.directlyControls(result, eqIsTrue)
     )
@@ -695,7 +691,7 @@ module RangeStage<
     getTrackedTypeForSsaVariable(v) instanceof Sem::IntegerType and
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
-      guard = semEqFlowCond(v, e, delta, false, testIsTrue) and
+      guard = eqFlowCond(v, e, delta, false, testIsTrue) and
       guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )

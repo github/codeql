@@ -37,6 +37,26 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
     result.(CopyValueExpr).getOperand() = ssaRead(v, delta)
   }
 
+  /**
+   * Gets a condition that tests whether `v` equals `e + delta`.
+   *
+   * If the condition evaluates to `testIsTrue`:
+   * - `isEq = true`  : `v == e + delta`
+   * - `isEq = false` : `v != e + delta`
+   */
+  pragma[nomagic]
+  Guard eqFlowCond(SsaVariable v, Expr e, D::Delta delta, boolean isEq, boolean testIsTrue) {
+    exists(boolean eqpolarity |
+      result.isEquality(ssaRead(v, delta), e, eqpolarity) and
+      (testIsTrue = true or testIsTrue = false) and
+      eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
+    )
+    or
+    exists(boolean testIsTrue0 |
+      implies_v2(result, testIsTrue, eqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0)
+    )
+  }
+
   private newtype TSsaReadPosition =
     TSsaReadPositionBlock(BasicBlock bb) {
       exists(SsaVariable v | v.getAUse().getBasicBlock() = bb)
