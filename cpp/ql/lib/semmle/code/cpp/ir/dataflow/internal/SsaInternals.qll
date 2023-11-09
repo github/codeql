@@ -472,7 +472,9 @@ class GlobalUse extends UseImpl, TGlobalUse {
     )
   }
 
-  override SourceVariable getSourceVariable() { sourceVariableIsGlobal(result, global, f, ind) }
+  override SourceVariable getSourceVariable() {
+    sourceVariableIsGlobal(result, global, f, this.getIndirection())
+  }
 
   final override Cpp::Location getLocation() { result = f.getLocation() }
 
@@ -513,8 +515,10 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
 
   /** Gets the global variable associated with this definition. */
   override SourceVariable getSourceVariable() {
-    sourceVariableIsGlobal(result, global, f, indirectionIndex)
+    sourceVariableIsGlobal(result, global, f, this.getIndirection())
   }
+
+  int getIndirection() { result = indirectionIndex }
 
   /**
    * Gets the type of this use after specifiers have been deeply stripped
