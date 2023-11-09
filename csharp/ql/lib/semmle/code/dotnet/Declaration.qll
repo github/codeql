@@ -79,12 +79,24 @@ class Member extends Declaration, @dotnet_member {
   predicate isFile() { none() }
 
   /**
+   * DEPRECATED: Use `hasFullyQualifiedName` instead.
+   *
    * Holds if this member has name `name` and is defined in type `type`
    * with namespace `namespace`.
    */
   cached
-  predicate hasQualifiedName(string namespace, string type, string name) {
+  deprecated predicate hasQualifiedName(string namespace, string type, string name) {
     this.getDeclaringType().hasQualifiedName(namespace, type) and
+    name = this.getName()
+  }
+
+  /**
+   * Holds if this member has name `name` and is defined in type `type`
+   * with namespace `namespace`.
+   */
+  cached
+  predicate hasFullyQualifiedName(string namespace, string type, string name) {
+    this.getDeclaringType().hasFullyQualifiedName(namespace, type) and
     name = this.getName()
   }
 }

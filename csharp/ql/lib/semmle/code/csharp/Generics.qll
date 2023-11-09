@@ -56,9 +56,9 @@ private string getTypeParametersToString(UnboundGeneric ug) {
     strictconcat(Type t, int i | t = ug.getTypeParameter(i) | t.toStringWithTypes(), ", " order by i)
 }
 
-/** Gets a string of `N` commas where `N + 1` is the number of type parameters of this unbound generic. */
-private string getTypeParameterCommas(UnboundGeneric ug) {
-  result = strictconcat(int i | exists(ug.getTypeParameter(i)) | "", ",")
+/** Gets a string ``"`N"``,  where `N` is the number of type parameters of this unbound generic. */
+private string getTypeParameterBacktick(UnboundGeneric ug) {
+  result = "`" + ug.getNumberOfTypeParameters()
 }
 
 /**
@@ -147,7 +147,7 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
   }
 
   final override string getName() {
-    result = this.getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
+    result = this.getUndecoratedName() + getTypeParameterBacktick(this)
   }
 }
 
@@ -531,7 +531,7 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
   }
 
   final override string getName() {
-    result = this.getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
+    result = this.getUndecoratedName() + getTypeParameterBacktick(this)
   }
 
   final override string getUndecoratedName() { methods(this, result, _, _, _) }

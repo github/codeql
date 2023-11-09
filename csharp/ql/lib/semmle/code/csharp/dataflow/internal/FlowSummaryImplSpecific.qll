@@ -174,23 +174,20 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   or
   c = "WithElement" and result = SummaryComponent::withContent(any(ElementContent ec))
   or
-  // Qualified names may contain commas,such as in `Tuple<,>`, so get the entire argument list
-  // rather than an individual argument.
   exists(Field f |
-    c.getName() = "Field" and
-    c.getArgumentList() = f.getQualifiedName() and
+    c.getAnArgument("Field") = f.getFullyQualifiedName() and
     result = SummaryComponent::content(any(FieldContent fc | fc.getField() = f))
   )
   or
   exists(Property p |
-    c.getName() = "Property" and
-    c.getArgumentList() = p.getQualifiedName() and
+
+    c.getAnArgument("Property") = p.getFullyQualifiedName() and
     result = SummaryComponent::content(any(PropertyContent pc | pc.getProperty() = p))
   )
   or
   exists(SyntheticField f |
-    c.getName() = "SyntheticField" and
-    c.getArgumentList() = f and
+
+    c.getAnArgument("SyntheticField") = f and
     result = SummaryComponent::content(any(SyntheticFieldContent sfc | sfc.getField() = f))
   )
 }
@@ -199,9 +196,9 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 private string getContentSpecific(Content c) {
   c = TElementContent() and result = "Element"
   or
-  exists(Field f | c = TFieldContent(f) and result = "Field[" + f.getQualifiedName() + "]")
+  exists(Field f | c = TFieldContent(f) and result = "Field[" + f.getFullyQualifiedName() + "]")
   or
-  exists(Property p | c = TPropertyContent(p) and result = "Property[" + p.getQualifiedName() + "]")
+  exists(Property p | c = TPropertyContent(p) and result = "Property[" + p.getFullyQualifiedName() + "]")
   or
   exists(SyntheticField f | c = TSyntheticFieldContent(f) and result = "SyntheticField[" + f + "]")
 }
