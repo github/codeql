@@ -1,3 +1,12 @@
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/go-ldap/ldap"
+)
+
 func bad() interface{} {
 	bindPassword := req.URL.Query()["password"][0]
 
