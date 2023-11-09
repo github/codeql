@@ -810,7 +810,7 @@ namespace MoreGlobalTests {
 
   void read_indirect1() {
     sink(global_indirect1); // clean
-    indirect_sink(*global_indirect1); // $ MISSING: ir,ast
+    indirect_sink(*global_indirect1); // $ ir MISSING: ast
   }
 
   void set_indirect2()
@@ -820,7 +820,7 @@ namespace MoreGlobalTests {
 
   void read_indirect2() {
     sink(global_indirect2); // clean
-    sink(**global_indirect2); // $ MISSING: ir,ast
+    sink(**global_indirect2); // $ ir MISSING: ast
   }
 
   // overload source with a boolean parameter so
