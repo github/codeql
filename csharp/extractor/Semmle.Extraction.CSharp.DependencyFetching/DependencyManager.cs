@@ -31,6 +31,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDotNet dotnet;
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
+        private readonly TemporaryDirectory legacyPackageDirectory;
         private readonly TemporaryDirectory missingPackageDirectory;
         private readonly TemporaryDirectory tempWorkingDirectory;
         private readonly bool cleanupTempWorkingDirectory;
@@ -52,6 +53,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.sourceDir = new DirectoryInfo(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "legacypackages"));
             missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "missingpackages"));
 
             tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
@@ -89,17 +91,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 try
                 {
-                    var nuget = new NugetPackages(sourceDir.FullName, packageDirectory, progressMonitor);
+                    var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, progressMonitor);
                     nuget.InstallPackages();
 
-                    var nugetPackageDlls = packageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
+                    var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
                     var nugetPackageDllPaths = nugetPackageDlls.Select(f => f.FullName).ToHashSet();
                     var excludedPaths = nugetPackageDllPaths
-                        .Where(path => IsPathInSubfolder(path, packageDirectory.DirInfo.FullName, "tools"));
+                        .Where(path => IsPathInSubfolder(path, legacyPackageDirectory.DirInfo.FullName, "tools"));
 
                     foreach (var excludedPath in excludedPaths)
                     {
-                        progressMonitor.LogInfo($"Excluded DLL: {excludedPath}");
+                        progressMonitor.LogInfo($"Excluded Nuget DLL: {excludedPath}");
                     }
 
                     nugetPackageDllPaths.ExceptWith(excludedPaths);
@@ -761,6 +763,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void Dispose()
         {
             Dispose(packageDirectory, "package");
+            Dispose(legacyPackageDirectory, "legacy package");
             Dispose(missingPackageDirectory, "missing package");
             if (cleanupTempWorkingDirectory)
             {
