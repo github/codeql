@@ -167,6 +167,20 @@ private module TypeTrackingSteps {
       def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
       or
       def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter())
+      or
+      exists(PatternCase pc |
+        pc.getPattern().asBindingPattern() = def.(BaseSsaUpdate).getDefiningExpr() and
+        (
+          pc.getSwitch().getExpr() = n1.asExpr()
+          or
+          pc.getSwitchExpr().getExpr() = n1.asExpr()
+        )
+      )
+      or
+      exists(InstanceOfExpr ioe |
+        ioe.getPattern().asBindingPattern() = def.(BaseSsaUpdate).getDefiningExpr() and
+        ioe.getExpr() = n1.asExpr()
+      )
     |
       v.getAnUltimateDefinition() = def and
       v.getAUse() = n2.asExpr()

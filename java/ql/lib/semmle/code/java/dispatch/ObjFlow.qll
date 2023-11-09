@@ -89,6 +89,11 @@ private predicate step(Node n1, Node n2) {
         pc.getSwitchExpr().getExpr() = n1.asExpr()
       )
     )
+    or
+    exists(InstanceOfExpr ioe |
+      ioe.getPattern().asBindingPattern() = def.(BaseSsaUpdate).getDefiningExpr() and
+      ioe.getExpr() = n1.asExpr()
+    )
   |
     v.getAnUltimateDefinition() = def and
     v.getAUse() = n2.asExpr()
