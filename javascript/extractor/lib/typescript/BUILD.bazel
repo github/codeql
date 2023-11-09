@@ -17,7 +17,7 @@ genrule(
         # we need a temp dir, and unfortunately, $TMPDIR is not set on Windows
         "export TEMP=$$(mktemp -d)",
         # Add node to the path so that npm run can find it - it's calling env node
-        "export PATH=$$PATH:$$BAZEL_ROOT/$$(dirname $(execpath @nodejs//:node_bin))",
+        "export PATH=$$BAZEL_ROOT/$$(dirname $(execpath @nodejs//:node_bin)):$$PATH",
         "export NPM=$$BAZEL_ROOT/$(execpath @nodejs//:npm_bin)",
         # npm has a global cache which doesn't work on macos, where absolute paths aren't filtered out by the sandbox.
         # Therefore, set a temporary cache directory.
