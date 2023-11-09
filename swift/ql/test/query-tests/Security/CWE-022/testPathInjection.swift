@@ -447,13 +447,13 @@ func testPathInjection2(s1: UnsafeMutablePointer<String>, s2: UnsafeMutablePoint
     var u1 = URL(filePath: "")
     _ = NSData(contentsOf: u1)
     _ = NSData(contentsOf: u1.appendingPathComponent(""))
-    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString)) // $ MISSING: hasPathInjection=445
-    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent("")) // $ MISSING: hasPathInjection=445
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString)) // $ hasPathInjection=445
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent("")) // $ hasPathInjection=445
     u1.appendPathComponent(remoteString)
-    _ = NSData(contentsOf: u1) // $ MISSING: hasPathInjection=445
+    _ = NSData(contentsOf: u1) // $ hasPathInjection=445
 
     let u2 = URL(filePath: remoteString)
-    _ = NSData(contentsOf: u2) // $ MISSING: hasPathInjection=445
+    _ = NSData(contentsOf: u2) // $ hasPathInjection=445
 
     let u3 = NSURL(string: "")!
     Data("").write(to: u3.filePathURL!, options: [])
@@ -464,9 +464,9 @@ func testPathInjection2(s1: UnsafeMutablePointer<String>, s2: UnsafeMutablePoint
     Data("").write(to: u4.filePathURL!, options: []) // $ hasPathInjection=445
     Data("").write(to: u4.appendingPathComponent("")!, options: []) // $ hasPathInjection=445
 
-    _ = NSData(contentsOfFile: remoteString)! // $ MISSING: hasPathInjection=445
-    _ = NSData(contentsOfMappedFile: remoteString)! // $ MISSING: hasPathInjection=445
-    _ = NSData.dataWithContentsOfMappedFile(remoteString)! // $ MISSING: hasPathInjection=445
+    _ = NSData(contentsOfFile: remoteString)! // $ hasPathInjection=445
+    _ = NSData(contentsOfMappedFile: remoteString)! // $ hasPathInjection=445
+    _ = NSData.dataWithContentsOfMappedFile(remoteString)! // $ hasPathInjection=445
 
     _ = NSData().write(toFile: s1.pointee, atomically: true)
     s1.pointee = remoteString
@@ -478,8 +478,8 @@ func testPathInjection2(s1: UnsafeMutablePointer<String>, s2: UnsafeMutablePoint
     _ = remoteString.completePath(into: s3, caseSensitive: false, matchesInto: nil, filterTypes: nil)
     _ = NSData().write(toFile: s3.pointee, atomically: true) // $ MISSING: hasPathInjection=445
 
-    _ = fm.fileAttributes(atPath: remoteString, traverseLink: true) // $ MISSING: hasPathInjection=445
-    _ = try fm.attributesOfItem(atPath: remoteString) // $ MISSING: hasPathInjection=445
+    _ = fm.fileAttributes(atPath: remoteString, traverseLink: true) // $ hasPathInjection=445
+    _ = try fm.attributesOfItem(atPath: remoteString) // $ hasPathInjection=445
 }
 
 // ---
