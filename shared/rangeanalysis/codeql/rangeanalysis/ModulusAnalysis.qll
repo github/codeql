@@ -260,7 +260,7 @@ module ModulusAnalysis<
     or
     exists(Sem::Expr mid, int val0, int delta |
       exprModulus(mid, b, val0, mod) and
-      U::semValueFlowStep(e, mid, D::fromInt(delta)) and
+      valueFlowStep(e, mid, D::fromInt(delta)) and
       val = remainder(val0 + delta, mod)
     )
     or

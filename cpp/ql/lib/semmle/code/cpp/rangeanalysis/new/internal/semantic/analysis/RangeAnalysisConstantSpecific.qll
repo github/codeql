@@ -27,11 +27,6 @@ module CppLangImplConstant implements LangSig<Sem, FloatDelta> {
   predicate hasBound(SemExpr e, SemExpr bound, float delta, boolean upper) { none() }
 
   /**
-   * Holds if the value of `dest` is known to be `src + delta`.
-   */
-  predicate additionalValueFlowStep(SemExpr dest, SemExpr src, float delta) { none() }
-
-  /**
    * Gets the type that range analysis should use to track the result of the specified expression,
    * if a type other than the original type of the expression is to be used.
    *

@@ -17,6 +17,8 @@ predicate ssaRead = U::ssaRead/2;
 
 predicate ssaUpdateStep = U::ssaUpdateStep/3;
 
+predicate valueFlowStep = U::valueFlowStep/3;
+
 predicate guardDirectlyControlsSsaRead = U::guardDirectlyControlsSsaRead/3;
 
 predicate guardControlsSsaRead = U::guardControlsSsaRead/3;
@@ -163,50 +165,10 @@ class ConstantStringExpr extends Expr {
 /**
  * Holds if `e1 + delta` equals `e2`.
  */
-predicate valueFlowStep(Expr e2, Expr e1, int delta) {
-  e2.(AssignExpr).getSource() = e1 and delta = 0
-  or
-  e2.(PlusExpr).getExpr() = e1 and delta = 0
-  or
-  e2.(PostIncExpr).getExpr() = e1 and delta = 0
-  or
-  e2.(PostDecExpr).getExpr() = e1 and delta = 0
-  or
-  e2.(PreIncExpr).getExpr() = e1 and delta = 1
-  or
-  e2.(PreDecExpr).getExpr() = e1 and delta = -1
-  or
+predicate additionalValueFlowStep(Expr e2, Expr e1, int delta) {
   exists(ArrayCreationExpr a |
     arrayLengthDef(e2, a) and
     a.getDimension(0) = e1 and
     delta = 0
-  )
-  or
-  exists(Expr x |
-    e2.(AddExpr).hasOperands(e1, x)
-    or
-    exists(AssignAddExpr add | add = e2 |
-      add.getDest() = e1 and add.getRhs() = x
-      or
-      add.getDest() = x and add.getRhs() = e1
-    )
-  |
-    x.(ConstantIntegerExpr).getIntValue() = delta
-  )
-  or
-  exists(Expr x |
-    exists(SubExpr sub |
-      e2 = sub and
-      sub.getLeftOperand() = e1 and
-      sub.getRightOperand() = x
-    )
-    or
-    exists(AssignSubExpr sub |
-      e2 = sub and
-      sub.getDest() = e1 and
-      sub.getRhs() = x
-    )
-  |
-    x.(ConstantIntegerExpr).getIntValue() = -delta
   )
 }

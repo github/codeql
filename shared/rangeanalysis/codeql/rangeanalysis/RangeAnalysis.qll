@@ -203,6 +203,11 @@ signature module Semantic {
     Expr getDefiningExpr();
   }
 
+  /**
+   * Holds if the value of `dest` is known to be `src + delta`.
+   */
+  predicate additionalValueFlowStep(Expr dest, Expr src, int delta);
+
   predicate conversionCannotOverflow(Type fromType, Type toType);
 }
 
@@ -278,11 +283,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   predicate ignoreExprBound(Sem::Expr e);
 
   /**
-   * Holds if the value of `dest` is known to be `src + delta`.
-   */
-  predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, D::Delta delta);
-
-  /**
    * Gets the type that range analysis should use to track the result of the specified expression,
    * if a type other than the original type of the expression is to be used.
    *
@@ -304,8 +304,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
 }
 
 signature module UtilSig<Semantic Sem, DeltaSig DeltaParam> {
-  predicate semValueFlowStep(Sem::Expr e2, Sem::Expr e1, DeltaParam::Delta delta);
-
   /**
    * Gets the type used to track the specified source variable's range information.
    *
@@ -711,7 +709,7 @@ module RangeStage<
    * - `upper = false` : `e2 >= e1 + delta`
    */
   private predicate boundFlowStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
-    semValueFlowStep(e2, e1, delta) and
+    valueFlowStep(e2, e1, delta) and
     (upper = true or upper = false)
     or
     e2.(SafeCastExpr).getOperand() = e1 and
@@ -1344,8 +1342,8 @@ module RangeStage<
     Sem::AddExpr add, boolean upper, SemBound b, boolean isLeft, D::Delta delta,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
-    // `semValueFlowStep` already handles the case where one of the operands is a constant.
-    not semValueFlowStep(add, _, _) and
+    // `valueFlowStep` already handles the case where one of the operands is a constant.
+    not valueFlowStep(add, _, _) and
     (
       isLeft = true and
       bounded(add.getLeftOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
@@ -1364,8 +1362,8 @@ module RangeStage<
     Sem::SubExpr sub, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
   ) {
-    // `semValueFlowStep` already handles the case where one of the operands is a constant.
-    not semValueFlowStep(sub, _, _) and
+    // `valueFlowStep` already handles the case where one of the operands is a constant.
+    not valueFlowStep(sub, _, _) and
     bounded(sub.getLeftOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
@@ -1380,8 +1378,8 @@ module RangeStage<
   private predicate boundedSubOperandRight(
     Sem::SubExpr sub, boolean upper, D::Delta delta, boolean fromBackEdge
   ) {
-    // `semValueFlowStep` already handles the case where one of the operands is a constant.
-    not semValueFlowStep(sub, _, _) and
+    // `valueFlowStep` already handles the case where one of the operands is a constant.
+    not valueFlowStep(sub, _, _) and
     bounded(sub.getRightOperand(), any(SemZeroBound zb), delta, upper.booleanNot(), fromBackEdge, _,
       _)
   }

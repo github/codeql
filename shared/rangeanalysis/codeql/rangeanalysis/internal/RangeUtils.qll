@@ -84,6 +84,35 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
     )
   }
 
+  /**
+   * Holds if `e1 + delta` equals `e2`.
+   */
+  predicate valueFlowStep(Expr e2, Expr e1, D::Delta delta) {
+    e2.(CopyValueExpr).getOperand() = e1 and delta = D::fromFloat(0)
+    or
+    e2.(PostIncExpr).getOperand() = e1 and delta = D::fromFloat(0)
+    or
+    e2.(PostDecExpr).getOperand() = e1 and delta = D::fromFloat(0)
+    or
+    e2.(PreIncExpr).getOperand() = e1 and delta = D::fromFloat(1)
+    or
+    e2.(PreDecExpr).getOperand() = e1 and delta = D::fromFloat(-1)
+    or
+    additionalValueFlowStep(e2, e1, D::toInt(delta))
+    or
+    exists(Expr x | e2.(AddExpr).hasOperands(e1, x) |
+      D::fromInt(x.(ConstantIntegerExpr).getIntValue()) = delta
+    )
+    or
+    exists(Expr x, SubExpr sub |
+      e2 = sub and
+      sub.getLeftOperand() = e1 and
+      sub.getRightOperand() = x
+    |
+      D::fromInt(-x.(ConstantIntegerExpr).getIntValue()) = delta
+    )
+  }
+
   private newtype TSsaReadPosition =
     TSsaReadPositionBlock(BasicBlock bb) {
       exists(SsaVariable v | v.getAUse().getBasicBlock() = bb)

@@ -94,6 +94,8 @@ module Sem implements Semantic {
 
   class SsaExplicitUpdate = SemSsaExplicitUpdate;
 
+  predicate additionalValueFlowStep(SemExpr dest, SemExpr src, int delta) { none() }
+
   predicate conversionCannotOverflow(Type fromType, Type toType) {
     SemanticType::conversionCannotOverflow(fromType, toType)
   }

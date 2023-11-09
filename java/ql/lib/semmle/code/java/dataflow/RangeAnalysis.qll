@@ -255,6 +255,8 @@ module Sem implements Semantic {
     Expr getDefiningExpr() { result = super.getDefiningExpr() }
   }
 
+  predicate additionalValueFlowStep = RU::additionalValueFlowStep/3;
+
   predicate conversionCannotOverflow = safeCast/2;
 }
 
@@ -360,8 +362,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 
   predicate ignoreExprBound(Sem::Expr e) { none() }
 
-  predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, int delta) { none() }
-
   Sem::Type getAlternateType(Sem::Expr e) { none() }
 
   Sem::Type getAlternateTypeForSsaVariable(Sem::SsaVariable var) { none() }
@@ -370,10 +370,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 }
 
 module Utils implements UtilSig<Sem, IntDelta> {
-  private import RangeUtils as RU
-
-  predicate semValueFlowStep = RU::valueFlowStep/3;
-
   Sem::Type getTrackedTypeForSsaVariable(Sem::SsaVariable var) {
     result = var.getSourceVariable().getType()
   }
