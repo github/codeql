@@ -91,7 +91,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     var nuget = new NugetPackages(sourceDir.FullName, packageDirectory, progressMonitor);
                     nuget.InstallPackages();
-                    dllPaths.UnionWith(GetAllPackageDirectories());
+
+                    var nugetPackageDlls = packageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
+                    var nugetPackageDllPaths = nugetPackageDlls.Select(f => f.FullName).ToHashSet();
+                    var excludedPaths = nugetPackageDllPaths
+                        .Where(path => IsPathInSubfolder(path, packageDirectory.DirInfo.FullName, "tools"));
+
+                    foreach (var excludedPath in excludedPaths)
+                    {
+                        progressMonitor.LogInfo($"Excluded DLL: {excludedPath}");
+                    }
+
+                    nugetPackageDllPaths.ExceptWith(excludedPaths);
+                    dllPaths.UnionWith(nugetPackageDllPaths);
                 }
                 catch (FileNotFoundException)
                 {
@@ -164,6 +176,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 succeededProjects + failedProjects,
                 failedProjects,
                 DateTime.Now - startTime);
+        }
+
+        private static bool IsPathInSubfolder(string path, string rootFolder, string subFolder)
+        {
+            return path.IndexOf(
+                $"{Path.DirectorySeparatorChar}{subFolder}{Path.DirectorySeparatorChar}",
+                rootFolder.Length,
+                StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
         private void RemoveNugetAnalyzerReferences()
