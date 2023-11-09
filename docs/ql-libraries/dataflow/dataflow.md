@@ -633,6 +633,16 @@ configuration:
 predicate includeHiddenNodes() { any() }
 ```
 
+### Show more nodes in path explanations
+
+Path explanations skip over most nodes and only show the important nodes in a
+path. To ensure that particular nodes are shown, define the following predicate
+in a configuration:
+
+```ql
+predicate neverSkip(Node n)
+```
+
 ### Unreachable nodes
 
 Consider:
