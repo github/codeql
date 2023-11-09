@@ -1,0 +1,1 @@
+| test.swift:2:11:2:23 | PackExpansionExpr | hasType: | yes | getPatternExpr: | test.swift:2:18:2:23 | PackElementExpr |

@@ -761,6 +761,8 @@ arguments(  //dir=expr
 | @optional_evaluation_expr
 | @other_initializer_ref_expr
 | @overloaded_decl_ref_expr
+| @pack_element_expr
+| @pack_expansion_expr
 | @property_wrapper_value_placeholder_expr
 | @rebind_self_in_initializer_expr
 | @sequence_expr
@@ -1114,6 +1116,16 @@ overloaded_decl_ref_expr_possible_declarations(  //dir=expr
   int id: @overloaded_decl_ref_expr ref,
   int index: int ref,
   int possible_declaration: @value_decl_or_none ref
+);
+
+pack_element_exprs(  //dir=expr
+  unique int id: @pack_element_expr,
+  int sub_expr: @expr_or_none ref
+);
+
+pack_expansion_exprs(  //dir=expr
+  unique int id: @pack_expansion_expr,
+  int pattern_expr: @expr_or_none ref
 );
 
 property_wrapper_value_placeholder_exprs(  //dir=expr
@@ -2005,6 +2017,9 @@ while_stmts(  //dir=stmt
 | @in_out_type
 | @l_value_type
 | @module_type
+| @pack_element_type
+| @pack_expansion_type
+| @pack_type
 | @parameterized_protocol_type
 | @protocol_composition_type
 | @reference_storage_type
@@ -2125,6 +2140,28 @@ module_types(  //dir=type
   int module: @module_decl_or_none ref
 );
 
+pack_element_types(  //dir=type
+  unique int id: @pack_element_type,
+  int pack_type: @type_or_none ref
+);
+
+pack_expansion_types(  //dir=type
+  unique int id: @pack_expansion_type,
+  int pattern_type: @type_or_none ref,
+  int count_type: @type_or_none ref
+);
+
+pack_types(  //dir=type
+  unique int id: @pack_type
+);
+
+#keyset[id, index]
+pack_type_elements(  //dir=type
+  int id: @pack_type ref,
+  int index: int ref,
+  int element: @type_or_none ref
+);
+
 parameterized_protocol_types(  //dir=type
   unique int id: @parameterized_protocol_type,
   int base: @protocol_type_or_none ref
@@ -2199,8 +2236,9 @@ unresolved_types(  //dir=type
 ;
 
 @archetype_type =
-  @opaque_type_archetype_type
-| @opened_archetype_type
+  @local_archetype_type
+| @opaque_type_archetype_type
+| @pack_archetype_type
 | @primary_archetype_type
 ;
 
@@ -2359,6 +2397,11 @@ dictionary_types(  //dir=type
   int value_type: @type_or_none ref
 );
 
+@local_archetype_type =
+  @element_archetype_type
+| @opened_archetype_type
+;
+
 @nominal_type =
   @class_type
 | @enum_type
@@ -2371,8 +2414,8 @@ opaque_type_archetype_types(  //dir=type
   int declaration: @opaque_type_decl_or_none ref
 );
 
-opened_archetype_types(  //dir=type
-  unique int id: @opened_archetype_type
+pack_archetype_types(  //dir=type
+  unique int id: @pack_archetype_type
 );
 
 primary_archetype_types(  //dir=type
@@ -2411,8 +2454,16 @@ class_types(  //dir=type
   unique int id: @class_type
 );
 
+element_archetype_types(  //dir=type
+  unique int id: @element_archetype_type
+);
+
 enum_types(  //dir=type
   unique int id: @enum_type
+);
+
+opened_archetype_types(  //dir=type
+  unique int id: @opened_archetype_type
 );
 
 optional_types(  //dir=type
