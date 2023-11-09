@@ -1,0 +1,11 @@
+load("@//:dist.bzl", "pack_zip")
+
+pack_zip(
+    name = "downgrades",
+    srcs = glob(
+        ["**/*"],
+        exclude = ["BUILD.bazel"],
+    ),
+    prefix = "downgrades",
+    visibility = ["//visibility:public"],
+)
