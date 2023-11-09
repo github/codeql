@@ -239,4 +239,8 @@
 | 4.8-api/WindowsBase.dll |
 | 4.8-api/cscompmgd.dll |
 | 4.8-api/mscorlib.dll |
+| /NUnit.ConsoleRunner.3.12.0/tools/nunit.engine.api.dll |
+| /NUnit.ConsoleRunner.3.12.0/tools/nunit.engine.core.dll |
+| /NUnit.ConsoleRunner.3.12.0/tools/nunit.engine.dll |
+| /NUnit.ConsoleRunner.3.12.0/tools/testcentric.engine.metadata.dll |
 | /Newtonsoft.Json.6.0.4/lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll |

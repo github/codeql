@@ -1,0 +1,101 @@
+[INVALID_KEY] predicate type_parameters(@type_parameter id, int index, @generic generic_id, int variance): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 3:
+Tuple 1 in row 405: (60523,0,48538,0)
+Tuple 2 in row 406: (60523,0,48538,2)
+	Relevant element: Tuple 1: id=60523
+		Full ID for 60523: @"(48538)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;typeparameter"
+	Relevant element: Tuple 2: id=60523
+		Full ID for 60523: @"(48538)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;typeparameter"
+	Relevant element: Tuple 1: generic_id=48538
+		Full ID for 48538: @"(17).Action`1;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`1;type"
+	Relevant element: Tuple 2: generic_id=48538
+		Full ID for 48538: @"(17).Action`1;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`1;type"
+[INVALID_KEY] predicate type_parameters(@type_parameter id, int index, @generic generic_id, int variance): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 3:
+Tuple 1 in row 444: (63606,0,63031,0)
+Tuple 2 in row 445: (63606,0,63031,2)
+	Relevant element: Tuple 1: id=63606
+		Full ID for 63606: @"(63031)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`2;type"}_0;typeparameter"
+	Relevant element: Tuple 2: id=63606
+		Full ID for 63606: @"(63031)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`2;type"}_0;typeparameter"
+	Relevant element: Tuple 1: generic_id=63031
+		Full ID for 63031: @"(17).Action`2;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`2;type"
+	Relevant element: Tuple 2: generic_id=63031
+		Full ID for 63031: @"(17).Action`2;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`2;type"
+[INVALID_KEY] predicate type_parameters(@type_parameter id, int index, @generic generic_id, int variance): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 3:
+Tuple 1 in row 446: (63610,1,63031,0)
+Tuple 2 in row 447: (63610,1,63031,2)
+	Relevant element: Tuple 1: id=63610
+		Full ID for 63610: @"(63031)_1;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`2;type"}_1;typeparameter"
+	Relevant element: Tuple 2: id=63610
+		Full ID for 63610: @"(63031)_1;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`2;type"}_1;typeparameter"
+	Relevant element: Tuple 1: generic_id=63031
+		Full ID for 63031: @"(17).Action`2;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`2;type"
+	Relevant element: Tuple 2: generic_id=63031
+		Full ID for 63031: @"(17).Action`2;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`2;type"
+[INVALID_KEY] predicate type_parameters(@type_parameter id, int index, @generic generic_id, int variance): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 3:
+Tuple 1 in row 3691: (207310,0,207302,0)
+Tuple 2 in row 3692: (207310,0,207302,2)
+	Relevant element: Tuple 1: id=207310
+		Full ID for 207310: @"(207302)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`3;type"}_0;typeparameter"
+	Relevant element: Tuple 2: id=207310
+		Full ID for 207310: @"(207302)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`3;type"}_0;typeparameter"
+	Relevant element: Tuple 1: generic_id=207302
+		Full ID for 207302: @"(17).Action`3;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`3;type"
+	Relevant element: Tuple 2: generic_id=207302
+		Full ID for 207302: @"(17).Action`3;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`3;type"
+[INVALID_KEY] predicate type_parameters(@type_parameter id, int index, @generic generic_id, int variance): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 3:
+Tuple 1 in row 3693: (207315,1,207302,0)
+Tuple 2 in row 3694: (207315,1,207302,2)
+	Relevant element: Tuple 1: id=207315
+		Full ID for 207315: @"(207302)_1;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`3;type"}_1;typeparameter"
+	Relevant element: Tuple 2: id=207315
+		Full ID for 207315: @"(207302)_1;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`3;type"}_1;typeparameter"
+	Relevant element: Tuple 1: generic_id=207302
+		Full ID for 207302: @"(17).Action`3;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`3;type"
+	Relevant element: Tuple 2: generic_id=207302
+		Full ID for 207302: @"(17).Action`3;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`3;type"
+[INVALID_KEY] predicate type_parameters(@type_parameter id, int index, @generic generic_id, int variance): More errors, not displayed. There are 6 pairs of tuples not satisfying the key dependency for a relation of size 8004
+[INVALID_KEY_SET] predicate params(@parameter id, string name, @type_or_ref type_id, int index, int mode, @parameterizable parent_id, @parameter unbound_id): The key set {index, parent_id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 19620: (60522,"arg",60523,0,0,48538,60522)
+Tuple 2 in row 19621: (60522,"obj",60523,0,0,48538,60522)
+	Relevant element: Tuple 1: id=60522
+		Full ID for 60522: @"(48538)_0;parameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;parameter"
+	Relevant element: Tuple 2: id=60522
+		Full ID for 60522: @"(48538)_0;parameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;parameter"
+	Relevant element: Tuple 1: type_id=60523
+		Full ID for 60523: @"(48538)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;typeparameter"
+	Relevant element: Tuple 2: type_id=60523
+		Full ID for 60523: @"(48538)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;typeparameter"
+	Relevant element: Tuple 1: parent_id=48538
+		Full ID for 48538: @"(17).Action`1;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`1;type"
+	Relevant element: Tuple 2: parent_id=48538
+		Full ID for 48538: @"(17).Action`1;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`1;type"
+	Relevant element: Tuple 1: unbound_id=60522
+		Full ID for 60522: @"(48538)_0;parameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;parameter"
+	Relevant element: Tuple 2: unbound_id=60522
+		Full ID for 60522: @"(48538)_0;parameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;parameter"
+[INVALID_KEY] predicate params(@parameter id, string name, @type_or_ref type_id, int index, int mode, @parameterizable parent_id, @parameter unbound_id): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 19620: (60522,"arg",60523,0,0,48538,60522)
+Tuple 2 in row 19621: (60522,"obj",60523,0,0,48538,60522)
+	Relevant element: Tuple 1: id=60522
+		Full ID for 60522: @"(48538)_0;parameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;parameter"
+	Relevant element: Tuple 2: id=60522
+		Full ID for 60522: @"(48538)_0;parameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;parameter"
+	Relevant element: Tuple 1: type_id=60523
+		Full ID for 60523: @"(48538)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;typeparameter"
+	Relevant element: Tuple 2: type_id=60523
+		Full ID for 60523: @"(48538)_0;typeparameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;typeparameter"
+	Relevant element: Tuple 1: parent_id=48538
+		Full ID for 48538: @"(17).Action`1;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`1;type"
+	Relevant element: Tuple 2: parent_id=48538
+		Full ID for 48538: @"(17).Action`1;type". The ID may expand to @"{@"{@";namespace"}.System;namespace"}.Action`1;type"
+	Relevant element: Tuple 1: unbound_id=60522
+		Full ID for 60522: @"(48538)_0;parameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;parameter"
+	Relevant element: Tuple 2: unbound_id=60522
+		Full ID for 60522: @"(48538)_0;parameter". The ID may expand to @"{@"{@"{@";namespace"}.System;namespace"}.Action`1;type"}_0;parameter"
