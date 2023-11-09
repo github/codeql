@@ -1007,6 +1007,9 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
   }
 
   /** Gets the indirection index of this definition. */
+  int getIndirection() { result = global.getIndirection() }
+
+  /** Gets the indirection index of this definition. */
   int getIndirectionIndex() { result = global.getIndirectionIndex() }
 
   /**
