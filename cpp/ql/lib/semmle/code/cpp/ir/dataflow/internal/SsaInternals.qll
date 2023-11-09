@@ -525,7 +525,7 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
    */
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
 
-  override string toString() { result = "GlobalDef" }
+  override string toString() { result = "Def of " + this.getSourceVariable() }
 
   override Location getLocation() { result = f.getLocation() }
 
@@ -995,7 +995,7 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
   final override Location getLocation() { result = global.getLocation() }
 
   /** Gets a textual representation of this definition. */
-  override string toString() { result = "GlobalDef" }
+  override string toString() { result = global.toString() }
 
   /**
    * Holds if this definition has index `index` in block `block`, and
