@@ -102,4 +102,20 @@ public class A extends ArrayList<Long> {
       default -> { }
     }
   }
+
+  public void m10(Object o) {
+    String s = "Hello world!";
+    Object o2 = s; // Alas, the type information, it is lost
+
+    if (o2 instanceof CharSequence cs) {
+      // Partially recovered statically, but we should know cs is an alias of o and therefore it's really a string.
+      Object target = cs;
+    }
+
+    // The same applies to a pattern case
+    switch (o2) {
+      case CharSequence cs -> { Object target = cs; }
+      default -> { }
+    }
+  }
 }
