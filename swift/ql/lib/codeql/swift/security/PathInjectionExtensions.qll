@@ -61,6 +61,41 @@ private class EnumConstructorPathInjectionSink extends PathInjectionSink {
   }
 }
 
+/**
+ * A string that might be a label for a path argument.
+ */
+pragma[inline]
+private predicate pathLikeHeuristic(string label) {
+  label =
+    [
+      "atFile", "atPath", "atDirectory", "toFile", "toPath", "toDirectory", "inFile", "inPath",
+      "inDirectory", "contentsOfFile", "contentsOfPath", "contentsOfDirectory", "filePath",
+      "directory", "directoryPath"
+    ]
+}
+
+/**
+ * A path injection sink that is determined by imprecise methods.
+ */
+private class HeuristicPathInjectionSink extends PathInjectionSink {
+  HeuristicPathInjectionSink() {
+    // by parameter name
+    exists(CallExpr ce, int ix, ParamDecl pd |
+      pathLikeHeuristic(pragma[only_bind_into](pd.getName())) and
+      pd.getType().getUnderlyingType().getName() = ["String", "NSString"] and
+      pd = ce.getStaticTarget().getParam(ix) and
+      this.asExpr() = ce.getArgument(ix).getExpr()
+    )
+    or
+    // by argument name
+    exists(Argument a |
+      pathLikeHeuristic(pragma[only_bind_into](a.getLabel())) and
+      a.getExpr().getType().getUnderlyingType().getName() = ["String", "NSString"] and
+      this.asExpr() = a.getExpr()
+    )
+  }
+}
+
 private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
   DefaultPathInjectionBarrier() {
     // This is a simplified implementation.

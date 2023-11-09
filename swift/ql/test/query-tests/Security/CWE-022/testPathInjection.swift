@@ -452,7 +452,7 @@ func testPathInjection2(s1: UnsafeMutablePointer<String>, s2: UnsafeMutablePoint
     u1.appendPathComponent(remoteString)
     _ = NSData(contentsOf: u1) // $ hasPathInjection=445
 
-    let u2 = URL(filePath: remoteString)
+    let u2 = URL(filePath: remoteString) // $ hasPathInjection=445
     _ = NSData(contentsOf: u2) // $ hasPathInjection=445
 
     let u3 = NSURL(string: "")!
@@ -504,13 +504,13 @@ class MyFile {
 func testPathInjectionHeuristics() {
     let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
 
-    myOpenFile1(atPath: remoteString) // $ MISSING: hasPathInjection=
-    myOpenFile2(remoteString) // $ MISSING: hasPathInjection=
-    myFindFiles(ofType: 0, inDirectory: remoteString) // $ MISSING: hasPathInjection=
+    myOpenFile1(atPath: remoteString) // $ hasPathInjection=505
+    myOpenFile2(remoteString) // $ hasPathInjection=505
+    myFindFiles(ofType: 0, inDirectory: remoteString) // $ hasPathInjection=505
 
-    let mc = MyClass(contentsOfFile: remoteString) // $ MISSING: hasPathInjection=
+    let mc = MyClass(contentsOfFile: remoteString) // $ hasPathInjection=505
     mc.doSomething(keyPath: remoteString) // good - not a path
-    mc.write(toFile: remoteString) // $ MISSING: hasPathInjection=
+    mc.write(toFile: remoteString) // $ hasPathInjection=505
 
     let mf1 = MyFile(path: "")
     let mf2 = MyFile(path: remoteString) // $ MISSING: hasPathInjection=
