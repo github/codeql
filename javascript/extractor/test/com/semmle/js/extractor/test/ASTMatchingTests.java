@@ -12,6 +12,7 @@ import com.semmle.jcorn.SyntaxError;
 import com.semmle.js.ast.AST2JSON;
 import com.semmle.js.ast.Program;
 import com.semmle.util.io.WholeIO;
+import com.semmle.util.tests.TestPaths;
 import java.io.File;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -54,7 +55,7 @@ public abstract class ASTMatchingTests {
     }
   }
 
-  private static final File BABYLON_BASE = new File("parser-tests/babylon").getAbsoluteFile();
+  private static final File BABYLON_BASE = TestPaths.get("parser-tests/babylon").toAbsolutePath().toFile();
 
   protected void babylonTest(String dir) {
     babylonTest(dir, new Options().esnext(true));

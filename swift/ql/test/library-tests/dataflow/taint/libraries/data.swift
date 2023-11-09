@@ -17,9 +17,13 @@ extension DataProtocol {
 extension UnsafeRawBufferPointer : DataProtocol { }
 extension Array : DataProtocol where Element == UInt8 { }
 
-protocol MutableDataProtocol : DataProtocol, RangeReplaceableCollection { }
+protocol MutableDataProtocol : DataProtocol, MutableCollection, RangeReplaceableCollection { }
 
-struct Data : MutableDataProtocol
+protocol ContiguousBytes {
+	func withUnsafeBytes<R>(_ body: (UnsafeRawBufferPointer) throws -> R) rethrows -> R
+}
+
+struct Data : MutableDataProtocol, ContiguousBytes
 {
 	struct Base64EncodingOptions : OptionSet { let rawValue: Int }
 	struct Base64DecodingOptions : OptionSet { let rawValue: Int }
@@ -31,7 +35,10 @@ struct Data : MutableDataProtocol
 	var endIndex: Self.Index { get { return 0 } }
 	func index(after: Self.Index) -> Self.Index { return 0 }
 	func index(before: Self.Index) -> Self.Index { return 0 }
-	subscript(position: Self.Index) -> Self.Element { get { return 0 } }
+	subscript(position: Self.Index) -> Self.Element {
+		get { return 0 }
+		set { }
+	}
 
  	init() {}
 	init<S>(_ elements: S) {}
@@ -74,6 +81,9 @@ struct Data : MutableDataProtocol
 	func shuffled<T>(using: inout T) -> [UInt8] { return [] }
 	func trimmingPrefix<Prefix>(_ prefix: Prefix) -> Data where Prefix : Sequence, UInt8 == Prefix.Element { return Data("") }
 	func trimmingPrefix(while: (UInt8) -> Bool) -> Data { return Data("") }
+
+	mutating func withUnsafeMutableBytes<ResultType>(_ body: (UnsafeMutableRawBufferPointer) throws -> ResultType) rethrows -> ResultType { return try body(UnsafeMutableRawBufferPointer(start: nil, count: 0)) }
+	func withUnsafeBytes<R>(_ body: (UnsafeRawBufferPointer) throws -> R) rethrows -> R { return try body(UnsafeRawBufferPointer(start: nil, count: 0)) }
 }
 
 // --- tests ---
@@ -94,193 +104,241 @@ func taintThroughData() {
 	let dataTainted2 = Data(dataTainted)
 
 	sink(arg: dataClean)
-	sink(arg: dataTainted) // $ tainted=93
-	sink(arg: dataTainted2) // $ tainted=93
+	sink(arg: dataTainted) // $ tainted=103
+	sink(arg: dataTainted2) // $ tainted=103
 
 	// ";Data;true;init(base64Encoded:options:);;;Argument[0];ReturnValue;taint",
 	let dataTainted3 = Data(base64Encoded: source() as! Data, options: [])
-	sink(arg: dataTainted3) // $ tainted=101
+	sink(arg: dataTainted3) // $ tainted=111
 
 	// ";Data;true;init(buffer:);;;Argument[0];ReturnValue;taint",
 	let dataTainted4 = Data(buffer: source() as! UnsafeBufferPointer<UInt8>)
-	sink(arg: dataTainted4)  // $ tainted=105
+	sink(arg: dataTainted4)  // $ tainted=115
 	let dataTainted5 = Data(buffer: source() as! UnsafeMutablePointer<UInt8>)
-	sink(arg: dataTainted5)  // $ tainted=107
+	sink(arg: dataTainted5)  // $ tainted=117
 
 	// ";Data;true;init(bytes:count:);;;Argument[0];ReturnValue;taint",
 	let dataTainted6 = Data(bytes: source() as! UnsafeRawPointer, count: 0)
-	sink(arg: dataTainted6)  // $ tainted=111
+	sink(arg: dataTainted6)  // $ tainted=121
 
 	// ";Data;true;init(bytesNoCopy:count:deallocator:);;;Argument[0];ReturnValue;taint",
 	let dataTainted7 = Data(bytesNoCopy: source() as! UnsafeRawPointer, count: 0, deallocator: Data.Deallocator.none)
-	sink(arg: dataTainted7)  // $ tainted=115
+	sink(arg: dataTainted7)  // $ tainted=125
 
 	// ";Data;true;init(contentsOf:options:);;;Argument[0];ReturnValue;taint",
 	let urlTainted8 = source() as! URL
 	let dataTainted8 = Data(contentsOf: urlTainted8, options: [])
-	sink(arg: dataTainted8)  // $ tainted=119
+	sink(arg: dataTainted8)  // $ tainted=129
 
 	// ";Data;true;init(referencing:);;;Argument[0];ReturnValue;taint",
 	let dataTainted9 = Data(referencing: source() as! NSData)
-	sink(arg: dataTainted9)  // $ tainted=124
+	sink(arg: dataTainted9)  // $ tainted=134
 
 	// ";Data;true;append(_:);;;Argument[0];Argument[-1];taint",
 	let dataTainted10 = Data("")
 	dataTainted10.append(source() as! Data)
-	sink(arg: dataTainted10) // $ tainted=129
+	sink(arg: dataTainted10) // $ tainted=139
 
 	let dataTainted11 = Data("")
 	dataTainted11.append(source() as! UInt8)
-	sink(arg: dataTainted11) // $ tainted=133
+	sink(arg: dataTainted11) // $ tainted=143
 
 	let dataTainted12 = Data("")
 	dataTainted12.append(source() as! UnsafeBufferPointer<UInt8>)
-	sink(arg: dataTainted12) // $ tainted=137
+	sink(arg: dataTainted12) // $ tainted=147
 
 	// ";Data;true;append(_:count:);;;Argument[0];Argument[-1];taint",
 	let dataTainted13 = Data("")
 	dataTainted13.append(source() as! UnsafePointer<UInt8>, count: 0)
-	sink(arg: dataTainted13) // $ tainted=142
+	sink(arg: dataTainted13) // $ tainted=152
 
 	// ";Data;true;append(contentsOf:);;;Argument[0];Argument[-1];taint",
 	let dataTainted14 = Data("")
 	dataTainted14.append(contentsOf: source() as! [UInt8])
-	sink(arg: dataTainted14) // $ tainted=147
+	sink(arg: dataTainted14) // $ tainted=157
 
 	// ";Data;true;base64EncodedData(options:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted15 = source() as! Data
-	sink(arg: dataTainted15.base64EncodedData(options: [])) // $ tainted=151
+	sink(arg: dataTainted15.base64EncodedData(options: [])) // $ tainted=161
 
 	// ";Data;true;base64EncodedString(options:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted16 = source() as! Data
-	sink(arg: dataTainted16.base64EncodedString(options: [])) // $ tainted=155
+	sink(arg: dataTainted16.base64EncodedString(options: [])) // $ tainted=165
 
 	// ";Data;true;compactMap(_:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted17 = source() as! Data
 	let compactMapped: [Int] = dataTainted17.compactMap { str in Int(str) }
-	sink(arg: compactMapped) // $ tainted=159
+	sink(arg: compactMapped) // $ tainted=169
 
 	// ";Data;true;copyBytes(to:);;;Argument[-1];Argument[0];taint",
 	let dataTainted18 = source() as! Data
 	let pointerTainted18 = UnsafeMutableRawBufferPointer.allocate(byteCount: 0, alignment: 0)
 	dataTainted18.copyBytes(to: pointerTainted18)
-	sink(arg: pointerTainted18) // $ tainted=164
+	sink(arg: pointerTainted18) // $ tainted=174
 
 	// ";Data;true;copyBytes(to:count:);;;Argument[-1];Argument[0];taint",
 	let dataTainted19 = source() as! Data
 	let pointerTainted19 = UnsafeMutablePointer<UInt8>.allocate(capacity: 0)
 	dataTainted19.copyBytes(to: pointerTainted19, count: 0)
-	sink(arg: pointerTainted19) // $ tainted=170
+	sink(arg: pointerTainted19) // $ tainted=180
 
 	// ";Data;true;copyBytes(to:from:);;;Argument[-1];Argument[0];taint",
 	let dataTainted20 = source() as! Data
 	let pointerTainted20 = UnsafeMutablePointer<UInt8>.allocate(capacity: 0)
 	dataTainted20.copyBytes(to: pointerTainted20, from: 0..<1)
-	sink(arg: pointerTainted20) // $ tainted=176
+	sink(arg: pointerTainted20) // $ tainted=186
 
 	// ";Data;true;flatMap(_:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted21 = source() as! Data
 	let flatMapped = dataTainted21.flatMap { Array(repeating: $0, count: 0) }
-	sink(arg: flatMapped) // $ tainted=182
+	sink(arg: flatMapped) // $ tainted=192
 
 	let dataTainted22 = source() as! Data
 	let flatMapped2 = dataTainted22.flatMap { str in Int(str) }
-	sink(arg: flatMapped2) // $ tainted=186
+	sink(arg: flatMapped2) // $ tainted=196
 
 	// ";Data;true;insert(_:at:);;;Argument[0];Argument[-1];taint",
 	let dataTainted23 = Data("")
 	dataTainted23.insert(source() as! UInt8, at: 0)
-	sink(arg: dataTainted23) // $ tainted=192
+	sink(arg: dataTainted23) // $ tainted=202
 
 	// ";Data;true;insert(contentsOf:at:);;;Argument[0];Argument[-1];taint",
 	let dataTainted24 = Data("")
 	dataTainted24.insert(contentsOf: source() as! [UInt8], at: 0)
-	sink(arg: dataTainted24) // $ tainted=197
+	sink(arg: dataTainted24) // $ tainted=207
 
 	// ";Data;true;map(_:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted25 = source() as! Data
 	let mapped = dataTainted25.map { $0 }
-	sink(arg: mapped) // $ tainted=201
+	sink(arg: mapped) // $ tainted=211
 
 	// ";Data;true;reduce(into:_:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted26 = source() as! Data
 	let reduced = dataTainted26.reduce(into: [:]) { c, i in c[i, default: 0] += 1 }
-	sink(arg: reduced) // $ tainted=206
+	sink(arg: reduced) // $ tainted=216
 
 	// ";Data;true;replace(_:with:maxReplacements:);;;Argument[1];Argument[-1];taint",
 	let dataTainted27 = Data("")
 	dataTainted27.replace([0], with: source() as! [UInt8], maxReplacements: .max)
-	sink(arg: dataTainted27) // $ tainted=212
+	sink(arg: dataTainted27) // $ tainted=222
 
 	// ";Data;true;replaceSubrange(_:with:);;;Argument[1];Argument[-1];taint",
 	let dataTainted28 = Data("")
 	dataTainted28.replaceSubrange(1..<3, with: source() as! Data)
-	sink(arg: dataTainted28) // $ tainted=217
+	sink(arg: dataTainted28) // $ tainted=227
 
 	let dataTainted29 = Data("")
 	dataTainted29.replaceSubrange(1..<3, with: source() as! [UInt8])
-	sink(arg: dataTainted29) // $ tainted=221
+	sink(arg: dataTainted29) // $ tainted=231
 
 	let dataTainted30 = Data("")
 	dataTainted30.replaceSubrange(1..<3, with: source() as! UnsafeBufferPointer<UInt8>)
-	sink(arg: dataTainted30) // $ tainted=225
+	sink(arg: dataTainted30) // $ tainted=235
 
 	// ";Data;true;replaceSubrange(_:with:count:);;;Argument[1];Argument[-1];taint",
 	let dataTainted31 = Data("")
 	dataTainted31.replaceSubrange(1..<3, with: source() as! UnsafeRawPointer, count: 0)
-	sink(arg: dataTainted31) // $ tainted=230
+	sink(arg: dataTainted31) // $ tainted=240
 
 	// ";Data;true;replacing(_:with:maxReplacements:);;;Argument[1];Argument[-1];taint",
 	let dataTainted32 = Data("")
 	let _ = dataTainted32.replacing([0], with: source() as! [UInt8], maxReplacements: 0)
-	sink(arg: dataTainted32) // $ tainted=235
+	sink(arg: dataTainted32) // $ tainted=245
 
 	// ";Data;true;replacing(_:with:subrange:maxReplacements:);;;Argument[1];Argument[-1];taint",
 	let dataTainted33 = Data("")
 	let _ = dataTainted33.replacing([0], with: source() as! [UInt8], subrange: 1..<3, maxReplacements: 0)
-	sink(arg: dataTainted33) // $ tainted=240
+	sink(arg: dataTainted33) // $ tainted=250
 
 	// ";Data;true;reversed();;;Argument[-1];ReturnValue;taint",
 	let dataTainted34 = source() as! Data
-	sink(arg: dataTainted34.reversed()) // $ tainted=244
+	sink(arg: dataTainted34.reversed()) // $ tainted=254
 
 	// ";Data;true;sorted();;;Argument[-1];ReturnValue;taint",
 	let dataTainted35 = source() as! Data
-	sink(arg: dataTainted35.sorted()) // $ tainted=248
+	sink(arg: dataTainted35.sorted()) // $ tainted=258
 
 	// ";Data;true;sorted(by:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted36 = source() as! Data
-	sink(arg: dataTainted36.sorted{ _,_ in return false }) // $ tainted=252
+	sink(arg: dataTainted36.sorted{ _,_ in return false }) // $ tainted=262
 
 	// ";Data;true;sorted(using:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted37 = source() as! Data
-	sink(arg: dataTainted37.sorted(using: cmp()!)) // $ tainted=256
+	sink(arg: dataTainted37.sorted(using: cmp()!)) // $ tainted=266
 
 	// ";Data;true;shuffled();;;Argument[-1];ReturnValue;taint",
 	let dataTainted38 = source() as! Data
-	sink(arg: dataTainted38.shuffled()) // $ tainted=260
+	sink(arg: dataTainted38.shuffled()) // $ tainted=270
 
 	// ";Data;true;shuffled(using:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted39 = source() as! Data
 	var myRng = rng()!
-	sink(arg: dataTainted39.shuffled(using: &myRng)) // $ tainted=264
+	sink(arg: dataTainted39.shuffled(using: &myRng)) // $ tainted=274
 
 	// ";Data;true;trimmingPrefix(_:);;;Argument[-1];ReturnValue;taint",
 	let dataTainted40 = source() as! Data
-	sink(arg: dataTainted40.trimmingPrefix([0])) // $ tainted=269
+	sink(arg: dataTainted40.trimmingPrefix([0])) // $ tainted=279
 
 	// ";Data;true;trimmingPrefix(while:);;;Argument[-1];ReturnValue;taint"
 	let dataTainted41 = source() as! Data
-	sink(arg: dataTainted41.trimmingPrefix { _ in false }) // $ tainted=273
+	sink(arg: dataTainted41.trimmingPrefix { _ in false }) // $ tainted=283
 
 	// ";DataProtocol;true;copyBytes(to:);;;Argument[-1];Argument[0];taint",
 	let dataTainted43 = source() as! UnsafeRawBufferPointer
 	let pointerTainted43 = UnsafeMutableRawBufferPointer.allocate(byteCount: 0, alignment: 0)
 	dataTainted43.copyBytes(to: pointerTainted43)
-	sink(arg: pointerTainted43) // $ tainted=277
+	sink(arg: pointerTainted43) // $ tainted=287
 
 	let dataTainted44 = source() as! Array<UInt8>
 	let pointerTainted44 = UnsafeMutableRawBufferPointer.allocate(byteCount: 0, alignment: 0)
 	dataTainted44.copyBytes(to: pointerTainted44)
-	sink(arg: pointerTainted44) // $ tainted=282
+	sink(arg: pointerTainted44) // $ tainted=292
+
+	let dataTainted45 = source() as! Data
+	let result45 = dataTainted45.withContiguousStorageIfAvailable({
+		buffer in
+
+		sink(arg: buffer) // $ tainted=297
+		sink(arg: buffer[0]) // $ tainted=297
+
+		return source() as! Int
+	})
+	sink(arg: result45!) // $ tainted=304
+
+	var data46 = Data(0)
+	let result46 = data46.withContiguousMutableStorageIfAvailable({
+		buffer in
+
+		buffer[0] = source() as! UInt8
+		sink(arg: buffer) // $ tainted=312
+		sink(arg: buffer[0]) // $ tainted=312
+
+		return source() as! Int
+	})
+	sink(arg: result46!) // $ tainted=316
+	sink(arg: data46) // $ tainted=312
+
+	let dataTainted47 = source() as! Data
+	let result47 = dataTainted47.withUnsafeBytes({
+		buffer in
+
+		sink(arg: buffer) // $ tainted=321
+		sink(arg: buffer[0]) // $ tainted=321
+
+		return source() as! Int
+	})
+	sink(arg: result47) // $ tainted=328
+
+	var data48 = Data(0)
+	let result48 = data48.withUnsafeMutableBytes({
+		buffer in
+
+		buffer[0] = source() as! UInt8
+		sink(arg: buffer) // $ tainted=336
+		sink(arg: buffer[0]) // $ tainted=336
+
+		return source() as! Int
+	})
+	sink(arg: result48) // $ tainted=340
+	sink(arg: data48) // $ tainted=336
 }

@@ -739,3 +739,9 @@ void test_realloc() {
 	char *dest = (char*)realloc(source, 16);
 	sink(dest); // $ ir MISSING: ast
 }
+
+void test_realloc_2_indirections(int **buffer) {
+  **buffer = source();
+  buffer = (int**)realloc(buffer, 16);
+  sink(**buffer); // $ ir MISSING: ast
+}

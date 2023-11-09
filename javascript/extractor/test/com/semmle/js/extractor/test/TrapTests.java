@@ -13,6 +13,7 @@ import com.semmle.util.extraction.ExtractorOutputConfig;
 import com.semmle.util.io.WholeIO;
 import com.semmle.util.process.Env;
 import com.semmle.util.srcarchive.DummySourceArchive;
+import com.semmle.util.tests.TestPaths;
 import com.semmle.util.trap.ITrapWriterFactory;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.pathtransformers.ProjectLayoutTransformer;
@@ -35,7 +36,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 public class TrapTests {
-  private static final File BASE = new File("tests").getAbsoluteFile();
+  private static final File BASE = TestPaths.get("tests").toAbsolutePath().toFile();
 
   @Parameters(name = "{0}:{1}")
   public static Iterable<Object[]> tests() {

@@ -1,5 +1,5 @@
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow
 import semmle.code.csharp.dataflow.internal.AccessPathSyntax
 import ModelValidation
 
