@@ -78,10 +78,26 @@ class RazorPageClass extends Class {
   }
 
   /**
-   * Gets the filepath of the source file that this class was generated from,
-   * relative to the application root.
+   * Gets the filepath of the source file that this class was generated from.
+   *
+   * This is an absolute path if the database was extracted in standalone mode,
+   * and is relative to to application root (the directory containing the .csproj file) otherwise.
    */
   string getSourceFilepath() { result = attr.getArgument(2).(StringLiteral).getValue() }
+}
+
+/**
+ * Gets a possible prefix to be applied to view search paths to locate a Razor page.
+ * This may be empty (for the case that the generated Razor page files contain paths relative to the application root),
+ * or the absolute path of the directory containing the .csproj file (for the case that standalone extraction is used and the generated files contain absolute paths).
+ */
+private string getARazorPathPrefix() {
+  result = ""
+  or
+  exists(File csproj |
+    csproj.getExtension() = "csproj" and
+    result = csproj.getParentContainer().getAbsolutePath()
+  )
 }
 
 private class ViewCallJumpNode extends DataFlow::NonLocalJumpNode {
@@ -113,7 +129,7 @@ bindingset[path]
 private string stripTilde(string path) { result = path.regexpReplaceAll("^~/", "/") }
 
 private predicate viewCallRefersToPageAbsolute(ViewCall vc, RazorPageClass rp) {
-  ["/", ""] + stripTilde(vc.getNameArgument()) = rp.getSourceFilepath()
+  getARazorPathPrefix() + ["/", ""] + stripTilde(vc.getNameArgument()) = rp.getSourceFilepath()
 }
 
 private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPageClass rp) {
@@ -123,7 +139,7 @@ private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPageClass rp) {
 private predicate matchesViewCallWithIndex(ViewCall vc, RazorPageClass rp, int i) {
   exists(RelativeViewCallFilepath fp |
     fp.hasViewCallWithIndex(vc, i) and
-    fp.getNormalizedPath() = rp.getSourceFilepath()
+    getARazorPathPrefix() + fp.getNormalizedPath() = rp.getSourceFilepath()
   )
 }
 
