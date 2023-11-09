@@ -21,10 +21,10 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             Assert.True(success);
-            Assert.Equal(5, dependencies.RequiredPaths.Count());
-            Assert.Equal(4, dependencies.UsedPackages.Count());
+            Assert.Equal(7, dependencies.Paths.Count());
+            Assert.Equal(6, dependencies.Packages.Count());
 
-            var normalizedPaths = dependencies.RequiredPaths.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
             // Required references
             Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll", normalizedPaths);
             Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core2.dll", normalizedPaths);
@@ -32,10 +32,13 @@ namespace Semmle.Extraction.Tests
             Assert.Contains("microsoft.aspnetcore.cryptography.internal/6.0.8/lib/net6.0/Microsoft.AspNetCore.Cryptography.Internal.dll", normalizedPaths);
             Assert.Contains("humanizer.core/2.8.26/lib/netstandard2.0", normalizedPaths);
             // Used packages
-            Assert.Contains("castle.core", dependencies.UsedPackages);
-            Assert.Contains("json.net", dependencies.UsedPackages);
-            Assert.Contains("microsoft.aspnetcore.cryptography.internal", dependencies.UsedPackages);
-            Assert.Contains("humanizer.core", dependencies.UsedPackages);
+            Assert.Contains("castle.core", dependencies.Packages);
+            Assert.Contains("json.net", dependencies.Packages);
+            Assert.Contains("microsoft.aspnetcore.cryptography.internal", dependencies.Packages);
+            Assert.Contains("humanizer.core", dependencies.Packages);
+            // Used frameworks
+            Assert.Contains("microsoft.netcore.app.ref", dependencies.Packages);
+            Assert.Contains("microsoft.aspnetcore.app.ref", dependencies.Packages);
         }
 
         [Fact]
@@ -51,15 +54,15 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             Assert.True(success);
-            Assert.Equal(2, dependencies.RequiredPaths.Count());
+            Assert.Equal(2, dependencies.Paths.Count());
 
-            var normalizedPaths = dependencies.RequiredPaths.Select(FixExpectedPathOnWindows);
+            var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
             // Required references
             Assert.Contains("microsoft.netframework.referenceassemblies/1.0.3", normalizedPaths);
             Assert.Contains("microsoft.netframework.referenceassemblies.net48/1.0.3", normalizedPaths);
             // Used packages
-            Assert.Contains("microsoft.netframework.referenceassemblies", dependencies.UsedPackages);
-            Assert.Contains("microsoft.netframework.referenceassemblies.net48", dependencies.UsedPackages);
+            Assert.Contains("microsoft.netframework.referenceassemblies", dependencies.Packages);
+            Assert.Contains("microsoft.netframework.referenceassemblies.net48", dependencies.Packages);
         }
 
         [Fact]
@@ -75,7 +78,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             Assert.False(success);
-            Assert.Empty(dependencies.RequiredPaths);
+            Assert.Empty(dependencies.Paths);
         }
 
         private readonly string assetsJson1 = """
