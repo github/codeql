@@ -1,10 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Diagnostics.SymbolStore", "ISymbolBinder", "GetReader", "(System.Int32,System.String,System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.SymbolStore", "ISymbolBinder1", "GetReader", "(System.IntPtr,System.String,System.String)", "summary", "df-generated"]
+      - ["System.Diagnostics.SymbolStore", "ISymbolBinder", "GetReader", "(System.Int32,System.String,System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.SymbolStore", "ISymbolDocument", "FindClosestLine", "(System.Int32)", "summary", "df-generated"]
       - ["System.Diagnostics.SymbolStore", "ISymbolDocument", "GetCheckSum", "()", "summary", "df-generated"]
       - ["System.Diagnostics.SymbolStore", "ISymbolDocument", "GetSourceRange", "(System.Int32,System.Int32,System.Int32,System.Int32)", "summary", "df-generated"]

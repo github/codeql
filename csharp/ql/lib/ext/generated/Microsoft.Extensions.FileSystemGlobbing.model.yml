@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -23,7 +24,6 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", "get_FullName", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", "get_Name", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", "Execute", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", "Matcher", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", "Matcher", "(System.StringComparison)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "AddExcludePatterns", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.Collections.Generic.IEnumerable<System.String>[])", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "AddIncludePatterns", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.Collections.Generic.IEnumerable<System.String>[])", "summary", "df-generated"]

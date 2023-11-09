@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -12,6 +13,7 @@ extensions:
       - ["System.Security.Principal", "GenericIdentity", False, "get_Claims", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Principal", "GenericIdentity", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Principal", "GenericPrincipal", False, "GenericPrincipal", "(System.Security.Principal.IIdentity,System.String[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Principal", "GenericPrincipal", False, "GenericPrincipal", "(System.Security.Principal.IIdentity,System.String[])", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Security.Principal", "GenericPrincipal", False, "get_Identity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -25,7 +27,6 @@ extensions:
       - ["System.Security.Principal", "IPrincipal", "IsInRole", "(System.String)", "summary", "df-generated"]
       - ["System.Security.Principal", "IPrincipal", "get_Identity", "()", "summary", "df-generated"]
       - ["System.Security.Principal", "IdentityNotMappedException", "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
-      - ["System.Security.Principal", "IdentityNotMappedException", "IdentityNotMappedException", "()", "summary", "df-generated"]
       - ["System.Security.Principal", "IdentityNotMappedException", "IdentityNotMappedException", "(System.String)", "summary", "df-generated"]
       - ["System.Security.Principal", "IdentityNotMappedException", "IdentityNotMappedException", "(System.String,System.Exception)", "summary", "df-generated"]
       - ["System.Security.Principal", "IdentityNotMappedException", "get_UnmappedIdentities", "()", "summary", "df-generated"]
@@ -38,7 +39,6 @@ extensions:
       - ["System.Security.Principal", "IdentityReference", "op_Equality", "(System.Security.Principal.IdentityReference,System.Security.Principal.IdentityReference)", "summary", "df-generated"]
       - ["System.Security.Principal", "IdentityReference", "op_Inequality", "(System.Security.Principal.IdentityReference,System.Security.Principal.IdentityReference)", "summary", "df-generated"]
       - ["System.Security.Principal", "IdentityReferenceCollection", "Contains", "(System.Security.Principal.IdentityReference)", "summary", "df-generated"]
-      - ["System.Security.Principal", "IdentityReferenceCollection", "IdentityReferenceCollection", "()", "summary", "df-generated"]
       - ["System.Security.Principal", "IdentityReferenceCollection", "IdentityReferenceCollection", "(System.Int32)", "summary", "df-generated"]
       - ["System.Security.Principal", "IdentityReferenceCollection", "Remove", "(System.Security.Principal.IdentityReference)", "summary", "df-generated"]
       - ["System.Security.Principal", "IdentityReferenceCollection", "Translate", "(System.Type)", "summary", "df-generated"]
