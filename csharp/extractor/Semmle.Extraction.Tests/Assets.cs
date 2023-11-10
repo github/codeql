@@ -42,7 +42,7 @@ namespace Semmle.Extraction.Tests
         }
 
         [Fact]
-        public void TestAssets2()
+        public void TestAssetsNet48()
         {
             // Setup
             var assets = new Assets(new ProgressMonitor(new LoggerStub()));
@@ -54,19 +54,17 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             Assert.True(success);
-            Assert.Equal(2, dependencies.Paths.Count());
+            Assert.Single(dependencies.Paths);
 
             var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
             // Used references
-            Assert.Contains("microsoft.netframework.referenceassemblies/1.0.3", normalizedPaths);
             Assert.Contains("microsoft.netframework.referenceassemblies.net48/1.0.3", normalizedPaths);
             // Used frameworks
-            Assert.Contains("microsoft.netframework.referenceassemblies", dependencies.Packages);
             Assert.Contains("microsoft.netframework.referenceassemblies.net48", dependencies.Packages);
         }
 
         [Fact]
-        public void TestAssets3()
+        public void TestAssetsFailure()
         {
             // Setup
             var assets = new Assets(new ProgressMonitor(new LoggerStub()));
