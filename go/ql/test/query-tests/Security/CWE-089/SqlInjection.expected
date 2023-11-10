@@ -117,22 +117,22 @@ edges
 | main.go:61:5:61:15 | RequestData [pointer, Category] | main.go:61:4:61:15 | star expression [Category] | provenance |  |
 | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:42:28:42:41 | untrustedInput | provenance | Src:MaD:20  |
 | mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:50:34:50:39 | filter | provenance |  |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:61:27:61:32 | filter | provenance | Sink:MaD:4 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:63:23:63:28 | filter | provenance | Sink:MaD:5 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:64:22:64:27 | filter | provenance | Sink:MaD:6 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:66:32:66:37 | filter | provenance | Sink:MaD:7 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:69:17:69:22 | filter | provenance | Sink:MaD:8 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:70:20:70:25 | filter | provenance | Sink:MaD:9 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:71:29:71:34 | filter | provenance | Sink:MaD:10 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:72:30:72:35 | filter | provenance | Sink:MaD:11 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:73:29:73:34 | filter | provenance | Sink:MaD:12 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:78:23:78:28 | filter | provenance | Sink:MaD:13 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:79:23:79:28 | filter | provenance | Sink:MaD:14 |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:80:22:80:27 | filter | provenance | Sink:MaD:15 |
 | mongoDB.go:42:28:42:41 | untrustedInput | mongoDB.go:42:19:42:42 | struct literal | provenance | Config |
 | mongoDB.go:50:23:50:40 | struct literal | mongoDB.go:57:22:57:29 | pipeline | provenance | Sink:MaD:3 |
 | mongoDB.go:50:23:50:40 | struct literal | mongoDB.go:81:18:81:25 | pipeline | provenance | Sink:MaD:16 |
 | mongoDB.go:50:34:50:39 | filter | mongoDB.go:50:23:50:40 | struct literal | provenance | Config |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:61:27:61:32 | filter | provenance | Sink:MaD:4 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:63:23:63:28 | filter | provenance | Sink:MaD:5 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:64:22:64:27 | filter | provenance | Sink:MaD:6 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:66:32:66:37 | filter | provenance | Sink:MaD:7 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:69:17:69:22 | filter | provenance | Sink:MaD:8 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:70:20:70:25 | filter | provenance | Sink:MaD:9 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:71:29:71:34 | filter | provenance | Sink:MaD:10 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:72:30:72:35 | filter | provenance | Sink:MaD:11 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:73:29:73:34 | filter | provenance | Sink:MaD:12 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:78:23:78:28 | filter | provenance | Sink:MaD:13 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:79:23:79:28 | filter | provenance | Sink:MaD:14 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:80:22:80:27 | filter | provenance | Sink:MaD:15 |
 models
 | 1 | Sink: database/sql; DB; true; Query; ; ; Argument[0]; sql-injection; manual |
 | 2 | Sink: database/sql; Tx; true; Query; ; ; Argument[0]; sql-injection; manual |
