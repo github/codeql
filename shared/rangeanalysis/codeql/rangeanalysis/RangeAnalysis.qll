@@ -1167,8 +1167,7 @@ module RangeStage<
       or
       exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
         boundedSsa(v, b, delta, bb, upper, fromBackEdge, origdelta, reason) and
-        e = v.getAUse() and
-        bb.getBlock() = e.getBasicBlock()
+        bb.getAnSsaRead(v) = e
       )
       or
       exists(Sem::Expr mid, D::Delta d1, D::Delta d2 |

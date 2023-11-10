@@ -254,8 +254,7 @@ module ModulusAnalysis<
     or
     exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
       ssaModulus(v, bb, b, val, mod) and
-      e = v.getAUse() and
-      bb.getBlock() = e.getBasicBlock()
+      bb.getAnSsaRead(v) = e
     )
     or
     exists(Sem::Expr mid, int val0, int delta |
