@@ -332,7 +332,7 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
   /**
    * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
-  predicate hasBound(Sem::Expr e2, Sem::Expr e1, int delta, boolean upper) {
+  predicate additionalBoundFlowStep(Sem::Expr e2, Sem::Expr e1, int delta, boolean upper) {
     exists(RandomDataSource rds |
       e2 = rds.getOutput() and
       (

@@ -270,9 +270,9 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   predicate hasConstantBound(Sem::Expr e, D::Delta bound, boolean upper);
 
   /**
-   * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
+   * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
-  predicate hasBound(Sem::Expr e, Sem::Expr bound, D::Delta delta, boolean upper);
+  predicate additionalBoundFlowStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper);
 
   /**
    * Ignore the bound on this expression.
@@ -740,7 +740,7 @@ module RangeStage<
     delta = D::fromInt(0) and
     upper = false
     or
-    hasBound(e2, e1, delta, upper)
+    additionalBoundFlowStep(e2, e1, delta, upper)
   }
 
   /** Holds if `e2 = e1 * factor` and `factor > 0`. */
