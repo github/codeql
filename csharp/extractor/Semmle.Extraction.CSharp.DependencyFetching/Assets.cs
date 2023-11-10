@@ -14,14 +14,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     {
         private readonly ProgressMonitor progressMonitor;
 
-        private static readonly string[] netFrameworks = new[] {
-            "microsoft.aspnetcore.app.ref",
-            "microsoft.netcore.app.ref",
-            "microsoft.netframework.referenceassemblies",
-            "microsoft.windowsdesktop.app.ref",
-            "netstandard.library.ref"
-        };
-
         internal Assets(ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
@@ -109,7 +101,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     }
 
                     // If this is a .NET framework reference then include everything.
-                    if (netFrameworks.Any(framework => name.StartsWith(framework)))
+                    if (FrameworkPackageNames.AllFrameworks.Any(framework => name.StartsWith(framework)))
                     {
                         dependencies.AddFramework(name);
                     }

@@ -25,7 +25,7 @@ namespace Semmle.Extraction.Tests
             Assert.Equal(6, dependencies.Packages.Count());
 
             var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
-            // Required references
+            // Used references
             Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll", normalizedPaths);
             Assert.Contains("castle.core/4.4.1/lib/netstandard1.5/Castle.Core2.dll", normalizedPaths);
             Assert.Contains("json.net/1.0.33/lib/netstandard2.0/Json.Net.dll", normalizedPaths);
@@ -57,10 +57,10 @@ namespace Semmle.Extraction.Tests
             Assert.Equal(2, dependencies.Paths.Count());
 
             var normalizedPaths = dependencies.Paths.Select(FixExpectedPathOnWindows);
-            // Required references
+            // Used references
             Assert.Contains("microsoft.netframework.referenceassemblies/1.0.3", normalizedPaths);
             Assert.Contains("microsoft.netframework.referenceassemblies.net48/1.0.3", normalizedPaths);
-            // Used packages
+            // Used frameworks
             Assert.Contains("microsoft.netframework.referenceassemblies", dependencies.Packages);
             Assert.Contains("microsoft.netframework.referenceassemblies.net48", dependencies.Packages);
         }
