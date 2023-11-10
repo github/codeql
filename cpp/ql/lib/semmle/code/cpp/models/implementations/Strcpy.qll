@@ -55,13 +55,18 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
   private predicate isSVariant() { this.getName().matches("%\\_s") }
 
   /**
+   * Holds if the function returns the total length the string would have had if the size was unlimited.
+   */
+  private predicate returnsTotalLength() { this.getName() = "strlcpy" }
+
+  /**
    * Gets the index of the parameter that is the maximum size of the copy (in characters).
    */
   int getParamSize() {
     if this.isSVariant()
     then result = 1
     else (
-      this.getName().matches(["%ncpy%", "%nbcpy%", "%xfrm%", "%lcpy%"]) and
+      this.getName().matches(["%ncpy%", "%nbcpy%", "%xfrm%", "strlcpy"]) and
       result = 2
     )
   }
@@ -101,6 +106,7 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
     input.isParameterDeref(this.getParamSrc()) and
     output.isReturnValueDeref()
     or
+    not this.returnsTotalLength() and
     input.isParameter(this.getParamDest()) and
     output.isReturnValue()
   }
@@ -111,8 +117,9 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
     exists(this.getParamSize()) and
     input.isParameterDeref(this.getParamSrc()) and
     (
-      output.isParameterDeref(this.getParamDest()) or
-      output.isReturnValueDeref()
+      output.isParameterDeref(this.getParamDest())
+      or
+      not this.returnsTotalLength() and output.isReturnValueDeref()
     )
   }
 

@@ -96,7 +96,7 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
 /**
  * The `strlcat` function.
  */
-class StrlcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, SideEffectFunction {
+class StrlcatFunction extends TaintFunction, ArrayFunction, SideEffectFunction {
   StrlcatFunction() {
     this.hasGlobalName("strlcat") // strlcat(dst, src, dst_size)
   }
@@ -116,11 +116,6 @@ class StrlcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Si
    */
   int getParamDest() { result = 0 }
 
-  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(0) and
-    output.isReturnValue()
-  }
-
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     (
       input.isParameter(2)
@@ -129,7 +124,7 @@ class StrlcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Si
       or
       input.isParameterDeref(1)
     ) and
-    (output.isParameterDeref(0) or output.isReturnValueDeref())
+    (output.isParameterDeref(0) or output.isReturnValue())
   }
 
   override predicate hasArrayInput(int param) {
