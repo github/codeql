@@ -232,13 +232,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             // Multiple dotnet framework packages could be present.
             // The order of the packages is important, we're adding the first one that is present in the nuget cache.
-            var packagesInPrioOrder = new string[]
-            {
-                "microsoft.netcore.app.ref", // net7.0, ... net5.0, netcoreapp3.1, netcoreapp3.0
-                "microsoft.netframework.referenceassemblies.", // net48, ..., net20
-                "netstandard.library.ref", // netstandard2.1
-                "netstandard.library" // netstandard2.0
-            };
+            var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
 
             var frameworkPath = packagesInPrioOrder
                     .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
@@ -308,7 +302,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // First try to find ASP.NET Core assemblies in the NuGet packages
-            if (GetPackageDirectory("microsoft.aspnetcore.app.ref") is string aspNetCorePackage)
+            if (GetPackageDirectory(FrameworkPackageNames.AspNetCoreFramework) is string aspNetCorePackage)
             {
                 progressMonitor.LogInfo($"Found ASP.NET Core in NuGet packages. Not adding installation directory.");
                 dllPaths.Add(aspNetCorePackage);
@@ -322,7 +316,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void AddMicrosoftWindowsDesktopDlls(ISet<string> dllPaths)
         {
-            if (GetPackageDirectory("microsoft.windowsdesktop.app.ref") is string windowsDesktopApp)
+            if (GetPackageDirectory(FrameworkPackageNames.WindowsDesktopFramework) is string windowsDesktopApp)
             {
                 progressMonitor.LogInfo($"Found Windows Desktop App in NuGet packages.");
                 dllPaths.Add(windowsDesktopApp);
