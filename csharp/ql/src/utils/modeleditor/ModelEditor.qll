@@ -28,7 +28,7 @@ class Endpoint extends Callable {
    * Gets the namespace of this endpoint.
    */
   bindingset[this]
-  string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
+  string getNamespace() { this.getDeclaringType().hasFullyQualifiedName(result, _) }
 
   /**
    * Gets the unbound type name of this endpoint.

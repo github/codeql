@@ -21,17 +21,10 @@ predicate namespaceHasQualifiedName(DotNet::Namespace n, string qualifier, strin
   )
 }
 
-/** Gets a string of `N` commas where `N + 1` is the number of type parameters of this unbound generic. */
-private string getTypeParameterCommas(UnboundGeneric ug) {
-  result = strictconcat(int i | exists(ug.getTypeParameter(i)) | "", ",")
-}
-
 /** Provides the input to `QualifiedName`. */
 signature module QualifiedNameInputSig {
   /** Gets the suffix to print after unbound generic `ug`. */
-  default string getUnboundGenericSuffix(UnboundGeneric ug) {
-    result = "<" + getTypeParameterCommas(ug) + ">"
-  }
+  string getUnboundGenericSuffix(UnboundGeneric ug);
 }
 
 /** Provides predicates for computing fully qualified names. */

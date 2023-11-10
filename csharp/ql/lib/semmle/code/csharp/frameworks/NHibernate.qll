@@ -14,7 +14,7 @@ module NHibernate {
 
   /** The interface `NHibernamte.ISession`. */
   class ISessionInterface extends Interface {
-    ISessionInterface() { this.hasQualifiedName("NHibernate", "ISession") }
+    ISessionInterface() { this.hasFullyQualifiedName("NHibernate", "ISession") }
 
     /** Gets a parameter that uses a mapped object. */
     Parameter getAMappedObjectParameter() {
@@ -28,7 +28,7 @@ module NHibernate {
 
     /** Gets a type parameter that specifies a mapped class. */
     TypeParameter getAMappedObjectTp() {
-      exists(string methodName | methodName = ["Load<>", "Merge<>", "Get<>", "Query<>"] |
+      exists(string methodName | methodName = ["Load`1", "Merge`1", "Get`1", "Query`1"] |
         result = this.getAMethod(methodName).(UnboundGenericMethod).getTypeParameter(0)
       )
     }
@@ -72,7 +72,7 @@ module NHibernate {
           .getDeclaringType()
           .getDeclaringNamespace()
           .getParentNamespace*()
-          .hasQualifiedName("", "NHibernate")
+          .hasFullyQualifiedName("", "NHibernate")
     }
   }
 

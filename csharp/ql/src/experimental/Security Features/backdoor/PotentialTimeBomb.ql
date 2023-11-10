@@ -30,7 +30,7 @@ query predicate edges(Flow::PathNode a, Flow::PathNode b) {
  */
 class GetLastWriteTimeMethod extends Method {
   GetLastWriteTimeMethod() {
-    this.hasQualifiedName("System.IO.File",
+    this.hasFullyQualifiedName("System.IO.File",
       ["GetLastWriteTime", "GetFileCreationTime", "GetCreationTimeUtc", "GetLastAccessTimeUtc"])
   }
 }
@@ -39,7 +39,7 @@ class GetLastWriteTimeMethod extends Method {
  * Abstracts `System.DateTime` structure
  */
 class DateTimeStruct extends Struct {
-  DateTimeStruct() { this.hasQualifiedName("System", "DateTime") }
+  DateTimeStruct() { this.hasFullyQualifiedName("System", "DateTime") }
 
   /**
    * holds if the Callable is used for DateTime arithmetic operations

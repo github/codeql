@@ -19,6 +19,6 @@ where
   m.fromSource() and
   exists(UsingNamespaceDirective u |
     u.getFile() = m.getFile() and
-    u.getImportedNamespace().hasQualifiedName("System", "Web")
+    u.getImportedNamespace().hasFullyQualifiedName("System", "Web")
   )
 select m, "Remove debug code if your ASP.NET application is in production."

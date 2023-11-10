@@ -287,7 +287,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
 
   /** Gets the length of *some* path to the root of the hierarchy. */
   int getADepth() {
-    this.hasQualifiedName("System", "Object") and result = 0
+    this.hasFullyQualifiedName("System", "Object") and result = 0
     or
     result = this.getABaseType().getADepth() + 1 and
     //prevent recursion on cyclic inheritance (only for incorrect databases)
@@ -809,7 +809,7 @@ class AnonymousClass extends Class {
  * The `object` type, `System.Object`.
  */
 class ObjectType extends Class {
-  ObjectType() { this.hasQualifiedName("System", "Object") }
+  ObjectType() { this.hasFullyQualifiedName("System", "Object") }
 
   override string toStringWithTypes() { result = "object" }
 
@@ -820,7 +820,7 @@ class ObjectType extends Class {
  * The `string` type, `System.String`.
  */
 class StringType extends Class {
-  StringType() { this.hasQualifiedName("System", "String") }
+  StringType() { this.hasFullyQualifiedName("System", "String") }
 
   override string toStringWithTypes() { result = "string" }
 
@@ -994,7 +994,7 @@ class NullableType extends ValueType, ConstructedType, @nullable_type {
   }
 
   override UnboundGenericStruct getUnboundGeneric() {
-    result.hasQualifiedName("System", "Nullable<>")
+    result.hasFullyQualifiedName("System", "Nullable`1")
   }
 
   override string toStringWithTypes() {

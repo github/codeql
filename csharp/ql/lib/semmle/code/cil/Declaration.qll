@@ -25,9 +25,17 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
 
   override Declaration getUnboundDeclaration() { result = this }
 
-  override predicate hasQualifiedName(string qualifier, string name) {
+  deprecated override predicate hasQualifiedName(string qualifier, string name) {
     exists(string dqualifier, string dname |
       this.getDeclaringType().hasQualifiedName(dqualifier, dname) and
+      qualifier = getQualifiedName(dqualifier, dname)
+    ) and
+    name = this.getName()
+  }
+
+  override predicate hasFullyQualifiedName(string qualifier, string name) {
+    exists(string dqualifier, string dname |
+      this.getDeclaringType().hasFullyQualifiedName(dqualifier, dname) and
       qualifier = getQualifiedName(dqualifier, dname)
     ) and
     name = this.getName()
