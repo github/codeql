@@ -15,11 +15,7 @@ module RangeUtil<DeltaSig D, LangSig<Sem, D> Lang> implements UtilSig<Sem, D> {
    * Usually, this just `e.getSemType()`, but the language can override this to track immutable boxed
    * primitive types as the underlying primitive type.
    */
-  SemType getTrackedType(SemExpr e) {
-    result = Lang::getAlternateType(e)
-    or
-    not exists(Lang::getAlternateType(e)) and result = e.getSemType()
-  }
+  SemType getTrackedType(SemExpr e) { result = e.getSemType() }
 
   /**
    * Gets the type used to track the specified source variable's range information.
@@ -27,9 +23,5 @@ module RangeUtil<DeltaSig D, LangSig<Sem, D> Lang> implements UtilSig<Sem, D> {
    * Usually, this just `e.getType()`, but the language can override this to track immutable boxed
    * primitive types as the underlying primitive type.
    */
-  SemType getTrackedTypeForSsaVariable(SemSsaVariable var) {
-    result = Lang::getAlternateTypeForSsaVariable(var)
-    or
-    not exists(Lang::getAlternateTypeForSsaVariable(var)) and result = var.getType()
-  }
+  SemType getTrackedTypeForSsaVariable(SemSsaVariable var) { result = var.getType() }
 }

@@ -282,24 +282,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
    */
   predicate ignoreExprBound(Sem::Expr e);
 
-  /**
-   * Gets the type that range analysis should use to track the result of the specified expression,
-   * if a type other than the original type of the expression is to be used.
-   *
-   * This predicate is commonly used in languages that support immutable "boxed" types that are
-   * actually references but whose values can be tracked as the type contained in the box.
-   */
-  Sem::Type getAlternateType(Sem::Expr e);
-
-  /**
-   * Gets the type that range analysis should use to track the result of the specified source
-   * variable, if a type other than the original type of the expression is to be used.
-   *
-   * This predicate is commonly used in languages that support immutable "boxed" types that are
-   * actually references but whose values can be tracked as the type contained in the box.
-   */
-  Sem::Type getAlternateTypeForSsaVariable(Sem::SsaVariable var);
-
   default predicate javaCompatibility() { none() }
 }
 

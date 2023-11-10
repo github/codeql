@@ -362,10 +362,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 
   predicate ignoreExprBound(Sem::Expr e) { none() }
 
-  Sem::Type getAlternateType(Sem::Expr e) { none() }
-
-  Sem::Type getAlternateTypeForSsaVariable(Sem::SsaVariable var) { none() }
-
   predicate javaCompatibility() { any() }
 }
 
