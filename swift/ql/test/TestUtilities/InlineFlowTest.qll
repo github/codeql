@@ -42,11 +42,17 @@ import codeql.swift.dataflow.TaintTracking
 import TestUtilities.InlineExpectationsTest
 
 private predicate defaultSource(DataFlow::Node source) {
-  source.asExpr().(CallExpr).getStaticTarget().(Function).getShortName() = ["source", "taint"]
+  source
+      .asExpr()
+      .(CallExpr)
+      .getStaticTarget()
+      .(Function)
+      .getShortName()
+      .matches(["source%", "taint"])
 }
 
 private predicate defaultSink(DataFlow::Node sink) {
-  exists(CallExpr ca | ca.getStaticTarget().(Function).getShortName() = "sink" |
+  exists(CallExpr ca | ca.getStaticTarget().(Function).getShortName().matches("sink%") |
     sink.asExpr() = ca.getAnArgument().getExpr()
   )
 }
@@ -59,34 +65,50 @@ module DefaultFlowConfig implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = 1000 }
 }
 
-private module NoFlowConfig implements DataFlow::ConfigSig {
+module NoFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { none() }
 
   predicate isSink(DataFlow::Node sink) { none() }
 }
 
+private signature string valueFlowTagSig();
+
+private signature string taintFlowTagSig();
+
+string defaultValueFlowTag() { result = "hasValueFlow" }
+
+string defaultTaintFlowTag() { result = "hasTaintFlow" }
+
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
-  src.asExpr().(CallExpr).getAnArgument().getExpr().(StringLiteralExpr).getValue() = result
+  (
+    src.asExpr().(CallExpr).getAnArgument().getExpr().(StringLiteralExpr).getValue() = result
+    or
+    not src.asExpr().(CallExpr).getAnArgument().getExpr() instanceof StringLiteralExpr and
+    result = src.getLocation().getStartLine().toString()
+  )
 }
 
-module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig> {
+module FlowTest<
+  DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig,
+  valueFlowTagSig/0 valueFlowTag, taintFlowTagSig/0 taintFlowTag>
+{
   module ValueFlow = DataFlow::Global<ValueFlowConfig>;
 
   module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
 
   private module InlineTest implements TestSig {
-    string getARelevantTag() { result = ["hasValueFlow", "hasTaintFlow"] }
+    string getARelevantTag() { result = [valueFlowTag(), taintFlowTag()] }
 
     predicate hasActualResult(Location location, string element, string tag, string value) {
-      tag = "hasValueFlow" and
+      tag = valueFlowTag() and
       exists(DataFlow::Node src, DataFlow::Node sink | ValueFlow::flow(src, sink) |
         sink.getLocation() = location and
         element = sink.toString() and
         if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
       )
       or
-      tag = "hasTaintFlow" and
+      tag = taintFlowTag() and
       exists(DataFlow::Node src, DataFlow::Node sink |
         TaintFlow::flow(src, sink) and not ValueFlow::flow(src, sink)
       |
@@ -106,12 +128,13 @@ module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFl
   }
 }
 
-module DefaultFlowTest = FlowTest<DefaultFlowConfig, DefaultFlowConfig>;
+module DefaultFlowTest =
+  FlowTest<DefaultFlowConfig, DefaultFlowConfig, defaultValueFlowTag/0, defaultTaintFlowTag/0>;
 
 module ValueFlowTest<DataFlow::ConfigSig ValueFlowConfig> {
-  import FlowTest<ValueFlowConfig, NoFlowConfig>
+  import FlowTest<ValueFlowConfig, NoFlowConfig, defaultValueFlowTag/0, defaultTaintFlowTag/0>
 }
 
 module TaintFlowTest<DataFlow::ConfigSig TaintFlowConfig> {
-  import FlowTest<NoFlowConfig, TaintFlowConfig>
+  import FlowTest<NoFlowConfig, TaintFlowConfig, defaultValueFlowTag/0, defaultTaintFlowTag/0>
 }
