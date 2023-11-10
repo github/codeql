@@ -2,8 +2,8 @@
 
 private import csharp
 private import semmle.code.csharp.dataflow.FlowSummary
-private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.frameworks.Test
 private import Telemetry.TestLibrary
 
@@ -28,7 +28,7 @@ class Endpoint extends Callable {
    * Gets the namespace of this endpoint.
    */
   bindingset[this]
-  string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
+  string getNamespace() { this.getDeclaringType().hasFullyQualifiedName(result, _) }
 
   /**
    * Gets the unbound type name of this endpoint.

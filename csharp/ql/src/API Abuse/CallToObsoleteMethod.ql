@@ -14,7 +14,7 @@
 import csharp
 
 class ObsoleteAttribute extends Attribute {
-  ObsoleteAttribute() { this.getType().hasQualifiedName("System", "ObsoleteAttribute") }
+  ObsoleteAttribute() { this.getType().hasFullyQualifiedName("System", "ObsoleteAttribute") }
 }
 
 from MethodCall c, Method m

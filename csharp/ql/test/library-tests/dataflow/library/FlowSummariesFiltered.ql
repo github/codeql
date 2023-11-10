@@ -1,5 +1,4 @@
 import shared.FlowSummaries
-private import semmle.code.csharp.dataflow.internal.DataFlowPrivate::Csv
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable instanceof SummarizedCallable

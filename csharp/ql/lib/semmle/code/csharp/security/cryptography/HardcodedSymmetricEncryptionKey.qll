@@ -57,7 +57,7 @@ module HardcodedSymmetricEncryptionKey {
 
   private class CryptographicBuffer extends Class {
     CryptographicBuffer() {
-      this.hasQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer")
+      this.hasFullyQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer")
     }
   }
 

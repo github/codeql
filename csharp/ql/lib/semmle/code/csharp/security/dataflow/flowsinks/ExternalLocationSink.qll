@@ -42,8 +42,8 @@ class LogMessageSink extends ExternalLocationSink {
 class TraceMessageSink extends ExternalLocationSink {
   TraceMessageSink() {
     exists(Class trace, string parameterName |
-      trace.hasQualifiedName("System.Diagnostics", "Trace") or
-      trace.hasQualifiedName("System.Diagnostics", "TraceSource")
+      trace.hasFullyQualifiedName("System.Diagnostics", "Trace") or
+      trace.hasFullyQualifiedName("System.Diagnostics", "TraceSource")
     |
       this.getExpr() = trace.getAMethod().getACall().getArgumentForName(parameterName) and
       parameterName = ["format", "args", "message", "category"]
@@ -74,16 +74,16 @@ class CookieStorageSink extends ExternalLocationSink, RemoteFlowSink {
 
 private predicate isFileWriteCall(Expr stream, Expr data) {
   exists(MethodCall mc, Method m | mc.getTarget() = m.getAnOverrider*() |
-    m.hasQualifiedName("System.IO", "Stream", ["Write", "WriteAsync"]) and
+    m.hasFullyQualifiedName("System.IO", "Stream", ["Write", "WriteAsync"]) and
     stream = mc.getQualifier() and
     data = mc.getArgument(0)
     or
-    m.hasQualifiedName("System.IO", "TextWriter",
+    m.hasFullyQualifiedName("System.IO", "TextWriter",
       ["Write", "WriteAsync", "WriteLine", "WriteLineAsync"]) and
     stream = mc.getQualifier() and
     data = mc.getArgument(0)
     or
-    m.hasQualifiedName("System.Xml.Linq", "XDocument", ["Save", "SaveAsync"]) and
+    m.hasFullyQualifiedName("System.Xml.Linq", "XDocument", ["Save", "SaveAsync"]) and
     data = mc.getQualifier() and
     stream = mc.getArgument(0)
   )
@@ -99,7 +99,7 @@ private module LocalFileOutputStreamConfig implements DataFlow::ConfigSig {
     node.asExpr()
         .(ObjectCreation)
         .getObjectType()
-        .hasQualifiedName("System.Security.Cryptography", "CryptoStream")
+        .hasFullyQualifiedName("System.Security.Cryptography", "CryptoStream")
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {

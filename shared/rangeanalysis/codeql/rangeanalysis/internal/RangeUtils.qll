@@ -1,38 +1,99 @@
 private import codeql.rangeanalysis.RangeAnalysis
 
 module MakeUtils<Semantic Lang, DeltaSig D> {
+  private import Lang
+
   /**
    * Gets an expression that equals `v - d`.
    */
-  Lang::Expr ssaRead(Lang::SsaVariable v, D::Delta delta) {
+  Expr ssaRead(SsaVariable v, D::Delta delta) {
     result = v.getAUse() and delta = D::fromInt(0)
     or
-    exists(D::Delta d1, Lang::ConstantIntegerExpr c |
-      result.(Lang::AddExpr).hasOperands(ssaRead(v, d1), c) and
+    exists(D::Delta d1, ConstantIntegerExpr c |
+      result.(AddExpr).hasOperands(ssaRead(v, d1), c) and
       delta = D::fromFloat(D::toFloat(d1) - c.getIntValue()) and
       // In the scope of `x += ..`, which is SSA translated as `x2 = x1 + ..`,
       // the variable `x1` is shadowed by `x2`, so there's no need to view this
       // as a read of `x1`.
-      not Lang::isAssignOp(result)
+      not isAssignOp(result)
     )
     or
-    exists(Lang::SubExpr sub, D::Delta d1, Lang::ConstantIntegerExpr c |
+    exists(SubExpr sub, D::Delta d1, ConstantIntegerExpr c |
       result = sub and
       sub.getLeftOperand() = ssaRead(v, d1) and
       sub.getRightOperand() = c and
       delta = D::fromFloat(D::toFloat(d1) + c.getIntValue()) and
-      not Lang::isAssignOp(result)
+      not isAssignOp(result)
     )
     or
-    result = v.(Lang::SsaExplicitUpdate).getDefiningExpr() and
-    if result instanceof Lang::PostIncExpr
+    result = v.(SsaExplicitUpdate).getDefiningExpr() and
+    if result instanceof PostIncExpr
     then delta = D::fromFloat(1) // x++ === ++x - 1
     else
-      if result instanceof Lang::PostDecExpr
+      if result instanceof PostDecExpr
       then delta = D::fromFloat(-1) // x-- === --x + 1
       else delta = D::fromFloat(0)
     or
-    result.(Lang::CopyValueExpr).getOperand() = ssaRead(v, delta)
+    result.(CopyValueExpr).getOperand() = ssaRead(v, delta)
+  }
+
+  private newtype TSsaReadPosition =
+    TSsaReadPositionBlock(BasicBlock bb) {
+      exists(SsaVariable v | v.getAUse().getBasicBlock() = bb)
+    } or
+    TSsaReadPositionPhiInputEdge(BasicBlock bbOrig, BasicBlock bbPhi) {
+      exists(SsaPhiNode phi | phi.hasInputFromBlock(_, bbOrig) and bbPhi = phi.getBasicBlock())
+    }
+
+  /**
+   * A position at which an SSA variable is read. This includes both ordinary
+   * reads occurring in basic blocks and input to phi nodes occurring along an
+   * edge between two basic blocks.
+   */
+  class SsaReadPosition extends TSsaReadPosition {
+    /** Holds if `v` is read at this position. */
+    abstract predicate hasReadOfVar(SsaVariable v);
+
+    /** Gets a textual representation of this SSA read position. */
+    abstract string toString();
+  }
+
+  /** A basic block in which an SSA variable is read. */
+  class SsaReadPositionBlock extends SsaReadPosition, TSsaReadPositionBlock {
+    /** Gets the basic block corresponding to this position. */
+    BasicBlock getBlock() { this = TSsaReadPositionBlock(result) }
+
+    override predicate hasReadOfVar(SsaVariable v) { exists(this.getAnSsaRead(v)) }
+
+    pragma[nomagic]
+    Expr getAnSsaRead(SsaVariable v) {
+      v.getAUse() = result and result.getBasicBlock() = this.getBlock()
+    }
+
+    override string toString() { result = "block" }
+  }
+
+  /**
+   * An edge between two basic blocks where the latter block has an SSA phi
+   * definition. The edge therefore has a read of an SSA variable serving as the
+   * input to the phi node.
+   */
+  class SsaReadPositionPhiInputEdge extends SsaReadPosition, TSsaReadPositionPhiInputEdge {
+    /** Gets the source of the edge. */
+    BasicBlock getOrigBlock() { this = TSsaReadPositionPhiInputEdge(result, _) }
+
+    /** Gets the target of the edge. */
+    BasicBlock getPhiBlock() { this = TSsaReadPositionPhiInputEdge(_, result) }
+
+    override predicate hasReadOfVar(SsaVariable v) { this.phiInput(_, v) }
+
+    /** Holds if `inp` is an input to `phi` along this edge. */
+    predicate phiInput(SsaPhiNode phi, SsaVariable inp) {
+      phi.hasInputFromBlock(inp, this.getOrigBlock()) and
+      this.getPhiBlock() = phi.getBasicBlock()
+    }
+
+    override string toString() { result = "edge" }
   }
 
   /**
@@ -40,10 +101,10 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
    * value `testIsTrue`.
    */
   pragma[nomagic]
-  predicate guardDirectlyControlsSsaRead(Lang::Guard guard, Lang::SsaReadPosition controlled, boolean testIsTrue) {
-    guard.directlyControls(controlled.(Lang::SsaReadPositionBlock).getBlock(), testIsTrue)
+  predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    guard.directlyControls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
     or
-    exists(Lang::SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
       guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
       guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
     )
@@ -52,11 +113,11 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
   /**
    * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
    */
-  predicate guardControlsSsaRead(Lang::Guard guard, Lang::SsaReadPosition controlled, boolean testIsTrue) {
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
     guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
     or
-    exists(Lang::Guard guard0, boolean testIsTrue0 |
-      Lang::implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
+    exists(Guard guard0, boolean testIsTrue0 |
+      implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
       guardControlsSsaRead(guard0, controlled, testIsTrue0)
     )
   }
@@ -64,9 +125,7 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
   /**
    * Holds if `inp` is an input to `phi` along a back edge.
    */
-  predicate backEdge(
-    Lang::SsaPhiNode phi, Lang::SsaVariable inp, Lang::SsaReadPositionPhiInputEdge edge
-  ) {
+  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
     edge.phiInput(phi, inp) and
     (
       phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
@@ -85,12 +144,33 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
    * dominated by the successor block, then mark all edges in a cycle in the resulting graph as back
    * edges.
    */
-  private predicate irreducibleSccEdge(Lang::BasicBlock b1, Lang::BasicBlock b2) {
+  private predicate irreducibleSccEdge(BasicBlock b1, BasicBlock b2) {
     trimmedEdge(b1, b2) and trimmedEdge+(b2, b1)
   }
 
-  private predicate trimmedEdge(Lang::BasicBlock pred, Lang::BasicBlock succ) {
-    Lang::getABasicBlockSuccessor(pred) = succ and
+  private predicate trimmedEdge(BasicBlock pred, BasicBlock succ) {
+    getABasicBlockSuccessor(pred) = succ and
     not succ.bbDominates(pred)
+  }
+
+  /**
+   * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
+   * in an arbitrary 1-based numbering of the input edges to `phi`.
+   */
+  predicate rankedPhiInput(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge, int r) {
+    edge.phiInput(phi, inp) and
+    edge =
+      rank[r](SsaReadPositionPhiInputEdge e |
+        e.phiInput(phi, _)
+      |
+        e order by getBlockId1(e.getOrigBlock()), getBlockId2(e.getOrigBlock())
+      )
+  }
+
+  /**
+   * Holds if `rix` is the number of input edges to `phi`.
+   */
+  predicate maxPhiInputRank(SsaPhiNode phi, int rix) {
+    rix = max(int r | rankedPhiInput(phi, _, _, r))
   }
 }

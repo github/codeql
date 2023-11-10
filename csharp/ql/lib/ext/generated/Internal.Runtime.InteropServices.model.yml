@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/csharp-all
-      extensible: neutralModel
-    data:
-      - ["Internal.Runtime.InteropServices", "ComponentActivator", "GetFunctionPointer", "(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)", "summary", "df-generated"]
-      - ["Internal.Runtime.InteropServices", "ComponentActivator", "LoadAssemblyAndGetFunctionPointer", "(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)", "summary", "df-generated"]

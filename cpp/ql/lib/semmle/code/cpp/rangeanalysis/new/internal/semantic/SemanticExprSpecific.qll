@@ -130,7 +130,7 @@ module SemanticExprConfig {
 
   newtype TSsaVariable =
     TSsaInstruction(IR::Instruction instr) { instr.hasMemoryResult() } or
-    TSsaOperand(IR::Operand op) { op.isDefinitionInexact() }
+    TSsaOperand(IR::PhiInputOperand op) { op.isDefinitionInexact() }
 
   class SsaVariable extends TSsaVariable {
     string toString() { none() }
@@ -139,7 +139,7 @@ module SemanticExprConfig {
 
     IR::Instruction asInstruction() { none() }
 
-    IR::Operand asOperand() { none() }
+    IR::PhiInputOperand asOperand() { none() }
   }
 
   class SsaInstructionVariable extends SsaVariable, TSsaInstruction {
@@ -155,7 +155,7 @@ module SemanticExprConfig {
   }
 
   class SsaOperand extends SsaVariable, TSsaOperand {
-    IR::Operand op;
+    IR::PhiInputOperand op;
 
     SsaOperand() { this = TSsaOperand(op) }
 
@@ -163,7 +163,7 @@ module SemanticExprConfig {
 
     final override Location getLocation() { result = op.getLocation() }
 
-    final override IR::Operand asOperand() { result = op }
+    final override IR::PhiInputOperand asOperand() { result = op }
   }
 
   predicate explicitUpdate(SsaVariable v, Expr sourceExpr) {
@@ -190,83 +190,25 @@ module SemanticExprConfig {
 
   SemType getSsaVariableType(SsaVariable v) {
     result = getSemanticType(v.asInstruction().getResultIRType())
+    or
+    result = getSemanticType(v.asOperand().getUse().getResultIRType())
   }
 
   BasicBlock getSsaVariableBasicBlock(SsaVariable v) {
     result = v.asInstruction().getBlock()
     or
-    result = v.asOperand().getUse().getBlock()
+    result = v.asOperand().getAnyDef().getBlock()
   }
 
-  private newtype TReadPosition =
-    TReadPositionBlock(IR::IRBlock block) or
-    TReadPositionPhiInputEdge(IR::IRBlock pred, IR::IRBlock succ) {
-      exists(IR::PhiInputOperand input |
-        pred = input.getPredecessorBlock() and
-        succ = input.getUse().getBlock()
-      )
-    }
-
-  class SsaReadPosition extends TReadPosition {
-    string toString() { none() }
-
-    Location getLocation() { none() }
-
-    predicate hasRead(SsaVariable v) { none() }
-  }
-
-  private class SsaReadPositionBlock extends SsaReadPosition, TReadPositionBlock {
-    IR::IRBlock block;
-
-    SsaReadPositionBlock() { this = TReadPositionBlock(block) }
-
-    final override string toString() { result = block.toString() }
-
-    final override Location getLocation() { result = block.getLocation() }
-
-    final override predicate hasRead(SsaVariable v) {
-      exists(IR::Operand operand | operand.getDef() = v.asInstruction() |
-        not operand instanceof IR::PhiInputOperand and
-        operand.getUse().getBlock() = block
-      )
-    }
-  }
-
-  private class SsaReadPositionPhiInputEdge extends SsaReadPosition, TReadPositionPhiInputEdge {
-    IR::IRBlock pred;
-    IR::IRBlock succ;
-
-    SsaReadPositionPhiInputEdge() { this = TReadPositionPhiInputEdge(pred, succ) }
-
-    final override string toString() { result = pred.toString() + "->" + succ.toString() }
-
-    final override Location getLocation() { result = succ.getLocation() }
-
-    final override predicate hasRead(SsaVariable v) {
-      exists(IR::PhiInputOperand operand | operand.getDef() = v.asInstruction() |
-        operand.getPredecessorBlock() = pred and
-        operand.getUse().getBlock() = succ
-      )
-    }
-  }
-
-  predicate hasReadOfSsaVariable(SsaReadPosition pos, SsaVariable v) { pos.hasRead(v) }
-
-  predicate readBlock(SsaReadPosition pos, BasicBlock block) { pos = TReadPositionBlock(block) }
-
-  predicate phiInputEdge(SsaReadPosition pos, BasicBlock origBlock, BasicBlock phiBlock) {
-    pos = TReadPositionPhiInputEdge(origBlock, phiBlock)
-  }
-
-  predicate phiInput(SsaReadPosition pos, SsaVariable phi, SsaVariable input) {
+  /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+  predicate phiInputFromBlock(SsaVariable phi, SsaVariable inp, BasicBlock bb) {
     exists(IR::PhiInputOperand operand |
-      pos = TReadPositionPhiInputEdge(operand.getPredecessorBlock(), operand.getUse().getBlock())
-    |
+      bb = operand.getPredecessorBlock() and
       phi.asInstruction() = operand.getUse() and
       (
-        input.asInstruction() = operand.getDef()
+        inp.asInstruction() = operand.getDef()
         or
-        input.asOperand() = operand
+        inp.asOperand() = operand
       )
     )
   }

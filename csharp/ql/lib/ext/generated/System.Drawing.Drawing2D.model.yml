@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -13,13 +14,11 @@ extensions:
       - ["System.Drawing.Drawing2D", "AdjustableArrowCap", "set_Height", "(System.Single)", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "AdjustableArrowCap", "set_MiddleInset", "(System.Single)", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "AdjustableArrowCap", "set_Width", "(System.Single)", "summary", "df-generated"]
-      - ["System.Drawing.Drawing2D", "Blend", "Blend", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Blend", "Blend", "(System.Int32)", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Blend", "get_Factors", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Blend", "get_Positions", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Blend", "set_Factors", "(System.Single[])", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Blend", "set_Positions", "(System.Single[])", "summary", "df-generated"]
-      - ["System.Drawing.Drawing2D", "ColorBlend", "ColorBlend", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "ColorBlend", "ColorBlend", "(System.Int32)", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "ColorBlend", "get_Colors", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "ColorBlend", "get_Positions", "()", "summary", "df-generated"]
@@ -97,7 +96,6 @@ extensions:
       - ["System.Drawing.Drawing2D", "GraphicsPath", "GetBounds", "(System.Drawing.Drawing2D.Matrix)", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "GraphicsPath", "GetBounds", "(System.Drawing.Drawing2D.Matrix,System.Drawing.Pen)", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "GraphicsPath", "GetLastPoint", "()", "summary", "df-generated"]
-      - ["System.Drawing.Drawing2D", "GraphicsPath", "GraphicsPath", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "GraphicsPath", "GraphicsPath", "(System.Drawing.Drawing2D.FillMode)", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "GraphicsPath", "GraphicsPath", "(System.Drawing.PointF[],System.Byte[])", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "GraphicsPath", "GraphicsPath", "(System.Drawing.PointF[],System.Byte[],System.Drawing.Drawing2D.FillMode)", "summary", "df-generated"]
@@ -196,7 +194,6 @@ extensions:
       - ["System.Drawing.Drawing2D", "Matrix", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Matrix", "GetHashCode", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Matrix", "Invert", "()", "summary", "df-generated"]
-      - ["System.Drawing.Drawing2D", "Matrix", "Matrix", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Matrix", "Matrix", "(System.Drawing.Rectangle,System.Drawing.Point[])", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Matrix", "Matrix", "(System.Drawing.RectangleF,System.Drawing.PointF[])", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Matrix", "Matrix", "(System.Numerics.Matrix3x2)", "summary", "df-generated"]
@@ -226,7 +223,6 @@ extensions:
       - ["System.Drawing.Drawing2D", "Matrix", "get_OffsetX", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Matrix", "get_OffsetY", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "Matrix", "set_MatrixElements", "(System.Numerics.Matrix3x2)", "summary", "df-generated"]
-      - ["System.Drawing.Drawing2D", "PathData", "PathData", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "PathData", "get_Points", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "PathData", "get_Types", "()", "summary", "df-generated"]
       - ["System.Drawing.Drawing2D", "PathData", "set_Points", "(System.Drawing.PointF[])", "summary", "df-generated"]

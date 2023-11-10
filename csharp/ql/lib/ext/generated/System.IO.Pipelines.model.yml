@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -6,12 +7,12 @@ extensions:
       - ["System.IO.Pipelines", "Pipe", False, "Pipe", "(System.IO.Pipelines.PipeOptions)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.IO.Pipelines", "Pipe", False, "get_Reader", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Pipelines", "Pipe", False, "get_Writer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.Pipelines", "PipeReader", True, "AsStream", "(System.Boolean)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.Pipelines", "PipeReader", True, "CopyToAsync", "(System.IO.Pipelines.PipeWriter,System.Threading.CancellationToken)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.Pipelines", "PipeReader", True, "CopyToAsync", "(System.IO.Stream,System.Threading.CancellationToken)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Pipelines", "PipeReader", False, "Create", "(System.Buffers.ReadOnlySequence<System.Byte>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Pipelines", "PipeReader", False, "Create", "(System.IO.Stream,System.IO.Pipelines.StreamPipeReaderOptions)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Pipelines", "PipeReader", False, "ReadAtLeastAsync", "(System.Int32,System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Pipelines", "PipeReader", True, "AsStream", "(System.Boolean)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Pipelines", "PipeReader", True, "CopyToAsync", "(System.IO.Pipelines.PipeWriter,System.Threading.CancellationToken)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Pipelines", "PipeReader", True, "CopyToAsync", "(System.IO.Stream,System.Threading.CancellationToken)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Pipelines", "PipeWriter", True, "AsStream", "(System.Boolean)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Pipelines", "PipeWriter", True, "WriteAsync", "(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Pipelines", "ReadResult", False, "ReadResult", "(System.Buffers.ReadOnlySequence<System.Byte>,System.Boolean,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
@@ -26,7 +27,6 @@ extensions:
       - ["System.IO.Pipelines", "FlushResult", "get_IsCompleted", "()", "summary", "df-generated"]
       - ["System.IO.Pipelines", "IDuplexPipe", "get_Input", "()", "summary", "df-generated"]
       - ["System.IO.Pipelines", "IDuplexPipe", "get_Output", "()", "summary", "df-generated"]
-      - ["System.IO.Pipelines", "Pipe", "Pipe", "()", "summary", "df-generated"]
       - ["System.IO.Pipelines", "Pipe", "Reset", "()", "summary", "df-generated"]
       - ["System.IO.Pipelines", "PipeOptions", "PipeOptions", "(System.Buffers.MemoryPool<System.Byte>,System.IO.Pipelines.PipeScheduler,System.IO.Pipelines.PipeScheduler,System.Int64,System.Int64,System.Int32,System.Boolean)", "summary", "df-generated"]
       - ["System.IO.Pipelines", "PipeOptions", "get_Default", "()", "summary", "df-generated"]

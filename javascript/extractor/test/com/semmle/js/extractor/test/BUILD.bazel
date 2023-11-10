@@ -1,0 +1,33 @@
+java_test(
+    name = "test_jar",
+    srcs = glob(["**/*.java"]),
+    test_class = "com.semmle.js.extractor.test.AllTests",
+    deps = [
+        "//javascript/extractor",
+        "//javascript/extractor:deps",
+        "@//resources/lib/java/DO_NOT_DISTRIBUTE:junit",
+    ],
+)
+
+# We need to unzip the typescript wrapper, and provide node on the path.
+# Therefore, we're wrapping the java_test inside a sh_test.
+sh_test(
+    name = "test",
+    size = "small",
+    srcs = ["run_tests.sh"],
+    args = [
+        "$(execpath @nodejs//:node_bin)",
+        "$(JAVABASE)/bin/java",
+        "$(rootpath //javascript/extractor/lib/typescript)",
+        "$(rootpath test_jar_deploy.jar)",
+    ],
+    data = [
+        ":test_jar_deploy.jar",
+        "//javascript/extractor/lib/typescript",
+        "//javascript/extractor/parser-tests",
+        "//javascript/extractor/tests",
+        "@bazel_tools//tools/jdk:current_java_runtime",
+        "@nodejs//:node_bin",
+    ],
+    toolchains = ["@bazel_tools//tools/jdk:current_java_runtime"],
+)

@@ -1239,3 +1239,10 @@ class ParameterizedProtocolType(Type):
 
 class AbiSafeConversionExpr(ImplicitConversionExpr):
     pass
+
+
+class SingleValueStmtExpr(Expr):
+    """
+    An expression that wraps a statement which produces a single value.
+    """
+    stmt: Stmt | child

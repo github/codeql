@@ -241,7 +241,7 @@ class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFl
     exists(Call c |
       c.getTarget()
           .getDeclaringType()
-          .hasQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
       c.getTarget().getName() = "TryGetValue" and
       this.asExpr() = c.getArgumentForName("value")
     )
