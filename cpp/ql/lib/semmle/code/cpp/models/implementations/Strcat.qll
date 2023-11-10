@@ -104,7 +104,7 @@ class StrlcatFunction extends TaintFunction, ArrayFunction, SideEffectFunction {
   /**
    * Gets the index of the parameter that is the size of the copy (in characters).
    */
-  int getParamSize() { exists(this.getParameter(2)) and result = 2 }
+  int getParamSize() { result = 2 }
 
   /**
    * Gets the index of the parameter that is the source of the copy.
