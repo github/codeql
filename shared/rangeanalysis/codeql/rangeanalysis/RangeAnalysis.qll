@@ -807,11 +807,9 @@ module RangeStage<
     )
     or
     exists(D::Delta d, SemReason r1, SemReason r2 |
-      boundedSsa(pragma[only_bind_into](v), pragma[only_bind_into](b), pragma[only_bind_into](d),
-        pragma[only_bind_into](pos), upper, fromBackEdge, origdelta, r2)
+      boundedSsa(v, b, d, pos, upper, fromBackEdge, origdelta, r2)
       or
-      boundedPhi(pragma[only_bind_into](v), pragma[only_bind_into](b), pragma[only_bind_into](d),
-        upper, fromBackEdge, origdelta, r2)
+      boundedPhi(v, b, d, upper, fromBackEdge, origdelta, r2)
     |
       unequalIntegralSsa(v, b, d, pos, r1) and
       (
