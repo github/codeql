@@ -22,7 +22,7 @@ About extensible predicates
 
 At a high level, there are two main components to using data extensions. The query writer defines one or more extensible predicates in their query libraries. CLI and code scanning users who want to augment these predicates supply one or more extension files whose data gets injected into the extensible predicate during evaluation. The extension files are either stored directly in the repository where the codebase to be analyzed is hosted, or downloaded as CodeQL model packs.
 
-This example of an extensible predicate for a source is taken from the core Java libraries https://github.com/github/codeql/blob/main/java/ql/lib/semmle/code/java/dataflow/ExternalFlowExtensions.qll#L8-L11
+This example of an extensible predicate for a source is taken from the core Java libraries https://github.com/github/codeql/blob/main/java/ql/lib/semmle/code/java/dataflow/internal/ExternalFlowExtensions.qll#L8-L11
 
 .. code-block:: ql
 

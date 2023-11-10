@@ -102,7 +102,8 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
     return f"{prop_name} of this {class_name}"
 
 
-def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.Class], prev_child: str = "") -> ql.Property:
+def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.Class],
+                    prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
         qltest_skip="qltest_skip" in prop.pragmas,
@@ -310,7 +311,8 @@ def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str)
             ]
     else:
         accessors = []
-    return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix, synth_accessors=accessors)
+    return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix,
+                   synth_accessors=accessors, ql_internal="ql_internal" in cls.pragmas)
 
 
 def generate(opts, renderer):
@@ -426,7 +428,7 @@ def generate(opts, renderer):
         for stub_file, data in stubs.items():
             renderer.render(data, stub_file)
         renderer.render(ql.Synth.Types(root.name, generated_import_prefix,
-                        final_synth_types, non_final_synth_types), out / "Synth.qll")
+                                       final_synth_types, non_final_synth_types), out / "Synth.qll")
         renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
         renderer.render(ql.ImportList(synth_constructor_imports), out / "PureSynthConstructors.qll")
         if opts.ql_format:

@@ -12,9 +12,6 @@ class SemBasicBlock extends Specific::BasicBlock {
   /** Holds if this block (transitively) dominates `otherblock`. */
   final predicate bbDominates(SemBasicBlock otherBlock) { Specific::bbDominates(this, otherBlock) }
 
-  /** Holds if this block has dominance information. */
-  final predicate hasDominanceInformation() { Specific::hasDominanceInformation(this) }
-
   /** Gets an expression that is evaluated in this basic block. */
   final SemExpr getAnExpr() { result.getBasicBlock() = this }
 

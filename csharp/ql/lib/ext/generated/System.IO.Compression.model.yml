@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -30,13 +31,17 @@ extensions:
       - ["System.IO.Compression", "ZipArchive", False, "CreateEntry", "(System.String,System.IO.Compression.CompressionLevel)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchive", False, "ZipArchive", "(System.IO.Stream,System.IO.Compression.ZipArchiveMode,System.Boolean,System.Text.Encoding)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchive", False, "ZipArchive", "(System.IO.Stream,System.IO.Compression.ZipArchiveMode,System.Boolean,System.Text.Encoding)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["System.IO.Compression", "ZipArchive", False, "get_Comment", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchive", False, "get_Entries", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Compression", "ZipArchive", False, "set_Comment", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", False, "Open", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", False, "get_Archive", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Compression", "ZipArchiveEntry", False, "get_Comment", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", False, "get_FullName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", False, "get_LastWriteTime", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Compression", "ZipArchiveEntry", False, "set_Comment", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", False, "set_FullName", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", False, "set_LastWriteTime", "(System.DateTimeOffset)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.IO.Compression", "ZipFile", False, "Open", "(System.String,System.IO.Compression.ZipArchiveMode)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -119,7 +124,6 @@ extensions:
       - ["System.IO.Compression", "GZipStream", "get_Length", "()", "summary", "df-generated"]
       - ["System.IO.Compression", "GZipStream", "get_Position", "()", "summary", "df-generated"]
       - ["System.IO.Compression", "GZipStream", "set_Position", "(System.Int64)", "summary", "df-generated"]
-      - ["System.IO.Compression", "ZLibException", "ZLibException", "()", "summary", "df-generated"]
       - ["System.IO.Compression", "ZLibException", "ZLibException", "(System.String,System.Exception)", "summary", "df-generated"]
       - ["System.IO.Compression", "ZLibStream", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["System.IO.Compression", "ZLibStream", "DisposeAsync", "()", "summary", "df-generated"]
@@ -153,6 +157,7 @@ extensions:
       - ["System.IO.Compression", "ZipArchiveEntry", "get_CompressedLength", "()", "summary", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", "get_Crc32", "()", "summary", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", "get_ExternalAttributes", "()", "summary", "df-generated"]
+      - ["System.IO.Compression", "ZipArchiveEntry", "get_IsEncrypted", "()", "summary", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", "get_Length", "()", "summary", "df-generated"]
       - ["System.IO.Compression", "ZipArchiveEntry", "set_ExternalAttributes", "(System.Int32)", "summary", "df-generated"]
       - ["System.IO.Compression", "ZipFile", "CreateFromDirectory", "(System.String,System.String)", "summary", "df-generated"]

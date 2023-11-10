@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -62,7 +63,6 @@ extensions:
       - ["Microsoft.Extensions.DependencyModel", "DependencyContextJsonReader", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel", "DependencyContextJsonReader", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel", "DependencyContextJsonReader", "Read", "(System.IO.Stream)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.DependencyModel", "DependencyContextLoader", "DependencyContextLoader", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel", "DependencyContextLoader", "Load", "(System.Reflection.Assembly)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel", "DependencyContextLoader", "get_Default", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel", "DependencyContextWriter", "Write", "(Microsoft.Extensions.DependencyModel.DependencyContext,System.IO.Stream)", "summary", "df-generated"]

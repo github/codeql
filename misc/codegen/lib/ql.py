@@ -166,6 +166,7 @@ class Stub:
     base_import: str
     import_prefix: str
     synth_accessors: List[SynthUnderlyingAccessor] = field(default_factory=list)
+    ql_internal: bool = False
 
     @property
     def has_synth_accessors(self) -> bool:

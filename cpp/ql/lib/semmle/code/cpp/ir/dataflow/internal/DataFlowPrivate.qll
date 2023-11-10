@@ -632,20 +632,20 @@ predicate jumpStep(Node n1, Node n2) {
       v = globalUse.getVariable() and
       n1.(FinalGlobalValue).getGlobalUse() = globalUse
     |
-      globalUse.getIndirectionIndex() = 1 and
+      globalUse.getIndirection() = 1 and
       v = n2.asVariable()
       or
-      v = n2.asIndirectVariable(globalUse.getIndirectionIndex())
+      v = n2.asIndirectVariable(globalUse.getIndirection())
     )
     or
     exists(Ssa::GlobalDef globalDef |
       v = globalDef.getVariable() and
       n2.(InitialGlobalValue).getGlobalDef() = globalDef
     |
-      globalDef.getIndirectionIndex() = 1 and
+      globalDef.getIndirection() = 1 and
       v = n1.asVariable()
       or
-      v = n1.asIndirectVariable(globalDef.getIndirectionIndex())
+      v = n1.asIndirectVariable(globalDef.getIndirection())
     )
   )
 }

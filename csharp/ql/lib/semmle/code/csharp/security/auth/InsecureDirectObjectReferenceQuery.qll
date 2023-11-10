@@ -52,7 +52,7 @@ private predicate callsPlus(Callable c1, Callable c2) = fastTC(calls/2)(c1, c2)
 private predicate hasAuthorizeAttribute(ActionMethod m) {
   exists(Attribute attr |
     getAnUnboundBaseType*(attr.getType())
-        .hasQualifiedName([
+        .hasFullyQualifiedName([
             "Microsoft.AspNetCore.Authorization", "System.Web.Mvc", "System.Web.Http"
           ], "AuthorizeAttribute")
   |
@@ -65,7 +65,7 @@ private predicate hasAuthorizeAttribute(ActionMethod m) {
 private predicate hasAllowAnonymousAttribute(ActionMethod m) {
   exists(Attribute attr |
     getAnUnboundBaseType*(attr.getType())
-        .hasQualifiedName([
+        .hasFullyQualifiedName([
             "Microsoft.AspNetCore.Authorization", "System.Web.Mvc", "System.Web.Http"
           ], "AllowAnonymousAttribute")
   |

@@ -6,7 +6,7 @@ import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.security.Sanitizers
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * A source specific to command injection vulnerabilities.

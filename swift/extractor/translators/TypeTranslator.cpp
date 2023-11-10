@@ -163,8 +163,10 @@ void TypeTranslator::fillAnyGenericType(const swift::AnyGenericType& type,
 }
 
 void TypeTranslator::fillType(const swift::TypeBase& type, codeql::Type& entry) {
-  entry.name = type.getString();
+  // Preserve the order as getCanonicalType() forces computation of the canonical type
+  // without which getString may crash sometimes
   entry.canonical_type = dispatcher.fetchLabel(type.getCanonicalType());
+  entry.name = type.getString();
 }
 
 void TypeTranslator::fillArchetypeType(const swift::ArchetypeType& type, ArchetypeType& entry) {

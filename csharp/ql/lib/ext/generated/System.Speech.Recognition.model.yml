@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -11,15 +12,12 @@ extensions:
       - ["System.Speech.Recognition", "AudioStateChangedEventArgs", "get_AudioState", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "Choices", "Add", "(System.Speech.Recognition.GrammarBuilder[])", "summary", "df-generated"]
       - ["System.Speech.Recognition", "Choices", "Add", "(System.String[])", "summary", "df-generated"]
-      - ["System.Speech.Recognition", "Choices", "Choices", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "Choices", "Choices", "(System.Speech.Recognition.GrammarBuilder[])", "summary", "df-generated"]
       - ["System.Speech.Recognition", "Choices", "Choices", "(System.String[])", "summary", "df-generated"]
       - ["System.Speech.Recognition", "Choices", "ToGrammarBuilder", "()", "summary", "df-generated"]
-      - ["System.Speech.Recognition", "DictationGrammar", "DictationGrammar", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "DictationGrammar", "DictationGrammar", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "DictationGrammar", "SetDictationContext", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "EmulateRecognizeCompletedEventArgs", "get_Result", "()", "summary", "df-generated"]
-      - ["System.Speech.Recognition", "Grammar", "Grammar", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "Grammar", "Grammar", "(System.IO.Stream)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "Grammar", "Grammar", "(System.IO.Stream,System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "Grammar", "Grammar", "(System.IO.Stream,System.String,System.Object[])", "summary", "df-generated"]
@@ -67,7 +65,6 @@ extensions:
       - ["System.Speech.Recognition", "GrammarBuilder", "AppendRuleReference", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "GrammarBuilder", "AppendRuleReference", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "GrammarBuilder", "AppendWildcard", "()", "summary", "df-generated"]
-      - ["System.Speech.Recognition", "GrammarBuilder", "GrammarBuilder", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "GrammarBuilder", "GrammarBuilder", "(System.Speech.Recognition.Choices)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "GrammarBuilder", "GrammarBuilder", "(System.Speech.Recognition.GrammarBuilder,System.Int32,System.Int32)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "GrammarBuilder", "GrammarBuilder", "(System.Speech.Recognition.SemanticResultKey)", "summary", "df-generated"]
@@ -176,7 +173,6 @@ extensions:
       - ["System.Speech.Recognition", "SpeechRecognitionEngine", "SetInputToNull", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognitionEngine", "SetInputToWaveFile", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognitionEngine", "SetInputToWaveStream", "(System.IO.Stream)", "summary", "df-generated"]
-      - ["System.Speech.Recognition", "SpeechRecognitionEngine", "SpeechRecognitionEngine", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognitionEngine", "SpeechRecognitionEngine", "(System.Globalization.CultureInfo)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognitionEngine", "SpeechRecognitionEngine", "(System.Speech.Recognition.RecognizerInfo)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognitionEngine", "SpeechRecognitionEngine", "(System.String)", "summary", "df-generated"]
@@ -214,7 +210,6 @@ extensions:
       - ["System.Speech.Recognition", "SpeechRecognizer", "RequestRecognizerUpdate", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognizer", "RequestRecognizerUpdate", "(System.Object)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognizer", "RequestRecognizerUpdate", "(System.Object,System.TimeSpan)", "summary", "df-generated"]
-      - ["System.Speech.Recognition", "SpeechRecognizer", "SpeechRecognizer", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognizer", "UnloadAllGrammars", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognizer", "UnloadGrammar", "(System.Speech.Recognition.Grammar)", "summary", "df-generated"]
       - ["System.Speech.Recognition", "SpeechRecognizer", "get_AudioFormat", "()", "summary", "df-generated"]

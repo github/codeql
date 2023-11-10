@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -5,9 +6,9 @@ extensions:
     data:
       - ["System.Reflection.PortableExecutable", "ManagedPEBuilder", False, "GetDirectories", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "ManagedPEBuilder", False, "SerializeSection", "(System.String,System.Reflection.PortableExecutable.SectionLocation)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Reflection.PortableExecutable", "PEBuilder+Section", False, "Section", "(System.String,System.Reflection.PortableExecutable.SectionCharacteristics)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PEBuilder", False, "GetSections", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PEBuilder", False, "Serialize", "(System.Reflection.Metadata.BlobBuilder)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Reflection.PortableExecutable", "PEBuilder+Section", False, "Section", "(System.String,System.Reflection.PortableExecutable.SectionCharacteristics)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PEHeaders", False, "get_CoffHeader", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PEHeaders", False, "get_CorHeader", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PEHeaders", False, "get_PEHeader", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -52,7 +53,6 @@ extensions:
       - ["System.Reflection.PortableExecutable", "DebugDirectoryBuilder", "AddEntry", "(System.Reflection.PortableExecutable.DebugDirectoryEntryType,System.UInt32,System.UInt32)", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "DebugDirectoryBuilder", "AddPdbChecksumEntry", "(System.String,System.Collections.Immutable.ImmutableArray<System.Byte>)", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "DebugDirectoryBuilder", "AddReproducibleEntry", "()", "summary", "df-generated"]
-      - ["System.Reflection.PortableExecutable", "DebugDirectoryBuilder", "DebugDirectoryBuilder", "()", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "DebugDirectoryEntry", "DebugDirectoryEntry", "(System.UInt32,System.UInt16,System.UInt16,System.Reflection.PortableExecutable.DebugDirectoryEntryType,System.Int32,System.Int32,System.Int32)", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "DebugDirectoryEntry", "get_DataPointer", "()", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "DebugDirectoryEntry", "get_DataRelativeVirtualAddress", "()", "summary", "df-generated"]
@@ -197,7 +197,6 @@ extensions:
       - ["System.Reflection.PortableExecutable", "PEReader", "get_IsLoadedImage", "()", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PdbChecksumDebugDirectoryData", "get_AlgorithmName", "()", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "PdbChecksumDebugDirectoryData", "get_Checksum", "()", "summary", "df-generated"]
-      - ["System.Reflection.PortableExecutable", "ResourceSectionBuilder", "ResourceSectionBuilder", "()", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "ResourceSectionBuilder", "Serialize", "(System.Reflection.Metadata.BlobBuilder,System.Reflection.PortableExecutable.SectionLocation)", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "SectionHeader", "get_Name", "()", "summary", "df-generated"]
       - ["System.Reflection.PortableExecutable", "SectionHeader", "get_NumberOfLineNumbers", "()", "summary", "df-generated"]

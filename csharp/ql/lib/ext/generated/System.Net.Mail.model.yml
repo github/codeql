@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -152,10 +153,8 @@ extensions:
       - ["System.Net.Mail", "MailAddress", "MailAddress", "(System.String)", "summary", "df-generated"]
       - ["System.Net.Mail", "MailAddress", "MailAddress", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Net.Mail", "MailAddress", "TryCreate", "(System.String,System.Net.Mail.MailAddress)", "summary", "df-generated"]
-      - ["System.Net.Mail", "MailAddressCollection", "MailAddressCollection", "()", "summary", "df-generated"]
       - ["System.Net.Mail", "MailMessage", "Dispose", "()", "summary", "df-generated"]
       - ["System.Net.Mail", "MailMessage", "Dispose", "(System.Boolean)", "summary", "df-generated"]
-      - ["System.Net.Mail", "MailMessage", "MailMessage", "()", "summary", "df-generated"]
       - ["System.Net.Mail", "MailMessage", "MailMessage", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Net.Mail", "MailMessage", "get_AlternateViews", "()", "summary", "df-generated"]
       - ["System.Net.Mail", "MailMessage", "get_Attachments", "()", "summary", "df-generated"]
@@ -175,7 +174,6 @@ extensions:
       - ["System.Net.Mail", "SmtpClient", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpClient", "OnSendCompleted", "(System.ComponentModel.AsyncCompletedEventArgs)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpClient", "SendAsyncCancel", "()", "summary", "df-generated"]
-      - ["System.Net.Mail", "SmtpClient", "SmtpClient", "()", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpClient", "get_ClientCertificates", "()", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpClient", "get_DeliveryFormat", "()", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpClient", "get_DeliveryMethod", "()", "summary", "df-generated"]
@@ -190,7 +188,7 @@ extensions:
       - ["System.Net.Mail", "SmtpClient", "set_Port", "(System.Int32)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpClient", "set_Timeout", "(System.Int32)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpClient", "set_UseDefaultCredentials", "(System.Boolean)", "summary", "df-generated"]
-      - ["System.Net.Mail", "SmtpException", "SmtpException", "()", "summary", "df-generated"]
+      - ["System.Net.Mail", "SmtpException", "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpException", "SmtpException", "(System.Net.Mail.SmtpStatusCode)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpException", "SmtpException", "(System.Net.Mail.SmtpStatusCode,System.String)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpException", "SmtpException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
@@ -198,10 +196,9 @@ extensions:
       - ["System.Net.Mail", "SmtpException", "SmtpException", "(System.String,System.Exception)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpException", "get_StatusCode", "()", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpException", "set_StatusCode", "(System.Net.Mail.SmtpStatusCode)", "summary", "df-generated"]
-      - ["System.Net.Mail", "SmtpFailedRecipientException", "SmtpFailedRecipientException", "()", "summary", "df-generated"]
+      - ["System.Net.Mail", "SmtpFailedRecipientException", "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpFailedRecipientException", "SmtpFailedRecipientException", "(System.String)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpFailedRecipientException", "SmtpFailedRecipientException", "(System.String,System.Exception)", "summary", "df-generated"]
-      - ["System.Net.Mail", "SmtpFailedRecipientsException", "SmtpFailedRecipientsException", "()", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpFailedRecipientsException", "SmtpFailedRecipientsException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpFailedRecipientsException", "SmtpFailedRecipientsException", "(System.String)", "summary", "df-generated"]
       - ["System.Net.Mail", "SmtpPermission", "AddPermission", "(System.Net.Mail.SmtpAccess)", "summary", "df-generated"]

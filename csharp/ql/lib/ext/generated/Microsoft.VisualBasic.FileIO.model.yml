@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -21,7 +22,6 @@ extensions:
       - ["Microsoft.VisualBasic.FileIO", "FileSystem", "DeleteFile", "(System.String,Microsoft.VisualBasic.FileIO.UIOption,Microsoft.VisualBasic.FileIO.RecycleOption,Microsoft.VisualBasic.FileIO.UICancelOption)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "FileSystem", "DirectoryExists", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "FileSystem", "FileExists", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic.FileIO", "FileSystem", "FileSystem", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "FileSystem", "FindInFiles", "(System.String,System.String,System.Boolean,Microsoft.VisualBasic.FileIO.SearchOption)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "FileSystem", "FindInFiles", "(System.String,System.String,System.Boolean,Microsoft.VisualBasic.FileIO.SearchOption,System.String[])", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "FileSystem", "GetDirectories", "(System.String)", "summary", "df-generated"]
@@ -61,7 +61,6 @@ extensions:
       - ["Microsoft.VisualBasic.FileIO", "FileSystem", "get_Drives", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "FileSystem", "set_CurrentDirectory", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "MalformedLineException", "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic.FileIO", "MalformedLineException", "MalformedLineException", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "MalformedLineException", "MalformedLineException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "MalformedLineException", "MalformedLineException", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "MalformedLineException", "MalformedLineException", "(System.String,System.Exception)", "summary", "df-generated"]
@@ -70,7 +69,6 @@ extensions:
       - ["Microsoft.VisualBasic.FileIO", "MalformedLineException", "ToString", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "MalformedLineException", "get_LineNumber", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "MalformedLineException", "set_LineNumber", "(System.Int64)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic.FileIO", "SpecialDirectories", "SpecialDirectories", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "SpecialDirectories", "get_AllUsersApplicationData", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "SpecialDirectories", "get_CurrentUserApplicationData", "()", "summary", "df-generated"]
       - ["Microsoft.VisualBasic.FileIO", "SpecialDirectories", "get_Desktop", "()", "summary", "df-generated"]

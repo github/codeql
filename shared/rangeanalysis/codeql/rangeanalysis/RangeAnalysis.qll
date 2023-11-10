@@ -142,7 +142,23 @@ signature module Semantic {
     Expr getBranchExpr(boolean branch);
   }
 
-  class BasicBlock;
+  class BasicBlock {
+    /** Holds if this block (transitively) dominates `otherblock`. */
+    predicate bbDominates(BasicBlock otherBlock);
+  }
+
+  /** Gets an immediate successor of basic block `bb`, if any. */
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb);
+
+  /**
+   * Gets an ideally unique integer for `bb`. If it is undesirable to make this
+   * unique, then `getBlock2` must provide a tiebreaker, such that the pair
+   * `(getBlockId1(bb),getBlockId2(bb))` becomes unique.
+   */
+  int getBlockId1(BasicBlock bb);
+
+  /** Gets a tiebreaker id in case `getBlockId1` is not unique. */
+  default string getBlockId2(BasicBlock bb) { result = "" }
 
   class Guard {
     string toString();
@@ -154,13 +170,11 @@ signature module Semantic {
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
+
+    predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
 
   predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2);
-
-  predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
-
-  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
 
   class Type;
 
@@ -176,27 +190,18 @@ signature module Semantic {
 
   class SsaVariable {
     Expr getAUse();
+
+    BasicBlock getBasicBlock();
   }
 
-  class SsaPhiNode extends SsaVariable;
+  class SsaPhiNode extends SsaVariable {
+    /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+    predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb);
+  }
 
   class SsaExplicitUpdate extends SsaVariable {
     Expr getDefiningExpr();
   }
-
-  class SsaReadPosition {
-    predicate hasReadOfVar(SsaVariable v);
-  }
-
-  class SsaReadPositionPhiInputEdge extends SsaReadPosition {
-    predicate phiInput(SsaPhiNode phi, SsaVariable inp);
-  }
-
-  class SsaReadPositionBlock extends SsaReadPosition {
-    BasicBlock getBlock();
-  }
-
-  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge);
 
   predicate conversionCannotOverflow(Type fromType, Type toType);
 }
@@ -322,19 +327,6 @@ signature module UtilSig<Semantic Sem, DeltaSig DeltaParam> {
    * primitive types as the underlying primitive type.
    */
   Sem::Type getTrackedType(Sem::Expr e);
-
-  /**
-   * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
-   * in an arbitrary 1-based numbering of the input edges to `phi`.
-   */
-  predicate rankedPhiInput(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int r
-  );
-
-  /**
-   * Holds if `rix` is the number of input edges to `phi`.
-   */
-  predicate maxPhiInputRank(Sem::SsaPhiNode phi, int rix);
 }
 
 signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
@@ -680,7 +672,7 @@ module RangeStage<
    * - `upper = false` : `v >= e + delta`
    */
   private predicate boundFlowStepSsa(
-    Sem::SsaVariable v, Sem::SsaReadPosition pos, Sem::Expr e, D::Delta delta, boolean upper,
+    Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, D::Delta delta, boolean upper,
     SemReason reason
   ) {
     semSsaUpdateStep(v, e, delta) and
@@ -691,20 +683,20 @@ module RangeStage<
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = boundFlowCond(v, e, delta, upper, testIsTrue) and
-      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
+      guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
   }
 
   /** Holds if `v != e + delta` at `pos` and `v` is of integral type. */
   private predicate unequalFlowStepIntegralSsa(
-    Sem::SsaVariable v, Sem::SsaReadPosition pos, Sem::Expr e, D::Delta delta, SemReason reason
+    Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, D::Delta delta, SemReason reason
   ) {
     getTrackedTypeForSsaVariable(v) instanceof Sem::IntegerType and
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = semEqFlowCond(v, e, delta, false, testIsTrue) and
-      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
+      guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
   }
@@ -828,7 +820,7 @@ module RangeStage<
    * - `upper = false` : `v >= b + delta`
    */
   private predicate boundedSsa(
-    Sem::SsaVariable v, SemBound b, D::Delta delta, Sem::SsaReadPosition pos, boolean upper,
+    Sem::SsaVariable v, SemBound b, D::Delta delta, SsaReadPosition pos, boolean upper,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
     exists(Sem::Expr mid, D::Delta d1, D::Delta d2, SemReason r1, SemReason r2 |
@@ -865,7 +857,7 @@ module RangeStage<
    * Holds if `v != b + delta` at `pos` and `v` is of integral type.
    */
   private predicate unequalIntegralSsa(
-    Sem::SsaVariable v, SemBound b, D::Delta delta, Sem::SsaReadPosition pos, SemReason reason
+    Sem::SsaVariable v, SemBound b, D::Delta delta, SsaReadPosition pos, SemReason reason
   ) {
     exists(Sem::Expr e, D::Delta d1, D::Delta d2 |
       unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
@@ -912,7 +904,7 @@ module RangeStage<
    * - `upper = false` : `inp >= b + delta`
    */
   private predicate boundedPhiInp(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, SemBound b,
+    Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, SemBound b,
     D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
     edge.phiInput(phi, inp) and
@@ -928,7 +920,7 @@ module RangeStage<
       origdelta = D::fromFloat(0) and
       reason = TSemNoReason()
     |
-      if Sem::backEdge(phi, inp, edge)
+      if backEdge(phi, inp, edge)
       then
         fromBackEdge = true and
         (
@@ -956,7 +948,7 @@ module RangeStage<
   pragma[noinline]
   private predicate boundedPhiInp1(
     Sem::SsaPhiNode phi, SemBound b, boolean upper, Sem::SsaVariable inp,
-    Sem::SsaReadPositionPhiInputEdge edge, D::Delta delta
+    SsaReadPositionPhiInputEdge edge, D::Delta delta
   ) {
     boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)
   }
@@ -968,7 +960,7 @@ module RangeStage<
    * - `upper = false` : `inp >= phi`
    */
   private predicate selfBoundedPhiInp(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, boolean upper
+    Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, boolean upper
   ) {
     exists(D::Delta d, SemSsaBound phibound |
       phibound.getVariable() = phi and
@@ -1001,8 +993,7 @@ module RangeStage<
    */
   private predicate boundedPhiCandValidForEdge(
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason, Sem::SsaVariable inp,
-    Sem::SsaReadPositionPhiInputEdge edge
+    D::Delta origdelta, SemReason reason, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge
   ) {
     boundedPhiCand(phi, upper, b, delta, fromBackEdge, origdelta, reason) and
     (
@@ -1028,7 +1019,7 @@ module RangeStage<
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason, int rix
   ) {
-    exists(Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge |
+    exists(Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge |
       rankedPhiInput(phi, inp, edge, rix) and
       boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
     |
@@ -1200,7 +1191,7 @@ module RangeStage<
       origdelta = delta and
       reason = TSemNoReason()
       or
-      exists(Sem::SsaVariable v, Sem::SsaReadPositionBlock bb |
+      exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
         boundedSsa(v, b, delta, bb, upper, fromBackEdge, origdelta, reason) and
         e = v.getAUse() and
         bb.getBlock() = e.getBasicBlock()
