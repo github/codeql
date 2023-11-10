@@ -241,6 +241,10 @@ module Sem implements Semantic {
     AddressType() { none() }
   }
 
+  Type getExprType(Expr e) { result = e.getType() }
+
+  Type getSsaType(SsaVariable var) { result = var.getSourceVariable().getType() }
+
   final private class FinalSsaVariable = SSA::SsaVariable;
 
   class SsaVariable extends FinalSsaVariable {
@@ -281,7 +285,7 @@ module Modulus implements ModulusAnalysisSig<Sem> {
   class ModBound = Bound;
 
   private import codeql.rangeanalysis.ModulusAnalysis as Mod
-  import Mod::ModulusAnalysis<Location, Sem, IntDelta, Bounds, Utils>
+  import Mod::ModulusAnalysis<Location, Sem, IntDelta, Bounds>
 }
 
 module IntDelta implements DeltaSig {
@@ -365,14 +369,6 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
   predicate javaCompatibility() { any() }
 }
 
-module Utils implements UtilSig<Sem, IntDelta> {
-  Sem::Type getTrackedTypeForSsaVariable(Sem::SsaVariable var) {
-    result = var.getSourceVariable().getType()
-  }
-
-  Sem::Type getTrackedType(Sem::Expr e) { result = e.getType() }
-}
-
 module Bounds implements BoundSig<Location, Sem, IntDelta> {
   class SemBound = Bound;
 
@@ -390,7 +386,7 @@ module Overflow implements OverflowSig<Sem, IntDelta> {
 }
 
 module Range =
-  RangeStage<Location, Sem, IntDelta, Bounds, Overflow, JavaLangImpl, SignInp, Modulus, Utils>;
+  RangeStage<Location, Sem, IntDelta, Bounds, Overflow, JavaLangImpl, SignInp, Modulus>;
 
 predicate bounded = Range::semBounded/5;
 

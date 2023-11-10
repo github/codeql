@@ -188,6 +188,12 @@ signature module Semantic {
 
   class AddressType extends Type;
 
+  /** Gets the type of an SSA variable. */
+  Type getSsaType(SsaVariable var);
+
+  /** Gets the type of an expression. */
+  Type getExprType(Expr e);
+
   class SsaVariable {
     Expr getAUse();
 
@@ -285,24 +291,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   default predicate javaCompatibility() { none() }
 }
 
-signature module UtilSig<Semantic Sem, DeltaSig DeltaParam> {
-  /**
-   * Gets the type used to track the specified source variable's range information.
-   *
-   * Usually, this just `e.getType()`, but the language can override this to track immutable boxed
-   * primitive types as the underlying primitive type.
-   */
-  Sem::Type getTrackedTypeForSsaVariable(Sem::SsaVariable var);
-
-  /**
-   * Gets the type used to track the specified expression's range information.
-   *
-   * Usually, this just `e.getSemType()`, but the language can override this to track immutable boxed
-   * primitive types as the underlying primitive type.
-   */
-  Sem::Type getTrackedType(Sem::Expr e);
-}
-
 signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
   class SemBound {
     string toString();
@@ -326,11 +314,10 @@ signature module OverflowSig<Semantic Sem, DeltaSig D> {
 module RangeStage<
   LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
   OverflowSig<Sem, D> OverflowParam, LangSig<Sem, D> LangParam, SignAnalysisSig<Sem> SignAnalysis,
-  ModulusAnalysisSig<Sem> ModulusAnalysisParam, UtilSig<Sem, D> UtilParam>
+  ModulusAnalysisSig<Sem> ModulusAnalysisParam>
 {
   private import Bounds
   private import LangParam
-  private import UtilParam
   private import D
   private import OverflowParam
   private import SignAnalysis
@@ -375,8 +362,8 @@ module RangeStage<
    */
   private class SafeCastExpr extends ConvertOrBoxExpr {
     SafeCastExpr() {
-      Sem::conversionCannotOverflow(getTrackedType(pragma[only_bind_into](this.getOperand())),
-        pragma[only_bind_out](getTrackedType(this)))
+      Sem::conversionCannotOverflow(Sem::getExprType(pragma[only_bind_into](this.getOperand())),
+        pragma[only_bind_out](Sem::getExprType(this)))
     }
   }
 
@@ -386,14 +373,14 @@ module RangeStage<
   private class NarrowingCastExpr extends ConvertOrBoxExpr {
     NarrowingCastExpr() {
       not this instanceof SafeCastExpr and
-      typeBound(getTrackedType(this), _, _)
+      typeBound(Sem::getExprType(this), _, _)
     }
 
     /** Gets the lower bound of the resulting type. */
-    float getLowerBound() { typeBound(getTrackedType(this), result, _) }
+    float getLowerBound() { typeBound(Sem::getExprType(this), result, _) }
 
     /** Gets the upper bound of the resulting type. */
-    float getUpperBound() { typeBound(getTrackedType(this), _, result) }
+    float getUpperBound() { typeBound(Sem::getExprType(this), _, result) }
   }
 
   cached
@@ -556,8 +543,8 @@ module RangeStage<
       ) and
       (
         if
-          getTrackedTypeForSsaVariable(v) instanceof Sem::IntegerType or
-          getTrackedTypeForSsaVariable(v) instanceof Sem::AddressType
+          Sem::getSsaType(v) instanceof Sem::IntegerType or
+          Sem::getSsaType(v) instanceof Sem::AddressType
         then
           upper = true and strengthen = -1
           or
@@ -666,7 +653,7 @@ module RangeStage<
   private predicate unequalFlowStepIntegralSsa(
     Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, D::Delta delta, SemReason reason
   ) {
-    getTrackedTypeForSsaVariable(v) instanceof Sem::IntegerType and
+    Sem::getSsaType(v) instanceof Sem::IntegerType and
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = eqFlowCond(v, e, delta, false, testIsTrue) and
@@ -677,12 +664,12 @@ module RangeStage<
 
   /** Holds if `e >= 1` as determined by sign analysis. */
   private predicate strictlyPositiveIntegralExpr(Sem::Expr e) {
-    semStrictlyPositive(e) and getTrackedType(e) instanceof Sem::IntegerType
+    semStrictlyPositive(e) and Sem::getExprType(e) instanceof Sem::IntegerType
   }
 
   /** Holds if `e <= -1` as determined by sign analysis. */
   private predicate strictlyNegativeIntegralExpr(Sem::Expr e) {
-    semStrictlyNegative(e) and getTrackedType(e) instanceof Sem::IntegerType
+    semStrictlyNegative(e) and Sem::getExprType(e) instanceof Sem::IntegerType
   }
 
   /**
@@ -764,7 +751,7 @@ module RangeStage<
    * therefore only valid for non-negative numbers.
    */
   private predicate boundFlowStepDiv(Sem::Expr e2, Sem::Expr e1, D::Delta factor) {
-    getTrackedType(e2) instanceof Sem::IntegerType and
+    Sem::getExprType(e2) instanceof Sem::IntegerType and
     exists(Sem::ConstantIntegerExpr c, D::Delta k |
       k = D::fromInt(c.getIntValue()) and D::toFloat(k) > 0
     |
@@ -1101,7 +1088,7 @@ module RangeStage<
     (
       expr instanceof Sem::NegateExpr or
       expr instanceof Sem::PreDecExpr or
-      getTrackedType(expr.(Sem::DivExpr)) instanceof Sem::FloatingPointType
+      Sem::getExprType(expr.(Sem::DivExpr)) instanceof Sem::FloatingPointType
     )
     or
     positively = true and

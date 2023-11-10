@@ -11,10 +11,9 @@ private import RangeAnalysisImpl
 private import SignAnalysisSpecific as Specific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 private import ConstantAnalysis
-private import RangeUtils
 private import Sign
 
-module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
+module SignAnalysis<DeltaSig D> {
   private import codeql.rangeanalysis.internal.RangeUtils::MakeUtils<Sem, D>
 
   /**
@@ -148,7 +147,7 @@ module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
       not this instanceof ConstantSignExpr and
       (
         // Only track numeric types.
-        Utils::getTrackedType(this) instanceof SemNumericType
+        Sem::getExprType(this) instanceof SemNumericType
         or
         // Unless the language says to track this expression anyway.
         Specific::trackUnknownNonNumericExpr(this)
@@ -203,7 +202,7 @@ module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
 
   /** An expression of an unsigned type. */
   private class UnsignedExpr extends FlowSignExpr {
-    UnsignedExpr() { Utils::getTrackedType(this) instanceof SemUnsignedIntegerType }
+    UnsignedExpr() { Sem::getExprType(this) instanceof SemUnsignedIntegerType }
 
     override Sign getSignRestriction() {
       result = TPos() or
@@ -276,7 +275,7 @@ module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
     override SemUnboxExpr cast;
 
     UnboxSignExpr() {
-      exists(SemType fromType | fromType = Utils::getTrackedType(cast.getOperand()) |
+      exists(SemType fromType | fromType = Sem::getExprType(cast.getOperand()) |
         // Only numeric source types are handled here.
         fromType instanceof SemNumericType
       )
@@ -471,7 +470,7 @@ module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
   Sign semExprSign(SemExpr e) {
     exists(Sign s | s = e.(SignExpr).getSign() |
       if
-        Utils::getTrackedType(e) instanceof SemUnsignedIntegerType and
+        Sem::getExprType(e) instanceof SemUnsignedIntegerType and
         s = TNeg() and
         not Specific::ignoreTypeRestrictions(e)
       then result = TPos()
