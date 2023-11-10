@@ -28,13 +28,17 @@ func serveStdlib() {
 	http.HandleFunc("/ex2", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 
+		// Taking gratuitous copies of target so that sanitizing the use in
+		// the first request doesn't also sanitize other uses
 		target := r.Form.Get("target")
+		target2 := target
+		target3 := target
 		// GOOD: local redirects are unproblematic
 		w.Header().Set("Location", "/local"+target)
 		// BAD: this could be a non-local redirect
-		w.Header().Set("Location", "/"+target)
+		w.Header().Set("Location", "/"+target2)
 		// GOOD: localhost redirects are unproblematic
-		w.Header().Set("Location", "//localhost/"+target)
+		w.Header().Set("Location", "//localhost/"+target3)
 		w.WriteHeader(302)
 	})
 
