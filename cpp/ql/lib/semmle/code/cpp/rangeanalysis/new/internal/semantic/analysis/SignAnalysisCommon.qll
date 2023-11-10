@@ -39,7 +39,7 @@ module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
 
   /** An SSA definition whose sign is determined by the sign of that definitions source expression. */
   private class ExplicitSignDef extends FlowSignDef instanceof SemSsaExplicitUpdate {
-    final override Sign getSign() { result = semExprSign(super.getSourceExpr()) }
+    final override Sign getSign() { result = semExprSign(super.getDefiningExpr()) }
   }
 
   /** An SSA Phi definition, whose sign is the union of the signs of its inputs. */
