@@ -848,7 +848,7 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  */
 predicate attributeStoreStep(Node nodeFrom, AttributeContent c, Node nodeTo) {
   exists(Node object |
-    // normally we target any PostUpdateNode. However, for class definitions the class
+    // Normally we target a PostUpdateNode. However, for class definitions the class
     // is only constructed after evaluating its' entire scope, so in terms of python
     // evaluations there is no post or pre update nodes, just one node for the class
     // expression. Therefore we target the class expression directly.
