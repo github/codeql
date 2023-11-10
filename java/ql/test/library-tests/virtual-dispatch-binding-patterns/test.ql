@@ -1,5 +1,4 @@
 import java
-
 import semmle.code.java.dispatch.VirtualDispatch
 
 from Call c, Callable c2
