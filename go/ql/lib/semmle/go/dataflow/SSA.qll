@@ -197,6 +197,8 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   override string prettyPrintDef() { result = "definition of " + this.getSourceVariable() }
 
   override Location getLocation() { result = this.getInstruction().getLocation() }
+
+  IR::Instruction getAFirstUse() { firstUse(this, result) }
 }
 
 /** Provides a helper predicate for working with explicit SSA definitions. */
@@ -410,3 +412,5 @@ DataFlow::Node getASimilarReadNode(DataFlow::Node node) {
     result = readFields.similar().getAUse()
   )
 }
+
+IR::Instruction getAnAdjacentUse(IR::Instruction pred) { adjacentUseUse(pred, result) }

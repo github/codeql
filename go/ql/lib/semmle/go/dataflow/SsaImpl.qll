@@ -199,6 +199,8 @@ private module Internal {
   /**
    * Holds if the `i`th node of `bb` is a use or an SSA definition of variable `v`, with
    * `k` indicating whether it is the former or the latter.
+   *
+   * Note this includes phi nodes, whereas `ref` above only includes explicit writes and captures.
    */
   private predicate ssaRef(ReachableBasicBlock bb, int i, SsaSourceVariable v, RefKind k) {
     useAt(bb, i, v) and k = ReadRef()
@@ -289,6 +291,145 @@ private module Internal {
     result = getLocalDefinition(bb, i, v)
     or
     rewindReads(bb, i, v) = 1 and result = getDefReachingEndOf(bb.getImmediateDominator(), v)
+  }
+
+  private module AdjacentUsesImpl {
+    /** Holds if `v` is defined or used in `b`. */
+    private predicate varOccursInBlock(SsaSourceVariable v, ReachableBasicBlock b) {
+      ssaRef(b, _, v, _)
+    }
+
+    /** Holds if `v` occurs in `b` or one of `b`'s transitive successors. */
+    private predicate blockPrecedesVar(SsaSourceVariable v, ReachableBasicBlock b) {
+      varOccursInBlock(v, b)
+      or
+      exists(getDefReachingEndOf(b, v))
+    }
+
+    /**
+     * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` and
+     * in `b2` or one of its transitive successors but not in any block on the path
+     * between `b1` and `b2`.
+     */
+    private predicate varBlockReaches(
+      SsaSourceVariable v, ReachableBasicBlock b1, ReachableBasicBlock b2
+    ) {
+      varOccursInBlock(v, b1) and
+      b2 = b1.getASuccessor() and
+      blockPrecedesVar(v, b2)
+      or
+      exists(ReachableBasicBlock mid |
+        varBlockReaches(v, b1, mid) and
+        b2 = mid.getASuccessor() and
+        not varOccursInBlock(v, mid) and
+        blockPrecedesVar(v, b2)
+      )
+    }
+
+    /**
+     * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` and
+     * `b2` but not in any block on the path between `b1` and `b2`.
+     */
+    private predicate varBlockStep(
+      SsaSourceVariable v, ReachableBasicBlock b1, ReachableBasicBlock b2
+    ) {
+      varBlockReaches(v, b1, b2) and
+      varOccursInBlock(v, b2)
+    }
+
+    /**
+     * Gets the maximum rank among all SSA references to `v` in basic block `bb`.
+     */
+    private int maxSsaRefRank(ReachableBasicBlock bb, SsaSourceVariable v) {
+      result = max(ssaRefRank(bb, _, v, _))
+    }
+
+    /**
+     * Holds if `v` occurs at index `i1` in `b1` and at index `i2` in `b2` and
+     * there is a path between them without any occurrence of `v`.
+     */
+    pragma[nomagic]
+    predicate adjacentVarRefs(
+      SsaSourceVariable v, ReachableBasicBlock b1, int i1, ReachableBasicBlock b2, int i2
+    ) {
+      exists(int rankix |
+        b1 = b2 and
+        ssaRefRank(b1, i1, v, _) = rankix and
+        ssaRefRank(b2, i2, v, _) = rankix + 1
+      )
+      or
+      maxSsaRefRank(b1, v) = ssaRefRank(b1, i1, v, _) and
+      varBlockStep(v, b1, b2) and
+      ssaRefRank(b2, i2, v, _) = 1
+    }
+
+    predicate variableUse(SsaSourceVariable v, IR::Instruction use, ReachableBasicBlock bb, int i) {
+      bb.getNode(i) = use and
+      exists(SsaVariable sv |
+        sv.getSourceVariable() = v and
+        use = sv.getAUse()
+      )
+    }
+  }
+
+  private import AdjacentUsesImpl
+
+  /**
+   * Holds if the value defined at `def` can reach `use` without passing through
+   * any other uses, but possibly through phi nodes.
+   */
+  cached
+  predicate firstUse(SsaDefinition def, IR::Instruction use) {
+    exists(SsaSourceVariable v, ReachableBasicBlock b1, int i1, ReachableBasicBlock b2, int i2 |
+      adjacentVarRefs(v, b1, i1, b2, i2) and
+      def.definesAt(b1, i1, v) and
+      variableUse(v, use, b2, i2)
+    )
+    or
+    exists(
+      SsaSourceVariable v, SsaPhiNode redef, ReachableBasicBlock b1, int i1, ReachableBasicBlock b2,
+      int i2
+    |
+      adjacentVarRefs(v, b1, i1, b2, i2) and
+      def.definesAt(b1, i1, v) and
+      redef.definesAt(b2, i2, v) and
+      firstUse(redef, use)
+    )
+  }
+
+  /**
+   * Holds if `use1` and `use2` form an adjacent use-use-pair of the same SSA
+   * variable, that is, the value read in `use1` can reach `use2` without passing
+   * through any other use or any SSA definition of the variable.
+   */
+  cached
+  predicate adjacentUseUseSameVar(IR::Instruction use1, IR::Instruction use2) {
+    exists(SsaSourceVariable v, ReachableBasicBlock b1, int i1, ReachableBasicBlock b2, int i2 |
+      adjacentVarRefs(v, b1, i1, b2, i2) and
+      variableUse(v, use1, b1, i1) and
+      variableUse(v, use2, b2, i2)
+    )
+  }
+
+  /**
+   * Holds if `use1` and `use2` form an adjacent use-use-pair of the same
+   * `SsaSourceVariable`, that is, the value read in `use1` can reach `use2`
+   * without passing through any other use or any SSA definition of the variable
+   * except for phi nodes and uncertain implicit updates.
+   */
+  cached
+  predicate adjacentUseUse(IR::Instruction use1, IR::Instruction use2) {
+    adjacentUseUseSameVar(use1, use2)
+    or
+    exists(
+      SsaSourceVariable v, SsaPhiNode def, ReachableBasicBlock b1, int i1, ReachableBasicBlock b2,
+      int i2
+    |
+      adjacentVarRefs(v, b1, i1, b2, i2) and
+      variableUse(v, use1, b1, i1) and
+      def.definesAt(b2, i2, v) and
+      firstUse(def, use2)
+    )
   }
 }
 

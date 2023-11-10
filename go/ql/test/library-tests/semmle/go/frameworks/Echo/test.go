@@ -176,12 +176,15 @@ func testRedirect(ctx echo.Context) error {
 
 func testLocalRedirects(ctx echo.Context) error {
 	param := ctx.Param("someParam")
+	param2 := param
+	param3 := param
+	// Gratuitious copy because sanitization of uses propagates to subsequent uses
 	// GOOD: local redirects are unproblematic
 	ctx.Redirect(301, "/local"+param)
 	// BAD: this could be a non-local redirect
-	ctx.Redirect(301, "/"+param)
+	ctx.Redirect(301, "/"+param2)
 	// GOOD: localhost redirects are unproblematic
-	ctx.Redirect(301, "//localhost/"+param)
+	ctx.Redirect(301, "//localhost/"+param3)
 	return nil
 }
 
