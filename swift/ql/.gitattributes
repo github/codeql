@@ -924,9 +924,6 @@
 /test/extractor-tests/generated/type/DependentMemberType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/DictionaryType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/DynamicSelfType/DynamicSelfType.ql linguist-generated
-/test/extractor-tests/generated/type/ElementArchetypeType/ElementArchetypeType.ql linguist-generated
-/test/extractor-tests/generated/type/ElementArchetypeType/ElementArchetypeType_getProtocol.ql linguist-generated
-/test/extractor-tests/generated/type/ElementArchetypeType/ElementArchetypeType_getSuperclass.ql linguist-generated
 /test/extractor-tests/generated/type/EnumType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/ExistentialMetatypeType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/ExistentialType/ExistentialType.ql linguist-generated
@@ -944,6 +941,9 @@
 /test/extractor-tests/generated/type/OpenedArchetypeType/OpenedArchetypeType_getProtocol.ql linguist-generated
 /test/extractor-tests/generated/type/OpenedArchetypeType/OpenedArchetypeType_getSuperclass.ql linguist-generated
 /test/extractor-tests/generated/type/OptionalType/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/type/PackType/ElementArchetypeType.ql linguist-generated
+/test/extractor-tests/generated/type/PackType/ElementArchetypeType_getProtocol.ql linguist-generated
+/test/extractor-tests/generated/type/PackType/ElementArchetypeType_getSuperclass.ql linguist-generated
 /test/extractor-tests/generated/type/PackType/PackArchetypeType.ql linguist-generated
 /test/extractor-tests/generated/type/PackType/PackArchetypeType_getProtocol.ql linguist-generated
 /test/extractor-tests/generated/type/PackType/PackArchetypeType_getSuperclass.ql linguist-generated

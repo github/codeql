@@ -1199,6 +1199,7 @@ class LocalArchetypeType(ArchetypeType):
 class OpenedArchetypeType(LocalArchetypeType):
     pass
 
+@qltest.test_with("PackType")
 class ElementArchetypeType(LocalArchetypeType):
     """
     An archetype type of PackElementType.
