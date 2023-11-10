@@ -21,17 +21,10 @@ predicate namespaceHasQualifiedName(DotNet::Namespace n, string qualifier, strin
   )
 }
 
-/** Gets a string of `N` commas where `N + 1` is the number of type parameters of this unbound generic. */
-private string getTypeParameterCommas(UnboundGeneric ug) {
-  result = strictconcat(int i | exists(ug.getTypeParameter(i)) | "", ",")
-}
-
 /** Provides the input to `QualifiedName`. */
 signature module QualifiedNameInputSig {
   /** Gets the suffix to print after unbound generic `ug`. */
-  default string getUnboundGenericSuffix(UnboundGeneric ug) {
-    result = "<" + getTypeParameterCommas(ug) + ">"
-  }
+  string getUnboundGenericSuffix(UnboundGeneric ug);
 }
 
 /** Provides predicates for computing fully qualified names. */
@@ -160,30 +153,30 @@ module QualifiedName<QualifiedNameInputSig Input> {
   }
 
   /**
-   * Holds if member `m` has name `name` and is defined in type `type`
+   * Holds if declaration `d` has name `name` and is defined in type `type`
    * with namespace `namespace`.
    */
-  predicate hasQualifiedName(Member m, string namespace, string type, string name) {
-    m =
-      any(ConstructedMethod cm |
-        hasQualifiedName(cm.getDeclaringType(), namespace, type) and
-        name = cm.getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(cm) + ">"
-      )
-    or
-    m =
-      any(UnboundGenericMethod ugm |
-        hasQualifiedName(ugm.getDeclaringType(), namespace, type) and
-        name = ugm.getUndecoratedName() + Input::getUnboundGenericSuffix(ugm)
-      )
-    or
-    not m instanceof ConstructedMethod and
-    not m instanceof UnboundGenericMethod and
-    hasQualifiedName(m.getDeclaringType(), namespace, type) and
+  predicate hasQualifiedName(Declaration d, string namespace, string type, string name) {
+    hasQualifiedName(d.getDeclaringType(), namespace, type) and
     (
-      name = m.(Operator).getFunctionName()
+      d =
+        any(ConstructedMethod cm |
+          name = cm.getUndecoratedName() + "<" + getTypeArgumentsQualifiedNames(cm) + ">"
+        )
       or
-      not m instanceof Operator and
-      name = m.getName()
+      d =
+        any(UnboundGenericMethod ugm |
+          name = ugm.getUndecoratedName() + Input::getUnboundGenericSuffix(ugm)
+        )
+      or
+      not d instanceof ConstructedMethod and
+      not d instanceof UnboundGenericMethod and
+      (
+        name = d.(Operator).getFunctionName()
+        or
+        not d instanceof Operator and
+        name = d.getName()
+      )
     )
   }
 }

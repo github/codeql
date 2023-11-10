@@ -89,7 +89,9 @@ class CompileAssemblyFromSourceSink extends Sink {
  */
 class RoslynCSharpScriptSink extends Sink {
   RoslynCSharpScriptSink() {
-    exists(Class c | c.hasQualifiedName("Microsoft.CodeAnalysis.CSharp.Scripting", "CSharpScript") |
+    exists(Class c |
+      c.hasFullyQualifiedName("Microsoft.CodeAnalysis.CSharp.Scripting", "CSharpScript")
+    |
       this.getExpr() = c.getAMethod().getACall().getArgumentForName("code")
     )
   }

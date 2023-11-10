@@ -95,6 +95,7 @@ private import DataFlowPublic
 private import FlowSummaryImpl::Public
 private import FlowSummaryImpl::Private::External
 private import FlowSummaryImplSpecific
+private import semmle.code.csharp.commons.QualifiedName
 private import codeql.mad.ModelValidation as SharedModelVal
 
 private predicate relevantNamespace(string namespace) {
@@ -227,7 +228,7 @@ module ModelValidation {
       not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
       result = "Dubious type \"" + type + "\" in " + pred + " model."
       or
-      not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
+      not name.regexpMatch("[a-zA-Z0-9_<>,\\.]*") and
       result = "Dubious member name \"" + name + "\" in " + pred + " model."
       or
       not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
@@ -268,7 +269,7 @@ private predicate elementSpec(
   UnboundValueOrRefType t
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
-  t.hasQualifiedName(namespace, type)
+  QN::hasQualifiedName(t, namespace, type)
 }
 
 private class UnboundValueOrRefType extends ValueOrRefType {
@@ -298,19 +299,6 @@ class UnboundCallable extends Callable {
   }
 }
 
-private predicate hasName(Declaration d, string name) {
-  d.(Operator).getFunctionName() = name
-  or
-  not d instanceof Operator and
-  d.hasName(name)
-}
-
-pragma[nomagic]
-private predicate callableSpecInfo(Callable c, string namespace, string type, string name) {
-  c.getDeclaringType().hasQualifiedName(namespace, type) and
-  hasName(c, name)
-}
-
 pragma[nomagic]
 private predicate subtypeSpecCandidate(string name, UnboundValueOrRefType t) {
   exists(UnboundValueOrRefType t0 |
@@ -321,14 +309,19 @@ private predicate subtypeSpecCandidate(string name, UnboundValueOrRefType t) {
 
 pragma[nomagic]
 private predicate callableInfo(Callable c, string name, UnboundValueOrRefType decl) {
-  hasName(c, name) and
-  decl = c.getDeclaringType()
+  decl = c.getDeclaringType() and
+  (
+    c.(Operator).getFunctionName() = name
+    or
+    not c instanceof Operator and
+    c.hasName(name)
+  )
 }
 
 private class InterpretedCallable extends Callable {
   InterpretedCallable() {
     exists(string namespace, string type, string name |
-      callableSpecInfo(this, namespace, type, name) and
+      partialModel(this, namespace, type, name, _) and
       elementSpec(namespace, type, _, name, _, _)
     )
     or
@@ -339,62 +332,19 @@ private class InterpretedCallable extends Callable {
   }
 }
 
-private string paramsStringPartA(InterpretedCallable c, int i) {
-  i = -1 and result = "("
-  or
-  exists(int n |
-    exists(c.getParameter(n)) and
-    i = 2 * n - 1 and
-    result = "," and
-    n != 0
-  )
-  or
-  i = 2 * c.getNumberOfParameters() and result = ")"
-}
-
-private string paramsStringPartB(InterpretedCallable c, int i) {
-  exists(int n, string p, Type t |
-    t = c.getParameter(n).getType() and
-    i = 2 * n and
-    result = p and
-    p = t.getQualifiedName()
-  )
-}
-
-private string paramsString(InterpretedCallable c) {
-  result =
-    strictconcat(int i, string s |
-      s in [paramsStringPartA(c, i), paramsStringPartB(c, i)]
-    |
-      s order by i
-    )
-}
-
 pragma[nomagic]
-private Element interpretElement0(
-  string namespace, string type, boolean subtypes, string name, string signature
-) {
-  exists(UnboundValueOrRefType t | elementSpec(namespace, type, subtypes, name, signature, _, t) |
-    exists(Declaration m |
-      (
-        result = m
-        or
-        subtypes = true and result.(UnboundCallable).overridesOrImplementsUnbound(m)
-      ) and
-      m.getDeclaringType() = t and
-      hasName(m, name)
-    |
-      signature = ""
-      or
-      paramsString(m) = signature
-    )
+Declaration interpretBaseDeclaration(string namespace, string type, string name, string signature) {
+  exists(UnboundValueOrRefType t | elementSpec(namespace, type, _, name, signature, _, t) |
+    result =
+      any(Declaration d |
+        QN::hasQualifiedName(d, namespace, type, name) and
+        (
+          signature = ""
+          or
+          signature = "(" + parameterQualifiedTypeNamesToString(d) + ")"
+        )
+      )
     or
-    (
-      result = t
-      or
-      subtypes = true and
-      result = t.getASubTypeUnbound+()
-    ) and
     result = t and
     name = "" and
     signature = ""
@@ -402,14 +352,27 @@ private Element interpretElement0(
 }
 
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
-Element interpretElement(
+pragma[nomagic]
+Declaration interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
-  exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
-    ext = "" and result = e
+  exists(Declaration base, Declaration d |
+    base = interpretBaseDeclaration(namespace, type, name, signature) and
+    (
+      d = base
+      or
+      subtypes = true and
+      (
+        d.(UnboundCallable).overridesOrImplementsUnbound(base)
+        or
+        d = base.(UnboundValueOrRefType).getASubTypeUnbound+()
+      )
+    )
+  |
+    ext = "" and result = d
     or
-    ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = e
+    ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = d
   )
 }
 
@@ -449,3 +412,76 @@ private module Cached {
 }
 
 import Cached
+
+/** Holds if the summary should apply for all overrides of `c`. */
+predicate isBaseCallableOrPrototype(UnboundCallable c) {
+  c.getDeclaringType() instanceof Interface
+  or
+  exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
+    m.isAbstract()
+    or
+    c.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+  )
+}
+
+/** Gets a string representing whether the summary should apply for all overrides of `c`. */
+private string getCallableOverride(UnboundCallable c) {
+  if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
+}
+
+private module QualifiedNameInput implements QualifiedNameInputSig {
+  string getUnboundGenericSuffix(UnboundGeneric ug) {
+    result =
+      "<" + strictconcat(int i, string s | s = ug.getTypeParameter(i).getName() | s, "," order by i)
+        + ">"
+  }
+}
+
+private module QN = QualifiedName<QualifiedNameInput>;
+
+pragma[nomagic]
+private string parameterQualifiedType(Parameter p) {
+  exists(string qualifier, string name |
+    QN::hasQualifiedName(p.getType(), qualifier, name) and
+    result = getQualifiedName(qualifier, name)
+  )
+}
+
+/** Gets the string representation of the parameters of `c`. */
+string parameterQualifiedTypeNamesToString(Callable c) {
+  result =
+    concat(int i, string s | s = parameterQualifiedType(c.getParameter(i)) | s, "," order by i)
+}
+
+predicate partialModel(
+  UnboundCallable c, string namespace, string type, string name, string parameters
+) {
+  QN::hasQualifiedName(c, namespace, type, name) and
+  parameters = "(" + parameterQualifiedTypeNamesToString(c) + ")"
+}
+
+/** Computes the first 6 columns for positive CSV rows of `c`. */
+string asPartialModel(UnboundCallable c) {
+  exists(string namespace, string type, string name, string parameters |
+    partialModel(c, namespace, type, name, parameters) and
+    result =
+      namespace + ";" //
+        + type + ";" //
+        + getCallableOverride(c) + ";" //
+        + name + ";" //
+        + parameters + ";" //
+        + /* ext + */ ";" //
+  )
+}
+
+/** Computes the first 4 columns for neutral CSV rows of `c`. */
+string asPartialNeutralModel(UnboundCallable c) {
+  exists(string namespace, string type, string name, string parameters |
+    partialModel(c, namespace, type, name, parameters) and
+    result =
+      namespace + ";" //
+        + type + ";" //
+        + name + ";" //
+        + parameters + ";" //
+  )
+}

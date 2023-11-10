@@ -1352,7 +1352,10 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract ControlFlowNode getNode();
 
   /** Gets the enclosing callable of this call. */
-  abstract DataFlowCallable getEnclosingCallable();
+  DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
+
+  /** Gets the scope of this node, if any. */
+  abstract Scope getScope();
 
   /** Gets the location of this dataflow call. */
   abstract Location getLocation();
@@ -1400,7 +1403,7 @@ class NormalCall extends ExtractedDataFlowCall, TNormalCall {
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+  override Scope getScope() { result = call.getScope() }
 
   override DataFlowCallable getCallable() { result.(DataFlowFunction).getScope() = target }
 
@@ -1450,7 +1453,7 @@ class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall 
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+  override Scope getScope() { result = call.getScope() }
 }
 
 /**
@@ -1473,6 +1476,8 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
+
+  override Scope getScope() { none() }
 
   override DataFlowCallable getCallable() { none() }
 
