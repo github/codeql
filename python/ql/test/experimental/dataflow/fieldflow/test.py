@@ -299,7 +299,7 @@ def set_to_source():
     WithTuple2.my_tuple = (SOURCE,)
 
 @expects(4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
-def test_class_override():
+def test_global_flow_to_class_attribute():
     inst = WithTuple2()
     SINK_F(WithTuple2.my_tuple[0])
     SINK_F(inst.my_tuple[0])
