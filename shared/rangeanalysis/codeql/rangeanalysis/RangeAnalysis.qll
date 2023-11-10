@@ -833,30 +833,10 @@ module RangeStage<
   ) {
     exists(Sem::Expr e, D::Delta d1, D::Delta d2 |
       unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
-      boundedUpper(e, b, d2) and
-      boundedLower(e, b, d2) and
+      bounded(e, b, d2, true, _, _, _) and
+      bounded(e, b, d2, false, _, _, _) and
       delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
     )
-  }
-
-  /**
-   * Holds if `b + delta` is an upper bound for `e`.
-   *
-   * This predicate only exists to prevent a bad standard order in `unequalIntegralSsa`.
-   */
-  pragma[nomagic]
-  private predicate boundedUpper(Sem::Expr e, SemBound b, D::Delta delta) {
-    bounded(e, b, delta, true, _, _, _)
-  }
-
-  /**
-   * Holds if `b + delta` is a lower bound for `e`.
-   *
-   * This predicate only exists to prevent a bad standard order in `unequalIntegralSsa`.
-   */
-  pragma[nomagic]
-  private predicate boundedLower(Sem::Expr e, SemBound b, D::Delta delta) {
-    bounded(e, b, delta, false, _, _, _)
   }
 
   /** Weakens a delta to lie in the range `[-1..1]`. */
