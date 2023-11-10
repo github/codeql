@@ -432,6 +432,10 @@ private class Node0 extends Node, TNode0 {
 
   override Declaration getFunction() { result = node.getFunction() }
 
+  override Location getLocationImpl() { result = node.getLocation() }
+
+  override string toStringImpl() { result = node.toString() }
+
   override DataFlowType getType() { result = node.getType() }
 
   override predicate isGLValue() { node.isGLValue() }
@@ -448,18 +452,6 @@ class InstructionNode extends Node0 {
 
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
-
-  override Location getLocationImpl() {
-    if exists(instr.getAst().getLocation())
-    then result = instr.getAst().getLocation()
-    else result instanceof UnknownDefaultLocation
-  }
-
-  override string toStringImpl() {
-    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = instr.getAst().toString()
-  }
 }
 
 /**
@@ -473,18 +465,6 @@ class OperandNode extends Node, Node0 {
 
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
-
-  override Location getLocationImpl() {
-    if exists(op.getDef().getAst().getLocation())
-    then result = op.getDef().getAst().getLocation()
-    else result instanceof UnknownDefaultLocation
-  }
-
-  override string toStringImpl() {
-    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = op.getDef().getAst().toString()
-  }
 }
 
 /**

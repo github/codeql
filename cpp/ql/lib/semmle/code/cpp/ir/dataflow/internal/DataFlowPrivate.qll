@@ -81,6 +81,14 @@ class Node0Impl extends TIRDataFlowNode0 {
   /** Gets the operands corresponding to this node, if any. */
   Operand asOperand() { result = this.(OperandNode0).getOperand() }
 
+  /** Gets the location of this node. */
+  final Location getLocation() { result = this.getLocationImpl() }
+
+  /** INTERNAL: Do not use. */
+  Location getLocationImpl() {
+    none() // overridden by subclasses
+  }
+
   /** INTERNAL: Do not use. */
   string toStringImpl() {
     none() // overridden by subclasses
@@ -131,9 +139,15 @@ abstract class InstructionNode0 extends Node0Impl {
   override DataFlowType getType() { result = getInstructionType(instr, _) }
 
   override string toStringImpl() {
-    // This predicate is overridden in subclasses. This default implementation
-    // does not use `Instruction.toString` because that's expensive to compute.
-    result = instr.getOpcode().toString()
+    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = instr.getAst().toString()
+  }
+
+  override Location getLocationImpl() {
+    if exists(instr.getAst().getLocation())
+    then result = instr.getAst().getLocation()
+    else result instanceof UnknownDefaultLocation
   }
 
   final override predicate isGLValue() { exists(getInstructionType(instr, true)) }
@@ -173,7 +187,17 @@ abstract class OperandNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getOperandType(op, _) }
 
-  override string toStringImpl() { result = op.toString() }
+  override string toStringImpl() {
+    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = op.getDef().getAst().toString()
+  }
+
+  override Location getLocationImpl() {
+    if exists(op.getDef().getAst().getLocation())
+    then result = op.getDef().getAst().getLocation()
+    else result instanceof UnknownDefaultLocation
+  }
 
   final override predicate isGLValue() { exists(getOperandType(op, true)) }
 }
