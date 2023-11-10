@@ -124,7 +124,7 @@ class StrlcatFunction extends TaintFunction, ArrayFunction, SideEffectFunction {
       or
       input.isParameterDeref(1)
     ) and
-    (output.isParameterDeref(0) or output.isReturnValue())
+    output.isParameterDeref(0)
   }
 
   override predicate hasArrayInput(int param) {
