@@ -5,6 +5,8 @@
 set -e
 set -u
 
+trap 'echo "Error at line $LINENO" >&2' ERR
+
 app_name="$(basename "$0")"
 app_dir="$(dirname "$0")"
 
@@ -134,6 +136,10 @@ mkdir -p "${upgradedir}"
 
 cp "${scheme_file}" "${upgradedir}"
 git cat-file blob "${prev_hash}" > "${upgradedir}/old.dbscheme"
+pushd "${upgradedir}" > /dev/null
+echo "// Not used for upgrades, only for better visibility" > dbscheme.diff
+diff -u old.dbscheme $(basename "${scheme_file}") -L old.dbscheme -L new.dbscheme >> dbscheme.diff || true
+popd > /dev/null
 
 create_upgrade_properties "${upgradedir}"
 
@@ -143,6 +149,10 @@ mkdir -p "${downgradedir}"
 
 cp "${scheme_file}" "${downgradedir}/old.dbscheme"
 git cat-file blob "${prev_hash}" > "${downgradedir}/$(basename "${scheme_file}")"
+pushd "${downgradedir}" > /dev/null
+echo "// Not used for downgrades, only for better visibility" > dbscheme.diff
+diff -u old.dbscheme $(basename "${scheme_file}") -L new.dbscheme -L old.dbscheme >> dbscheme.diff || true
+popd > /dev/null
 
 create_upgrade_properties "${downgradedir}"
 
