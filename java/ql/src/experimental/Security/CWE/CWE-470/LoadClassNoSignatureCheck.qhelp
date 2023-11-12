@@ -3,9 +3,10 @@
 
 <overview>
 <p>
-If a vulnerable app obtains the ClassLoader of any app based solely on the package name without checking the package signature
-allow attacker to create application with the targeted package name for "package namespace squatting".
-If the victim install such malicious app in the same device as the vulnerable app, the vulnerable app would load
+If a vulnerable loads classes or code of any app based solely on the package name of the app without 
+first checking the package signature of the app, this could malicious app with the same package name 
+to be loaded through "package namespace squatting".
+If the victim user install such malicious app in the same device as the vulnerable app, the vulnerable app would load
 classes or code from the malicious app, potentially leading to arbitrary code execution.
 </p>
 </overview>
