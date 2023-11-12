@@ -11,7 +11,7 @@
 
 import go
 import ImproperLdapAuthCustomizations
-import ImproperLdapAuth::Flow
+import ImproperLdapAuth::Flow::PathGraph
 
 from ImproperLdapAuth::Flow::PathNode source, ImproperLdapAuth::Flow::PathNode sink
 where ImproperLdapAuth::Flow::flowPath(source, sink)
