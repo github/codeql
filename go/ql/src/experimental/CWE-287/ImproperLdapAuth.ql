@@ -10,10 +10,10 @@
  */
 
 import go
-import ImproperLdapAuth
-import DataFlow::PathGraph
+import ImproperLdapAuthCustomizations
+import ImproperLdapAuth::Flow
 
-from ImproperLdapAuthConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from ImproperLdapAuth::Flow::PathNode source, ImproperLdapAuth::Flow::PathNode sink
+where ImproperLdapAuth::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "LDAP binding password depends on a $@.", source.getNode(),
   "user-provided value"
