@@ -16,7 +16,6 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.PathCreation
 import JFinalController
 import semmle.code.java.security.PathSanitizer
 import InjectFilePathFlow::PathGraph
@@ -26,7 +25,7 @@ private class ActivateModels extends ActiveExperimentalModels {
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
-class PathNormalizeSanitizer extends MethodAccess {
+class PathNormalizeSanitizer extends MethodCall {
   PathNormalizeSanitizer() {
     exists(RefType t |
       t instanceof TypePath or
@@ -49,10 +48,10 @@ class NormalizedPathNode extends DataFlow::Node {
 }
 
 module InjectFilePathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(PathCreation p).getAnInput() and
+    sinkNode(sink, "path-injection") and
     not sink instanceof NormalizedPathNode
   }
 

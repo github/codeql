@@ -51,5 +51,5 @@ viableLambda
 | DelegateFlow.cs:125:9:125:25 | function pointer call | file://:0:0:0:0 | (none) | DelegateFlow.cs:7:17:7:18 | M2 |
 | DelegateFlow.cs:132:9:132:11 | delegate call | DelegateFlow.cs:135:25:135:40 | call to method M19 | DelegateFlow.cs:135:29:135:36 | (...) => ... |
 | DelegateFlow.cs:132:9:132:11 | delegate call | file://:0:0:0:0 | (none) | DelegateFlow.cs:131:17:131:24 | (...) => ... |
-| file://:0:0:0:0 | [summary] call to parameter position 0 of Lazy in Lazy | DelegateFlow.cs:105:9:105:24 | object creation of type Lazy<Int32> | DelegateFlow.cs:104:23:104:30 | (...) => ... |
-| file://:0:0:0:0 | [summary] call to parameter position 0 of Lazy in Lazy | DelegateFlow.cs:107:9:107:24 | object creation of type Lazy<Int32> | DelegateFlow.cs:106:13:106:20 | (...) => ... |
+| file://:0:0:0:0 | [summary] call to [summary param] position 0 in Lazy in Lazy | DelegateFlow.cs:105:9:105:24 | object creation of type Lazy<Int32> | DelegateFlow.cs:104:23:104:30 | (...) => ... |
+| file://:0:0:0:0 | [summary] call to [summary param] position 0 in Lazy in Lazy | DelegateFlow.cs:107:9:107:24 | object creation of type Lazy<Int32> | DelegateFlow.cs:106:13:106:20 | (...) => ... |

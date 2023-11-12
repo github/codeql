@@ -3,8 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["jakarta.ws.rs.core", "Response", True, "seeOther", "", "", "Argument[0]", "url-redirect", "manual"]
-      - ["jakarta.ws.rs.core", "Response", True, "temporaryRedirect", "", "", "Argument[0]", "url-redirect", "manual"]
+      - ["jakarta.ws.rs.core", "Response", True, "seeOther", "", "", "Argument[0]", "url-redirection", "manual"]
+      - ["jakarta.ws.rs.core", "Response", True, "temporaryRedirect", "", "", "Argument[0]", "url-redirection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

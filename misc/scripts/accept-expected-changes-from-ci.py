@@ -114,7 +114,7 @@ def make_patches_from_log_file(log_file_lines) -> List[Patch]:
             while True:
                 next_line = parse_log_line(next(lines))
                 # it can be the case that
-                if next_line[0] in (" ", "-", "+", "@"):
+                if next_line and next_line[0] in (" ", "-", "+", "@"):
                     lines_changed.append(next_line)
                 if "FAILED" in next_line:
                     break
@@ -336,7 +336,10 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
         check_runs = json.loads(subprocess.check_output(["gh", "api", "--paginate", check_failure_url]).decode("utf-8"))
         for check_run in check_runs["check_runs"]:
             if check_run["conclusion"] == "failure":
-                m = re.fullmatch(r"^https://github\.com/([^/]+/[^/]+)/actions/runs/(\d+)(?:/jobs/(\d+))?$", check_run["details_url"])
+                m = re.fullmatch(r"^https://github\.com/([^/]+/[^/]+)/actions/runs/(\d+)(?:/job/(\d+))?$", check_run["details_url"])
+                if not m:
+                    LOGGER.error(f"Could not parse details URL for {check_run['name']}: '{check_run['details_url']}'")
+                    continue
                 nwo = m.group(1)
                 run_id = m.group(2)
                 jobs_url = f"https://api.github.com/repos/{nwo}/actions/runs/{run_id}/jobs"

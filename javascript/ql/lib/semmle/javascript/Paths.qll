@@ -380,6 +380,25 @@ private class PathExprString extends PathString {
   }
 }
 
+pragma[nomagic]
+private DataFlow::Node getAPathExprAlias(PathExpr expr) {
+  result.getImmediatePredecessor().asExpr() = expr
+  or
+  result.getImmediatePredecessor() = getAPathExprAlias(expr)
+}
+
+private class PathExprFromAlias extends PathExpr {
+  private PathExpr other;
+
+  PathExprFromAlias() { this = getAPathExprAlias(other).asExpr() }
+
+  override string getValue() { result = other.getValue() }
+
+  override Folder getAdditionalSearchRoot(int priority) {
+    result = other.getAdditionalSearchRoot(priority)
+  }
+}
+
 /**
  * A path expression of the form `p + q`, where both `p` and `q`
  * are path expressions.
@@ -413,6 +432,9 @@ private class ConcatPath extends PathExpr {
  * Examples include arguments to the CommonJS `require` function or AMD dependency arguments.
  */
 abstract class PathExprCandidate extends Expr {
+  pragma[nomagic]
+  private Expr getAPart1() { result = this or result = this.getAPart().getAChildExpr() }
+
   /**
    * Gets an expression that is nested inside this expression.
    *
@@ -421,5 +443,5 @@ abstract class PathExprCandidate extends Expr {
    * `ConstantString`s).
    */
   pragma[nomagic]
-  Expr getAPart() { result = this or result = this.getAPart().getAChildExpr() }
+  Expr getAPart() { result = this.getAPart1().flow().getImmediatePredecessor*().asExpr() }
 }

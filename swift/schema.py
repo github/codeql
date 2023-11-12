@@ -47,6 +47,7 @@ class UnspecifiedElement(ErrorElement):
     property: string
     index: optional[int]
     error: string
+    children: list["AstNode"] | child | desc("These will be present only in certain downgraded databases.")
 
 class Comment(Locatable):
     text: string
@@ -73,21 +74,34 @@ class AstNode(Locatable):
     pass
 
 @group("type")
+@ql.hideable
 class Type(Element):
     name: string
-    canonical_type: "Type"
+    canonical_type: "Type" | desc("""
+        This is the unique type we get after resolving aliases and desugaring. For example, given
+        ```
+        typealias MyInt = Int
+        ```
+        then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
+    """)
 
 @group("decl")
 class Decl(AstNode):
     module: "ModuleDecl"
-    members: list["Decl"] | child
+    members: list["Decl"] | child | desc("""
+        Prefer to use more specific methods (such as `EnumDecl.getEnumElement`) rather than relying
+        on the order of members given by `getMember`. In some cases the order of members may not
+        align with expectations, and could change in future releases.
+    """)
 
 @group("expr")
+@ql.hideable
 class Expr(AstNode):
     """The base class for all expressions in Swift."""
     type: optional[Type]
 
 @group("pattern")
+@ql.hideable
 class Pattern(AstNode):
     pass
 
@@ -99,6 +113,7 @@ class Stmt(AstNode):
 class GenericContext(Element):
     generic_type_params: list["GenericTypeParamDecl"] | child
 
+@qltest.test_with("EnumDecl")
 class EnumCaseDecl(Decl):
     elements: list["EnumElementDecl"]
 
@@ -228,7 +243,8 @@ class ParamDecl(VarDecl):
     """)
 
 class Callable(Element):
-    name: optional[string] | doc("name of this callable")
+    name: optional[string] | doc("name of this callable") | desc("The name includes argument "
+        "labels of the callable, for example `myFunction(arg:)`.")
     self_param: optional[ParamDecl] | child
     params: list[ParamDecl] | child
     body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
@@ -238,6 +254,7 @@ class Callable(Element):
 class Function(GenericContext, ValueDecl, Callable):
     pass
 
+@qltest.test_with("EnumDecl")
 class EnumElementDecl(ValueDecl):
     name: string
     params: list[ParamDecl] | child
@@ -253,7 +270,10 @@ class PrefixOperatorDecl(OperatorDecl):
 
 class TypeDecl(ValueDecl):
     name: string
-    base_types: list[Type]
+    inherited_types: list[Type] | desc("""
+        This only returns the types effectively appearing in the declaration. In particular it
+        will not resolve `TypeAliasDecl`s or consider base types added by extensions.
+    """)
 
 class AbstractTypeParamDecl(TypeDecl):
     pass
@@ -391,7 +411,10 @@ class CapturedDecl(Decl):
 
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
-    closure_body: "ExplicitClosureExpr" | child
+    variables: list[VarDecl] | child | synth | desc("""
+        These are the variables introduced by this capture in the closure's scope, not the captured ones.
+    """)
+    closure_body: "ClosureExpr" | child
 
 class CollectionExpr(Expr):
     pass
@@ -692,8 +715,6 @@ class InjectIntoOptionalExpr(ImplicitConversionExpr):
 
 class InterpolatedStringLiteralExpr(LiteralExpr):
     interpolation_expr: optional[OpaqueValueExpr]
-    interpolation_count_expr: optional[Expr] | child
-    literal_capacity_expr: optional[Expr] | child
     appending_expr: optional[TapExpr] | child
 
 class LinearFunctionExpr(ImplicitConversionExpr):
@@ -856,7 +877,7 @@ class IsPattern(Pattern):
     sub_pattern: optional[Pattern] | child
 
 class NamedPattern(Pattern):
-    name: string
+    var_decl: VarDecl
 
 class OptionalSomePattern(Pattern):
     sub_pattern: Pattern | child
@@ -872,6 +893,7 @@ class TypedPattern(Pattern):
     type_repr: optional["TypeRepr"] | child
 
 @group("stmt")
+@qltest.test_with("SwitchStmt")
 class CaseLabelItem(AstNode):
     pattern: Pattern | child
     guard: optional[Expr] | child
@@ -929,16 +951,18 @@ class StmtCondition(AstNode):
     elements: list[ConditionElement] | child
 
 class BraceStmt(Stmt):
+    variables: list[VarDecl] | synth | child | doc("variable declared in the scope of this brace statement")
     elements: list[AstNode] | child
 
 class BreakStmt(Stmt):
     target_name: optional[string]
     target: optional[Stmt]
 
+@qltest.test_with("SwitchStmt")
 class CaseStmt(Stmt):
-    body: Stmt | child
     labels: list[CaseLabelItem] | child
-    variables: list[VarDecl]
+    variables: list[VarDecl] | child
+    body: Stmt | child
 
 class ContinueStmt(Stmt):
     target_name: optional[string]
@@ -979,8 +1003,9 @@ class DoStmt(LabeledStmt):
 
 class ForEachStmt(LabeledStmt):
     pattern: Pattern | child
-    sequence: Expr | child
     where: optional[Expr] | child
+    iteratorVar: optional[PatternBindingDecl] | child
+    nextCall: optional[Expr] | child
     body: BraceStmt | child
 
 class LabeledConditionalStmt(LabeledStmt):
@@ -1214,3 +1239,10 @@ class ParameterizedProtocolType(Type):
 
 class AbiSafeConversionExpr(ImplicitConversionExpr):
     pass
+
+
+class SingleValueStmtExpr(Expr):
+    """
+    An expression that wraps a statement which produces a single value.
+    """
+    stmt: Stmt | child

@@ -21,6 +21,8 @@ module Raw {
   class Callable extends @callable, Element {
     /**
      * Gets the name of this callable, if it exists.
+     *
+     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
      */
     string getName() { callable_names(this, result) }
 
@@ -269,6 +271,13 @@ module Raw {
      * Gets the error of this unspecified element.
      */
     string getError() { unspecified_elements(this, _, result) }
+
+    /**
+     * Gets the `index`th child of this unspecified element (0-based).
+     *
+     * These will be present only in certain downgraded databases.
+     */
+    AstNode getChild(int index) { unspecified_element_children(this, index, result) }
   }
 
   /**
@@ -310,6 +319,10 @@ module Raw {
 
     /**
      * Gets the `index`th member of this declaration (0-based).
+     *
+     * Prefer to use more specific methods (such as `EnumDecl.getEnumElement`) rather than relying
+     * on the order of members given by `getMember`. In some cases the order of members may not
+     * align with expectations, and could change in future releases.
      */
     Decl getMember(int index) { decl_members(this, index, result) }
   }
@@ -568,9 +581,12 @@ module Raw {
     string getName() { type_decls(this, result) }
 
     /**
-     * Gets the `index`th base type of this type declaration (0-based).
+     * Gets the `index`th inherited type of this type declaration (0-based).
+     *
+     * This only returns the types effectively appearing in the declaration. In particular it
+     * will not resolve `TypeAliasDecl`s or consider base types added by extensions.
      */
-    Type getBaseType(int index) { type_decl_base_types(this, index, result) }
+    Type getInheritedType(int index) { type_decl_inherited_types(this, index, result) }
   }
 
   /**
@@ -1090,7 +1106,7 @@ module Raw {
     /**
      * Gets the closure body of this capture list expression.
      */
-    ExplicitClosureExpr getClosureBody() { capture_list_exprs(this, result) }
+    ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
   }
 
   /**
@@ -1557,6 +1573,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that wraps a statement which produces a single value.
+   */
+  class SingleValueStmtExpr extends @single_value_stmt_expr, Expr {
+    override string toString() { result = "SingleValueStmtExpr" }
+
+    /**
+     * Gets the statement of this single value statement expression.
+     */
+    Stmt getStmt() { single_value_stmt_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class SuperRefExpr extends @super_ref_expr, Expr {
     override string toString() { result = "SuperRefExpr" }
@@ -1972,20 +2001,6 @@ module Raw {
      */
     OpaqueValueExpr getInterpolationExpr() {
       interpolated_string_literal_expr_interpolation_exprs(this, result)
-    }
-
-    /**
-     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getInterpolationCountExpr() {
-      interpolated_string_literal_expr_interpolation_count_exprs(this, result)
-    }
-
-    /**
-     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getLiteralCapacityExpr() {
-      interpolated_string_literal_expr_literal_capacity_exprs(this, result)
     }
 
     /**
@@ -2452,9 +2467,9 @@ module Raw {
     override string toString() { result = "NamedPattern" }
 
     /**
-     * Gets the name of this named pattern.
+     * Gets the variable declaration of this named pattern.
      */
-    string getName() { named_patterns(this, result) }
+    VarDecl getVarDecl() { named_patterns(this, result) }
   }
 
   /**
@@ -2607,11 +2622,6 @@ module Raw {
     override string toString() { result = "CaseStmt" }
 
     /**
-     * Gets the body of this case statement.
-     */
-    Stmt getBody() { case_stmts(this, result) }
-
-    /**
      * Gets the `index`th label of this case statement (0-based).
      */
     CaseLabelItem getLabel(int index) { case_stmt_labels(this, index, result) }
@@ -2620,6 +2630,11 @@ module Raw {
      * Gets the `index`th variable of this case statement (0-based).
      */
     VarDecl getVariable(int index) { case_stmt_variables(this, index, result) }
+
+    /**
+     * Gets the body of this case statement.
+     */
+    Stmt getBody() { case_stmts(this, result) }
   }
 
   /**
@@ -2776,12 +2791,7 @@ module Raw {
     /**
      * Gets the pattern of this for each statement.
      */
-    Pattern getPattern() { for_each_stmts(this, result, _, _) }
-
-    /**
-     * Gets the sequence of this for each statement.
-     */
-    Expr getSequence() { for_each_stmts(this, _, result, _) }
+    Pattern getPattern() { for_each_stmts(this, result, _) }
 
     /**
      * Gets the where of this for each statement, if it exists.
@@ -2789,9 +2799,19 @@ module Raw {
     Expr getWhere() { for_each_stmt_wheres(this, result) }
 
     /**
+     * Gets the iteratorvar of this for each statement, if it exists.
+     */
+    PatternBindingDecl getIteratorVar() { for_each_stmt_iterator_vars(this, result) }
+
+    /**
+     * Gets the nextcall of this for each statement, if it exists.
+     */
+    Expr getNextCall() { for_each_stmt_next_calls(this, result) }
+
+    /**
      * Gets the body of this for each statement.
      */
-    BraceStmt getBody() { for_each_stmts(this, _, _, result) }
+    BraceStmt getBody() { for_each_stmts(this, _, result) }
   }
 
   /**
@@ -2890,6 +2910,12 @@ module Raw {
 
     /**
      * Gets the canonical type of this type.
+     *
+     * This is the unique type we get after resolving aliases and desugaring. For example, given
+     * ```
+     * typealias MyInt = Int
+     * ```
+     * then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
      */
     Type getCanonicalType() { types(this, _, result) }
   }

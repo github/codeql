@@ -4,3 +4,4 @@ groups:
   - examples
 dependencies:
   codeql/cpp-all: ${workspace}
+warnOnImplicitThis: true

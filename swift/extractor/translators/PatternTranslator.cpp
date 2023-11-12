@@ -4,7 +4,7 @@ namespace codeql {
 
 codeql::NamedPattern PatternTranslator::translateNamedPattern(const swift::NamedPattern& pattern) {
   auto entry = dispatcher.createEntry(pattern);
-  entry.name = pattern.getNameStr().str();
+  entry.var_decl = dispatcher.fetchLabel(pattern.getDecl());
   return entry;
 }
 
@@ -59,7 +59,11 @@ codeql::IsPattern PatternTranslator::translateIsPattern(const swift::IsPattern& 
 
 codeql::ExprPattern PatternTranslator::translateExprPattern(const swift::ExprPattern& pattern) {
   auto entry = dispatcher.createEntry(pattern);
-  entry.sub_expr = dispatcher.fetchLabel(pattern.getSubExpr());
+  if (auto match = pattern.getMatchExpr()) {
+    entry.sub_expr = dispatcher.fetchLabel(match);
+  } else {
+    entry.sub_expr = dispatcher.fetchLabel(pattern.getSubExpr());
+  }
   return entry;
 }
 

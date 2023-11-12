@@ -577,9 +577,6 @@ private Overlap getVariableMemoryLocationOverlap(
  */
 predicate canReuseSsaForOldResult(Instruction instr) { OldSsa::canReuseSsaForMemoryResult(instr) }
 
-/** DEPRECATED: Alias for canReuseSsaForOldResult */
-deprecated predicate canReuseSSAForOldResult = canReuseSsaForOldResult/1;
-
 bindingset[result, b]
 private boolean unbindBool(boolean b) { result != b.booleanNot() }
 

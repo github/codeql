@@ -1,2 +1,5 @@
-| Foo.qll:2:21:2:25 | ClasslessPredicate dead1 | This code is never used, and it's not publicly exported. |
-| Foo.qll:6:13:6:17 | ClasslessPredicate dead2 | This code is never used, and it's not publicly exported. |
+| Foo.qll:4:21:4:25 | ClasslessPredicate dead1 | This code is never used, and it's not publicly exported. |
+| Foo.qll:8:13:8:17 | ClasslessPredicate dead2 | This code is never used, and it's not publicly exported. |
+| Foo.qll:46:16:46:21 | Module Input2 | This code is never used, and it's not publicly exported. |
+| Foo.qll:56:16:56:17 | Module M2 | This code is never used, and it's not publicly exported. |
+| Foo.qll:68:15:68:20 | Class CImpl2 | This code is never used, and it's not publicly exported. |

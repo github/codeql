@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["jakarta.ws.rs.client", "Client", True, "target", "", "", "Argument[0]", "open-url", "manual"]
+      - ["jakarta.ws.rs.client", "Client", True, "target", "", "", "Argument[0]", "request-forgery", "manual"]

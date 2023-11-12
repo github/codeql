@@ -77,6 +77,3 @@ class PrettyJsonTaintStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
-
-/** DEPRECATED: Alias for PrettyJsonTaintStep */
-deprecated class PrettyJSONTaintStep = PrettyJsonTaintStep;

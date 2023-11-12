@@ -1,0 +1,42 @@
+{
+  "markdownMessage": "1 `go.work` file was found:\n\n`modules/go.work`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/go-work-found",
+    "name": "`go.work` file found"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "2 `go.mod` files were found:\n\n`modules/subdir1/go.mod`, `modules/subdir2/go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/multiple-go-mod-found-not-nested",
+    "name": "Multiple `go.mod` files found, not all nested under one root `go.mod` file"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "2 packages could not be found:\n\n`subdir1/subsubdir1`, `subdir2/subsubdir2`.\n\nDefinitions in those packages may not be recognized by CodeQL, and files that use them may only be partially analyzed.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+  "severity": "warning",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Some packages could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

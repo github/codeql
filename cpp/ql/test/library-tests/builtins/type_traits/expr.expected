@@ -121,6 +121,10 @@
 | clang.cpp:87:25:87:51 | volatile int |  | <none> |
 | clang.cpp:88:25:88:42 | __is_volatile | int | 0 |
 | clang.cpp:88:25:88:42 | int |  | <none> |
+| clang.cpp:94:24:94:40 | __is_trivial | int | 1 |
+| clang.cpp:94:24:94:40 | int |  | <none> |
+| clang.cpp:95:24:95:39 | S2 |  | <none> |
+| clang.cpp:95:24:95:39 | __is_trivial | S2 | 0 |
 | file://:0:0:0:0 | 0 |  | 0 |
 | file://:0:0:0:0 | 1 |  | 1 |
 | file://:0:0:0:0 | 2 |  | 2 |

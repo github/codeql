@@ -8,7 +8,7 @@ private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.frameworks.system.linq.Expressions
-import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
@@ -65,9 +65,9 @@ class TargetApiSpecific extends DotNet::Callable {
   }
 }
 
-predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
+predicate asPartialModel = ExternalFlow::asPartialModel/1;
 
-predicate asPartialNeutralModel = DataFlowPrivate::Csv::asPartialNeutralModel/1;
+predicate asPartialNeutralModel = ExternalFlow::asPartialNeutralModel/1;
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.

@@ -37,12 +37,12 @@ generics.kt:
 #   25|                 1: [TypeAccess] Integer
 #   25|               0: [IntegerLiteral] 1
 #   26|         1: [ExprStmt] <Expr>;
-#   26|           0: [MethodAccess] f1(...)
+#   26|           0: [MethodCall] f1(...)
 #   26|             -1: [VarAccess] c1
 #   26|             0: [IntegerLiteral] 2
 #   27|         2: [LocalVariableDeclStmt] var ...;
 #   27|           1: [LocalVariableDeclExpr] x1
-#   27|             0: [MethodAccess] f2(...)
+#   27|             0: [MethodCall] f2(...)
 #   27|               -2: [TypeAccess] String
 #   27|               -1: [VarAccess] c1
 #   27|               0: [StringLiteral] ""
@@ -54,12 +54,12 @@ generics.kt:
 #   28|                 1: [TypeAccess] Integer
 #   28|               0: [StringLiteral] ""
 #   29|         4: [ExprStmt] <Expr>;
-#   29|           0: [MethodAccess] f1(...)
+#   29|           0: [MethodCall] f1(...)
 #   29|             -1: [VarAccess] c2
 #   29|             0: [StringLiteral] "a"
 #   30|         5: [LocalVariableDeclStmt] var ...;
 #   30|           1: [LocalVariableDeclExpr] x2
-#   30|             0: [MethodAccess] f2(...)
+#   30|             0: [MethodCall] f2(...)
 #   30|               -2: [TypeAccess] Integer
 #   30|               -1: [VarAccess] c2
 #   30|               0: [IntegerLiteral] 3
@@ -68,7 +68,7 @@ generics.kt:
 #   31|             0: [ClassInstanceExpr] new C2(...)
 #   31|               -3: [TypeAccess] C2
 #   32|         7: [ExprStmt] <Expr>;
-#   32|           0: [MethodAccess] f4(...)
+#   32|           0: [MethodCall] f4(...)
 #   32|             -2: [TypeAccess] Integer
 #   32|             -1: [VarAccess] c3
 #   32|             0: [IntegerLiteral] 5
@@ -250,7 +250,7 @@ generics.kt:
 #   59|                   0: [TypeAccess] T4
 #   59|               5: [BlockStmt] { ... }
 #   61|         1: [ExprStmt] <Expr>;
-#   61|           0: [MethodAccess] fn2(...)
+#   61|           0: [MethodCall] fn2(...)
 #   61|             -2: [TypeAccess] String
 #   61|             -1: [ClassInstanceExpr] new Local<Integer>(...)
 #   61|               -3: [TypeAccess] Local<Integer>

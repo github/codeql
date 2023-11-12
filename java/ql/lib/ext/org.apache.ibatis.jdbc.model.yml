@@ -3,12 +3,12 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "delete", "(String,Object[])", "", "Argument[0]", "sql", "manual"]
-      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "insert", "(String,Object[])", "", "Argument[0]", "sql", "manual"]
-      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "run", "(String)", "", "Argument[0]", "sql", "manual"]
-      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "selectAll", "(String,Object[])", "", "Argument[0]", "sql", "manual"]
-      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "selectOne", "(String,Object[])", "", "Argument[0]", "sql", "manual"]
-      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "update", "(String,Object[])", "", "Argument[0]", "sql", "manual"]
+      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "delete", "(String,Object[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "insert", "(String,Object[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "run", "(String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "selectAll", "(String,Object[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "selectOne", "(String,Object[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.apache.ibatis.jdbc", "SqlRunner", False, "update", "(String,Object[])", "", "Argument[0]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

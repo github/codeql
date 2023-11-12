@@ -198,7 +198,7 @@ class MainModulePath extends PathExpr, @json_string {
   }
 
   /** DEPRECATED: Alias for getPackageJson */
-  deprecated PackageJSON getPackageJSON() { result = this.getPackageJson() }
+  deprecated PackageJson getPackageJSON() { result = this.getPackageJson() }
 
   override string getValue() { result = this.(JsonString).getValue() }
 
@@ -259,7 +259,7 @@ private class FilesPath extends PathExpr, @json_string {
   PackageJson getPackageJson() { result = pkg }
 
   /** DEPRECATED: Alias for getPackageJson */
-  deprecated PackageJSON getPackageJSON() { result = this.getPackageJson() }
+  deprecated PackageJson getPackageJSON() { result = this.getPackageJson() }
 
   override string getValue() { result = this.(JsonString).getValue() }
 

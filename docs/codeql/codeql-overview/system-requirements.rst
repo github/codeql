@@ -28,7 +28,7 @@ For extraction of compiled languages (C/C++, C#, Go, Java) and Ruby on Linux:
 
 For TypeScript extraction on all platforms:
 
-- Node.js must be installed and available on the ``PATH`` as ``node``.
+- Node.js 14 or higher must be installed and available on the ``PATH`` as ``node``.
 
 For Python extraction:
 

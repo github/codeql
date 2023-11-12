@@ -9,57 +9,57 @@ const app = Express();
 app.use(BodyParser.json());
 
 const Document = Mongoose.model('Document', {
-    title: {
-        type: String,
-        unique: true
-    },
-    type: String
+	title: {
+		type: String,
+		unique: true
+	},
+	type: String
 });
 
 app.post('/documents/find', (req, res) => {
-    const query = {};
-    query.title = req.body.title;
+	const query = {};
+	query.title = req.body.title;
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.aggregate([query]);
+	// NOT OK: query is tainted by user-provided object value
+	Document.aggregate([query]);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.count(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.count(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.deleteMany(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.deleteMany(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.deleteOne(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.deleteOne(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.distinct('type', query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.distinct('type', query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.find(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.find(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.findOne(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.findOne(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.findOneAndDelete(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.findOneAndDelete(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.findOneAndRemove(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.findOneAndRemove(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.findOneAndUpdate(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.findOneAndUpdate(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.replaceOne(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.replaceOne(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.update(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.update(query);
 
-    // NOT OK: query is tainted by user-provided object value
-    Document.updateMany(query);
+	// NOT OK: query is tainted by user-provided object value
+	Document.updateMany(query);
 
-    // NOT OK: query is tainted by user-provided object value
+	// NOT OK: query is tainted by user-provided object value
 	Document.updateOne(query).then(X);
 
 	Document.findByIdAndUpdate(X, query, function(){}); // NOT OK
@@ -68,8 +68,8 @@ app.post('/documents/find', (req, res) => {
 		.and(query, function(){}) // NOT OK
 	;
 
-    Document.where(query)	// NOT OK - `.where()` on a Model. 
-        .where(query)	// NOT OK - `.where()` on a Query. 
+	Document.where(query)	// NOT OK - `.where()` on a Model. 
+		.where(query)	// NOT OK - `.where()` on a Query. 
 		.and(query) // NOT OK
 		.or(query) // NOT OK
 		.distinct(X, query) // NOT OK
@@ -97,14 +97,14 @@ app.post('/documents/find', (req, res) => {
 	Document.find(X).then(Y, (err) => err.count(query)); // OK
 
 	Document.count(X, (err, res) => res.count(query)); // OK (res is a number)
-    
+	
 	function innocent(X, Y, query) { // To detect if API-graphs were used incorrectly.
 		return new Mongoose.Query("constant", "constant", "constant");
 	}
 	new innocent(X, Y, query);
 
 	function getQueryConstructor() {
-		return Mongoose.Query;
+	return Mongoose.Query;
 	}
 
 	var C = getQueryConstructor();
@@ -129,4 +129,10 @@ app.post('/documents/find', (req, res) => {
 	Document.updateOne(cond, Y); // NOT OK
 	Document.find({ _id: id }); // NOT OK
 	Document.find({ _id: { $eq: id } }); // OK
+
+	if (Mongoose.Types.ObjectId.isValid(query)) {
+		Document.findByIdAndUpdate(query, X, function(){}); // OK - is sanitized
+	} else {
+		Document.findByIdAndUpdate(query, X, function(){}); // NOT OK
+	}
 });

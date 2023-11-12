@@ -61,13 +61,13 @@ module Random {
     RandomSource() {
       this.getExpr() =
         any(MethodCall mc |
-          mc.getQualifier().getType().(RefType).hasQualifiedName("System", "Random")
+          mc.getQualifier().getType().(RefType).hasFullyQualifiedName("System", "Random")
           or
           // by using `% 87` on a `byte`, `System.Web.Security.Membership.GeneratePassword` has a bias
           mc.getQualifier()
               .getType()
               .(RefType)
-              .hasQualifiedName("System.Web.Security", "Membership") and
+              .hasFullyQualifiedName("System.Web.Security", "Membership") and
           mc.getTarget().hasName("GeneratePassword")
         )
     }

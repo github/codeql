@@ -134,7 +134,7 @@ void pointer_test() {
 	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast,ir
+	sink(*p3); // $ SPURIOUS: ast
 }
 
 // --- return values ---
@@ -693,4 +693,55 @@ void test_argument_source_field_to_obj() {
 	sink(s); // $ SPURIOUS: ast,ir
 	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
+}
+
+namespace strings {
+	void test_write_to_read_then_incr_then_deref() {
+		char* s = source();
+		char* p;
+		*p++ = *s;
+		sink(p); // $ ast ir
+	}
+}
+
+char * strncpy (char *, const char *, unsigned long);
+
+void test_strncpy(char* d, char* s) {
+	argument_source(s);
+	strncpy(d, s, 16);
+	sink(d); // $ ast ir
+}
+
+char* indirect_source();
+
+void test_strtok_indirect() {
+	char *source = indirect_source();
+	const char* delim = ",.-;:_";
+	char* tokenized = strtok(source, delim);
+	sink(*tokenized); // $ ir MISSING: ast
+	sink(*delim);
+}
+
+long int strtol(const char*, char**, int);
+
+void test_strtol(char *source) {
+	char* endptr = nullptr;
+	long l = strtol(source, &endptr, 10);
+	sink(l); // $ ast,ir
+	sink(endptr); // $ ast,ir
+	sink(*endptr); // $ ast,ir
+}
+
+void *realloc(void *, size_t);
+
+void test_realloc() {
+	char *source = indirect_source();
+	char *dest = (char*)realloc(source, 16);
+	sink(dest); // $ ir MISSING: ast
+}
+
+void test_realloc_2_indirections(int **buffer) {
+  **buffer = source();
+  buffer = (int**)realloc(buffer, 16);
+  sink(**buffer); // $ ir MISSING: ast
 }

@@ -55,6 +55,7 @@ private newtype TOpcode =
   TVariableAddress() or
   TFieldAddress() or
   TFunctionAddress() or
+  TVirtualDeleteFunctionAddress() or
   TElementsAddress() or
   TConstant() or
   TStringConstant() or
@@ -885,6 +886,15 @@ module Opcode {
    */
   class FunctionAddress extends Opcode, TFunctionAddress {
     final override string toString() { result = "FunctionAddress" }
+  }
+
+  /**
+   * The `Opcode` for a `VirtualDeleteFunctionAddress`.
+   *
+   * See the `VirtualDeleteFunctionAddressInstruction` documentation for more details.
+   */
+  class VirtualDeleteFunctionAddress extends Opcode, TVirtualDeleteFunctionAddress {
+    final override string toString() { result = "VirtualDeleteFunctionAddress" }
   }
 
   /**

@@ -26,21 +26,12 @@ class InsecureAlgoLiteral extends ShortStringLiteral {
   }
 }
 
-private predicate objectToString(MethodAccess ma) {
+private predicate objectToString(MethodCall ma) {
   exists(ToStringMethod m |
     m = ma.getMethod() and
     m.getDeclaringType() instanceof TypeObject and
     DataFlow::exprNode(ma.getQualifier()).getTypeBound().getErasure() instanceof TypeObject
   )
-}
-
-private class StringContainer extends RefType {
-  StringContainer() {
-    this instanceof TypeString or
-    this instanceof StringBuildingType or
-    this.hasQualifiedName("java.util", "StringTokenizer") or
-    this.(Array).getComponentType() instanceof StringContainer
-  }
 }
 
 /**
@@ -53,7 +44,7 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node n) {
     objectToString(n.asExpr()) or
-    not n.getType().getErasure() instanceof StringContainer
+    n.getType().getErasure() instanceof TypeObject
   }
 }
 

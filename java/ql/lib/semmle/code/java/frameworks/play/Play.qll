@@ -126,7 +126,7 @@ class PlayMvcHttpRequestHeaderMethods extends Method {
   /**
    * Gets a reference to the `getQueryString` method.
    */
-  MethodAccess getAQueryStringAccess() {
+  MethodCall getAQueryStringAccess() {
     this.hasName("getQueryString") and result = this.getAReference()
   }
 }
@@ -140,10 +140,10 @@ class PlayMvcResultsMethods extends Method {
   /**
    * Gets a reference to the `play.mvc.Results.ok` method.
    */
-  MethodAccess getAnOkAccess() { this.hasName("ok") and result = this.getAReference() }
+  MethodCall getAnOkAccess() { this.hasName("ok") and result = this.getAReference() }
 
   /**
    * Gets a reference to the `play.mvc.Results.redirect` method.
    */
-  MethodAccess getARedirectAccess() { this.hasName("redirect") and result = this.getAReference() }
+  MethodCall getARedirectAccess() { this.hasName("redirect") and result = this.getAReference() }
 }

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
-using Semmle.Util.Logging;
 using Mono.Unix;
+using Semmle.Util.Logging;
 
 namespace Semmle.Util
 {

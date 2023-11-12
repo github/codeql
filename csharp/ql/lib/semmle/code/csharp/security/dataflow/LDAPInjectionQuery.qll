@@ -8,6 +8,7 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.frameworks.system.DirectoryServices
 private import semmle.code.csharp.frameworks.system.directoryservices.Protocols
 private import semmle.code.csharp.security.Sanitizers
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * A data flow source for unvalidated user input that is used to construct LDAP queries.
@@ -67,6 +68,11 @@ module LdapInjection = TaintTracking::Global<LdapInjectionConfig>;
 
 /** A source of remote user input. */
 class RemoteSource extends Source instanceof RemoteFlowSource { }
+
+/** LDAP sinks defined through Models as Data. */
+private class ExternalLdapExprSink extends Sink {
+  ExternalLdapExprSink() { sinkNode(this, "ldap-injection") }
+}
 
 /**
  * An argument that sets the `Path` property of a `DirectoryEntry` object that is a sink for LDAP
@@ -148,9 +154,6 @@ class LdapEncodeSanitizer extends Sanitizer {
     this.getExpr().(MethodCall).getTarget().getName().regexpMatch("(?i)LDAP.*Encode.*")
   }
 }
-
-/** DEPRECATED: Alias for LdapEncodeSanitizer */
-deprecated class LDAPEncodeSanitizer = LdapEncodeSanitizer;
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

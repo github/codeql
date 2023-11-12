@@ -1,3 +1,89 @@
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* Added modeling for importing `express-rate-limit` using a named import.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Added the `AmdModuleDefinition::Range` class, making it possible to define custom aliases for the AMD `define` function.
+
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+### Bug Fixes
+
+* Fixed an extractor crash that could occur in projects containing TypeScript files larger than 10 MB.
+
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* Files larger than 10 MB are no longer be extracted or analyzed.
+* Imports can now be resolved in more cases, where a non-constant string expression is passed to a `require()` call.
+
+### Bug Fixes
+
+* Fixed an extractor crash that would occur in rare cases when a TypeScript file contains a self-referential namespace alias.
+
+## 0.7.3
+
+No user-facing changes.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* The `fs/promises` package is now recognised as an alias for `require('fs').promises`.
+* The `js/path-injection` query can now track taint through calls to `path.join()` with a spread argument, such as `path.join(baseDir, ...args)`.
+
+## 0.7.0
+
+### Bug Fixes
+
+* The query "Arbitrary file write during zip extraction ("Zip Slip")" (`js/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* Fixed an issue where calls to a method named `search` would lead to false positive alerts related to regular expressions.
+  This happened when the call was incorrectly seen as a call to `String.prototype.search`, since this function converts its first argument
+  to a regular expression. The analysis is now more restrictive about when to treat `search` calls as regular expression sinks.
+
+## 0.6.2
+
+### Major Analysis Improvements
+
+* Added taint sources from the `@actions/core` and `@actions/github` packages.
+* Added command-injection sinks from the `@actions/exec` package.
+
+### Minor Analysis Improvements
+
+* The `js/indirect-command-line-injection` query no longer flags command arguments that cannot be interpreted as a shell string.
+* The `js/unsafe-deserialization` query no longer flags deserialization through the `js-yaml` library, except
+  when it is used with an unsafe schema.
+* The Forge module in `CryptoLibraries.qll` now correctly classifies SHA-512/224,
+  SHA-512/256, and SHA-512/384 hashes used in message digests as NonKeyCiphers.
+
+### Bug Fixes
+
+* Fixed a spurious diagnostic warning about comments in JSON files being illegal.
+  Comments in JSON files are in fact fully supported, and the diagnostic message was misleading.
+
 ## 0.6.1
 
 ### Minor Analysis Improvements

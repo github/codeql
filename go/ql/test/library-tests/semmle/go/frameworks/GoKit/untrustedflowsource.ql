@@ -1,13 +1,10 @@
 import go
-import semmle.go.frameworks.GoKit
 import TestUtilities.InlineExpectationsTest
 
-class UntrustedFlowSourceTest extends InlineExpectationsTest {
-  UntrustedFlowSourceTest() { this = "untrustedflowsourcetest" }
+module UntrustedFlowSourceTest implements TestSig {
+  string getARelevantTag() { result = "source" }
 
-  override string getARelevantTag() { result = "source" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(UntrustedFlowSource source |
       source
           .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -18,3 +15,5 @@ class UntrustedFlowSourceTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<UntrustedFlowSourceTest>

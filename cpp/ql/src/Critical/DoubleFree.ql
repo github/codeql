@@ -2,7 +2,7 @@
  * @name Potential double free
  * @description Freeing a resource more than once can lead to undefined behavior and cause memory corruption.
  * @kind path-problem
- * @precision medium
+ * @precision high
  * @id cpp/double-free
  * @problem.severity warning
  * @security-severity 9.3

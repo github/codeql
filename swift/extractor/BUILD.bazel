@@ -8,6 +8,7 @@ swift_cc_binary(
         "*.h",
         "*.cpp",
     ]),
+    visibility = ["//swift:__pkg__"],
     deps = [
         "//swift/extractor/config",
         "//swift/extractor/infra",
@@ -17,12 +18,6 @@ swift_cc_binary(
         "//swift/third_party/swift-llvm-support",
         "@absl//absl/strings",
     ],
-)
-
-generate_cmake(
-    name = "cmake",
-    targets = [":extractor.real"],
-    visibility = ["//visibility:public"],
 )
 
 sh_binary(

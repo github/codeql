@@ -3,9 +3,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Runtime.CompilerServices", "ConditionalWeakTable<,>", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
-      - ["System.Runtime.CompilerServices", "ConfiguredTaskAwaitable<>", False, "GetAwaiter", "()", "", "Argument[this].SyntheticField[m_configuredTaskAwaiter]", "ReturnValue", "value", "manual"]
-      - ["System.Runtime.CompilerServices", "ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter", False, "GetResult", "()", "", "Argument[this].SyntheticField[m_task_configured_task_awaitable].Property[System.Threading.Tasks.Task<>.Result]", "ReturnValue", "value", "manual"]
-      - ["System.Runtime.CompilerServices", "ReadOnlyCollectionBuilder<>", False, "Reverse", "()", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
-      - ["System.Runtime.CompilerServices", "ReadOnlyCollectionBuilder<>", False, "Reverse", "(System.Int32,System.Int32)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
-      - ["System.Runtime.CompilerServices", "TaskAwaiter<>", False, "GetResult", "()", "", "Argument[this].SyntheticField[m_task_task_awaiter].Property[System.Threading.Tasks.Task<>.Result]", "ReturnValue", "value", "manual"]
+      - ["System.Runtime.CompilerServices", "ConditionalWeakTable<TKey,TValue>", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["System.Runtime.CompilerServices", "ConfiguredTaskAwaitable<TResult>", False, "GetAwaiter", "()", "", "Argument[this].SyntheticField[m_configuredTaskAwaiter]", "ReturnValue", "value", "manual"]
+      - ["System.Runtime.CompilerServices", "ConfiguredTaskAwaitable<TResult>+ConfiguredTaskAwaiter", False, "GetResult", "()", "", "Argument[this].SyntheticField[m_task_configured_task_awaitable].Property[System.Threading.Tasks.Task`1.Result]", "ReturnValue", "value", "manual"]
+      - ["System.Runtime.CompilerServices", "TaskAwaiter<TResult>", False, "GetResult", "()", "", "Argument[this].SyntheticField[m_task_task_awaiter].Property[System.Threading.Tasks.Task`1.Result]", "ReturnValue", "value", "manual"]

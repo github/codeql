@@ -15,6 +15,16 @@ private import semmle.code.java.dataflow.internal.AccessPathSyntax as AccessPath
 class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
 
 /**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase extends Callable {
+  NeutralCallableBase() { this.isSourceDeclaration() }
+
+  /** Gets a call that targets this neutral. */
+  Call getACall() { result.getCallee().getSourceDeclaration() = this }
+}
+
+/**
  * A module for importing frameworks that define synthetic globals.
  */
 private module SyntheticGlobals {
@@ -26,14 +36,16 @@ DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
-
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { result.getReceiver() = receiver }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { result.getReceiver() = receiver }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { result = c.getType() }
+
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
+  result = getErasedRepr(c.getParameterType(pos))
+}
 
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
@@ -154,13 +166,13 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenance`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
  */
-predicate neutralSummaryElement(SummarizedCallableBase c, string provenance) {
+predicate neutralElement(NeutralCallableBase c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, "summary", provenance) and
-    c.asCallable() = interpretElement(namespace, type, false, name, signature, "")
+    neutralModel(namespace, type, name, signature, kind, provenance) and
+    c = interpretElement(namespace, type, false, name, signature, "")
   )
 }
 
@@ -168,6 +180,10 @@ predicate neutralSummaryElement(SummarizedCallableBase c, string provenance) {
 bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
+  or
+  c = "WithoutElement" and result = SummaryComponent::withoutContent(any(CollectionContent cc))
+  or
+  c = "WithElement" and result = SummaryComponent::withContent(any(CollectionContent cc))
 }
 
 /** Gets the summary component for specification component `c`, if any. */
@@ -191,9 +207,13 @@ private string getContentSpecific(Content c) {
   c instanceof MapValueContent and result = "MapValue"
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of the content in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
+  or
+  sc = TWithoutContentSummaryComponent(_) and result = "WithoutElement"
+  or
+  sc = TWithContentSummaryComponent(_) and result = "WithElement"
 }
 
 bindingset[pos]
@@ -313,7 +333,7 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
   exists(FieldWrite fw |
     c = "" and
     fw.getField() = mid.asElement() and
-    n.asNode().asExpr() = fw.getRhs()
+    n.asNode().asExpr() = fw.getASource()
   )
 }
 

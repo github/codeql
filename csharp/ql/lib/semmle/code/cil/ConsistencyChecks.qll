@@ -486,7 +486,7 @@ class InvalidOverride extends MethodViolation {
 
   override string getMessage() {
     exists(string qualifier, string type |
-      base.getDeclaringType().hasQualifiedName(qualifier, type)
+      base.getDeclaringType().hasFullyQualifiedName(qualifier, type)
     |
       result =
         "Overridden method from " + getQualifiedName(qualifier, type) + " is not in a base type"

@@ -26,7 +26,6 @@
 /lib/codeql/swift/elements/decl/ConcreteVarDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/DeinitializerConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/EnumCaseDeclConstructor.qll linguist-generated
-/lib/codeql/swift/elements/decl/EnumDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/EnumDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/EnumElementDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/ExtensionDeclConstructor.qll linguist-generated
@@ -60,7 +59,6 @@
 /lib/codeql/swift/elements/decl/StructDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/SubscriptDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/TopLevelCodeDeclConstructor.qll linguist-generated
-/lib/codeql/swift/elements/decl/TypeAliasDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/TypeAliasDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/AbiSafeConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AbiSafeConversionExprConstructor.qll linguist-generated
@@ -129,7 +127,6 @@
 /lib/codeql/swift/elements/expr/ErrorExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExistentialMetatypeToObjectExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExistentialMetatypeToObjectExprConstructor.qll linguist-generated
-/lib/codeql/swift/elements/expr/ExplicitClosureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExplicitClosureExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/FloatLiteralExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/ForceTryExprConstructor.qll linguist-generated
@@ -198,6 +195,8 @@
 /lib/codeql/swift/elements/expr/SelfApplyExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/SequenceExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/SequenceExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/SingleValueStmtExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/SingleValueStmtExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/StringLiteralExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/StringToPointerExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/StringToPointerExprConstructor.qll linguist-generated
@@ -350,7 +349,6 @@
 /lib/codeql/swift/elements/type/SubstitutableType.qll linguist-generated
 /lib/codeql/swift/elements/type/SugarType.qll linguist-generated
 /lib/codeql/swift/elements/type/SyntaxSugarType.qll linguist-generated
-/lib/codeql/swift/elements/type/TupleType.qll linguist-generated
 /lib/codeql/swift/elements/type/TupleTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/TypeAliasTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/TypeReprConstructor.qll linguist-generated
@@ -363,7 +361,6 @@
 /lib/codeql/swift/elements/type/UnownedStorageTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/UnresolvedType.qll linguist-generated
 /lib/codeql/swift/elements/type/UnresolvedTypeConstructor.qll linguist-generated
-/lib/codeql/swift/elements/type/VariadicSequenceType.qll linguist-generated
 /lib/codeql/swift/elements/type/VariadicSequenceTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/WeakStorageType.qll linguist-generated
 /lib/codeql/swift/elements/type/WeakStorageTypeConstructor.qll linguist-generated
@@ -538,6 +535,7 @@
 /lib/codeql/swift/generated/expr/RegexLiteralExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/SelfApplyExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/SequenceExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/SingleValueStmtExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/StringLiteralExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/StringToPointerExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/SubscriptExpr.qll linguist-generated
@@ -678,13 +676,13 @@
 /test/extractor-tests/generated/decl/Accessor/Accessor_getParam.ql linguist-generated
 /test/extractor-tests/generated/decl/Accessor/Accessor_getSelfParam.ql linguist-generated
 /test/extractor-tests/generated/decl/AssociatedTypeDecl/AssociatedTypeDecl.ql linguist-generated
-/test/extractor-tests/generated/decl/AssociatedTypeDecl/AssociatedTypeDecl_getBaseType.ql linguist-generated
+/test/extractor-tests/generated/decl/AssociatedTypeDecl/AssociatedTypeDecl_getInheritedType.ql linguist-generated
 /test/extractor-tests/generated/decl/AssociatedTypeDecl/AssociatedTypeDecl_getMember.ql linguist-generated
 /test/extractor-tests/generated/decl/CapturedDecl/CapturedDecl.ql linguist-generated
 /test/extractor-tests/generated/decl/CapturedDecl/CapturedDecl_getMember.ql linguist-generated
 /test/extractor-tests/generated/decl/ClassDecl/ClassDecl.ql linguist-generated
-/test/extractor-tests/generated/decl/ClassDecl/ClassDecl_getBaseType.ql linguist-generated
 /test/extractor-tests/generated/decl/ClassDecl/ClassDecl_getGenericTypeParam.ql linguist-generated
+/test/extractor-tests/generated/decl/ClassDecl/ClassDecl_getInheritedType.ql linguist-generated
 /test/extractor-tests/generated/decl/ClassDecl/ClassDecl_getMember.ql linguist-generated
 /test/extractor-tests/generated/decl/ConcreteVarDecl/ConcreteVarDecl.ql linguist-generated
 /test/extractor-tests/generated/decl/ConcreteVarDecl/ConcreteVarDecl_getAccessor.ql linguist-generated
@@ -697,12 +695,16 @@
 /test/extractor-tests/generated/decl/ConcreteVarDecl/ConcreteVarDecl_getPropertyWrapperProjectionVar.ql linguist-generated
 /test/extractor-tests/generated/decl/ConcreteVarDecl/ConcreteVarDecl_getPropertyWrapperProjectionVarBinding.ql linguist-generated
 /test/extractor-tests/generated/decl/Deinitializer/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/decl/EnumCaseDecl/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumCaseDecl.ql linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumCaseDecl_getElement.ql linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumCaseDecl_getMember.ql linguist-generated
 /test/extractor-tests/generated/decl/EnumDecl/EnumDecl.ql linguist-generated
-/test/extractor-tests/generated/decl/EnumDecl/EnumDecl_getBaseType.ql linguist-generated
 /test/extractor-tests/generated/decl/EnumDecl/EnumDecl_getGenericTypeParam.ql linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumDecl_getInheritedType.ql linguist-generated
 /test/extractor-tests/generated/decl/EnumDecl/EnumDecl_getMember.ql linguist-generated
-/test/extractor-tests/generated/decl/EnumElementDecl/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumElementDecl.ql linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumElementDecl_getMember.ql linguist-generated
+/test/extractor-tests/generated/decl/EnumDecl/EnumElementDecl_getParam.ql linguist-generated
 /test/extractor-tests/generated/decl/ExtensionDecl/ExtensionDecl.ql linguist-generated
 /test/extractor-tests/generated/decl/ExtensionDecl/ExtensionDecl_getGenericTypeParam.ql linguist-generated
 /test/extractor-tests/generated/decl/ExtensionDecl/ExtensionDecl_getMember.ql linguist-generated
@@ -720,7 +722,7 @@
 /test/extractor-tests/generated/decl/ModuleDecl/ModuleDecl.ql linguist-generated
 /test/extractor-tests/generated/decl/ModuleDecl/ModuleDecl_getAnExportedModule.ql linguist-generated
 /test/extractor-tests/generated/decl/ModuleDecl/ModuleDecl_getAnImportedModule.ql linguist-generated
-/test/extractor-tests/generated/decl/ModuleDecl/ModuleDecl_getBaseType.ql linguist-generated
+/test/extractor-tests/generated/decl/ModuleDecl/ModuleDecl_getInheritedType.ql linguist-generated
 /test/extractor-tests/generated/decl/ModuleDecl/ModuleDecl_getMember.ql linguist-generated
 /test/extractor-tests/generated/decl/NamedFunction/NamedFunction.ql linguist-generated
 /test/extractor-tests/generated/decl/NamedFunction/NamedFunction_getBody.ql linguist-generated
@@ -731,8 +733,8 @@
 /test/extractor-tests/generated/decl/NamedFunction/NamedFunction_getParam.ql linguist-generated
 /test/extractor-tests/generated/decl/NamedFunction/NamedFunction_getSelfParam.ql linguist-generated
 /test/extractor-tests/generated/decl/OpaqueTypeDecl/OpaqueTypeDecl.ql linguist-generated
-/test/extractor-tests/generated/decl/OpaqueTypeDecl/OpaqueTypeDecl_getBaseType.ql linguist-generated
 /test/extractor-tests/generated/decl/OpaqueTypeDecl/OpaqueTypeDecl_getGenericTypeParam.ql linguist-generated
+/test/extractor-tests/generated/decl/OpaqueTypeDecl/OpaqueTypeDecl_getInheritedType.ql linguist-generated
 /test/extractor-tests/generated/decl/OpaqueTypeDecl/OpaqueTypeDecl_getMember.ql linguist-generated
 /test/extractor-tests/generated/decl/OpaqueTypeDecl/OpaqueTypeDecl_getOpaqueGenericParam.ql linguist-generated
 /test/extractor-tests/generated/decl/ParamDecl/ParamDecl.ql linguist-generated
@@ -835,6 +837,8 @@
 /test/extractor-tests/generated/expr/PropertyWrapperValuePlaceholderExpr/PropertyWrapperValuePlaceholderExpr_getWrappedValue.ql linguist-generated
 /test/extractor-tests/generated/expr/RebindSelfInInitializerExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/RegexLiteralExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/SingleValueStmtExpr/SingleValueStmtExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/SingleValueStmtExpr/SingleValueStmtExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/StringLiteralExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/SubscriptExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/SuperRefExpr/MISSING_SOURCE.txt linguist-generated
@@ -857,8 +861,6 @@
 /test/extractor-tests/generated/pattern/TypedPattern/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/BraceStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/BreakStmt/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/stmt/CaseLabelItem/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/stmt/CaseStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/ConditionElement/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/ContinueStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/DeferStmt/MISSING_SOURCE.txt linguist-generated
@@ -873,7 +875,14 @@
 /test/extractor-tests/generated/stmt/RepeatWhileStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/ReturnStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/StmtCondition/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/stmt/SwitchStmt/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseLabelItem.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseLabelItem_getGuard.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseStmt.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseStmt_getLabel.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/CaseStmt_getVariable.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/SwitchStmt.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/SwitchStmt_getCase.ql linguist-generated
+/test/extractor-tests/generated/stmt/SwitchStmt/SwitchStmt_getLabel.ql linguist-generated
 /test/extractor-tests/generated/stmt/ThrowStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/WhileStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/YieldStmt/MISSING_SOURCE.txt linguist-generated

@@ -1,4 +1,4 @@
 import java
 
-from MethodAccess ma
+from MethodCall ma
 select ma, ma.getCallee(), ma.getCallee().getDeclaringType()

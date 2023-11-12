@@ -130,9 +130,6 @@ module Stdlib {
     }
   }
 
-  /** DEPRECATED: Alias for HttpMessage */
-  deprecated module HTTPMessage = HttpMessage;
-
   /**
    * Provides models for the `http.cookies.Morsel` class
    *
@@ -1818,72 +1815,95 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // BaseHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `BaseHttpServer` module. */
-  API::Node baseHttpServer() { result = API::moduleImport("BaseHTTPServer") }
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Gets a reference to the `BaseHttpServer` module.
+   */
+  deprecated API::Node baseHttpServer() { result = API::moduleImport("BaseHTTPServer") }
 
-  /** DEPRECATED: Alias for baseHttpServer */
-  deprecated API::Node baseHTTPServer() { result = baseHttpServer() }
-
-  /** Provides models for the `BaseHttpServer` module. */
-  module BaseHttpServer {
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Provides models for the `BaseHttpServer` module.
+   */
+  deprecated module BaseHttpServer {
     /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
      * Provides models for the `BaseHTTPServer.BaseHTTPRequestHandler` class (Python 2 only).
      */
-    module BaseHttpRequestHandler {
-      /** Gets a reference to the `BaseHttpServer.BaseHttpRequestHandler` class. */
-      API::Node classRef() { result = baseHttpServer().getMember("BaseHTTPRequestHandler") }
+    deprecated module BaseHttpRequestHandler {
+      /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
+       *  Gets a reference to the `BaseHttpServer.BaseHttpRequestHandler` class.
+       */
+      deprecated API::Node classRef() {
+        result = baseHttpServer().getMember("BaseHTTPRequestHandler")
+      }
     }
-
-    /** DEPRECATED: Alias for BaseHttpRequestHandler */
-    deprecated module BaseHTTPRequestHandler = BaseHttpRequestHandler;
   }
-
-  /** DEPRECATED: Alias for BaseHttpServer */
-  deprecated module BaseHTTPServer = BaseHttpServer;
 
   // ---------------------------------------------------------------------------
   // SimpleHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `SimpleHttpServer` module. */
-  API::Node simpleHttpServer() { result = API::moduleImport("SimpleHTTPServer") }
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Gets a reference to the `SimpleHttpServer` module.
+   */
+  deprecated API::Node simpleHttpServer() { result = API::moduleImport("SimpleHTTPServer") }
 
-  /** DEPRECATED: Alias for simpleHttpServer */
-  deprecated API::Node simpleHTTPServer() { result = simpleHttpServer() }
-
-  /** Provides models for the `SimpleHttpServer` module. */
-  module SimpleHttpServer {
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Provides models for the `SimpleHttpServer` module.
+   */
+  deprecated module SimpleHttpServer {
     /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
      * Provides models for the `SimpleHTTPServer.SimpleHTTPRequestHandler` class (Python 2 only).
      */
-    module SimpleHttpRequestHandler {
-      /** Gets a reference to the `SimpleHttpServer.SimpleHttpRequestHandler` class. */
-      API::Node classRef() { result = simpleHttpServer().getMember("SimpleHTTPRequestHandler") }
+    deprecated module SimpleHttpRequestHandler {
+      /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
+       *  Gets a reference to the `SimpleHttpServer.SimpleHttpRequestHandler` class.
+       */
+      deprecated API::Node classRef() {
+        result = simpleHttpServer().getMember("SimpleHTTPRequestHandler")
+      }
     }
-
-    /** DEPRECATED: Alias for SimpleHttpRequestHandler */
-    deprecated module SimpleHTTPRequestHandler = SimpleHttpRequestHandler;
   }
-
-  /** DEPRECATED: Alias for SimpleHttpServer */
-  deprecated module SimpleHTTPServer = SimpleHttpServer;
 
   // ---------------------------------------------------------------------------
   // CGIHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `CGIHTTPServer` module. */
-  API::Node cgiHttpServer() { result = API::moduleImport("CGIHTTPServer") }
-
-  /** DEPRECATED: Alias for cgiHttpServer */
-  deprecated API::Node cgiHTTPServer() { result = cgiHttpServer() }
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   *  Gets a reference to the `CGIHTTPServer` module.
+   */
+  deprecated API::Node cgiHttpServer() { result = API::moduleImport("CGIHTTPServer") }
 
   /** Provides models for the `CGIHTTPServer` module. */
-  module CgiHttpServer {
+  deprecated module CgiHttpServer {
     /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
      * Provides models for the `CGIHTTPServer.CGIHTTPRequestHandler` class (Python 2 only).
      */
-    module CgiHttpRequestHandler {
-      /** Gets a reference to the `CGIHTTPServer.CgiHttpRequestHandler` class. */
-      API::Node classRef() { result = cgiHttpServer().getMember("CGIHTTPRequestHandler") }
+    deprecated module CgiHttpRequestHandler {
+      /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
+       *  Gets a reference to the `CGIHTTPServer.CgiHttpRequestHandler` class.
+       */
+      deprecated API::Node classRef() {
+        result = cgiHttpServer().getMember("CGIHTTPRequestHandler")
+      }
     }
 
     /** DEPRECATED: Alias for CgiHttpRequestHandler */
@@ -1896,53 +1916,69 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // http (Python 3 only)
   // ---------------------------------------------------------------------------
-  /** Gets a reference to the `http` module. */
-  API::Node http() { result = API::moduleImport("http") }
+  /**
+   * DEPRECATED: Use API-graphs directly instead.
+   *
+   * Gets a reference to the `http` module.
+   */
+  deprecated API::Node http() { result = API::moduleImport("http") }
 
   /** Provides models for the `http` module. */
-  module StdlibHttp {
+  deprecated module StdlibHttp {
     // -------------------------------------------------------------------------
     // http.server
     // -------------------------------------------------------------------------
-    /** Gets a reference to the `http.server` module. */
-    API::Node server() { result = http().getMember("server") }
+    /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
+     * Gets a reference to the `http.server` module.
+     */
+    deprecated API::Node server() { result = http().getMember("server") }
 
-    /** Provides models for the `http.server` module */
-    module Server {
+    /**
+     * DEPRECATED: Use API-graphs directly instead.
+     *
+     * Provides models for the `http.server` module
+     */
+    deprecated module Server {
       /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
        * Provides models for the `http.server.BaseHTTPRequestHandler` class (Python 3 only).
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler.
        */
-      module BaseHttpRequestHandler {
+      deprecated module BaseHttpRequestHandler {
         /** Gets a reference to the `http.server.BaseHttpRequestHandler` class. */
-        API::Node classRef() { result = server().getMember("BaseHTTPRequestHandler") }
+        deprecated API::Node classRef() { result = server().getMember("BaseHTTPRequestHandler") }
       }
 
-      /** DEPRECATED: Alias for BaseHttpRequestHandler */
-      deprecated module BaseHTTPRequestHandler = BaseHttpRequestHandler;
-
       /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
        * Provides models for the `http.server.SimpleHTTPRequestHandler` class (Python 3 only).
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.SimpleHTTPRequestHandler.
        */
-      module SimpleHttpRequestHandler {
+      deprecated module SimpleHttpRequestHandler {
         /** Gets a reference to the `http.server.SimpleHttpRequestHandler` class. */
-        API::Node classRef() { result = server().getMember("SimpleHTTPRequestHandler") }
+        deprecated API::Node classRef() { result = server().getMember("SimpleHTTPRequestHandler") }
       }
 
-      /** DEPRECATED: Alias for SimpleHttpRequestHandler */
-      deprecated module SimpleHTTPRequestHandler = SimpleHttpRequestHandler;
-
       /**
+       * DEPRECATED: Use API-graphs directly instead.
+       *
        * Provides models for the `http.server.CGIHTTPRequestHandler` class (Python 3 only).
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.CGIHTTPRequestHandler.
        */
-      module CgiHttpRequestHandler {
-        /** Gets a reference to the `http.server.CGIHTTPRequestHandler` class. */
-        API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
+      deprecated module CgiHttpRequestHandler {
+        /**
+         * DEPRECATED: Use API-graphs directly instead.
+         *
+         * Gets a reference to the `http.server.CGIHTTPRequestHandler` class.
+         */
+        deprecated API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
       }
 
       /** DEPRECATED: Alias for CgiHttpRequestHandler */
@@ -1963,13 +1999,13 @@ private module StdlibPrivate {
       result =
         [
           // Python 2
-          BaseHttpServer::BaseHttpRequestHandler::classRef(),
-          SimpleHttpServer::SimpleHttpRequestHandler::classRef(),
-          CgiHttpServer::CgiHttpRequestHandler::classRef(),
+          API::moduleImport("BaseHTTPServer").getMember("BaseHTTPRequestHandler"),
+          API::moduleImport("SimpleHTTPServer").getMember("SimpleHTTPRequestHandler"),
+          API::moduleImport("CGIHTTPServer").getMember("CGIHTTPRequestHandler"),
           // Python 3
-          StdlibHttp::Server::BaseHttpRequestHandler::classRef(),
-          StdlibHttp::Server::SimpleHttpRequestHandler::classRef(),
-          StdlibHttp::Server::CgiHttpRequestHandler::classRef()
+          API::moduleImport("http").getMember("server").getMember("BaseHTTPRequestHandler"),
+          API::moduleImport("http").getMember("server").getMember("SimpleHTTPRequestHandler"),
+          API::moduleImport("http").getMember("server").getMember("CGIHTTPRequestHandler"),
         ].getASubclass*()
     }
 
@@ -1977,9 +2013,6 @@ private module StdlibPrivate {
     class HttpRequestHandlerClassDef extends Class {
       HttpRequestHandlerClassDef() { this.getParent() = subclassRef().asSource().asExpr() }
     }
-
-    /** DEPRECATED: Alias for HttpRequestHandlerClassDef */
-    deprecated class HTTPRequestHandlerClassDef = HttpRequestHandlerClassDef;
 
     /**
      * A source of instances of the `BaseHTTPRequestHandler` class or any subclass, extend this class to model new instances.
@@ -2352,9 +2385,6 @@ private module StdlibPrivate {
     }
   }
 
-  /** DEPRECATED: Alias for HttpConnection */
-  deprecated module HTTPConnection = HttpConnection;
-
   /**
    * Provides models for the `http.client.HTTPResponse` class
    *
@@ -2423,9 +2453,6 @@ private module StdlibPrivate {
       }
     }
   }
-
-  /** DEPRECATED: Alias for HttpResponse */
-  deprecated module HTTPResponse = HttpResponse;
 
   // ---------------------------------------------------------------------------
   // sqlite3
@@ -2720,6 +2747,8 @@ private module StdlibPrivate {
       exists(this.getParameter(1, "data"))
     }
 
+    override DataFlow::Node getInitialization() { result = this }
+
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
     override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").asSink() }
@@ -2731,11 +2760,15 @@ private module StdlibPrivate {
    * A hashing operation by using the `update` method on the result of calling the `hashlib.new` function.
    */
   class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range, API::CallNode {
+    API::CallNode init;
     string hashName;
 
     HashlibNewUpdateCall() {
-      this = hashlibNewCall(hashName).getReturn().getMember("update").getACall()
+      init = hashlibNewCall(hashName) and
+      this = init.getReturn().getMember("update").getACall()
     }
+
+    override DataFlow::Node getInitialization() { result = init }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
@@ -2775,7 +2808,14 @@ private module StdlibPrivate {
    * (such as `hashlib.md5`), by calling its' `update` method.
    */
   class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
-    HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
+    API::CallNode init;
+
+    HashlibHashClassUpdateCall() {
+      init = hashClass.getACall() and
+      this = hashClass.getReturn().getMember("update").getACall()
+    }
+
+    override DataFlow::Node getInitialization() { result = init }
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
   }
@@ -2791,6 +2831,8 @@ private module StdlibPrivate {
       this = hashClass.getACall() and
       exists([this.getArg(0), this.getArgByName("string")])
     }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override DataFlow::Node getAnInput() {
       result = this.getArg(0)
@@ -2838,6 +2880,8 @@ private module StdlibPrivate {
       exists(this.getParameter(1, "msg").asSink())
     }
 
+    override DataFlow::Node getInitialization() { result = this }
+
     override API::Node getDigestArg() { result = digestArg }
 
     override DataFlow::Node getAnInput() { result = this.getParameter(1, "msg").asSink() }
@@ -2849,11 +2893,15 @@ private module StdlibPrivate {
    * See https://docs.python.org/3.11/library/hmac.html#hmac.HMAC.update
    */
   class HmacUpdateCall extends HmacCryptographicOperation {
+    API::CallNode init;
     API::Node digestArg;
 
     HmacUpdateCall() {
-      this = getHmacConstructorCall(digestArg).getReturn().getMember("update").getACall()
+      init = getHmacConstructorCall(digestArg) and
+      this = init.getReturn().getMember("update").getACall()
     }
+
+    override DataFlow::Node getInitialization() { result = init }
 
     override API::Node getDigestArg() { result = digestArg }
 
@@ -2867,6 +2915,8 @@ private module StdlibPrivate {
    */
   class HmacDigestCall extends HmacCryptographicOperation {
     HmacDigestCall() { this = API::moduleImport("hmac").getMember("digest").getACall() }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override API::Node getDigestArg() { result = this.getParameter(2, "digest") }
 
@@ -3922,6 +3972,9 @@ private module StdlibPrivate {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // Flow summaries for functions operating on containers
+  // ---------------------------------------------------------------------------
   /** A flow summary for `reversed`. */
   class ReversedSummary extends SummarizedCallable {
     ReversedSummary() { this = "builtins.reversed" }
@@ -3933,9 +3986,284 @@ private module StdlibPrivate {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[0].ListElement" and
+      (
+        input = "Argument[0].ListElement"
+        or
+        input = "Argument[0].SetElement"
+        or
+        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+          input = "Argument[0].TupleElement[" + i.toString() + "]"
+        )
+        // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+      ) and
       output = "ReturnValue.ListElement" and
       preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `sorted`. */
+  class SortedSummary extends SummarizedCallable {
+    SortedSummary() { this = "builtins.sorted" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("sorted").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("sorted").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(string content |
+        content = "ListElement"
+        or
+        content = "SetElement"
+        or
+        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+          content = "TupleElement[" + i.toString() + "]"
+        )
+      |
+        // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+        input = "Argument[0]." + content and
+        output = "ReturnValue.ListElement" and
+        preservesValue = true
+      )
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `iter`. */
+  class IterSummary extends SummarizedCallable {
+    IterSummary() { this = "builtins.iter" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("iter").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("iter").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[0].ListElement"
+        or
+        input = "Argument[0].SetElement"
+        or
+        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+          input = "Argument[0].TupleElement[" + i.toString() + "]"
+        )
+        // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+      ) and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `next`. */
+  class NextSummary extends SummarizedCallable {
+    NextSummary() { this = "builtins.next" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("next").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("next").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[0].ListElement"
+        or
+        input = "Argument[0].SetElement"
+        or
+        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+          input = "Argument[0].TupleElement[" + i.toString() + "]"
+        )
+        // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+      ) and
+      output = "ReturnValue" and
+      preservesValue = true
+      or
+      input = "Argument[1]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Flow summaries for container methods
+  // ---------------------------------------------------------------------------
+  /** A flow summary for `copy`. */
+  class CopySummary extends SummarizedCallable {
+    CopySummary() { this = "collection.copy" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "copy"
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(string content |
+        content = "ListElement"
+        or
+        content = "SetElement"
+        or
+        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+          content = "TupleElement[" + i.toString() + "]"
+        )
+        or
+        exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+          content = "DictionaryElement[" + key + "]"
+        )
+      |
+        input = "Argument[self]." + content and
+        output = "ReturnValue." + content and
+        preservesValue = true
+      )
+      or
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for `pop` either for list or set.
+   * This ignores the index if given, since content is
+   * imprecise anyway.
+   *
+   * I also handles the default value when `pop` is called
+   * on a dictionary, since that also does not depend on the key.
+   */
+  class PopSummary extends SummarizedCallable {
+    PopSummary() { this = "collection.pop" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "pop"
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self].ListElement" and
+      output = "ReturnValue" and
+      preservesValue = true
+      or
+      input = "Argument[self].SetElement" and
+      output = "ReturnValue" and
+      preservesValue = true
+      or
+      // default value for dictionary
+      input = "Argument[1]" and
+      output = "ReturnValue" and
+      preservesValue = true
+      or
+      // transfer taint on self to return value
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `dict.pop` */
+  class DictPopSummary extends SummarizedCallable {
+    string key;
+
+    DictPopSummary() {
+      this = "dict.pop(" + key + ")" and
+      exists(DataFlow::DictionaryElementContent dc | key = dc.getKey())
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "pop" and
+      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self].DictionaryElement[" + key + "]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  /** A flow summary for `dict.get` at specific content. */
+  class DictGetSummary extends SummarizedCallable {
+    string key;
+
+    DictGetSummary() {
+      this = "dict.get(" + key + ")" and
+      exists(DataFlow::DictionaryElementContent dc | key = dc.getKey())
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "get" and
+      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self].DictionaryElement[" + key + "]" and
+      output = "ReturnValue" and
+      preservesValue = true
+      or
+      // optional default value
+      input = "Argument[1]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  /** A flow summary for `dict.get` disregarding content. */
+  class DictGetAnySummary extends SummarizedCallable {
+    DictGetAnySummary() { this = "dict.get" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "get"
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // default value
+      input = "Argument[1]" and
+      output = "ReturnValue" and
+      preservesValue = true
+      or
+      // transfer taint from self to return value
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `dict.popitem` */
+  class DictPopitemSummary extends SummarizedCallable {
+    DictPopitemSummary() { this = "dict.popitem" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "popitem"
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+        input = "Argument[self].DictionaryElement[" + key + "]" and
+        output = "ReturnValue.TupleElement[1]" and
+        preservesValue = true
+        // TODO: put `key` into "ReturnValue.TupleElement[0]"
+      )
     }
   }
 
@@ -3960,6 +4288,312 @@ private module StdlibPrivate {
       input = "Argument[1]" and
       output = "ReturnValue" and
       preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for `dict.setdefault` at specific content.
+   * See https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
+   * This summary handles read and store steps. See `DictSetdefaultSummary`
+   * for the dataflow steps.
+   */
+  class DictSetdefaultKeySummary extends SummarizedCallable {
+    string key;
+
+    DictSetdefaultKeySummary() {
+      this = "dict.setdefault(" + key + ")" and
+      exists(DataFlow::DictionaryElementContent dc | key = dc.getKey())
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "setdefault" and
+      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // If key is in the dictionary, return its value.
+      input = "Argument[self].DictionaryElement[" + key + "]" and
+      output = "ReturnValue" and
+      preservesValue = true
+      or
+      // If not, insert key with a value of default.
+      input = "Argument[1]" and
+      output = "ReturnValue.DictionaryElement[" + key + "]" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for `dict.values`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#dict.values
+   */
+  class DictValues extends SummarizedCallable {
+    DictValues() { this = "dict.values" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).calls(_, "values")
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "values"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+        input = "Argument[self].DictionaryElement[" + key + "]" and
+        output = "ReturnValue.ListElement" and
+        preservesValue = true
+      )
+      or
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `dict.keys`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#dict.keys
+   */
+  class DictKeys extends SummarizedCallable {
+    DictKeys() { this = "dict.keys" }
+
+    override DataFlow::CallCfgNode getACall() { result.(DataFlow::MethodCallNode).calls(_, "keys") }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "keys"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `dict.items`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#dict.items
+   */
+  class DictItems extends SummarizedCallable {
+    DictItems() { this = "dict.items" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).calls(_, "items")
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "items"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+        input = "Argument[self].DictionaryElement[" + key + "]" and
+        output = "ReturnValue.ListElement.TupleElement[1]" and
+        preservesValue = true
+      )
+      or
+      // TODO: Add the keys to output list
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `list.append`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#typesseq-mutable
+   */
+  class ListAppend extends SummarizedCallable {
+    ListAppend() { this = "list.append" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).calls(_, "append")
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "append"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // newly added element added to this
+      input = "Argument[0]" and
+      output = "Argument[self].ListElement" and
+      preservesValue = true
+      or
+      // transfer taint from new element to this (TODO: remove in future when taint-handling is more in line with other languages)
+      input = "Argument[0]" and
+      output = "Argument[self]" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `set.add`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#frozenset.add
+   */
+  class SetAdd extends SummarizedCallable {
+    SetAdd() { this = "set.add" }
+
+    override DataFlow::CallCfgNode getACall() { result.(DataFlow::MethodCallNode).calls(_, "add") }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "add"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // newly added element added to this
+      input = "Argument[0]" and
+      output = "Argument[self].SetElement" and
+      preservesValue = true
+      or
+      // transfer taint from new element to this (TODO: remove in future when taint-handling is more in line with other languages)
+      input = "Argument[0]" and
+      output = "Argument[self]" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `os.getenv` / `os.getenvb`
+   *
+   * See https://devdocs.io/python~3.11/library/os#os.getenv
+   */
+  class OsGetEnv extends SummarizedCallable {
+    OsGetEnv() { this = "os.getenv" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("os").getMember(["getenv", "getenvb"]).getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("os").getMember(["getenv", "getenvb"]).getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input in ["Argument[1]", "Argument[default:]"] and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // asyncio
+  // ---------------------------------------------------------------------------
+  /** Provides models for the `asyncio` module. */
+  module AsyncIO {
+    /**
+     * A call to the `asyncio.create_subprocess_exec` function (also accessible via the `subprocess` module of `asyncio`)
+     *
+     * See https://docs.python.org/3/library/asyncio-subprocess.html#creating-subprocesses
+     */
+    private class CreateSubprocessExec extends SystemCommandExecution::Range,
+      FileSystemAccess::Range, API::CallNode
+    {
+      CreateSubprocessExec() {
+        this = API::moduleImport("asyncio").getMember("create_subprocess_exec").getACall()
+        or
+        this =
+          API::moduleImport("asyncio")
+              .getMember("subprocess")
+              .getMember("create_subprocess_exec")
+              .getACall()
+      }
+
+      override DataFlow::Node getCommand() { result = this.getParameter(0, "program").asSink() }
+
+      override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) {
+        none() // this is a safe API.
+      }
+    }
+
+    /**
+     * A call to the `asyncio.create_subprocess_shell` function (also accessible via the `subprocess` module of `asyncio`)
+     *
+     * See https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.create_subprocess_shell
+     */
+    private class CreateSubprocessShell extends SystemCommandExecution::Range,
+      FileSystemAccess::Range, API::CallNode
+    {
+      CreateSubprocessShell() {
+        this = API::moduleImport("asyncio").getMember("create_subprocess_shell").getACall()
+        or
+        this =
+          API::moduleImport("asyncio")
+              .getMember("subprocess")
+              .getMember("create_subprocess_shell")
+              .getACall()
+      }
+
+      override DataFlow::Node getCommand() { result = this.getParameter(0, "cmd").asSink() }
+
+      override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
+    }
+
+    /**
+     * Get an asyncio event loop (an object with basetype `AbstractEventLoop`).
+     *
+     * See https://docs.python.org/3/library/asyncio-eventloop.html
+     */
+    private API::Node getAsyncioEventLoop() {
+      result = API::moduleImport("asyncio").getMember("get_running_loop").getReturn()
+      or
+      result = API::moduleImport("asyncio").getMember("get_event_loop").getReturn() // deprecated in Python 3.10.0 and later
+      or
+      result = API::moduleImport("asyncio").getMember("new_event_loop").getReturn()
+    }
+
+    /**
+     * A call to `subprocess_exec` on an event loop instance.
+     *
+     * See https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.subprocess_exec
+     */
+    private class EventLoopSubprocessExec extends API::CallNode, SystemCommandExecution::Range,
+      FileSystemAccess::Range
+    {
+      EventLoopSubprocessExec() {
+        this = getAsyncioEventLoop().getMember("subprocess_exec").getACall()
+      }
+
+      override DataFlow::Node getCommand() { result = this.getArg(1) }
+
+      override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) {
+        none() // this is a safe API.
+      }
+    }
+
+    /**
+     * A call to `subprocess_shell` on an event loop instance.
+     *
+     * See https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.subprocess_shell
+     */
+    private class EventLoopSubprocessShell extends API::CallNode, SystemCommandExecution::Range,
+      FileSystemAccess::Range
+    {
+      EventLoopSubprocessShell() {
+        this = getAsyncioEventLoop().getMember("subprocess_shell").getACall()
+      }
+
+      override DataFlow::Node getCommand() { result = this.getParameter(1, "cmd").asSink() }
+
+      override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
     }
   }
 }

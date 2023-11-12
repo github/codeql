@@ -10,3 +10,4 @@ dependencies:
   codeql/csharp-solorigate-queries: ${workspace}
 extractor: csharp
 tests: .
+warnOnImplicitThis: true

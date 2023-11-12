@@ -422,12 +422,6 @@ private module Cached {
     )
   }
 
-  /** DEPRECATED: Alias for getInstructionAst */
-  cached
-  deprecated Language::AST getInstructionAST(Instruction instr) {
-    result = getInstructionAst(instr)
-  }
-
   cached
   Language::LanguageType getInstructionResultType(Instruction instr) {
     result = instr.(RawIR::Instruction).getResultLanguageType()
@@ -993,9 +987,6 @@ predicate canReuseSsaForMemoryResult(Instruction instruction) {
   // We don't support reusing SSA for any location that could create a `Chi` instruction.
 }
 
-/** DEPRECATED: Alias for canReuseSsaForMemoryResult */
-deprecated predicate canReuseSSAForMemoryResult = canReuseSsaForMemoryResult/1;
-
 /**
  * Expose some of the internal predicates to PrintSSA.qll. We do this by publicly importing those modules in the
  * `DebugSsa` module, which is then imported by PrintSSA.
@@ -1004,9 +995,6 @@ module DebugSsa {
   import PhiInsertion
   import DefUse
 }
-
-/** DEPRECATED: Alias for DebugSsa */
-deprecated module DebugSSA = DebugSsa;
 
 import CachedForDebugging
 

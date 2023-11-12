@@ -33,6 +33,34 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
   DefaultPathInjectionSink() { sinkNode(this, "path-injection") }
 }
 
+/**
+ * A sink that is a write to a global variable.
+ */
+private class GlobalVariablePathInjectionSink extends PathInjectionSink {
+  GlobalVariablePathInjectionSink() {
+    // value assigned to the sqlite3 global variable `sqlite3_temp_directory`
+    // the sink should be the `DeclRefExpr` itself, but we don't currently have taint flow to globals.
+    exists(AssignExpr ae |
+      ae.getDest().(DeclRefExpr).getDecl().(VarDecl).getName() = "sqlite3_temp_directory" and
+      ae.getSource() = this.asExpr()
+    )
+  }
+}
+
+/**
+ * A sink that is an argument to an enum element.
+ */
+private class EnumConstructorPathInjectionSink extends PathInjectionSink {
+  EnumConstructorPathInjectionSink() {
+    // first argument to SQLite.swift's `Connection.Location.uri(_:parameters:)`
+    exists(ApplyExpr ae, EnumElementDecl decl |
+      ae.getFunction().(MethodLookupExpr).getMember() = decl and
+      decl.hasQualifiedName("Connection.Location", "uri") and
+      this.asExpr() = ae.getArgument(0).getExpr()
+    )
+  }
+}
+
 private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
   DefaultPathInjectionBarrier() {
     // This is a simplified implementation.
@@ -130,6 +158,17 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[10];path-injection",
         ";Realm.Configuration;true;fileURL;;;PostUpdate;path-injection",
         ";Realm.Configuration;true;seedFilePath;;;PostUpdate;path-injection",
+        // sqlite3
+        ";;false;sqlite3_open(_:_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_open16(_:_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_open_v2(_:_:_:_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_database_file_object(_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_filename_database(_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_filename_journal(_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_filename_wal(_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_free_filename(_:);;;Argument[0];path-injection",
+        // SQLite.swift
+        ";Connection;true;init(_:readonly:);;;Argument[0];path-injection",
       ]
   }
 }

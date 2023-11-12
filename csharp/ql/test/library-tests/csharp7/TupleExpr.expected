@@ -40,8 +40,8 @@
 | CSharp7.cs:87:18:87:34 | (..., ...) | CSharp7.cs:87:18:87:34 | (String,String) | 1 | CSharp7.cs:87:30:87:33 | "X2" |
 | CSharp7.cs:88:9:88:24 | (..., ...) | CSharp7.cs:87:18:87:34 | (String,String) | 0 | CSharp7.cs:88:14:88:15 | String t2 |
 | CSharp7.cs:88:9:88:24 | (..., ...) | CSharp7.cs:87:18:87:34 | (String,String) | 1 | CSharp7.cs:88:22:88:23 | String t3 |
-| CSharp7.cs:95:18:95:38 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 0 | CSharp7.cs:95:19:95:19 | 1 |
-| CSharp7.cs:95:18:95:38 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 1 | CSharp7.cs:95:22:95:37 | "TupleExprNode1" |
+| CSharp7.cs:95:18:95:38 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 0 | CSharp7.cs:95:19:95:19 | 1 |
+| CSharp7.cs:95:18:95:38 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 1 | CSharp7.cs:95:22:95:37 | "TupleExprNode1" |
 | CSharp7.cs:96:18:96:43 | (..., ...) | CSharp7.cs:96:18:96:43 | (Int32,(String,Int32)) | 0 | CSharp7.cs:96:19:96:19 | 1 |
 | CSharp7.cs:96:18:96:43 | (..., ...) | CSharp7.cs:96:18:96:43 | (Int32,(String,Int32)) | 1 | CSharp7.cs:96:22:96:42 | (..., ...) |
 | CSharp7.cs:96:22:96:42 | (..., ...) | file://:0:0:0:0 | (String,Int32) | 0 | CSharp7.cs:96:23:96:38 | "TupleExprNode2" |
@@ -82,11 +82,11 @@
 | CSharp7.cs:223:9:223:18 | (..., ...) | CSharp7.cs:213:5:213:17 | (Int32,Double) | 1 | CSharp7.cs:223:17:223:17 | _ |
 | CSharp7.cs:224:9:224:18 | (..., ...) | CSharp7.cs:213:5:213:17 | (Int32,Double) | 0 | CSharp7.cs:224:10:224:10 | _ |
 | CSharp7.cs:224:9:224:18 | (..., ...) | CSharp7.cs:213:5:213:17 | (Int32,Double) | 1 | CSharp7.cs:224:17:224:17 | Double y |
-| CSharp7.cs:283:40:283:61 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 0 | CSharp7.cs:283:41:283:48 | access to property Key |
-| CSharp7.cs:283:40:283:61 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 1 | CSharp7.cs:283:51:283:60 | access to property Value |
-| CSharp7.cs:285:18:285:34 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 0 | CSharp7.cs:285:23:285:23 | Int32 a |
-| CSharp7.cs:285:18:285:34 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 1 | CSharp7.cs:285:33:285:33 | String b |
-| CSharp7.cs:287:18:287:31 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 0 | CSharp7.cs:287:23:287:23 | Int32 a |
-| CSharp7.cs:287:18:287:31 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 1 | CSharp7.cs:287:30:287:30 | String b |
-| CSharp7.cs:289:18:289:27 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 0 | CSharp7.cs:289:23:289:23 | Int32 a |
-| CSharp7.cs:289:18:289:27 | (..., ...) | file://:0:0:0:0 | (Int32,String) | 1 | CSharp7.cs:289:26:289:26 | String b |
+| CSharp7.cs:283:40:283:61 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 0 | CSharp7.cs:283:41:283:48 | access to property Key |
+| CSharp7.cs:283:40:283:61 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 1 | CSharp7.cs:283:51:283:60 | access to property Value |
+| CSharp7.cs:285:18:285:34 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 0 | CSharp7.cs:285:23:285:23 | Int32 a |
+| CSharp7.cs:285:18:285:34 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 1 | CSharp7.cs:285:33:285:33 | String b |
+| CSharp7.cs:287:18:287:31 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 0 | CSharp7.cs:287:23:287:23 | Int32 a |
+| CSharp7.cs:287:18:287:31 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 1 | CSharp7.cs:287:30:287:30 | String b |
+| CSharp7.cs:289:18:289:27 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 0 | CSharp7.cs:289:23:289:23 | Int32 a |
+| CSharp7.cs:289:18:289:27 | (..., ...) | CSharp7.cs:95:18:95:38 | (Int32,String) | 1 | CSharp7.cs:289:26:289:26 | String b |

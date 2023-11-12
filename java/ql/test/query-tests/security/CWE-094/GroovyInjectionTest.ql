@@ -4,12 +4,10 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.GroovyInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
-class HasGroovyInjectionTest extends InlineExpectationsTest {
-  HasGroovyInjectionTest() { this = "HasGroovyInjectionTest" }
+module HasGroovyInjectionTest implements TestSig {
+  string getARelevantTag() { result = "hasGroovyInjection" }
 
-  override string getARelevantTag() { result = "hasGroovyInjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasGroovyInjection" and
     exists(DataFlow::Node sink | GroovyInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -18,3 +16,5 @@ class HasGroovyInjectionTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasGroovyInjectionTest>

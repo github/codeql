@@ -27,7 +27,7 @@ void test4(bool b) {
 	if (b) {
 		foo = 1;
 	}
-	use(foo); // BAD
+	use(foo); // BAD [NOT DETECTED]
 }
 
 void test5() {
@@ -43,7 +43,7 @@ void test5(int count) {
 	for (int i = 0; i < count; i++) {
 		foo = i;
 	}
-	use(foo); // BAD
+	use(foo); // BAD [NOT DETECTED]
 }
 
 void test6(bool b) {
@@ -52,7 +52,7 @@ void test6(bool b) {
 		foo = 42;
 	}
 	if (b) {
-		use(foo); // GOOD (REPORTED, FP)
+		use(foo); // GOOD
 	}
 }
 
@@ -64,7 +64,7 @@ void test7(bool b) {
 		set = true;
 	}
 	if (set) {
-		use(foo); // GOOD (REPORTED, FP)
+		use(foo); // GOOD
 	}
 }
 
@@ -89,7 +89,7 @@ void test9(int count) {
 	if (!set) {
 		foo = 42;
 	}
-	use(foo); // GOOD (REPORTED, FP)
+	use(foo); // GOOD
 }
 
 void test10() {
@@ -129,7 +129,7 @@ int absWrong(int i) {
 	} else if (i < 0) {
 		j = -i;
 	}
-	return j; // wrong: j may not be initialized before use
+	return j; // wrong: j may not be initialized before use [NOT DETECTED]
 }
 
 // Example from qhelp
@@ -326,7 +326,7 @@ int test28() {
 		a = false;
 		c = false;
 	}
-	return val; // GOOD [FALSE POSITIVE]
+	return val; // GOOD
 }
 
 int test29() {
@@ -434,4 +434,102 @@ int test38() {
 	}
 
 	return j; // BAD
+}
+
+void test39() {
+	int x;
+
+	x; // GOOD, in void context
+}
+
+void test40() {
+	int x;
+
+	(void)x; // GOOD, explicitly cast to void
+}
+
+void test41() {
+	int x;
+
+	x++; // BAD
+}
+
+void test42() {
+	int x;
+
+	void(x++); // BAD
+}
+
+void test43() {
+	int x;
+	int y = 1;
+
+	x + y; // BAD
+}
+
+void test44() {
+	int x;
+	int y = 1;
+
+	void(x + y); // BAD
+}
+
+enum class State { StateA, StateB, StateC };
+
+int exhaustive_switch(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		case State::StateB:
+			y = 2;
+			break;
+		case State::StateC:
+			y = 3;
+			break;
+	}
+	return y; // GOOD (y is always initialized)
+}
+
+int exhaustive_switch_2(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		default:
+			y = 2;
+			break;
+	}
+	return y; // GOOD (y is always initialized)
+}
+
+int non_exhaustive_switch(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		case State::StateB:
+			y = 2;
+			break;
+	}
+	return y; // BAD [NOT DETECTED] (y is not initialized when s = StateC)
+}
+
+int non_exhaustive_switch_2(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		case State::StateB:
+			y = 2;
+			break;
+	}
+	if(s != State::StateC) {
+		return y; // GOOD (y is not initialized when s = StateC, but if s = StateC we won't reach this point)
+	}
+	return 0;
 }

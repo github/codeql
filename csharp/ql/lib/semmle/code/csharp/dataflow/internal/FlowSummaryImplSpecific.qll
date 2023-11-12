@@ -12,27 +12,37 @@ private import DataFlowImplCommon
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import semmle.code.csharp.Unification
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 
-class SummarizedCallableBase extends Callable {
-  SummarizedCallableBase() { this.isUnboundDeclaration() }
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
+class SummarizedCallableBase = UnboundCallable;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = UnboundCallable;
+
+/**
+ * A module for importing frameworks that define synthetic globals.
+ */
+private module SyntheticGlobals {
+  private import semmle.code.csharp.frameworks.EntityFramework
 }
 
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
-ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
-
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
+ArgumentPosition callbackSelfParameterPosition() { result.isDelegateSelf() }
 
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) {
-  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
+  exists(Type t | result.asGvnType() = Gvn::getGlobalValueNumber(t) |
     t = c.(FieldContent).getField().getType()
     or
     t = c.(PropertyContent).getProperty().getType()
@@ -44,8 +54,22 @@ DataFlowType getContentType(Content c) {
   )
 }
 
-private DataFlowType getReturnTypeBase(DotNet::Callable c, ReturnKind rk) {
-  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
+  exists(Type t | result.asGvnType() = Gvn::getGlobalValueNumber(t) |
+    exists(int i |
+      pos.getPosition() = i and
+      t = c.getParameter(i).getType()
+    )
+    or
+    pos.isThisParameter() and
+    t = c.getDeclaringType()
+  )
+}
+
+/** Gets the return type of kind `rk` for callable `c`. */
+DataFlowType getReturnType(DotNet::Callable c, ReturnKind rk) {
+  exists(Type t | result.asGvnType() = Gvn::getGlobalValueNumber(t) |
     rk instanceof NormalReturnKind and
     (
       t = c.(Constructor).getDeclaringType()
@@ -58,25 +82,19 @@ private DataFlowType getReturnTypeBase(DotNet::Callable c, ReturnKind rk) {
   )
 }
 
-/** Gets the return type of kind `rk` for callable `c`. */
-bindingset[c]
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getReturnTypeBase(c, rk)
-  or
-  rk =
-    any(JumpReturnKind jrk | result = getReturnTypeBase(jrk.getTarget(), jrk.getTargetReturnKind()))
-}
-
 /**
  * Gets the type of the parameter matching arguments at position `pos` in a
  * synthesized call that targets a callback of type `t`.
  */
 DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
   exists(SystemLinqExpressions::DelegateExtType dt |
-    t = Gvn::getGlobalValueNumber(dt) and
-    result =
+    t.asGvnType() = Gvn::getGlobalValueNumber(dt) and
+    result.asGvnType() =
       Gvn::getGlobalValueNumber(dt.getDelegateType().getParameter(pos.getPosition()).getType())
   )
+  or
+  pos.isDelegateSelf() and
+  result = t
 }
 
 /**
@@ -86,15 +104,15 @@ DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   rk instanceof NormalReturnKind and
   exists(SystemLinqExpressions::DelegateExtType dt |
-    t = Gvn::getGlobalValueNumber(dt) and
-    result = Gvn::getGlobalValueNumber(dt.getDelegateType().getReturnType())
+    t.asGvnType() = Gvn::getGlobalValueNumber(dt) and
+    result.asGvnType() = Gvn::getGlobalValueNumber(dt.getDelegateType().getReturnType())
   )
 }
 
 /** Gets the type of synthetic global `sg`. */
 DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) {
   exists(sg) and
-  result = Gvn::getGlobalValueNumber(any(ObjectType t))
+  result.asGvnType() = Gvn::getGlobalValueNumber(any(ObjectType t))
 }
 
 /**
@@ -111,12 +129,12 @@ predicate summaryElement(Callable c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenace`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
  */
-predicate neutralSummaryElement(Callable c, string provenance) {
+predicate neutralElement(Callable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, "summary", provenance) and
+    neutralModel(namespace, type, name, signature, kind, provenance) and
     c = interpretElement(namespace, type, false, name, signature, "")
   )
 }
@@ -160,46 +178,46 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   // rather than an individual argument.
   exists(Field f |
     c.getName() = "Field" and
-    c.getArgumentList() = f.getQualifiedName() and
+    c.getArgumentList() = f.getFullyQualifiedName() and
     result = SummaryComponent::content(any(FieldContent fc | fc.getField() = f))
   )
   or
   exists(Property p |
     c.getName() = "Property" and
-    c.getArgumentList() = p.getQualifiedName() and
+    c.getArgumentList() = p.getFullyQualifiedName() and
     result = SummaryComponent::content(any(PropertyContent pc | pc.getProperty() = p))
   )
   or
   exists(SyntheticField f |
-    c.getName() = "SyntheticField" and
-    c.getArgumentList() = f and
+    c.getAnArgument("SyntheticField") = f and
     result = SummaryComponent::content(any(SyntheticFieldContent sfc | sfc.getField() = f))
   )
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
+/** Gets the textual representation of the content in the format used for MaD models. */
 private string getContentSpecific(Content c) {
   c = TElementContent() and result = "Element"
   or
-  exists(Field f | c = TFieldContent(f) and result = "Field[" + f.getQualifiedName() + "]")
+  exists(Field f | c = TFieldContent(f) and result = "Field[" + f.getFullyQualifiedName() + "]")
   or
-  exists(Property p | c = TPropertyContent(p) and result = "Property[" + p.getQualifiedName() + "]")
+  exists(Property p |
+    c = TPropertyContent(p) and result = "Property[" + p.getFullyQualifiedName() + "]"
+  )
   or
   exists(SyntheticField f | c = TSyntheticFieldContent(f) and result = "SyntheticField[" + f + "]")
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   sc = TWithoutContentSummaryComponent(_) and result = "WithoutElement"
   or
   sc = TWithContentSummaryComponent(_) and result = "WithElement"
   or
-  exists(ReturnKind rk |
+  exists(OutRefReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    result = "ReturnValue[" + rk + "]" and
-    not rk instanceof NormalReturnKind
+    result = "Argument[" + rk.getPosition() + "]"
   )
 }
 
@@ -209,6 +227,9 @@ string getParameterPosition(ParameterPosition pos) {
   or
   pos.isThisParameter() and
   result = "this"
+  or
+  pos.isDelegateSelf() and
+  result = "delegate-self"
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
@@ -217,6 +238,9 @@ string getArgumentPosition(ArgumentPosition pos) {
   or
   pos.isQualifier() and
   result = "this"
+  or
+  pos.isDelegateSelf() and
+  result = "delegate-self"
 }
 
 /** Holds if input specification component `c` needs a reference. */
@@ -298,6 +322,9 @@ ArgumentPosition parseParamBody(string s) {
   or
   s = "this" and
   result.isQualifier()
+  or
+  s = "delegate-self" and
+  result.isDelegateSelf()
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
@@ -307,4 +334,7 @@ ParameterPosition parseArgBody(string s) {
   or
   s = "this" and
   result.isThisParameter()
+  or
+  s = "delegate-self" and
+  result.isDelegateSelf()
 }

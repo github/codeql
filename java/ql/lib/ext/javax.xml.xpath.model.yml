@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.xml.xpath", "XPath", True, "compile", "", "", "Argument[0]", "xpath", "manual"]
-      - ["javax.xml.xpath", "XPath", True, "evaluate", "", "", "Argument[0]", "xpath", "manual"]
-      - ["javax.xml.xpath", "XPath", True, "evaluateExpression", "", "", "Argument[0]", "xpath", "manual"]
+      - ["javax.xml.xpath", "XPath", True, "compile", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["javax.xml.xpath", "XPath", True, "evaluate", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["javax.xml.xpath", "XPath", True, "evaluateExpression", "", "", "Argument[0]", "xpath-injection", "manual"]

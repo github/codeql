@@ -721,14 +721,14 @@ public class Test {
 		{
 			// "org.apache.commons.collections4;MapUtils;true;getMap;;;MapValue of Argument[0];ReturnValue;value;manual"
 			Map out = null;
-			Map in = newTreeMapWithMapValue((String)source());
+			Map in = newTreeMapWithMapValue((Map)source());
 			out = MapUtils.getMap(in, null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.apache.commons.collections4;MapUtils;true;getMap;;;MapValue of Argument[0];ReturnValue;value;manual"
 			Map out = null;
-			Map in = newTreeMapWithMapValue((String)source());
+			Map in = newTreeMapWithMapValue((Map)source());
 			out = MapUtils.getMap(in, null);
 			sink(out); // $ hasValueFlow
 		}

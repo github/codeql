@@ -76,4 +76,32 @@ class FooController < ActionController::Base
   def re_compile_indirect_2 (reg, input)
     input.gsub reg, '' # NOT GOOD
   end
+
+  # See https://github.com/dependabot/dependabot-core/blob/37dc1767fde9b7184020763f4d0c1434f93d11d6/python/lib/dependabot/python/requirement_parser.rb#L6-L25
+  NAME = /[a-zA-Z0-9](?:[a-zA-Z0-9\-_\.]*[a-zA-Z0-9])?/
+  EXTRA = /[a-zA-Z0-9\-_\.]+/
+  COMPARISON = /===|==|>=|<=|<|>|~=|!=/
+  VERSION = /([1-9][0-9]*!)?[0-9]+[a-zA-Z0-9\-_.*]*(\+[0-9a-zA-Z]+(\.[0-9a-zA-Z]+)*)?/
+
+  REQUIREMENT = /(?<comparison>#{COMPARISON})\s*\\?\s*(?<version>#{VERSION})/
+  HASH = /--hash=(?<algorithm>.*?):(?<hash>.*?)(?=\s|\\|$)/
+  REQUIREMENTS = /#{REQUIREMENT}(\s*,\s*\\?\s*#{REQUIREMENT})*/
+  HASHES = /#{HASH}(\s*\\?\s*#{HASH})*/
+  MARKER_OP = /\s*(#{COMPARISON}|(\s*in)|(\s*not\s*in))/
+  PYTHON_STR_C = %r{[a-zA-Z0-9\s\(\)\.\{\}\-_\*#:;/\?\[\]!~`@\$%\^&=\+\|<>]}
+  PYTHON_STR = /('(#{PYTHON_STR_C}|")*'|"(#{PYTHON_STR_C}|')*")/
+  ENV_VAR =
+      /python_version|python_full_version|os_name|sys_platform|
+      platform_release|platform_system|platform_version|platform_machine|
+      platform_python_implementation|implementation_name|
+      implementation_version/
+  MARKER_VAR = /\s*(#{ENV_VAR}|#{PYTHON_STR})/
+  MARKER_EXPR_ONE = /#{MARKER_VAR}#{MARKER_OP}#{MARKER_VAR}/
+  MARKER_EXPR = /(#{MARKER_EXPR_ONE}|\(\s*|\s*\)|\s+and\s+|\s+or\s+)+/
+
+  def use_marker_expr 
+    name = params[:name] # source
+
+    name =~ MARKER_EXPR 
+  end  
 end

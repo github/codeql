@@ -6,19 +6,19 @@
 | method_lookups.swift:33:3:33:5 | .bar() | method_lookups.swift:3:3:3:21 | bar() |
 | method_lookups.swift:34:3:34:3 | X.init() | method_lookups.swift:6:3:8:3 | X.init() |
 | method_lookups.swift:34:3:34:7 | .baz(_:) | method_lookups.swift:4:3:4:21 | baz(_:) |
-| method_lookups.swift:36:13:36:13 | .bar() | method_lookups.swift:3:3:3:21 | bar() |
+| method_lookups.swift:36:11:36:13 | .bar() | method_lookups.swift:3:3:3:21 | bar() |
 | method_lookups.swift:37:11:37:11 | X.init() | method_lookups.swift:6:3:8:3 | X.init() |
 | method_lookups.swift:37:15:37:15 | .baz(_:) | method_lookups.swift:4:3:4:21 | baz(_:) |
 | method_lookups.swift:40:1:40:1 | Task<Success, Never>.init(priority:operation:) | file://:0:0:0:0 | Task<Success, Never>.init(priority:operation:) |
 | method_lookups.swift:41:3:41:5 | .foo(_:_:) | method_lookups.swift:12:3:12:35 | foo(_:_:) |
 | method_lookups.swift:42:9:42:9 | Y.init() | method_lookups.swift:15:3:17:3 | Y.init() |
 | method_lookups.swift:42:9:42:13 | .baz(_:) | method_lookups.swift:13:3:13:21 | baz(_:) |
-| method_lookups.swift:44:13:44:13 | .foo(_:_:) | method_lookups.swift:12:3:12:35 | foo(_:_:) |
+| method_lookups.swift:44:11:44:13 | .foo(_:_:) | method_lookups.swift:12:3:12:35 | foo(_:_:) |
 | method_lookups.swift:47:1:47:1 | Task<Success, Never>.init(priority:operation:) | file://:0:0:0:0 | Task<Success, Never>.init(priority:operation:) |
 | method_lookups.swift:48:9:48:11 | .foo(_:_:) | method_lookups.swift:22:3:22:35 | foo(_:_:) |
-| method_lookups.swift:49:9:49:11 | .bar() | method_lookups.swift:23:3:23:21 | bar() |
+| method_lookups.swift:49:9:49:11 | .bar() | method_lookups.swift:23:15:23:33 | bar() |
 | method_lookups.swift:50:9:50:9 | Z.init() | method_lookups.swift:26:3:28:3 | Z.init() |
 | method_lookups.swift:50:9:50:13 | .baz(_:) | method_lookups.swift:24:3:24:21 | baz(_:) |
-| method_lookups.swift:52:13:52:13 | .bar() | method_lookups.swift:23:3:23:21 | bar() |
+| method_lookups.swift:52:11:52:13 | .bar() | method_lookups.swift:23:15:23:33 | bar() |
 | method_lookups.swift:53:18:53:18 | Z.init() | method_lookups.swift:26:3:28:3 | Z.init() |
 | method_lookups.swift:53:23:53:23 | .baz(_:) | method_lookups.swift:24:3:24:21 | baz(_:) |

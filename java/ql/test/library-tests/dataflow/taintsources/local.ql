@@ -7,7 +7,7 @@ class LocalSource extends DataFlow::Node instanceof UserInput {
 }
 
 predicate isTestSink(DataFlow::Node n) {
-  exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
 }
 
 module LocalValueConfig implements DataFlow::ConfigSig {
@@ -26,12 +26,10 @@ module LocalTaintConfig implements DataFlow::ConfigSig {
 
 module LocalTaintFlow = TaintTracking::Global<LocalTaintConfig>;
 
-class LocalFlowTest extends InlineExpectationsTest {
-  LocalFlowTest() { this = "LocalFlowTest" }
+module LocalFlowTest implements TestSig {
+  string getARelevantTag() { result = ["hasLocalValueFlow", "hasLocalTaintFlow"] }
 
-  override string getARelevantTag() { result = ["hasLocalValueFlow", "hasLocalTaintFlow"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasLocalValueFlow" and
     exists(DataFlow::Node sink | LocalValueFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -49,3 +47,5 @@ class LocalFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<LocalFlowTest>

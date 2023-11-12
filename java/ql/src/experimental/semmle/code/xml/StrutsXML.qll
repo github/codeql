@@ -10,9 +10,6 @@ class StrutsXmlFile extends XmlFile {
   }
 }
 
-/** DEPRECATED: Alias for StrutsXmlFile */
-deprecated class StrutsXMLFile = StrutsXmlFile;
-
 /**
  * An XML element in a `StrutsXMLFile`.
  */
@@ -24,9 +21,6 @@ class StrutsXmlElement extends XmlElement {
    */
   string getValue() { result = this.allCharactersString().trim() }
 }
-
-/** DEPRECATED: Alias for StrutsXmlElement */
-deprecated class StrutsXMLElement = StrutsXmlElement;
 
 /**
  * A `<constant>` element in a `StrutsXMLFile`.

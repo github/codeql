@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 using System.Reflection.PortableExecutable;
 using Microsoft.DiaSymReader;
-using System.Reflection.Metadata.Ecma335;
-using System.Reflection.Metadata;
-using System.IO;
 
 namespace Semmle.Extraction.PDB
 {

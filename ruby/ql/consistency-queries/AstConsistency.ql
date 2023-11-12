@@ -23,3 +23,8 @@ query predicate multipleParents(AstNode node, AstNode parent, string cls) {
     one != two
   )
 }
+
+query predicate multipleToString(AstNode n, string s) {
+  s = strictconcat(n.toString(), ",") and
+  strictcount(n.toString()) > 1
+}

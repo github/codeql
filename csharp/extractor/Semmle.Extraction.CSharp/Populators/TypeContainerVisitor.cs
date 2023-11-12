@@ -1,11 +1,11 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
@@ -82,9 +82,6 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitAttributeList(AttributeListSyntax node)
         {
-            if (Cx.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
-                return;
-
             var outputAssembly = Assembly.CreateOutputAssembly(Cx);
             var kind = node.Target?.Identifier.Kind() switch
             {

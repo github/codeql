@@ -51,18 +51,12 @@ module InsecureDownload {
       SensitiveInsecureUrl() { this = "sensitiveInsecure" }
     }
 
-    /** DEPRECATED: Alias for SensitiveInsecureUrl */
-    deprecated class SensitiveInsecureURL = SensitiveInsecureUrl;
-
     /**
      * A flow-label for a URL that is downloaded over an insecure connection.
      */
     class InsecureUrl extends DataFlow::FlowLabel {
       InsecureUrl() { this = "insecure" }
     }
-
-    /** DEPRECATED: Alias for InsecureUrl */
-    deprecated class InsecureURL = InsecureUrl;
   }
 
   /**
@@ -126,9 +120,6 @@ module InsecureDownload {
       result instanceof Label::InsecureUrl
     }
   }
-
-  /** DEPRECATED: Alias for ClientRequestUrl */
-  deprecated class ClientRequestURL = ClientRequestUrl;
 
   /**
    * Gets a node for the response from `request`, type-tracked using `t`.

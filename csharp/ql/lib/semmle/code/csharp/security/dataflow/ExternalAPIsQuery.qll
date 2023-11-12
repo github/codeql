@@ -14,9 +14,6 @@ private import semmle.code.csharp.dataflow.FlowSummary
  */
 abstract class SafeExternalApiCallable extends Callable { }
 
-/** DEPRECATED: Alias for SafeExternalApiCallable */
-deprecated class SafeExternalAPICallable = SafeExternalApiCallable;
-
 private class SummarizedCallableSafe extends SafeExternalApiCallable instanceof SummarizedCallable {
 }
 
@@ -72,7 +69,7 @@ class ExternalApiDataNode extends DataFlow::Node {
 
   /** Holds if the callable being use has name `name` and has qualifier `qualifier`. */
   predicate hasQualifiedName(string qualifier, string name) {
-    this.getCallable().hasQualifiedName(qualifier, name)
+    this.getCallable().hasFullyQualifiedName(qualifier, name)
   }
 
   /**
@@ -86,9 +83,6 @@ class ExternalApiDataNode extends DataFlow::Node {
     )
   }
 }
-
-/** DEPRECATED: Alias for ExternalApiDataNode */
-deprecated class ExternalAPIDataNode = ExternalApiDataNode;
 
 /**
  * DEPRECATED: Use `RemoteSourceToExternalApi` instead.
@@ -113,9 +107,6 @@ private module RemoteSourceToExternalApiConfig implements DataFlow::ConfigSig {
 /** A module for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
 module RemoteSourceToExternalApi = TaintTracking::Global<RemoteSourceToExternalApiConfig>;
 
-/** DEPRECATED: Alias for UntrustedDataToExternalApiConfig */
-deprecated class UntrustedDataToExternalAPIConfig = UntrustedDataToExternalApiConfig;
-
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalApiDataNode extends ExternalApiDataNode {
   UntrustedExternalApiDataNode() { RemoteSourceToExternalApi::flow(_, this) }
@@ -123,9 +114,6 @@ class UntrustedExternalApiDataNode extends ExternalApiDataNode {
   /** Gets a source of untrusted data which is passed to this external API data node. */
   DataFlow::Node getAnUntrustedSource() { RemoteSourceToExternalApi::flow(result, this) }
 }
-
-/** DEPRECATED: Alias for UntrustedExternalApiDataNode */
-deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
 
 /** An external API which is used with untrusted data. */
 private newtype TExternalApi =
@@ -156,11 +144,8 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
     |
       this = TExternalApiParameter(m, index) and
       result =
-        m.getDeclaringType().getQualifiedName() + "." + m.toStringWithTypes() + " [" + indexString +
-          "]"
+        m.getDeclaringType().getFullyQualifiedName() + "." + m.toStringWithTypes() + " [" +
+          indexString + "]"
     )
   }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated class ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

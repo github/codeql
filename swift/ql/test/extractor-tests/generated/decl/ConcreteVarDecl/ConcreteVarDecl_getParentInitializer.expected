@@ -1,3 +1,4 @@
+| var_decls.swift:2:12:2:12 | $i$generator | var_decls.swift:2:12:2:16 | call to makeIterator() |
 | var_decls.swift:4:7:4:7 | i | var_decls.swift:4:11:4:11 | 0 |
 | var_decls.swift:7:5:7:5 | numbers | var_decls.swift:7:15:7:18 | [...] |
 | var_decls.swift:10:12:10:12 | numbers | var_decls.swift:10:22:10:35 | [...] |

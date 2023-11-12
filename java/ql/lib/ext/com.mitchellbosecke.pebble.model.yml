@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.mitchellbosecke.pebble", "PebbleEngine", True, "getLiteralTemplate", "", "", "Argument[0]", "ssti", "manual"]
-      - ["com.mitchellbosecke.pebble", "PebbleEngine", True, "getTemplate", "", "", "Argument[0]", "ssti", "manual"]
+      - ["com.mitchellbosecke.pebble", "PebbleEngine", True, "getLiteralTemplate", "", "", "Argument[0]", "template-injection", "manual"]
+      - ["com.mitchellbosecke.pebble", "PebbleEngine", True, "getTemplate", "", "", "Argument[0]", "template-injection", "manual"]

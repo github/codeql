@@ -1,8 +1,7 @@
-﻿using Microsoft.CodeAnalysis;
-using Semmle.Util.Logging;
-using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
 {

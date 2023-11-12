@@ -32,4 +32,9 @@ private import codeql.ruby.frameworks.Slim
 private import codeql.ruby.frameworks.Sinatra
 private import codeql.ruby.frameworks.Twirp
 private import codeql.ruby.frameworks.Sqlite3
+private import codeql.ruby.frameworks.Mysql2
 private import codeql.ruby.frameworks.Pg
+private import codeql.ruby.frameworks.Yaml
+private import codeql.ruby.frameworks.Sequel
+private import codeql.ruby.frameworks.Ldap
+private import codeql.ruby.frameworks.Jwt

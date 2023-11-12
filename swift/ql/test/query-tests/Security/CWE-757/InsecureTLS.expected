@@ -53,6 +53,11 @@ edges
 | InsecureTLS.swift:187:5:187:5 | [post] self [tlsMinimumSupportedProtocolVersion] | InsecureTLS.swift:187:5:187:5 | [post] self |
 | InsecureTLS.swift:187:42:187:42 | withMinVersion | InsecureTLS.swift:187:5:187:5 | [post] self [tlsMinimumSupportedProtocolVersion] |
 | InsecureTLS.swift:193:51:193:74 | .TLSv10 | InsecureTLS.swift:185:20:185:36 | withMinVersion |
+| InsecureTLS.swift:196:56:196:63 | value | InsecureTLS.swift:196:1:198:1 | version[return] |
+| InsecureTLS.swift:202:24:202:24 | [post] config [tlsMinimumSupportedProtocolVersion] | InsecureTLS.swift:202:24:202:24 | [post] config |
+| InsecureTLS.swift:202:24:202:31 | [post] getter for .tlsMinimumSupportedProtocolVersion | InsecureTLS.swift:202:24:202:24 | [post] config [tlsMinimumSupportedProtocolVersion] |
+| InsecureTLS.swift:202:74:202:97 | .TLSv10 | InsecureTLS.swift:196:56:196:63 | value |
+| InsecureTLS.swift:202:74:202:97 | .TLSv10 | InsecureTLS.swift:202:24:202:31 | [post] getter for .tlsMinimumSupportedProtocolVersion |
 | file://:0:0:0:0 | [post] self [tlsMaximumSupportedProtocolVersion] | file://:0:0:0:0 | [post] self |
 | file://:0:0:0:0 | [post] self [tlsMaximumSupportedProtocolVersion] | file://:0:0:0:0 | [post] self |
 | file://:0:0:0:0 | [post] self [tlsMaximumSupportedProtocol] | file://:0:0:0:0 | [post] self |
@@ -112,6 +117,12 @@ nodes
 | InsecureTLS.swift:187:5:187:5 | [post] self [tlsMinimumSupportedProtocolVersion] | semmle.label | [post] self [tlsMinimumSupportedProtocolVersion] |
 | InsecureTLS.swift:187:42:187:42 | withMinVersion | semmle.label | withMinVersion |
 | InsecureTLS.swift:193:51:193:74 | .TLSv10 | semmle.label | .TLSv10 |
+| InsecureTLS.swift:196:1:198:1 | version[return] | semmle.label | version[return] |
+| InsecureTLS.swift:196:56:196:63 | value | semmle.label | value |
+| InsecureTLS.swift:202:24:202:24 | [post] config | semmle.label | [post] config |
+| InsecureTLS.swift:202:24:202:24 | [post] config [tlsMinimumSupportedProtocolVersion] | semmle.label | [post] config [tlsMinimumSupportedProtocolVersion] |
+| InsecureTLS.swift:202:24:202:31 | [post] getter for .tlsMinimumSupportedProtocolVersion | semmle.label | [post] getter for .tlsMinimumSupportedProtocolVersion |
+| InsecureTLS.swift:202:74:202:97 | .TLSv10 | semmle.label | .TLSv10 |
 | file://:0:0:0:0 | .TLSVersion | semmle.label | .TLSVersion |
 | file://:0:0:0:0 | [post] self | semmle.label | [post] self |
 | file://:0:0:0:0 | [post] self | semmle.label | [post] self |
@@ -153,6 +164,7 @@ subpaths
 | InsecureTLS.swift:165:47:165:51 | .TLSVersion | InsecureTLS.swift:19:7:19:7 | value | file://:0:0:0:0 | [post] self [tlsMinimumSupportedProtocolVersion] | InsecureTLS.swift:165:3:165:3 | [post] config [tlsMinimumSupportedProtocolVersion] |
 | InsecureTLS.swift:181:53:181:76 | .TLSv10 | InsecureTLS.swift:19:7:19:7 | value | file://:0:0:0:0 | [post] self | InsecureTLS.swift:181:3:181:9 | [post] getter for .config |
 | InsecureTLS.swift:181:53:181:76 | .TLSv10 | InsecureTLS.swift:19:7:19:7 | value | file://:0:0:0:0 | [post] self [tlsMinimumSupportedProtocolVersion] | InsecureTLS.swift:181:3:181:9 | [post] getter for .config [tlsMinimumSupportedProtocolVersion] |
+| InsecureTLS.swift:202:74:202:97 | .TLSv10 | InsecureTLS.swift:196:56:196:63 | value | InsecureTLS.swift:196:1:198:1 | version[return] | InsecureTLS.swift:202:24:202:31 | [post] getter for .tlsMinimumSupportedProtocolVersion |
 #select
 | InsecureTLS.swift:40:3:40:3 | [post] config | InsecureTLS.swift:40:47:40:70 | .TLSv10 | InsecureTLS.swift:40:3:40:3 | [post] config | This TLS configuration is insecure. |
 | InsecureTLS.swift:45:3:45:3 | [post] config | InsecureTLS.swift:45:47:45:70 | .TLSv11 | InsecureTLS.swift:45:3:45:3 | [post] config | This TLS configuration is insecure. |
@@ -164,6 +176,7 @@ subpaths
 | InsecureTLS.swift:165:3:165:3 | [post] config | InsecureTLS.swift:163:20:163:43 | .TLSv10 | InsecureTLS.swift:165:3:165:3 | [post] config | This TLS configuration is insecure. |
 | InsecureTLS.swift:181:3:181:9 | [post] getter for .config | InsecureTLS.swift:181:53:181:76 | .TLSv10 | InsecureTLS.swift:181:3:181:9 | [post] getter for .config | This TLS configuration is insecure. |
 | InsecureTLS.swift:187:5:187:5 | [post] self | InsecureTLS.swift:193:51:193:74 | .TLSv10 | InsecureTLS.swift:187:5:187:5 | [post] self | This TLS configuration is insecure. |
+| InsecureTLS.swift:202:24:202:24 | [post] config | InsecureTLS.swift:202:74:202:97 | .TLSv10 | InsecureTLS.swift:202:24:202:24 | [post] config | This TLS configuration is insecure. |
 | file://:0:0:0:0 | [post] self | InsecureTLS.swift:40:47:40:70 | .TLSv10 | file://:0:0:0:0 | [post] self | This TLS configuration is insecure. |
 | file://:0:0:0:0 | [post] self | InsecureTLS.swift:45:47:45:70 | .TLSv11 | file://:0:0:0:0 | [post] self | This TLS configuration is insecure. |
 | file://:0:0:0:0 | [post] self | InsecureTLS.swift:57:47:57:70 | .TLSv10 | file://:0:0:0:0 | [post] self | This TLS configuration is insecure. |

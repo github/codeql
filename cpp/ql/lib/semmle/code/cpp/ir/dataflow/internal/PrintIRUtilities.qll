@@ -18,9 +18,12 @@ private string stars(int k) {
 }
 
 string starsForNode(Node node) {
-  result = stars(node.(IndirectInstruction).getIndirectionIndex())
-  or
-  result = stars(node.(IndirectOperand).getIndirectionIndex())
+  exists(int indirectionIndex |
+    node.(IndirectInstruction).hasInstructionAndIndirectionIndex(_, indirectionIndex) or
+    node.(IndirectOperand).hasOperandAndIndirectionIndex(_, indirectionIndex)
+  |
+    result = stars(indirectionIndex)
+  )
   or
   not node instanceof IndirectInstruction and
   not node instanceof IndirectOperand and

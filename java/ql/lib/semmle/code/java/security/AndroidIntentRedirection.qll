@@ -30,7 +30,7 @@ class IntentRedirectionAdditionalTaintStep extends Unit {
 
 /** Default sink for Intent redirection vulnerabilities. */
 private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
-  DefaultIntentRedirectionSink() { sinkNode(this, "intent-start") }
+  DefaultIntentRedirectionSink() { sinkNode(this, "intent-redirection") }
 }
 
 /**
@@ -41,14 +41,14 @@ private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
 private class DefaultIntentRedirectionSanitizer extends IntentRedirectionSanitizer {
   DefaultIntentRedirectionSanitizer() {
     this.getType() instanceof TypeIntent and
-    exists(MethodAccess ma, Method m, Guard g, boolean branch |
+    exists(MethodCall ma, Method m, Guard g, boolean branch |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeComponentName and
       m.hasName("getPackageName") and
       g.isEquality(ma, _, branch) and
       g.controls(this.asExpr().getBasicBlock(), branch)
     ) and
-    exists(MethodAccess ma, Method m, Guard g, boolean branch |
+    exists(MethodCall ma, Method m, Guard g, boolean branch |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeComponentName and
       m.hasName("getClassName") and

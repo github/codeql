@@ -14,7 +14,7 @@ abstract class PathCreation extends Expr {
 }
 
 /** Models the `java.nio.file.Paths.get` method. */
-private class PathsGet extends PathCreation, MethodAccess {
+private class PathsGet extends PathCreation, MethodCall {
   PathsGet() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypePaths and
@@ -26,7 +26,7 @@ private class PathsGet extends PathCreation, MethodAccess {
 }
 
 /** Models the `java.nio.file.FileSystem.getPath` method. */
-private class FileSystemGetPath extends PathCreation, MethodAccess {
+private class FileSystemGetPath extends PathCreation, MethodCall {
   FileSystemGetPath() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypeFileSystem and
@@ -49,7 +49,7 @@ private class FileCreation extends PathCreation, ClassInstanceExpr {
 }
 
 /** Models the `java.nio.file.Path.resolveSibling` method. */
-private class PathResolveSiblingCreation extends PathCreation, MethodAccess {
+private class PathResolveSiblingCreation extends PathCreation, MethodCall {
   PathResolveSiblingCreation() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypePath and
@@ -65,7 +65,7 @@ private class PathResolveSiblingCreation extends PathCreation, MethodAccess {
 }
 
 /** Models the `java.nio.file.Path.resolve` method. */
-private class PathResolveCreation extends PathCreation, MethodAccess {
+private class PathResolveCreation extends PathCreation, MethodCall {
   PathResolveCreation() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypePath and
@@ -81,7 +81,7 @@ private class PathResolveCreation extends PathCreation, MethodAccess {
 }
 
 /** Models the `java.nio.file.Path.of` method. */
-private class PathOfCreation extends PathCreation, MethodAccess {
+private class PathOfCreation extends PathCreation, MethodCall {
   PathOfCreation() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypePath and

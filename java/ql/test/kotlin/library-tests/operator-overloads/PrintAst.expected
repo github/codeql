@@ -18,7 +18,7 @@ test.kt:
 #    3|         1: [ExprStmt] <Expr>;
 #    3|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    3|             0: [TypeAccess] Unit
-#    3|             1: [MethodAccess] get(...)
+#    3|             1: [MethodCall] get(...)
 #    3|               -1: [TypeAccess] TestKt
 #    3|               0: [VarAccess] arr
 #    3|               1: [IntegerLiteral] 1
@@ -26,14 +26,14 @@ test.kt:
 #    4|         2: [ExprStmt] <Expr>;
 #    4|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    4|             0: [TypeAccess] Unit
-#    4|             1: [MethodAccess] get(...)
+#    4|             1: [MethodCall] get(...)
 #    4|               -1: [VarAccess] mt
 #    4|               0: [IntegerLiteral] 1
 #    4|               1: [IntegerLiteral] 2
 #    6|         3: [ExprStmt] <Expr>;
 #    6|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    6|             0: [TypeAccess] Unit
-#    6|             1: [MethodAccess] set(...)
+#    6|             1: [MethodCall] set(...)
 #    6|               -1: [TypeAccess] TestKt
 #    6|               0: [VarAccess] arr
 #    6|               1: [IntegerLiteral] 1
@@ -42,7 +42,7 @@ test.kt:
 #    7|         4: [ExprStmt] <Expr>;
 #    7|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    7|             0: [TypeAccess] Unit
-#    7|             1: [MethodAccess] set(...)
+#    7|             1: [MethodCall] set(...)
 #    7|               -1: [TypeAccess] TestKt
 #    7|               0: [VarAccess] arr
 #    7|               1: [IntegerLiteral] 1

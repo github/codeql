@@ -3,7 +3,6 @@
  */
 
 import go
-private import semmle.go.dataflow.DataFlowForStringsNewReplacer
 
 /** Provides predicates and classes for working with string operations. */
 module StringOps {
@@ -223,20 +222,10 @@ module StringOps {
       }
     }
 
-    /**
-     * A configuration for tracking flow from a call to `strings.NewReplacer` to
-     * the receiver of a call to `strings.Replacer.Replace` or
-     * `strings.Replacer.WriteString`.
-     */
-    private class StringsNewReplacerConfiguration extends DataFlowForStringsNewReplacer::Configuration
-    {
-      StringsNewReplacerConfiguration() { this = "StringsNewReplacerConfiguration" }
+    private module StringsNewReplacerConfig implements DataFlow::ConfigSig {
+      predicate isSource(DataFlow::Node source) { source instanceof StringsNewReplacerCall }
 
-      override predicate isSource(DataFlow::Node source) {
-        source instanceof StringsNewReplacerCall
-      }
-
-      override predicate isSink(DataFlow::Node sink) {
+      predicate isSink(DataFlow::Node sink) {
         exists(DataFlow::MethodCallNode call |
           sink = call.getReceiver() and
           call.getTarget().hasQualifiedName("strings", "Replacer", ["Replace", "WriteString"])
@@ -245,17 +234,20 @@ module StringOps {
     }
 
     /**
+     * Tracks data flow from a call to `strings.NewReplacer` to the receiver of
+     * a call to `strings.Replacer.Replace` or `strings.Replacer.WriteString`.
+     */
+    private module StringsNewReplacerFlow = DataFlow::Global<StringsNewReplacerConfig>;
+
+    /**
      * A call to `strings.Replacer.Replace` or `strings.Replacer.WriteString`.
      */
     private class StringsReplacerReplaceOrWriteString extends Range {
       string replacedString;
 
       StringsReplacerReplaceOrWriteString() {
-        exists(
-          StringsNewReplacerConfiguration config, StringsNewReplacerCall source,
-          DataFlow::Node sink, DataFlow::MethodCallNode call
-        |
-          config.hasFlow(source, sink) and
+        exists(StringsNewReplacerCall source, DataFlow::Node sink, DataFlow::MethodCallNode call |
+          StringsNewReplacerFlow::flow(source, sink) and
           sink = call.getReceiver() and
           replacedString = source.getAReplacedArgument().getStringValue() and
           (

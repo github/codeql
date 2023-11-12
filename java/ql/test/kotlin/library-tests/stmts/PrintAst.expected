@@ -119,7 +119,7 @@ stmts.kt:
 #   31|         2: [EnhancedForStmt] for (... : ...)
 #-----|           0: (Single Local Variable Declaration)
 #   31|             1: [LocalVariableDeclExpr] i
-#   31|           1: [MethodAccess] rangeTo(...)
+#   31|           1: [MethodCall] rangeTo(...)
 #   31|             -1: [VarAccess] x
 #   31|             0: [VarAccess] y
 #   31|           2: [BlockStmt] { ... }
@@ -134,7 +134,7 @@ stmts.kt:
 #   35|           0: [EnhancedForStmt] for (... : ...)
 #-----|             0: (Single Local Variable Declaration)
 #   35|               1: [LocalVariableDeclExpr] i
-#   35|             1: [MethodAccess] rangeTo(...)
+#   35|             1: [MethodCall] rangeTo(...)
 #   35|               -1: [VarAccess] x
 #   35|               0: [VarAccess] y
 #   35|             2: [BlockStmt] { ... }
@@ -154,20 +154,20 @@ stmts.kt:
 #   41|         4: [EnhancedForStmt] for (... : ...)
 #-----|           0: (Single Local Variable Declaration)
 #   41|             1: [LocalVariableDeclExpr] tmp3_loop_parameter
-#   41|           1: [MethodAccess] withIndex(...)
+#   41|           1: [MethodCall] withIndex(...)
 #   41|             -2: [TypeAccess] Integer
 #   41|             -1: [TypeAccess] CollectionsKt
-#   41|             0: [MethodAccess] rangeTo(...)
+#   41|             0: [MethodCall] rangeTo(...)
 #   41|               -1: [VarAccess] x
 #   41|               0: [VarAccess] y
 #   41|           2: [BlockStmt] { ... }
 #   41|             0: [LocalVariableDeclStmt] var ...;
 #   41|               1: [LocalVariableDeclExpr] v
-#    0|                 0: [MethodAccess] component1(...)
+#    0|                 0: [MethodCall] component1(...)
 #   41|                   -1: [VarAccess] tmp3_loop_parameter
 #   41|             1: [LocalVariableDeclStmt] var ...;
 #   41|               1: [LocalVariableDeclExpr] i
-#    0|                 0: [MethodAccess] component2(...)
+#    0|                 0: [MethodCall] component2(...)
 #    0|                   -1: [VarAccess] tmp3_loop_parameter
 #   41|             2: [BlockStmt] { ... }
 #   42|               0: [ExprStmt] <Expr>;

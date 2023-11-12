@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.security.ssl", "KeyManagerFactoryImpl$SunX509", False, "engineInit", "(KeyStore,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["sun.security.ssl", "KeyManagerFactoryImpl$X509", False, "engineInit", "(KeyStore,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["sun.security.ssl", "SunX509KeyManagerImpl", False, "SunX509KeyManagerImpl", "(KeyStore,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]

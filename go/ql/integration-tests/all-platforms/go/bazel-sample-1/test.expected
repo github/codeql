@@ -1,0 +1,7 @@
+htmlFiles
+extractionErrors
+| Extraction failed in test.go with error \tother declaration of test | 2 |
+| Extraction failed in todel.go with error test redeclared in this block | 2 |
+#select
+| test.go:0:0:0:0 | test.go |
+| todel.go:0:0:0:0 | todel.go |

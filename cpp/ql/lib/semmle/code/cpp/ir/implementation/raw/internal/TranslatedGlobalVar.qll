@@ -22,8 +22,6 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
 
   final override Declaration getFunction() { result = var }
 
-  final Location getLocation() { result = var.getLocation() }
-
   override Instruction getFirstInstruction() { result = this.getInstruction(EnterFunctionTag()) }
 
   override TranslatedElement getChild(int n) {

@@ -874,28 +874,3 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     )
   }
 }
-
-/**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-deprecated class BarrierGuard extends GuardCondition {
-  /** Override this predicate to hold if this guard validates `e` upon evaluating to `b`. */
-  abstract predicate checks(Expr e, boolean b);
-
-  /** Gets a node guarded by this guard. */
-  final ExprNode getAGuardedNode() {
-    exists(SsaDefinition def, Variable v, boolean branch |
-      result.getExpr() = def.getAUse(v) and
-      this.checks(def.getAUse(v), branch) and
-      this.controls(result.getExpr().getBasicBlock(), branch)
-    )
-  }
-}

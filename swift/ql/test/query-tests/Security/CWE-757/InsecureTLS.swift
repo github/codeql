@@ -199,5 +199,5 @@ func setVersion(version: inout tls_protocol_version_t, value: tls_protocol_versi
 
 func case_22(config: URLSessionConfiguration) {
   setVersion(version: &config.tlsMinimumSupportedProtocolVersion, value: tls_protocol_version_t.TLSv13) // GOOD
-  setVersion(version: &config.tlsMinimumSupportedProtocolVersion, value: tls_protocol_version_t.TLSv10) // BAD [NOT DETECTED]
+  setVersion(version: &config.tlsMinimumSupportedProtocolVersion, value: tls_protocol_version_t.TLSv10) // BAD
 }

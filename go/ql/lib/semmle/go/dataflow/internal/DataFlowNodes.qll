@@ -11,12 +11,7 @@ private newtype TNode =
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
-  MkSummarizedParameterNode(SummarizedCallable c, int i) {
-    FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
-  } or
-  MkSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-    FlowSummaryImpl::Private::summaryNodeRange(c, state)
-  }
+  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -26,13 +21,16 @@ module Private {
   DataFlowCallable nodeGetEnclosingCallable(Node n) {
     result.asCallable() = n.getEnclosingCallable()
     or
-    (n = MkInstructionNode(_) or n = MkSsaNode(_) or n = MkGlobalFunctionNode(_)) and
+    not n instanceof FlowSummaryNode and
     not exists(n.getEnclosingCallable()) and
-    result.asFileScope() = n.getFile()
+    (
+      result.asFileScope() = n.getFile()
+      or
+      not exists(n.getFile()) and
+      result.isExternalFileScope()
+    )
     or
-    n = MkSummarizedParameterNode(result.asSummarizedCallable(), _)
-    or
-    n = MkSummaryInternalNode(result.asSummarizedCallable(), _)
+    result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable()
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
@@ -52,7 +50,7 @@ module Private {
     ReturnNode() {
       this.(Public::ResultNode).getIndex() = kind.getIndex()
       or
-      this.(SummaryNode).isReturn(kind)
+      this.(FlowSummaryNode).isReturn(kind)
     }
 
     /** Gets the kind of this returned value. */
@@ -72,33 +70,33 @@ module Private {
   /**
    * A data-flow node used to model flow summaries.
    */
-  class SummaryNode extends Node, MkSummaryInternalNode {
-    private SummarizedCallable c;
-    private FlowSummaryImpl::Private::SummaryNodeState state;
+  class FlowSummaryNode extends Node, MkFlowSummaryNode {
+    FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = MkFlowSummaryNode(result) }
 
-    SummaryNode() { this = MkSummaryInternalNode(c, state) }
-
-    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      c.hasLocationInfo(fp, sl, sc, el, ec)
+    SummarizedCallable getSummarizedCallable() {
+      result = this.getSummaryNode().getSummarizedCallable()
     }
 
-    override string toString() { result = "[summary] " + state + " in " + c }
+    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+      this.getSummarizedCallable().hasLocationInfo(fp, sl, sc, el, ec)
+    }
+
+    override string toString() { result = this.getSummaryNode().toString() }
 
     /** Holds if this summary node is the `i`th argument of `call`. */
     predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this, i)
+      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), i)
     }
 
     /** Holds if this summary node is a return node. */
-    predicate isReturn(ReturnKind kind) { FlowSummaryImpl::Private::summaryReturnNode(this, kind) }
+    predicate isReturn(ReturnKind kind) {
+      FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), kind)
+    }
 
     /** Holds if this summary node is an out node for `call`. */
-    predicate isOut(DataFlowCall call) { FlowSummaryImpl::Private::summaryOutNode(call, this, _) }
-  }
-
-  /** Gets the summary node corresponding to the callable `c` and state `state`. */
-  SummaryNode getSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-    result = MkSummaryInternalNode(c, state)
+    predicate isOut(DataFlowCall call) {
+      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), _)
+    }
   }
 }
 
@@ -496,13 +494,9 @@ module Public {
      * interface type.
      */
     Callable getACalleeIncludingExternals() {
-      result.asFunction() = this.getTarget()
+      result = this.getACalleeWithoutVirtualDispatch()
       or
       exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
-        result.asFuncLit() = calleeSource.asExpr()
-        or
-        calleeSource = result.asFunction().getARead()
-        or
         exists(Method declared, Method actual |
           calleeSource = declared.getARead() and
           actual.implements(declared) and
@@ -516,6 +510,19 @@ module Public {
      * we lack a definition, such as standard library functions).
      */
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
+
+    /**
+     * Gets the definition of a possible target of this call, excluding targets reachable via virtual dispatch.
+     */
+    Callable getACalleeWithoutVirtualDispatch() {
+      result.asFunction() = this.getTarget()
+      or
+      exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
+        result.asFuncLit() = calleeSource.asExpr()
+        or
+        calleeSource = result.asFunction().getARead()
+      )
+    }
 
     /**
      * Gets the name of the function, method or variable that is being called.
@@ -661,11 +668,14 @@ module Public {
    * A summary node which represents a parameter in a function which doesn't
    * already have a parameter nodes.
    */
-  class SummarizedParameterNode extends ParameterNode, MkSummarizedParameterNode {
-    SummarizedCallable c;
-    int i;
+  class SummarizedParameterNode extends ParameterNode, FlowSummaryNode {
+    SummarizedParameterNode() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
+    }
 
-    SummarizedParameterNode() { this = MkSummarizedParameterNode(c, i) }
+    private int getPos() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+    }
 
     // There are no AST representations of summarized parameter nodes
     override ControlFlow::Root getRoot() { none() }
@@ -673,19 +683,32 @@ module Public {
     override string getNodeKind() { result = "external parameter node" }
 
     override Type getType() {
-      result = c.getType().getParameterType(i)
+      result = this.getSummarizedCallable().getType().getParameterType(this.getPos())
       or
-      i = -1 and result = c.asFunction().(Method).getReceiverType()
+      this.getPos() = -1 and
+      result = this.getSummarizedCallable().asFunction().(Method).getReceiverType()
     }
 
     override predicate isParameterOf(DataFlowCallable call, int idx) {
-      c = call.asSummarizedCallable() and i = idx
+      this.getSummarizedCallable() = call.asSummarizedCallable() and this.getPos() = idx
+    }
+  }
+
+  /** A representation of a parameter initialization, defined in source via an SSA node. */
+  class UnusedParameterNode extends ParameterNode, InstructionNode {
+    override IR::InitParameterInstruction insn;
+    Parameter parm;
+
+    UnusedParameterNode() {
+      insn = IR::initParamInstruction(parm) and
+      not exists(SsaExplicitDefinition ssa | ssa.getInstruction() = insn)
     }
 
-    override string toString() { result = "parameter " + i + " of " + c.toString() }
+    /** Gets the parameter this node initializes. */
+    override Parameter asParameter() { result = parm }
 
-    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      c.hasLocationInfo(fp, sl, sc, el, ec)
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      parm.isParameterOf(c.asCallable().getFuncDef(), i)
     }
   }
 
@@ -1237,10 +1260,12 @@ module Public {
 private import Private
 private import Public
 
-class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
-  private Node pre;
+class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
+  private FlowSummaryNode pre;
 
-  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+  SummaryPostUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+  }
 
   override Node getPreUpdateNode() { result = pre }
 }

@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.springframework.jdbc.datasource", "AbstractDriverBasedDataSource", False, "setUrl", "(String)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["org.springframework.jdbc.datasource", "DriverManagerDataSource", False, "DriverManagerDataSource", "(String)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["org.springframework.jdbc.datasource", "DriverManagerDataSource", False, "DriverManagerDataSource", "(String,Properties)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["org.springframework.jdbc.datasource", "DriverManagerDataSource", False, "DriverManagerDataSource", "(String,String,String)", "", "Argument[0]", "jdbc-url", "manual"]
+      - ["org.springframework.jdbc.datasource", "AbstractDriverBasedDataSource", False, "setUrl", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.jdbc.datasource", "DriverManagerDataSource", False, "DriverManagerDataSource", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.jdbc.datasource", "DriverManagerDataSource", False, "DriverManagerDataSource", "(String,Properties)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.jdbc.datasource", "DriverManagerDataSource", False, "DriverManagerDataSource", "(String,String,String)", "", "Argument[0]", "request-forgery", "manual"]

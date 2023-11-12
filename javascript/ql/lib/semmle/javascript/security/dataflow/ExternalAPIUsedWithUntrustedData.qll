@@ -5,6 +5,3 @@ private import ExternalAPIUsedWithUntrustedDataQuery as ExternalApiUsedWithUntru
 
 /** DEPRECATED. Import `ExternalApiUsedWithUntrustedDataQuery` instead. */
 deprecated module ExternalApiUsedWithUntrustedData = ExternalApiUsedWithUntrustedDataQuery;
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated module ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

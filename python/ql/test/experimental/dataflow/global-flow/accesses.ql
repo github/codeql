@@ -2,12 +2,10 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import TestUtilities.InlineExpectationsTest
 
-class GlobalReadTest extends InlineExpectationsTest {
-  GlobalReadTest() { this = "GlobalReadTest" }
+module GlobalReadTest implements TestSig {
+  string getARelevantTag() { result = "reads" }
 
-  override string getARelevantTag() { result = "reads" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::ModuleVariableNode n, DataFlow::Node read |
       read = n.getARead() and
       value = n.getVariable().getId() and
@@ -19,12 +17,10 @@ class GlobalReadTest extends InlineExpectationsTest {
   }
 }
 
-class GlobalWriteTest extends InlineExpectationsTest {
-  GlobalWriteTest() { this = "GlobalWriteTest" }
+module GlobalWriteTest implements TestSig {
+  string getARelevantTag() { result = "writes" }
 
-  override string getARelevantTag() { result = "writes" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::ModuleVariableNode n, DataFlow::Node read |
       read = n.getAWrite() and
       value = n.getVariable().getId() and
@@ -34,3 +30,5 @@ class GlobalWriteTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests<GlobalReadTest, GlobalWriteTest>>

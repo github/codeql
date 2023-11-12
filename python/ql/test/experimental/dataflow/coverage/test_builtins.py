@@ -57,7 +57,7 @@ def test_list_from_set():
     s = {SOURCE}
     l = list(s)
     SINK(l[0]) #$ flow="SOURCE, l:-2 -> l[0]"
-    
+
 @expects(2)
 def test_list_from_dict():
     d = {SOURCE: 'v', NONSOURCE: 'v2'}
@@ -154,24 +154,24 @@ def test_list_pop():
 def test_list_pop_index():
     l = [SOURCE]
     v = l.pop(0)
-    SINK(v) #$ MISSING: flow="SOURCE, l:-2 -> v"
+    SINK(v) #$ flow="SOURCE, l:-2 -> v"
 
 def test_list_pop_index_imprecise():
     l = [SOURCE, NONSOURCE]
     v = l.pop(1)
-    SINK_F(v)
+    SINK_F(v) #$ SPURIOUS: flow="SOURCE, l:-2 -> v"
 
 @expects(2)
 def test_list_copy():
     l0 = [SOURCE, NONSOURCE]
     l = l0.copy()
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-2 -> l[0]"
-    SINK_F(l[1])
+    SINK(l[0]) #$ flow="SOURCE, l:-2 -> l[0]"
+    SINK_F(l[1]) #$ SPURIOUS: flow="SOURCE, l:-3 -> l[1]"
 
 def test_list_append():
     l = [NONSOURCE]
     l.append(SOURCE)
-    SINK(l[1]) #$ MISSING: flow="SOURCE, l:-1 -> l[1]"
+    SINK(l[1]) #$ flow="SOURCE, l:-1 -> l[1]"
 
 ### Set
 
@@ -183,12 +183,12 @@ def test_set_pop():
 def test_set_copy():
     s0 = {SOURCE}
     s = s0.copy()
-    SINK(s.pop()) #$ MISSING: flow="SOURCE, l:-2 -> s.pop()"
+    SINK(s.pop()) #$ flow="SOURCE, l:-2 -> s.pop()"
 
 def test_set_add():
     s = set([])
     s.add(SOURCE)
-    SINK(s.pop()) #$ MISSING: flow="SOURCE, l:-2 -> s.pop()"
+    SINK(s.pop()) #$ flow="SOURCE, l:-1 -> s.pop()"
 
 ### Dict
 
@@ -202,7 +202,7 @@ def test_dict_values():
     d = {'k': SOURCE}
     vals = d.values()
     val_list = list(vals)
-    SINK(val_list[0]) #$ MISSING: flow="SOURCE, l:-3 -> val_list[0]"
+    SINK(val_list[0]) #$ flow="SOURCE, l:-3 -> val_list[0]"
 
 @expects(4)
 def test_dict_items():
@@ -210,9 +210,9 @@ def test_dict_items():
     items = d.items()
     item_list = list(items)
     SINK_F(item_list[0][0]) # expecting FP due to imprecise flow
-    SINK(item_list[0][1]) #$ MISSING: flow="SOURCE, l:-4 -> item_list[0][1]"
+    SINK(item_list[0][1]) #$ flow="SOURCE, l:-4 -> item_list[0][1]"
     SINK(item_list[1][0]) #$ MISSING: flow="SOURCE, l:-5 -> item_list[1][0]"
-    SINK_F(item_list[1][1]) # expecting FP due to imprecise flow
+    SINK_F(item_list[1][1]) #$ SPURIOUS: flow="SOURCE, l:-6 -> item_list[1][1]"
 
 @expects(3)
 def test_dict_pop():
@@ -222,28 +222,31 @@ def test_dict_pop():
     v1 = d.pop("k", NONSOURCE)
     SINK_F(v1) #$ SPURIOUS: flow="SOURCE, l:-4 -> v1"
     v2 = d.pop("non-existing", SOURCE)
-    SINK(v2) #$ MISSING: flow="SOURCE, l:-1 -> v2"
+    SINK(v2) #$ flow="SOURCE, l:-1 -> v2"
 
-@expects(2)
+@expects(3)
 def test_dict_get():
     d = {'k': SOURCE}
     v = d.get("k")
     SINK(v) #$ flow="SOURCE, l:-2 -> v"
     v1 = d.get("non-existing", SOURCE)
-    SINK(v1) #$ MISSING: flow="SOURCE, l:-1 -> v1"
+    SINK(v1) #$ flow="SOURCE, l:-1 -> v1"
+    k = "k"
+    v2 = d.get(k)
+    SINK(v2) #$ flow="SOURCE, l:-7 -> v2"
 
 @expects(2)
 def test_dict_popitem():
     d = {'k': SOURCE}
     t = d.popitem() # could be any pair (before 3.7), but we only have one
     SINK_F(t[0])
-    SINK(t[1]) #$ MISSING: flow="SOURCE, l:-3 -> t[1]"
+    SINK(t[1]) #$ flow="SOURCE, l:-3 -> t[1]"
 
 @expects(2)
 def test_dict_copy():
     d = {'k': SOURCE, 'k1': NONSOURCE}
     d1 = d.copy()
-    SINK(d1["k"]) #$ MISSING: flow="SOURCE, l:-2 -> d[k]"
+    SINK(d1["k"]) #$ flow="SOURCE, l:-2 -> d1['k']"
     SINK_F(d1["k1"])
 
 
@@ -254,17 +257,17 @@ def test_dict_copy():
 def test_sorted_list():
     l0 = [SOURCE]
     l = sorted(l0)
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-2 -> l[0]"
+    SINK(l[0]) #$ flow="SOURCE, l:-2 -> l[0]"
 
 def test_sorted_tuple():
     t = (SOURCE,)
     l = sorted(t)
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-2 -> l[0]"
+    SINK(l[0]) #$ flow="SOURCE, l:-2 -> l[0]"
 
 def test_sorted_set():
     s = {SOURCE}
     l = sorted(s)
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-2 -> l[0]"
+    SINK(l[0]) #$ flow="SOURCE, l:-2 -> l[0]"
 
 def test_sorted_dict():
     d = {SOURCE: "val"}
@@ -286,8 +289,8 @@ def test_reversed_tuple():
     t = (SOURCE, NONSOURCE)
     r = reversed(t)
     l = list(r)
-    SINK_F(l[0])
-    SINK(l[1]) #$ MISSING: flow="SOURCE, l:-4 -> l[1]"
+    SINK_F(l[0]) #$ SPURIOUS: flow="SOURCE, l:-3 -> l[0]"
+    SINK(l[1]) #$ flow="SOURCE, l:-4 -> l[1]"
 
 @expects(2)
 def test_reversed_dict():
@@ -303,19 +306,19 @@ def test_iter_list():
     l0 = [SOURCE]
     i = iter(l0)
     l = list(i)
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-3 -> l[0]"
+    SINK(l[0]) #$ flow="SOURCE, l:-3 -> l[0]"
 
 def test_iter_tuple():
     t = (SOURCE,)
     i = iter(t)
     l = list(i)
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-3 -> l[0]"
+    SINK(l[0]) #$ flow="SOURCE, l:-3 -> l[0]"
 
 def test_iter_set():
     t = {SOURCE}
     i = iter(t)
     l = list(i)
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-3 -> l[0]"
+    SINK(l[0]) #$ flow="SOURCE, l:-3 -> l[0]"
 
 def test_iter_dict():
     d = {SOURCE: "val"}
@@ -328,7 +331,7 @@ def test_iter_iter():
     l0 = [SOURCE]
     i = iter(iter(l0))
     l = list(i)
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-3 -> l[0]"
+    SINK(l[0]) #$ flow="SOURCE, l:-3 -> l[0]"
 
 ### next
 
@@ -336,19 +339,19 @@ def test_next_list():
     l = [SOURCE]
     i = iter(l)
     n = next(i)
-    SINK(n) #$ MISSING: flow="SOURCE, l:-3 -> n"
+    SINK(n) #$ flow="SOURCE, l:-3 -> n"
 
 def test_next_tuple():
     t = (SOURCE,)
     i = iter(t)
     n = next(i)
-    SINK(n) #$ MISSING: flow="SOURCE, l:-3 -> n"
+    SINK(n) #$ flow="SOURCE, l:-3 -> n"
 
 def test_next_set():
     s = {SOURCE}
     i = iter(s)
     n = next(i)
-    SINK(n) #$ MISSING: flow="SOURCE, l:-3 -> n"
+    SINK(n) #$ flow="SOURCE, l:-3 -> n"
 
 def test_next_dict():
     d = {SOURCE: "val"}

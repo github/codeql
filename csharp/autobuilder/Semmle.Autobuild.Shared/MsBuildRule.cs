@@ -1,6 +1,7 @@
-using Semmle.Util.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -190,7 +191,7 @@ namespace Semmle.Autobuild.Shared
             })
             &
             BuildScript.DownloadFile(
-                "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe",
+                FileUtils.NugetExeUrl,
                 path,
                 e => builder.Log(Severity.Warning, $"Failed to download 'nuget.exe': {e.Message}"))
             &

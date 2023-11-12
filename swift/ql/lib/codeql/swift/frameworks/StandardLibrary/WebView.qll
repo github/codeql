@@ -66,7 +66,7 @@ private class WKNavigationDelegateSource extends RemoteFlowSource {
         ] and
       p.getDeclaringFunction() = f and
       p.getIndex() = 1 and
-      this.(DataFlow::ParameterNode).getParameter() = p
+      this.asParameter() = p
     )
   }
 
@@ -173,7 +173,7 @@ private class JsExportedSource extends RemoteFlowSource {
       base.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedProto and
       adopter.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedType
     |
-      this.(DataFlow::ParameterNode).getParameter().getDeclaringFunction() = adopter and
+      this.asParameter().getDeclaringFunction() = adopter and
       pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
     )
     or
@@ -208,10 +208,5 @@ private class WKUserScriptSummaries extends SummaryModelCsv {
 private class WKUserScriptInheritsTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
-  WKUserScriptInheritsTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl().asNominalTypeDecl().getName() = "WKUserScript" and
-      f.getName() = "source"
-    )
-  }
+  WKUserScriptInheritsTaint() { this.getField().hasQualifiedName("WKUserScript", "source") }
 }

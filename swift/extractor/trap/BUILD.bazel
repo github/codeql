@@ -53,6 +53,5 @@ swift_cc_library(
     deps = [
         "//swift/extractor/infra/file",
         "//swift/logging",
-        "@absl//absl/numeric:bits",
     ],
 )

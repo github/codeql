@@ -74,7 +74,7 @@ module TrustAllHostnameVerifierFlow = DataFlow::Global<TrustAllHostnameVerifierC
  * A sink that sets the `HostnameVerifier` on `HttpsURLConnection`.
  */
 private class HostnameVerifierSink extends DataFlow::Node {
-  HostnameVerifierSink() { sinkNode(this, "set-hostname-verifier") }
+  HostnameVerifierSink() { sinkNode(this, "hostname-verification") }
 }
 
 /**

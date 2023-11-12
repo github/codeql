@@ -59,8 +59,8 @@ func taintBuffer(buffer: UnsafeMutableBufferPointer<UInt8>) {
 
   buffer[0] = sourceUInt8()
 
-  sink(arg: buffer[0]) // $ MISSING: tainted=60
-  sink(arg: buffer)
+  sink(arg: buffer[0]) // $ tainted=60
+  sink(arg: buffer) // $ tainted=60
 }
 
 func testMutatingBufferInCall(ptr: UnsafeMutablePointer<UInt8>) {
@@ -71,8 +71,8 @@ func testMutatingBufferInCall(ptr: UnsafeMutablePointer<UInt8>) {
 
   taintBuffer(buffer: buffer) // mutates `buffer` contents with a tainted value
 
-  sink(arg: buffer[0]) // $ MISSING: tainted=60
-  sink(arg: buffer)
+  sink(arg: buffer[0]) // $ tainted=60
+  sink(arg: buffer) // $ tainted=60
 
 }
 

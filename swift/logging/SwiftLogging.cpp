@@ -3,7 +3,11 @@
 #include <filesystem>
 #include <stdlib.h>
 #include <optional>
+#ifdef _WIN32
+#include <process.h>
+#else
 #include <unistd.h>
+#endif
 #include "absl/strings/str_cat.h"
 
 #define LEVEL_REGEX_PATTERN "trace|debug|info|warning|error|critical|no_logs"

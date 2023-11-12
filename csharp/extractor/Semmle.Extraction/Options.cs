@@ -1,6 +1,6 @@
 using System;
-using Semmle.Util.Logging;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
 {
@@ -13,7 +13,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// The specified number of threads, or the default if unspecified.
         /// </summary>
-        public int Threads { get; private set; } = System.Environment.ProcessorCount;
+        public int Threads { get; private set; } = EnvironmentVariables.GetDefaultNumberOfThreads();
 
         /// <summary>
         /// The verbosity used in output and logging.
@@ -28,7 +28,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Holds if CIL should be extracted.
         /// </summary>
-        public bool CIL { get; private set; } = true;
+        public bool CIL { get; private set; } = false;
 
         /// <summary>
         /// Holds if assemblies shouldn't be extracted twice.
