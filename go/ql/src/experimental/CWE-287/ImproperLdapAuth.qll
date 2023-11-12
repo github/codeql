@@ -36,16 +36,27 @@ private class GoLdapBindSink extends LdapAuthSink {
  */
 class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, LdapSanitizer { }
 
+/**
+ * An empty string.
+ */
+class EmptyString extends DataFlow::Node {
+  EmptyString() { this.asExpr().getStringValue() = "" }
+}
+
 private predicate equalityAsSanitizerGuard(DataFlow::Node g, Expr e, boolean outcome) {
-  exists(DataFlow::Node passwd, DataFlow::EqualityTestNode eq |
+  exists(DataFlow::Node nonConstNode, DataFlow::Node constNode, DataFlow::EqualityTestNode eq |
     g = eq and
-    passwd = eq.getAnOperand() and
-    e = passwd.asExpr() and
+    nonConstNode = eq.getAnOperand() and
+    not nonConstNode.isConst() and
+    constNode = eq.getAnOperand() and
+    constNode.isConst() and
+    e = nonConstNode.asExpr() and
     (
-      eq.getAnOperand().getStringValue().length() > 0 and outcome = eq.getPolarity()
+      // If `constNode` is not an empty string a comparison is considered a sanitizer
+      not constNode instanceof EmptyString and outcome = eq.getPolarity()
       or
-      eq.getAnOperand().getStringValue().length() = 0 and
-      outcome = eq.getPolarity().booleanNot()
+      // If `constNode` is an empty string a not comparison is considered a sanitizer
+      constNode instanceof EmptyString and outcome = eq.getPolarity().booleanNot()
     )
   )
 }
@@ -58,12 +69,6 @@ class EqualityAsSanitizerGuard extends LdapSanitizer {
   EqualityAsSanitizerGuard() {
     this = DataFlow::BarrierGuard<equalityAsSanitizerGuard/3>::getABarrierNode()
   }
-}
-
-/**
- */
-class EmptyString extends DataFlow::Node {
-  EmptyString() { this.asExpr().getStringValue() = "" }
 }
 
 /**
