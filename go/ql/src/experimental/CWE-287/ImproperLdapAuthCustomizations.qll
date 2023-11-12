@@ -4,11 +4,6 @@ import semmle.go.dataflow.barrierguardutil.RegexpCheck
 
 module ImproperLdapAuth {
   /**
-   * A LDAP connection node.
-   */
-  abstract class LdapConn extends DataFlow::CallNode { }
-
-  /**
    * A sink that is vulnerable to improper LDAP Authentication vulnerabilities.
    */
   abstract class LdapAuthSink extends DataFlow::Node { }
