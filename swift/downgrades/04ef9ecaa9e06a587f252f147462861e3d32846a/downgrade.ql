@@ -5,7 +5,7 @@ class Element extends @element {
 query predicate new_unspecified_elements(Element e, string property, string error) {
   unspecified_elements(e, property, error)
   or
-  error = "Removed parameter packs during the database downgrade" and
+  error = "Parameter packs removed during database downgrade. Please update your CodeQL code." and
   property = "" and
   (
     pack_element_exprs(e, _) or
