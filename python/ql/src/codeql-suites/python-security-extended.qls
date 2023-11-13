@@ -2,3 +2,8 @@
 - queries: .
 - apply: security-extended-selectors.yml
   from: codeql/suite-helpers
+- include:
+    query path:
+        - meta/alerts/RemoteFlowSources.ql
+        - meta/alerts/TaintSinks.ql
+        - meta/alerts/InterestingTaintSinks.ql
