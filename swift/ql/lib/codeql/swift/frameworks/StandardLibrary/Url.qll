@@ -22,8 +22,7 @@ private class UriFieldsInheritTaint extends TaintInheritingContent, DataFlow::Co
 }
 
 /**
- * A content implying that, if a `URLRequest` is tainted, then its fields `url`, `httpBody`,
- * `httpBodyStream`, `mainDocument` and `allHTTPHeaderFields` are tainted.
+ * A content implying that, if a `URLRequest` is tainted, then certain fields tainted.
  */
 private class UrlRequestFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
@@ -31,7 +30,10 @@ private class UrlRequestFieldsInheritTaint extends TaintInheritingContent,
   UrlRequestFieldsInheritTaint() {
     this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "URLRequest" and
     this.getField().getName() =
-      ["url", "httpBody", "httpBodyStream", "mainDocument", "allHTTPHeaderFields"]
+      [
+        "url", "httpBody", "httpBodyStream", "mainDocument", "mainDocumentURL",
+        "allHTTPHeaderFields"
+      ]
   }
 }
 

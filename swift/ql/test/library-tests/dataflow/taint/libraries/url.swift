@@ -445,7 +445,7 @@ func taintThroughUrlRequest() {
 	sink(any: clean.mainDocument)
 	sink(any: tainted.mainDocument) // $ tainted=431
 	sink(any: clean.mainDocumentURL!)
-	sink(any: tainted.mainDocumentURL!) // $ MISSING: tainted=431
+	sink(any: tainted.mainDocumentURL!) // $ tainted=431
 	sink(any: clean.allHTTPHeaderFields!)
 	sink(any: tainted.allHTTPHeaderFields!) // $ tainted=431
 	sink(any: clean.timeoutInterval)
