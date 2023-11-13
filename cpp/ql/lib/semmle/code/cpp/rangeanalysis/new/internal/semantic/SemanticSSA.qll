@@ -22,8 +22,6 @@ class SemSsaExplicitUpdate extends SemSsaVariable {
 
   SemSsaExplicitUpdate() { Specific::explicitUpdate(this, sourceExpr) }
 
-  final SemExpr getSourceExpr() { result = sourceExpr }
-
   final SemExpr getDefiningExpr() { result = sourceExpr }
 }
 

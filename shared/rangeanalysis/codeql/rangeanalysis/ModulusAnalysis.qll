@@ -14,8 +14,7 @@ private import codeql.util.Location
 private import RangeAnalysis
 
 module ModulusAnalysis<
-  LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
-  UtilSig<Sem, D> U>
+  LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds>
 {
   private import internal.RangeUtils::MakeUtils<Sem, D>
 
@@ -254,8 +253,7 @@ module ModulusAnalysis<
     or
     exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
       ssaModulus(v, bb, b, val, mod) and
-      e = v.getAUse() and
-      bb.getBlock() = e.getBasicBlock()
+      bb.getAnSsaRead(v) = e
     )
     or
     exists(Sem::Expr mid, int val0, int delta |

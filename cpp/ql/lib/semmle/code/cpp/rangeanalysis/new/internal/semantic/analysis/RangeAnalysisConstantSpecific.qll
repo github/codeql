@@ -22,25 +22,7 @@ module CppLangImplConstant implements LangSig<Sem, FloatDelta> {
   predicate hasConstantBound(SemExpr e, float bound, boolean upper) { none() }
 
   /**
-   * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
+   * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
-  predicate hasBound(SemExpr e, SemExpr bound, float delta, boolean upper) { none() }
-
-  /**
-   * Gets the type that range analysis should use to track the result of the specified expression,
-   * if a type other than the original type of the expression is to be used.
-   *
-   * This predicate is commonly used in languages that support immutable "boxed" types that are
-   * actually references but whose values can be tracked as the type contained in the box.
-   */
-  SemType getAlternateType(SemExpr e) { none() }
-
-  /**
-   * Gets the type that range analysis should use to track the result of the specified source
-   * variable, if a type other than the original type of the expression is to be used.
-   *
-   * This predicate is commonly used in languages that support immutable "boxed" types that are
-   * actually references but whose values can be tracked as the type contained in the box.
-   */
-  SemType getAlternateTypeForSsaVariable(SemSsaVariable var) { none() }
+  predicate additionalBoundFlowStep(SemExpr e2, SemExpr e1, float delta, boolean upper) { none() }
 }
