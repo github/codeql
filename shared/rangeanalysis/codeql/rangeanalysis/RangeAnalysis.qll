@@ -203,6 +203,11 @@ signature module Semantic {
     Expr getDefiningExpr();
   }
 
+  /**
+   * Holds if the value of `dest` is known to be `src + delta`.
+   */
+  predicate additionalValueFlowStep(Expr dest, Expr src, int delta);
+
   predicate conversionCannotOverflow(Type fromType, Type toType);
 }
 
@@ -278,11 +283,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   predicate ignoreExprBound(Sem::Expr e);
 
   /**
-   * Holds if the value of `dest` is known to be `src + delta`.
-   */
-  predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, D::Delta delta);
-
-  /**
    * Gets the type that range analysis should use to track the result of the specified expression,
    * if a type other than the original type of the expression is to be used.
    *
@@ -304,14 +304,6 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
 }
 
 signature module UtilSig<Semantic Sem, DeltaSig DeltaParam> {
-  Sem::Guard semEqFlowCond(
-    Sem::SsaVariable v, Sem::Expr e, DeltaParam::Delta delta, boolean isEq, boolean testIsTrue
-  );
-
-  predicate semSsaUpdateStep(Sem::SsaExplicitUpdate v, Sem::Expr e, DeltaParam::Delta delta);
-
-  predicate semValueFlowStep(Sem::Expr e2, Sem::Expr e1, DeltaParam::Delta delta);
-
   /**
    * Gets the type used to track the specified source variable's range information.
    *
@@ -447,7 +439,7 @@ module RangeStage<
      */
     cached
     predicate possibleReason(Sem::Guard guard) {
-      guard = boundFlowCond(_, _, _, _, _) or guard = semEqFlowCond(_, _, _, _, _)
+      guard = boundFlowCond(_, _, _, _, _) or guard = eqFlowCond(_, _, _, _, _)
     }
   }
 
@@ -609,7 +601,7 @@ module RangeStage<
         testIsTrue0)
     )
     or
-    result = semEqFlowCond(v, e, delta, true, testIsTrue) and
+    result = eqFlowCond(v, e, delta, true, testIsTrue) and
     (upper = true or upper = false)
     or
     // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
@@ -630,7 +622,7 @@ module RangeStage<
     Sem::SsaVariable v1, Sem::SsaVariable v2, float delta
   ) {
     exists(Sem::Guard guardEq, D::Delta d1, D::Delta d2, boolean eqIsTrue |
-      guardEq = semEqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
+      guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
       delta = D::toFloat(d2) - D::toFloat(d1) and
       guardEq.directlyControls(result, eqIsTrue)
     )
@@ -675,7 +667,7 @@ module RangeStage<
     Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, D::Delta delta, boolean upper,
     SemReason reason
   ) {
-    semSsaUpdateStep(v, e, delta) and
+    ssaUpdateStep(v, e, delta) and
     pos.hasReadOfVar(v) and
     (upper = true or upper = false) and
     reason = TSemNoReason()
@@ -695,7 +687,7 @@ module RangeStage<
     getTrackedTypeForSsaVariable(v) instanceof Sem::IntegerType and
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
-      guard = semEqFlowCond(v, e, delta, false, testIsTrue) and
+      guard = eqFlowCond(v, e, delta, false, testIsTrue) and
       guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
@@ -717,7 +709,7 @@ module RangeStage<
    * - `upper = false` : `e2 >= e1 + delta`
    */
   private predicate boundFlowStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
-    semValueFlowStep(e2, e1, delta) and
+    valueFlowStep(e2, e1, delta) and
     (upper = true or upper = false)
     or
     e2.(SafeCastExpr).getOperand() = e1 and
@@ -1350,8 +1342,8 @@ module RangeStage<
     Sem::AddExpr add, boolean upper, SemBound b, boolean isLeft, D::Delta delta,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
-    // `semValueFlowStep` already handles the case where one of the operands is a constant.
-    not semValueFlowStep(add, _, _) and
+    // `valueFlowStep` already handles the case where one of the operands is a constant.
+    not valueFlowStep(add, _, _) and
     (
       isLeft = true and
       bounded(add.getLeftOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
@@ -1370,8 +1362,8 @@ module RangeStage<
     Sem::SubExpr sub, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
   ) {
-    // `semValueFlowStep` already handles the case where one of the operands is a constant.
-    not semValueFlowStep(sub, _, _) and
+    // `valueFlowStep` already handles the case where one of the operands is a constant.
+    not valueFlowStep(sub, _, _) and
     bounded(sub.getLeftOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
@@ -1386,8 +1378,8 @@ module RangeStage<
   private predicate boundedSubOperandRight(
     Sem::SubExpr sub, boolean upper, D::Delta delta, boolean fromBackEdge
   ) {
-    // `semValueFlowStep` already handles the case where one of the operands is a constant.
-    not semValueFlowStep(sub, _, _) and
+    // `valueFlowStep` already handles the case where one of the operands is a constant.
+    not valueFlowStep(sub, _, _) and
     bounded(sub.getRightOperand(), any(SemZeroBound zb), delta, upper.booleanNot(), fromBackEdge, _,
       _)
   }

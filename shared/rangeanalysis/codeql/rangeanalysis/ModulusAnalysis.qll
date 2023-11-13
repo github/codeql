@@ -30,11 +30,11 @@ module ModulusAnalysis<
    */
   pragma[nomagic]
   private predicate valueFlowStepSsa(Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, int delta) {
-    U::semSsaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
+    ssaUpdateStep(v, e, D::fromInt(delta)) and pos.hasReadOfVar(v)
     or
     exists(Sem::Guard guard, boolean testIsTrue |
       hasReadOfVarInlineLate(pos, v) and
-      guard = U::semEqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
+      guard = eqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
       guardDirectlyControlsSsaRead(guard, pos, testIsTrue)
     )
   }
@@ -260,7 +260,7 @@ module ModulusAnalysis<
     or
     exists(Sem::Expr mid, int val0, int delta |
       exprModulus(mid, b, val0, mod) and
-      U::semValueFlowStep(e, mid, D::fromInt(delta)) and
+      valueFlowStep(e, mid, D::fromInt(delta)) and
       val = remainder(val0 + delta, mod)
     )
     or
