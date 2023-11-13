@@ -20,10 +20,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public HashSet<string> Packages { get; } = new();
 
         /// <summary>
-        /// In most cases paths in asset files point to dll's or the empty _._ file, which
-        /// is sometimes there to avoid the directory being empty.
-        /// That is, if the path specifically adds a .dll we use that, otherwise we as a fallback
-        /// add the entire directory (which should be fine in case of _._ as well).
+        /// If the path specifically adds a .dll we use that, otherwise we as a fallback
+        /// add the entire directory.
         /// </summary>
         private static string ParseFilePath(string path)
         {
@@ -46,6 +44,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var p = package.Replace('/', Path.DirectorySeparatorChar);
             var d = dependency.Replace('/', Path.DirectorySeparatorChar);
+
+            // In most cases paths in asset files point to dll's or the empty _._ file.
+            // That is, for _._ we don't need to add anything.
+            if (Path.GetFileName(d) == "_._")
+            {
+                return;
+            }
 
             var path = Path.Combine(p, ParseFilePath(d));
             Paths.Add(path);

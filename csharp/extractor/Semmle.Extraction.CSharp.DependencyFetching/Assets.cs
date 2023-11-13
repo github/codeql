@@ -100,16 +100,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         return;
                     }
 
-                    // If this is a .NET framework reference then include everything.
-                    if (FrameworkPackageNames.AllFrameworks.Any(framework => name.StartsWith(framework)))
+                    if (info.Compile is null || !info.Compile.Any())
                     {
-                        dependencies.AddFramework(name);
+                        // If this is a framework reference then include everything.
+                        if (FrameworkPackageNames.AllFrameworks.Any(framework => name.StartsWith(framework)))
+                        {
+                            dependencies.AddFramework(name);
+                        }
+                        return;
                     }
-                    else
-                    {
-                        info.Compile?
-                            .ForEach(r => dependencies.Add(name, r.Key));
-                    }
+
+                    info.Compile
+                        .ForEach(r => dependencies.Add(name, r.Key));
                 });
 
             return;
