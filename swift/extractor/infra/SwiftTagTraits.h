@@ -288,10 +288,8 @@ MAP(swift::TypeBase, TypeTag)
     MAP(swift::BuiltinUnsafeValueBufferType, BuiltinUnsafeValueBufferTypeTag)
     MAP(swift::BuiltinDefaultActorStorageType, BuiltinDefaultActorStorageTypeTag)
     MAP(swift::BuiltinVectorType, BuiltinVectorTypeTag)
-#if CODEQL_SWIFT_VERSION_GE(5, 9)
-    MAP(swift::BuiltinPackIndexType, void) // TODO: (introduced in 5.9)
-    MAP(swift::BuiltinNonDefaultDistributedActorStorageType, void) // TODO: (introduced in 5.9)
-#endif
+    MAP(swift::BuiltinPackIndexType, void)  // SIL type, cannot really appear in the frontend run
+    MAP(swift::BuiltinNonDefaultDistributedActorStorageType, void)  // Does not appear in AST/SIL, only used during IRGen
   MAP(swift::TupleType, TupleTypeTag)
   MAP(swift::ReferenceStorageType, ReferenceStorageTypeTag)
   MAP(swift::WeakStorageType, WeakStorageTypeTag)
@@ -328,14 +326,12 @@ MAP(swift::TypeBase, TypeTag)
   MAP(swift::AnyFunctionType, AnyFunctionTypeTag)
     MAP(swift::FunctionType, FunctionTypeTag)
     MAP(swift::GenericFunctionType, GenericFunctionTypeTag)
-  MAP(swift::SILFunctionType, void)  // SIL types cannot really appear in the frontend run)
-  MAP(swift::SILBlockStorageType, void)  // SIL types cannot really appear in the frontend run)
-  MAP(swift::SILBoxType, void)  // SIL types cannot really appear in the frontend run)
-  MAP(swift::SILMoveOnlyWrappedType, void)  // SIL types cannot really appear in the frontend run)
-  MAP(swift::SILTokenType, void)  // SIL types cannot really appear in the frontend run)
-#if CODEQL_SWIFT_VERSION_GE(5, 9)
-  MAP(swift::SILPackType, void)  // TODO: (introduced in 5.9)
-#endif
+  MAP(swift::SILFunctionType, void)  // SIL types cannot really appear in the frontend run
+  MAP(swift::SILBlockStorageType, void)  // SIL types cannot really appear in the frontend run
+  MAP(swift::SILBoxType, void)  // SIL types cannot really appear in the frontend run
+  MAP(swift::SILMoveOnlyWrappedType, void)  // SIL types cannot really appear in the frontend run
+  MAP(swift::SILTokenType, void)  // SIL types cannot really appear in the frontend run
+  MAP(swift::SILPackType, void)  // SIL types cannot really appear in the frontend run
   MAP(swift::ProtocolCompositionType, ProtocolCompositionTypeTag)
   MAP(swift::ParameterizedProtocolType, ParameterizedProtocolTypeTag)
   MAP(swift::ExistentialType, ExistentialTypeTag)
