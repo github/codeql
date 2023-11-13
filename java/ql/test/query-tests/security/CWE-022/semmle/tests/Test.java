@@ -101,4 +101,12 @@ class Test {
 		new File(new URI(null, null, null, 0, t, null, null));
 	}
 
+	void doGet6(String root, InetAddress address)
+	throws IOException{
+		String temp = address.getHostName();
+		// GOOD: Use `contains` and `startsWith` to check if the path is safe
+		if (!temp.contains("..") && temp.startsWith(root + "/")) {
+			File file = new File(temp);
+		}
+	}
 }
