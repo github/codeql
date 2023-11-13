@@ -16,15 +16,15 @@
  * To declare expectations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
  * Example of the corresponding test file, e.g. Test.java
  * ```swift
- * func source() -> Any { return nil }
- * func taint() -> Any { return nil }
+ * func source(_ label: String) -> Any { return nil }
+ * func taint(_ label: String) -> Any { return nil }
  * func sink(_ o: Any) { }
  *
  * func test() {
- *     let s = source()
- *     sink(s) // $ hasValueFlow
- *     let t = "foo" + taint()
- *     sink(t); // $ hasTaintFlow
+ *     let s = source("mySource")
+ *     sink(s) // $ hasValueFlow=mySource
+ *     let t = "foo" + taint("myTaint")
+ *     sink(t); // $ hasTaintFlow=myTaint
  * }
  * ```
  *
