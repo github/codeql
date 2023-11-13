@@ -3225,8 +3225,9 @@ private module StdlibPrivate {
             methodName in ["split", "findall", "finditer"] and
             output = "ReturnValue.ListElement"
             or
-            // TODO: Since we currently model lists as tainted, the result of findall and split needs to be tainted
-            methodName in ["split", "findall"] and
+            // TODO: Since we currently model iterables as tainted when their elements
+            // are, the result of findall, finditer, split needs to be tainted
+            methodName in ["split", "findall", "finditer"] and
             output = "ReturnValue"
             or
             methodName = "sub" and

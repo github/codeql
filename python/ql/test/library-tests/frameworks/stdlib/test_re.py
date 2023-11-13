@@ -6,47 +6,16 @@ pat = ... # some pattern
 compiled_pat = re.compile(pat)
 
 # see https://docs.python.org/3/library/re.html#functions
-ensure_tainted(
-    # returns Match object, see below
-    re.search(pat, ts), # $ MISSING: tainted
-    re.match(pat, ts), # $ MISSING: tainted
-    re.fullmatch(pat, ts), # $ MISSING: tainted
-
-    # other functions not returning Match objects
-    re.split(pat, ts), # $ tainted
-    re.split(pat, ts)[0], # $ tainted
-
-    re.findall(pat, ts), # $ tainted
-    re.findall(pat, ts)[0], # $ tainted
-
-    re.finditer(pat, ts), # $ MISSING: tainted
-    [x for x in re.finditer(pat, ts)], # $ tainted
-
-    re.sub(pat, repl="safe", string=ts), # $ tainted
-    re.sub(pat, repl=lambda m: ..., string=ts), # $ tainted
-    re.sub(pat, repl=ts, string="safe"), # $ tainted
-    re.sub(pat, repl=lambda m: ts, string="safe"), # $ tainted
-
-    re.subn(pat, repl="safe", string=ts), # $ MISSING: tainted
-    re.subn(pat, repl="safe", string=ts)[0], # $ tainted // the string
-
-    # same for compiled patterns
-    compiled_pat.search(ts), # $ MISSING: tainted
-    compiled_pat.match(ts), # $ MISSING: tainted
-    compiled_pat.fullmatch(ts), # $ MISSING: tainted
-
-    compiled_pat.split(ts), # $ tainted
-    compiled_pat.split(ts)[0], # $ tainted
-
-    # ...
-
-    # user-controlled compiled pattern
-    re.compile(ts), # $ tainted
-    re.compile(ts).pattern, # $ tainted
-)
-
 ensure_not_tainted(
-    re.subn(pat, repl="safe", string=ts)[1], # // the number of substitutions made
+    # returns Match object, which is tested properly below. (note: with the flow summary
+    # modeling, objects containing tainted values are not itself tainted).
+    re.search(pat, ts),
+    re.match(pat, ts),
+    re.fullmatch(pat, ts),
+
+    compiled_pat.search(ts),
+    compiled_pat.match(ts),
+    compiled_pat.fullmatch(ts),
 )
 
 # Match object
@@ -80,4 +49,38 @@ ensure_not_tainted(
 
     re.match(pat, "safe").re,
     re.match(pat, "safe").string,
+)
+
+ensure_tainted(
+    # other functions not returning Match objects
+    re.split(pat, ts), # $ tainted
+    re.split(pat, ts)[0], # $ tainted
+
+    re.findall(pat, ts), # $ tainted
+    re.findall(pat, ts)[0], # $ tainted
+
+    re.finditer(pat, ts), # $ tainted
+    [x for x in re.finditer(pat, ts)], # $ tainted
+
+    re.sub(pat, repl="safe", string=ts), # $ tainted
+    re.sub(pat, repl=lambda m: ..., string=ts), # $ tainted
+    re.sub(pat, repl=ts, string="safe"), # $ tainted
+    re.sub(pat, repl=lambda m: ts, string="safe"), # $ tainted
+
+    # same for compiled patterns
+    compiled_pat.split(ts), # $ tainted
+    compiled_pat.split(ts)[0], # $ tainted
+    # ...
+
+    # user-controlled compiled pattern
+    re.compile(ts), # $ tainted
+    re.compile(ts).pattern, # $ tainted
+)
+
+ensure_not_tainted(
+    re.subn(pat, repl="safe", string=ts),
+    re.subn(pat, repl="safe", string=ts)[1], # // the number of substitutions made
+)
+ensure_tainted(
+    re.subn(pat, repl="safe", string=ts)[0], # $ tainted // the string
 )
