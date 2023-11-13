@@ -407,7 +407,7 @@ void test15()
 		{
 			if (ptr[5] == ' ') // GOOD
 			{
-				// ...
+				break;
 			}
 		}
 	}
