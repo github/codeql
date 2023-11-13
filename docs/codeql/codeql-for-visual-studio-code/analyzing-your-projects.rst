@@ -42,14 +42,46 @@ Downloading a database from GitHub
 
 .. include:: ../reusables/download-github-database.rst
 
+.. _filtering-databases-and-queries-by-language:
+
+Filtering databases and queries by language
+-------------------------------------------
+
+Optionally, to see databases containing a specific language, as well as queries written for that language, you can apply a language filter using the language selector.
+
+#. To see available language filters, in the sidebar, click the **Language** title bar.
+#. Hover over the language filter you would like to apply, then click **Select**.
+
+   .. image:: ../images/codeql-for-visual-studio-code/choose-language-filter.png
+      :width: 350
+      :alt: Screenshot of the language selector. The "Select" button for a language filter is outlined in dark orange.
+
+Creating a query
+------------------------
+
+You can generate a query template for a specific language from the queries panel, helping you quickly create a custom query.
+
+#. In the sidebar, hover over the **Queries** title bar, then click the **Create query** icon.
+
+   .. image:: ../images/codeql-for-visual-studio-code/create-query-icon.png
+      :width: 350
+      :alt: Screenshot of the queries panel. The "Create query" icon is outlined in dark orange.
+
+#. In the Command Palette, select the target language for your query. Selecting a language will autogenerate a folder labeled "codeql-custom-queries-LANGUAGE", which will contain a query template labeled "example.ql".
+#. In the template file, write your custom query, then save the file. Once your query is finished, you can run it from the queries panel.
+
 Running a query
 ------------------------
 
 The `CodeQL repository <https://github.com/github/codeql>`__ on GitHub contains lots of example queries.
-If you have that folder (or a different CodeQL pack) available in your workspace, you can access existing queries under ``<language>/ql/src/<category>``, for example ``java/ql/src/Likely Bugs``.
+You can access any existing queries in your workspace through the queries panel.
 
-#. Open a query (``.ql``) file. It is displayed in the editor, with IntelliSense features such as syntax highlighting and autocomplete suggestions.
-#. Right-click in the query window and select **CodeQL: Run Query on Selected Database**. (Alternatively, run the command from the Command Palette.)
+#. In the sidebar, to expand the queries panel, click the **Queries** title bar.
+#. Hover over the desired query, then click the **Run local query** icon.
+
+   .. image:: ../images/codeql-for-visual-studio-code/run-local-query-icon.png
+      :width: 350
+      :alt: Screenshot of the mouse pointer hovering over a query in the queries panel. The "Run local query" icon is outlined in dark orange.
 
 The CodeQL extension runs the query on the current database and reports progress in the bottom right corner of the application.
 When the results are ready, they're displayed in the Results view.
@@ -60,6 +92,23 @@ For more information, see ":doc:`Troubleshooting CodeQL for Visual Studio Code <
 
 Running multiple queries
 --------------------------
+
+Using a couple different methods, you can quickly run multiple queries against your code.
+
+Running all queries in a directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can easily run a directory of queries using the query selector.
+
+#. In the sidebar, to expand the queries panel, click the **Queries** title bar.
+#. Hover over the desired directory of queries, then click the **Run local queries** icon.
+
+   .. image:: ../images/codeql-for-visual-studio-code/run-local-queries-icon.png
+      :width: 350
+      :alt: Screenshot of the mouse pointer hovering over a directory of queries in the queries panel. The "Run local queries" icon is outlined in dark orange.
+
+Running a selection of queries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can run multiple queries with a single command.
 
@@ -114,7 +163,7 @@ This is helpful if you want to test your query on multiple codebases, or find a 
 Viewing previous queries
 --------------------------
 
-To see the queries that you have run in the current session, open the Query History view.
+To see the queries that you have run in the current session, open the Query History view. You can filter the Query History view by language. For more information, see ":ref:`Filtering databases and queries by language <filtering-databases-and-queries-by-language>`."
 
    .. image:: ../images/codeql-for-visual-studio-code/query-history.png
       :width: 350
