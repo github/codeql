@@ -91,6 +91,7 @@ import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.CollectionUpcastConversionExpr
 import codeql.swift.elements.expr.ConditionalBridgeFromObjCExpr
 import codeql.swift.elements.expr.ConditionalCheckedCastExpr
+import codeql.swift.elements.expr.CopyExpr
 import codeql.swift.elements.expr.CovariantFunctionConversionExpr
 import codeql.swift.elements.expr.CovariantReturnConversionExpr
 import codeql.swift.elements.expr.DeclRefExpr

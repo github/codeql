@@ -1201,6 +1201,22 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCopyExpr(CopyExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfDeclRefExpr(
     DeclRefExpr e, int index, string partialPredicateCall
   ) {
@@ -5077,6 +5093,8 @@ private module Impl {
     result = getImmediateChildOfBindOptionalExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfCaptureListExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCopyExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfDeclRefExpr(e, index, partialAccessor)
     or

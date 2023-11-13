@@ -1327,3 +1327,14 @@ class PackElementExpr(Expr):
     https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
     """
     sub_expr: Expr | child
+
+class CopyExpr(Expr):
+    """
+    An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
+
+    ```
+    let y = ...
+    let x = copy y
+    ```
+    """
+    sub_expr: Expr | child

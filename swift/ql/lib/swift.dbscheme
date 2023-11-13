@@ -734,6 +734,7 @@ arguments(  //dir=expr
 | @capture_list_expr
 | @closure_expr
 | @collection_expr
+| @copy_expr
 | @decl_ref_expr
 | @default_argument_expr
 | @discard_assignment_expr
@@ -858,6 +859,11 @@ capture_list_expr_binding_decls(  //dir=expr
   @array_expr
 | @dictionary_expr
 ;
+
+copy_exprs(  //dir=expr
+  unique int id: @copy_expr,
+  int sub_expr: @expr_or_none ref
+);
 
 decl_ref_exprs(  //dir=expr
   unique int id: @decl_ref_expr,

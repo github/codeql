@@ -657,4 +657,10 @@ codeql::PackElementExpr ExprTranslator::translatePackElementExpr(
   return entry;
 }
 
+codeql::CopyExpr ExprTranslator::translateCopyExpr(const swift::CopyExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
+  return entry;
+}
+
 }  // namespace codeql

@@ -282,6 +282,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TCopyExpr(Raw::CopyExpr id) { constructCopyExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TCovariantFunctionConversionExpr(Raw::CovariantFunctionConversionExpr id) {
       constructCovariantFunctionConversionExpr(id)
     } or
@@ -1195,7 +1199,7 @@ module Synth {
    */
   class TExpr =
     TAnyTryExpr or TAppliedPropertyWrapperExpr or TApplyExpr or TAssignExpr or TBindOptionalExpr or
-        TCaptureListExpr or TClosureExpr or TCollectionExpr or TDeclRefExpr or
+        TCaptureListExpr or TClosureExpr or TCollectionExpr or TCopyExpr or TDeclRefExpr or
         TDefaultArgumentExpr or TDiscardAssignmentExpr or TDotSyntaxBaseIgnoredExpr or
         TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or TExplicitCastExpr or TForceValueExpr or
         TIdentityExpr or TIfExpr or TImplicitConversionExpr or TInOutExpr or
@@ -1859,6 +1863,13 @@ module Synth {
   TConditionalCheckedCastExpr convertConditionalCheckedCastExprFromRaw(Raw::Element e) {
     result = TConditionalCheckedCastExpr(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TCopyExpr`, if possible.
+   */
+  cached
+  TCopyExpr convertCopyExprFromRaw(Raw::Element e) { result = TCopyExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3702,6 +3713,8 @@ module Synth {
     or
     result = convertCollectionExprFromRaw(e)
     or
+    result = convertCopyExprFromRaw(e)
+    or
     result = convertDeclRefExprFromRaw(e)
     or
     result = convertDefaultArgumentExprFromRaw(e)
@@ -4757,6 +4770,13 @@ module Synth {
   Raw::Element convertConditionalCheckedCastExprToRaw(TConditionalCheckedCastExpr e) {
     e = TConditionalCheckedCastExpr(result)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCopyExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertCopyExprToRaw(TCopyExpr e) { e = TCopyExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -6597,6 +6617,8 @@ module Synth {
     result = convertClosureExprToRaw(e)
     or
     result = convertCollectionExprToRaw(e)
+    or
+    result = convertCopyExprToRaw(e)
     or
     result = convertDeclRefExprToRaw(e)
     or
