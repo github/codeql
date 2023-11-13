@@ -202,7 +202,7 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::TypeJoinExpr, void)  // TODO (introduced in 5.8)
   MAP(swift::MacroExpansionExpr, void)  // TODO (introduced in 5.8)
   MAP(swift::CopyExpr, CopyExprTag)
-  MAP(swift::ConsumeExpr, void)  // TODO (introduced in 5.9)
+  MAP(swift::ConsumeExpr, ConsumeExprTag)
   MAP(swift::MaterializePackExpr, void)  // TODO (introduced in 5.9)
   MAP(swift::SingleValueStmtExpr, SingleValueStmtExprTag)
 

@@ -2,3 +2,4 @@
 
 let x = 42
 let _ = copy x
+let _ = consume x

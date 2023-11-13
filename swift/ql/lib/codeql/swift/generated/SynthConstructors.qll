@@ -64,6 +64,7 @@ import codeql.swift.elements.expr.CoerceExprConstructor
 import codeql.swift.elements.expr.CollectionUpcastConversionExprConstructor
 import codeql.swift.elements.expr.ConditionalBridgeFromObjCExprConstructor
 import codeql.swift.elements.expr.ConditionalCheckedCastExprConstructor
+import codeql.swift.elements.expr.ConsumeExprConstructor
 import codeql.swift.elements.expr.CopyExprConstructor
 import codeql.swift.elements.expr.CovariantFunctionConversionExprConstructor
 import codeql.swift.elements.expr.CovariantReturnConversionExprConstructor

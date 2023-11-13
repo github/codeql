@@ -1338,3 +1338,15 @@ class CopyExpr(Expr):
     ```
     """
     sub_expr: Expr | child
+
+@qltest.test_with(CopyExpr)
+class ConsumeExpr(Expr):
+    """
+    An expression that forces value to be moved. In the example below, `consume` marks the move expression:
+
+    ```
+    let y = ...
+    let x = consume y
+    ```
+    """
+    sub_expr: Expr | child

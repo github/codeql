@@ -1121,6 +1121,24 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that forces value to be moved. In the example below, `consume` marks the move expression:
+   *
+   * ```
+   * let y = ...
+   * let x = consume y
+   * ```
+   */
+  class ConsumeExpr extends @consume_expr, Expr {
+    override string toString() { result = "ConsumeExpr" }
+
+    /**
+     * Gets the sub expression of this consume expression.
+     */
+    Expr getSubExpr() { consume_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
    *
    * ```
