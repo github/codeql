@@ -10,6 +10,7 @@ import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * IPA type for data flow nodes.
@@ -597,7 +598,30 @@ newtype TContent =
   /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
   /** An object attribute. */
-  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
+  TAttributeContent(string attr) {
+    attr = any(Attribute a).getName()
+    or
+    // Flow summaries that target attributes rely on a TAttributeContent being
+    // available. However, since the code above only constructs a TAttributeContent
+    // based on the attribute names seen in the DB, we can end up in a scenario where
+    // flow summaries don't work due to missing TAttributeContent. To get around this,
+    // we need to add the attribute names used by flow summaries. This needs to be done
+    // both for the summaries written in QL and the ones written in data-extension
+    // files.
+    //
+    // 1) Summaries in QL. Sadly the following code leads to non-monotonic recursion
+    //   name = any(AccessPathToken a).getAnArgument("Attribute")
+    // instead we use a qltest to alert if we write a new summary in QL that uses an
+    // attribute -- see
+    // python/ql/test/experimental/dataflow/summaries-checks/missing-attribute-content.ql
+    none() // to be filled out in next commit
+    or
+    //
+    // 2) summaries in data-extension files
+    exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
+      attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
+    )
+  }
 
 /**
  * A data-flow value can have associated content.

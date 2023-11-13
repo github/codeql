@@ -1,0 +1,14 @@
+| compiled re.Match | Argument[self].Attribute[pattern] | Attribute[pattern] |
+| compiled re.Match | ReturnValue.Attribute[re].Attribute[pattern] | Attribute[pattern] |
+| compiled re.Match | ReturnValue.Attribute[re].Attribute[pattern] | Attribute[re] |
+| compiled re.Match | ReturnValue.Attribute[string] | Attribute[string] |
+| compiled re.subn | ReturnValue.TupleElement[0] | TupleElement[0] |
+| re.Match | ReturnValue.Attribute[re].Attribute[pattern] | Attribute[pattern] |
+| re.Match | ReturnValue.Attribute[re].Attribute[pattern] | Attribute[re] |
+| re.Match | ReturnValue.Attribute[string] | Attribute[string] |
+| re.Match.expand | Argument[self].Attribute[string] | Attribute[string] |
+| re.Match.group | Argument[self].Attribute[string] | Attribute[string] |
+| re.Match.groupdict | Argument[self].Attribute[string] | Attribute[string] |
+| re.Match.groups | Argument[self].Attribute[string] | Attribute[string] |
+| re.Pattern | ReturnValue.Attribute[pattern] | Attribute[pattern] |
+| re.subn | ReturnValue.TupleElement[0] | TupleElement[0] |
