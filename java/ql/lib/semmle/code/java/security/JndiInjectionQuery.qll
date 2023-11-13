@@ -56,7 +56,7 @@ module JndiInjectionFlow = TaintTracking::Global<JndiInjectionFlowConfig>;
  */
 private class UnsafeSearchControlsSink extends JndiInjectionSink {
   UnsafeSearchControlsSink() {
-    exists(MethodAccess ma | UnsafeSearchControlsFlow::flowToExpr(ma.getAnArgument()) |
+    exists(MethodCall ma | UnsafeSearchControlsFlow::flowToExpr(ma.getAnArgument()) |
       this.asExpr() = ma.getArgument(0)
     )
   }
@@ -79,7 +79,7 @@ private module UnsafeSearchControlsFlow = DataFlow::Global<UnsafeSearchControlsC
  */
 private class UnsafeSearchControlsArgument extends DataFlow::ExprNode {
   UnsafeSearchControlsArgument() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       ma.getMethod() = m and
       ma.getAnArgument() = this.asExpr() and
       this.asExpr().getType() instanceof TypeSearchControls and
@@ -96,7 +96,7 @@ private class UnsafeSearchControlsArgument extends DataFlow::ExprNode {
  */
 private class UnsafeSearchControls extends DataFlow::ExprNode {
   UnsafeSearchControls() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof SetReturningObjFlagMethod and
       ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
       this.asExpr() = ma.getQualifier()

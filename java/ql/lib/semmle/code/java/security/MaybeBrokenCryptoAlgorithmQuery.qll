@@ -26,7 +26,7 @@ class InsecureAlgoLiteral extends ShortStringLiteral {
   }
 }
 
-private predicate objectToString(MethodAccess ma) {
+private predicate objectToString(MethodCall ma) {
   exists(ToStringMethod m |
     m = ma.getMethod() and
     m.getDeclaringType() instanceof TypeObject and

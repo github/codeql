@@ -1,0 +1,18 @@
+load("@//:common.bzl", "codeql_java_project")
+
+codeql_java_project(
+    name = "extractor",
+    deps = [
+        "@//extractor",
+        "@//resources/lib/java:commons-compress",
+        "@//resources/lib/java:gson",
+        "@//resources/lib/java:jericho-html",
+        "@//resources/lib/java:slf4j-api",
+        "@//resources/lib/java:snakeyaml",
+        "@//resources/lib/java/DO_NOT_DISTRIBUTE:junit",
+        "@//third_party:jackson",
+        "@//third_party:logback",
+        "@//util-java7",
+        "@//util-java8",
+    ],
+)

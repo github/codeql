@@ -1,6 +1,6 @@
 import java
 
-from MethodAccess ma, Method m
+from MethodCall ma, Method m
 where m = ma.getMethod()
 select ma, m
 

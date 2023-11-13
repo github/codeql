@@ -2104,4 +2104,12 @@ void newArrayCorrectType(size_t n) {
   new int[n] { 0, 1, 2 };
 }
 
+double strtod (const char* str, char** endptr);
+
+char* test_strtod(char *s) {
+  char *end;
+  double d = strtod(s, &end);
+  return end;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

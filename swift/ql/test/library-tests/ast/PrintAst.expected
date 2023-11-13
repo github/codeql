@@ -3366,6 +3366,118 @@ cfg.swift:
 #  545|       getElse(): [BraceStmt] { ... }
 #  546|         getElement(0): [ReturnStmt] return ...
 #  546|           getResult(): [IntegerLiteralExpr] 0
+#  550| [NamedFunction] usesAutoclosure(_:)
+#  550|     InterfaceType = (@autoclosure () -> Int) -> Int
+#  550|   getParam(0): [ParamDecl] expr
+#  550|       Type = () -> Int
+#  550|   getBody(): [BraceStmt] { ... }
+#  551|     getElement(0): [ReturnStmt] return ...
+#  551|       getResult(): [CallExpr] call to ...
+#  551|         getFunction(): [DeclRefExpr] expr
+#  554| [NamedFunction] autoclosureTest()
+#  554|     InterfaceType = () -> ()
+#  554|   getBody(): [BraceStmt] { ... }
+#  555|     getElement(0): [CallExpr] call to usesAutoclosure(_:)
+#  555|       getFunction(): [DeclRefExpr] usesAutoclosure(_:)
+#  555|       getArgument(0): [Argument] : { ... }
+#  555|         getExpr(): [AutoClosureExpr] { ... }
+#  555|           getBody(): [BraceStmt] { ... }
+#  555|             getElement(0): [ReturnStmt] return ...
+#  555|               getResult(): [IntegerLiteralExpr] 1
+#  558| [Comment] // ---
+#  558| 
+#  560| [ProtocolDecl] MyProtocol
+#-----|   getGenericTypeParam(0): [GenericTypeParamDecl] Self
+#  561|   getMember(0): [NamedFunction] source()
+#  561|       InterfaceType = <Self where Self : MyProtocol> (Self) -> () -> Int
+#  561|     getSelfParam(): [ParamDecl] self
+#  561|         Type = Self
+#  564| [ClassDecl] MyProcotolImpl
+#  565|   getMember(0): [NamedFunction] source()
+#  565|       InterfaceType = (MyProcotolImpl) -> () -> Int
+#  565|     getSelfParam(): [ParamDecl] self
+#  565|         Type = MyProcotolImpl
+#  565|     getBody(): [BraceStmt] { ... }
+#  565|       getElement(0): [ReturnStmt] return ...
+#  565|         getResult(): [IntegerLiteralExpr] 0
+#  564|   getMember(1): [Deinitializer] MyProcotolImpl.deinit()
+#  564|       InterfaceType = (MyProcotolImpl) -> () -> ()
+#  564|     getSelfParam(): [ParamDecl] self
+#  564|         Type = MyProcotolImpl
+#  564|     getBody(): [BraceStmt] { ... }
+#  564|   getMember(2): [Initializer] MyProcotolImpl.init()
+#  564|       InterfaceType = (MyProcotolImpl.Type) -> () -> MyProcotolImpl
+#  564|     getSelfParam(): [ParamDecl] self
+#  564|         Type = MyProcotolImpl
+#  564|     getBody(): [BraceStmt] { ... }
+#  564|       getElement(0): [ReturnStmt] return
+#  568| [NamedFunction] getMyProtocol()
+#  568|     InterfaceType = () -> MyProtocol
+#  568|   getBody(): [BraceStmt] { ... }
+#  568|     getElement(0): [ReturnStmt] return ...
+#  568|       getResult(): [CallExpr] call to MyProcotolImpl.init()
+#  568|         getFunction(): [MethodLookupExpr] MyProcotolImpl.init()
+#  568|           getBase(): [TypeExpr] MyProcotolImpl.Type
+#  568|             getTypeRepr(): [TypeRepr] MyProcotolImpl
+#  568|           getMethodRef(): [DeclRefExpr] MyProcotolImpl.init()
+#  568|       getResult().getFullyConverted(): [ErasureExpr] (MyProtocol) ...
+#  569| [NamedFunction] getMyProtocolImpl()
+#  569|     InterfaceType = () -> MyProcotolImpl
+#  569|   getBody(): [BraceStmt] { ... }
+#  569|     getElement(0): [ReturnStmt] return ...
+#  569|       getResult(): [CallExpr] call to MyProcotolImpl.init()
+#  569|         getFunction(): [MethodLookupExpr] MyProcotolImpl.init()
+#  569|           getBase(): [TypeExpr] MyProcotolImpl.Type
+#  569|             getTypeRepr(): [TypeRepr] MyProcotolImpl
+#  569|           getMethodRef(): [DeclRefExpr] MyProcotolImpl.init()
+#  571| [NamedFunction] sink(arg:)
+#  571|     InterfaceType = (Int) -> ()
+#  571|   getParam(0): [ParamDecl] arg
+#  571|       Type = Int
+#  571|   getBody(): [BraceStmt] { ... }
+#  573| [NamedFunction] testOpenExistentialExpr(x:y:)
+#  573|     InterfaceType = (MyProtocol, MyProcotolImpl) -> ()
+#  573|   getParam(0): [ParamDecl] x
+#  573|       Type = MyProtocol
+#  573|   getParam(1): [ParamDecl] y
+#  573|       Type = MyProcotolImpl
+#  573|   getBody(): [BraceStmt] { ... }
+#  574|     getElement(0): [CallExpr] call to sink(arg:)
+#  574|       getFunction(): [DeclRefExpr] sink(arg:)
+#  574|       getArgument(0): [Argument] arg: OpenExistentialExpr
+#  574|         getExpr(): [OpenExistentialExpr] OpenExistentialExpr
+#  574|           getSubExpr(): [CallExpr] call to source()
+#  574|             getFunction(): [MethodLookupExpr] .source()
+#  574|               getBase(): [OpaqueValueExpr] OpaqueValueExpr
+#  574|               getMethodRef(): [DeclRefExpr] source()
+#  574|           getExistential(): [DeclRefExpr] x
+#  575|     getElement(1): [CallExpr] call to sink(arg:)
+#  575|       getFunction(): [DeclRefExpr] sink(arg:)
+#  575|       getArgument(0): [Argument] arg: call to source()
+#  575|         getExpr(): [CallExpr] call to source()
+#  575|           getFunction(): [MethodLookupExpr] .source()
+#  575|             getBase(): [DeclRefExpr] y
+#  575|             getMethodRef(): [DeclRefExpr] source()
+#  576|     getElement(2): [CallExpr] call to sink(arg:)
+#  576|       getFunction(): [DeclRefExpr] sink(arg:)
+#  576|       getArgument(0): [Argument] arg: OpenExistentialExpr
+#  576|         getExpr(): [OpenExistentialExpr] OpenExistentialExpr
+#  576|           getSubExpr(): [CallExpr] call to source()
+#  576|             getFunction(): [MethodLookupExpr] .source()
+#  576|               getBase(): [OpaqueValueExpr] OpaqueValueExpr
+#  576|               getMethodRef(): [DeclRefExpr] source()
+#  576|           getExistential(): [CallExpr] call to getMyProtocol()
+#  576|             getFunction(): [DeclRefExpr] getMyProtocol()
+#  577|     getElement(3): [CallExpr] call to sink(arg:)
+#  577|       getFunction(): [DeclRefExpr] sink(arg:)
+#  577|       getArgument(0): [Argument] arg: call to source()
+#  577|         getExpr(): [CallExpr] call to source()
+#  577|           getFunction(): [MethodLookupExpr] .source()
+#  577|             getBase(): [CallExpr] call to getMyProtocolImpl()
+#  577|               getFunction(): [DeclRefExpr] getMyProtocolImpl()
+#  577|             getMethodRef(): [DeclRefExpr] source()
+#  580| [Comment] // ---
+#  580| 
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...

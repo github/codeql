@@ -16,7 +16,7 @@ private module Frameworks {
 /**
  * An abstract type representing a call to parse XML files.
  */
-abstract class XmlParserCall extends MethodAccess {
+abstract class XmlParserCall extends MethodCall {
   /**
    * Gets the argument representing the XML content to be parsed.
    */
@@ -31,7 +31,7 @@ abstract class XmlParserCall extends MethodAccess {
 /**
  * An access to a method use for configuring the parser.
  */
-abstract class ParserConfig extends MethodAccess {
+abstract class ParserConfig extends MethodCall {
   /**
    * Holds if the method disables a property.
    */
@@ -141,7 +141,7 @@ class SafeDocumentBuilderFactory extends VarAccess {
   }
 }
 
-private class DocumentBuilderConstruction extends MethodAccess {
+private class DocumentBuilderConstruction extends MethodCall {
   DocumentBuilderConstruction() {
     exists(Method m |
       this.getMethod() = m and
@@ -440,7 +440,7 @@ private predicate safeSaxParserNode(DataFlow::Node src) { src.asExpr() instanceo
 private module SafeSaxParserFlow = DataFlow::SimpleGlobal<safeSaxParserNode/1>;
 
 /** A `SaxParser` created from a safely configured `SaxParserFactory`. */
-class SafeSaxParser extends MethodAccess {
+class SafeSaxParser extends MethodCall {
   SafeSaxParser() {
     this.getMethod().getDeclaringType() instanceof SaxParserFactory and
     this.getMethod().hasName("newSAXParser") and
@@ -640,13 +640,13 @@ private module CreatedSafeXmlReaderFlow = DataFlow::SimpleGlobal<createdSafeXmlR
 class CreatedSafeXmlReader extends Call {
   CreatedSafeXmlReader() {
     //Obtained from SAXParser
-    this.(MethodAccess).getMethod().getDeclaringType() instanceof SaxParser and
-    this.(MethodAccess).getMethod().hasName("getXMLReader") and
+    this.(MethodCall).getMethod().getDeclaringType() instanceof SaxParser and
+    this.(MethodCall).getMethod().hasName("getXMLReader") and
     SafeSaxParserFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
     or
     //Obtained from SAXReader
-    this.(MethodAccess).getMethod().getDeclaringType() instanceof SaxReader and
-    this.(MethodAccess).getMethod().hasName("getXMLReader") and
+    this.(MethodCall).getMethod().getDeclaringType() instanceof SaxReader and
+    this.(MethodCall).getMethod().hasName("getXMLReader") and
     SafeSaxReaderFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
     or
     exists(RefType secureReader, string package |
@@ -693,7 +693,7 @@ class ConstructedSaxSource extends ClassInstanceExpr {
 }
 
 /** A call to the `SAXSource.setXMLReader` method. */
-class SaxSourceSetReader extends MethodAccess {
+class SaxSourceSetReader extends MethodCall {
   SaxSourceSetReader() {
     exists(Method m |
       m = this.getMethod() and
@@ -721,7 +721,7 @@ class SafeSaxSource extends Expr {
 
 /* Transformer: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#transformerfactory */
 /** An access to a method use for configuring a transformer or schema. */
-abstract class TransformerConfig extends MethodAccess {
+abstract class TransformerConfig extends MethodCall {
   /** Holds if the configuration is disabled */
   predicate disables(Expr e) {
     this.getArgument(0) = e and
@@ -850,7 +850,7 @@ deprecated class SafeTransformerFactoryFlowConfig extends DataFlow3::Configurati
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeTransformerFactory }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getQualifier() and
       ma.getMethod().getDeclaringType() instanceof TransformerFactory
     )
@@ -869,7 +869,7 @@ deprecated module SafeTransformerFactoryFlowConfig implements DataFlow::ConfigSi
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeTransformerFactory }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getQualifier() and
       ma.getMethod().getDeclaringType() instanceof TransformerFactory
     )
@@ -907,7 +907,7 @@ class SafeTransformerFactory extends VarAccess {
 }
 
 /** A `Transformer` created from a safely configured `TransformerFactory`. */
-class SafeTransformer extends MethodAccess {
+class SafeTransformer extends MethodCall {
   SafeTransformer() {
     exists(Method m |
       this.getMethod() = m and

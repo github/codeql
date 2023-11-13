@@ -25,7 +25,7 @@ class Socket extends RefType {
   Socket() { this.getAnAncestor().hasQualifiedName("java.net", "Socket") }
 }
 
-from MethodAccess m, Class c, string type
+from MethodCall m, Class c, string type
 where
   m.getQualifier().getType() = c and
   (

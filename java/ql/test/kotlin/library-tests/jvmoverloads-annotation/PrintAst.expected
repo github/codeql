@@ -21,7 +21,7 @@ test.kt:
 #   45|           0: [TypeAccess] boolean
 #   45|       5: [BlockStmt] { ... }
 #   45|         0: [ReturnStmt] return ...
-#   45|           0: [MethodAccess] testExtensionFunction$default(...)
+#   45|           0: [MethodCall] testExtensionFunction$default(...)
 #   45|             -1: [TypeAccess] TestKt
 #    0|             0: [ExtensionReceiverAccess] this
 #    0|             1: [VarAccess] a
@@ -64,7 +64,7 @@ test.kt:
 #   45|           0: [TypeAccess] boolean
 #   45|       5: [BlockStmt] { ... }
 #   45|         0: [ReturnStmt] return ...
-#   45|           0: [MethodAccess] testExtensionFunction$default(...)
+#   45|           0: [MethodCall] testExtensionFunction$default(...)
 #   45|             -1: [TypeAccess] TestKt
 #    0|             0: [ExtensionReceiverAccess] this
 #    0|             1: [VarAccess] a
@@ -103,7 +103,7 @@ test.kt:
 #   45|           1: [ExprStmt] <Expr>;
 #   45|             0: [AssignExpr] ...=...
 #   45|               0: [VarAccess] p2
-#   45|               1: [MethodAccess] getString(...)
+#   45|               1: [MethodCall] getString(...)
 #   45|                 -1: [TypeAccess] TestKt
 #   45|         1: [IfStmt] if (...)
 #   45|           0: [EQExpr] ... == ...
@@ -116,7 +116,7 @@ test.kt:
 #   45|               0: [VarAccess] p4
 #   45|               1: [FloatLiteral] 1.0
 #   45|         2: [ReturnStmt] return ...
-#   45|           0: [MethodAccess] testExtensionFunction(...)
+#   45|           0: [MethodCall] testExtensionFunction(...)
 #   45|             -1: [TypeAccess] TestKt
 #   45|             0: [ExtensionReceiverAccess] this
 #   45|             1: [VarAccess] p1
@@ -142,7 +142,7 @@ test.kt:
 #    6|           0: [TypeAccess] boolean
 #    6|       5: [BlockStmt] { ... }
 #    6|         0: [ReturnStmt] return ...
-#    6|           0: [MethodAccess] testStaticFunction$default(...)
+#    6|           0: [MethodCall] testStaticFunction$default(...)
 #    6|             -1: [TypeAccess] Test
 #    0|             0: [VarAccess] a
 #    0|             1: [VarAccess] b
@@ -181,7 +181,7 @@ test.kt:
 #    6|           0: [TypeAccess] boolean
 #    6|       5: [BlockStmt] { ... }
 #    6|         0: [ReturnStmt] return ...
-#    6|           0: [MethodAccess] testStaticFunction$default(...)
+#    6|           0: [MethodCall] testStaticFunction$default(...)
 #    6|             -1: [TypeAccess] Test
 #    0|             0: [VarAccess] a
 #    1|             1: [NullLiteral] null
@@ -217,7 +217,7 @@ test.kt:
 #    6|           1: [ExprStmt] <Expr>;
 #    6|             0: [AssignExpr] ...=...
 #    6|               0: [VarAccess] p1
-#    6|               1: [MethodAccess] getString(...)
+#    6|               1: [MethodCall] getString(...)
 #    6|                 -1: [TypeAccess] TestKt
 #    6|         1: [IfStmt] if (...)
 #    6|           0: [EQExpr] ... == ...
@@ -230,7 +230,7 @@ test.kt:
 #    6|               0: [VarAccess] p3
 #    6|               1: [FloatLiteral] 1.0
 #    6|         2: [ReturnStmt] return ...
-#    6|           0: [MethodAccess] testStaticFunction(...)
+#    6|           0: [MethodCall] testStaticFunction(...)
 #    6|             -1: [TypeAccess] Test
 #    6|             0: [VarAccess] p0
 #    6|             1: [VarAccess] p1
@@ -250,7 +250,7 @@ test.kt:
 #    9|           0: [TypeAccess] boolean
 #    9|       5: [BlockStmt] { ... }
 #    9|         0: [ReturnStmt] return ...
-#    9|           0: [MethodAccess] testMemberFunction$default(...)
+#    9|           0: [MethodCall] testMemberFunction$default(...)
 #    9|             -1: [TypeAccess] Test
 #    0|             0: [ThisAccess] this
 #    0|             1: [VarAccess] a
@@ -289,7 +289,7 @@ test.kt:
 #    9|           0: [TypeAccess] boolean
 #    9|       5: [BlockStmt] { ... }
 #    9|         0: [ReturnStmt] return ...
-#    9|           0: [MethodAccess] testMemberFunction$default(...)
+#    9|           0: [MethodCall] testMemberFunction$default(...)
 #    9|             -1: [TypeAccess] Test
 #    0|             0: [ThisAccess] this
 #    0|             1: [VarAccess] a
@@ -328,7 +328,7 @@ test.kt:
 #    9|           1: [ExprStmt] <Expr>;
 #    9|             0: [AssignExpr] ...=...
 #    9|               0: [VarAccess] p2
-#    9|               1: [MethodAccess] getString(...)
+#    9|               1: [MethodCall] getString(...)
 #    9|                 -1: [TypeAccess] TestKt
 #    9|         1: [IfStmt] if (...)
 #    9|           0: [EQExpr] ... == ...
@@ -341,7 +341,7 @@ test.kt:
 #    9|               0: [VarAccess] p4
 #    9|               1: [FloatLiteral] 1.0
 #    9|         2: [ReturnStmt] return ...
-#    9|           0: [MethodAccess] testMemberFunction(...)
+#    9|           0: [MethodCall] testMemberFunction(...)
 #    9|             -1: [VarAccess] p0
 #    9|             0: [VarAccess] p1
 #    9|             1: [VarAccess] p2
@@ -363,7 +363,7 @@ test.kt:
 #   12|           0: [TypeAccess] boolean
 #   12|       5: [BlockStmt] { ... }
 #   12|         0: [ReturnStmt] return ...
-#   12|           0: [MethodAccess] testMemberExtensionFunction$default(...)
+#   12|           0: [MethodCall] testMemberExtensionFunction$default(...)
 #   12|             -1: [TypeAccess] Test
 #    0|             0: [ThisAccess] Test.this
 #    0|               0: [TypeAccess] Test
@@ -408,7 +408,7 @@ test.kt:
 #   12|           0: [TypeAccess] boolean
 #   12|       5: [BlockStmt] { ... }
 #   12|         0: [ReturnStmt] return ...
-#   12|           0: [MethodAccess] testMemberExtensionFunction$default(...)
+#   12|           0: [MethodCall] testMemberExtensionFunction$default(...)
 #   12|             -1: [TypeAccess] Test
 #    0|             0: [ThisAccess] Test.this
 #    0|               0: [TypeAccess] Test
@@ -451,7 +451,7 @@ test.kt:
 #   12|           1: [ExprStmt] <Expr>;
 #   12|             0: [AssignExpr] ...=...
 #   12|               0: [VarAccess] p3
-#   12|               1: [MethodAccess] getString(...)
+#   12|               1: [MethodCall] getString(...)
 #   12|                 -1: [TypeAccess] TestKt
 #   12|         1: [IfStmt] if (...)
 #   12|           0: [EQExpr] ... == ...
@@ -464,7 +464,7 @@ test.kt:
 #   12|               0: [VarAccess] p5
 #   12|               1: [FloatLiteral] 1.0
 #   12|         2: [ReturnStmt] return ...
-#   12|           0: [MethodAccess] testMemberExtensionFunction(...)
+#   12|           0: [MethodCall] testMemberExtensionFunction(...)
 #   12|             -1: [VarAccess] p0
 #   12|             0: [ExtensionReceiverAccess] this
 #   12|             1: [VarAccess] p2
@@ -535,7 +535,7 @@ test.kt:
 #   16|           1: [ExprStmt] <Expr>;
 #   16|             0: [AssignExpr] ...=...
 #   16|               0: [VarAccess] p1
-#   16|               1: [MethodAccess] getString(...)
+#   16|               1: [MethodCall] getString(...)
 #   16|                 -1: [TypeAccess] TestKt
 #   16|         1: [IfStmt] if (...)
 #   16|           0: [EQExpr] ... == ...
@@ -588,7 +588,7 @@ test.kt:
 #   21|             0: [TypeAccess] boolean
 #   21|         5: [BlockStmt] { ... }
 #   21|           0: [ReturnStmt] return ...
-#   21|             0: [MethodAccess] testCompanionFunction$default(...)
+#   21|             0: [MethodCall] testCompanionFunction$default(...)
 #   21|               -1: [TypeAccess] Companion
 #    0|               0: [ThisAccess] this
 #    0|               1: [VarAccess] a
@@ -627,7 +627,7 @@ test.kt:
 #   21|             0: [TypeAccess] boolean
 #   21|         5: [BlockStmt] { ... }
 #   21|           0: [ReturnStmt] return ...
-#   21|             0: [MethodAccess] testCompanionFunction$default(...)
+#   21|             0: [MethodCall] testCompanionFunction$default(...)
 #   21|               -1: [TypeAccess] Companion
 #    0|               0: [ThisAccess] this
 #    0|               1: [VarAccess] a
@@ -666,7 +666,7 @@ test.kt:
 #   21|             1: [ExprStmt] <Expr>;
 #   21|               0: [AssignExpr] ...=...
 #   21|                 0: [VarAccess] p2
-#   21|                 1: [MethodAccess] getString(...)
+#   21|                 1: [MethodCall] getString(...)
 #   21|                   -1: [TypeAccess] TestKt
 #   21|           1: [IfStmt] if (...)
 #   21|             0: [EQExpr] ... == ...
@@ -679,7 +679,7 @@ test.kt:
 #   21|                 0: [VarAccess] p4
 #   21|                 1: [FloatLiteral] 1.0
 #   21|           2: [ReturnStmt] return ...
-#   21|             0: [MethodAccess] testCompanionFunction(...)
+#   21|             0: [MethodCall] testCompanionFunction(...)
 #   21|               -1: [VarAccess] p0
 #   21|               0: [VarAccess] p1
 #   21|               1: [VarAccess] p2
@@ -699,7 +699,7 @@ test.kt:
 #   24|             0: [TypeAccess] boolean
 #   24|         5: [BlockStmt] { ... }
 #   24|           0: [ReturnStmt] return ...
-#   24|             0: [MethodAccess] testStaticCompanionFunction$default(...)
+#   24|             0: [MethodCall] testStaticCompanionFunction$default(...)
 #   24|               -1: [TypeAccess] Companion
 #    0|               0: [ThisAccess] this
 #    0|               1: [VarAccess] a
@@ -739,7 +739,7 @@ test.kt:
 #   24|             0: [TypeAccess] boolean
 #   24|         5: [BlockStmt] { ... }
 #   24|           0: [ReturnStmt] return ...
-#   24|             0: [MethodAccess] testStaticCompanionFunction$default(...)
+#   24|             0: [MethodCall] testStaticCompanionFunction$default(...)
 #   24|               -1: [TypeAccess] Companion
 #    0|               0: [ThisAccess] this
 #    0|               1: [VarAccess] a
@@ -778,7 +778,7 @@ test.kt:
 #   24|             1: [ExprStmt] <Expr>;
 #   24|               0: [AssignExpr] ...=...
 #   24|                 0: [VarAccess] p2
-#   24|                 1: [MethodAccess] getString(...)
+#   24|                 1: [MethodCall] getString(...)
 #   24|                   -1: [TypeAccess] TestKt
 #   24|           1: [IfStmt] if (...)
 #   24|             0: [EQExpr] ... == ...
@@ -791,7 +791,7 @@ test.kt:
 #   24|                 0: [VarAccess] p4
 #   24|                 1: [FloatLiteral] 1.0
 #   24|           2: [ReturnStmt] return ...
-#   24|             0: [MethodAccess] testStaticCompanionFunction(...)
+#   24|             0: [MethodCall] testStaticCompanionFunction(...)
 #   24|               -1: [VarAccess] p0
 #   24|               0: [VarAccess] p1
 #   24|               1: [VarAccess] p2
@@ -811,7 +811,7 @@ test.kt:
 #   24|           0: [TypeAccess] boolean
 #   24|       5: [BlockStmt] { ... }
 #   24|         0: [ReturnStmt] return ...
-#   24|           0: [MethodAccess] testStaticCompanionFunction$default(...)
+#   24|           0: [MethodCall] testStaticCompanionFunction$default(...)
 #   24|             -1: [TypeAccess] Companion
 #    0|             0: [ThisAccess] this
 #    0|             1: [VarAccess] a
@@ -836,7 +836,7 @@ test.kt:
 #   24|           0: [TypeAccess] boolean
 #   24|       5: [BlockStmt] { ... }
 #   24|         0: [ReturnStmt] return ...
-#   24|           0: [MethodAccess] testStaticCompanionFunction(...)
+#   24|           0: [MethodCall] testStaticCompanionFunction(...)
 #   24|             -1: [VarAccess] Test2.Companion
 #   24|               -1: [TypeAccess] Test2
 #   24|             0: [VarAccess] a
@@ -855,7 +855,7 @@ test.kt:
 #   24|           0: [TypeAccess] boolean
 #   24|       5: [BlockStmt] { ... }
 #   24|         0: [ReturnStmt] return ...
-#   24|           0: [MethodAccess] testStaticCompanionFunction$default(...)
+#   24|           0: [MethodCall] testStaticCompanionFunction$default(...)
 #   24|             -1: [TypeAccess] Companion
 #    0|             0: [ThisAccess] this
 #    0|             1: [VarAccess] a
@@ -962,7 +962,7 @@ test.kt:
 #   33|           0: [TypeAccess] T
 #   33|       5: [BlockStmt] { ... }
 #   33|         0: [ReturnStmt] return ...
-#   33|           0: [MethodAccess] testMemberFunction$default(...)
+#   33|           0: [MethodCall] testMemberFunction$default(...)
 #   33|             -1: [TypeAccess] GenericTest<>
 #    0|             0: [ThisAccess] this
 #    1|             1: [IntegerLiteral] 0
@@ -998,7 +998,7 @@ test.kt:
 #   33|           0: [TypeAccess] T
 #   33|       5: [BlockStmt] { ... }
 #   33|         0: [ReturnStmt] return ...
-#   33|           0: [MethodAccess] testMemberFunction$default(...)
+#   33|           0: [MethodCall] testMemberFunction$default(...)
 #   33|             -1: [TypeAccess] GenericTest<>
 #    0|             0: [ThisAccess] this
 #    0|             1: [VarAccess] a
@@ -1046,7 +1046,7 @@ test.kt:
 #   33|               0: [VarAccess] p3
 #   33|               1: [StringLiteral] "Hello world"
 #   33|         2: [ReturnStmt] return ...
-#   33|           0: [MethodAccess] testMemberFunction(...)
+#   33|           0: [MethodCall] testMemberFunction(...)
 #   33|             -1: [VarAccess] p0
 #   33|             0: [VarAccess] p1
 #   33|             1: [VarAccess] p2
@@ -1065,7 +1065,7 @@ test.kt:
 #   37|         0: [ExprStmt] <Expr>;
 #   37|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   37|             0: [TypeAccess] Unit
-#   37|             1: [MethodAccess] testMemberFunction(...)
+#   37|             1: [MethodCall] testMemberFunction(...)
 #   37|               -1: [VarAccess] spec1
 #   37|               0: [IntegerLiteral] 1
 #   37|               1: [FloatLiteral] 1.0
@@ -1074,7 +1074,7 @@ test.kt:
 #   38|         1: [ExprStmt] <Expr>;
 #   38|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   38|             0: [TypeAccess] Unit
-#   38|             1: [MethodAccess] testMemberFunction(...)
+#   38|             1: [MethodCall] testMemberFunction(...)
 #   38|               -1: [VarAccess] spec2
 #   38|               0: [IntegerLiteral] 1
 #   38|               1: [DoubleLiteral] 1.0

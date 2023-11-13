@@ -18,8 +18,7 @@ import semmle.code.java.security.ConditionalBypassQuery
 import ConditionalBypassFlow::PathGraph
 
 from
-  ConditionalBypassFlow::PathNode source, ConditionalBypassFlow::PathNode sink, MethodAccess m,
-  Expr e
+  ConditionalBypassFlow::PathNode source, ConditionalBypassFlow::PathNode sink, MethodCall m, Expr e
 where
   conditionControlsMethod(m, e) and
   sink.getNode().asExpr() = e and

@@ -24,7 +24,7 @@ abstract class InsecureTrustManagerSink extends DataFlow::Node {
 
 private class DefaultInsecureTrustManagerSink extends InsecureTrustManagerSink {
   DefaultInsecureTrustManagerSink() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m.hasName("init") and
       m.getDeclaringType() instanceof SslContext and
       ma.getMethod() = m

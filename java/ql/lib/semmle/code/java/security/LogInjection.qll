@@ -46,8 +46,8 @@ private class LineBreaksLogInjectionSanitizer extends LogInjectionSanitizer {
   }
 }
 
-private predicate stringMethodAccess(
-  MethodAccess ma, CompileTimeConstantExpr arg0, CompileTimeConstantExpr arg1
+private predicate stringMethodCall(
+  MethodCall ma, CompileTimeConstantExpr arg0, CompileTimeConstantExpr arg1
 ) {
   ma.getMethod().getDeclaringType() instanceof TypeString and
   arg0 = ma.getArgument(0) and
@@ -55,7 +55,7 @@ private predicate stringMethodAccess(
 }
 
 private predicate stringMethodArgument(CompileTimeConstantExpr arg) {
-  stringMethodAccess(_, arg, _) or stringMethodAccess(_, _, arg)
+  stringMethodCall(_, arg, _) or stringMethodCall(_, _, arg)
 }
 
 bindingset[match]
@@ -69,9 +69,9 @@ private predicate stringMethodArgumentValueMatches(CompileTimeConstantExpr const
  * Holds if the return value of `ma` is sanitized against log injection attacks
  * by removing line breaks from it.
  */
-private predicate logInjectionSanitizer(MethodAccess ma) {
+private predicate logInjectionSanitizer(MethodCall ma) {
   exists(CompileTimeConstantExpr target, CompileTimeConstantExpr replacement |
-    stringMethodAccess(ma, target, replacement) and
+    stringMethodCall(ma, target, replacement) and
     not stringMethodArgumentValueMatches(replacement, ["%\n%", "%\r%"])
   |
     ma.getMethod().hasName("replace") and
@@ -98,7 +98,7 @@ private predicate logInjectionSanitizer(MethodAccess ma) {
  * by checking if there are line breaks in `e`.
  */
 private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
-  exists(MethodAccess ma, CompileTimeConstantExpr target |
+  exists(MethodCall ma, CompileTimeConstantExpr target |
     ma = g and
     target = ma.getArgument(0)
   |

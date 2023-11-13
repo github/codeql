@@ -24,10 +24,12 @@ namespace Microsoft
         }
         namespace RateLimiting
         {
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public sealed class DisableRateLimitingAttribute : System.Attribute
             {
                 public DisableRateLimitingAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public sealed class EnableRateLimitingAttribute : System.Attribute
             {
                 public EnableRateLimitingAttribute(string policyName) => throw null;

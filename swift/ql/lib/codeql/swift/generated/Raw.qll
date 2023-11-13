@@ -271,6 +271,13 @@ module Raw {
      * Gets the error of this unspecified element.
      */
     string getError() { unspecified_elements(this, _, result) }
+
+    /**
+     * Gets the `index`th child of this unspecified element (0-based).
+     *
+     * These will be present only in certain downgraded databases.
+     */
+    AstNode getChild(int index) { unspecified_element_children(this, index, result) }
   }
 
   /**
@@ -2890,6 +2897,12 @@ module Raw {
 
     /**
      * Gets the canonical type of this type.
+     *
+     * This is the unique type we get after resolving aliases and desugaring. For example, given
+     * ```
+     * typealias MyInt = Int
+     * ```
+     * then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
      */
     Type getCanonicalType() { types(this, _, result) }
   }

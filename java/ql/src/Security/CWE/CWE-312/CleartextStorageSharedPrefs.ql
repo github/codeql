@@ -15,7 +15,7 @@
 import java
 import semmle.code.java.security.CleartextStorageSharedPrefsQuery
 
-from SensitiveSource data, SharedPreferencesEditorMethodAccess s, Expr input, Expr store
+from SensitiveSource data, SharedPreferencesEditorMethodCall s, Expr input, Expr store
 where
   input = s.getAnInput() and
   store = s.getAStore() and

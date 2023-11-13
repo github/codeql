@@ -25,9 +25,18 @@ updates:
     allow:
       - dependency-name: "golang.org/x/mod"
       - dependency-name: "golang.org/x/tools"
-    group:
+    groups:
       extractor-dependencies:
         patterns:
           - "golang.org/x/*"
+    reviewers:
+      - "github/codeql-go"
+
+  - package-ecosystem: "gomod"
+    directory: "go/ql/test"
+    schedule:
+      interval: "monthly"
+    ignore:
+      - dependency-name: "*"
     reviewers:
       - "github/codeql-go"

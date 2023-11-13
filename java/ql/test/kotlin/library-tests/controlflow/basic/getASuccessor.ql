@@ -50,5 +50,5 @@ query predicate missingSuccessor(Expr n) {
   maybeSuccessor(n) instanceof NoMaybeControlFlowNode and
   n.getFile().(CompilationUnit).fromSource() and
   not n instanceof TypeAccess and
-  not n instanceof LValue
+  not n instanceof VarWrite
 }
