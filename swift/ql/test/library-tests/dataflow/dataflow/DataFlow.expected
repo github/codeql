@@ -604,6 +604,8 @@ edges
 | test.swift:884:15:884:15 | generator [Collection element] | test.swift:884:15:884:30 | call to next() [some:0] |
 | test.swift:884:15:884:30 | call to next() [some:0] | test.swift:884:15:884:31 | ...! |
 | test.swift:908:19:908:26 | call to source() | test.swift:904:13:904:18 | call to ... |
+| test.swift:927:12:927:31 | call to source(_:) | test.swift:927:12:927:31 | OpenExistentialExpr |
+| test.swift:929:12:929:57 | call to source(_:) | test.swift:929:12:929:57 | OpenExistentialExpr |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .s [x] | semmle.label | .s [x] |
@@ -1254,6 +1256,12 @@ nodes
 | test.swift:884:15:884:31 | ...! | semmle.label | ...! |
 | test.swift:904:13:904:18 | call to ... | semmle.label | call to ... |
 | test.swift:908:19:908:26 | call to source() | semmle.label | call to source() |
+| test.swift:927:12:927:31 | OpenExistentialExpr | semmle.label | OpenExistentialExpr |
+| test.swift:927:12:927:31 | call to source(_:) | semmle.label | call to source(_:) |
+| test.swift:928:12:928:31 | call to source(_:) | semmle.label | call to source(_:) |
+| test.swift:929:12:929:57 | OpenExistentialExpr | semmle.label | OpenExistentialExpr |
+| test.swift:929:12:929:57 | call to source(_:) | semmle.label | call to source(_:) |
+| test.swift:930:12:930:65 | call to source(_:) | semmle.label | call to source(_:) |
 subpaths
 | test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:32:75:32 | [post] y |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -1452,3 +1460,7 @@ subpaths
 | test.swift:880:19:880:19 | elem | test.swift:877:21:877:28 | call to source() | test.swift:880:19:880:19 | elem | result |
 | test.swift:884:15:884:31 | ...! | test.swift:877:21:877:28 | call to source() | test.swift:884:15:884:31 | ...! | result |
 | test.swift:904:13:904:18 | call to ... | test.swift:908:19:908:26 | call to source() | test.swift:904:13:904:18 | call to ... | result |
+| test.swift:927:12:927:31 | OpenExistentialExpr | test.swift:927:12:927:31 | call to source(_:) | test.swift:927:12:927:31 | OpenExistentialExpr | result |
+| test.swift:928:12:928:31 | call to source(_:) | test.swift:928:12:928:31 | call to source(_:) | test.swift:928:12:928:31 | call to source(_:) | result |
+| test.swift:929:12:929:57 | OpenExistentialExpr | test.swift:929:12:929:57 | call to source(_:) | test.swift:929:12:929:57 | OpenExistentialExpr | result |
+| test.swift:930:12:930:65 | call to source(_:) | test.swift:930:12:930:65 | call to source(_:) | test.swift:930:12:930:65 | call to source(_:) | result |
