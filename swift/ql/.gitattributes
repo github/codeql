@@ -78,6 +78,8 @@
 /lib/codeql/swift/elements/expr/BinaryExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/BindOptionalExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/BooleanLiteralExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/BorrowExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/BorrowExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/BridgeFromObjCExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/BridgeFromObjCExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/BridgeToObjCExpr.qll linguist-generated
@@ -465,6 +467,7 @@
 /lib/codeql/swift/generated/expr/BinaryExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BindOptionalExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BooleanLiteralExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/BorrowExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BridgeFromObjCExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BridgeToObjCExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BuiltinLiteralExpr.qll linguist-generated

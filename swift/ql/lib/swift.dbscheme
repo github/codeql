@@ -958,6 +958,7 @@ force_value_exprs(  //dir=expr
 
 @identity_expr =
   @await_expr
+| @borrow_expr
 | @dot_self_expr
 | @paren_expr
 | @unresolved_member_chain_result_expr
@@ -1290,6 +1291,10 @@ await_exprs(  //dir=expr
 
 binary_exprs(  //dir=expr
   unique int id: @binary_expr
+);
+
+borrow_exprs(  //dir=expr
+  unique int id: @borrow_expr
 );
 
 bridge_from_obj_c_exprs(  //dir=expr

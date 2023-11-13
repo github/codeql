@@ -1881,6 +1881,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:
+   *
+   * ```
+   * let y = ...
+   * let x = _borrow y
+   * ```
+   */
+  class BorrowExpr extends @borrow_expr, IdentityExpr {
+    override string toString() { result = "BorrowExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class BridgeFromObjCExpr extends @bridge_from_obj_c_expr, ImplicitConversionExpr {
     override string toString() { result = "BridgeFromObjCExpr" }

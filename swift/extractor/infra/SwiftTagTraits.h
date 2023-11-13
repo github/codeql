@@ -103,11 +103,7 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::IdentityExpr, IdentityExprTag)
     MAP(swift::ParenExpr, ParenExprTag)
     MAP(swift::DotSelfExpr, DotSelfExprTag)
-#if CODEQL_SWIFT_VERSION_GE(5, 9)
-    MAP(swift::BorrowExpr, void) // TODO (introduced in 5.9)
-#else
-    MAP(swift::MoveExpr, void)  // TODO (introduced in 5.8, gone in 5.9)
-#endif
+    MAP(swift::BorrowExpr, BorrowExprTag)
     MAP(swift::AwaitExpr, AwaitExprTag)
     MAP(swift::UnresolvedMemberChainResultExpr, UnresolvedMemberChainResultExprTag)
   MAP(swift::AnyTryExpr, AnyTryExprTag)

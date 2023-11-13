@@ -238,6 +238,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TBorrowExpr(Raw::BorrowExpr id) { constructBorrowExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TBridgeFromObjCExpr(Raw::BridgeFromObjCExpr id) { constructBridgeFromObjCExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1221,7 +1225,7 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TIdentityExpr =
-    TAwaitExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
+    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1794,6 +1798,13 @@ module Synth {
   TBooleanLiteralExpr convertBooleanLiteralExprFromRaw(Raw::Element e) {
     result = TBooleanLiteralExpr(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TBorrowExpr`, if possible.
+   */
+  cached
+  TBorrowExpr convertBorrowExprFromRaw(Raw::Element e) { result = TBorrowExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3825,6 +3836,8 @@ module Synth {
   TIdentityExpr convertIdentityExprFromRaw(Raw::Element e) {
     result = convertAwaitExprFromRaw(e)
     or
+    result = convertBorrowExprFromRaw(e)
+    or
     result = convertDotSelfExprFromRaw(e)
     or
     result = convertParenExprFromRaw(e)
@@ -4710,6 +4723,13 @@ module Synth {
   Raw::Element convertBooleanLiteralExprToRaw(TBooleanLiteralExpr e) {
     e = TBooleanLiteralExpr(result)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TBorrowExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertBorrowExprToRaw(TBorrowExpr e) { e = TBorrowExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -6738,6 +6758,8 @@ module Synth {
   cached
   Raw::Element convertIdentityExprToRaw(TIdentityExpr e) {
     result = convertAwaitExprToRaw(e)
+    or
+    result = convertBorrowExprToRaw(e)
     or
     result = convertDotSelfExprToRaw(e)
     or

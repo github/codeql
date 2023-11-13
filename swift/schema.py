@@ -1350,3 +1350,14 @@ class ConsumeExpr(Expr):
     ```
     """
     sub_expr: Expr | child
+
+class BorrowExpr(IdentityExpr):
+    """
+    An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:
+
+    ```
+    let y = ...
+    let x = _borrow y
+    ```
+    """
+    pass

@@ -2175,6 +2175,20 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfBorrowExpr(BorrowExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bIdentityExpr, int n |
+      b = 0 and
+      bIdentityExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfIdentityExpr(e, i, _)) | i) and
+      n = bIdentityExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfIdentityExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfBridgeFromObjCExpr(
     BridgeFromObjCExpr e, int index, string partialPredicateCall
   ) {
@@ -5209,6 +5223,8 @@ private module Impl {
     result = getImmediateChildOfAwaitExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBinaryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBorrowExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBridgeFromObjCExpr(e, index, partialAccessor)
     or
