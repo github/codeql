@@ -4,7 +4,6 @@
  *              package signature but only rely on package name.
  *              This makes it susceptible to package namespace squatting 
  *              potentially leading to arbitrary code execution.
- * @kind path-problem
  * @problem.severity error
  * @precision high
  * @id java/unsafe-reflection
@@ -59,16 +58,13 @@ from
 where
     maCreatePackageContext.getCallee().getDeclaringType().getQualifiedName() = "android.content.ContextWrapper" and
     maCreatePackageContext.getCallee().getName() = "createPackageContext" and
-
     not isSignaturesChecked(maCreatePackageContext) and
-
     lvdePackageContext.getEnclosingStmt() = maCreatePackageContext.getEnclosingStmt() and
     TaintTracking::localTaint(DataFlow::exprNode(lvdePackageContext.getAnAccess()), sinkPackageContext) and
-
     doesPackageContextLeadToInvokeMethod(sinkPackageContext, maInvoke)
 select
     lvdePackageContext, 
     sinkPackageContext, 
     maInvoke,
-    maCreatePackageContext.getArgument(0)
+    "Potential arbitary code execution due to class loading without package signature checking."
 
