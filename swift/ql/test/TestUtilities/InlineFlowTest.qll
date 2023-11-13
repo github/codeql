@@ -81,12 +81,7 @@ string defaultTaintFlowTag() { result = "hasTaintFlow" }
 
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
-  (
-    src.asExpr().(CallExpr).getAnArgument().getExpr().(StringLiteralExpr).getValue() = result
-    or
-    not src.asExpr().(CallExpr).getAnArgument().getExpr() instanceof StringLiteralExpr and
-    result = src.getLocation().getStartLine().toString()
-  )
+  src.asExpr().(CallExpr).getAnArgument().getExpr().(StringLiteralExpr).getValue() = result
 }
 
 module FlowTest<
@@ -105,7 +100,9 @@ module FlowTest<
       exists(DataFlow::Node src, DataFlow::Node sink | ValueFlow::flow(src, sink) |
         sink.getLocation() = location and
         element = sink.toString() and
-        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
+        if exists(getSourceArgString(src))
+        then value = getSourceArgString(src)
+        else value = src.getLocation().getStartLine().toString()
       )
       or
       tag = taintFlowTag() and
@@ -114,7 +111,9 @@ module FlowTest<
       |
         sink.getLocation() = location and
         element = sink.toString() and
-        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
+        if exists(getSourceArgString(src))
+        then value = getSourceArgString(src)
+        else value = src.getLocation().getStartLine().toString()
       )
     }
   }
