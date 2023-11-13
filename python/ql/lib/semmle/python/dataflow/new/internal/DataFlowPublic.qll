@@ -588,6 +588,11 @@ newtype TContent =
     or
     // Arguments can overflow and end up in the starred parameter tuple.
     exists(any(CallNode cn).getArg(index))
+    or
+    // since flow summaries might use tuples, we ensure that we at least have valid
+    // TTupleElementContent for the 0..7 (7 was picked to match `small_tuple` in
+    // data-flow-private)
+    index in [0 .. 7]
   } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
