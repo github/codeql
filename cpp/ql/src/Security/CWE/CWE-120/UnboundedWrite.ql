@@ -60,9 +60,14 @@ predicate unboundedWriteSource(Expr e, BufferWrite bw) {
 
 predicate isSource(FS::FlowSource source, string sourceType) { source.getSourceType() = sourceType }
 
-predicate isSink(DataFlow::Node sink, BufferWrite bw) {
-  unboundedWriteSource(sink.asIndirectExpr(), bw)
-  or
+/**
+ * Holds if `bw` is a `BufferWrite` that reads from `stdin`. In such cases the
+ * sink is the outgoing argument that is written to.
+ *
+ * By factoring these cases out into this predicate we can place an out barrier
+ * on exactly these sinks in `Config`.
+ */
+predicate isSinkFromStdIn(DataFlow::Node sink, BufferWrite bw) {
   // `gets` and `scanf` reads from stdin so there's no real input.
   // The `BufferWrite` library models this as the call itself being
   // the source. In this case we mark the output argument as being
@@ -70,6 +75,12 @@ predicate isSink(DataFlow::Node sink, BufferWrite bw) {
   // the same output argument is also included in `isSource`).
   bw.getASource() = bw and
   unboundedWriteSource(sink.asDefiningArgument(), bw)
+}
+
+predicate isSink(DataFlow::Node sink, BufferWrite bw) {
+  unboundedWriteSource(sink.asIndirectExpr(), bw)
+  or
+  isSinkFromStdIn(sink, bw)
 }
 
 predicate lessThanOrEqual(IRGuardCondition g, Expr e, boolean branch) {
@@ -86,7 +97,7 @@ module Config implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
 
-  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
+  predicate isBarrierOut(DataFlow::Node node) { isSinkFromStdIn(node, _) }
 
   predicate isBarrier(DataFlow::Node node) {
     // Block flow if the node is guarded by any <, <= or = operations.
