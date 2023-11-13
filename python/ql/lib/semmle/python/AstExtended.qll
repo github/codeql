@@ -228,7 +228,11 @@ class TypeParameter extends TypeParameter_, AstNode {
 
   override AstNode getAChildNode() { none() }
 
-  override Scope getScope() { none() }
+  override Scope getScope() {
+    // `TypeParameter`s are children of `TypeParameterList`s which are children of `Function`s, `ClassExpr`s, and `TypeAlias`es.
+    // For `TypeAlias`, this is not quite right. Instead, `TypeAlias`es should define their own scopes, cf. https://docs.python.org/3.12/reference/executionmodel.html#annotation-scopes
+    result = this.getParent().getParent().(AstNode).getScope()
+  }
 
   /** Gets the location of this element */
   override Location getLocation() { result = TypeParameter_.super.getLocation() }
@@ -249,14 +253,20 @@ class TypeAlias extends TypeAlias_, Stmt {
 /** A type variable, with an optional bound, such as `T1` and `T2` in `type T[T1, T2: T3] = T4`. */
 class TypeVar extends TypeVar_, TypeParameter {
   override Name getName() { result = super.getName() }
+
+  override Expr getAChildNode() { result in [this.getName(), this.getBound()] }
 }
 
 /** A type var tuple parameter, such as `*T1` in `type T[*T1] = T2`. */
 class TypeVarTuple extends TypeVarTuple_, TypeParameter {
   override Name getName() { result = super.getName() }
+
+  override Expr getAChildNode() { result = this.getName() }
 }
 
 /** A param spec parameter, such as `**T1` in `type T[**T1] = T2`. */
 class ParamSpec extends ParamSpec_, TypeParameter {
   override Name getName() { result = super.getName() }
+
+  override Expr getAChildNode() { result = this.getName() }
 }
