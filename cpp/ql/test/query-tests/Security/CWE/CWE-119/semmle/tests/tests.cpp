@@ -625,7 +625,7 @@ void test25(char* source) {
 	s.home = source;
 
 	char buf[100];
-	strcpy(buf, s.home); // BAD [NOT DETECTED]
+	strcpy(buf, s.home); // BAD
 }
 
 int tests_main(int argc, char *argv[])
