@@ -77,7 +77,7 @@ The `CodeQL repository <https://github.com/github/codeql>`__ on GitHub contains 
 You can access any existing queries in your workspace through the queries panel.
 
 #. In the sidebar, to expand the queries panel, click the **Queries** title bar.
-#. Hover over the desired query, then click the **Run local query** icon.
+#. To run a query against the selected database, hover over the desired query, then click the **Run local query** icon.
 
    .. image:: ../images/codeql-for-visual-studio-code/run-local-query-icon.png
       :width: 350
@@ -93,12 +93,12 @@ For more information, see ":doc:`Troubleshooting CodeQL for Visual Studio Code <
 Running multiple queries
 --------------------------
 
-Using a couple different methods, you can quickly run multiple queries against your code.
+You can quickly run multiple queries against the database you've selected using the queries panel or a single command.
 
 Running all queries in a directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can easily run a directory of queries using the query selector.
+You can easily run a directory of queries using the queries panel.
 
 #. In the sidebar, to expand the queries panel, click the **Queries** title bar.
 #. Hover over the desired directory of queries, then click the **Run local queries** icon.
