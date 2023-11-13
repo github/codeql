@@ -1,0 +1,10 @@
+---
+sourceLocationPrefix: /Users/yunus.aydin/Research/codeql-fork/go/ql/src/Security/CVE-525
+baselineLinesOfCode: 67
+unicodeNewlines: false
+columnKind: utf8
+primaryLanguage: go
+creationMetadata:
+  cliVersion: 2.15.1
+  creationTime: 2023-11-13T20:28:51.105630Z
+finalised: true
