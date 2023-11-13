@@ -911,11 +911,11 @@ func autoclosureTest() {
 // ---
 
 protocol MyProtocol {
-	func source() -> Int
+	func source(_ label: String) -> Int
 }
 
 class MyProcotolImpl : MyProtocol {
-	func source() -> Int { return 0 }
+	func source(_ label: String) -> Int { return 0 }
 }
 
 func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
@@ -924,10 +924,10 @@ func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
 func sink(arg: Int) { }
 
 func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
-	sink(arg: x.source()) // $ flow=927
-	sink(arg: y.source()) // $ flow=928
-	sink(arg: getMyProtocol().source()) // $ flow=929
-	sink(arg: getMyProtocolImpl().source()) // $ flow=930
+	sink(arg: x.source("x.source")) // $ flow=x.source
+	sink(arg: y.source("y.source")) // $ flow=y.source
+	sink(arg: getMyProtocol().source("getMyProtocol.source")) // $ flow=getMyProtocol.source
+	sink(arg: getMyProtocolImpl().source("getMyProtocolImpl.source")) // $ flow=getMyProtocolImpl.source
 }
 
 // ---
