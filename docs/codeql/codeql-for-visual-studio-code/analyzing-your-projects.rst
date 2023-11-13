@@ -47,7 +47,7 @@ Downloading a database from GitHub
 Filtering databases and queries by language
 -------------------------------------------
 
-Optionally, to see databases containing a specific language, as well as queries written for that language, you can apply a language filter using the language selector.
+Optionally, to see databases containing a specific language and queries written for that language, you can apply a language filter using the language selector.
 
 #. To see available language filters, in the sidebar, click the **Language** title bar.
 #. Hover over the language filter you would like to apply, then click **Select**.
@@ -59,7 +59,7 @@ Optionally, to see databases containing a specific language, as well as queries 
 Creating a query
 ------------------------
 
-You can generate a query template for a specific language from the queries panel, helping you quickly create a custom query.
+You can generate a query template for a specific language from the queries panel, then write your own code to quickly create a custom query.
 
 #. In the sidebar, hover over the **Queries** title bar, then click the **Create query** icon.
 
@@ -68,7 +68,7 @@ You can generate a query template for a specific language from the queries panel
       :alt: Screenshot of the queries panel. The "Create query" icon is outlined in dark orange.
 
 #. In the Command Palette, select the target language for your query. Selecting a language will autogenerate a folder labeled "codeql-custom-queries-LANGUAGE", which will contain a query template labeled "example.ql".
-#. In the template file, write your custom query, then save the file. Once your query is finished, you can run it from the queries panel.
+#. In the template, write your custom query, then save the file. Once your query is finished, you can run it from the queries panel.
 
 Running a query
 ------------------------
@@ -163,7 +163,7 @@ This is helpful if you want to test your query on multiple codebases, or find a 
 Viewing previous queries
 --------------------------
 
-To see the queries that you have run in the current session, open the Query History view. You can filter the Query History view by language. For more information, see ":ref:`Filtering databases and queries by language <filtering-databases-and-queries-by-language>`."
+To see the queries that you have run in the current session, open the Query History view.
 
    .. image:: ../images/codeql-for-visual-studio-code/query-history.png
       :width: 350
@@ -171,6 +171,7 @@ To see the queries that you have run in the current session, open the Query Hist
 
 The Query History contains information including the date and time when the query was run, the name of the query, the database on which it was run, and how long it took to run the query.
 To customize the information that is displayed, right-click an entry and select **Rename**.
+Additionally, you can filter the Query History view by language. For more information, see ":ref:`Filtering databases and queries by language <filtering-databases-and-queries-by-language>`."
 
 Click an entry to display the corresponding results in the Query Results view, and double-click
 to display the query itself in the editor (or right-click and select **View Query**).
