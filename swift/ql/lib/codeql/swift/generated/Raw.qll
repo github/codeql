@@ -1525,6 +1525,52 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A pack element expression is a child of PackExpansionExpr.
+   *
+   * In the following example, `each t` on the second line is the pack element expression:
+   * ```
+   * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+   *   return (repeat each t)
+   * }
+   * ```
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class PackElementExpr extends @pack_element_expr, Expr {
+    override string toString() { result = "PackElementExpr" }
+
+    /**
+     * Gets the sub expression of this pack element expression.
+     */
+    Expr getSubExpr() { pack_element_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A pack expansion expression.
+   *
+   * In the following example, `repeat each t` on the second line is the pack expansion expression:
+   * ```
+   * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+   *   return (repeat each t)
+   * }
+   * ```
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class PackExpansionExpr extends @pack_expansion_expr, Expr {
+    override string toString() { result = "PackExpansionExpr" }
+
+    /**
+     * Gets the pattern expression of this pack expansion expression.
+     */
+    Expr getPatternExpr() { pack_expansion_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A placeholder substituting property initializations with `=` when the property has a property
    * wrapper with an initializer.
    */
@@ -3068,6 +3114,59 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A type of PackElementExpr, see PackElementExpr for more information.
+   */
+  class PackElementType extends @pack_element_type, Type {
+    override string toString() { result = "PackElementType" }
+
+    /**
+     * Gets the pack type of this pack element type.
+     */
+    Type getPackType() { pack_element_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A type of PackExpansionExpr, see PackExpansionExpr for more information.
+   */
+  class PackExpansionType extends @pack_expansion_type, Type {
+    override string toString() { result = "PackExpansionType" }
+
+    /**
+     * Gets the pattern type of this pack expansion type.
+     */
+    Type getPatternType() { pack_expansion_types(this, result, _) }
+
+    /**
+     * Gets the count type of this pack expansion type.
+     */
+    Type getCountType() { pack_expansion_types(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An actual type of a pack expression at the instatiation point.
+   *
+   * In the following example, PackType will appear around `makeTuple` call site as `Pack{String, Int}`:
+   * ```
+   * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) { ... }
+   * makeTuple("A", 2)
+   * ```
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class PackType extends @pack_type, Type {
+    override string toString() { result = "PackType" }
+
+    /**
+     * Gets the `index`th element of this pack type (0-based).
+     */
+    Type getElement(int index) { pack_type_elements(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A sugar type of the form `P<X>` with `P` a protocol.
    *
    * If `P` has primary associated type `A`, then `T: P<X>` is a shortcut for `T: P where T.A == X`.
@@ -3393,6 +3492,11 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class LocalArchetypeType extends @local_archetype_type, ArchetypeType { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class NominalType extends @nominal_type, NominalOrBoundGenericNominalType { }
 
   /**
@@ -3412,9 +3516,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An archetype type of PackType.
    */
-  class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {
-    override string toString() { result = "OpenedArchetypeType" }
+  class PackArchetypeType extends @pack_archetype_type, ArchetypeType {
+    override string toString() { result = "PackArchetypeType" }
   }
 
   /**
@@ -3471,9 +3576,24 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An archetype type of PackElementType.
+   */
+  class ElementArchetypeType extends @element_archetype_type, LocalArchetypeType {
+    override string toString() { result = "ElementArchetypeType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class EnumType extends @enum_type, NominalType {
     override string toString() { result = "EnumType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class OpenedArchetypeType extends @opened_archetype_type, LocalArchetypeType {
+    override string toString() { result = "OpenedArchetypeType" }
   }
 
   /**

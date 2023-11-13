@@ -1190,11 +1190,59 @@ class OpaqueTypeArchetypeType(ArchetypeType):
     See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html."""
     declaration: OpaqueTypeDecl
 
-class OpenedArchetypeType(ArchetypeType):
-    pass
-
 class PrimaryArchetypeType(ArchetypeType):
     pass
+
+class LocalArchetypeType(ArchetypeType):
+    pass
+
+class OpenedArchetypeType(LocalArchetypeType):
+    pass
+
+@qltest.test_with("PackType")
+class ElementArchetypeType(LocalArchetypeType):
+    """
+    An archetype type of PackElementType.
+    """
+    pass
+
+@qltest.test_with("PackType")
+class PackArchetypeType(ArchetypeType):
+    """
+    An archetype type of PackType.
+    """
+    pass
+
+class PackType(Type):
+    """
+    An actual type of a pack expression at the instatiation point.
+
+    In the following example, PackType will appear around `makeTuple` call site as `Pack{String, Int}`:
+    ```
+    func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) { ... }
+    makeTuple("A", 2)
+    ```
+
+    More details:
+    https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+    """
+    elements: list[Type]
+
+@qltest.test_with(PackType)
+class PackExpansionType(Type):
+    """
+    A type of PackExpansionExpr, see PackExpansionExpr for more information.
+    """
+    pattern_type: Type
+    count_type: Type
+
+@qltest.test_with(PackType)
+class PackElementType(Type):
+    """
+    A type of PackElementExpr, see PackElementExpr for more information.
+    """
+    pack_type: Type
+
 class UnarySyntaxSugarType(SyntaxSugarType):
     base_type: Type
 
@@ -1246,3 +1294,36 @@ class SingleValueStmtExpr(Expr):
     An expression that wraps a statement which produces a single value.
     """
     stmt: Stmt | child
+
+class PackExpansionExpr(Expr):
+    """
+    A pack expansion expression.
+
+    In the following example, `repeat each t` on the second line is the pack expansion expression:
+    ```
+    func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+      return (repeat each t)
+    }
+    ```
+
+    More details:
+    https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+    """
+    pattern_expr: Expr | child
+
+@qltest.test_with(PackExpansionExpr)
+class PackElementExpr(Expr):
+    """
+    A pack element expression is a child of PackExpansionExpr.
+
+    In the following example, `each t` on the second line is the pack element expression:
+    ```
+    func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+      return (repeat each t)
+    }
+    ```
+
+    More details:
+    https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+    """
+    sub_expr: Expr | child

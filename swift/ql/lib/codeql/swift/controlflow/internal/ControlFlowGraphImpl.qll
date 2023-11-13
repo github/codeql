@@ -1426,6 +1426,24 @@ module Exprs {
     }
   }
 
+  /** Control-flow for Pack Expansion. See the QLDoc for `PackExpansionExpr` for details. */
+  private class PackExpansionExprTree extends AstStandardPostOrderTree {
+    override PackExpansionExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getPatternExpr().getFullyConverted()
+    }
+  }
+
+  /** Control-flow for Pack Expansion. See the QLDoc for `PackElementExpr` for details. */
+  private class PackElementExprTree extends AstStandardPostOrderTree {
+    override PackElementExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
   private class OpaqueValueExprTree extends AstLeafTree {
     override OpaqueValueExpr ast;
   }

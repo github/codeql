@@ -122,6 +122,8 @@ import codeql.swift.elements.expr.OptionalEvaluationExprConstructor
 import codeql.swift.elements.expr.OptionalTryExprConstructor
 import codeql.swift.elements.expr.OtherInitializerRefExprConstructor
 import codeql.swift.elements.expr.OverloadedDeclRefExprConstructor
+import codeql.swift.elements.expr.PackElementExprConstructor
+import codeql.swift.elements.expr.PackExpansionExprConstructor
 import codeql.swift.elements.expr.ParenExprConstructor
 import codeql.swift.elements.expr.PointerToPointerExprConstructor
 import codeql.swift.elements.expr.PostfixUnaryExprConstructor
@@ -204,6 +206,7 @@ import codeql.swift.elements.type.ClassTypeConstructor
 import codeql.swift.elements.type.DependentMemberTypeConstructor
 import codeql.swift.elements.type.DictionaryTypeConstructor
 import codeql.swift.elements.type.DynamicSelfTypeConstructor
+import codeql.swift.elements.type.ElementArchetypeTypeConstructor
 import codeql.swift.elements.type.EnumTypeConstructor
 import codeql.swift.elements.type.ErrorTypeConstructor
 import codeql.swift.elements.type.ExistentialMetatypeTypeConstructor
@@ -218,6 +221,10 @@ import codeql.swift.elements.type.ModuleTypeConstructor
 import codeql.swift.elements.type.OpaqueTypeArchetypeTypeConstructor
 import codeql.swift.elements.type.OpenedArchetypeTypeConstructor
 import codeql.swift.elements.type.OptionalTypeConstructor
+import codeql.swift.elements.type.PackArchetypeTypeConstructor
+import codeql.swift.elements.type.PackElementTypeConstructor
+import codeql.swift.elements.type.PackExpansionTypeConstructor
+import codeql.swift.elements.type.PackTypeConstructor
 import codeql.swift.elements.type.ParameterizedProtocolTypeConstructor
 import codeql.swift.elements.type.ParenTypeConstructor
 import codeql.swift.elements.type.PrimaryArchetypeTypeConstructor
