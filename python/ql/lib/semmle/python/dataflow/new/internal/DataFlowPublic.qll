@@ -614,7 +614,7 @@ newtype TContent =
     // instead we use a qltest to alert if we write a new summary in QL that uses an
     // attribute -- see
     // python/ql/test/experimental/dataflow/summaries-checks/missing-attribute-content.ql
-    none() // to be filled out in next commit
+    attr in ["re", "string", "pattern"]
     or
     //
     // 2) summaries in data-extension files
