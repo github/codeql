@@ -1,0 +1,12 @@
+version: 3
+cli:
+  server: https://app.fossa.com
+  fetcher: git
+  package: github.com/kataras/iris
+  project: github.com/kataras/iris
+analyze:
+  modules:
+    - name: iris
+      type: go
+      target: .
+      path: .
