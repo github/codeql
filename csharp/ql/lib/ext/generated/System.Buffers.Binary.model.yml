@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -22,13 +23,27 @@ extensions:
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReadUInt64BigEndian", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReadUInt64LittleEndian", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.Byte)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.Int128)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.Int16)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.Int32)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.Int64)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.IntPtr)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.Int128>,System.Span<System.Int128>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.Int16>,System.Span<System.Int16>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.Int32>,System.Span<System.Int32>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.Int64>,System.Span<System.Int64>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.IntPtr>,System.Span<System.IntPtr>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.UInt128>,System.Span<System.UInt128>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.UInt16>,System.Span<System.UInt16>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.UInt32>,System.Span<System.UInt32>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.UInt64>,System.Span<System.UInt64>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.ReadOnlySpan<System.UIntPtr>,System.Span<System.UIntPtr>)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.SByte)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.UInt128)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.UInt16)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.UInt32)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.UInt64)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.UIntPtr)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadDoubleBigEndian", "(System.ReadOnlySpan<System.Byte>,System.Double)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadDoubleLittleEndian", "(System.ReadOnlySpan<System.Byte>,System.Double)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadHalfBigEndian", "(System.ReadOnlySpan<System.Byte>,System.Half)", "summary", "df-generated"]

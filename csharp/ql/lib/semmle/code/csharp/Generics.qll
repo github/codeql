@@ -56,9 +56,9 @@ private string getTypeParametersToString(UnboundGeneric ug) {
     strictconcat(Type t, int i | t = ug.getTypeParameter(i) | t.toStringWithTypes(), ", " order by i)
 }
 
-/** Gets a string of `N` commas where `N + 1` is the number of type parameters of this unbound generic. */
-private string getTypeParameterCommas(UnboundGeneric ug) {
-  result = strictconcat(int i | exists(ug.getTypeParameter(i)) | "", ",")
+/** Gets a string ``"`N"``,  where `N` is the number of type parameters of this unbound generic. */
+private string getTypeParameterBacktick(UnboundGeneric ug) {
+  result = "`" + ug.getNumberOfTypeParameters()
 }
 
 /**
@@ -103,7 +103,7 @@ private string getTypeArgumentsNames(ConstructedGeneric cg) {
 
 /**
  * An unbound generic type. This is a generic type with type parameters
- * (for example `List<T>`) or elided type parameters (for example `List<>`).
+ * (for example `List<T>`) or elided type parameters (for example ``List`1``).
  *
  * Either an unbound generic `struct` (`UnboundGenericStruct`), an unbound generic `class`
  * (`UnboundGenericClass`), an unbound generic `interface` (`UnboundGenericInterface`), or
@@ -123,11 +123,13 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
   }
 
   /**
+   * DEPRECATED: predicate does not contain any tuples.
+   *
    * Gets the instance type of this type. For an unbound generic type, the instance type
    * is a constructed type created from the unbound type, with each of the supplied type
    * arguments being the corresponding type parameter.
    */
-  ConstructedType getInstanceType() {
+  deprecated ConstructedType getInstanceType() {
     result = this.getAConstructedGeneric() and
     forall(TypeParameter tp, int i | tp = this.getTypeParameter(i) | tp = result.getTypeArgument(i))
   }
@@ -145,7 +147,7 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
   }
 
   final override string getName() {
-    result = this.getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
+    result = this.getUndecoratedName() + getTypeParameterBacktick(this)
   }
 }
 
@@ -277,7 +279,7 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
  * ```
  */
 class UnboundGenericStruct extends Struct, UnboundGenericType {
-  override ConstructedStruct getInstanceType() {
+  deprecated override ConstructedStruct getInstanceType() {
     result = UnboundGenericType.super.getInstanceType()
   }
 
@@ -300,7 +302,7 @@ class UnboundGenericStruct extends Struct, UnboundGenericType {
  * ```
  */
 class UnboundGenericClass extends Class, UnboundGenericType {
-  override ConstructedClass getInstanceType() {
+  deprecated override ConstructedClass getInstanceType() {
     result = UnboundGenericType.super.getInstanceType()
   }
 
@@ -323,7 +325,7 @@ class UnboundGenericClass extends Class, UnboundGenericType {
  * ```
  */
 class UnboundGenericInterface extends Interface, UnboundGenericType {
-  override ConstructedInterface getInstanceType() {
+  deprecated override ConstructedInterface getInstanceType() {
     result = UnboundGenericType.super.getInstanceType()
   }
 
@@ -347,7 +349,7 @@ class UnboundGenericInterface extends Interface, UnboundGenericType {
  * ```
  */
 class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
-  override ConstructedDelegateType getInstanceType() {
+  deprecated override ConstructedDelegateType getInstanceType() {
     result = UnboundGenericType.super.getInstanceType()
   }
 
@@ -529,7 +531,7 @@ class UnboundGenericMethod extends Method, UnboundGeneric {
   }
 
   final override string getName() {
-    result = this.getUndecoratedName() + "<" + getTypeParameterCommas(this) + ">"
+    result = this.getUndecoratedName() + getTypeParameterBacktick(this)
   }
 
   final override string getUndecoratedName() { methods(this, result, _, _, _) }

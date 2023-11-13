@@ -3,24 +3,24 @@ extensions:
       pack: codeql/csharp-all
       extensible: sourceModel
     data:
+      - ["System.IO", "File", False, "AppendText", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "File", False, "Create", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "File", False, "CreateText", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "File", False, "Open", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "File", False, "OpenWrite", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "AppendText", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "Create", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "CreateText", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "Open", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "OpenWrite", "", "", "ReturnValue", "file-write", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "", "", "Argument[this]", "file", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "", "", "Argument[this]", "file-write", "manual"]
       - ["System.IO", "StreamWriter", False, "StreamWriter", "(System.String)", "", "Argument[this]", "file-write", "manual"]
       - ["System.IO", "StreamWriter", False, "StreamWriter", "(System.String,System.Boolean)", "", "Argument[this]", "file-write", "manual"]
       - ["System.IO", "StreamWriter", False, "StreamWriter", "(System.String,System.Boolean,System.Text.Encoding)", "", "Argument[this]", "file-write", "manual"]
       - ["System.IO", "StreamWriter", False, "StreamWriter", "(System.String,System.Boolean,System.Text.Encoding,System.Int32)", "", "Argument[this]", "file-write", "manual"]
-      - ["System.IO", "StreamWriter", False, "StreamWriter", "(System.String,System.Text.Encoding,System.IO.FileStreamOptions)", "", "Argument[this]", "file-write", "manual"]
       - ["System.IO", "StreamWriter", False, "StreamWriter", "(System.String,System.IO.FileStreamOptions)", "", "Argument[this]", "file-write", "manual"]
-      - ["System.IO", "File", False, "Open", "", "", "ReturnValue", "file-write", "manual"]
-      - ["System.IO", "File", False, "OpenWrite", "", "", "ReturnValue", "file-write", "manual"]
-      - ["System.IO", "File", False, "Create", "", "", "ReturnValue", "file-write", "manual"]
-      - ["System.IO", "File", False, "CreateText", "", "", "ReturnValue", "file-write", "manual"]
-      - ["System.IO", "File", False, "AppendText", "", "", "ReturnValue", "file-write", "manual"]
-      - ["System.IO", "FileInfo", False, "Open", "", "", "ReturnValue", "file-write", "manual"]
-      - ["System.IO", "FileInfo", False, "OpenWrite", "", "", "ReturnValue", "file-write", "manual"]
-      - ["System.IO", "FileInfo", False, "Create", "", "", "ReturnValue", "file-write", "manual"]
-      - ["System.IO", "FileInfo", False, "CreateText", "", "", "ReturnValue", "file-write", "manual"]
-      - ["System.IO", "FileInfo", False, "AppendText", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "StreamWriter", False, "StreamWriter", "(System.String,System.Text.Encoding,System.IO.FileStreamOptions)", "", "Argument[this]", "file-write", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel

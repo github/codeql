@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -28,11 +29,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Security", "AllowPartiallyTrustedCallersAttribute", "AllowPartiallyTrustedCallersAttribute", "()", "summary", "df-generated"]
       - ["System.Security", "AllowPartiallyTrustedCallersAttribute", "get_PartialTrustVisibilityLevel", "()", "summary", "df-generated"]
       - ["System.Security", "AllowPartiallyTrustedCallersAttribute", "set_PartialTrustVisibilityLevel", "(System.Security.PartialTrustVisibilityLevel)", "summary", "df-generated"]
       - ["System.Security", "CodeAccessPermission", "Assert", "()", "summary", "df-generated"]
-      - ["System.Security", "CodeAccessPermission", "CodeAccessPermission", "()", "summary", "df-generated"]
       - ["System.Security", "CodeAccessPermission", "Copy", "()", "summary", "df-generated"]
       - ["System.Security", "CodeAccessPermission", "Demand", "()", "summary", "df-generated"]
       - ["System.Security", "CodeAccessPermission", "Deny", "()", "summary", "df-generated"]
@@ -49,7 +48,6 @@ extensions:
       - ["System.Security", "CodeAccessPermission", "ToString", "()", "summary", "df-generated"]
       - ["System.Security", "CodeAccessPermission", "ToXml", "()", "summary", "df-generated"]
       - ["System.Security", "CodeAccessPermission", "Union", "(System.Security.IPermission)", "summary", "df-generated"]
-      - ["System.Security", "HostProtectionException", "HostProtectionException", "()", "summary", "df-generated"]
       - ["System.Security", "HostProtectionException", "HostProtectionException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Security", "HostProtectionException", "HostProtectionException", "(System.String)", "summary", "df-generated"]
       - ["System.Security", "HostProtectionException", "HostProtectionException", "(System.String,System.Exception)", "summary", "df-generated"]
@@ -62,7 +60,6 @@ extensions:
       - ["System.Security", "HostSecurityManager", "GenerateAssemblyEvidence", "(System.Type,System.Reflection.Assembly)", "summary", "df-generated"]
       - ["System.Security", "HostSecurityManager", "GetHostSuppliedAppDomainEvidenceTypes", "()", "summary", "df-generated"]
       - ["System.Security", "HostSecurityManager", "GetHostSuppliedAssemblyEvidenceTypes", "(System.Reflection.Assembly)", "summary", "df-generated"]
-      - ["System.Security", "HostSecurityManager", "HostSecurityManager", "()", "summary", "df-generated"]
       - ["System.Security", "HostSecurityManager", "ProvideAppDomainEvidence", "(System.Security.Policy.Evidence)", "summary", "df-generated"]
       - ["System.Security", "HostSecurityManager", "ProvideAssemblyEvidence", "(System.Reflection.Assembly,System.Security.Policy.Evidence)", "summary", "df-generated"]
       - ["System.Security", "HostSecurityManager", "ResolvePolicy", "(System.Security.Policy.Evidence)", "summary", "df-generated"]
@@ -137,7 +134,6 @@ extensions:
       - ["System.Security", "SecureString", "IsReadOnly", "()", "summary", "df-generated"]
       - ["System.Security", "SecureString", "MakeReadOnly", "()", "summary", "df-generated"]
       - ["System.Security", "SecureString", "RemoveAt", "(System.Int32)", "summary", "df-generated"]
-      - ["System.Security", "SecureString", "SecureString", "()", "summary", "df-generated"]
       - ["System.Security", "SecureString", "SecureString", "(System.Char*,System.Int32)", "summary", "df-generated"]
       - ["System.Security", "SecureString", "SetAt", "(System.Int32,System.Char)", "summary", "df-generated"]
       - ["System.Security", "SecureString", "get_Length", "()", "summary", "df-generated"]
@@ -153,7 +149,6 @@ extensions:
       - ["System.Security", "SecurityContext", "RestoreFlow", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityContext", "SuppressFlow", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityContext", "SuppressFlowWindowsIdentity", "()", "summary", "df-generated"]
-      - ["System.Security", "SecurityCriticalAttribute", "SecurityCriticalAttribute", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityCriticalAttribute", "SecurityCriticalAttribute", "(System.Security.SecurityCriticalScope)", "summary", "df-generated"]
       - ["System.Security", "SecurityCriticalAttribute", "get_Scope", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityElement", "Equal", "(System.Security.SecurityElement)", "summary", "df-generated"]
@@ -164,7 +159,6 @@ extensions:
       - ["System.Security", "SecurityElement", "IsValidText", "(System.String)", "summary", "df-generated"]
       - ["System.Security", "SecurityElement", "get_Attributes", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityElement", "set_Attributes", "(System.Collections.Hashtable)", "summary", "df-generated"]
-      - ["System.Security", "SecurityException", "SecurityException", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityException", "SecurityException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Security", "SecurityException", "SecurityException", "(System.String)", "summary", "df-generated"]
       - ["System.Security", "SecurityException", "SecurityException", "(System.String,System.Exception)", "summary", "df-generated"]
@@ -213,19 +207,11 @@ extensions:
       - ["System.Security", "SecurityRulesAttribute", "get_RuleSet", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityRulesAttribute", "get_SkipVerificationInFullTrust", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityRulesAttribute", "set_SkipVerificationInFullTrust", "(System.Boolean)", "summary", "df-generated"]
-      - ["System.Security", "SecuritySafeCriticalAttribute", "SecuritySafeCriticalAttribute", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityState", "EnsureState", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityState", "IsStateAvailable", "()", "summary", "df-generated"]
-      - ["System.Security", "SecurityState", "SecurityState", "()", "summary", "df-generated"]
-      - ["System.Security", "SecurityTransparentAttribute", "SecurityTransparentAttribute", "()", "summary", "df-generated"]
-      - ["System.Security", "SecurityTreatAsSafeAttribute", "SecurityTreatAsSafeAttribute", "()", "summary", "df-generated"]
-      - ["System.Security", "SuppressUnmanagedCodeSecurityAttribute", "SuppressUnmanagedCodeSecurityAttribute", "()", "summary", "df-generated"]
-      - ["System.Security", "UnverifiableCodeAttribute", "UnverifiableCodeAttribute", "()", "summary", "df-generated"]
-      - ["System.Security", "VerificationException", "VerificationException", "()", "summary", "df-generated"]
       - ["System.Security", "VerificationException", "VerificationException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Security", "VerificationException", "VerificationException", "(System.String)", "summary", "df-generated"]
       - ["System.Security", "VerificationException", "VerificationException", "(System.String,System.Exception)", "summary", "df-generated"]
-      - ["System.Security", "XmlSyntaxException", "XmlSyntaxException", "()", "summary", "df-generated"]
       - ["System.Security", "XmlSyntaxException", "XmlSyntaxException", "(System.Int32)", "summary", "df-generated"]
       - ["System.Security", "XmlSyntaxException", "XmlSyntaxException", "(System.Int32,System.String)", "summary", "df-generated"]
       - ["System.Security", "XmlSyntaxException", "XmlSyntaxException", "(System.String)", "summary", "df-generated"]

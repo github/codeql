@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -62,7 +63,6 @@ extensions:
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "GenerateCommandLineCommands", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "GenerateFullPathToTool", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "LogEventsFromTextOutput", "(System.String,Microsoft.Build.Framework.MessageImportance)", "summary", "df-generated"]
-      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "RunReadyToRunCompiler", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "ValidateParameters", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "get_CompilationEntry", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "get_Crossgen2ExtraCommandLineArgs", "()", "summary", "df-generated"]

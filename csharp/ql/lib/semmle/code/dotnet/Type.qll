@@ -12,7 +12,7 @@ import Generics
  * a pointer type (`PointerType`), or an array type (`ArrayType`).
  */
 class Type extends Declaration, @dotnet_type {
-  /** Gets the name of this type without additional syntax such as `[]`, `*`, or `<...>`. */
+  /** Gets the name of this type without additional syntax such as `[]` or `*`. */
   override string getUndecoratedName() { none() }
 }
 

@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -25,7 +26,25 @@ extensions:
       - ["Microsoft.WebAssembly.Build.Tasks", "GenerateAOTProps", "set_Items", "(Microsoft.Build.Framework.ITaskItem[])", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "GenerateAOTProps", "set_OutputFile", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "GenerateAOTProps", "set_Properties", "(Microsoft.Build.Framework.ITaskItem[])", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "Execute", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "get_BaseSnapshotUrl", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "get_BranchPosition", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "get_Channel", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "get_ChromeVersion", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "get_IntermediateOutputPath", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "get_MaxLowerBranchPositionsToCheck", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "get_OSIdentifier", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "get_OSPrefix", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "get_V8Version", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "set_BaseSnapshotUrl", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "set_BranchPosition", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "set_Channel", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "set_ChromeVersion", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "set_IntermediateOutputPath", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "set_MaxLowerBranchPositionsToCheck", "(System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "set_OSIdentifier", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "set_OSPrefix", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "GetChromeVersions", "set_V8Version", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "RunWithEmSdkEnv", "Execute", "()", "summary", "df-generated"]
-      - ["Microsoft.WebAssembly.Build.Tasks", "RunWithEmSdkEnv", "RunWithEmSdkEnv", "()", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "RunWithEmSdkEnv", "get_EmSdkPath", "()", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "RunWithEmSdkEnv", "set_EmSdkPath", "(System.String)", "summary", "df-generated"]

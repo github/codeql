@@ -2,7 +2,9 @@ import csharp
 import semmle.code.csharp.commons.QualifiedName
 
 private string getSignature(Method m) {
-  exists(string qualifier, string name | m.getDeclaringType().hasQualifiedName(qualifier, name) |
+  exists(string qualifier, string name |
+    m.getDeclaringType().hasFullyQualifiedName(qualifier, name)
+  |
     result = getQualifiedName(qualifier, name) + "." + m.toStringWithTypes()
   )
 }

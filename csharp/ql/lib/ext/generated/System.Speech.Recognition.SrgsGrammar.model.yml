@@ -1,9 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Speech.Recognition.SrgsGrammar", "SrgsDocument", "SrgsDocument", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsDocument", "SrgsDocument", "(System.Speech.Recognition.GrammarBuilder)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsDocument", "SrgsDocument", "(System.Speech.Recognition.SrgsGrammar.SrgsRule)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsDocument", "SrgsDocument", "(System.String)", "summary", "df-generated"]
@@ -31,7 +31,6 @@ extensions:
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsDocument", "set_Root", "(System.Speech.Recognition.SrgsGrammar.SrgsRule)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsDocument", "set_Script", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsDocument", "set_XmlBase", "(System.Uri)", "summary", "df-generated"]
-      - ["System.Speech.Recognition.SrgsGrammar", "SrgsElement", "SrgsElement", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsGrammarCompiler", "Compile", "(System.Speech.Recognition.SrgsGrammar.SrgsDocument,System.IO.Stream)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsGrammarCompiler", "Compile", "(System.String,System.IO.Stream)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsGrammarCompiler", "Compile", "(System.Xml.XmlReader,System.IO.Stream)", "summary", "df-generated"]
@@ -41,7 +40,6 @@ extensions:
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "Add", "(System.Speech.Recognition.SrgsGrammar.SrgsElement)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "SetRepeat", "(System.Int32)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "SetRepeat", "(System.Int32,System.Int32)", "summary", "df-generated"]
-      - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "SrgsItem", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "SrgsItem", "(System.Int32)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "SrgsItem", "(System.Int32,System.Int32)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "SrgsItem", "(System.Int32,System.Int32,System.Speech.Recognition.SrgsGrammar.SrgsElement[])", "summary", "df-generated"]
@@ -55,7 +53,6 @@ extensions:
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "get_Weight", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "set_RepeatProbability", "(System.Single)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsItem", "set_Weight", "(System.Single)", "summary", "df-generated"]
-      - ["System.Speech.Recognition.SrgsGrammar", "SrgsNameValueTag", "SrgsNameValueTag", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsNameValueTag", "SrgsNameValueTag", "(System.Object)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsNameValueTag", "SrgsNameValueTag", "(System.String,System.Object)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsNameValueTag", "get_Name", "()", "summary", "df-generated"]
@@ -63,7 +60,6 @@ extensions:
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsNameValueTag", "set_Name", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsNameValueTag", "set_Value", "(System.Object)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsOneOf", "Add", "(System.Speech.Recognition.SrgsGrammar.SrgsItem)", "summary", "df-generated"]
-      - ["System.Speech.Recognition.SrgsGrammar", "SrgsOneOf", "SrgsOneOf", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsOneOf", "SrgsOneOf", "(System.Speech.Recognition.SrgsGrammar.SrgsItem[])", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsOneOf", "SrgsOneOf", "(System.String[])", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsOneOf", "get_Items", "()", "summary", "df-generated"]
@@ -99,8 +95,6 @@ extensions:
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsRuleRef", "get_Uri", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsRulesCollection", "Add", "(System.Speech.Recognition.SrgsGrammar.SrgsRule[])", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsRulesCollection", "GetKeyForItem", "(System.Speech.Recognition.SrgsGrammar.SrgsRule)", "summary", "df-generated"]
-      - ["System.Speech.Recognition.SrgsGrammar", "SrgsRulesCollection", "SrgsRulesCollection", "()", "summary", "df-generated"]
-      - ["System.Speech.Recognition.SrgsGrammar", "SrgsSemanticInterpretationTag", "SrgsSemanticInterpretationTag", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsSemanticInterpretationTag", "SrgsSemanticInterpretationTag", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsSemanticInterpretationTag", "get_Script", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsSemanticInterpretationTag", "set_Script", "(System.String)", "summary", "df-generated"]
@@ -110,7 +104,6 @@ extensions:
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsSubset", "get_Text", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsSubset", "set_MatchingMode", "(System.Speech.Recognition.SubsetMatchingMode)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsSubset", "set_Text", "(System.String)", "summary", "df-generated"]
-      - ["System.Speech.Recognition.SrgsGrammar", "SrgsText", "SrgsText", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsText", "SrgsText", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsText", "get_Text", "()", "summary", "df-generated"]
       - ["System.Speech.Recognition.SrgsGrammar", "SrgsText", "set_Text", "(System.String)", "summary", "df-generated"]
