@@ -2740,7 +2740,7 @@ module PrivateDjango {
       this.asExpr() = list and
       // we look for an assignment to the `MIDDLEWARE` setting
       exists(DataFlow::Node mw |
-        mw.asVar().getName() = "MIDDLEWARE" and
+        mw.asExpr().(Name).getId() = "MIDDLEWARE" and
         DataFlow::localFlow(this, mw)
       |
         // To only include results where CSRF protection matters, we only care about CSRF

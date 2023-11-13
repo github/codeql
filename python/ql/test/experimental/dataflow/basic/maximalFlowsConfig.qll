@@ -1,3 +1,4 @@
+import python
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
@@ -11,14 +12,12 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node node) {
     node instanceof DataFlow::ParameterNode
     or
-    node instanceof DataFlow::EssaNode and
-    not exists(DataFlow::EssaNode pred | DataFlow::localFlowStep(pred, node))
+    node instanceof DataFlow::LocalSourceNode
   }
 
   override predicate isSink(DataFlow::Node node) {
     node instanceof DataFlowPrivate::ReturnNode
     or
-    node instanceof DataFlow::EssaNode and
-    not exists(node.(DataFlow::EssaNode).getVar().getASourceUse())
+    not DataFlowPrivate::LocalFlow::localFlowStep(node, _)
   }
 }
