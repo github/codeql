@@ -171,7 +171,7 @@ To see the queries that you have run in the current session, open the Query Hist
 
 The Query History contains information including the date and time when the query was run, the name of the query, the database on which it was run, and how long it took to run the query.
 To customize the information that is displayed, right-click an entry and select **Rename**.
-Additionally, you can filter the Query History view by language. For more information, see ":ref:`Filtering databases and queries by language <filtering-databases-and-queries-by-language>`."
+You can also filter the Query History view by language using the language selector. For more information, see ":ref:`Filtering databases and queries by language <filtering-databases-and-queries-by-language>`."
 
 Click an entry to display the corresponding results in the Query Results view, and double-click
 to display the query itself in the editor (or right-click and select **View Query**).
