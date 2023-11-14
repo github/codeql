@@ -56,7 +56,7 @@ Optionally, to see databases containing a specific language and queries written 
       :width: 350
       :alt: Screenshot of the language selector. The "Select" button for a language filter is outlined in dark orange.
 
-Creating a query
+Creating a custom query
 ------------------------
 
 You can generate a query template for a specific language from the queries panel, then write your own code to quickly create a custom query.
