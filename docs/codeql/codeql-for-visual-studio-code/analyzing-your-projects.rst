@@ -67,7 +67,7 @@ You can generate a query template for a specific language from the queries panel
       :width: 350
       :alt: Screenshot of the queries panel. The "Create query" icon is outlined in dark orange.
 
-#. In the Command Palette, select the target language for your query. Selecting a language will autogenerate a folder labeled "codeql-custom-queries-LANGUAGE", which will contain a query template labeled "example.ql".
+#. In the Command Palette, select the target language for your query. Selecting a language will autogenerate a directory labeled `codeql-custom-queries-<language>`, where `<language>` is the name of the selected language. That directory will contain a query template labeled `example.ql`.
 #. In the template, write your custom query, then save the file. Once your query is finished, you can run it from the queries panel.
 
 Running a query
