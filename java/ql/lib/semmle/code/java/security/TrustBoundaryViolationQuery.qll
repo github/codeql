@@ -12,7 +12,8 @@ private import semmle.code.java.frameworks.owasp.Esapi
  */
 abstract class TrustBoundaryViolationSource extends DataFlow::Node { }
 
-private class RemoteSource extends TrustBoundaryViolationSource instanceof RemoteFlowSource { }
+private class ThreatModelSource extends TrustBoundaryViolationSource instanceof ThreatModelFlowSource
+{ }
 
 /**
  * A sink for data that crosses a trust boundary.
@@ -32,7 +33,7 @@ abstract class TrustBoundaryValidationSanitizer extends DataFlow::Node { }
 private class EsapiValidatedInputSanitizer extends TrustBoundaryValidationSanitizer {
   EsapiValidatedInputSanitizer() {
     this = DataFlow::BarrierGuard<esapiIsValidData/3>::getABarrierNode() or
-    this.asExpr().(MethodAccess).getMethod() instanceof EsapiGetValidMethod
+    this.asExpr().(MethodCall).getMethod() instanceof EsapiGetValidMethod
   }
 }
 
@@ -41,7 +42,7 @@ private class EsapiValidatedInputSanitizer extends TrustBoundaryValidationSaniti
  */
 private predicate esapiIsValidData(Guard g, Expr e, boolean branch) {
   branch = true and
-  exists(MethodAccess ma | ma.getMethod() instanceof EsapiIsValidMethod |
+  exists(MethodCall ma | ma.getMethod() instanceof EsapiIsValidMethod |
     g = ma and
     e = ma.getArgument(1)
   )

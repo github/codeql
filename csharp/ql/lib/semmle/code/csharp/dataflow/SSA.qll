@@ -120,7 +120,7 @@ module Ssa {
           result = prefix + "." + this.getAssignable()
         |
           if f.(Modifiable).isStatic()
-          then prefix = f.getDeclaringType().getQualifiedName()
+          then prefix = f.getDeclaringType().getFullyQualifiedName()
           else prefix = "this"
         )
       }

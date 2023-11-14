@@ -1,0 +1,43 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.IO.Enumeration", "FileSystemEntry", False, "ToFileSystemInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", False, "ToSpecifiedFullPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", False, "get_FileName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemName", False, "TranslateWin32Expression", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.IO.Enumeration", "FileSystemEntry", "ToFullPath", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_Attributes", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_CreationTimeUtc", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_Directory", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_IsDirectory", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_IsHidden", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_LastAccessTimeUtc", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_LastWriteTimeUtc", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_Length", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_OriginalRootDirectory", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "get_RootDirectory", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "set_Directory", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "set_OriginalRootDirectory", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEntry", "set_RootDirectory", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerable<TResult>", "get_ShouldIncludePredicate", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerable<TResult>", "get_ShouldRecursePredicate", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "ContinueOnError", "(System.Int32)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "Dispose", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "FileSystemEnumerator", "(System.String,System.IO.EnumerationOptions)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "MoveNext", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "OnDirectoryFinished", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "Reset", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "ShouldIncludeEntry", "(System.IO.Enumeration.FileSystemEntry)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "ShouldRecurseIntoEntry", "(System.IO.Enumeration.FileSystemEntry)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "TransformEntry", "(System.IO.Enumeration.FileSystemEntry)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemName", "MatchesSimpleExpression", "(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.Boolean)", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemName", "MatchesWin32Expression", "(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.Boolean)", "summary", "df-generated"]

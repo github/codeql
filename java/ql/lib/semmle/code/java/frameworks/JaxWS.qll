@@ -437,7 +437,7 @@ private predicate isXssSafeContentTypeExpr(Expr e) { isXssSafeContentType(getCon
 private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   // Base case: ResponseBuilder.type(contentType)
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getCallee().hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder", "type") and
       contentType = ma.getArgument(0)
     )
@@ -451,7 +451,7 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   or
   // Base case: Variant[.VariantListBuilder].mediaTypes(...)
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getCallee()
           .hasQualifiedName(getAJaxRsPackage("core"), ["Variant", "Variant$VariantListBuilder"],
             "mediaTypes") and
@@ -460,7 +460,7 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   or
   // Recursive case: propagate through variant list building:
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       (
         ma.getType()
             .(RefType)
@@ -475,14 +475,14 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   or
   // Recursive case: propagate through a List.get operation
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getMethod().hasQualifiedName("java.util", "List<Variant>", "get") and
       ma.getQualifier() = getABuilderWithExplicitContentType(contentType).asExpr()
     )
   or
   // Recursive case: propagate through Response.ResponseBuilder operations, including the `variant(...)` operation.
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getType().(RefType).hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder") and
       [ma.getQualifier(), ma.getArgument(0)] =
         getABuilderWithExplicitContentType(contentType).asExpr()
@@ -518,7 +518,7 @@ private class SanitizedResponseBuilder extends XssSanitizer {
     this = getASanitizedBuilder()
     or
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         ma.getMethod().hasQualifiedName(getAJaxRsPackage("core"), "Response", "ok") and
         (
           // e.g. Response.ok(sanitizeMe, new Variant("application/json", ...))
@@ -542,19 +542,19 @@ private class SanitizedResponseBuilder extends XssSanitizer {
 private class VulnerableEntity extends XssSinkBarrier {
   VulnerableEntity() {
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         (
           // Vulnerable content-type already set:
           ma.getQualifier() = getAVulnerableBuilder().asExpr()
           or
           // Vulnerable content-type set in the future:
-          getAVulnerableBuilder().asExpr().(MethodAccess).getQualifier*() = ma
+          getAVulnerableBuilder().asExpr().(MethodCall).getQualifier*() = ma
         ) and
         ma.getMethod().hasName("entity")
       ).getArgument(0)
     or
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         (
           isXssVulnerableContentTypeExpr(ma.getArgument(1))
           or

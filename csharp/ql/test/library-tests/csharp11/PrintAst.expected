@@ -227,10 +227,10 @@ FileScoped1.cs:
 #-----|   3: (Base types)
 #    9|     1: [TypeMention] I2
 #   11| [Interface] IC
-#   13| [Class] C4<>
+#   13| [Class] C4`1
 #-----|   1: (Type parameters)
 #   13|     0: [TypeParameter] T
-#   15| [Class] C5<>
+#   15| [Class] C5`1
 #-----|   1: (Type parameters)
 #   15|     0: [TypeParameter] S
 #-----|   3: (Base types)
@@ -267,10 +267,10 @@ FileScoped2.cs:
 #-----|   3: (Base types)
 #    7|     1: [TypeMention] I2
 #    9| [Class] IC
-#   11| [Class] C4<>
+#   11| [Class] C4`1
 #-----|   1: (Type parameters)
 #   11|     0: [TypeParameter] T
-#   13| [Class] C5<>
+#   13| [Class] C5`1
 #-----|   1: (Type parameters)
 #   13|     0: [TypeParameter] S
 #-----|   3: (Base types)
@@ -321,12 +321,12 @@ GenericAttribute.cs:
 #    4|   0: [TypeMention] MyGeneric2Attribute<object, object>
 #    4|     1: [TypeMention] object
 #    4|     2: [TypeMention] object
-#    6| [Class] MyGenericAttribute<>
+#    6| [Class] MyGenericAttribute`1
 #-----|   1: (Type parameters)
 #    6|     0: [TypeParameter] T
 #-----|   3: (Base types)
 #    6|     0: [TypeMention] Attribute
-#    7| [Class] MyGeneric2Attribute<,>
+#    7| [Class] MyGeneric2Attribute`2
 #-----|   1: (Type parameters)
 #    7|     0: [TypeParameter] T
 #    7|     1: [TypeParameter] U
@@ -494,7 +494,7 @@ NameofScope.cs:
 #    8|       4: [AssignExpr] ... = ...
 #    8|         0: [FieldAccess] access to field S
 #    8|         1: [ParameterAccess] access to parameter s
-#   12|   6: [Method] M1<>
+#   12|   6: [Method] M1`1
 #   12|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #   11|       1: [DefaultAttribute] [My(...)]
@@ -530,7 +530,7 @@ NameofScope.cs:
 #   17|             0: [NameOfExpr] nameof(...)
 #   17|               0: [ParameterAccess] access to parameter z
 #   17|     4: [ParameterAccess] access to parameter z
-#   19|   9: [Method] M4<>
+#   19|   9: [Method] M4`1
 #   19|     -1: [TypeMention] object
 #-----|     1: (Type parameters)
 #   19|       0: [TypeParameter] S
@@ -659,7 +659,7 @@ PatternMatchSpan.cs:
 #   16|         3: [BlockStmt] {...}
 #   16|           0: [BreakStmt] break;
 RelaxedShift.cs:
-#    1| [Interface] IShiftOperators<,,>
+#    1| [Interface] IShiftOperators`3
 #-----|   1: (Type parameters)
 #    1|     0: [TypeParameter] TSelf
 #    1|     1: [TypeParameter] TOther
@@ -1037,7 +1037,7 @@ SignAnalysis.cs:
 #   39|                 0: [ParameterAccess] access to parameter x
 #   39|                 1: [ParameterAccess] access to parameter y
 StaticInterfaceMembers.cs:
-#    1| [Interface] INumber<>
+#    1| [Interface] INumber`1
 #-----|   1: (Type parameters)
 #    1|     0: [TypeParameter] T
 #    3|   4: [IncrementOperator] ++

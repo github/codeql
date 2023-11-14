@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class NugetPackages
     {
-        private readonly string nugetExe;
+        private readonly string? nugetExe;
         private readonly ProgressMonitor progressMonitor;
 
         /// <summary>
@@ -36,10 +36,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.packageDirectory = packageDirectory;
             this.progressMonitor = progressMonitor;
 
-            nugetExe = ResolveNugetExe(sourceDir);
             packageFiles = new DirectoryInfo(sourceDir)
                 .EnumerateFiles("packages.config", SearchOption.AllDirectories)
                 .ToArray();
+
+            if (packageFiles.Length > 0)
+            {
+                nugetExe = ResolveNugetExe(sourceDir);
+            }
+            else
+            {
+                progressMonitor.LogInfo("Found no packages.config file");
+            }
         }
 
         /// <summary>
@@ -111,7 +119,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             string exe, args;
             if (Util.Win32.IsWindows())
             {
-                exe = nugetExe;
+                exe = nugetExe!;
                 args = string.Format("install -OutputDirectory {0} {1}", packageDirectory, package);
             }
             else

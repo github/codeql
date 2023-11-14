@@ -11,7 +11,7 @@
 
 import java
 
-from MethodAccess ma, Method m
+from MethodCall ma, Method m
 where
   m = ma.getMethod() and
   m instanceof CloneMethod and

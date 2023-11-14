@@ -1,8 +1,5 @@
 package com.semmle.js.ast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.semmle.js.ast.jsx.JSXAttribute;
 import com.semmle.js.ast.jsx.JSXClosingElement;
 import com.semmle.js.ast.jsx.JSXElement;
@@ -42,16 +39,18 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
-import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.data.IntList;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Deep cloning of AST nodes. */
 public class NodeCopier implements Visitor<Void, INode> {
@@ -429,7 +428,8 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   @Override
   public TemplateLiteralTypeExpr visit(TemplateLiteralTypeExpr nd, Void q) {
-    return new TemplateLiteralTypeExpr(visit(nd.getLoc()), copy(nd.getExpressions()), copy(nd.getQuasis()));
+    return new TemplateLiteralTypeExpr(
+        visit(nd.getLoc()), copy(nd.getExpressions()), copy(nd.getQuasis()));
   }
 
   @Override
@@ -523,7 +523,8 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   @Override
   public ExportAllDeclaration visit(ExportAllDeclaration nd, Void c) {
-    return new ExportAllDeclaration(visit(nd.getLoc()), copy(nd.getSource()), copy(nd.getAssertion()));
+    return new ExportAllDeclaration(
+        visit(nd.getLoc()), copy(nd.getSource()), copy(nd.getAttributes()));
   }
 
   @Override
@@ -538,7 +539,7 @@ public class NodeCopier implements Visitor<Void, INode> {
         copy(nd.getDeclaration()),
         copy(nd.getSpecifiers()),
         copy(nd.getSource()),
-        copy(nd.getAssertion()));
+        copy(nd.getAttributes()));
   }
 
   @Override
@@ -559,7 +560,11 @@ public class NodeCopier implements Visitor<Void, INode> {
   @Override
   public ImportDeclaration visit(ImportDeclaration nd, Void c) {
     return new ImportDeclaration(
-        visit(nd.getLoc()), copy(nd.getSpecifiers()), copy(nd.getSource()), copy(nd.getAssertion()), nd.hasTypeKeyword());
+        visit(nd.getLoc()),
+        copy(nd.getSpecifiers()),
+        copy(nd.getSource()),
+        copy(nd.getAttributes()),
+        nd.hasTypeKeyword());
   }
 
   @Override
@@ -725,7 +730,8 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   @Override
   public INode visit(TupleTypeExpr nd, Void c) {
-    return new TupleTypeExpr(visit(nd.getLoc()), copy(nd.getElementTypes()), copy(nd.getElementNames()));
+    return new TupleTypeExpr(
+        visit(nd.getLoc()), copy(nd.getElementTypes()), copy(nd.getElementNames()));
   }
 
   @Override
@@ -787,9 +793,7 @@ public class NodeCopier implements Visitor<Void, INode> {
   @Override
   public INode visit(SatisfiesExpr nd, Void c) {
     return new SatisfiesExpr(
-        visit(nd.getLoc()),
-        copy(nd.getExpression()),
-        copy(nd.getTypeAnnotation()));
+        visit(nd.getLoc()), copy(nd.getExpression()), copy(nd.getTypeAnnotation()));
   }
 
   @Override
@@ -907,7 +911,8 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   @Override
   public INode visit(GeneratedCodeExpr nd, Void c) {
-    return new GeneratedCodeExpr(visit(nd.getLoc()), nd.getOpeningDelimiter(), nd.getClosingDelimiter(), nd.getBody());
+    return new GeneratedCodeExpr(
+        visit(nd.getLoc()), nd.getOpeningDelimiter(), nd.getClosingDelimiter(), nd.getBody());
   }
 
   @Override

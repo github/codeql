@@ -18,6 +18,8 @@ closures.swift:
 #    7|           getInit(0): [CallExpr] call to hello()
 #    7|             getFunction(): [DeclRefExpr] hello()
 #    7|           getPattern(0): [NamedPattern] x
+#    7|         getVariable(0): [ConcreteVarDecl] x
+#    7|             Type = String
 #    7|         getClosureBody(): [ExplicitClosureExpr] { ... }
 #    7|           getBody(): [BraceStmt] { ... }
 #    8|             getElement(0): [CallExpr] call to print(_:separator:terminator:)
@@ -44,8 +46,6 @@ closures.swift:
 #    9|                 getExpr(): [DefaultArgumentExpr] default terminator
 #    8|           getCapture(0): [CapturedDecl] x
 #    9|           getCapture(1): [CapturedDecl] y
-#    7| [ConcreteVarDecl] x
-#    7|     Type = String
 #   12| [TopLevelCodeDecl] { ... }
 #   12|   getBody(): [BraceStmt] { ... }
 #   12|     getElement(0): [PatternBindingDecl] var ... = ...

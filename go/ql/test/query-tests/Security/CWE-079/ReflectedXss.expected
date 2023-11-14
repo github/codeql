@@ -9,9 +9,6 @@ edges
 | contenttype.go:73:10:73:28 | call to FormValue | contenttype.go:79:11:79:14 | data |
 | contenttype.go:88:10:88:28 | call to FormValue | contenttype.go:91:4:91:7 | data |
 | contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data |
-| reflectedxsstest.go:27:2:27:38 | ... := ...[0] | reflectedxsstest.go:28:50:28:55 | cookie |
-| reflectedxsstest.go:28:17:28:56 | call to Sprintf | reflectedxsstest.go:28:10:28:57 | type conversion |
-| reflectedxsstest.go:28:50:28:55 | cookie | reflectedxsstest.go:28:17:28:56 | call to Sprintf |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:32:34:32:37 | file |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:46:34:60 | selection of Filename |
 | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | reflectedxsstest.go:33:49:33:55 | content |
@@ -62,10 +59,6 @@ nodes
 | contenttype.go:91:4:91:7 | data | semmle.label | data |
 | contenttype.go:113:10:113:28 | call to FormValue | semmle.label | call to FormValue |
 | contenttype.go:114:50:114:53 | data | semmle.label | data |
-| reflectedxsstest.go:27:2:27:38 | ... := ...[0] | semmle.label | ... := ...[0] |
-| reflectedxsstest.go:28:10:28:57 | type conversion | semmle.label | type conversion |
-| reflectedxsstest.go:28:17:28:56 | call to Sprintf | semmle.label | call to Sprintf |
-| reflectedxsstest.go:28:50:28:55 | cookie | semmle.label | cookie |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | semmle.label | ... := ...[1] |
 | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | semmle.label | ... := ...[0] |
@@ -119,7 +112,6 @@ subpaths
 | contenttype.go:79:11:79:14 | data | contenttype.go:73:10:73:28 | call to FormValue | contenttype.go:79:11:79:14 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:73:10:73:28 | call to FormValue | user-provided value | contenttype.go:0:0:0:0 | contenttype.go |  |
 | contenttype.go:91:4:91:7 | data | contenttype.go:88:10:88:28 | call to FormValue | contenttype.go:91:4:91:7 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:88:10:88:28 | call to FormValue | user-provided value | contenttype.go:0:0:0:0 | contenttype.go |  |
 | contenttype.go:114:50:114:53 | data | contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:113:10:113:28 | call to FormValue | user-provided value | contenttype.go:0:0:0:0 | contenttype.go |  |
-| reflectedxsstest.go:28:10:28:57 | type conversion | reflectedxsstest.go:27:2:27:38 | ... := ...[0] | reflectedxsstest.go:28:10:28:57 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:27:2:27:38 | ... := ...[0] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
 | reflectedxsstest.go:33:10:33:57 | type conversion | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:33:10:33:57 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
 | reflectedxsstest.go:34:10:34:62 | type conversion | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:10:34:62 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
 | reflectedxsstest.go:44:10:44:55 | type conversion | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | reflectedxsstest.go:44:10:44:55 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |

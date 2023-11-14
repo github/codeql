@@ -56,7 +56,7 @@ private predicate ldapNameStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
  * i.e. `new LdapName().addAll(tainted)`.
  */
 private predicate ldapNameAddAllStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     n1.asExpr() = ma.getAnArgument() and
     (n2.asExpr() = ma or n2.asExpr() = ma.getQualifier())
   |
@@ -70,7 +70,7 @@ private predicate ldapNameAddAllStep(DataFlow::ExprNode n1, DataFlow::ExprNode n
  * `taintedLdapName.getRdns()` or `taintedLdapName.toString()`.
  */
 private predicate ldapNameGetCloneStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     n1.asExpr() = ma.getQualifier() and
     n2.asExpr() = ma and
     ma.getMethod() = m
@@ -87,7 +87,7 @@ private predicate ldapNameGetCloneStep(DataFlow::ExprNode n1, DataFlow::ExprNode
  * i.e. `Filter.create*(tainted)`.
  */
 private predicate filterStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     n1.asExpr() = ma.getAnArgument() and
     n2.asExpr() = ma and
     ma.getMethod() = m
@@ -105,7 +105,7 @@ private predicate filterStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
  * i.e. `taintedFilter.toString()` or `taintedFilter.toString(buffer)`.
  */
 private predicate filterToStringStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     n1.asExpr() = ma.getQualifier() and
     (n2.asExpr() = ma or n2.asExpr() = ma.getAnArgument())
   |
@@ -135,7 +135,7 @@ private predicate unboundIdSearchRequestStep(DataFlow::ExprNode n1, DataFlow::Ex
  * and UnboundID `SearchRequest`, i.e. `taintedSearchRequest.duplicate()`.
  */
 private predicate unboundIdSearchRequestDuplicateStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
+  exists(MethodCall ma, Method m | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
     ma.getMethod() = m and
     m.getDeclaringType().getAnAncestor() instanceof TypeUnboundIdReadOnlySearchRequest and
     m.hasName("duplicate")
@@ -147,7 +147,7 @@ private predicate unboundIdSearchRequestDuplicateStep(DataFlow::ExprNode n1, Dat
  * `SearchRequest`, i.e. `searchRequest.setBaseDN(tainted)` or `searchRequest.setFilter(tainted)`.
  */
 private predicate unboundIdSearchRequestSetStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     n1.asExpr() = ma.getAnArgument() and
     n2.asExpr() = ma.getQualifier() and
     ma.getMethod() = m
@@ -162,7 +162,7 @@ private predicate unboundIdSearchRequestSetStep(DataFlow::ExprNode n1, DataFlow:
  * i.e. `LdapQueryBuilder.query().filter(tainted)` or `LdapQueryBuilder.query().base(tainted)`.
  */
 private predicate ldapQueryStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m, int index |
+  exists(MethodCall ma, Method m, int index |
     n1.asExpr() = ma.getArgument(index) and
     n2.asExpr() = ma and
     ma.getMethod() = m and
@@ -178,7 +178,7 @@ private predicate ldapQueryStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
  * `Name`, i.e. `taintedLdapQueryBuilder.base()`.
  */
 private predicate ldapQueryBaseStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     n1.asExpr() = ma.getQualifier() and
     n2.asExpr() = ma and
     ma.getMethod() = m
@@ -194,7 +194,7 @@ private predicate ldapQueryBaseStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2
  * `query().base(tainted).where("objectclass").is("person")`.
  */
 private predicate ldapQueryBuilderStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     n1.asExpr() = ma.getQualifier() and
     n2.asExpr() = ma and
     ma.getMethod() = m
@@ -229,7 +229,7 @@ private predicate hardcodedFilterStep(DataFlow::ExprNode n1, DataFlow::ExprNode 
  * `taintedFilter.encode(buffer)`.
  */
 private predicate springLdapFilterToStringStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     n1.asExpr() = ma.getQualifier() and
     (n2.asExpr() = ma or n2.asExpr() = ma.getAnArgument()) and
     ma.getMethod() = m
@@ -245,7 +245,7 @@ private predicate springLdapFilterToStringStep(DataFlow::ExprNode n1, DataFlow::
  * `LdapNameBuilder.newInstance().add(tainted)`.
  */
 private predicate ldapNameBuilderStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     n1.asExpr() = ma.getAnArgument() and
     (n2.asExpr() = ma or n2.asExpr() = ma.getQualifier()) and
     ma.getMethod() = m and
@@ -261,7 +261,7 @@ private predicate ldapNameBuilderStep(DataFlow::ExprNode n1, DataFlow::ExprNode 
  * and `LdapName`, `LdapNameBuilder.build()`.
  */
 private predicate ldapNameBuilderBuildStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
+  exists(MethodCall ma | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
     ma.getMethod() instanceof MethodSpringLdapNameBuilderBuild
   )
 }
@@ -271,7 +271,7 @@ private predicate ldapNameBuilderBuildStep(DataFlow::ExprNode n1, DataFlow::Expr
  * Spring `LdapUtils.newLdapName`, i.e. `LdapUtils.newLdapName(tainted)`.
  */
 private predicate ldapUtilsStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma | n1.asExpr() = ma.getAnArgument() and n2.asExpr() = ma |
+  exists(MethodCall ma | n1.asExpr() = ma.getAnArgument() and n2.asExpr() = ma |
     ma.getMethod() instanceof MethodSpringLdapUtilsNewLdapName
   )
 }
@@ -281,7 +281,7 @@ private predicate ldapUtilsStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
  * `SearchRequest`, i.e. `searchRequest.setFilter(tainted)` or `searchRequest.setBase(tainted)`.
  */
 private predicate apacheSearchRequestStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     n1.asExpr() = ma.getAnArgument() and
     n2.asExpr() = ma.getQualifier()
   |
@@ -296,7 +296,7 @@ private predicate apacheSearchRequestStep(DataFlow::ExprNode n1, DataFlow::ExprN
  * and filter or DN i.e. `tainterSearchRequest.getFilter()` or `taintedSearchRequest.getBase()`.
  */
 private predicate apacheSearchRequestGetStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
+  exists(MethodCall ma, Method m | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
     ma.getMethod() = m and
     m.getDeclaringType().getAnAncestor() instanceof TypeApacheSearchRequest and
     (m.hasName("getFilter") or m.hasName("getBase"))
@@ -319,7 +319,7 @@ private predicate apacheLdapDnStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2)
  * and `String` i.e. `taintedDn.getName()`, `taintedDn.getNormName()` or `taintedDn.toString()`.
  */
 private predicate apacheLdapDnGetStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
+  exists(MethodCall ma, Method m | n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma |
     ma.getMethod() = m and
     m.getDeclaringType().getAnAncestor() instanceof TypeApacheDn and
     (m.hasName("getName") or m.hasName("getNormName") or m.hasName("toString"))

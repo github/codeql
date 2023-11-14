@@ -28,7 +28,7 @@ predicate commonSynchronization(Expr e1, Expr e2, Variable monitor) {
 /**
  * Holds if `m` is a call to a synchronized method on `receiver`.
  */
-predicate synchCallOn(MethodAccess m, Variable receiver) {
+predicate synchCallOn(MethodCall m, Variable receiver) {
   m.getCallee() instanceof SynchronizedCallable and
   m.getQualifier() = receiver.getAnAccess()
 }
@@ -98,7 +98,7 @@ predicate probablyNeverEscapes(LocalVariableDecl v) {
 }
 
 // Loop conditions tend to be uninteresting, so are not included.
-from IfStmt check, MethodAccess call1, MethodAccess call2, Variable r
+from IfStmt check, MethodCall call1, MethodCall call2, Variable r
 where
   check.getCondition().getAChildExpr*() = call1 and
   // This can happen if there are loops, etc.

@@ -173,7 +173,7 @@ class ApplyExprCfgNode extends ExprCfgNode {
 
   Callable getStaticTarget() { result = e.getStaticTarget() }
 
-  Expr getFunction() { result = e.getFunction() }
+  CfgNode getFunction() { result.getAst() = e.getFunction() }
 }
 
 class CallExprCfgNode extends ApplyExprCfgNode {

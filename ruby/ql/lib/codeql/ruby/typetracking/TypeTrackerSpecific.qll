@@ -275,7 +275,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
  * Holds if a store step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
  * is a post-update node that should be treated as a local source node.
  */
-predicate storeStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
+private predicate storeStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     contents
@@ -311,7 +311,7 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
  * Holds if a read step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
  * should be treated as a local source node.
  */
-predicate readStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
+private predicate readStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
   DataFlowPrivate::readStepCommon(nodeFrom, contents, nodeTo)
 }
 
@@ -330,7 +330,7 @@ predicate basicLoadStoreStep(
  * Holds if a read+store step `nodeFrom -> nodeTo` exists, where the destination node
  * should be treated as a local source node.
  */
-predicate readStoreStepIntoSourceNode(
+private predicate readStoreStepIntoSourceNode(
   Node nodeFrom, Node nodeTo, DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent
 ) {
   exists(DataFlowPrivate::SynthSplatParameterShiftNode shift |
@@ -441,10 +441,14 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   class SummarizedCallable = FlowSummary::SummarizedCallable;
 
   // Relating nodes to summaries
-  Node argumentOf(Node call, SummaryComponent arg) {
-    exists(DataFlowDispatch::ParameterPosition pos |
+  Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
+    exists(DataFlowDispatch::ParameterPosition pos, DataFlowPrivate::ArgumentNode n |
       arg = SummaryComponent::argument(pos) and
-      argumentPositionMatch(call.asExpr(), result, pos)
+      argumentPositionMatch(call.asExpr(), n, pos)
+    |
+      isPostUpdate = false and result = n
+      or
+      isPostUpdate = true and result.(DataFlowPublic::PostUpdateNode).getPreUpdateNode() = n
     )
   }
 

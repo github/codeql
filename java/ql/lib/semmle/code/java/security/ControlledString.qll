@@ -35,7 +35,7 @@ private predicate controlledStringProp(Expr src, Expr dest) {
   exists(Variable var | var.getAnAccess() = dest | src = var.getAnAssignedValue())
   or
   // Propagation through method parameters.
-  exists(Parameter param, MethodAccess call, int i |
+  exists(Parameter param, MethodCall call, int i |
     src = call.getArgument(i) and
     param = call.getMethod().getParameter(i) and
     dest = param.getAnAccess()
@@ -45,7 +45,7 @@ private predicate controlledStringProp(Expr src, Expr dest) {
   exists(AddExpr concatOp | concatOp = dest | src = concatOp.getAnOperand())
   or
   // `toString()` on a safe string is safe.
-  exists(MethodAccess toStringCall |
+  exists(MethodCall toStringCall |
     src = toStringCall.getQualifier() and
     toStringCall.getMethod() instanceof ToStringMethod and
     dest = toStringCall
@@ -83,7 +83,7 @@ predicate controlledString(Expr expr) {
     or
     expr.getType() instanceof BoxedType
     or
-    exists(Method method | method = expr.(MethodAccess).getMethod() |
+    exists(Method method | method = expr.(MethodCall).getMethod() |
       method instanceof ClassNameMethod or
       method instanceof ClassSimpleNameMethod or
       boxedToString(method)

@@ -1,6 +1,6 @@
 import java
 
-query predicate iterator(MethodAccess ma, string mn, string t) {
+query predicate iterator(MethodCall ma, string mn, string t) {
   exists(Method m |
     ma.getMethod() = m and
     m.getName() = "iterator" and

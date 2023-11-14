@@ -70,7 +70,12 @@ class MyUITextFieldDelegate : UITextFieldDelegate {
 	}
 }
 
-func test(textField: UITextField, searchTextField: UISearchTextField, myTextInput: MyTextInput, range: UITextRange) {
+func test(
+    textField: UITextField,
+    searchTextField: UISearchTextField,
+    myTextInput: MyTextInput,
+    range: UITextRange,
+    protocolTextInput: UITextInput) {
   _ = textField.text // $ source=local
   _ = textField.attributedText // $ source=local
   _ = textField.placeholder // GOOD (not input)
@@ -79,4 +84,7 @@ func test(textField: UITextField, searchTextField: UISearchTextField, myTextInpu
 
   _ = myTextInput.text(in: range)! // $ source=local
   _ = myTextInput.harmless(in: range)! // GOOD (not input)
+
+  let str = protocolTextInput.text(in: range)! // $ source=local
+  sink(arg: str) // $ tainted
 }

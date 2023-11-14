@@ -396,7 +396,7 @@ Qualifiers.cs:
 #    9|     3: [Getter] get_B
 #    9|       4: [MethodCall] call to method Instance<Boolean>
 #    9|         -1: [ThisAccess] this access
-#   11|   8: [Method] Static<>
+#   11|   9: [Method] Static`1
 #   11|     -1: [TypeMention] T
 #-----|     1: (Type parameters)
 #   11|       0: [TypeParameter] T
@@ -406,7 +406,7 @@ Qualifiers.cs:
 #   11|     4: [DefaultValueExpr] default(...)
 #   11|       0: [TypeAccess] access to type T
 #   11|         0: [TypeMention] T
-#   13|   10: [Method] Instance<>
+#   13|   12: [Method] Instance`1
 #   13|     -1: [TypeMention] T
 #-----|     1: (Type parameters)
 #   13|       0: [TypeParameter] T
@@ -774,11 +774,11 @@ expressions.cs:
 #  100|                 1: [StringLiteralUtf16] " "
 #  100|               1: [CastExpr] (...) ...
 #  100|                 1: [LocalVariableAccess] access to local variable i
-#  103|     18: [Class] Y<,>
+#  103|     18: [Class] Y`2
 #-----|       1: (Type parameters)
 #  103|         0: [TypeParameter] T
 #  103|         1: [TypeParameter] U
-#  107|     19: [Class] X<>
+#  107|     20: [Class] X`1
 #-----|       1: (Type parameters)
 #  107|         0: [TypeParameter] T
 #  110|       5: [Method] PrintTypes
@@ -814,16 +814,16 @@ expressions.cs:
 #  119|                     0: [TypeAccess] access to type T
 #  119|                       0: [TypeMention] T
 #  120|                   7: [TypeofExpr] typeof(...)
-#  120|                     0: [TypeAccess] access to type X<>
+#  120|                     0: [TypeAccess] access to type X`1
 #  120|                       0: [TypeMention] X<T>
 #  120|                         1: [TypeMention] T
 #  121|                   8: [TypeofExpr] typeof(...)
-#  121|                     0: [TypeAccess] access to type X<X<>>
+#  121|                     0: [TypeAccess] access to type X<X`1>
 #  121|                       0: [TypeMention] X<X<T>>
 #  121|                         1: [TypeMention] X<T>
 #  121|                           1: [TypeMention] T
 #  122|                   9: [TypeofExpr] typeof(...)
-#  122|                     0: [TypeAccess] access to type Y<,>
+#  122|                     0: [TypeAccess] access to type Y`2
 #  122|                       0: [TypeMention] Y<T, U>
 #  122|                         1: [TypeMention] <unknown type>
 #  122|                         2: [TypeMention] <unknown type>
@@ -1110,7 +1110,7 @@ expressions.cs:
 #  198|             0: [LocalVariableAccess] access to local variable cd1
 #  198|             1: [ImplicitDelegateCreation] delegate creation of type D
 #  198|               0: [LocalFunctionAccess] access to local function LocalFunction
-#  202|   2: [DelegateType] Predicate<>
+#  202|   2: [DelegateType] Predicate`1
 #-----|     1: (Type parameters)
 #  202|       0: [TypeParameter] T
 #-----|     2: (Parameters)

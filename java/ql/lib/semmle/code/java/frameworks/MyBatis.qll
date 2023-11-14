@@ -114,7 +114,7 @@ class MyBatisInjectionSink extends DataFlow::Node {
 
 private class MyBatisProviderStep extends TaintTracking::AdditionalValueStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(MethodAccess ma, Annotation a, Method providerMethod |
+    exists(MethodCall ma, Annotation a, Method providerMethod |
       exists(int i |
         ma.getArgument(pragma[only_bind_into](i)) = n1.asExpr() and
         providerMethod.getParameter(pragma[only_bind_into](i)) = n2.asParameter()

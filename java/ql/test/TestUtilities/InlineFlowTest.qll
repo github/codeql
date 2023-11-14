@@ -12,16 +12,16 @@ private import internal.InlineExpectationsTestImpl
 
 private module FlowTestImpl implements InputSig<JavaDataFlow> {
   predicate defaultSource(DataFlow::Node source) {
-    source.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
+    source.asExpr().(MethodCall).getMethod().getName() = ["source", "taint"]
   }
 
   predicate defaultSink(DataFlow::Node sink) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | sink.asExpr() = ma.getAnArgument())
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | sink.asExpr() = ma.getAnArgument())
   }
 
   private string getSourceArgString(DataFlow::Node src) {
     defaultSource(src) and
-    src.asExpr().(MethodAccess).getAnArgument().(StringLiteral).getValue() = result
+    src.asExpr().(MethodCall).getAnArgument().(StringLiteral).getValue() = result
   }
 
   string getArgString(DataFlow::Node src, DataFlow::Node sink) {

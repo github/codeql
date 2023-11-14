@@ -1269,6 +1269,41 @@ module DataFlow {
         result >= 0 and kind = "call" and result = originalCall.getNumArgument() - 1
       }
     }
+
+    /**
+     * A data flow node representing a call with a tagged template literal.
+     */
+    private class TaggedTemplateLiteralCallNode extends CallNodeDef, ValueNode {
+      override TaggedTemplateExpr astNode;
+
+      override InvokeExpr getInvokeExpr() { none() } // There is no InvokeExpr for this.
+
+      override string getCalleeName() {
+        result = astNode.getTag().getUnderlyingValue().(Identifier).getName()
+      }
+
+      override DataFlow::Node getCalleeNode() { result = DataFlow::valueNode(astNode.getTag()) }
+
+      override DataFlow::Node getArgument(int i) {
+        // the first argument sent to the function is the array of string parts, which we don't model.
+        // rank is 1-indexed, which is perfect here.
+        result =
+          DataFlow::valueNode(rank[i](Expr e, int index |
+              e = astNode.getTemplate().getElement(index) and not e instanceof TemplateElement
+            |
+              e order by index
+            ))
+      }
+
+      override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+
+      override DataFlow::Node getASpreadArgument() { none() }
+
+      // we don't model the string constants as arguments, but we still count them.
+      override int getNumArgument() { result = count(this.getArgument(_)) + 1 }
+
+      override DataFlow::Node getReceiver() { none() }
+    }
   }
 
   /**

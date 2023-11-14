@@ -170,14 +170,14 @@ returnTypes
 | NullableRefTypes.cs:47:23:47:25 | Invoke | MyClass? |
 | NullableRefTypes.cs:48:16:48:16 | add_P | Void! |
 | NullableRefTypes.cs:48:16:48:16 | remove_P | Void! |
-| NullableRefTypes.cs:51:12:51:15 | Q<> | object! |
 | NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object |
 | NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object! |
+| NullableRefTypes.cs:51:12:51:15 | Q`1 | object! |
 | NullableRefTypes.cs:54:11:54:33 | Generic | Void! |
 | NullableRefTypes.cs:58:11:58:26 | Generic2 | Void! |
-| NullableRefTypes.cs:67:10:67:21 | GenericFn<> | Void! |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void! |
+| NullableRefTypes.cs:67:10:67:21 | GenericFn`1 | Void! |
 | NullableRefTypes.cs:71:14:71:18 | CallF | MyStruct! |
 | NullableRefTypes.cs:80:7:80:22 | NullableRefTypes | Void! |
 | NullableRefTypes.cs:82:10:82:40 | TestSuppressNullableWarningExpr | Void! |

@@ -7,6 +7,19 @@ import Variable
 private import dotnet
 private import Implements
 private import TypeRef
+private import commons.QualifiedName
+
+private module QualifiedNameInput implements QualifiedNameInputSig {
+  string getUnboundGenericSuffix(UnboundGeneric ug) {
+    result = "<" + strictconcat(int i | exists(ug.getTypeParameter(i)) | "", ",") + ">"
+  }
+}
+
+private module FullyQualifiedNameInput implements QualifiedNameInputSig {
+  string getUnboundGenericSuffix(UnboundGeneric ug) {
+    result = "`" + ug.getNumberOfTypeParameters()
+  }
+}
 
 /**
  * A declaration.
@@ -21,6 +34,37 @@ class Declaration extends DotNet::Declaration, Element, @declaration {
 
   override string toString() { result = this.getName() }
 
+  deprecated override predicate hasQualifiedName(string qualifier, string name) {
+    QualifiedName<QualifiedNameInput>::hasQualifiedName(this, qualifier, name)
+  }
+
+  override predicate hasFullyQualifiedName(string qualifier, string name) {
+    QualifiedName<FullyQualifiedNameInput>::hasQualifiedName(this, qualifier, name)
+  }
+
+  /**
+   * DEPRECATED: Use `getFullyQualifiedNameWithTypes` instead.
+   *
+   * Gets the fully qualified name of this declaration, including types, for example
+   * the fully qualified name with types of `M` on line 3 is `N.C.M(int, string)` in
+   *
+   * ```csharp
+   * namespace N {
+   *   class C {
+   *     void M(int i, string s) { }
+   *   }
+   * }
+   * ```
+   */
+  deprecated string getQualifiedNameWithTypes() {
+    exists(string qual |
+      qual = this.getDeclaringType().getQualifiedName() and
+      if this instanceof NestedType
+      then result = qual + "+" + this.toStringWithTypes()
+      else result = qual + "." + this.toStringWithTypes()
+    )
+  }
+
   /**
    * Gets the fully qualified name of this declaration, including types, for example
    * the fully qualified name with types of `M` on line 3 is `N.C.M(int, string)` in
@@ -33,9 +77,9 @@ class Declaration extends DotNet::Declaration, Element, @declaration {
    * }
    * ```
    */
-  string getQualifiedNameWithTypes() {
+  string getFullyQualifiedNameWithTypes() {
     exists(string qual |
-      qual = this.getDeclaringType().getQualifiedName() and
+      qual = this.getDeclaringType().getFullyQualifiedName() and
       if this instanceof NestedType
       then result = qual + "+" + this.toStringWithTypes()
       else result = qual + "." + this.toStringWithTypes()
@@ -199,6 +243,14 @@ class Member extends DotNet::Member, Modifiable, @member {
   override predicate isRequired() { Modifiable.super.isRequired() }
 
   override predicate isFile() { Modifiable.super.isFile() }
+
+  deprecated final override predicate hasQualifiedName(string namespace, string type, string name) {
+    QualifiedName<QualifiedNameInput>::hasQualifiedName(this, namespace, type, name)
+  }
+
+  final override predicate hasFullyQualifiedName(string namespace, string type, string name) {
+    QualifiedName<FullyQualifiedNameInput>::hasQualifiedName(this, namespace, type, name)
+  }
 }
 
 private class TOverridable = @virtualizable or @callable_accessor;
@@ -215,7 +267,12 @@ class Overridable extends Declaration, TOverridable {
    * to members that can be declared on an interface, i.e. methods, properties,
    * indexers and events.
    */
-  Interface getExplicitlyImplementedInterface() { explicitly_implements(this, getTypeRef(result)) }
+  Interface getExplicitlyImplementedInterface() {
+    explicitly_implements(this, result)
+    or
+    not explicitly_implements(this, any(Interface i)) and
+    explicitly_implements(this, getTypeRef(result))
+  }
 
   /**
    * Holds if this member implements an interface member explicitly.

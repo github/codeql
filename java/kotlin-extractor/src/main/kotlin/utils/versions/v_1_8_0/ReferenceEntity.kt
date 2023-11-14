@@ -10,6 +10,10 @@ import org.jetbrains.kotlin.name.Name
 
 fun getClassByFqName(pluginContext: IrPluginContext, fqName: FqName): IrClassSymbol? {
     val id = ClassId.topLevel(fqName)
+    return getClassByClassId(pluginContext, id)
+}
+
+fun getClassByClassId(pluginContext: IrPluginContext, id: ClassId): IrClassSymbol? {
     return pluginContext.referenceClass(id)
 }
 

@@ -81,6 +81,14 @@ class Node0Impl extends TIRDataFlowNode0 {
   /** Gets the operands corresponding to this node, if any. */
   Operand asOperand() { result = this.(OperandNode0).getOperand() }
 
+  /** Gets the location of this node. */
+  final Location getLocation() { result = this.getLocationImpl() }
+
+  /** INTERNAL: Do not use. */
+  Location getLocationImpl() {
+    none() // overridden by subclasses
+  }
+
   /** INTERNAL: Do not use. */
   string toStringImpl() {
     none() // overridden by subclasses
@@ -131,9 +139,15 @@ abstract class InstructionNode0 extends Node0Impl {
   override DataFlowType getType() { result = getInstructionType(instr, _) }
 
   override string toStringImpl() {
-    // This predicate is overridden in subclasses. This default implementation
-    // does not use `Instruction.toString` because that's expensive to compute.
-    result = instr.getOpcode().toString()
+    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = instr.getAst().toString()
+  }
+
+  override Location getLocationImpl() {
+    if exists(instr.getAst().getLocation())
+    then result = instr.getAst().getLocation()
+    else result instanceof UnknownDefaultLocation
   }
 
   final override predicate isGLValue() { exists(getInstructionType(instr, true)) }
@@ -173,7 +187,17 @@ abstract class OperandNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getOperandType(op, _) }
 
-  override string toStringImpl() { result = op.toString() }
+  override string toStringImpl() {
+    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = op.getDef().getAst().toString()
+  }
+
+  override Location getLocationImpl() {
+    if exists(op.getDef().getAst().getLocation())
+    then result = op.getDef().getAst().getLocation()
+    else result instanceof UnknownDefaultLocation
+  }
 
   final override predicate isGLValue() { exists(getOperandType(op, true)) }
 }
@@ -555,7 +579,7 @@ predicate instructionForFullyConvertedCall(Instruction instr, CallInstruction ca
 }
 
 /** Holds if `node` represents the output node for `call`. */
-private predicate simpleOutNode(Node node, CallInstruction call) {
+predicate simpleOutNode(Node node, CallInstruction call) {
   operandForFullyConvertedCall(node.asOperand(), call)
   or
   instructionForFullyConvertedCall(node.asInstruction(), call)
@@ -632,20 +656,20 @@ predicate jumpStep(Node n1, Node n2) {
       v = globalUse.getVariable() and
       n1.(FinalGlobalValue).getGlobalUse() = globalUse
     |
-      globalUse.getIndirectionIndex() = 1 and
+      globalUse.getIndirection() = 1 and
       v = n2.asVariable()
       or
-      v = n2.asIndirectVariable(globalUse.getIndirectionIndex())
+      v = n2.asIndirectVariable(globalUse.getIndirection())
     )
     or
     exists(Ssa::GlobalDef globalDef |
       v = globalDef.getVariable() and
       n2.(InitialGlobalValue).getGlobalDef() = globalDef
     |
-      globalDef.getIndirectionIndex() = 1 and
+      globalDef.getIndirection() = 1 and
       v = n1.asVariable()
       or
-      v = n1.asIndirectVariable(globalDef.getIndirectionIndex())
+      v = n1.asIndirectVariable(globalDef.getIndirection())
     )
   )
 }

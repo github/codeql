@@ -45,7 +45,7 @@ class RightShiftOp extends Expr {
   }
 }
 
-private predicate boundedRead(RValue read) {
+private predicate boundedRead(VarRead read) {
   exists(SsaVariable v, ConditionBlock cb, ComparisonExpr comp, boolean testIsTrue |
     read = v.getAUse() and
     cb.controls(read.getBasicBlock(), testIsTrue) and
@@ -57,7 +57,7 @@ private predicate boundedRead(RValue read) {
   )
 }
 
-private predicate castCheck(RValue read) {
+private predicate castCheck(VarRead read) {
   exists(EqualityTest eq, CastExpr cast |
     cast.getExpr() = read and
     eq.hasOperands(cast, read.getVariable().getAnAccess())
@@ -85,7 +85,7 @@ private predicate smallExpr(Expr e) {
  * numeric cast.
  */
 module NumericCastFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
@@ -117,7 +117,8 @@ module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr()
+    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
+    sink.asExpr() instanceof VarAccess
   }
 
   predicate isBarrier(DataFlow::Node node) {
@@ -125,8 +126,11 @@ module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
     castCheck(node.asExpr()) or
     node.getType() instanceof SmallType or
     smallExpr(node.asExpr()) or
-    node.getEnclosingCallable() instanceof HashCodeMethod
+    node.getEnclosingCallable() instanceof HashCodeMethod or
+    exists(RightShiftOp e | e.getShiftedVariable().getAnAccess() = node.asExpr())
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /**

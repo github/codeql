@@ -15,14 +15,12 @@ namespace Semmle.Autobuild.Shared
         /// <returns></returns>
         public static CommandBuilder MsBuildCommand(this CommandBuilder cmdBuilder, IAutobuilder<AutobuildOptionsShared> builder)
         {
-            var isArmMac = builder.Actions.IsMacOs() && builder.Actions.IsArm();
-
             // mono doesn't ship with `msbuild` on Arm-based Macs, but we can fall back to
             // msbuild that ships with `dotnet` which can be invoked with `dotnet msbuild`
             // perhaps we should do this on all platforms?
-            return isArmMac ?
-                cmdBuilder.RunCommand("dotnet").Argument("msbuild") :
-                cmdBuilder.RunCommand("msbuild");
+            return builder.Actions.IsRunningOnAppleSilicon()
+                ? cmdBuilder.RunCommand("dotnet").Argument("msbuild")
+                : cmdBuilder.RunCommand("msbuild");
         }
     }
 
@@ -84,7 +82,12 @@ namespace Semmle.Autobuild.Shared
                         Argument("/t:restore").
                         QuoteArgument(projectOrSolution.FullPath);
 
-                    if (nugetDownloaded)
+                    if (builder.Actions.IsRunningOnAppleSilicon())
+                    {
+                        // On Apple Silicon, only try package restore with `dotnet msbuild /t:restore`
+                        ret &= BuildScript.Try(msbuildRestoreCommand.Script);
+                    }
+                    else if (nugetDownloaded)
                     {
                         ret &= BuildScript.Try(nugetRestore | msbuildRestoreCommand.Script);
                     }

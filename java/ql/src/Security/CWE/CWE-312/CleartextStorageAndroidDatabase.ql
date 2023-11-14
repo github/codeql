@@ -15,7 +15,7 @@
 import java
 import semmle.code.java.security.CleartextStorageAndroidDatabaseQuery
 
-from SensitiveSource data, LocalDatabaseOpenMethodAccess s, Expr input, Expr store
+from SensitiveSource data, LocalDatabaseOpenMethodCall s, Expr input, Expr store
 where
   input = s.getAnInput() and
   store = s.getAStore() and

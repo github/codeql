@@ -27,11 +27,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (File.Exists(path))
                 {
                     pendingDllsToIndex.Enqueue(path);
+                    continue;
                 }
-                else
+
+                if (Directory.Exists(path))
                 {
                     progressMonitor.FindingFiles(path);
                     AddReferenceDirectory(path);
+                }
+                else
+                {
+                    progressMonitor.LogInfo("AssemblyCache: Path not found: " + path);
                 }
             }
             IndexReferences();
@@ -70,7 +76,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var info in assemblyInfoByFileName.Values
                 .OrderBy(info => info.Name)
                 .ThenBy(info => info.NetCoreVersion ?? emptyVersion)
-                .ThenBy(info => info.Version ?? emptyVersion))
+                .ThenBy(info => info.Version ?? emptyVersion)
+                .ThenBy(info => info.Filename))
             {
                 foreach (var index in info.IndexStrings)
                 {

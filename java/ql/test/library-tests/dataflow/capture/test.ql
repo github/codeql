@@ -16,7 +16,7 @@ module Flow = DataFlow::Global<Config>;
 
 int explorationLimit() { result = 100 }
 
-module PartialFlow = Flow::FlowExploration<explorationLimit/0>;
+module PartialFlow = Flow::FlowExplorationFwd<explorationLimit/0>;
 
 from PartialFlow::PartialPathNode src, PartialFlow::PartialPathNode sink
 where PartialFlow::partialFlow(src, sink, _)

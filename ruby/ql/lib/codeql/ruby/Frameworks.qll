@@ -37,3 +37,4 @@ private import codeql.ruby.frameworks.Pg
 private import codeql.ruby.frameworks.Yaml
 private import codeql.ruby.frameworks.Sequel
 private import codeql.ruby.frameworks.Ldap
+private import codeql.ruby.frameworks.Jwt

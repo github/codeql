@@ -91,6 +91,13 @@ signature module InputSig {
    */
   OutNode getAnOutNode(DataFlowCall call, ReturnKind kind);
 
+  /**
+   * A type for a data flow node.
+   *
+   * This may or may not coincide with any type system existing for the source
+   * language, but should minimally include unique types for individual closure
+   * expressions (typically lambdas).
+   */
   class DataFlowType {
     /** Gets a textual representation of this element. */
     string toString();
@@ -98,9 +105,25 @@ signature module InputSig {
 
   string ppReprType(DataFlowType t);
 
+  /**
+   * Holds if `t1` and `t2` are compatible types.
+   *
+   * This predicate must be symmetric and reflexive.
+   *
+   * This predicate is used in the following way: If the data flow library
+   * tracks an object from node `n1` to `n2` using solely value-preserving
+   * steps, then it will check that the types of `n1` and `n2` are compatible.
+   * If they are not, then flow will be blocked.
+   */
   bindingset[t1, t2]
   predicate compatibleTypes(DataFlowType t1, DataFlowType t2);
 
+  /**
+   * Holds if `t1` is strictly stronger than `t2`. That is, `t1` is a strict
+   * subtype of `t2`.
+   *
+   * This predicate must be transitive and imply `compatibleTypes(t1, t2)`.
+   */
   predicate typeStrongerThan(DataFlowType t1, DataFlowType t2);
 
   class Content {
@@ -199,6 +222,12 @@ signature module InputSig {
 
   /**
    * Holds if the value of `node2` is given by `node1`.
+   *
+   * This predicate is combined with type information in the following way: If
+   * the data flow library is able to compute an improved type for `node1` then
+   * it will also conclude that this type applies to `node2`. Vice versa, if
+   * `node2` must be visited along a flow path, then any type known for `node2`
+   * must also apply to `node1`.
    */
   predicate localMustFlowStep(Node node1, Node node2);
 

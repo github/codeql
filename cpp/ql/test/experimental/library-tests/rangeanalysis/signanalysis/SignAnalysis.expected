@@ -675,6 +675,7 @@
 | test.c:398:9:398:22 | CopyValue: ... , ... | positive strictlyPositive |
 | test.c:398:14:398:14 | Load: y | positive strictlyPositive |
 | test.c:398:14:398:19 | Add: ... += ... | positive strictlyPositive |
+| test.c:398:14:398:19 | Load: ... += ... | positive strictlyPositive |
 | test.c:398:14:398:19 | Store: ... += ... | positive strictlyPositive |
 | test.c:398:19:398:19 | Constant: (unsigned int)... | positive strictlyPositive |
 | test.c:398:22:398:22 | Load: y | positive strictlyPositive |

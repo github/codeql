@@ -2,16 +2,17 @@ package test
 
 import (
 	"database/sql"
-	"golang.org/x/net/html"
 	"net/http"
+
+	"golang.org/x/net/html"
 )
 
 func test(request *http.Request, writer http.ResponseWriter) {
 
-	cookie, _ := request.Cookie("SomeCookie")
-	writer.Write([]byte(html.EscapeString(cookie.Value))) // GOOD: escaped.
+	param1 := request.URL.Query().Get("param1")
+	writer.Write([]byte(html.EscapeString(param1))) // GOOD: escaped.
 
-	writer.Write([]byte(html.UnescapeString(cookie.Value))) // BAD: unescaped.
+	writer.Write([]byte(html.UnescapeString(param1))) // BAD: unescaped.
 
 	node, _ := html.Parse(request.Body)
 	writer.Write([]byte(node.Data)) // BAD: writing unescaped HTML data

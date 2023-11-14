@@ -84,7 +84,7 @@ private module Cached {
 import Cached
 
 private predicate explicitInstanceArgument(Call call, Expr instarg) {
-  call instanceof MethodAccess and
+  call instanceof MethodCall and
   instarg = call.getQualifier() and
   not call.getCallee().isStatic()
 }
@@ -463,7 +463,7 @@ module Private {
   /** A data flow node that represents the output of a call. */
   class OutNode extends Node {
     OutNode() {
-      this.asExpr() instanceof MethodAccess
+      this.asExpr() instanceof MethodCall
       or
       this.(FlowSummaryNode).isOut(_)
     }
