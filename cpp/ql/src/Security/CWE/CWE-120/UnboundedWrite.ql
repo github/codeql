@@ -52,16 +52,17 @@ predicate isUnboundedWrite(BufferWrite bw) {
  * Holds if `e` is a source buffer going into an unbounded write `bw` or a
  * qualifier of (a qualifier of ...) such a source.
  */
-predicate unboundedWriteSource(Expr e, BufferWrite bw) {
-  isUnboundedWrite(bw) and e = bw.getASource()
+predicate unboundedWriteSource(Expr e, BufferWrite bw, boolean qualifier) {
+  isUnboundedWrite(bw) and e = bw.getASource() and qualifier = false
   or
-  exists(FieldAccess fa | unboundedWriteSource(fa, bw) and e = fa.getQualifier())
+  exists(FieldAccess fa | unboundedWriteSource(fa, bw, _) and e = fa.getQualifier()) and
+  qualifier = true
 }
 
 predicate isSource(FS::FlowSource source, string sourceType) { source.getSourceType() = sourceType }
 
-predicate isSink(DataFlow::Node sink, BufferWrite bw) {
-  unboundedWriteSource(sink.asIndirectExpr(), bw)
+predicate isSink(DataFlow::Node sink, BufferWrite bw, boolean qualifier) {
+  unboundedWriteSource(sink.asIndirectExpr(), bw, qualifier)
   or
   // `gets` and `scanf` reads from stdin so there's no real input.
   // The `BufferWrite` library models this as the call itself being
@@ -69,7 +70,7 @@ predicate isSink(DataFlow::Node sink, BufferWrite bw) {
   // the sink so that we report a path where source = sink (because
   // the same output argument is also included in `isSource`).
   bw.getASource() = bw and
-  unboundedWriteSource(sink.asDefiningArgument(), bw)
+  unboundedWriteSource(sink.asDefiningArgument(), bw, qualifier)
 }
 
 predicate lessThanOrEqual(IRGuardCondition g, Expr e, boolean branch) {
@@ -84,9 +85,9 @@ predicate lessThanOrEqual(IRGuardCondition g, Expr e, boolean branch) {
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSource(source, _) }
 
-  predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  predicate isSink(DataFlow::Node sink) { isSink(sink, _, _) }
 
-  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node, _, false) }
 
   predicate isBarrier(DataFlow::Node node) {
     // Block flow if the node is guarded by any <, <= or = operations.
@@ -116,7 +117,7 @@ from BufferWrite bw, Flow::PathNode source, Flow::PathNode sink, string sourceTy
 where
   Flow::flowPath(source, sink) and
   isSource(source.getNode(), sourceType) and
-  isSink(sink.getNode(), bw)
+  isSink(sink.getNode(), bw, _)
 select bw, source, sink,
   "This '" + bw.getBWDesc() + "' with input from $@ may overflow the destination.",
   source.getNode(), sourceType
