@@ -78,6 +78,8 @@
 /lib/codeql/swift/elements/expr/BinaryExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/BindOptionalExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/BooleanLiteralExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/BorrowExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/BorrowExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/BridgeFromObjCExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/BridgeFromObjCExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/BridgeToObjCExpr.qll linguist-generated
@@ -98,6 +100,10 @@
 /lib/codeql/swift/elements/expr/ConditionalBridgeFromObjCExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/ConditionalCheckedCastExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ConditionalCheckedCastExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/ConsumeExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/ConsumeExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/CopyExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/CopyExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/CovariantFunctionConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/CovariantFunctionConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/CovariantReturnConversionExpr.qll linguist-generated
@@ -461,6 +467,7 @@
 /lib/codeql/swift/generated/expr/BinaryExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BindOptionalExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BooleanLiteralExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/BorrowExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BridgeFromObjCExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BridgeToObjCExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/BuiltinLiteralExpr.qll linguist-generated
@@ -474,6 +481,8 @@
 /lib/codeql/swift/generated/expr/CollectionUpcastConversionExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ConditionalBridgeFromObjCExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ConditionalCheckedCastExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/ConsumeExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/CopyExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/CovariantFunctionConversionExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/CovariantReturnConversionExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DeclRefExpr.qll linguist-generated
@@ -796,6 +805,10 @@
 /test/extractor-tests/generated/expr/CaptureListExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/CoerceExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/ConditionalCheckedCastExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/CopyExpr/ConsumeExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/CopyExpr/ConsumeExpr_getType.ql linguist-generated
+/test/extractor-tests/generated/expr/CopyExpr/CopyExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/CopyExpr/CopyExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/DeclRefExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/DefaultArgumentExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/DictionaryExpr/MISSING_SOURCE.txt linguist-generated
