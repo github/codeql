@@ -1,4 +1,4 @@
-/**
+/*
  * @name Web Cache Deception
  * @description A caching system has been detected on the application and is vulnerable to web cache deception. By manipulating the URL it is possible to force the application to cache pages that are only accessible by an authenticated user. Once cached, these pages can be accessed by an unauthenticated user.
  * @kind path-problem

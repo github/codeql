@@ -78,12 +78,12 @@ func ShowAdminPageCache(w http.ResponseWriter, r *http.Request) {
 func main() {
 	var portNum = flag.String("p", "80", "Specify application server listening port")
 	flag.Parse()
-	fmt.Println("Vulnapp server listening : " + *portNum)
+	fmt.Println("Vulnapp server listening : 1337")
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets/"))))
 	http.HandleFunc("/adminusers", ShowAdminPageCache)
 
-	err := http.ListenAndServe(":"+*portNum, nil)
+	err := http.ListenAndServe(":1337", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
