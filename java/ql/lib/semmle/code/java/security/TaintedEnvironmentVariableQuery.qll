@@ -18,16 +18,23 @@ private module ProcessBuilderEnvironmentConfig implements DataFlow::ConfigSig {
 
 private module ProcessBuilderEnvironmentFlow = DataFlow::Global<ProcessBuilderEnvironmentConfig>;
 
+/**
+ * A taint-tracking configuration that tracks flow from unvalidated data to an environment variable for a subprocess.
+ */
 module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     sinkNode(sink, "environment-injection")
     or
+    // sink is an added to a `ProcessBuilder::environment` map.
     exists(MapPutCall mpc | mpc.getAnArgument() = sink.asExpr() |
       ProcessBuilderEnvironmentFlow::flowToExpr(mpc.getQualifier())
     )
   }
 }
 
+/**
+ * Taint-tracking flow for unvalidated data to an environment variable for a subprocess.
+ */
 module ExecTaintedEnvironmentFlow = TaintTracking::Global<ExecTaintedEnvironmentConfig>;
