@@ -47,14 +47,14 @@ func test_heuristic(db: MyDatabase) throws {
 
 	_ = MyDatabase()
 	_ = MyDatabase(sql: "some_fixed_sql")
-	_ = MyDatabase(sql: remoteString) // BAD [NOT DETECTED]
+	_ = MyDatabase(sql: remoteString) // BAD
 
-	db.execute1(remoteString) // BAD [NOT DETECTED]
-	db.execute2(remoteString) // BAD [NOT DETECTED]
-	db.execute3(NSString(string: remoteString)) // BAD [NOT DETECTED]
-	db.execute4(remoteString as! Sql) // BAD [NOT DETECTED]
+	db.execute1(remoteString) // BAD
+	db.execute2(remoteString) // BAD
+	db.execute3(NSString(string: remoteString)) // BAD
+	db.execute4(remoteString as! Sql) // BAD
 
-	db.query(sql: remoteString) // BAD [NOT DETECTED]
+	db.query(sql: remoteString) // BAD
 	db.query(sqlLiteral: remoteString) // BAD [NOT DETECTED]
 	db.query(sqlStatement: remoteString) // BAD [NOT DETECTED]
 	db.query(sqliteStatement: remoteString) // BAD [NOT DETECTED]

@@ -148,6 +148,26 @@ private class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
 }
 
 /**
+ * An SQL injection sink that is determined by imprecise methods.
+ */
+private class HeuristicSqlInjectionSink extends SqlInjectionSink {
+  HeuristicSqlInjectionSink() {
+    // by parameter name
+    exists(CallExpr ce, int ix, ParamDecl pd |
+      pd.getName() = "sql" and
+      pd = ce.getStaticTarget().getParam(ix) and
+      this.asExpr() = ce.getArgument(ix).getExpr()
+    )
+    or
+    // by argument name
+    exists(Argument a |
+      a.getLabel() = "sql" and
+      this.asExpr() = a.getExpr()
+    )
+  }
+}
+
+/**
  * A sink defined in a CSV model.
  */
 private class DefaultSqlInjectionSink extends SqlInjectionSink {
