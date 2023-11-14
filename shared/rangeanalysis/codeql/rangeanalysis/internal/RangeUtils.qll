@@ -37,6 +37,82 @@ module MakeUtils<Semantic Lang, DeltaSig D> {
     result.(CopyValueExpr).getOperand() = ssaRead(v, delta)
   }
 
+  /**
+   * Gets a condition that tests whether `v` equals `e + delta`.
+   *
+   * If the condition evaluates to `testIsTrue`:
+   * - `isEq = true`  : `v == e + delta`
+   * - `isEq = false` : `v != e + delta`
+   */
+  pragma[nomagic]
+  Guard eqFlowCond(SsaVariable v, Expr e, D::Delta delta, boolean isEq, boolean testIsTrue) {
+    exists(boolean eqpolarity |
+      result.isEquality(ssaRead(v, delta), e, eqpolarity) and
+      (testIsTrue = true or testIsTrue = false) and
+      eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
+    )
+    or
+    exists(boolean testIsTrue0 |
+      implies_v2(result, testIsTrue, eqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0)
+    )
+  }
+
+  /**
+   * Holds if `v` is an `SsaExplicitUpdate` that equals `e + delta`.
+   */
+  predicate ssaUpdateStep(SsaExplicitUpdate v, Expr e, D::Delta delta) {
+    exists(Expr defExpr | defExpr = v.getDefiningExpr() |
+      defExpr.(CopyValueExpr).getOperand() = e and delta = D::fromFloat(0)
+      or
+      defExpr.(PostIncExpr).getOperand() = e and delta = D::fromFloat(1)
+      or
+      defExpr.(PreIncExpr).getOperand() = e and delta = D::fromFloat(1)
+      or
+      defExpr.(PostDecExpr).getOperand() = e and delta = D::fromFloat(-1)
+      or
+      defExpr.(PreDecExpr).getOperand() = e and delta = D::fromFloat(-1)
+      or
+      e = defExpr and
+      not (
+        defExpr instanceof CopyValueExpr or
+        defExpr instanceof PostIncExpr or
+        defExpr instanceof PreIncExpr or
+        defExpr instanceof PostDecExpr or
+        defExpr instanceof PreDecExpr
+      ) and
+      delta = D::fromFloat(0)
+    )
+  }
+
+  /**
+   * Holds if `e1 + delta` equals `e2`.
+   */
+  predicate valueFlowStep(Expr e2, Expr e1, D::Delta delta) {
+    e2.(CopyValueExpr).getOperand() = e1 and delta = D::fromFloat(0)
+    or
+    e2.(PostIncExpr).getOperand() = e1 and delta = D::fromFloat(0)
+    or
+    e2.(PostDecExpr).getOperand() = e1 and delta = D::fromFloat(0)
+    or
+    e2.(PreIncExpr).getOperand() = e1 and delta = D::fromFloat(1)
+    or
+    e2.(PreDecExpr).getOperand() = e1 and delta = D::fromFloat(-1)
+    or
+    additionalValueFlowStep(e2, e1, D::toInt(delta))
+    or
+    exists(Expr x | e2.(AddExpr).hasOperands(e1, x) |
+      D::fromInt(x.(ConstantIntegerExpr).getIntValue()) = delta
+    )
+    or
+    exists(Expr x, SubExpr sub |
+      e2 = sub and
+      sub.getLeftOperand() = e1 and
+      sub.getRightOperand() = x
+    |
+      D::fromInt(-x.(ConstantIntegerExpr).getIntValue()) = delta
+    )
+  }
+
   private newtype TSsaReadPosition =
     TSsaReadPositionBlock(BasicBlock bb) {
       exists(SsaVariable v | v.getAUse().getBasicBlock() = bb)

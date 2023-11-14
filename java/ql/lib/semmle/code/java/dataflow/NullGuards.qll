@@ -6,7 +6,6 @@ import java
 import SSA
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.frameworks.apache.Collections
-private import RangeUtils
 private import IntegerGuards
 
 /** Gets an expression that is always `null`. */

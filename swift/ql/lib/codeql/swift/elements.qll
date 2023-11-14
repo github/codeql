@@ -155,6 +155,8 @@ import codeql.swift.elements.expr.OptionalEvaluationExpr
 import codeql.swift.elements.expr.OptionalTryExpr
 import codeql.swift.elements.expr.OtherInitializerRefExpr
 import codeql.swift.elements.expr.OverloadedDeclRefExpr
+import codeql.swift.elements.expr.PackElementExpr
+import codeql.swift.elements.expr.PackExpansionExpr
 import codeql.swift.elements.expr.ParenExpr
 import codeql.swift.elements.expr.PointerToPointerExpr
 import codeql.swift.elements.expr.PostfixUnaryExpr
@@ -248,6 +250,7 @@ import codeql.swift.elements.type.ClassType
 import codeql.swift.elements.type.DependentMemberType
 import codeql.swift.elements.type.DictionaryType
 import codeql.swift.elements.type.DynamicSelfType
+import codeql.swift.elements.type.ElementArchetypeType
 import codeql.swift.elements.type.EnumType
 import codeql.swift.elements.type.ErrorType
 import codeql.swift.elements.type.ExistentialMetatypeType
@@ -257,6 +260,7 @@ import codeql.swift.elements.type.GenericFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 import codeql.swift.elements.type.InOutType
 import codeql.swift.elements.type.LValueType
+import codeql.swift.elements.type.LocalArchetypeType
 import codeql.swift.elements.type.MetatypeType
 import codeql.swift.elements.type.ModuleType
 import codeql.swift.elements.type.NominalOrBoundGenericNominalType
@@ -264,6 +268,10 @@ import codeql.swift.elements.type.NominalType
 import codeql.swift.elements.type.OpaqueTypeArchetypeType
 import codeql.swift.elements.type.OpenedArchetypeType
 import codeql.swift.elements.type.OptionalType
+import codeql.swift.elements.type.PackArchetypeType
+import codeql.swift.elements.type.PackElementType
+import codeql.swift.elements.type.PackExpansionType
+import codeql.swift.elements.type.PackType
 import codeql.swift.elements.type.ParameterizedProtocolType
 import codeql.swift.elements.type.ParenType
 import codeql.swift.elements.type.PrimaryArchetypeType

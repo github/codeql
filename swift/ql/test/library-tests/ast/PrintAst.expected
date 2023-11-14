@@ -5952,6 +5952,27 @@ expressions.swift:
 #  183|       getPattern(0): [NamedPattern] tupleElement
 #  183| [ConcreteVarDecl] tupleElement
 #  183|     Type = WritableKeyPath<(Int, Int), Int>
+#  185| [NamedFunction] makeTuple(_:)
+#  185|     InterfaceType = <each T> (repeat each T) -> (repeat each T)
+#  185|   getGenericTypeParam(0): [GenericTypeParamDecl] T
+#  185|   getParam(0): [ParamDecl] t
+#  185|       Type = repeat each T
+#  185|   getBody(): [BraceStmt] { ... }
+#  186|     getElement(0): [ReturnStmt] return ...
+#  186|       getResult(): [TupleExpr] (...)
+#  186|         getElement(0): [PackExpansionExpr] PackExpansionExpr
+#  186|           getPatternExpr(): [PackElementExpr] PackElementExpr
+#  186|             getSubExpr(): [DeclRefExpr] t
+#  189| [TopLevelCodeDecl] { ... }
+#  189|   getBody(): [BraceStmt] { ... }
+#  189|     getElement(0): [PatternBindingDecl] var ... = ...
+#  189|       getInit(0): [CallExpr] call to makeTuple(_:)
+#  189|         getFunction(): [DeclRefExpr] makeTuple(_:)
+#  189|         getArgument(0): [Argument] : A
+#  189|           getExpr(): [StringLiteralExpr] A
+#  189|         getArgument(1): [Argument] : 2
+#  189|           getExpr(): [IntegerLiteralExpr] 2
+#  189|       getPattern(0): [AnyPattern] _
 patterns.swift:
 #    1| [NamedFunction] basic_patterns()
 #    1|     InterfaceType = () -> ()
