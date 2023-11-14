@@ -1201,6 +1201,40 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfConsumeExpr(
+    ConsumeExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCopyExpr(CopyExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfDeclRefExpr(
     DeclRefExpr e, int index, string partialPredicateCall
   ) {
@@ -2137,6 +2171,20 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfApplyExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfBorrowExpr(BorrowExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bIdentityExpr, int n |
+      b = 0 and
+      bIdentityExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfIdentityExpr(e, i, _)) | i) and
+      n = bIdentityExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfIdentityExpr(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -5078,6 +5126,10 @@ private module Impl {
     or
     result = getImmediateChildOfCaptureListExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfConsumeExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCopyExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfDeclRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfDefaultArgumentExpr(e, index, partialAccessor)
@@ -5171,6 +5223,8 @@ private module Impl {
     result = getImmediateChildOfAwaitExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBinaryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBorrowExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBridgeFromObjCExpr(e, index, partialAccessor)
     or

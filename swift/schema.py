@@ -1327,3 +1327,37 @@ class PackElementExpr(Expr):
     https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
     """
     sub_expr: Expr | child
+
+class CopyExpr(Expr):
+    """
+    An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
+
+    ```
+    let y = ...
+    let x = copy y
+    ```
+    """
+    sub_expr: Expr | child
+
+@qltest.test_with(CopyExpr)
+class ConsumeExpr(Expr):
+    """
+    An expression that forces value to be moved. In the example below, `consume` marks the move expression:
+
+    ```
+    let y = ...
+    let x = consume y
+    ```
+    """
+    sub_expr: Expr | child
+
+class BorrowExpr(IdentityExpr):
+    """
+    An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:
+
+    ```
+    let y = ...
+    let x = _borrow y
+    ```
+    """
+    pass

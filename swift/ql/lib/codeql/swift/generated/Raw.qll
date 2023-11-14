@@ -1121,6 +1121,42 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that forces value to be moved. In the example below, `consume` marks the move expression:
+   *
+   * ```
+   * let y = ...
+   * let x = consume y
+   * ```
+   */
+  class ConsumeExpr extends @consume_expr, Expr {
+    override string toString() { result = "ConsumeExpr" }
+
+    /**
+     * Gets the sub expression of this consume expression.
+     */
+    Expr getSubExpr() { consume_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
+   *
+   * ```
+   * let y = ...
+   * let x = copy y
+   * ```
+   */
+  class CopyExpr extends @copy_expr, Expr {
+    override string toString() { result = "CopyExpr" }
+
+    /**
+     * Gets the sub expression of this copy expression.
+     */
+    Expr getSubExpr() { copy_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class DeclRefExpr extends @decl_ref_expr, Expr {
     override string toString() { result = "DeclRefExpr" }
@@ -1841,6 +1877,19 @@ module Raw {
    */
   class BinaryExpr extends @binary_expr, ApplyExpr {
     override string toString() { result = "BinaryExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:
+   *
+   * ```
+   * let y = ...
+   * let x = _borrow y
+   * ```
+   */
+  class BorrowExpr extends @borrow_expr, IdentityExpr {
+    override string toString() { result = "BorrowExpr" }
   }
 
   /**

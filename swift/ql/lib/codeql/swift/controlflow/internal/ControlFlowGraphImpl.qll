@@ -1444,6 +1444,24 @@ module Exprs {
     }
   }
 
+  /** Control-flow for Move Semantics. See the QLDoc for `CopyExpr` for details. */
+  private class CopyExprTree extends AstStandardPostOrderTree {
+    override CopyExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
+  /** Control-flow for Move Semantics. See the QLDoc for `ConsumeExpr` for details. */
+  private class ConsumeExprTree extends AstStandardPostOrderTree {
+    override ConsumeExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
   private class OpaqueValueExprTree extends AstLeafTree {
     override OpaqueValueExpr ast;
   }
