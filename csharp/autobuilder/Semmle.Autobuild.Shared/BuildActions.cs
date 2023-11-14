@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml;
 using Semmle.Util;
@@ -119,10 +120,10 @@ namespace Semmle.Autobuild.Shared
         bool IsMacOs();
 
         /// <summary>
-        /// Gets a value indicating whether we are running on arm.
+        /// Gets a value indicating whether we are running on Apple Silicon.
         /// </summary>
-        /// <returns>True if we are running on arm.</returns>
-        bool IsArm();
+        /// <returns>True if we are running on Apple Silicon.</returns>
+        bool IsRunningOnAppleSilicon();
 
         /// <summary>
         /// Combine path segments, Path.Combine().
@@ -240,9 +241,25 @@ namespace Semmle.Autobuild.Shared
 
         bool IBuildActions.IsMacOs() => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
-        bool IBuildActions.IsArm() =>
-            RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ||
-            RuntimeInformation.ProcessArchitecture == Architecture.Arm;
+        bool IBuildActions.IsRunningOnAppleSilicon()
+        {
+            var thisBuildActions = (IBuildActions)this;
+
+            if (!thisBuildActions.IsMacOs())
+            {
+                return false;
+            }
+
+            try
+            {
+                thisBuildActions.RunProcess("sysctl", "machdep.cpu.brand_string", workingDirectory: null, env: null, out var stdOut);
+                return stdOut?.Any(s => s?.ToLowerInvariant().Contains("apple") == true) ?? false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         string IBuildActions.PathCombine(params string[] parts) => Path.Combine(parts);
 
