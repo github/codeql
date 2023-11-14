@@ -252,7 +252,7 @@ namespace Semmle.Autobuild.Shared
 
             try
             {
-                var res = thisBuildActions.RunProcess("sysctl", "machdep.cpu.brand_string", workingDirectory: null, env: null, out var stdOut);
+                thisBuildActions.RunProcess("sysctl", "machdep.cpu.brand_string", workingDirectory: null, env: null, out var stdOut);
                 return stdOut?.Any(s => s?.ToLowerInvariant().Contains("apple") == true) ?? false;
             }
             catch (Exception)
