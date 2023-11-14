@@ -82,7 +82,12 @@ namespace Semmle.Autobuild.Shared
                         Argument("/t:restore").
                         QuoteArgument(projectOrSolution.FullPath);
 
-                    if (nugetDownloaded)
+                    if (builder.Actions.IsRunningOnAppleSilicon())
+                    {
+                        // On Apple Silicon, only try package restore with `dotnet msbuild /t:restore`
+                        ret &= BuildScript.Try(msbuildRestoreCommand.Script);
+                    }
+                    else if (nugetDownloaded)
                     {
                         ret &= BuildScript.Try(nugetRestore | msbuildRestoreCommand.Script);
                     }
