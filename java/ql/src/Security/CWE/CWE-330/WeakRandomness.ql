@@ -1,11 +1,13 @@
 /**
- * @name Weak Randomness
- * @description Using a weak source of randomness may allow an attacker to predict the generated values.
+ * @name Insecure randomness
+ * @description Using a cryptographically weak pseudo-random number generator to generate a
+ *              security-sensitive value may allow an attacker to predict what value will
+ *              be generated.
  * @kind path-problem
- * @problem.severity error
- * @security-severity 8.6
+ * @problem.severity warning
+ * @security-severity 7.8
  * @precision high
- * @id java/weak-randomness
+ * @id java/insecure-randomness
  * @tags security
  *      external/cwe/cwe-330
  *      external/cwe/cwe-338
