@@ -12,7 +12,7 @@ def is_running_on_apple_silicon():
 
 # if on ARM runners, remove Mono from the path, so we're using
 # dotnet restore instead of nuget.exe restore - on ARM machines
-# we run dotner msbuild (instead of the mono-provided msbuild.exe)
+# we run dotnet msbuild (instead of the mono-provided msbuild.exe)
 # so we need to match the restore command, too.
 
 platform_name = sys.platform.lower()
