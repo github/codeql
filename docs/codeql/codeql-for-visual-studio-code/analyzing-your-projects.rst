@@ -98,7 +98,7 @@ You can quickly run multiple queries against the database you've selected using 
 Running all queries in a directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can easily run a directory of queries using the queries panel.
+You can easily run every query in a directory using the queries panel.
 
 #. In the sidebar, to expand the queries panel, click the **Queries** title bar.
 #. Hover over the desired directory of queries, then click the **Run local queries** icon.
