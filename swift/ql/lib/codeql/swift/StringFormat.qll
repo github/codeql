@@ -85,3 +85,16 @@ class NsExceptionRaise extends FormattingFunction, Method {
 
   override int getFormatParameterIndex() { result = 1 }
 }
+
+/**
+ * A function that appears to be an imported C `printf` variant.
+ */
+class PrintfFormat extends FormattingFunction, FreeFunction {
+  int formatParamIndex;
+
+  PrintfFormat() {
+    this.getShortName().matches("%printf%") and this.getParam(formatParamIndex).getName() = "format"
+  }
+
+  override int getFormatParameterIndex() { result = formatParamIndex }
+}

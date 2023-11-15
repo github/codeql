@@ -138,13 +138,13 @@ func tests() throws {
 
     tainted.withCString({
         cstr in
-        _ = dprintf(0, cstr, "abc") // BAD [NOT DETECTED]
+        _ = dprintf(0, cstr, "abc") // BAD
         _ = dprintf(0, "%s", cstr) // GOOD: format not tainted
-        _ = vprintf(cstr, getVaList(["abc"])) // BAD [NOT DETECTED]
+        _ = vprintf(cstr, getVaList(["abc"])) // BAD
         _ = vprintf("%s", getVaList([cstr])) // GOOD: format not tainted
-        _ = vfprintf(nil, cstr, getVaList(["abc"])) // BAD [NOT DETECTED]
+        _ = vfprintf(nil, cstr, getVaList(["abc"])) // BAD
         _ = vfprintf(nil, "%s", getVaList([cstr])) // GOOD: format not tainted
-        _ = vasprintf_l(nil, nil, cstr, getVaList(["abc"])) // BAD [NOT DETECTED]
+        _ = vasprintf_l(nil, nil, cstr, getVaList(["abc"])) // BAD
         _ = vasprintf_l(nil, nil, "%s", getVaList([cstr])) // GOOD: format not tainted
     })
 
