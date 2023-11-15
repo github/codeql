@@ -17,4 +17,5 @@ import ExecTaintedEnvironmentFlow::PathGraph
 
 from ExecTaintedEnvironmentFlow::PathNode source, ExecTaintedEnvironmentFlow::PathNode sink
 where ExecTaintedEnvironmentFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This command will be execute with a tainted environment variable."
+select sink.getNode(), source, sink,
+  "This command will be execute with a tainted environment variable."
