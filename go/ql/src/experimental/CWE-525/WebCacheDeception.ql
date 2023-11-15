@@ -13,8 +13,7 @@
 import go
 
 from
-  DataFlow::CallNode httpHandleFuncCall, DataFlow::CallNode call, DataFlow::Node predecessor,
-  Method get
+  DataFlow::CallNode httpHandleFuncCall, DataFlow::CallNode call, Method get
 where
   httpHandleFuncCall.getTarget().hasQualifiedName("net/http", "HandleFunc") and
   httpHandleFuncCall.getArgument(0).getType().getUnderlyingType() instanceof StringType and
