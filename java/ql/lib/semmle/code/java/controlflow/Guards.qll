@@ -108,8 +108,7 @@ class Guard extends ExprParent {
    */
   BasicBlock getBasicBlock() {
     result = this.(Expr).getBasicBlock() or
-    result = this.(SwitchCase).getSwitch().getExpr().getBasicBlock() or
-    result = this.(SwitchCase).getSwitchExpr().getExpr().getBasicBlock()
+    result = this.(SwitchCase).getSelectorExpr().getBasicBlock()
   }
 
   /**
