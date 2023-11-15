@@ -171,6 +171,13 @@ signature module InputSig {
   predicate simpleLocalFlowStep(Node node1, Node node2);
 
   /**
+   * Holds if the data flow step from `node1` to `node2` can be used when
+   * computing flow-through summaries.
+   */
+  bindingset[node1, node2]
+  default predicate flowThroughStepAllowed(Node node1, Node node2) { any() }
+
+  /**
    * Holds if data can flow from `node1` to `node2` through a non-local step
    * that does not follow a call edge. For example, a step through a global
    * variable.
