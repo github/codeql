@@ -1510,6 +1510,22 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that materializes a pack during expansion. Appears around PackExpansionExpr.
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class MaterializePackExpr extends @materialize_pack_expr, Expr {
+    override string toString() { result = "MaterializePackExpr" }
+
+    /**
+     * Gets the sub expression of this materialize pack expression.
+     */
+    Expr getSubExpr() { materialize_pack_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class ObjCSelectorExpr extends @obj_c_selector_expr, Expr {
     override string toString() { result = "ObjCSelectorExpr" }

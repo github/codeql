@@ -798,6 +798,7 @@ arguments(  //dir=expr
 | @literal_expr
 | @lookup_expr
 | @make_temporarily_escapable_expr
+| @materialize_pack_expr
 | @obj_c_selector_expr
 | @one_way_expr
 | @opaque_value_expr
@@ -1127,6 +1128,11 @@ make_temporarily_escapable_exprs(  //dir=expr
   unique int id: @make_temporarily_escapable_expr,
   int escaping_closure: @opaque_value_expr_or_none ref,
   int nonescaping_closure: @expr_or_none ref,
+  int sub_expr: @expr_or_none ref
+);
+
+materialize_pack_exprs(  //dir=expr
+  unique int id: @materialize_pack_expr,
   int sub_expr: @expr_or_none ref
 );
 

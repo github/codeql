@@ -146,6 +146,7 @@ import codeql.swift.elements.expr.LoadExpr
 import codeql.swift.elements.expr.LookupExpr
 import codeql.swift.elements.expr.MagicIdentifierLiteralExpr
 import codeql.swift.elements.expr.MakeTemporarilyEscapableExpr
+import codeql.swift.elements.expr.MaterializePackExpr
 import codeql.swift.elements.expr.MemberRefExpr
 import codeql.swift.elements.expr.MetatypeConversionExpr
 import codeql.swift.elements.expr.MethodLookupExpr

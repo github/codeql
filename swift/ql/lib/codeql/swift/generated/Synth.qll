@@ -506,6 +506,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TMaterializePackExpr(Raw::MaterializePackExpr id) { constructMaterializePackExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TMemberRefExpr(Raw::MemberRefExpr id) { constructMemberRefExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1223,13 +1227,14 @@ module Synth {
         TExplicitCastExpr or TForceValueExpr or TIdentityExpr or TIfExpr or
         TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or TKeyPathDotExpr or
         TKeyPathExpr or TLazyInitializationExpr or TLiteralExpr or TLookupExpr or
-        TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or TOneWayExpr or TOpaqueValueExpr or
-        TOpenExistentialExpr or TOptionalEvaluationExpr or TOtherInitializerRefExpr or
-        TOverloadedDeclRefExpr or TPackElementExpr or TPackExpansionExpr or
-        TPropertyWrapperValuePlaceholderExpr or TRebindSelfInInitializerExpr or TSequenceExpr or
-        TSingleValueStmtExpr or TSuperRefExpr or TTapExpr or TTupleElementExpr or TTupleExpr or
-        TTypeExpr or TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
-        TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or TVarargExpansionExpr;
+        TMakeTemporarilyEscapableExpr or TMaterializePackExpr or TObjCSelectorExpr or TOneWayExpr or
+        TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
+        TOtherInitializerRefExpr or TOverloadedDeclRefExpr or TPackElementExpr or
+        TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
+        TRebindSelfInInitializerExpr or TSequenceExpr or TSingleValueStmtExpr or TSuperRefExpr or
+        TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
+        TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
+        TUnresolvedSpecializeExpr or TVarargExpansionExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -2292,6 +2297,15 @@ module Synth {
   cached
   TMakeTemporarilyEscapableExpr convertMakeTemporarilyEscapableExprFromRaw(Raw::Element e) {
     result = TMakeTemporarilyEscapableExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMaterializePackExpr`, if possible.
+   */
+  cached
+  TMaterializePackExpr convertMaterializePackExprFromRaw(Raw::Element e) {
+    result = TMaterializePackExpr(e)
   }
 
   /**
@@ -3809,6 +3823,8 @@ module Synth {
     or
     result = convertMakeTemporarilyEscapableExprFromRaw(e)
     or
+    result = convertMaterializePackExprFromRaw(e)
+    or
     result = convertObjCSelectorExprFromRaw(e)
     or
     result = convertOneWayExprFromRaw(e)
@@ -5235,6 +5251,15 @@ module Synth {
   cached
   Raw::Element convertMakeTemporarilyEscapableExprToRaw(TMakeTemporarilyEscapableExpr e) {
     e = TMakeTemporarilyEscapableExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TMaterializePackExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMaterializePackExprToRaw(TMaterializePackExpr e) {
+    e = TMaterializePackExpr(result)
   }
 
   /**
@@ -6751,6 +6776,8 @@ module Synth {
     result = convertLookupExprToRaw(e)
     or
     result = convertMakeTemporarilyEscapableExprToRaw(e)
+    or
+    result = convertMaterializePackExprToRaw(e)
     or
     result = convertObjCSelectorExprToRaw(e)
     or

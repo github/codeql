@@ -1639,6 +1639,24 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfMaterializePackExpr(
+    MaterializePackExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfObjCSelectorExpr(
     ObjCSelectorExpr e, int index, string partialPredicateCall
   ) {
@@ -5195,6 +5213,8 @@ private module Impl {
     result = getImmediateChildOfLazyInitializationExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfMakeTemporarilyEscapableExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMaterializePackExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfObjCSelectorExpr(e, index, partialAccessor)
     or

@@ -172,6 +172,8 @@
 /lib/codeql/swift/elements/expr/LookupExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/MagicIdentifierLiteralExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/MakeTemporarilyEscapableExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/MaterializePackExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/MaterializePackExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/MemberRefExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/MetatypeConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/MetatypeConversionExprConstructor.qll linguist-generated
@@ -540,6 +542,7 @@
 /lib/codeql/swift/generated/expr/LookupExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/MagicIdentifierLiteralExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/MakeTemporarilyEscapableExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/MaterializePackExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/MemberRefExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/MetatypeConversionExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/MethodLookupExpr.qll linguist-generated
@@ -877,6 +880,8 @@
 /test/extractor-tests/generated/expr/OptionalEvaluationExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/OptionalTryExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/OtherInitializerRefExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/PackExpansionExpr/MaterializePackExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/PackExpansionExpr/MaterializePackExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/PackExpansionExpr/PackElementExpr.ql linguist-generated
 /test/extractor-tests/generated/expr/PackExpansionExpr/PackElementExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/PackExpansionExpr/PackExpansionExpr.ql linguist-generated

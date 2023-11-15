@@ -199,7 +199,7 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::MacroExpansionExpr, void) // unexpanded macro in an expr context, skipping
   MAP(swift::CopyExpr, CopyExprTag)
   MAP(swift::ConsumeExpr, ConsumeExprTag)
-  MAP(swift::MaterializePackExpr, void)  // TODO (introduced in 5.9)
+  MAP(swift::MaterializePackExpr, MaterializePackExprTag)
   MAP(swift::SingleValueStmtExpr, SingleValueStmtExprTag)
 
 MAP(swift::Decl, DeclTag)
