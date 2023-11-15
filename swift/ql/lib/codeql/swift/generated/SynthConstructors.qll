@@ -177,6 +177,7 @@ import codeql.swift.elements.stmt.CaseStmtConstructor
 import codeql.swift.elements.stmt.ConditionElementConstructor
 import codeql.swift.elements.stmt.ContinueStmtConstructor
 import codeql.swift.elements.stmt.DeferStmtConstructor
+import codeql.swift.elements.stmt.DiscardStmtConstructor
 import codeql.swift.elements.stmt.DoCatchStmtConstructor
 import codeql.swift.elements.stmt.DoStmtConstructor
 import codeql.swift.elements.stmt.FailStmtConstructor

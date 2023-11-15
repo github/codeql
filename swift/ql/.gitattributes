@@ -257,6 +257,8 @@
 /lib/codeql/swift/elements/stmt/ConditionElementConstructor.qll linguist-generated
 /lib/codeql/swift/elements/stmt/ContinueStmtConstructor.qll linguist-generated
 /lib/codeql/swift/elements/stmt/DeferStmtConstructor.qll linguist-generated
+/lib/codeql/swift/elements/stmt/DiscardStmt.qll linguist-generated
+/lib/codeql/swift/elements/stmt/DiscardStmtConstructor.qll linguist-generated
 /lib/codeql/swift/elements/stmt/DoCatchStmtConstructor.qll linguist-generated
 /lib/codeql/swift/elements/stmt/DoStmtConstructor.qll linguist-generated
 /lib/codeql/swift/elements/stmt/FailStmtConstructor.qll linguist-generated
@@ -608,6 +610,7 @@
 /lib/codeql/swift/generated/stmt/ConditionElement.qll linguist-generated
 /lib/codeql/swift/generated/stmt/ContinueStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/DeferStmt.qll linguist-generated
+/lib/codeql/swift/generated/stmt/DiscardStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/DoCatchStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/DoStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/FailStmt.qll linguist-generated
@@ -922,6 +925,7 @@
 /test/extractor-tests/generated/stmt/ConditionElement/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/ContinueStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/DeferStmt/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/stmt/DiscardStmt/DiscardStmt.ql linguist-generated
 /test/extractor-tests/generated/stmt/DoCatchStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/DoStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/FailStmt/FailStmt.ql linguist-generated

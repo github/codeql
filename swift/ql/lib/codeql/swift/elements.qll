@@ -211,6 +211,7 @@ import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.ConditionElement
 import codeql.swift.elements.stmt.ContinueStmt
 import codeql.swift.elements.stmt.DeferStmt
+import codeql.swift.elements.stmt.DiscardStmt
 import codeql.swift.elements.stmt.DoCatchStmt
 import codeql.swift.elements.stmt.DoStmt
 import codeql.swift.elements.stmt.FailStmt

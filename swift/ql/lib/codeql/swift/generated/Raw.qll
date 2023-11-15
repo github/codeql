@@ -2839,6 +2839,24 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A statement that takes a non-copyable value and destructs its members/fields.
+   *
+   * The only valid syntax:
+   * ```
+   * destruct self
+   * ```
+   */
+  class DiscardStmt extends @discard_stmt, Stmt {
+    override string toString() { result = "DiscardStmt" }
+
+    /**
+     * Gets the sub expression of this discard statement.
+     */
+    Expr getSubExpr() { discard_stmts(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class FailStmt extends @fail_stmt, Stmt {
     override string toString() { result = "FailStmt" }

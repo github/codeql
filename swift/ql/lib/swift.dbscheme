@@ -1834,6 +1834,7 @@ condition_element_availabilities(  //dir=stmt
 | @case_stmt
 | @continue_stmt
 | @defer_stmt
+| @discard_stmt
 | @fail_stmt
 | @fallthrough_stmt
 | @labeled_stmt
@@ -1919,6 +1920,11 @@ continue_stmt_targets(  //dir=stmt
 defer_stmts(  //dir=stmt
   unique int id: @defer_stmt,
   int body: @brace_stmt_or_none ref
+);
+
+discard_stmts(  //dir=stmt
+  unique int id: @discard_stmt,
+  int sub_expr: @expr_or_none ref
 );
 
 fail_stmts(  //dir=stmt

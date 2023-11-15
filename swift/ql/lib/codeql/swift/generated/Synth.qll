@@ -774,6 +774,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TDiscardStmt(Raw::DiscardStmt id) { constructDiscardStmt(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TDoCatchStmt(Raw::DoCatchStmt id) { constructDoCatchStmt(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1305,9 +1309,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TStmt =
-    TBraceStmt or TBreakStmt or TCaseStmt or TContinueStmt or TDeferStmt or TFailStmt or
-        TFallthroughStmt or TLabeledStmt or TPoundAssertStmt or TReturnStmt or TThrowStmt or
-        TYieldStmt;
+    TBraceStmt or TBreakStmt or TCaseStmt or TContinueStmt or TDeferStmt or TDiscardStmt or
+        TFailStmt or TFallthroughStmt or TLabeledStmt or TPoundAssertStmt or TReturnStmt or
+        TThrowStmt or TYieldStmt;
 
   /**
    * INTERNAL: Do not use.
@@ -2798,6 +2802,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TDiscardStmt`, if possible.
+   */
+  cached
+  TDiscardStmt convertDiscardStmtFromRaw(Raw::Element e) { result = TDiscardStmt(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TDoCatchStmt`, if possible.
    */
   cached
@@ -4092,6 +4103,8 @@ module Synth {
     result = convertContinueStmtFromRaw(e)
     or
     result = convertDeferStmtFromRaw(e)
+    or
+    result = convertDiscardStmtFromRaw(e)
     or
     result = convertFailStmtFromRaw(e)
     or
@@ -5752,6 +5765,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TDiscardStmt` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertDiscardStmtToRaw(TDiscardStmt e) { e = TDiscardStmt(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TDoCatchStmt` to a raw DB element, if possible.
    */
   cached
@@ -7046,6 +7066,8 @@ module Synth {
     result = convertContinueStmtToRaw(e)
     or
     result = convertDeferStmtToRaw(e)
+    or
+    result = convertDiscardStmtToRaw(e)
     or
     result = convertFailStmtToRaw(e)
     or

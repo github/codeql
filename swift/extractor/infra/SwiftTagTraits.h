@@ -61,9 +61,7 @@ MAP(swift::Stmt, StmtTag)
   MAP(swift::FailStmt, FailStmtTag)
   MAP(swift::ThrowStmt, ThrowStmtTag)
   MAP(swift::PoundAssertStmt, PoundAssertStmtTag)
-#if CODEQL_SWIFT_VERSION_GE(5, 9)
-  MAP(swift::DiscardStmt, void) // TODO (introduced in 5.9)
-#endif
+  MAP(swift::DiscardStmt, DiscardStmtTag)
 
 MAP(swift::Argument, ArgumentTag)
 MAP(swift::KeyPathExpr::Component, KeyPathComponentTag)

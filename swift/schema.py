@@ -1399,3 +1399,14 @@ class MacroDecl(GenericContext, ValueDecl):
     parameters: list[ParamDecl] | doc("parameters of this macro")
     roles: list[MacroRole] | doc("roles of this macro")
     pass
+
+class DiscardStmt(Stmt):
+    """
+    A statement that takes a non-copyable value and destructs its members/fields.
+
+    The only valid syntax:
+    ```
+    destruct self
+    ```
+    """
+    sub_expr: Expr | child

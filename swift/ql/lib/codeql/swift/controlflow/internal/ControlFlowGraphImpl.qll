@@ -237,6 +237,14 @@ module Stmts {
     }
   }
 
+  private class DiscardStmtTree extends AstStandardPostOrderTree {
+    override DiscardStmt ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
   private class YieldStmtTree extends AstStandardPostOrderTree {
     override YieldStmt ast;
 

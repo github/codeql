@@ -3688,6 +3688,24 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfDiscardStmt(
+    DiscardStmt e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bStmt, int n, int nSubExpr |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfFailStmt(FailStmt e, int index, string partialPredicateCall) {
     exists(int b, int bStmt, int n |
       b = 0 and
@@ -5437,6 +5455,8 @@ private module Impl {
     result = getImmediateChildOfContinueStmt(e, index, partialAccessor)
     or
     result = getImmediateChildOfDeferStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDiscardStmt(e, index, partialAccessor)
     or
     result = getImmediateChildOfFailStmt(e, index, partialAccessor)
     or
