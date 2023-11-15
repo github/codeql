@@ -55,6 +55,7 @@ import codeql.swift.elements.expr.AwaitExprConstructor
 import codeql.swift.elements.expr.BinaryExprConstructor
 import codeql.swift.elements.expr.BindOptionalExprConstructor
 import codeql.swift.elements.expr.BooleanLiteralExprConstructor
+import codeql.swift.elements.expr.BorrowExprConstructor
 import codeql.swift.elements.expr.BridgeFromObjCExprConstructor
 import codeql.swift.elements.expr.BridgeToObjCExprConstructor
 import codeql.swift.elements.expr.CallExprConstructor
@@ -64,6 +65,8 @@ import codeql.swift.elements.expr.CoerceExprConstructor
 import codeql.swift.elements.expr.CollectionUpcastConversionExprConstructor
 import codeql.swift.elements.expr.ConditionalBridgeFromObjCExprConstructor
 import codeql.swift.elements.expr.ConditionalCheckedCastExprConstructor
+import codeql.swift.elements.expr.ConsumeExprConstructor
+import codeql.swift.elements.expr.CopyExprConstructor
 import codeql.swift.elements.expr.CovariantFunctionConversionExprConstructor
 import codeql.swift.elements.expr.CovariantReturnConversionExprConstructor
 import codeql.swift.elements.expr.DeclRefExprConstructor

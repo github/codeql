@@ -238,6 +238,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TBorrowExpr(Raw::BorrowExpr id) { constructBorrowExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TBridgeFromObjCExpr(Raw::BridgeFromObjCExpr id) { constructBridgeFromObjCExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -279,6 +283,14 @@ module Synth {
     TConditionalCheckedCastExpr(Raw::ConditionalCheckedCastExpr id) {
       constructConditionalCheckedCastExpr(id)
     } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TConsumeExpr(Raw::ConsumeExpr id) { constructConsumeExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCopyExpr(Raw::CopyExpr id) { constructCopyExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1195,25 +1207,25 @@ module Synth {
    */
   class TExpr =
     TAnyTryExpr or TAppliedPropertyWrapperExpr or TApplyExpr or TAssignExpr or TBindOptionalExpr or
-        TCaptureListExpr or TClosureExpr or TCollectionExpr or TDeclRefExpr or
-        TDefaultArgumentExpr or TDiscardAssignmentExpr or TDotSyntaxBaseIgnoredExpr or
-        TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or TExplicitCastExpr or TForceValueExpr or
-        TIdentityExpr or TIfExpr or TImplicitConversionExpr or TInOutExpr or
-        TKeyPathApplicationExpr or TKeyPathDotExpr or TKeyPathExpr or TLazyInitializationExpr or
-        TLiteralExpr or TLookupExpr or TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or
-        TOneWayExpr or TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
-        TOtherInitializerRefExpr or TOverloadedDeclRefExpr or TPackElementExpr or
-        TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
-        TRebindSelfInInitializerExpr or TSequenceExpr or TSingleValueStmtExpr or TSuperRefExpr or
-        TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
-        TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
-        TUnresolvedSpecializeExpr or TVarargExpansionExpr;
+        TCaptureListExpr or TClosureExpr or TCollectionExpr or TConsumeExpr or TCopyExpr or
+        TDeclRefExpr or TDefaultArgumentExpr or TDiscardAssignmentExpr or
+        TDotSyntaxBaseIgnoredExpr or TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or
+        TExplicitCastExpr or TForceValueExpr or TIdentityExpr or TIfExpr or
+        TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or TKeyPathDotExpr or
+        TKeyPathExpr or TLazyInitializationExpr or TLiteralExpr or TLookupExpr or
+        TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or TOneWayExpr or TOpaqueValueExpr or
+        TOpenExistentialExpr or TOptionalEvaluationExpr or TOtherInitializerRefExpr or
+        TOverloadedDeclRefExpr or TPackElementExpr or TPackExpansionExpr or
+        TPropertyWrapperValuePlaceholderExpr or TRebindSelfInInitializerExpr or TSequenceExpr or
+        TSingleValueStmtExpr or TSuperRefExpr or TTapExpr or TTupleElementExpr or TTupleExpr or
+        TTypeExpr or TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
+        TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or TVarargExpansionExpr;
 
   /**
    * INTERNAL: Do not use.
    */
   class TIdentityExpr =
-    TAwaitExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
+    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1789,6 +1801,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TBorrowExpr`, if possible.
+   */
+  cached
+  TBorrowExpr convertBorrowExprFromRaw(Raw::Element e) { result = TBorrowExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TBridgeFromObjCExpr`, if possible.
    */
   cached
@@ -1859,6 +1878,20 @@ module Synth {
   TConditionalCheckedCastExpr convertConditionalCheckedCastExprFromRaw(Raw::Element e) {
     result = TConditionalCheckedCastExpr(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TConsumeExpr`, if possible.
+   */
+  cached
+  TConsumeExpr convertConsumeExprFromRaw(Raw::Element e) { result = TConsumeExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TCopyExpr`, if possible.
+   */
+  cached
+  TCopyExpr convertCopyExprFromRaw(Raw::Element e) { result = TCopyExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3702,6 +3735,10 @@ module Synth {
     or
     result = convertCollectionExprFromRaw(e)
     or
+    result = convertConsumeExprFromRaw(e)
+    or
+    result = convertCopyExprFromRaw(e)
+    or
     result = convertDeclRefExprFromRaw(e)
     or
     result = convertDefaultArgumentExprFromRaw(e)
@@ -3798,6 +3835,8 @@ module Synth {
   cached
   TIdentityExpr convertIdentityExprFromRaw(Raw::Element e) {
     result = convertAwaitExprFromRaw(e)
+    or
+    result = convertBorrowExprFromRaw(e)
     or
     result = convertDotSelfExprFromRaw(e)
     or
@@ -4687,6 +4726,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TBorrowExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertBorrowExprToRaw(TBorrowExpr e) { e = TBorrowExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TBridgeFromObjCExpr` to a raw DB element, if possible.
    */
   cached
@@ -4757,6 +4803,20 @@ module Synth {
   Raw::Element convertConditionalCheckedCastExprToRaw(TConditionalCheckedCastExpr e) {
     e = TConditionalCheckedCastExpr(result)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TConsumeExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertConsumeExprToRaw(TConsumeExpr e) { e = TConsumeExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCopyExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertCopyExprToRaw(TCopyExpr e) { e = TCopyExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -6598,6 +6658,10 @@ module Synth {
     or
     result = convertCollectionExprToRaw(e)
     or
+    result = convertConsumeExprToRaw(e)
+    or
+    result = convertCopyExprToRaw(e)
+    or
     result = convertDeclRefExprToRaw(e)
     or
     result = convertDefaultArgumentExprToRaw(e)
@@ -6694,6 +6758,8 @@ module Synth {
   cached
   Raw::Element convertIdentityExprToRaw(TIdentityExpr e) {
     result = convertAwaitExprToRaw(e)
+    or
+    result = convertBorrowExprToRaw(e)
     or
     result = convertDotSelfExprToRaw(e)
     or

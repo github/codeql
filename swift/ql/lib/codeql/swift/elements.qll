@@ -78,6 +78,7 @@ import codeql.swift.elements.expr.AwaitExpr
 import codeql.swift.elements.expr.BinaryExpr
 import codeql.swift.elements.expr.BindOptionalExpr
 import codeql.swift.elements.expr.BooleanLiteralExpr
+import codeql.swift.elements.expr.BorrowExpr
 import codeql.swift.elements.expr.BridgeFromObjCExpr
 import codeql.swift.elements.expr.BridgeToObjCExpr
 import codeql.swift.elements.expr.BuiltinLiteralExpr
@@ -91,6 +92,8 @@ import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.CollectionUpcastConversionExpr
 import codeql.swift.elements.expr.ConditionalBridgeFromObjCExpr
 import codeql.swift.elements.expr.ConditionalCheckedCastExpr
+import codeql.swift.elements.expr.ConsumeExpr
+import codeql.swift.elements.expr.CopyExpr
 import codeql.swift.elements.expr.CovariantFunctionConversionExpr
 import codeql.swift.elements.expr.CovariantReturnConversionExpr
 import codeql.swift.elements.expr.DeclRefExpr

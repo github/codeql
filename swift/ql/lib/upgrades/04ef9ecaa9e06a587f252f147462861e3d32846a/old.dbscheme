@@ -734,8 +734,6 @@ arguments(  //dir=expr
 | @capture_list_expr
 | @closure_expr
 | @collection_expr
-| @consume_expr
-| @copy_expr
 | @decl_ref_expr
 | @default_argument_expr
 | @discard_assignment_expr
@@ -861,16 +859,6 @@ capture_list_expr_binding_decls(  //dir=expr
 | @dictionary_expr
 ;
 
-consume_exprs(  //dir=expr
-  unique int id: @consume_expr,
-  int sub_expr: @expr_or_none ref
-);
-
-copy_exprs(  //dir=expr
-  unique int id: @copy_expr,
-  int sub_expr: @expr_or_none ref
-);
-
 decl_ref_exprs(  //dir=expr
   unique int id: @decl_ref_expr,
   int decl: @decl_or_none ref
@@ -958,7 +946,6 @@ force_value_exprs(  //dir=expr
 
 @identity_expr =
   @await_expr
-| @borrow_expr
 | @dot_self_expr
 | @paren_expr
 | @unresolved_member_chain_result_expr
@@ -1291,10 +1278,6 @@ await_exprs(  //dir=expr
 
 binary_exprs(  //dir=expr
   unique int id: @binary_expr
-);
-
-borrow_exprs(  //dir=expr
-  unique int id: @borrow_expr
 );
 
 bridge_from_obj_c_exprs(  //dir=expr
