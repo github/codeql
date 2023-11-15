@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.security.WeakHashingAlgorithmPropertyQuery
+import semmle.code.java.security.MaybeBrokenCryptoAlgorithmQuery
 
 query predicate weakAlgorithmUse(DataFlow::Node sink) {
-  exists(DataFlow::Node source | InsecureAlgorithmPropertyFlow::flow(source, sink))
+  exists(DataFlow::Node source | InsecureCryptoFlow::flow(source, sink))
 }
