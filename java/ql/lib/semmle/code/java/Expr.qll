@@ -2633,7 +2633,7 @@ class PatternExpr extends Expr {
     (
       this.getParent() instanceof SwitchCase or
       this.getParent() instanceof InstanceOfExpr or
-      this.getParent() instanceof PatternExpr
+      this.getParent() instanceof RecordPatternExpr
     ) and
     (this instanceof LocalVariableDeclExpr or this instanceof RecordPatternExpr)
   }
