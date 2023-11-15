@@ -16,13 +16,10 @@ import semmle.code.java.security.Encryption
 import semmle.code.java.security.MaybeBrokenCryptoAlgorithmQuery
 import InsecureCryptoFlow::PathGraph
 
-from
-  InsecureCryptoFlow::PathNode source, InsecureCryptoFlow::PathNode sink, CryptoAlgoSpec c,
-  InsecureAlgoLiteral s
+from InsecureCryptoFlow::PathNode source, InsecureCryptoFlow::PathNode sink, CryptoAlgoSpec c
 where
   sink.getNode().asExpr() = c.getAlgoSpec() and
-  source.getNode().asExpr() = s and
   InsecureCryptoFlow::flowPath(source, sink)
 select c, source, sink,
-  "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", s,
-  s.getValue()
+  "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", source,
+  insecureAlgorithmName(source.getNode())
