@@ -16,8 +16,8 @@ func main() {
 	var a [4]string
 	a[0] = source()
 	alias := [2]string(a[:])
-	sink(alias[0]) // $ hasTaintFlow="index expression"
-	sink(alias[1]) // $ SPURIOUS: hasTaintFlow="index expression" // we don't distinguish different elements of arrays or slices
+	sink(alias[0]) // $ hasValueFlow="index expression"
+	sink(alias[1]) // $ SPURIOUS: hasValueFlow="index expression" // we don't distinguish different elements of arrays or slices
 	sink(alias)    // $ hasTaintFlow="alias"
 
 	// Compare with the standard dataflow support for arrays
