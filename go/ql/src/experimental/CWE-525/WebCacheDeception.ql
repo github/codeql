@@ -18,7 +18,7 @@ from
 where
   httpHandleFuncCall.getTarget().hasQualifiedName("net/http", "HandleFunc") and
   httpHandleFuncCall.getNumArgument() > 1 and
-  httpHandleFuncCall.getArgument(0).getType().toString() = "string" and
+  httpHandleFuncCall.getArgument(0).getType().getUnderlyingType() = StringType and
   httpHandleFuncCall.getArgument(0).toString().matches("%/\"") and
   // Trace the second argument's data flow to its predecessor
   predecessor = httpHandleFuncCall.getArgument(1).getAPredecessor() and
