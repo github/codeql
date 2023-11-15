@@ -235,17 +235,17 @@ void *alloca(size_t);
 
 void* test_alloca() {
 	void* p = alloca(10);
-	return p; // BAD [NOT DETECTED]
+	return p; // BAD
 }
 
 char *strdupa(const char *);
 char *strndupa(const char *, size_t);
 
 char* test_strdupa(const char* s) {
-	return strdupa(s); // BAD [NOT DETECTED]
+	return strdupa(s); // BAD
 }
 
 void* test_strndupa(const char* s, size_t size) {
 	char* s2 = strndupa(s, size);
-	return s2; // BAD [NOT DETECTED]
+	return s2; // BAD
 }
