@@ -1149,3 +1149,53 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
       )
   )
 }
+
+/**
+ * Holds if the dataflow step from `node1` to `node2` should not be used when
+ * computing flow-through summaries because the dataflow step copies the value
+ * of `node1` to `node2` in a way that does not preserve the identity of the
+ * value. For example the assignment to `x` that reads the value of `*p` in:
+ * ```cpp
+ * int* p = ...
+ * int x = *p;
+ * ```
+ */
+bindingset[node1, node2]
+pragma[inline_late]
+predicate flowThroughStepAllowed(Node node1, Node node2) {
+  // When flow-through summaries are computed we track which parameters flow to out-going parameters.
+  // In an example such as:
+  // ```
+  // modify(int* px) { *px = source(); }
+  // void modify_copy(int* p) {
+  //   int x = *p;
+  //   modify(&x);
+  // }
+  // ```
+  // since dataflow tracks each indirection as a separate SSA variable dataflow
+  // sees the above roughly as
+  // ```
+  // modify(int* px, int deref_px) { deref_px = source(); }
+  // void modify_copy(int* p, int deref_p) {
+  //   int x = deref_p;
+  //   modify(&x, x);
+  // }
+  // ```
+  // and when dataflow computes flow from a parameter to a post-update node to
+  // conclude which parameters are "updated" by the call to `modify_copy` it
+  // finds flow from `x [post update]` to `deref_p [post update]`.
+  // To prevent this we exclude steps that don't preserve identity. We do this
+  // by excluding flow from the right-hand side of `StoreInstruction`s to the
+  // `StoreInstruction`. This is sufficient because, for flow-through summaries,
+  // we're only interested in indirect parameters such as `deref_p` in the
+  // exampe above (i.e., the parameters with a non-zero indirection index), and
+  // if that ever flows to the right-hand side of a `StoreInstruction` then
+  // there must have been a dereference to reduce its indirection index down to
+  // 0.
+  not exists(Operand operand |
+    node1.asOperand() = operand and
+    node2.asInstruction().(StoreInstruction).getSourceValueOperand() = operand
+  )
+  // TODO: Also block flow through models that don't preserve identity such
+  // as `strdup`.
+}
