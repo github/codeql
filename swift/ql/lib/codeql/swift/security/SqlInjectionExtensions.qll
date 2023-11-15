@@ -148,7 +148,8 @@ private class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
 }
 
 /**
- * A parameter that might be executed as SQL.
+ * Holds if `f`, `ix` describe `pd` and `pd` is a parameter that might be
+ * executed as SQL.
  */
 pragma[noinline]
 predicate sqlLikeHeuristic(Callable f, int ix, ParamDecl pd) {
