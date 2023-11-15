@@ -48,8 +48,8 @@ where
   exprs(e, oldKind, typeid, _, _) and
   hasNewParent(e, parent, index) and
   (
-    if oldKind = 89
-    then /* record pattern */ newKind = 74
-    else /* error expression */ oldKind = newKind
+    if oldKind = /* record pattern */ 89
+    then newKind = /* error expression */ 74
+    else oldKind = newKind
   )
 select e, newKind, typeid, parent, index
