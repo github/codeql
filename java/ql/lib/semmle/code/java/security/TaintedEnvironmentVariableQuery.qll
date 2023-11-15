@@ -13,7 +13,7 @@ private module ProcessBuilderEnvironmentConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(MapPutCall mpc).getQualifier() }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(MapMutation mm).getQualifier() }
 }
 
 private module ProcessBuilderEnvironmentFlow = DataFlow::Global<ProcessBuilderEnvironmentConfig>;
@@ -28,8 +28,8 @@ module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
     sinkNode(sink, "environment-injection")
     or
     // sink is an added to a `ProcessBuilder::environment` map.
-    exists(MapPutCall mpc | mpc.getAnArgument() = sink.asExpr() |
-      ProcessBuilderEnvironmentFlow::flowToExpr(mpc.getQualifier())
+    exists(MapMutation mm | mm.getAnArgument() = sink.asExpr() |
+      ProcessBuilderEnvironmentFlow::flowToExpr(mm.getQualifier())
     )
   }
 }
