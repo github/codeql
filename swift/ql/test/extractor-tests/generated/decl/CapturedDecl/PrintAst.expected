@@ -1,3 +1,13 @@
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(declaration)
+#-----| [MacroRole] #freestanding(declaration)
 closures.swift:
 #    1| [NamedFunction] hello()
 #    1|     InterfaceType = () -> String

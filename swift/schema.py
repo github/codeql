@@ -1361,3 +1361,31 @@ class BorrowExpr(IdentityExpr):
     ```
     """
     pass
+
+@qltest.test_with('MacroDecl')
+class MacroRole(AstNode):
+    """
+    The role of a macro.
+    """
+    kind: int | doc("kind of this macro role (declaration, expression, member, etc.)")
+    macro_syntax: int | doc("#freestanding or @attached")
+    conformances: list[TypeExpr] | doc("conformances of this macro role")
+    names: list[string] | doc("names of this macro role")
+
+class MacroDecl(GenericContext, ValueDecl):
+    """
+    A declaration of a macro. Some examples:
+
+    ```
+    @freestanding(declaration)
+    macro A() = #externalMacro(module: "A", type: "A")
+    @freestanding(expression)
+    macro B() = Builtin.B
+    @attached(member)
+    macro C() = C.C
+    ```
+    """
+    name: string | doc("name of this macro")
+    parameters: list[ParamDecl] | doc("parameters of this macro")
+    roles: list[MacroRole] | doc("roles of this macro")
+    pass

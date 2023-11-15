@@ -248,6 +248,34 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The role of a macro.
+   */
+  class MacroRole extends @macro_role, AstNode {
+    override string toString() { result = "MacroRole" }
+
+    /**
+     * Gets the kind of this macro role (declaration, expression, member, etc.).
+     */
+    int getKind() { macro_roles(this, result, _) }
+
+    /**
+     * Gets the #freestanding or @attached.
+     */
+    int getMacroSyntax() { macro_roles(this, _, result) }
+
+    /**
+     * Gets the `index`th conformance of this macro role (0-based).
+     */
+    TypeExpr getConformance(int index) { macro_role_conformances(this, index, result) }
+
+    /**
+     * Gets the `index`th name of this macro role (0-based).
+     */
+    string getName(int index) { macro_role_names(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class UnspecifiedElement extends @unspecified_element, ErrorElement {
     override string toString() { result = "UnspecifiedElement" }
@@ -555,6 +583,38 @@ module Raw {
      * Gets the precedence group of this infix operator declaration, if it exists.
      */
     PrecedenceGroupDecl getPrecedenceGroup() { infix_operator_decl_precedence_groups(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A declaration of a macro. Some examples:
+   *
+   * ```
+   * @freestanding(declaration)
+   * macro A() = #externalMacro(module: "A", type: "A")
+   * @freestanding(expression)
+   * macro B() = Builtin.B
+   * @attached(member)
+   * macro C() = C.C
+   * ```
+   */
+  class MacroDecl extends @macro_decl, GenericContext, ValueDecl {
+    override string toString() { result = "MacroDecl" }
+
+    /**
+     * Gets the name of this macro.
+     */
+    string getName() { macro_decls(this, result) }
+
+    /**
+     * Gets the `index`th parameter of this macro (0-based).
+     */
+    ParamDecl getParameter(int index) { macro_decl_parameters(this, index, result) }
+
+    /**
+     * Gets the `index`th role of this macro (0-based).
+     */
+    MacroRole getRole(int index) { macro_decl_roles(this, index, result) }
   }
 
   /**

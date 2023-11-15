@@ -42,6 +42,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TMacroRole(Raw::MacroRole id) { constructMacroRole(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TOtherAvailabilitySpec(Raw::OtherAvailabilitySpec id) { constructOtherAvailabilitySpec(id) } or
     /**
      * INTERNAL: Do not use.
@@ -121,6 +125,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TInitializer(Raw::Initializer id) { constructInitializer(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TMacroDecl(Raw::MacroDecl id) { constructMacroDecl(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1061,7 +1069,7 @@ module Synth {
    */
   class TAstNode =
     TAvailabilityInfo or TAvailabilitySpec or TCaseLabelItem or TConditionElement or TDecl or
-        TExpr or TKeyPathComponent or TPattern or TStmt or TStmtCondition or TTypeRepr;
+        TExpr or TKeyPathComponent or TMacroRole or TPattern or TStmt or TStmtCondition or TTypeRepr;
 
   /**
    * INTERNAL: Do not use.
@@ -1128,7 +1136,8 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TGenericContext = TExtensionDecl or TFunction or TGenericTypeDecl or TSubscriptDecl;
+  class TGenericContext =
+    TExtensionDecl or TFunction or TGenericTypeDecl or TMacroDecl or TSubscriptDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1153,7 +1162,8 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TValueDecl = TAbstractStorageDecl or TEnumElementDecl or TFunction or TTypeDecl;
+  class TValueDecl =
+    TAbstractStorageDecl or TEnumElementDecl or TFunction or TMacroDecl or TTypeDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1429,6 +1439,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMacroRole`, if possible.
+   */
+  cached
+  TMacroRole convertMacroRoleFromRaw(Raw::Element e) { result = TMacroRole(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TOtherAvailabilitySpec`, if possible.
    */
   cached
@@ -1578,6 +1595,13 @@ module Synth {
    */
   cached
   TInitializer convertInitializerFromRaw(Raw::Element e) { result = TInitializer(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMacroDecl`, if possible.
+   */
+  cached
+  TMacroDecl convertMacroDeclFromRaw(Raw::Element e) { result = TMacroDecl(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3319,6 +3343,8 @@ module Synth {
     or
     result = convertKeyPathComponentFromRaw(e)
     or
+    result = convertMacroRoleFromRaw(e)
+    or
     result = convertPatternFromRaw(e)
     or
     result = convertStmtFromRaw(e)
@@ -3528,6 +3554,8 @@ module Synth {
     or
     result = convertGenericTypeDeclFromRaw(e)
     or
+    result = convertMacroDeclFromRaw(e)
+    or
     result = convertSubscriptDeclFromRaw(e)
   }
 
@@ -3596,6 +3624,8 @@ module Synth {
     result = convertEnumElementDeclFromRaw(e)
     or
     result = convertFunctionFromRaw(e)
+    or
+    result = convertMacroDeclFromRaw(e)
     or
     result = convertTypeDeclFromRaw(e)
   }
@@ -4354,6 +4384,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TMacroRole` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMacroRoleToRaw(TMacroRole e) { e = TMacroRole(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TOtherAvailabilitySpec` to a raw DB element, if possible.
    */
   cached
@@ -4503,6 +4540,13 @@ module Synth {
    */
   cached
   Raw::Element convertInitializerToRaw(TInitializer e) { e = TInitializer(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TMacroDecl` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMacroDeclToRaw(TMacroDecl e) { e = TMacroDecl(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -6242,6 +6286,8 @@ module Synth {
     or
     result = convertKeyPathComponentToRaw(e)
     or
+    result = convertMacroRoleToRaw(e)
+    or
     result = convertPatternToRaw(e)
     or
     result = convertStmtToRaw(e)
@@ -6451,6 +6497,8 @@ module Synth {
     or
     result = convertGenericTypeDeclToRaw(e)
     or
+    result = convertMacroDeclToRaw(e)
+    or
     result = convertSubscriptDeclToRaw(e)
   }
 
@@ -6519,6 +6567,8 @@ module Synth {
     result = convertEnumElementDeclToRaw(e)
     or
     result = convertFunctionToRaw(e)
+    or
+    result = convertMacroDeclToRaw(e)
     or
     result = convertTypeDeclToRaw(e)
   }

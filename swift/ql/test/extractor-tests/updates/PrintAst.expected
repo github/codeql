@@ -1,3 +1,13 @@
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(declaration)
+#-----| [MacroRole] #freestanding(declaration)
 v5.8.swift:
 #    1| [Comment] // https://github.com/apple/swift/blob/main/CHANGELOG.md#swift-58
 #    1| 

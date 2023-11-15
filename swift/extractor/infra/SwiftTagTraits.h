@@ -228,7 +228,7 @@ MAP(swift::Decl, DeclTag)
       MAP(swift::FuncDecl, AccessorOrNamedFunctionTag)
         MAP_CONCRETE(swift::FuncDecl, NamedFunctionTag)
         MAP(swift::AccessorDecl, AccessorTag)
-    MAP(swift::MacroDecl, void)  // TODO (introduced in 5.8)
+    MAP(swift::MacroDecl, MacroDeclTag)
     MAP(swift::EnumElementDecl, EnumElementDeclTag)
   MAP(swift::ExtensionDecl, ExtensionDeclTag)
   MAP(swift::TopLevelCodeDecl, TopLevelCodeDeclTag)
@@ -350,6 +350,7 @@ MAP(swift::AvailabilitySpec, AvailabilitySpecTag)
   MAP(swift::OtherPlatformAvailabilitySpec, OtherAvailabilitySpecTag)
 
 MAP(swift::PoundAvailableInfo, AvailabilityInfoTag)
+MAP(swift::MacroRoleAttr, MacroRoleTag)
 
 // clang-format on
 #undef MAP

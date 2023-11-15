@@ -17,6 +17,7 @@ import codeql.swift.elements.File
 import codeql.swift.elements.KeyPathComponent
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
+import codeql.swift.elements.MacroRole
 import codeql.swift.elements.OtherAvailabilitySpec
 import codeql.swift.elements.PlatformVersionAvailabilitySpec
 import codeql.swift.elements.UnknownFile
@@ -43,6 +44,7 @@ import codeql.swift.elements.decl.IfConfigDecl
 import codeql.swift.elements.decl.ImportDecl
 import codeql.swift.elements.decl.InfixOperatorDecl
 import codeql.swift.elements.decl.Initializer
+import codeql.swift.elements.decl.MacroDecl
 import codeql.swift.elements.decl.MissingMemberDecl
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.decl.NamedFunction

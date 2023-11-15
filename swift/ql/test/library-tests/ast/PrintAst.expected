@@ -1,3 +1,13 @@
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(declaration)
+#-----| [MacroRole] #freestanding(declaration)
 cfg.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }

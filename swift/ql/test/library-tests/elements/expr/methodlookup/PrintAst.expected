@@ -1,3 +1,13 @@
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(expression)
+#-----| [MacroRole] #freestanding(declaration)
+#-----| [MacroRole] #freestanding(declaration)
 methodlookup.swift:
 #    1| [ClassDecl] Foo
 #    2|   getMember(0): [Initializer] Foo.init()
