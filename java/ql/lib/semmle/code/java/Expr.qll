@@ -1679,7 +1679,7 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
    */
   InstanceOfExpr getAssociatedInstanceOfExpr() { result.getPattern().getAChildExpr*() = this }
 
-  /** Holds f this is a declaration stemming from a pattern instanceof expression. */
+  /** Holds if this is a declaration stemming from a pattern instanceof expression. */
   predicate hasAssociatedInstanceOfExpr() { exists(this.getAssociatedInstanceOfExpr()) }
 
   /** Gets the initializer expression of this local variable declaration expression, if any. */
