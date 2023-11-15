@@ -30,7 +30,9 @@ newtype TApplicationModeEndpoint =
       arg.asExpr() = argExpr and call = argExpr.getCall() and not argExpr.isVararg()
     )
   } or
-  TInstanceArgument(Call call, DataFlow::Node arg) { arg = DataFlow::getInstanceArgument(call) } or
+  TInstanceArgument(Call call, DataFlow::Node arg) {
+    arg = DataFlow::getInstanceArgument(call)
+  } or
   TImplicitVarargsArray(Call call, DataFlow::Node arg, int idx) {
     exists(Argument argExpr |
       arg.asExpr() = argExpr and
