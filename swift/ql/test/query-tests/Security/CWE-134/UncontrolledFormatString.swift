@@ -124,4 +124,35 @@ func tests() throws {
     let taintedVal2 = Int(tainted) ?? 0
     let taintedSan2 = String(taintedVal2)
     let r = String(format: taintedSan2) // GOOD: sufficiently sanitized
+
+    _ = String("abc").appendingFormat("%s", "abc") // GOOD: not tainted
+    _ = String("abc").appendingFormat("%s", tainted) // GOOD: format not tainted
+    _ = String("abc").appendingFormat(tainted, "abc") // BAD [NOT DETECTED]
+    _ = String(tainted).appendingFormat("%s", "abc") // GOOD: format not tainted
+
+    let s = NSMutableString(string: "foo")
+    s.appendFormat(NSString(string: "%s"), "abc") // GOOD: not tainted
+    s.appendFormat(NSString(string: tainted), "abc") // BAD [NOT DETECTED]
+
+    _ = NSPredicate(format: tainted) // GOOD: this should be flagged by `swift/predicate-injection`, not `swift/uncontrolled-format-string`
+
+    tainted.withCString({
+        cstr in
+        _ = dprintf(0, cstr, "abc") // BAD [NOT DETECTED]
+        _ = dprintf(0, "%s", cstr) // GOOD: format not tainted
+        _ = vprintf(cstr, getVaList(["abc"])) // BAD [NOT DETECTED]
+        _ = vprintf("%s", getVaList([cstr])) // GOOD: format not tainted
+        _ = vfprintf(nil, cstr, getVaList(["abc"])) // BAD [NOT DETECTED]
+        _ = vfprintf(nil, "%s", getVaList([cstr])) // GOOD: format not tainted
+        _ = vasprintf_l(nil, nil, cstr, getVaList(["abc"])) // BAD [NOT DETECTED]
+        _ = vasprintf_l(nil, nil, "%s", getVaList([cstr])) // GOOD: format not tainted
+    })
+
+    myFormatMessage(string: tainted, "abc") // BAD [NOT DETECTED]
+    myFormatMessage(string: "%s", tainted) // GOOD: format not tainted
+
+    _ = MyString(format: tainted, "abc") // BAD [NOT DETECTED]
+    _ = MyString(format: "%s", tainted) // GOOD: format not tainted
+    _ = MyString(formatString: tainted, "abc") // BAD [NOT DETECTED]
+    _ = MyString(formatString: "%s", tainted) // GOOD: format not tainted
 }
