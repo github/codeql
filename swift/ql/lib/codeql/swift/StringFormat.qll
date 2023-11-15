@@ -56,6 +56,19 @@ class LocalizedStringWithFormat extends FormattingFunction, Method {
 }
 
 /**
+ * A method that appends a formatted string.
+ */
+class StringMethodWithFormat extends FormattingFunction, Method {
+  StringMethodWithFormat() {
+    this.hasQualifiedName("NSMutableString", "appendFormat(_:_:)")
+    or
+    this.hasQualifiedName("StringProtocol", "appendingFormat(_:_:)")
+  }
+
+  override int getFormatParameterIndex() { result = 0 }
+}
+
+/**
  * The functions `NSLog` and `NSLogv`.
  */
 class NsLog extends FormattingFunction, FreeFunction {

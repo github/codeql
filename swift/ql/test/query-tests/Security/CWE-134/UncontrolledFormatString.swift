@@ -127,12 +127,12 @@ func tests() throws {
 
     _ = String("abc").appendingFormat("%s", "abc") // GOOD: not tainted
     _ = String("abc").appendingFormat("%s", tainted) // GOOD: format not tainted
-    _ = String("abc").appendingFormat(tainted, "abc") // BAD [NOT DETECTED]
+    _ = String("abc").appendingFormat(tainted, "abc") // BAD
     _ = String(tainted).appendingFormat("%s", "abc") // GOOD: format not tainted
 
     let s = NSMutableString(string: "foo")
     s.appendFormat(NSString(string: "%s"), "abc") // GOOD: not tainted
-    s.appendFormat(NSString(string: tainted), "abc") // BAD [NOT DETECTED]
+    s.appendFormat(NSString(string: tainted), "abc") // BAD
 
     _ = NSPredicate(format: tainted) // GOOD: this should be flagged by `swift/predicate-injection`, not `swift/uncontrolled-format-string`
 
