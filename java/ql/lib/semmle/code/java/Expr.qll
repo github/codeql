@@ -1682,21 +1682,64 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   /** Holds if this is a declaration stemming from a pattern instanceof expression. */
   predicate hasAssociatedInstanceOfExpr() { exists(this.getAssociatedInstanceOfExpr()) }
 
-  /** Gets the initializer expression of this local variable declaration expression, if any. */
+  /**
+   * Gets the initializer expression of this local variable declaration expression, if any.
+   *
+   * Note this applies specifically to a syntactic initialization like `T varname = init`;
+   * to include also `e instanceof T varname` and `switch(e) ... case T varname`, which both
+   * have the effect of initializing `varname` to a known local expression without using
+   * that syntax, use `getInitOrPatternSource`.
+   */
   Expr getInit() { result.isNthChildOf(this, 0) }
+
+  /**
+   * Gets the local expression that initializes this variable declaration, if any.
+   *
+   * Note this includes explicit `T varname = init;`, as well as `e instanceof T varname`
+   * and `switch(e) ... case T varname`. To get only explicit initializers, use `getInit`.
+   *
+   * Note that record pattern variables like `e instance of T Record(T varname)` do not have
+   * either an explicit initializer or a pattern source.
+   */
+  Expr getInitOrPatternSource() {
+    result = this.getInit()
+    or
+    exists(SwitchStmt switch |
+      result = switch.getExpr() and
+      this = switch.getAPatternCase().getPattern().asBindingPattern()
+    )
+    or
+    exists(SwitchExpr switch |
+      result = switch.getExpr() and
+      this = switch.getAPatternCase().getPattern().asBindingPattern()
+    )
+    or
+    exists(InstanceOfExpr ioe |
+      result = ioe.getExpr() and
+      this = ioe.getPattern().asBindingPattern()
+    )
+  }
 
   /** Holds if this variable declaration implicitly initializes the variable. */
   predicate hasImplicitInit() {
-    exists(CatchClause cc | cc.getVariable() = this) or
-    exists(EnhancedForStmt efs | efs.getVariable() = this) or
-    this.hasAssociatedSwitch() or
-    this.hasAssociatedInstanceOfExpr()
+    exists(CatchClause cc | cc.getVariable() = this)
+    or
+    exists(EnhancedForStmt efs | efs.getVariable() = this)
+    or
+    this.getParent() instanceof RecordPatternExpr
   }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = this.getName() }
 
   override string getAPrimaryQlClass() { result = "LocalVariableDeclExpr" }
+}
+
+/** A local variable declaration that occurs within a record pattern. */
+class RecordBindingVariableExpr extends LocalVariableDeclExpr {
+  RecordBindingVariableExpr() {
+    this.getParent() instanceof RecordPatternExpr
+  }
 }
 
 /** An update of a variable or an initialization of the variable. */
@@ -1727,12 +1770,12 @@ class VariableAssign extends VariableUpdate {
   /**
    * Gets the source (right-hand side) of this assignment, if any.
    *
-   * An initialization in a `CatchClause` or `EnhancedForStmt` is implicit and
-   * does not have a source.
+   * An initialization in a `CatchClause`, `EnhancedForStmt` or `RecordPatternExpr`
+   * is implicit and does not have a source.
    */
   Expr getSource() {
     result = this.(AssignExpr).getSource() or
-    result = this.(LocalVariableDeclExpr).getInit()
+    result = this.(LocalVariableDeclExpr).getInitOrPatternSource()
   }
 }
 

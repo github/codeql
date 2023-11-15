@@ -116,22 +116,6 @@ private predicate step(TypeFlowNode n1, TypeFlowNode n2) {
   n2.asSsa().(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
   or
   n2.asSsa().(BaseSsaImplicitInit).captures(n1.asSsa())
-  or
-  exists(PatternCase pc, LocalVariableDeclExpr patternVar |
-    patternVar = pc.getPattern().asBindingPattern() and
-    n2.asSsa().(BaseSsaUpdate).getDefiningExpr() = patternVar and
-    (
-      pc.getSwitch().getExpr() = n1.asExpr()
-      or
-      pc.getSwitchExpr().getExpr() = n1.asExpr()
-    )
-  )
-  or
-  exists(InstanceOfExpr ioe, LocalVariableDeclExpr patternVar |
-    patternVar = ioe.getPattern().asBindingPattern() and
-    n2.asSsa().(BaseSsaUpdate).getDefiningExpr() = patternVar and
-    ioe.getExpr() = n1.asExpr()
-  )
 }
 
 /**
