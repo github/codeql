@@ -113,7 +113,7 @@ func tests() throws {
 
     NSLog("abc") // GOOD: not tainted
     NSLog(tainted) // BAD
-    MyLog(tainted) // BAD [NOT DETECTED]
+    MyLog(tainted) // BAD
 
     NSException.raise(NSExceptionName("exception"), format: tainted, arguments: getVaList([])) // BAD
 
@@ -134,7 +134,7 @@ func tests() throws {
     s.appendFormat(NSString(string: "%s"), "abc") // GOOD: not tainted
     s.appendFormat(NSString(string: tainted), "abc") // BAD
 
-    _ = NSPredicate(format: tainted) // GOOD: this should be flagged by `swift/predicate-injection`, not `swift/uncontrolled-format-string`
+    _ = NSPredicate(format: tainted) // GOOD: this should be flagged by `swift/predicate-injection`, not `swift/uncontrolled-format-string` [FALSE POSITIVE]
 
     tainted.withCString({
         cstr in
@@ -151,8 +151,8 @@ func tests() throws {
     myFormatMessage(string: tainted, "abc") // BAD [NOT DETECTED]
     myFormatMessage(string: "%s", tainted) // GOOD: format not tainted
 
-    _ = MyString(format: tainted, "abc") // BAD [NOT DETECTED]
+    _ = MyString(format: tainted, "abc") // BAD
     _ = MyString(format: "%s", tainted) // GOOD: format not tainted
-    _ = MyString(formatString: tainted, "abc") // BAD [NOT DETECTED]
+    _ = MyString(formatString: tainted, "abc") // BAD
     _ = MyString(formatString: "%s", tainted) // GOOD: format not tainted
 }
