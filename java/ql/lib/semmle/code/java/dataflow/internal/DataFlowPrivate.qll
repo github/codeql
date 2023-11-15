@@ -232,12 +232,22 @@ predicate storeStep(Node node1, ContentSet f, Node node2) {
     pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
+// Manual join hacking, to avoid a paramters x fields product.
+pragma[noinline]
+private predicate hasNamedField(Record r, Field f, string name) {
+  f = r.getAField() and name = f.getName()
+}
+
+pragma[noinline]
+private predicate hasNamedCanonicalParameter(Record r, Parameter p, int idx, string name) {
+  p = r.getCanonicalConstructor().getParameter(idx) and name = p.getName()
+}
+
 private Field getLexicallyOrderedRecordField(Record r, int idx) {
   result =
-    rank[idx + 1](Field f, int i, Parameter p |
-      f = r.getAField() and
-      p = r.getCanonicalConstructor().getParameter(i) and
-      f.getName() = p.getName()
+    rank[idx + 1](Field f, int i, Parameter p, string name |
+      hasNamedCanonicalParameter(r, p, i, name) and
+      hasNamedField(r, f, name)
     |
       f order by i
     )
