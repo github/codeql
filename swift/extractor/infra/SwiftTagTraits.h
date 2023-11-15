@@ -193,7 +193,7 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::KeyPathDotExpr, KeyPathDotExprTag)
   MAP(swift::OneWayExpr, OneWayExprTag)
   MAP(swift::TapExpr, TapExprTag)
-  MAP(swift::TypeJoinExpr, void)  // TODO (introduced in 5.8)
+  MAP(swift::TypeJoinExpr, void)  // does not appear in a visible AST, skipping
   MAP(swift::MacroExpansionExpr, void) // unexpanded macro in an expr context, skipping
   MAP(swift::CopyExpr, CopyExprTag)
   MAP(swift::ConsumeExpr, ConsumeExprTag)
