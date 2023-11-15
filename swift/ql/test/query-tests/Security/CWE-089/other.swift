@@ -35,7 +35,7 @@ class MyDatabase {
 	func query(sqlStatement: String) { }
 	func query(sqliteStatement: String) { }
 
-    // non-examples
+	// non-examples
 	func doSomething(sqlIndex: Int) { }
 	func doSomething(sqliteContext: Sql) { }
 }
@@ -45,8 +45,8 @@ class MyDatabase {
 func test_heuristic(db: MyDatabase) throws {
 	let remoteString = try String(contentsOf: URL(string: "http://example.com/")!)
 
-	_ = MyDatabase()
-	_ = MyDatabase(sql: "some_fixed_sql")
+	_ = MyDatabase() // GOOD
+	_ = MyDatabase(sql: "some_fixed_sql") // GOOD
 	_ = MyDatabase(sql: remoteString) // BAD
 
 	db.execute1(remoteString) // BAD
@@ -59,6 +59,6 @@ func test_heuristic(db: MyDatabase) throws {
 	db.query(sqlStatement: remoteString) // BAD [NOT DETECTED]
 	db.query(sqliteStatement: remoteString) // BAD [NOT DETECTED]
 
-	db.doSomething(sqlIndex: Int(remoteString) ?? 0)
-	db.doSomething(sqliteContext: remoteString as! Sql)
+	db.doSomething(sqlIndex: Int(remoteString) ?? 0) // GOOD
+	db.doSomething(sqliteContext: remoteString as! Sql) // GOOD
 }
