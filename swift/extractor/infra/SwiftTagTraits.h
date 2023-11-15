@@ -196,7 +196,7 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::OneWayExpr, OneWayExprTag)
   MAP(swift::TapExpr, TapExprTag)
   MAP(swift::TypeJoinExpr, void)  // TODO (introduced in 5.8)
-  MAP(swift::MacroExpansionExpr, void)  // TODO (introduced in 5.8)
+  MAP(swift::MacroExpansionExpr, void) // unexpanded macro in an expr context, skipping
   MAP(swift::CopyExpr, CopyExprTag)
   MAP(swift::ConsumeExpr, ConsumeExprTag)
   MAP(swift::MaterializePackExpr, void)  // TODO (introduced in 5.9)
@@ -243,10 +243,8 @@ MAP(swift::Decl, DeclTag)
     MAP(swift::InfixOperatorDecl, InfixOperatorDeclTag)
     MAP(swift::PrefixOperatorDecl, PrefixOperatorDeclTag)
     MAP(swift::PostfixOperatorDecl, PostfixOperatorDeclTag)
-  MAP(swift::MacroExpansionDecl, void)  // TODO (introduced in 5.8)
-#if CODEQL_SWIFT_VERSION_GE(5, 9)
-  MAP(swift::MissingDecl, void)  // TODO (introduced in 5.9)
-#endif
+  MAP(swift::MacroExpansionDecl, void) // unexpanded macro in a decl context, skipping
+  MAP(swift::MissingDecl, void) // appears around an unexpanded macro, skipping
 
 MAP(swift::Pattern, PatternTag)
   MAP(swift::ParenPattern, ParenPatternTag)
