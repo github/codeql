@@ -150,7 +150,8 @@ private class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
 /**
  * A parameter that might be executed as SQL.
  */
-pragma[noinline] predicate sqlLikeHeuristic(Callable f, int ix, ParamDecl pd) {
+pragma[noinline]
+predicate sqlLikeHeuristic(Callable f, int ix, ParamDecl pd) {
   pd.getName() = "sql" and
   pd = f.getParam(ix)
 }
