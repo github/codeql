@@ -1,0 +1,5 @@
+| file://:0:0:0:0 | Module sys | isUsedAsModule |
+| imported.py:0:0:0:0 | Module imported | isUsedAsModule |
+| main.py:0:0:0:0 | Module main | isUsedAsScript |
+| myscript.py:0:0:0:0 | Script myscript | isUsedAsScript |
+| script:0:0:0:0 | Script script | isUsedAsScript |
