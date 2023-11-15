@@ -44,7 +44,7 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
       // `source` is an instruction that represents the return value of a
       // function that is known to return stack-allocated memory.
       exists(Call call |
-        call.getTarget().hasGlobalName(["alloca", "strdupa", "strndupa"]) and
+        call.getTarget().hasGlobalName(["alloca", "strdupa", "strndupa", "_alloca", "_malloca"]) and
         source.getUnconvertedResultExpression() = call
       )
     )
