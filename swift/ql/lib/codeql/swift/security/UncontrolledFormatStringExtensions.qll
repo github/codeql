@@ -9,6 +9,7 @@ private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.TaintTracking
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
+private import codeql.swift.security.PredicateInjectionExtensions
 
 /**
  * A dataflow sink for uncontrolled format string vulnerabilities.
@@ -81,7 +82,9 @@ class HeuristicUncontrolledFormatStringSink extends UncontrolledFormatStringSink
         argsType instanceof CVaListPointerType or
         argsType instanceof VariadicSequenceType
       )
-    )
+    ) and
+    // prevent overlap with `swift/predicate-injection`
+    not this instanceof PredicateInjectionSink
   }
 }
 

@@ -20,7 +20,6 @@ edges
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:118:61:118:61 | tainted |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:130:39:130:39 | tainted |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:135:37:135:37 | tainted |
-| UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:137:29:137:29 | tainted |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:139:5:139:5 | tainted |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:154:26:154:26 | tainted |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:156:32:156:32 | tainted |
@@ -64,7 +63,6 @@ nodes
 | UncontrolledFormatString.swift:130:39:130:39 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:135:20:135:44 | call to NSString.init(string:) | semmle.label | call to NSString.init(string:) |
 | UncontrolledFormatString.swift:135:37:135:37 | tainted | semmle.label | tainted |
-| UncontrolledFormatString.swift:137:29:137:29 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:139:5:139:5 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:140:9:140:9 | cstr [Collection element] | semmle.label | cstr [Collection element] |
 | UncontrolledFormatString.swift:141:24:141:24 | cstr | semmle.label | cstr |
@@ -92,7 +90,6 @@ subpaths
 | UncontrolledFormatString.swift:118:61:118:61 | tainted | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:118:61:118:61 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:130:39:130:39 | tainted | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:130:39:130:39 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:135:20:135:44 | call to NSString.init(string:) | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:135:20:135:44 | call to NSString.init(string:) | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
-| UncontrolledFormatString.swift:137:29:137:29 | tainted | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:137:29:137:29 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:141:24:141:24 | cstr | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:141:24:141:24 | cstr | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:143:21:143:21 | cstr | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:143:21:143:21 | cstr | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:145:27:145:27 | cstr | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:145:27:145:27 | cstr | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
