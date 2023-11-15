@@ -1413,15 +1413,19 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
     stripType(t1.asType()).(BoundGenericType) = bound1 and
     stripType(t2.asType()).(BoundGenericType) = bound2 and
     bound1.getDeclaration() = bound2.getDeclaration() and
-    forall(int index | index in [0 .. bound1.getNumberOfArgTypes()-1] |
-    bound1.getArgType(index).getCanonicalType() instanceof AnyType or
-    bound2.getArgType(index).getCanonicalType() instanceof AnyType or
-      bound1.getArgType(index).getCanonicalType() instanceof GenericTypeParamType or
-      bound2.getArgType(index).getCanonicalType() instanceof GenericTypeParamType or
-      bound1.getArgType(index).getCanonicalType() instanceof ArchetypeType or
-      bound2.getArgType(index).getCanonicalType() instanceof ArchetypeType or
-      bound1.getArgType(index).getCanonicalType() instanceof DependentMemberType or
-      bound2.getArgType(index).getCanonicalType() instanceof DependentMemberType
+    forall(int index | index in [0 .. bound1.getNumberOfArgTypes() - 1] |
+      isAnyOrUnboundType(bound1.getArgType(index).getCanonicalType()) or
+      isAnyOrUnboundType(bound2.getArgType(index).getCanonicalType())
+    )
+  )
+  or
+  exists(TupleType tuple1, TupleType tuple2 |
+    stripType(t1.asType()) = tuple1 and
+    stripType(t2.asType()) = tuple2 and
+    tuple1.getNumberOfTypes() = tuple2.getNumberOfTypes() and
+    forall(int index | index in [0 .. tuple1.getNumberOfTypes() - 1] |
+      isAnyOrUnboundType(tuple1.getType(index).getCanonicalType()) or
+      isAnyOrUnboundType(tuple2.getType(index).getCanonicalType())
     )
   )
   or
@@ -1436,21 +1440,34 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   or
   t1.asCallable() = t2.asCallable()
   or
-  stripType(t1.asType()) instanceof AnyType
+  isAnyOrUnboundType(stripType(t1.asType()))
   or
-  stripType(t2.asType()) instanceof AnyType
+  isAnyOrUnboundType(stripType(t2.asType()))
+}
+
+predicate isAnyOrUnboundType(Type t) {
+  t instanceof AnyType
   or
-  stripType(t1.asType()) instanceof GenericTypeParamType
+  t instanceof GenericTypeParamType
   or
-  stripType(t2.asType()) instanceof GenericTypeParamType
+  t instanceof ArchetypeType
   or
-  stripType(t1.asType()) instanceof ArchetypeType
+  t instanceof DependentMemberType
   or
-  stripType(t2.asType()) instanceof ArchetypeType
-  or
-  stripType(t1.asType()) instanceof DependentMemberType
-  or
-  stripType(t2.asType()) instanceof DependentMemberType
+  exists(TypeDecl td, TypeDecl parent |
+    t.(AnyGenericType).getDeclaration() = td and
+    parent = getEnclosingDeclNonExtension+(td) and
+    (
+      parent.(GenericTypeDecl).getNumberOfGenericTypeParams() != 0 or
+      parent.(ProtocolDecl).getNumberOfGenericTypeParams() != 0
+    )
+  )
+}
+
+Decl getEnclosingDeclNonExtension(Decl d) {
+  if d.getEnclosingDecl() instanceof ExtensionDecl
+  then result = d.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl()
+  else result = d.getEnclosingDecl()
 }
 
 Type stripType(Type t) {
