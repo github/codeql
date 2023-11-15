@@ -16,7 +16,7 @@ void modify_copy(int* ptr) { // $ ast-def=ptr
 void test_output_copy() {
    int x = 0;
    modify_copy(&x);
-   sink(x); // $ SPURIOUS: ir
+   sink(x); // clean
 }
 
 void modify(int* ptr) { // $ ast-def=ptr
@@ -43,7 +43,7 @@ void modify_copy_of_pointer(int* p, unsigned len) { // $ ast-def=p
 void test_modify_copy_of_pointer() {
   int x[10];
   modify_copy_of_pointer(x, 10);
-  sink(x[0]); // $ SPURIOUS: ir,ast
+  sink(x[0]); // $ SPURIOUS: ast // clean
 }
 
 void modify_pointer(int* p, unsigned len) { // $ ast-def=p
