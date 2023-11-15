@@ -1,0 +1,98 @@
+[T 15:13:47 51936] CodeQL CLI version 2.15.2
+[T 15:13:47 51936] Initializing tracer.
+[T 15:13:47 51936] Initialising tags...
+[T 15:13:47 51936] ID set to 000000000000CAE0_0000000000000001 (parent root)
+[T 15:13:47 51936] Initializing tracer.
+[T 15:13:47 51936] Initialising tags...
+[T 15:13:47 51936] ID set to 000000000000CAE0_0000000000000002 (parent root)
+[T 15:13:47 51936] Warning: SEMMLE_EXEC and SEMMLE_EXECP not set. Falling back to path lookup on argv[0].
+[T 15:13:47 51936] ==== Candidate to intercept: /Users/yunus.aydin/Research/codeql/tools/osx64/runner-osx (canonical: /Users/yunus.aydin/Research/codeql/tools/osx64/runner-osx) ====
+[T 15:13:47 51936] Executing the following tracer actions:
+[T 15:13:47 51936] Tracer actions:
+[T 15:13:47 51936] pre_invocations(0)
+[T 15:13:47 51936] post_invocations(0)
+[T 15:13:47 51936] trace_languages(1): [go]
+[T 15:13:47 51937] Attempting to switch stdout/stderr to 3...
+/Users/yunus.aydin/Research/codeql-fork/go/ql/src/experimental/CWE-525/wcd/working/copy-root/000001F5/bin/sh.semmle.0000CAE0.086137C8.slice.x86_64: replacing existing signature
+[T 15:13:47 51936] Initializing tracer.
+[T 15:13:47 51936] Initialising tags...
+[T 15:13:47 51936] ID set to 000000000000CAE0_0000000000000003 (parent 000000000000CAE0_0000000000000002)
+[T 15:13:47 51936] ==== Candidate to intercept: /Users/yunus.aydin/Research/codeql/go/tools/autobuild.sh (canonical: /Users/yunus.aydin/Research/codeql/go/tools/autobuild.sh) ====
+[T 15:13:47 51936] Executing the following tracer actions:
+[T 15:13:47 51936] Tracer actions:
+[T 15:13:47 51936] pre_invocations(0)
+[T 15:13:47 51936] post_invocations(0)
+[T 15:13:47 51936] trace_languages(1): [go]
+[T 15:13:47 51943] Attempting to switch stdout/stderr to 3...
+/Users/yunus.aydin/Research/codeql-fork/go/ql/src/experimental/CWE-525/wcd/working/copy-root/000001F5/bin/bash.semmle.0000CAE0.3A1B9858.slice.x86_64: replacing existing signature
+[T 15:13:48 51936] Initializing tracer.
+[T 15:13:48 51936] Initialising tags...
+[T 15:13:48 51936] ID set to 000000000000CAE0_0000000000000004 (parent 000000000000CAE0_0000000000000003)
+[T 15:13:48 51936] ==== Candidate to intercept: /bin/bash (canonical: /bin/bash) ====
+[T 15:13:48 51936] Executing the following tracer actions:
+[T 15:13:48 51936] Tracer actions:
+[T 15:13:48 51936] pre_invocations(0)
+[T 15:13:48 51936] post_invocations(0)
+[T 15:13:48 51936] trace_languages(1): [go]
+[T 15:13:48 51956] Attempting to switch stdout/stderr to 3...
+[T 15:13:49 51955] Initializing tracer.
+[T 15:13:49 51955] Initialising tags...
+[T 15:13:49 51955] ID set to 000000000000CAF3_0000000000000001 (parent 000000000000CAE0_0000000000000004)
+[T 15:13:49 51955] ==== Candidate to intercept: /Users/yunus.aydin/Research/codeql/go/tools/osx64/go-autobuilder (canonical: /Users/yunus.aydin/Research/codeql/go/tools/osx64/go-autobuilder) ====
+[T 15:13:49 51955] Lua: === Intercepted call to /users/yunus.aydin/research/codeql/go/tools/osx64/go-autobuilder ===
+[T 15:13:49 51955] Lua: Disabling tracing for language go.
+[T 15:13:49 51955] Executing the following tracer actions:
+[T 15:13:49 51955] Tracer actions:
+[T 15:13:49 51955] pre_invocations(0)
+[T 15:13:49 51955] post_invocations(0)
+[T 15:13:49 51955] trace_languages(0): []
+[T 15:13:49 51955] Disabling tracing for this command.
+[T 15:38:41 58609] CodeQL CLI version 2.15.2
+[T 15:38:41 58609] Initializing tracer.
+[T 15:38:41 58609] Initialising tags...
+[T 15:38:41 58609] ID set to 000000000000E4F1_0000000000000001 (parent root)
+[T 15:38:41 58609] Initializing tracer.
+[T 15:38:41 58609] Initialising tags...
+[T 15:38:41 58609] ID set to 000000000000E4F1_0000000000000002 (parent root)
+[T 15:38:41 58609] Warning: SEMMLE_EXEC and SEMMLE_EXECP not set. Falling back to path lookup on argv[0].
+[T 15:38:41 58609] ==== Candidate to intercept: /Users/yunus.aydin/Research/codeql/tools/osx64/runner-osx (canonical: /Users/yunus.aydin/Research/codeql/tools/osx64/runner-osx) ====
+[T 15:38:41 58609] Executing the following tracer actions:
+[T 15:38:41 58609] Tracer actions:
+[T 15:38:41 58609] pre_invocations(0)
+[T 15:38:41 58609] post_invocations(0)
+[T 15:38:41 58609] trace_languages(1): [go]
+[T 15:38:41 58610] Attempting to switch stdout/stderr to 3...
+/Users/yunus.aydin/Research/codeql-fork/go/ql/src/experimental/CWE-525/wcd/working/copy-root/000001F5/bin/sh.semmle.0000E4F1.201C2B48.slice.x86_64: replacing existing signature
+[T 15:38:42 58609] Initializing tracer.
+[T 15:38:42 58609] Initialising tags...
+[T 15:38:42 58609] ID set to 000000000000E4F1_0000000000000003 (parent 000000000000E4F1_0000000000000002)
+[T 15:38:42 58609] ==== Candidate to intercept: /Users/yunus.aydin/Research/codeql/go/tools/autobuild.sh (canonical: /Users/yunus.aydin/Research/codeql/go/tools/autobuild.sh) ====
+[T 15:38:42 58609] Executing the following tracer actions:
+[T 15:38:42 58609] Tracer actions:
+[T 15:38:42 58609] pre_invocations(0)
+[T 15:38:42 58609] post_invocations(0)
+[T 15:38:42 58609] trace_languages(1): [go]
+[T 15:38:42 58614] Attempting to switch stdout/stderr to 3...
+/Users/yunus.aydin/Research/codeql-fork/go/ql/src/experimental/CWE-525/wcd/working/copy-root/000001F5/bin/bash.semmle.0000E4F1.16A1EA30.slice.x86_64: replacing existing signature
+[T 15:38:42 58609] Initializing tracer.
+[T 15:38:42 58609] Initialising tags...
+[T 15:38:42 58609] ID set to 000000000000E4F1_0000000000000004 (parent 000000000000E4F1_0000000000000003)
+[T 15:38:42 58609] ==== Candidate to intercept: /bin/bash (canonical: /bin/bash) ====
+[T 15:38:42 58609] Executing the following tracer actions:
+[T 15:38:42 58609] Tracer actions:
+[T 15:38:42 58609] pre_invocations(0)
+[T 15:38:42 58609] post_invocations(0)
+[T 15:38:42 58609] trace_languages(1): [go]
+[T 15:38:42 58620] Attempting to switch stdout/stderr to 3...
+[T 15:38:43 58619] Initializing tracer.
+[T 15:38:43 58619] Initialising tags...
+[T 15:38:43 58619] ID set to 000000000000E4FB_0000000000000001 (parent 000000000000E4F1_0000000000000004)
+[T 15:38:43 58619] ==== Candidate to intercept: /Users/yunus.aydin/Research/codeql/go/tools/osx64/go-autobuilder (canonical: /Users/yunus.aydin/Research/codeql/go/tools/osx64/go-autobuilder) ====
+[T 15:38:43 58619] Lua: === Intercepted call to /users/yunus.aydin/research/codeql/go/tools/osx64/go-autobuilder ===
+[T 15:38:43 58619] Lua: Disabling tracing for language go.
+[T 15:38:43 58619] Executing the following tracer actions:
+[T 15:38:43 58619] Tracer actions:
+[T 15:38:43 58619] pre_invocations(0)
+[T 15:38:43 58619] post_invocations(0)
+[T 15:38:43 58619] trace_languages(0): []
+[T 15:38:43 58619] Disabling tracing for this command.

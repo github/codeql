@@ -17,13 +17,9 @@ from
   Method get
 where
   httpHandleFuncCall.getTarget().hasQualifiedName("net/http", "HandleFunc") and
-  httpHandleFuncCall.getNumArgument() > 1 and
-  httpHandleFuncCall.getArgument(0).getType().getUnderlyingType() = StringType and
-  httpHandleFuncCall.getArgument(0).getStringValue().matches("%/\"") and
-  // Trace the second argument's data flow to its predecessor
-  predecessor = httpHandleFuncCall.getArgument(1).getAPredecessor() and
-  // Find the corresponding expression for the predecessor
+  httpHandleFuncCall.getArgument(0).getType().getUnderlyingType() instanceof StringType and
+  httpHandleFuncCall.getArgument(0).getStringValue().matches("%/") and
   get.hasQualifiedName("net/http", "Header", "Set") and
   call = get.getACall() and
-  call.getArgument(0).getStringValue() = "\"Cache-Control\""
+  call.getArgument(0).getStringValue() = "Cache-Control"
 select httpHandleFuncCall.getArgument(0), call.getArgument(0)
