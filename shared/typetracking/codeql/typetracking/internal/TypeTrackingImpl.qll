@@ -33,10 +33,11 @@ module TypeTracking<TypeTrackingInput I> {
      * Holds if there is any node in a step relation that is unreachable from a
      * `LocalSourceNode`.
      */
-    query predicate unreachableNode(string msg) {
-      exists(int k, string kind |
-        k = strictcount(Node n | stepEntry(n, kind) and not flowsTo(_, n)) and
-        msg = "There are " + k + " unreachable nodes in steps of kind " + kind + "."
+    query predicate unreachableNode(Node n, string msg) {
+      exists(string kind |
+        stepEntry(n, kind) and
+        not flowsTo(_, n) and
+        msg = "Unreachable node in step of kind " + kind + "."
       )
     }
 
@@ -44,18 +45,11 @@ module TypeTracking<TypeTrackingInput I> {
      * Holds if there is a store target that isn't a `LocalSourceNode` and
      * backtracking store target feature isn't enabled.
      */
-    query predicate nonSourceStoreTarget(string msg) {
+    query predicate nonSourceStoreTarget(Node n, string msg) {
       not hasFeatureBacktrackStoreTarget() and
-      exists(int k |
-        k =
-          strictcount(Node n |
-            not n instanceof LocalSourceNode and
-            (storeStep(_, n, _) or loadStoreStep(_, n, _, _))
-          ) and
-        msg =
-          "There are " + k +
-            " store targets that are not local source nodes and backtracking store targets is not enabled."
-      )
+      not n instanceof LocalSourceNode and
+      (storeStep(_, n, _) or loadStoreStep(_, n, _, _)) and
+      msg = "Store target is not a local source nodes and backtracking store targets is disabled."
     }
   }
 
