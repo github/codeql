@@ -12,13 +12,10 @@
 
 import go
 
-from
-  DataFlow::CallNode httpHandleFuncCall, DataFlow::CallNode call, Method get
+from DataFlow::CallNode httpHandleFuncCall, Http::HeaderWrite::Range hw
 where
   httpHandleFuncCall.getTarget().hasQualifiedName("net/http", "HandleFunc") and
   httpHandleFuncCall.getArgument(0).getType().getUnderlyingType() instanceof StringType and
   httpHandleFuncCall.getArgument(0).getStringValue().matches("%/") and
-  get.hasQualifiedName("net/http", "Header", "Set") and
-  call = get.getACall() and
-  call.getArgument(0).getStringValue() = "Cache-Control"
-select httpHandleFuncCall.getArgument(0), call.getArgument(0)
+  hw.getHeaderName() = "cache-control"
+select httpHandleFuncCall.getArgument(0), hw.getHeaderName()
