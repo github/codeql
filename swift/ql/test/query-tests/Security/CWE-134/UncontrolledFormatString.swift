@@ -21,6 +21,10 @@ extension String : CVarArg {
     static func localizedStringWithFormat(_ format: String, _ arguments: CVarArg...) -> String { return "" }
 }
 
+extension StringProtocol {
+    func appendingFormat<T>(_ format: T, _ arguments: CVarArg...) -> String where T : StringProtocol { return "" }
+}
+
 class NSObject
 {
 }
@@ -35,6 +39,7 @@ class NSString : NSObject
 
 class NSMutableString : NSString
 {
+    func appendFormat(_ format: NSString, _ args: CVarArg...) {}
 }
 
 struct NSExceptionName {
@@ -52,6 +57,21 @@ func NSLogv(_ format: String, _ args: CVaListPointer) {}
 
 func getVaList(_ args: [CVarArg]) -> CVaListPointer { return (nil as CVaListPointer?)! }
 
+// not a (normal) formatting function
+class NSPredicate {
+    init(format: String, _: CVarArg...) {}
+}
+
+// imported from C
+typealias FILE = Int32 // this is a simplification
+typealias wchar_t = Int32
+typealias locale_t = OpaquePointer
+func dprintf(_ fd: Int, _ format: UnsafePointer<Int8>, _ args: CVarArg...) -> Int32 { return 0 }
+func vprintf(_ format: UnsafePointer<CChar>, _ arg: CVaListPointer) -> Int32 { return 0 }
+func vfprintf(_ file: UnsafeMutablePointer<FILE>?, _ format: UnsafePointer<CChar>?, _ arg: CVaListPointer) -> Int32 { return 0 }
+func vasprintf_l(_ ret: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?, _ loc: locale_t?, _ format: UnsafePointer<CChar>?, _ ap: CVaListPointer) -> Int32 { return 0 }
+
+
 // --- tests ---
 
 func MyLog(_ format: String, _ args: CVarArg...) {
@@ -60,7 +80,14 @@ func MyLog(_ format: String, _ args: CVarArg...) {
     }
 }
 
-func tests() {
+func myFormatMessage(string: String, _ args: CVarArg...) { }
+
+class MyString {
+    init(format: String, _ args: CVarArg...) { }
+    init(formatString: String, _ args: CVarArg...) { }
+}
+
+func tests() throws {
     let tainted = try! String(contentsOf: URL(string: "http://example.com")!)
 
     let a = String("abc") // GOOD: not a format string
