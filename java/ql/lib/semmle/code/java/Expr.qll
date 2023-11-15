@@ -2580,6 +2580,32 @@ class NotNullExpr extends UnaryExpr, @notnullexpr {
   override string getAPrimaryQlClass() { result = "NotNullExpr" }
 }
 
+/**
+ * A binding or record pattern.
+ *
+ * Note binding patterns are represented as `LocalVariableDeclExpr`s.
+ */
+class PatternExpr extends Expr {
+  PatternExpr() {
+    (
+      this.getParent() instanceof SwitchCase or
+      this.getParent() instanceof InstanceOfExpr or
+      this.getParent() instanceof PatternExpr
+    ) and
+    (this instanceof LocalVariableDeclExpr or this instanceof RecordPatternExpr)
+  }
+
+  /**
+   * Gets this pattern cast to a binding pattern.
+   */
+  LocalVariableDeclExpr asBindingPattern() { result = this }
+
+  /**
+   * Gets this pattern cast to a record pattern.
+   */
+  RecordPatternExpr asRecordPattern() { result = this }
+}
+
 /** A record pattern expr, as in `if (x instanceof SomeRecord(int field))`. */
 class RecordPatternExpr extends Expr, @recordpatternexpr {
   override string toString() { result = this.getType().toString() + "(...)" }

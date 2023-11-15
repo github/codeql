@@ -530,32 +530,6 @@ class ConstCase extends SwitchCase {
   override string getAPrimaryQlClass() { result = "ConstCase" }
 }
 
-/**
- * A binding or record pattern.
- *
- * Note binding patterns are represented as `LocalVariableDeclExpr`s.
- */
-class PatternExpr extends Expr {
-  PatternExpr() {
-    (
-      this.getParent() instanceof SwitchCase or
-      this.getParent() instanceof InstanceOfExpr or
-      this.getParent() instanceof PatternExpr
-    ) and
-    (this instanceof LocalVariableDeclExpr or this instanceof RecordPatternExpr)
-  }
-
-  /**
-   * Gets this pattern cast to a binding pattern.
-   */
-  LocalVariableDeclExpr asBindingPattern() { result = this }
-
-  /**
-   * Gets this pattern cast to a record pattern.
-   */
-  RecordPatternExpr asRecordPattern() { result = this }
-}
-
 /** A pattern case of a `switch` statement */
 class PatternCase extends SwitchCase {
   PatternExpr pattern;
