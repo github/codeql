@@ -29,14 +29,14 @@ predicate hasNewParent(Expr e, ExprParent newParent, int newIndex) {
     getParent(e) instanceof LocalVariableDeclExpr and
     getParent(getParent(e)) instanceof InstanceOfExpr
   then (
+    // Initialiser moves to hang directly off the instanceof expression
     newParent = getParent(getParent(e)) and newIndex = 0
   ) else (
-    // Initialiser moves to hang directly off the instanceof expression
     if e instanceof LocalVariableDeclExpr and getParent(e) instanceof InstanceOfExpr
-    then newParent = getParent(e) and newIndex = 2
-    else
+    then
       // Variable declaration moves to be the instanceof expression's 2nd child
-      exprs(e, _, _, newParent, newIndex) // Other expressions unchanged
+      newParent = getParent(e) and newIndex = 2
+    else exprs(e, _, _, newParent, newIndex) // Other expressions unchanged
   )
 }
 
