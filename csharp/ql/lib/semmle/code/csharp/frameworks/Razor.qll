@@ -69,9 +69,11 @@ class RazorPageClass extends Class {
   AssemblyAttribute attr;
 
   RazorPageClass() {
-    this.getBaseClass()
-        .getUnboundDeclaration()
-        .hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorPage<>") and
+    exists(Class baseClass | baseClass = this.getBaseClass().getUnboundDeclaration() |
+      baseClass.hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorPage<>")
+      or
+      baseClass.hasQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "Page")
+    ) and
     attr.getFile() = this.getFile() and
     attr.getType()
         .hasQualifiedName("Microsoft.AspNetCore.Razor.Hosting", "RazorCompiledItemAttribute")
