@@ -25,5 +25,5 @@ where
   // Find the corresponding expression for the predecessor
   get.hasQualifiedName("net/http", "Header", "Set") and
   call = get.getACall() and
-  call.getArgument(0).toString().matches("\"Cache-Control\"")
+  call.getArgument(0).getStringValue() = "\"Cache-Control\""
 select httpHandleFuncCall.getArgument(0), call.getArgument(0)
