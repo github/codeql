@@ -27,10 +27,13 @@ predicate isProcessOperationExplanation(DataFlow::Node arg, string processOperat
   )
 }
 
+predicate isSource(FlowSource source, string sourceType) {
+  not source instanceof DataFlow::ExprNode and
+  sourceType = source.getSourceType()
+}
+
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) {
-    node instanceof FlowSource and not node instanceof DataFlow::ExprNode
-  }
+  predicate isSource(DataFlow::Node node) { isSource(node, _) }
 
   predicate isSink(DataFlow::Node node) { isProcessOperationExplanation(node, _) }
 
@@ -44,13 +47,14 @@ module Config implements DataFlow::ConfigSig {
 module Flow = TaintTracking::Global<Config>;
 
 from
-  string processOperation, DataFlow::Node source, DataFlow::Node sink, Flow::PathNode sourceNode,
-  Flow::PathNode sinkNode
+  string processOperation, string sourceType, DataFlow::Node source, DataFlow::Node sink,
+  Flow::PathNode sourceNode, Flow::PathNode sinkNode
 where
   source = sourceNode.getNode() and
   sink = sinkNode.getNode() and
+  isSource(source, sourceType) and
   isProcessOperationExplanation(sink, processOperation) and
   Flow::flowPath(sourceNode, sinkNode)
 select sink, sourceNode, sinkNode,
   "The value of this argument may come from $@ and is being passed to " + processOperation + ".",
-  source, source.toString()
+  source, sourceType
