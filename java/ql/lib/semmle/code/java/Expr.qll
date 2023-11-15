@@ -1547,7 +1547,10 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
   }
 
   /** Holds if this switch has a case handling a null literal. */
-  predicate hasNullCase() { this.getAConstCase().getValue(_) instanceof NullLiteral }
+  predicate hasNullCase() {
+    this.getAConstCase().getValue(_) instanceof NullLiteral or
+    this.getACase() instanceof NullDefaultCase
+  }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "switch (...)" }
