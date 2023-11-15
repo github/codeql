@@ -18,7 +18,7 @@ class ConditionBlock extends BasicBlock {
   ConditionNode getConditionNode() { result = this.getLastNode() }
 
   /** Gets the condition of the last node of this basic block. */
-  Expr getCondition() { result = this.getConditionNode().getCondition() }
+  ExprParent getCondition() { result = this.getConditionNode().getCondition() }
 
   /** Gets a `true`- or `false`-successor of the last node of this basic block. */
   BasicBlock getTestSuccessor(boolean testIsTrue) {
@@ -172,6 +172,30 @@ class Guard extends ExprParent {
   predicate controls(BasicBlock controlled, boolean branch) {
     guardControls_v3(this, controlled, branch)
   }
+}
+
+/**
+ * A `Guard` that tests an expression's type -- that is, an `instanceof T` or a
+ * `case T varname` pattern case.
+ */
+class TypeTestGuard extends Guard {
+  Expr testedExpr;
+  Type testedType;
+
+  TypeTestGuard() {
+    exists(InstanceOfExpr ioe | this = ioe |
+      testedExpr = ioe.getExpr() and
+      testedType = ioe.getCheckedType()
+    )
+    or
+    exists(PatternCase pc | this = pc |
+      pc.getSelectorExpr() = testedExpr and
+      testedType = pc.getPattern().getType()
+    )
+  }
+
+  /** Holds if this guard tests whether `e` has type `t`. */
+  predicate appliesTypeTest(Expr e, Type t) { e = testedExpr and t = testedType }
 }
 
 private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {

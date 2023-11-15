@@ -1512,5 +1512,5 @@ class ConditionNode extends ControlFlowNode {
   ControlFlowNode getAFalseSuccessor() { result = this.getABranchSuccessor(false) }
 
   /** Gets the condition of this `ConditionNode`. This is equal to the node itself. */
-  Expr getCondition() { result = this }
+  ExprParent getCondition() { result = this }
 }
