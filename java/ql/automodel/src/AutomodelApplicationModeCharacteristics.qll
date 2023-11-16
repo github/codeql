@@ -376,7 +376,7 @@ class ApplicationModeMetadataExtractor extends string {
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
       name = callable.getName() and
-      signature = ExternalFlow::paramsString(callable) and
+      signature = ExternalFlow::paramsString(callable.getSourceDeclaration()) and
       if e instanceof ImplicitVarargsArray
       then isVarargsArray = "true"
       else isVarargsArray = "false"
