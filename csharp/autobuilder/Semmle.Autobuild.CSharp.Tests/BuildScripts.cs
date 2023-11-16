@@ -1,4 +1,4 @@
-using Xunit;
+﻿using Xunit;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -949,6 +949,40 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.DownloadFiles.Add(("https://dot.net/v1/dotnet-install.sh", "dotnet-install.sh"));
 
             var autobuilder = CreateAutoBuilder(false, dotnetVersion: "2.1.3");
+            TestAutobuilderScript(autobuilder, 0, 8);
+        }
+
+        [Fact]
+        public void TestDotnetVersionInstalledFromTargetFramework()
+        {
+            actions.RunProcess["dotnet --list-sdks"] = 0;
+            actions.RunProcessOut["dotnet --list-sdks"] = "6.0.404 [C:\\Program Files\\dotnet\\sdks]\n7.0.102 [C:\\Program Files\\dotnet\\sdks]";
+            actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
+            actions.RunProcess[@"./dotnet-install.sh --channel 8.0 --version latest --install-dir C:\Project/.dotnet"] = 0;
+            actions.RunProcess[@"rm dotnet-install.sh"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet build --no-incremental C:\Project/test.csproj"] = 0;
+            actions.FileExists["csharp.log"] = true;
+            actions.FileExists["test.csproj"] = true;
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["PATH"] = "/bin:/usr/bin";
+            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
+            actions.EnumerateDirectories[@"C:\Project"] = "";
+            var xml = new XmlDocument();
+            xml.LoadXml(@"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>");
+            actions.LoadXml[@"C:\Project/test.csproj"] = xml;
+            actions.DownloadFiles.Add(("https://dot.net/v1/dotnet-install.sh", "dotnet-install.sh"));
+
+            var autobuilder = CreateAutoBuilder(false);
             TestAutobuilderScript(autobuilder, 0, 8);
         }
 
