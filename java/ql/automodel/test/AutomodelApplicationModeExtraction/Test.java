@@ -6,6 +6,7 @@ import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.io.File;
@@ -66,5 +67,13 @@ class Test {
 class OverrideTest extends Exception {
 	public void printStackTrace(PrintWriter writer) { // writer is a source candidate because it overrides an existing method
 		return;
+	}
+}
+
+class GenericTypesTest<T> {
+	public ArrayList<String> mkList(String elem) {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(elem); // list is a sink candidate (elem is not, because there's a taint step originating)
+		return list;
 	}
 }
