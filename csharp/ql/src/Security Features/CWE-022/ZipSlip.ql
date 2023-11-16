@@ -19,5 +19,5 @@ import ZipSlip::PathGraph
 from ZipSlip::PathNode source, ZipSlip::PathNode sink
 where ZipSlip::flowPath(source, sink)
 select source.getNode(), source, sink,
- "Unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
- "file system operation"
+  "Unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
+  "file system operation"
