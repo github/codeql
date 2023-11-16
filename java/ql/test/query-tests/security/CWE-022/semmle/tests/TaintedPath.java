@@ -21,10 +21,10 @@ public class TaintedPath {
 
     public void sendUserFileGood(Socket sock, String user) throws IOException {
         BufferedReader filenameReader = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8"));
-        String filePath = filenameReader.readLine();
+        String filename = filenameReader.readLine();
         // GOOD: ensure that the file is in a designated folder in the user's home directory
-        if (!filePath.contains("..") && filePath.startsWith("/home/" + user + "/public/")) {
-            BufferedReader fileReader = new BufferedReader(new FileReader(filePath));
+        if (!filename.contains("..") && filename.startsWith("/home/" + user + "/public/")) {
+            BufferedReader fileReader = new BufferedReader(new FileReader(filename));
             String fileLine = fileReader.readLine();
             while(fileLine != null) {
                 sock.getOutputStream().write(fileLine.getBytes());
