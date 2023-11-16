@@ -383,20 +383,18 @@ private class PpInstanceOfExpr extends PpAst, InstanceOfExpr {
   override string getPart(int i) {
     i = 1 and result = " instanceof "
     or
-    i = 3 and result = " " and this.isPattern()
+    i = 3 and result = " " and this.getPattern() instanceof LocalVariableDeclExpr
     or
     i = 4 and
-    (
-      result = this.getPattern().asBindingPattern().getName()
-      or
-      result = this.getPattern().asRecordPattern().toString()
-    )
+    result = this.getPattern().asBindingPattern().getName()
   }
 
   override PpAst getChild(int i) {
     i = 0 and result = this.getExpr()
     or
     i = 2 and result = this.getTypeName()
+    or
+    i = 2 and result = this.getPattern().asRecordPattern()
   }
 }
 
@@ -748,6 +746,8 @@ private class PpSwitchStmt extends PpAst, SwitchStmt {
 }
 
 private class PpSwitchCase extends PpAst, SwitchCase {
+  PpSwitchCase() { not this instanceof PatternCase }
+
   override string getPart(int i) {
     i = 0 and result = "default" and this instanceof DefaultCase
     or
@@ -781,6 +781,36 @@ private class PpSwitchCase extends PpAst, SwitchCase {
     i = 2 + this.lastConstCaseValueIndex() and result = this.getRuleExpression()
     or
     i = 2 + this.lastConstCaseValueIndex() and result = this.getRuleStatement()
+  }
+}
+
+private class PpPatternCase extends PpAst, PatternCase {
+  override string getPart(int i) {
+    i = 0 and result = "case "
+    or
+    i = 2 and this.getPattern() instanceof LocalVariableDeclExpr and result = " "
+    or
+    i = 3 and result = this.getPattern().asBindingPattern().getName()
+    or
+    i = 2 + this.getPatternOffset() and result = ":" and not this.isRule()
+    or
+    i = 2 + this.getPatternOffset() and result = " -> " and this.isRule()
+    or
+    i = 4 + this.getPatternOffset() and result = ";" and exists(this.getRuleExpression())
+  }
+
+  private int getPatternOffset() {
+    if this.getPattern() instanceof LocalVariableDeclExpr then result = 2 else result = 0
+  }
+
+  override PpAst getChild(int i) {
+    i = 1 and result = this.getPattern().asBindingPattern().getTypeAccess()
+    or
+    i = 1 and result = this.getPattern().asRecordPattern()
+    or
+    i = 4 and result = this.getRuleExpression()
+    or
+    i = 4 and result = this.getRuleStatement()
   }
 }
 
@@ -1037,5 +1067,21 @@ private class PpCallable extends PpAst, Callable {
 
   override PpAst getChild(int i) {
     i = 5 + 4 * this.getNumberOfParameters() and result = this.getBody()
+  }
+}
+
+private class PpRecordPattern extends PpAst, RecordPatternExpr {
+  override string getPart(int i) {
+    i = 0 and result = this.getType().getName()
+    or
+    i = 1 and result = "("
+    or
+    i = 1 + ((any(int x | x >= 1 and exists(this.getSubPattern(x)))) * 2) and result = ", "
+    or
+    i = 1 + (count(this.getSubPattern(_)) * 2) and result = ")"
+  }
+
+  override PpAst getChild(int i) {
+    exists(int x | result = this.getSubPattern(x) | i = 2 + (x * 2))
   }
 }
