@@ -223,7 +223,7 @@ class TypeTestGuard extends Guard {
   }
 
   /**
-   * Holds if this guard tests whether `e` has type `t`.
+   * Holds if this guard tests whether `e` has type `t` on `testedBranch`.
    *
    * Note that record patterns that make at least one tighter restriction than the record's definition
    * (e.g. matching `record R(Object)` with `case R(String)`) means this only guarantees the tested type
