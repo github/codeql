@@ -232,7 +232,7 @@ predicate storeStep(Node node1, ContentSet f, Node node2) {
     pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
-// Manual join hacking, to avoid a paramters x fields product.
+// Manual join hacking, to avoid a parameters x fields product.
 pragma[noinline]
 private predicate hasNamedField(Record r, Field f, string name) {
   f = r.getAField() and name = f.getName()
