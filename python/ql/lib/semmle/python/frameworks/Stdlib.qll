@@ -1479,6 +1479,26 @@ private module StdlibPrivate {
     }
   }
 
+  /**
+   * A call to the `io.FileIO` constructor.
+   * See https://docs.python.org/3/library/io.html#io.FileIO
+   */
+  private class FileIOCall extends FileSystemAccess::Range, API::CallNode {
+    FileIOCall() { this = API::moduleImport("io").getMember("FileIO").getACall() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "file").asSink() }
+  }
+
+  /**
+   * A call to the `io.open_code` function.
+   * See https://docs.python.org/3.11/library/io.html#io.open_code
+   */
+  private class OpenCodeCall extends FileSystemAccess::Range, API::CallNode {
+    OpenCodeCall() { this = API::moduleImport("io").getMember("open_code").getACall() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "path").asSink() }
+  }
+
   /** Gets a reference to an open file. */
   private DataFlow::TypeTrackingNode openFile(DataFlow::TypeTracker t, FileSystemAccess openCall) {
     t.start() and
