@@ -21,5 +21,5 @@ func main() {
 	// Compare with the standard dataflow support for arrays
 	var b [4]string
 	b[0] = source()
-	sink(b[0]) // $ hasTaintFlow="index expression"
+	sink(b[0]) // $ hasValueFlow="index expression"
 }

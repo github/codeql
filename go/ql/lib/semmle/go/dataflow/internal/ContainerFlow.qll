@@ -21,7 +21,7 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
       node2.getType() instanceof SliceType
     ) and
     (
-      exists(Write w | w.writesElement(node2, _, node1))
+      exists(Write w | w.writesElement(node2.(PostUpdateNode).getPreUpdateNode(), _, node1))
       or
       node1 = node2.(ImplicitVarargsSlice).getCallNode().getAnImplicitVarargsArgument()
     )
