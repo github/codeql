@@ -34,7 +34,8 @@ cached
 private newtype TIRDataFlowNode =
   TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
   TVariableNode(Variable var, int indirectionIndex) {
-    indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
+    indirectionIndex =
+      [getMinIndirectionsForType(var.getUnspecifiedType()) .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
   TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
     indirectionIndex =
@@ -346,7 +347,9 @@ class Node extends TIRDataFlowNode {
    * Gets the variable corresponding to this node, if any. This can be used for
    * modeling flow in and out of global variables.
    */
-  Variable asVariable() { this = TVariableNode(result, 1) }
+  Variable asVariable() {
+    this = TVariableNode(result, getMinIndirectionsForType(result.getUnspecifiedType()))
+  }
 
   /**
    * Gets the `indirectionIndex`'th indirection of this node's underlying variable, if any.
@@ -354,7 +357,7 @@ class Node extends TIRDataFlowNode {
    * This can be used for modeling flow in and out of global variables.
    */
   Variable asIndirectVariable(int indirectionIndex) {
-    indirectionIndex > 1 and
+    indirectionIndex > getMinIndirectionsForType(result.getUnspecifiedType()) and
     this = TVariableNode(result, indirectionIndex)
   }
 
