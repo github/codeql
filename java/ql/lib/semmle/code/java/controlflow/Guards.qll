@@ -152,13 +152,16 @@ class Guard extends ExprParent {
       bb2 = cb.getTestSuccessor(branch)
     )
     or
-    exists(SwitchCase sc, ControlFlowNode pred |
+    exists(SwitchCase sc |
       sc = this and
+      // Pattern cases are handled as ConditionBlocks above.
+      not sc instanceof PatternCase and
       branch = true and
       bb2.getFirstNode() = sc.getControlFlowNode() and
-      pred = sc.getControlFlowNode().getAPredecessor() and
-      pred.(Expr).getParent*() = sc.getSelectorExpr() and
-      bb1 = pred.getBasicBlock()
+      bb1 = sc.getControlFlowNode().getAPredecessor().getBasicBlock() and
+      // This is either the top of the switch block, or a preceding pattern case
+      // if one exists.
+      this.getBasicBlock() = bb1
     )
     or
     preconditionBranchEdge(this, bb1, bb2, branch)
@@ -245,20 +248,20 @@ class TypeTestGuard extends Guard {
 }
 
 private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
-  exists(BasicBlock caseblock, Expr selector |
-    selector = sc.getSelectorExpr() and
-    (
-      if sc instanceof PatternCase
-      then caseblock.getANode() = sc.(PatternCase).getPattern().getControlFlowNode()
-      else (
-        caseblock.getFirstNode() = sc.getControlFlowNode() and
-        // Check there is no fall-through edge from a previous case:
-        forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
-          pred.(Expr).getParent*() = selector
-        )
-      )
-    ) and
-    caseblock.bbDominates(bb)
+  exists(BasicBlock caseblock |
+    caseblock.getFirstNode() = sc.getControlFlowNode() and
+    caseblock.bbDominates(bb) and
+    // Check we can't fall through from a previous block:
+    forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
+      // Branch straight from the switch selector:
+      pred.(Expr).getParent*() = sc.getSelectorExpr()
+      or
+      // Branch from a predecessor pattern case (note pattern cases cannot ever fall through)
+      pred = sc.getSiblingCase(_).(PatternCase)
+      or
+      // Branch from a predecessor pattern case's guard test, which also can't be a fallthrough edge
+      pred.(Expr).getParent*() = sc.getSiblingCase(_).(PatternCase).getGuard()
+    )
   )
 }
 

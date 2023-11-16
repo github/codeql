@@ -12,5 +12,10 @@ class Test {
       case "d" -> { }
       default -> { }
     }
+    switch (s) {
+      case String s2 when s.length() == 4 -> { }
+      case "e" -> { }
+      default -> { }
+    }
   }
 }
