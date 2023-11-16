@@ -100,7 +100,8 @@ private string getARazorPathPrefix() {
   or
   exists(File csproj |
     csproj.getExtension() = "csproj" and
-    result = csproj.getParentContainer().getAbsolutePath()
+    // possibly prepend '/' to match Windows absolute paths starting with `C:/` with paths appearing in the Razor file in standalone mode starting with `/C:/`
+    result = ["/", ""] + csproj.getParentContainer().getAbsolutePath()
   )
 }
 
