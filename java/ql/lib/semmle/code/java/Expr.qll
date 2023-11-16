@@ -2658,4 +2658,22 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
    * Gets the `i`th subpattern of this record pattern.
    */
   PatternExpr getSubPattern(int i) { result.isNthChildOf(this, i) }
+
+  /**
+   * Holds if this record pattern matches any record of its type.
+   *
+   * For example, for `record R(Object o) { }`, pattern `R(Object o)` is unrestricted, whereas
+   * pattern `R(String s)` is not because it matches a subset of `R` instances, those containing `String`s.
+   */
+  predicate isUnrestricted() {
+    forall(PatternExpr subPattern, int idx | subPattern = this.getSubPattern(idx) |
+      subPattern.getType() =
+        this.getType().(Record).getCanonicalConstructor().getParameter(idx).getType() and
+      (
+        subPattern instanceof LocalVariableDeclExpr
+        or
+        subPattern.(RecordPatternExpr).isUnrestricted()
+      )
+    )
+  }
 }

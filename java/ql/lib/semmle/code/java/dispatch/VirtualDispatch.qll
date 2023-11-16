@@ -197,7 +197,7 @@ private module Dispatch {
     exists(TypeTestGuard typeTest, BaseSsaVariable v, Expr q, RefType t |
       source.getQualifier() = q and
       v.getAUse() = q and
-      typeTest.appliesTypeTest(v.getAUse(), t) and
+      typeTest.appliesTypeTest(v.getAUse(), t, false) and
       guardControls_v1(typeTest, q.getBasicBlock(), false) and
       tgt.getDeclaringType().getSourceDeclaration().getASourceSupertype*() = t.getErasure()
     )

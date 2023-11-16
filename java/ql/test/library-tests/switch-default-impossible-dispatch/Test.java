@@ -6,24 +6,51 @@ public class Test {
   interface I { void take(int x); }
   static class C1 implements I { public void take(int x) { sink(x); } }
   static class C2 implements I { public void take(int x) { sink(x); } }
+  record Wrapper(Object o) implements I { public void take(int x) { sink(x); } }
+  record WrapperWrapper(Wrapper w) implements I { public void take(int x) { sink(x); } }
 
-  public static void test(boolean unknown, int alsoUnknown) {
+  public static void test(int unknown, int alsoUnknown) {
 
-    I c1or2 = unknown ? new C1() : new C2();
+    I i = unknown == 0 ? new C1() : unknown == 1 ? new C2() : unknown == 2 ? new Wrapper(new Object()) : new WrapperWrapper(new Wrapper(new Object()));
 
-    switch(c1or2) {
+    switch(i) {
       case C1 c1 when alsoUnknown == 1 -> { }
-      default -> c1or2.take(source()); // Could call either implementation
+      default -> i.take(source()); // Could call any implementation
     }
 
-    switch(c1or2) {
+    switch(i) {
       case C1 c1 -> { }
-      default -> c1or2.take(source()); // Can't call C1.take
+      default -> i.take(source()); // Can't call C1.take
     }
 
-    switch(c1or2) {
+    switch(i) {
       case C1 c1 -> { }
-      case null, default -> c1or2.take(source()); // Can't call C1.take
+      case null, default -> i.take(source()); // Can't call C1.take
+    }
+
+    switch(i) {
+      case Wrapper w -> { }
+      default -> i.take(source()); // Can't call Wrapper.take
+    }
+
+    switch(i) {
+      case Wrapper(Object o) -> { }
+      default -> i.take(source()); // Can't call Wrapper.take
+    }
+
+    switch(i) {
+      case Wrapper(String s) -> { }
+      default -> i.take(source()); // Could call any implementation, because this might be a Wrapper(Integer) for example.
+    }
+
+    switch(i) {
+      case WrapperWrapper(Wrapper(Object o)) -> { }
+      default -> i.take(source()); // Can't call WrapperWrapper.take
+    }
+
+    switch(i) {
+      case WrapperWrapper(Wrapper(String s)) -> { }
+      default -> i.take(source()); // Could call any implementation, because this might be a WrapperWrapper(Wrapper((Integer)) for example.
     }
 
   }

@@ -194,8 +194,38 @@ class TypeTestGuard extends Guard {
     )
   }
 
-  /** Holds if this guard tests whether `e` has type `t`. */
-  predicate appliesTypeTest(Expr e, Type t) { e = testedExpr and t = testedType }
+  /**
+   * Gets the record pattern this type test binds to, if any.
+   */
+  PatternExpr getPattern() {
+    result = this.(InstanceOfExpr).getPattern()
+    or
+    result = this.(PatternCase).getPattern()
+  }
+
+  /**
+   * Holds if this guard tests whether `e` has type `t`.
+   *
+   * Note that record patterns that make at least one tighter restriction than the record's definition
+   * (e.g. matching `record R(Object)` with `case R(String)`) means this only guarantees the tested type
+   * on the true branch (i.e., entering such a case guarantees `testedExpr` is a `testedType`, but failing
+   * the type test could mean a nested record or binding pattern didn't match but `testedExpr` is still
+   * of type `testedType`.)
+   */
+  predicate appliesTypeTest(Expr e, Type t, boolean testedBranch) {
+    e = testedExpr and
+    t = testedType and
+    (
+      testedBranch = true
+      or
+      testedBranch = false and
+      (
+        this.getPattern().asRecordPattern().isUnrestricted()
+        or
+        not this.getPattern() instanceof RecordPatternExpr
+      )
+    )
+  }
 }
 
 private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {

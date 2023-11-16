@@ -418,7 +418,7 @@ private predicate downcastSuccessor(VarAccess va, RefType t) {
  */
 private predicate typeTestGuarded(VarAccess va, RefType t) {
   exists(TypeTestGuard typeTest, BaseSsaVariable v |
-    typeTest.appliesTypeTest(v.getAUse(), t) and
+    typeTest.appliesTypeTest(v.getAUse(), t, true) and
     va = v.getAUse() and
     guardControls_v1(typeTest, va.getBasicBlock(), true)
   )
@@ -429,7 +429,7 @@ private predicate typeTestGuarded(VarAccess va, RefType t) {
  */
 predicate arrayTypeTestGuarded(ArrayAccess aa, RefType t) {
   exists(TypeTestGuard typeTest, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
-    typeTest.appliesTypeTest(aa1, t) and
+    typeTest.appliesTypeTest(aa1, t, true) and
     aa1.getArray() = v1.getAUse() and
     aa1.getIndexExpr() = v2.getAUse() and
     aa.getArray() = v1.getAUse() and
