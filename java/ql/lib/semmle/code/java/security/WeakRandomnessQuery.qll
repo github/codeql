@@ -30,9 +30,8 @@ private class RandomMethodSource extends WeakRandomnessSource {
  */
 abstract private class SafeRandomImplementation extends RefType { }
 
-private class TypeSecureRandom extends SafeRandomImplementation {
-  TypeSecureRandom() { this.hasQualifiedName("java.security", "SecureRandom") }
-}
+private class TypeSecureRandom extends SafeRandomImplementation instanceof SecureRandomNumberGenerator
+{ }
 
 private class TypeHadoopOsSecureRandom extends SafeRandomImplementation {
   TypeHadoopOsSecureRandom() {
