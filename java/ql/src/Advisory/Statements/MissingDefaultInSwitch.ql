@@ -15,5 +15,5 @@ import java
 from SwitchStmt switch
 where
   not switch.getExpr().getType() instanceof EnumType and
-  not exists(switch.getDefaultOrNullDefaultCase())
+  not exists(switch.getDefaultCase())
 select switch, "Switch statement does not have a default case."

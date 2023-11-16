@@ -174,7 +174,7 @@ class ConstSwitchStmt extends SwitchStmt {
     exists(this.getExpr().(ConstantExpr).getIntValue()) and
     if exists(this.getMatchingConstCase())
     then result = this.getMatchingConstCase()
-    else result = this.getDefaultOrNullDefaultCase()
+    else result = this.getDefaultCase()
   }
 
   /**

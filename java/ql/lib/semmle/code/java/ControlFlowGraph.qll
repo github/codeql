@@ -923,7 +923,7 @@ private module ControlFlowGraphImpl {
       completion = NormalCompletion()
       or
       // if no default case exists, then normal completion of the expression may terminate the switch
-      not exists(switch.getDefaultOrNullDefaultCase()) and
+      not exists(switch.getDefaultCase()) and
       last(switch.getExpr(), last, completion) and
       completion = NormalCompletion()
     )

@@ -14,5 +14,5 @@ where
   switch.getExpr().getType() = enum and
   missing.getDeclaringType() = enum and
   not switch.getAConstCase().getValue() = missing.getAnAccess() and
-  not exists(switch.getDefaultOrNullDefaultCase())
+  not exists(switch.getDefaultCase())
 select switch

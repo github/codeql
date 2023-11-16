@@ -1530,11 +1530,12 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
   /** Gets a (non-default) pattern `case` of this `switch` expression. */
   PatternCase getAPatternCase() { result = this.getACase() }
 
-  /** Gets the `default` case of this switch expression, if any. */
-  DefaultCase getDefaultCase() { result = this.getACase() }
-
-  /** Gets the `default` or `case null, default` case of this switch statement, if any. */
-  SwitchCase getDefaultOrNullDefaultCase() { result = this.getACase() and result.hasDefaultLabel() }
+  /**
+   * Gets the `default` case of this switch statement, if any.
+   *
+   * Note this may be `default` or `case null, default`.
+   */
+  SwitchCase getDefaultCase() { result = this.getACase() and result.hasDefaultLabel() }
 
   /** Gets the expression of this `switch` expression. */
   Expr getExpr() { result.getParent() = this }
