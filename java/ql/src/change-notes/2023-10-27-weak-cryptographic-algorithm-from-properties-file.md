@@ -1,5 +1,4 @@
 ---
 category: newQuery
 ---
-* Added the `java/weak-hashing-property` query to detect the use of weak cryptographic algorithms where the algorithm name comes from a `.properties` configuration file.
-
+* Modified the `java/potentially-weak-cryptographic-algorithm` query to include the use of weak cryptographic algorithms from configuration values specified in properties files.
