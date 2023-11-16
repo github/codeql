@@ -1273,49 +1273,90 @@ abstract private class IndirectExprNodeBase extends Node {
   }
 }
 
-bindingset[e, indirectionIndex]
-private predicate adjustForReference(
-  Expr e, int indirectionIndex, Expr conv, int adjustedIndirectionIndex
-) {
-  conv.(ReferenceDereferenceExpr).getExpr() = e and
-  adjustedIndirectionIndex = indirectionIndex - 1
-  or
-  not conv instanceof ReferenceDereferenceExpr and
-  conv = e and
-  adjustedIndirectionIndex = indirectionIndex
+/** A signature for converting an indirect node to an expression. */
+private signature module IndirectNodeToIndirectExprSig {
+  /** The indirect node class to be converted to an expression */
+  class IndirectNode;
+
+  /**
+   * Holds if the indirect expression at indirection index `indirectionIndex`
+   * of `node` is `e`. The integer `n` specifies how many conversions has been
+   * applied to `node`.
+   */
+  predicate indirectNodeHasIndirectExpr(IndirectNode node, Expr e, int n, int indirectionIndex);
 }
+
+/**
+ * A module that implements the logic for deciding whether an indirect node
+ * should be an `IndirectExprNode`.
+ */
+private module IndirectNodeToIndirectExpr<IndirectNodeToIndirectExprSig Sig> {
+  import Sig
+
+  /**
+   * This predicate shifts the indirection index by one when `conv` is a
+   * `ReferenceDereferenceExpr`.
+   *
+   * This is necessary because `ReferenceDereferenceExpr` is a conversion
+   * in the AST, but appears as a `LoadInstruction` in the IR.
+   */
+  bindingset[e, indirectionIndex]
+  private predicate adjustForReference(
+    Expr e, int indirectionIndex, Expr conv, int adjustedIndirectionIndex
+  ) {
+    conv.(ReferenceDereferenceExpr).getExpr() = e and
+    adjustedIndirectionIndex = indirectionIndex - 1
+    or
+    not conv instanceof ReferenceDereferenceExpr and
+    conv = e and
+    adjustedIndirectionIndex = indirectionIndex
+  }
+
+  /** Holds if `node` should be an `IndirectExprNode`. */
+  predicate charpred(IndirectNode node) {
+    exists(Expr e, int n, int indirectionIndex |
+      indirectNodeHasIndirectExpr(node, e, n, indirectionIndex) and
+      not exists(Expr conv, int adjustedIndirectionIndex |
+        adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
+        indirectNodeHasIndirectExpr(_, conv, n + 1, adjustedIndirectionIndex)
+      )
+    )
+  }
+}
+
+private module IndirectOperandIndirectExprNodeImpl implements IndirectNodeToIndirectExprSig {
+  class IndirectNode = IndirectOperand;
+
+  predicate indirectNodeHasIndirectExpr = indirectExprNodeShouldBeIndirectOperand/4;
+}
+
+module IndirectOperandToIndirectExpr =
+  IndirectNodeToIndirectExpr<IndirectOperandIndirectExprNodeImpl>;
 
 private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase instanceof IndirectOperand
 {
-  IndirectOperandIndirectExprNode() {
-    exists(Expr e, int n, int indirectionIndex |
-      indirectExprNodeShouldBeIndirectOperand(this, e, n, indirectionIndex) and
-      not exists(Expr conv, int adjustedIndirectionIndex |
-        adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
-        indirectExprNodeShouldBeIndirectOperand(_, conv, n + 1, adjustedIndirectionIndex)
-      )
-    )
-  }
+  IndirectOperandIndirectExprNode() { IndirectOperandToIndirectExpr::charpred(this) }
 
   final override Expr getConvertedExpr(int n, int index) {
-    indirectExprNodeShouldBeIndirectOperand(this, result, n, index)
+    IndirectOperandToIndirectExpr::indirectNodeHasIndirectExpr(this, result, n, index)
   }
 }
 
+private module IndirectInstructionIndirectExprNodeImpl implements IndirectNodeToIndirectExprSig {
+  class IndirectNode = IndirectInstruction;
+
+  predicate indirectNodeHasIndirectExpr = indirectExprNodeShouldBeIndirectInstruction/4;
+}
+
+module IndirectInstructionToIndirectExpr =
+  IndirectNodeToIndirectExpr<IndirectInstructionIndirectExprNodeImpl>;
+
 private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase instanceof IndirectInstruction
 {
-  IndirectInstructionIndirectExprNode() {
-    exists(Expr e, int n, int indirectionIndex |
-      indirectExprNodeShouldBeIndirectInstruction(this, e, n, indirectionIndex) and
-      not exists(Expr conv, int adjustedIndirectionIndex |
-        adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
-        not indirectExprNodeShouldBeIndirectInstruction(_, conv, n + 1, adjustedIndirectionIndex)
-      )
-    )
-  }
+  IndirectInstructionIndirectExprNode() { IndirectInstructionToIndirectExpr::charpred(this) }
 
   final override Expr getConvertedExpr(int n, int index) {
-    indirectExprNodeShouldBeIndirectInstruction(this, result, n, index)
+    IndirectInstructionToIndirectExpr::indirectNodeHasIndirectExpr(this, result, n, index)
   }
 }
 
