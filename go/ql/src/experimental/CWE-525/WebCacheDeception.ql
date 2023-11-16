@@ -12,10 +12,14 @@
 
 import go
 
-from DataFlow::CallNode httpHandleFuncCall, Http::HeaderWrite::Range hw
+from
+  DataFlow::CallNode httpHandleFuncCall, DataFlow::ReadNode rn, Http::HeaderWrite::Range hw,
+  DeclaredFunction f
 where
   httpHandleFuncCall.getTarget().hasQualifiedName("net/http", "HandleFunc") and
   httpHandleFuncCall.getArgument(0).getType().getUnderlyingType() instanceof StringType and
   httpHandleFuncCall.getArgument(0).getStringValue().matches("%/") and
+  rn.reads(f) and
+  f.getParameter(0) = hw.getResponseWriter() and
   hw.getHeaderName() = "cache-control"
-select httpHandleFuncCall.getArgument(0), hw.getHeaderName()
+select httpHandleFuncCall.getArgument(0), hw.getResponseWriter()
