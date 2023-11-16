@@ -98,7 +98,7 @@ class ExplicitArgument extends ApplicationModeEndpoint, TExplicitArgument {
 
   ExplicitArgument() { this = TExplicitArgument(call, arg) }
 
-  override Callable getCallable() { result = call.getCallee() }
+  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
 
   override Call getCall() { result = call }
 
@@ -121,7 +121,7 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
 
   InstanceArgument() { this = TInstanceArgument(call, arg) }
 
-  override Callable getCallable() { result = call.getCallee() }
+  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
 
   override Call getCall() { result = call }
 
@@ -152,7 +152,7 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
 
   ImplicitVarargsArray() { this = TImplicitVarargsArray(call, vararg, idx) }
 
-  override Callable getCallable() { result = call.getCallee() }
+  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
 
   override Call getCall() { result = call }
 
@@ -176,7 +176,7 @@ class MethodReturnValue extends ApplicationModeEndpoint, TMethodReturnValue {
 
   MethodReturnValue() { this = TMethodReturnValue(call) }
 
-  override Callable getCallable() { result = call.getCallee() }
+  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
 
   override Call getCall() { result = call }
 
@@ -206,7 +206,7 @@ class OverriddenParameter extends ApplicationModeEndpoint, TOverriddenParameter 
     // candidate model will be about the overridden method, not the overriding
     // method. This is a more general model, that also applies to other
     // subclasses of the overridden class.
-    result = overriddenMethod
+    result = overriddenMethod.getSourceDeclaration()
   }
 
   override Call getCall() { none() }
@@ -333,6 +333,9 @@ private module ApplicationModeGetCallable implements AutomodelSharedGetCallable:
 
   /**
    * Returns the API callable being modeled.
+   *
+   * We usually want to use `.getSourceDeclaration()` instead of just 'the' callable,
+   * because the source declaration callable has erased generic type parameters.
    */
   Callable getCallable(Endpoint e) { result = e.getCall().getCallee() }
 }
@@ -376,7 +379,7 @@ class ApplicationModeMetadataExtractor extends string {
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
       name = callable.getName() and
-      signature = ExternalFlow::paramsString(callable.getSourceDeclaration()) and
+      signature = ExternalFlow::paramsString(callable) and
       if e instanceof ImplicitVarargsArray
       then isVarargsArray = "true"
       else isVarargsArray = "false"
