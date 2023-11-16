@@ -103,11 +103,27 @@ class Guard extends ExprParent {
   }
 
   /**
-   * Gets the basic block containing this guard or the basic block containing
-   * the switch expression if the guard is a switch case.
+   * Gets the basic block containing this guard or the basic block that tests the
+   * applicability of this switch case -- for a pattern case this is the case statement
+   * itself; for a non-pattern case this is the most recent pattern case or the top of
+   * the switch block if there is none.
    */
   BasicBlock getBasicBlock() {
-    result = this.(Expr).getBasicBlock() or
+    // Not a switch case
+    result = this.(Expr).getBasicBlock()
+    or
+    // Return the closest pattern case statement before this one, including this one.
+    result =
+      max(int i, PatternCase c |
+        c = this.(SwitchCase).getSiblingCase(i) and i <= this.(SwitchCase).getCaseIndex()
+      |
+        c order by i
+      ).getBasicBlock()
+    or
+    // Not a pattern case and no preceding pattern case -- return the top of the switch block.
+    not exists(PatternCase c, int i |
+      c = this.(SwitchCase).getSiblingCase(i) and i <= this.(SwitchCase).getCaseIndex()
+    ) and
     result = this.(SwitchCase).getSelectorExpr().getBasicBlock()
   }
 
