@@ -7,7 +7,9 @@ private import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
 /** A call to the `View` method */
 private class ViewCall extends MethodCall {
-  ViewCall() { this.getTarget().hasQualifiedName("Microsoft.AspNetCore.Mvc", "Controller", "View") }
+  ViewCall() {
+    this.getTarget().hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "Controller", "View")
+  }
 
   /** Gets the `name` argument to this call, if any. */
   string getNameArgument() {
@@ -55,7 +57,7 @@ private class ViewCall extends MethodCall {
   string getAreaName() {
     exists(Attribute attr |
       attr = this.getController().getAnAttribute() and
-      attr.getType().hasQualifiedName("Microsoft.AspNetCore.Mvc", "AreaAttribute") and
+      attr.getType().hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "AreaAttribute") and
       result = attr.getArgument(0).(StringLiteral).getValue()
     )
   }
@@ -70,13 +72,13 @@ class RazorViewClass extends Class {
 
   RazorViewClass() {
     exists(Class baseClass | baseClass = this.getBaseClass().getUnboundDeclaration() |
-      baseClass.hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorPage<>")
+      baseClass.hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorPage`1")
       or
-      baseClass.hasQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "Page")
+      baseClass.hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "Page")
     ) and
     attr.getFile() = this.getFile() and
     attr.getType()
-        .hasQualifiedName("Microsoft.AspNetCore.Razor.Hosting", "RazorCompiledItemAttribute")
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Razor.Hosting", "RazorCompiledItemAttribute")
   }
 
   /**
@@ -176,7 +178,7 @@ private Expr getAViewLocationList(boolean isArea) {
     result
         .(PropertyRead)
         .getProperty()
-        .hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorViewEngineOptions", name)
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorViewEngineOptions", name)
   |
     name = "ViewLocationFormats" and isArea = false
     or
