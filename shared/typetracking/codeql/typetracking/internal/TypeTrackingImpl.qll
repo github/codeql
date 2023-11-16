@@ -17,8 +17,16 @@ private import codeql.typetracking.TypeTracking
 module TypeTracking<TypeTrackingInput I> {
   private import I
 
+  signature module ConsistencyChecksInputSig {
+    /** Holds if `n` should be excluded from the consistency test `unreachableNode`. */
+    default predicate unreachableNodeExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `nonSourceStoreTarget`. */
+    default predicate nonSourceStoreTargetExclude(Node n) { none() }
+  }
+
   /** Provides consistency checks for the type-tracker step relations. */
-  module ConsistencyChecks {
+  module ConsistencyChecks<ConsistencyChecksInputSig ConsistencyChecksInput> {
     private predicate stepEntry(Node n, string kind) {
       simpleLocalSmallStep(n, _) and kind = "simpleLocalSmallStep"
       or
@@ -34,6 +42,7 @@ module TypeTracking<TypeTrackingInput I> {
      * `LocalSourceNode`.
      */
     query predicate unreachableNode(Node n, string msg) {
+      not ConsistencyChecksInput::unreachableNodeExclude(n) and
       exists(string kind |
         stepEntry(n, kind) and
         not flowsTo(_, n) and
@@ -46,6 +55,7 @@ module TypeTracking<TypeTrackingInput I> {
      * backtracking store target feature isn't enabled.
      */
     query predicate nonSourceStoreTarget(Node n, string msg) {
+      not ConsistencyChecksInput::nonSourceStoreTargetExclude(n) and
       not hasFeatureBacktrackStoreTarget() and
       not n instanceof LocalSourceNode and
       (storeStep(_, n, _) or loadStoreStep(_, n, _, _)) and

@@ -124,7 +124,9 @@ private import internal.TypeTrackingImpl as Impl
 module TypeTracking<TypeTrackingInput I> {
   private module MkImpl = Impl::TypeTracking<I>;
 
-  deprecated module ConsistencyChecks = MkImpl::ConsistencyChecks;
+  private module ConsistencyChecksInput implements MkImpl::ConsistencyChecksInputSig { }
+
+  deprecated module ConsistencyChecks = MkImpl::ConsistencyChecks<ConsistencyChecksInput>;
 
   class TypeTracker = MkImpl::TypeTracker;
 
