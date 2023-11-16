@@ -1535,7 +1535,7 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
    *
    * Note this may be `default` or `case null, default`.
    */
-  SwitchCase getDefaultCase() { result = this.getACase() and result.hasDefaultLabel() }
+  DefaultCase getDefaultCase() { result = this.getACase() }
 
   /** Gets the expression of this `switch` expression. */
   Expr getExpr() { result.getParent() = this }
@@ -1738,9 +1738,7 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
 
 /** A local variable declaration that occurs within a record pattern. */
 class RecordBindingVariableExpr extends LocalVariableDeclExpr {
-  RecordBindingVariableExpr() {
-    this.getParent() instanceof RecordPatternExpr
-  }
+  RecordBindingVariableExpr() { this.getParent() instanceof RecordPatternExpr }
 }
 
 /** An update of a variable or an initialization of the variable. */

@@ -78,9 +78,7 @@ private predicate branchingSwitchCase(ConstCase sc) {
 }
 
 private predicate defaultFallThrough(ConstCase sc) {
-  exists(SwitchCase default | default.hasDefaultLabel() |
-    default.(ControlFlowNode).getASuccessor() = sc
-  )
+  exists(DefaultCase default | default.(ControlFlowNode).getASuccessor() = sc)
   or
   defaultFallThrough(sc.(ControlFlowNode).getAPredecessor())
 }

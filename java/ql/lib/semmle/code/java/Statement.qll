@@ -408,7 +408,7 @@ class SwitchStmt extends Stmt, @switchstmt {
    *
    * Note this may be `default` or `case null, default`.
    */
-  SwitchCase getDefaultCase() { result = this.getACase() and result.hasDefaultLabel() }
+  DefaultCase getDefaultCase() { result = this.getACase() }
 
   /** Gets the expression of this `switch` statement. */
   Expr getExpr() { result.getParent() = this }
@@ -492,12 +492,6 @@ class SwitchCase extends Stmt, @case {
   Stmt getRuleStatementOrExpressionStatement() {
     result.getParent() = this and result.getIndex() = -1
   }
-
-  /**
-   * Holds if this case statement includes the default label, i.e. it is either `default`
-   * or `case null, default`.
-   */
-  predicate hasDefaultLabel() { this instanceof DefaultCase or this instanceof NullDefaultCase }
 }
 
 /**
@@ -553,12 +547,14 @@ class PatternCase extends SwitchCase {
 }
 
 /**
- * A `default` case of a `switch` statement.
- *
- * Note this does not include `case null, default` -- for that, see `NullDefaultCase`.
+ * A `default` or `case null, default` case of a `switch` statement or expression.
  */
 class DefaultCase extends SwitchCase {
-  DefaultCase() { not exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
+  DefaultCase() {
+    isNullDefaultCase(this)
+    or
+    not exists(Expr e | e.getParent() = this | e.getIndex() >= 0)
+  }
 
   override string pp() { result = "default" }
 
@@ -570,7 +566,7 @@ class DefaultCase extends SwitchCase {
 }
 
 /** A `case null, default` statement of a `switch` statement or expression. */
-class NullDefaultCase extends SwitchCase {
+class NullDefaultCase extends DefaultCase {
   NullDefaultCase() { isNullDefaultCase(this) }
 
   override string pp() { result = "case null, default" }
