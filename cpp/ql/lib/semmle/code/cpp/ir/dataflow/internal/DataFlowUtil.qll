@@ -1273,12 +1273,27 @@ abstract private class IndirectExprNodeBase extends Node {
   }
 }
 
+bindingset[e, indirectionIndex]
+private predicate adjustForReference(
+  Expr e, int indirectionIndex, Expr conv, int adjustedIndirectionIndex
+) {
+  conv.(ReferenceDereferenceExpr).getExpr() = e and
+  adjustedIndirectionIndex = indirectionIndex - 1
+  or
+  not conv instanceof ReferenceDereferenceExpr and
+  conv = e and
+  adjustedIndirectionIndex = indirectionIndex
+}
+
 private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase instanceof IndirectOperand
 {
   IndirectOperandIndirectExprNode() {
     exists(Expr e, int n, int indirectionIndex |
       indirectExprNodeShouldBeIndirectOperand(this, e, n, indirectionIndex) and
-      not indirectExprNodeShouldBeIndirectOperand(_, e, n + 1, indirectionIndex)
+      not exists(Expr conv, int adjustedIndirectionIndex |
+        adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
+        indirectExprNodeShouldBeIndirectOperand(_, conv, n + 1, adjustedIndirectionIndex)
+      )
     )
   }
 
@@ -1292,7 +1307,10 @@ private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase i
   IndirectInstructionIndirectExprNode() {
     exists(Expr e, int n, int indirectionIndex |
       indirectExprNodeShouldBeIndirectInstruction(this, e, n, indirectionIndex) and
-      not indirectExprNodeShouldBeIndirectInstruction(_, e, n + 1, indirectionIndex)
+      not exists(Expr conv, int adjustedIndirectionIndex |
+        adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
+        not indirectExprNodeShouldBeIndirectInstruction(_, conv, n + 1, adjustedIndirectionIndex)
+      )
     )
   }
 

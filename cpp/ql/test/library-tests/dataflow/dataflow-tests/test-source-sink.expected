@@ -282,7 +282,6 @@ irFlow
 | test.cpp:832:21:832:26 | call to source | test.cpp:836:10:836:22 | global_direct |
 | test.cpp:842:11:842:16 | call to source | test.cpp:844:8:844:8 | y |
 | test.cpp:846:13:846:27 | call to indirect_source indirection | test.cpp:848:17:848:25 | rpx indirection |
-| test.cpp:846:13:846:27 | call to indirect_source indirection | test.cpp:848:23:848:25 | (reference dereference) indirection |
 | true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
