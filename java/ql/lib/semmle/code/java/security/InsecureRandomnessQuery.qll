@@ -1,4 +1,4 @@
-/** Provides classes and predicates for reasoning about weak randomness. */
+/** Provides classes and predicates for reasoning about insecure randomness. */
 
 import java
 private import semmle.code.java.frameworks.Servlets
@@ -9,13 +9,13 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.RandomQuery
 
 /**
- * A node representing a source of weak randomness.
+ * A node representing a source of insecure randomness.
  *
  * For example, use of `java.util.Random` or `java.lang.Math.random`.
  */
-abstract class WeakRandomnessSource extends DataFlow::Node { }
+abstract class InsecureRandomnessSource extends DataFlow::Node { }
 
-private class RandomMethodSource extends WeakRandomnessSource {
+private class RandomMethodSource extends InsecureRandomnessSource {
   RandomMethodSource() {
     exists(RandomDataSource s | this.asExpr() = s.getOutput() |
       not s.getQualifier().getType() instanceof SafeRandomImplementation
@@ -40,14 +40,14 @@ private class TypeHadoopOsSecureRandom extends SafeRandomImplementation {
 }
 
 /**
- * A node representing an operation which should not use a weakly random value.
+ * A node representing an operation which should not use a Insecurely random value.
  */
-abstract class WeakRandomnessSink extends DataFlow::Node { }
+abstract class InsecureRandomnessSink extends DataFlow::Node { }
 
 /**
  * A node which sets the value of a cookie.
  */
-private class CookieSink extends WeakRandomnessSink {
+private class CookieSink extends InsecureRandomnessSink {
   CookieSink() {
     exists(Call c |
       c.(ClassInstanceExpr).getConstructedType() instanceof TypeCookie and
@@ -60,19 +60,19 @@ private class CookieSink extends WeakRandomnessSink {
   }
 }
 
-private class SensitiveActionSink extends WeakRandomnessSink {
+private class SensitiveActionSink extends InsecureRandomnessSink {
   SensitiveActionSink() { this.asExpr() instanceof SensitiveExpr }
 }
 
-private class CredentialsSink extends WeakRandomnessSink instanceof CredentialsSinkNode { }
+private class CredentialsSink extends InsecureRandomnessSink instanceof CredentialsSinkNode { }
 
 /**
- * A taint-tracking configuration for weak randomness.
+ * A taint-tracking configuration for Insecure randomness.
  */
-module WeakRandomnessConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof WeakRandomnessSource }
+module InsecureRandomnessConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof InsecureRandomnessSource }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof WeakRandomnessSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof InsecureRandomnessSink }
 
   predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 
@@ -92,6 +92,6 @@ module WeakRandomnessConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * Taint-tracking flow of a weakly random value into a sensitive sink.
+ * Taint-tracking flow of a Insecurely random value into a sensitive sink.
  */
-module WeakRandomnessFlow = TaintTracking::Global<WeakRandomnessConfig>;
+module InsecureRandomnessFlow = TaintTracking::Global<InsecureRandomnessConfig>;
