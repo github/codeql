@@ -31,7 +31,7 @@ newtype TApplicationModeEndpoint =
     )
   } or
   TInstanceArgument(Call call, DataFlow::Node arg) {
-    arg = DataFlow::getInstanceArgument(call)
+    arg = DataFlow::getInstanceArgument(call) and not call instanceof ConstructorCall
   } or
   TImplicitVarargsArray(Call call, DataFlow::Node arg, int idx) {
     exists(Argument argExpr |
