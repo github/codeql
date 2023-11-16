@@ -46,6 +46,11 @@ not contain ".." and starts with the public folder.</p>
 
 <sample src="TaintedPathGood.java" />
 
+<p>Alternatively, if we only want to allow simple filenames without a path component, we can remove all path
+separators ("/" or "\") and all ".." sequences from the input before using it to construct a file path.</p>
+
+<sample src="TaintedPathGood2.java" />
+
 </example>
 <references>
 
