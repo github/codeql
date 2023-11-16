@@ -559,6 +559,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["test.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
@@ -573,6 +574,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 10;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["test.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
@@ -587,6 +589,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["foo.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
@@ -629,6 +632,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess["./build.sh --skip-tests"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["test.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
@@ -729,6 +733,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             actions.RunProcess[@"cmd.exe /C C:\codeql\tools\codeql index --xml --extensions config"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists[@"C:\Project\test.sln"] = false;
             SkipVsWhere();
 
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -875,6 +880,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --skip-nuget"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["foo.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
