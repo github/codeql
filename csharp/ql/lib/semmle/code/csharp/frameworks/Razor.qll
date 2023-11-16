@@ -64,11 +64,11 @@ private class ViewCall extends MethodCall {
   boolean hasArea() { if exists(this.getAreaName()) then result = true else result = false }
 }
 
-/** A compiler-generated Razor page. */
-class RazorPageClass extends Class {
+/** A compiler-generated Razor page from a `.cshtml` file. */
+class RazorViewClass extends Class {
   AssemblyAttribute attr;
 
-  RazorPageClass() {
+  RazorViewClass() {
     exists(Class baseClass | baseClass = this.getBaseClass().getUnboundDeclaration() |
       baseClass.hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorPage<>")
       or
@@ -103,7 +103,7 @@ private string getARazorPathPrefix() {
 }
 
 private class ViewCallJumpNode extends DataFlow::NonLocalJumpNode {
-  RazorPageClass rp;
+  RazorViewClass rp;
 
   ViewCallJumpNode() {
     exists(ViewCall vc |
@@ -122,7 +122,7 @@ private class ViewCallJumpNode extends DataFlow::NonLocalJumpNode {
   }
 }
 
-private predicate viewCallRefersToPage(ViewCall vc, RazorPageClass rp) {
+private predicate viewCallRefersToPage(ViewCall vc, RazorViewClass rp) {
   viewCallRefersToPageAbsolute(vc, rp) or
   viewCallRefersToPageRelative(vc, rp)
 }
@@ -130,15 +130,15 @@ private predicate viewCallRefersToPage(ViewCall vc, RazorPageClass rp) {
 bindingset[path]
 private string stripTilde(string path) { result = path.regexpReplaceAll("^~/", "/") }
 
-private predicate viewCallRefersToPageAbsolute(ViewCall vc, RazorPageClass rp) {
+private predicate viewCallRefersToPageAbsolute(ViewCall vc, RazorViewClass rp) {
   getARazorPathPrefix() + ["/", ""] + stripTilde(vc.getNameArgument()) = rp.getSourceFilepath()
 }
 
-private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPageClass rp) {
-  rp = min(int i, RazorPageClass rp2 | matchesViewCallWithIndex(vc, rp2, i) | rp2 order by i)
+private predicate viewCallRefersToPageRelative(ViewCall vc, RazorViewClass rp) {
+  rp = min(int i, RazorViewClass rp2 | matchesViewCallWithIndex(vc, rp2, i) | rp2 order by i)
 }
 
-private predicate matchesViewCallWithIndex(ViewCall vc, RazorPageClass rp, int i) {
+private predicate matchesViewCallWithIndex(ViewCall vc, RazorViewClass rp, int i) {
   exists(RelativeViewCallFilepath fp |
     fp.hasViewCallWithIndex(vc, i) and
     getARazorPathPrefix() + fp.getNormalizedPath() = rp.getSourceFilepath()
