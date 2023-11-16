@@ -119,20 +119,13 @@ namespace Semmle.Autobuild.CSharp
             => WithDotNet(builder, (_1, env) => f(env));
 
         /// <summary>
-        /// Returns a script for downloading relevant versions of the
-        /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
-        /// (provided that the script succeeds).
+        /// Tries to determine the version of .NET that's required for the project from a <code>global.json</code> file, if present.
         /// </summary>
-        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir)
+        /// <returns>
+        /// Returns the .NET version specified in <code>global.json<code> as a string or null if no version could be retrieved.
+        /// </returns>
+        private static string? SdkVersionFromGlobalJson(IAutobuilder<AutobuildOptionsShared> builder)
         {
-            if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
-                // Specific version supplied in configuration: always use that
-                return DownloadDotNetVersion(builder, installDir, builder.Options.DotNetVersion);
-
-            // Download versions mentioned in `global.json` files
-            // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
-            var installScript = BuildScript.Success;
-            var validGlobalJson = false;
             foreach (var path in builder.Paths.Select(p => p.Item1).Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
             {
                 string version;
@@ -147,7 +140,32 @@ namespace Semmle.Autobuild.CSharp
                     continue;
                 }
 
-                installScript &= DownloadDotNetVersion(builder, installDir, version);
+                return version;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns a script for downloading relevant versions of the
+        /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
+        /// (provided that the script succeeds).
+        /// </summary>
+        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir)
+        {
+            if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
+                // Specific version supplied in configuration: always use that
+                return DownloadDotNetVersion(builder, installDir, builder.Options.DotNetVersion);
+
+            // Download versions mentioned in `global.json` files
+            // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
+            var installScript = BuildScript.Success;
+            var validGlobalJson = false;
+            var globalJsonSdkVersion = SdkVersionFromGlobalJson(builder);
+
+            if (!string.IsNullOrEmpty(globalJsonSdkVersion))
+            {
+                installScript &= DownloadDotNetVersion(builder, installDir, globalJsonSdkVersion);
                 validGlobalJson = true;
             }
 
