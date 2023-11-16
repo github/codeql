@@ -24,6 +24,7 @@ argHasPostUpdate
 | lambdas.cpp:45:2:45:2 | e | ArgumentNode is missing PostUpdateNode. |
 | test.cpp:67:29:67:35 | source1 | ArgumentNode is missing PostUpdateNode. |
 | test.cpp:813:19:813:35 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:848:23:848:25 | rpx | ArgumentNode is missing PostUpdateNode. |
 postWithInFlow
 | BarrierGuard.cpp:49:6:49:6 | x [post update] | PostUpdateNode should not be the target of local flow. |
 | BarrierGuard.cpp:60:7:60:7 | x [post update] | PostUpdateNode should not be the target of local flow. |
