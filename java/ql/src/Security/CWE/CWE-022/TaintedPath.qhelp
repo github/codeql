@@ -8,31 +8,43 @@ can result in sensitive information being revealed or deleted, or an attacker be
 behavior by modifying unexpected files.</p>
 
 <p>Paths that are naively constructed from data controlled by a user may contain unexpected special characters,
-such as "..". Such a path may potentially point to any directory on the file system.</p>
+such as "..". Such a path may potentially point anywhere on the file system.</p>
 
 </overview>
 <recommendation>
 
-<p>Validate user input before using it to construct a file path. Ideally, follow these rules:</p>
+<p>Validate user input before using it to construct a file path.</p>
 
-<ul>
-<li>Do not allow more than a single "." character.</li>
-<li>Do not allow directory separators such as "/" or "\" (depending on the file system).</li>
-<li>Do not rely on simply replacing problematic sequences such as "../". For example, after applying this filter to
-".../...//" the resulting string would still be "../".</li>
-<li>Ideally use a whitelist of known good patterns.</li>
-</ul>
+<p>The choice of validation depends on whether you want to allow the user to specify complex paths with
+multiple components that may span multiple folders, or only simple filenames without a path component.</p>
+
+<p>In the former case, a common strategy is to make sure that the constructed file path is contained within
+a safe root folder, for example by checking that the path starts with the root folder. Additionally,
+you need to ensure that the path does not contain any ".." components, since otherwise
+even a path that starts with the root folder could be used to access files outside the root folder.</p>
+
+<p>In the latter case, if you want to ensure that the user input is interpreted as a simple filename without
+a path component, you can remove all path separators ("/" or "\") and all ".." sequences from the input
+before using it to construct a file path. Note that it is <i>not</i> sufficient to only remove "../" sequences:
+for example, applying this filter to ".../...//" would still result in the string "../".</p>
+
+<p>Finally, the simplest (but most restrictive) option is to use an allow list of safe patterns and make sure that
+the user input matches one of these patterns.</p>
 
 </recommendation>
 <example>
 
-<p>In this example, a file name is read from a <code>java.net.Socket</code> and then used to access a file in the
-user's home directory and send it back over the socket. However, a malicious user could enter a file name which contains special 
-characters. For example, the string "../../etc/passwd" will result in the code reading the file located at 
-"/home/[user]/../../etc/passwd", which is the system's password file. This file would then be sent back to the user, 
-giving them access to all the system's passwords.</p>
+<p>In this example, a file name is read from a <code>java.net.Socket</code> and then used to access a file
+and send it back over the socket. However, a malicious user could enter a file name anywhere on the file system,
+such as "/etc/passwd".</p>
 
 <sample src="TaintedPath.java" />
+
+<p>Simply checking that the path is under a trusted location (such as a known public folder) is not enough,
+however, since the path could contain relative components such as "..". To fix this, check that it does
+not contain ".." and starts with the public folder.</p>
+
+<sample src="TaintedPathGood.java" />
 
 </example>
 <references>
