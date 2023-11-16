@@ -1,3 +1,4 @@
+testFailures
 edges
 | Types.cs:7:21:7:25 | this : D | Types.cs:7:32:7:35 | this access : D |
 | Types.cs:7:32:7:35 | this access : D | Types.cs:16:30:16:30 | this : D |
@@ -54,6 +55,9 @@ edges
 | Types.cs:145:13:145:13 | access to parameter c : FieldC [field Field] : Object | Types.cs:138:21:138:25 | this : FieldC [field Field] : Object |
 | Types.cs:153:30:153:30 | this : FieldC [field Field] : Object | Types.cs:153:42:153:45 | this access : FieldC [field Field] : Object |
 | Types.cs:153:42:153:45 | this access : FieldC [field Field] : Object | Types.cs:153:42:153:51 | access to field Field |
+| Types.cs:162:34:162:34 | this : Types+F+F1<Int32> | Types.cs:162:46:162:49 | this access |
+| Types.cs:167:22:167:34 | object creation of type F1<Int32> : Types+F+F1<Int32> | Types.cs:173:13:173:19 | call to method GetF1 : Types+F+F1<Int32> |
+| Types.cs:173:13:173:19 | call to method GetF1 : Types+F+F1<Int32> | Types.cs:162:34:162:34 | this : Types+F+F1<Int32> |
 nodes
 | Types.cs:7:21:7:25 | this : D | semmle.label | this : D |
 | Types.cs:7:32:7:35 | this access : D | semmle.label | this access : D |
@@ -123,6 +127,10 @@ nodes
 | Types.cs:153:30:153:30 | this : FieldC [field Field] : Object | semmle.label | this : FieldC [field Field] : Object |
 | Types.cs:153:42:153:45 | this access : FieldC [field Field] : Object | semmle.label | this access : FieldC [field Field] : Object |
 | Types.cs:153:42:153:51 | access to field Field | semmle.label | access to field Field |
+| Types.cs:162:34:162:34 | this : Types+F+F1<Int32> | semmle.label | this : Types+F+F1<Int32> |
+| Types.cs:162:46:162:49 | this access | semmle.label | this access |
+| Types.cs:167:22:167:34 | object creation of type F1<Int32> : Types+F+F1<Int32> | semmle.label | object creation of type F1<Int32> : Types+F+F1<Int32> |
+| Types.cs:173:13:173:19 | call to method GetF1 : Types+F+F1<Int32> | semmle.label | call to method GetF1 : Types+F+F1<Int32> |
 subpaths
 | Types.cs:122:30:122:30 | access to local variable a : A | Types.cs:130:34:130:34 | x : A | Types.cs:130:40:130:40 | access to parameter x : A | Types.cs:122:22:122:31 | call to method Through |
 | Types.cs:123:30:123:31 | access to local variable e2 : Types+E<D>.E2 | Types.cs:130:34:130:34 | x : Types+E<D>.E2 | Types.cs:130:40:130:40 | access to parameter x : Types+E<D>.E2 | Types.cs:123:22:123:32 | call to method Through |
@@ -145,3 +153,4 @@ subpaths
 | Types.cs:120:25:120:31 | object creation of type A : A | Types.cs:120:25:120:31 | object creation of type A : A | Types.cs:122:22:122:31 | call to method Through | $@ | Types.cs:122:22:122:31 | call to method Through | call to method Through |
 | Types.cs:121:26:121:33 | object creation of type E2 : Types+E<D>.E2 | Types.cs:121:26:121:33 | object creation of type E2 : Types+E<D>.E2 | Types.cs:123:22:123:32 | call to method Through | $@ | Types.cs:123:22:123:32 | call to method Through | call to method Through |
 | Types.cs:144:23:144:34 | object creation of type Object : Object | Types.cs:144:23:144:34 | object creation of type Object : Object | Types.cs:153:42:153:51 | access to field Field | $@ | Types.cs:153:42:153:51 | access to field Field | access to field Field |
+| Types.cs:167:22:167:34 | object creation of type F1<Int32> : Types+F+F1<Int32> | Types.cs:167:22:167:34 | object creation of type F1<Int32> : Types+F+F1<Int32> | Types.cs:162:46:162:49 | this access | $@ | Types.cs:162:46:162:49 | this access | this access |

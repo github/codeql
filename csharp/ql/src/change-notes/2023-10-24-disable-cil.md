@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* CIL extraction is now disabled by default. It is still possible to turn on CIL extraction by setting the `cil` extractor option to `true` or by setting the environment variable `$CODEQL_EXTRACTOR_CSHARP_OPTION_CIL` to `true`. This is the first step towards sun-setting the CIL extractor entirely.

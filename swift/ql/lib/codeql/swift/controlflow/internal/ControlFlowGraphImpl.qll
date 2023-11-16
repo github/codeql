@@ -1417,6 +1417,51 @@ module Exprs {
     }
   }
 
+  /** Control-flow for a `SingleValueStmtExpr`. See the QLDoc for `SingleValueStmtExpr` for the semantics of a `SingleValueStmtExpr`. */
+  private class SingleValueStmtExprTree extends AstStandardPostOrderTree {
+    override SingleValueStmtExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getStmt()
+    }
+  }
+
+  /** Control-flow for Pack Expansion. See the QLDoc for `PackExpansionExpr` for details. */
+  private class PackExpansionExprTree extends AstStandardPostOrderTree {
+    override PackExpansionExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getPatternExpr().getFullyConverted()
+    }
+  }
+
+  /** Control-flow for Pack Expansion. See the QLDoc for `PackElementExpr` for details. */
+  private class PackElementExprTree extends AstStandardPostOrderTree {
+    override PackElementExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
+  /** Control-flow for Move Semantics. See the QLDoc for `CopyExpr` for details. */
+  private class CopyExprTree extends AstStandardPostOrderTree {
+    override CopyExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
+  /** Control-flow for Move Semantics. See the QLDoc for `ConsumeExpr` for details. */
+  private class ConsumeExprTree extends AstStandardPostOrderTree {
+    override ConsumeExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
   private class OpaqueValueExprTree extends AstLeafTree {
     override OpaqueValueExpr ast;
   }

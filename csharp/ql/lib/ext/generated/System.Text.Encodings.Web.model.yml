@@ -1,10 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.IO.TextWriter,System.Char[],System.Int32,System.Int32)", "", "Argument[1].Element", "Argument[0]", "taint", "df-generated"]
       - ["System.Text.Encodings.Web", "TextEncoder", False, "Encode", "(System.IO.TextWriter,System.String)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.IO.TextWriter,System.Char[],System.Int32,System.Int32)", "", "Argument[1].Element", "Argument[0]", "taint", "df-generated"]
       - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.IO.TextWriter,System.String,System.Int32,System.Int32)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
       - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
@@ -36,7 +37,6 @@ extensions:
       - ["System.Text.Encodings.Web", "TextEncoderSettings", "ForbidRange", "(System.Text.Unicode.UnicodeRange)", "summary", "df-generated"]
       - ["System.Text.Encodings.Web", "TextEncoderSettings", "ForbidRanges", "(System.Text.Unicode.UnicodeRange[])", "summary", "df-generated"]
       - ["System.Text.Encodings.Web", "TextEncoderSettings", "GetAllowedCodePoints", "()", "summary", "df-generated"]
-      - ["System.Text.Encodings.Web", "TextEncoderSettings", "TextEncoderSettings", "()", "summary", "df-generated"]
       - ["System.Text.Encodings.Web", "TextEncoderSettings", "TextEncoderSettings", "(System.Text.Encodings.Web.TextEncoderSettings)", "summary", "df-generated"]
       - ["System.Text.Encodings.Web", "TextEncoderSettings", "TextEncoderSettings", "(System.Text.Unicode.UnicodeRange[])", "summary", "df-generated"]
       - ["System.Text.Encodings.Web", "UrlEncoder", "Create", "(System.Text.Encodings.Web.TextEncoderSettings)", "summary", "df-generated"]

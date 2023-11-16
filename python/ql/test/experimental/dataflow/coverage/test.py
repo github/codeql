@@ -338,9 +338,9 @@ class C:
 
 @expects(2)
 def test_attribute_reference():
-    SINK(C.a) #$ MISSING:flow="SOURCE, l:-4 -> C.a"
+    SINK(C.a) # $ flow="SOURCE, l:-5 -> C.a"
     c = C()
-    SINK(c.a) #$ MISSING:flow="SOURCE, l:-6 -> c.a"
+    SINK(c.a) # $ MISSING: flow="SOURCE, l:-7 -> c.a"
 
 # overriding __getattr__ should be tested by the class coverage tests
 

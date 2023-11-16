@@ -10,5 +10,5 @@
 import csharp
 
 from ObjectCreation new
-where new.getObjectType().hasQualifiedName("System", "Exception")
+where new.getObjectType().hasFullyQualifiedName("System", "Exception")
 select new

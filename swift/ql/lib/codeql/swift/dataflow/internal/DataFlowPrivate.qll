@@ -1075,12 +1075,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::CollectionContent ac))
   )
   or
-  // array assignment `a[n] = x`
+  // subscript assignment `a[n] = x`
   exists(AssignExpr assign, SubscriptExpr subscript |
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
     subscript = assign.getDest() and
-    subscript.getBase().getType() instanceof ArrayType and
+    not any(DictionarySubscriptNode n).getExpr() = subscript and
     c.isSingleton(any(Content::CollectionContent ac))
   )
   or

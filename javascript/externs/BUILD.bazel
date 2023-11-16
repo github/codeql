@@ -1,0 +1,11 @@
+load("@//:dist.bzl", "pack_zip")
+
+pack_zip(
+    name = "externs",
+    srcs = glob(
+        ["**/*"],
+        exclude = ["BUILD.bazel"],
+    ),
+    prefix = "tools/data/externs",
+    visibility = ["//visibility:public"],
+)

@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -20,7 +21,6 @@ extensions:
       - ["System.Configuration.Internal", "DelegatingConfigHost", "CreateConfigurationContext", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Configuration.Internal", "DelegatingConfigHost", "CreateDeprecatedConfigContext", "(System.String)", "summary", "df-generated"]
       - ["System.Configuration.Internal", "DelegatingConfigHost", "DecryptSection", "(System.String,System.Configuration.ProtectedConfigurationProvider,System.Configuration.ProtectedConfigurationSection)", "summary", "df-generated"]
-      - ["System.Configuration.Internal", "DelegatingConfigHost", "DelegatingConfigHost", "()", "summary", "df-generated"]
       - ["System.Configuration.Internal", "DelegatingConfigHost", "DeleteStream", "(System.String)", "summary", "df-generated"]
       - ["System.Configuration.Internal", "DelegatingConfigHost", "EncryptSection", "(System.String,System.Configuration.ProtectedConfigurationProvider,System.Configuration.ProtectedConfigurationSection)", "summary", "df-generated"]
       - ["System.Configuration.Internal", "DelegatingConfigHost", "GetConfigPathFromLocationSubPath", "(System.String,System.String)", "summary", "df-generated"]

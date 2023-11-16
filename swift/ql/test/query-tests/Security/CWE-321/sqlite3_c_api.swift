@@ -1,11 +1,19 @@
 
 // --- stubs ---
 
-struct Data {
+protocol ContiguousBytes {
+	func withUnsafeBytes<R>(_ body: (UnsafeRawBufferPointer) throws -> R) rethrows -> R
+}
+
+struct Data : ContiguousBytes {
     init<S>(_ elements: S) { count = 0 }
 
+	func withUnsafeBytes<ResultType>(_ body: (UnsafeRawBufferPointer) throws -> ResultType) rethrows -> ResultType {
+		return 0 as! ResultType
+	}
+
 	func withUnsafeBytes<ResultType, ContentType>(_ body: (UnsafePointer<ContentType>) throws -> ResultType) rethrows -> ResultType {
-		return 0 as! ResultType//body(0 as UnsafePointer<ContentType>())
+		return 0 as! ResultType
 	}
 
 	var count: Int

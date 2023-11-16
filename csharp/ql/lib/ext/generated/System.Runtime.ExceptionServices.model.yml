@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -17,4 +18,3 @@ extensions:
       - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", "Throw", "(System.Exception)", "summary", "df-generated"]
       - ["System.Runtime.ExceptionServices", "FirstChanceExceptionEventArgs", "FirstChanceExceptionEventArgs", "(System.Exception)", "summary", "df-generated"]
       - ["System.Runtime.ExceptionServices", "FirstChanceExceptionEventArgs", "get_Exception", "()", "summary", "df-generated"]
-      - ["System.Runtime.ExceptionServices", "HandleProcessCorruptedStateExceptionsAttribute", "HandleProcessCorruptedStateExceptionsAttribute", "()", "summary", "df-generated"]

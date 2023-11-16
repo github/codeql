@@ -510,7 +510,7 @@ Tuples.cs:
 #  137|       0: [Parameter] o
 #  137|         -1: [TypeMention] object
 #  137|     4: [BlockStmt] {...}
-#  139|   13: [Method] Source<>
+#  139|   15: [Method] Source`1
 #  139|     -1: [TypeMention] T
 #-----|     1: (Type parameters)
 #  139|       0: [TypeParameter] T

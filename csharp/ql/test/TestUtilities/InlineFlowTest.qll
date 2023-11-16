@@ -26,7 +26,11 @@ private module FlowTestImpl implements InputSig<CsharpDataFlow> {
   }
 
   string getArgString(DataFlow::Node src, DataFlow::Node sink) {
-    (if exists(getSourceArgString(src)) then result = getSourceArgString(src) else result = "") and
+    (
+      result = getSourceArgString(src)
+      or
+      not exists(getSourceArgString(src)) and result = "line:" + src.getLocation().getStartLine()
+    ) and
     exists(sink)
   }
 }

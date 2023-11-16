@@ -51,7 +51,8 @@ private class ThrowingCall extends NonReturningCall {
       this =
         any(MethodCall mc |
           mc.getTarget()
-              .hasQualifiedName("System.Runtime.ExceptionServices", "ExceptionDispatchInfo", "Throw") and
+              .hasFullyQualifiedName("System.Runtime.ExceptionServices", "ExceptionDispatchInfo",
+                "Throw") and
           (
             mc.hasNoArguments() and
             c.getExceptionClass() instanceof SystemExceptionClass
@@ -85,8 +86,8 @@ private class DirectlyExitingCallable extends ExitingCallable {
   DirectlyExitingCallable() {
     this =
       any(Method m |
-        m.hasQualifiedName("System", "Environment", "Exit") or
-        m.hasQualifiedName("System.Windows.Forms", "Application", "Exit")
+        m.hasFullyQualifiedName("System", "Environment", "Exit") or
+        m.hasFullyQualifiedName("System.Windows.Forms", "Application", "Exit")
       )
   }
 }

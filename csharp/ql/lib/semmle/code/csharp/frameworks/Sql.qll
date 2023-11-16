@@ -36,11 +36,11 @@ class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
       ic.getParameter(0).getType() instanceof StringType and
       not exists(Type t | t = ic.getDeclaringType() |
         // Known sealed classes:
-        t.hasQualifiedName("System.Data.SqlClient", "SqlCommand") or
-        t.hasQualifiedName("System.Data.Odbc", "OdbcCommand") or
-        t.hasQualifiedName("System.Data.OleDb", "OleDbCommand") or
-        t.hasQualifiedName("System.Data.EntityClient", "EntityCommand") or
-        t.hasQualifiedName("System.Data.SQLite", "SQLiteCommand")
+        t.hasFullyQualifiedName("System.Data.SqlClient", "SqlCommand") or
+        t.hasFullyQualifiedName("System.Data.Odbc", "OdbcCommand") or
+        t.hasFullyQualifiedName("System.Data.OleDb", "OleDbCommand") or
+        t.hasFullyQualifiedName("System.Data.EntityClient", "EntityCommand") or
+        t.hasFullyQualifiedName("System.Data.SQLite", "SQLiteCommand")
       )
     )
   }

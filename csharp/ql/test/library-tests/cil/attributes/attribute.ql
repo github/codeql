@@ -2,7 +2,7 @@ import semmle.code.cil.Attribute
 import semmle.code.cil.Declaration
 
 private predicate isOsSpecific(Declaration d) {
-  d.getQualifiedName()
+  d.getFullyQualifiedName()
       .matches("%" +
           [
             "libobjc", "libproc", "libc", "Interop.Sys",
