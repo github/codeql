@@ -11,18 +11,21 @@ public class SimpleServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
         String queryString = "";
-        try{
-            queryString = request.getQueryString();
-            saveQuery(queryString);
-        } catch (Exception e) {
+        queryString = request.getQueryString();
+        if (queryString.matches("save_query_0")) {
+            throw new RuntimeException(queryString);
+        } else if(queryString.matches("save_query_1")) {
             System.out.println(queryString);
+        } else if(queryString.matches("save_query_2")) {
+            System.out.print(queryString);
         }
+        saveQuery(queryString);
 
-        // 输出HTML页面
         out.println("<html>");
         out.println("<head><title>Simple Servlet</title></head>");
         out.println("<body>");
         out.println("Hello, World!");
+        out.println(queryString);
         out.println("</body></html>");
     }
     public void saveQuery(String queryString) {
