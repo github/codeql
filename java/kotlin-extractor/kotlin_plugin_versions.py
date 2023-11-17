@@ -27,6 +27,9 @@ class Version:
     def toTupleNoTag(self):
         return [self.major, self.minor, self.patch]
 
+    def lessThan(self, other):
+        return self.toTupleNoTag() < other.toTupleNoTag()
+
     def lessThanOrEqual(self, other):
         return self.toTupleNoTag() <= other.toTupleNoTag()
 

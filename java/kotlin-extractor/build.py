@@ -90,10 +90,14 @@ def write_arg_file(arg_file, args):
 def compile_to_dir(build_dir, srcs, version, classpath, java_classpath, output):
     # Use kotlinc to compile .kt files:
     kotlin_arg_file = build_dir + '/kotlin.args'
-    kotlin_args = ['-Werror',
-                   '-opt-in=kotlin.RequiresOptIn',
-                   '-opt-in=org.jetbrains.kotlin.ir.symbols.IrSymbolInternals',
-                   '-d', output,
+    opt_in_args = ['-opt-in=kotlin.RequiresOptIn']
+    if version.lessThan(kotlin_plugin_versions.Version(2, 0, 0, "")):
+        opt_in_args.append('-opt-in=org.jetbrains.kotlin.ir.symbols.IrSymbolInternals')
+    else:
+        opt_in_args.append('-opt-in=org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI')
+    kotlin_args = ['-Werror'] \
+                + opt_in_args \
+                + ['-d', output,
                    '-module-name', 'codeql-kotlin-extractor',
                    '-Xsuppress-version-warnings',
                    '-language-version', version.toLanguageVersionString(),
