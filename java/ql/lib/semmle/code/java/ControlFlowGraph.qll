@@ -471,6 +471,7 @@ private module ControlFlowGraphImpl {
   private SwitchCase getASuccessorSwitchCase(PatternCase pred) {
     result.getParent() = pred.getParent() and
     result.getIndex() > pred.getIndex() and
+    // Note we do include `case null, default` (as well as plain old `default`) here.
     not result.(ConstCase).getValue(_) instanceof NullLiteral and
     (
       result.getIndex() <= getNextPatternCase(pred).getIndex()
@@ -491,6 +492,8 @@ private module ControlFlowGraphImpl {
     result.getParent() = switch and
     (
       result.(ConstCase).getValue(_) instanceof NullLiteral
+      or
+      result instanceof NullDefaultCase
       or
       not exists(getPatternCase(switch, _))
       or

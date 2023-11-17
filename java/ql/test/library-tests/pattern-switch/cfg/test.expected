@@ -144,6 +144,7 @@
 | Test.java:55:13:55:25 | (...)... | Test.java:56:8:56:21 | case ... |
 | Test.java:55:13:55:25 | (...)... | Test.java:58:8:58:21 | case ... |
 | Test.java:55:13:55:25 | (...)... | Test.java:61:8:61:42 | case T t ... |
+| Test.java:55:13:55:25 | (...)... | Test.java:69:8:69:26 | case null, default |
 | Test.java:55:21:55:25 | thing | Test.java:55:13:55:25 | (...)... |
 | Test.java:56:8:56:21 | case ... | Test.java:57:10:57:44 | <Expr>; |
 | Test.java:57:10:57:19 | System.out | Test.java:57:29:57:42 | "It's Const1!" |
