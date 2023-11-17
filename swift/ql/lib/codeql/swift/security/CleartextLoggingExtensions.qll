@@ -93,6 +93,24 @@ private class CleartextLoggingFieldAdditionalFlowStep extends CleartextLoggingAd
   }
 }
 
+/**
+ * A sink that appears to be an imported C `printf` variant.
+ * TODO: merge code with similar cases from the cleartext logging PR.
+ */
+private class PrintfCleartextLoggingSink extends CleartextLoggingSink {
+  PrintfCleartextLoggingSink() {
+    exists(CallExpr ce, FreeFunction f, int formatParamIndex |
+      f.getShortName().matches("%printf%") and
+      f.getParam(formatParamIndex).getName() = "format" and
+      ce.getStaticTarget() = f and
+      (
+        this.asExpr() = ce.getArgument(formatParamIndex).getExpr() or
+        this.asExpr() = ce.getArgument(f.getNumberOfParams() - 1).getExpr()
+      )
+    )
+  }
+}
+
 private class LoggingSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =

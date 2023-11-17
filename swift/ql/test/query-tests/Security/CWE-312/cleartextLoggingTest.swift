@@ -343,15 +343,15 @@ func test6(passwordString: String) {
     NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ MISSING: hasCleartextLogging=
     NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ MISSING: hasCleartextLogging=
 
-    _ = dprintf(0, "\(passwordString) is incorrect!") // $ MISSING: hasCleartextLogging=
-    _ = dprintf(0, "%s is incorrect!", passwordString) // $ MISSING: hasCleartextLogging=
-    _ = dprintf(0, "%s: %s is incorrect!", "foo", passwordString) // $ MISSING: hasCleartextLogging=
-    _ = vprintf("\(passwordString) is incorrect!", getVaList([])) // $ MISSING: hasCleartextLogging=
-    _ = vprintf("%s is incorrect!", getVaList([passwordString])) // $ MISSING: hasCleartextLogging=
+    _ = dprintf(0, "\(passwordString) is incorrect!") // $ hasCleartextLogging=346
+    _ = dprintf(0, "%s is incorrect!", passwordString) // $ hasCleartextLogging=347
+    _ = dprintf(0, "%s: %s is incorrect!", "foo", passwordString) // $ hasCleartextLogging=348
+    _ = vprintf("\(passwordString) is incorrect!", getVaList([])) // $ hasCleartextLogging=349
+    _ = vprintf("%s is incorrect!", getVaList([passwordString])) // $ hasCleartextLogging=350
     _ = vfprintf(nil, "\(passwordString) is incorrect!", getVaList([])) // $ hasCleartextLogging=351
     _ = vfprintf(nil, "%s is incorrect!", getVaList([passwordString])) // $ hasCleartextLogging=352
-    _ = vasprintf_l(nil, nil, "\(passwordString) is incorrect!", getVaList([])) // good (`sprintf` is not logging)
-    _ = vasprintf_l(nil, nil, "%s is incorrect!", getVaList([passwordString])) // good (`sprintf` is not logging)
+    _ = vasprintf_l(nil, nil, "\(passwordString) is incorrect!", getVaList([])) // $ SPURIOUS hasCleartextLogging=353 good (`sprintf` is not logging)
+    _ = vasprintf_l(nil, nil, "%s is incorrect!", getVaList([passwordString])) // $ SPURIOUS hasCleartextLogging=354 good (`sprintf` is not logging)
 }
 
 func test7(authKey: String, authKey2: Int, authKey3: Float) {
