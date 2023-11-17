@@ -19,6 +19,7 @@ where
   httpHandleFuncCall.getTarget().hasQualifiedName("net/http", "HandleFunc") and
   httpHandleFuncCall.getArgument(0).getType().getUnderlyingType() instanceof StringType and
   httpHandleFuncCall.getArgument(0).getStringValue().matches("%/") and
+  httpHandleFuncCall.getArgument(1) = rn and
   rn.reads(f) and
   f.getParameter(0) = hw.getResponseWriter() and
   hw.getHeaderName() = "cache-control"
