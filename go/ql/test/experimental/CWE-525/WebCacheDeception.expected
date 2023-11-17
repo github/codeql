@@ -1,1 +1,1 @@
-| WebCacheDeceptionBad.go:82:18:82:31 | "/adminusers/" | WebCacheDeceptionBad.go:45:25:45:25 | w |
+| Wildcard Endpoint used with : "/adminusers/" | cache-control Header is used |
