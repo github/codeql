@@ -22,5 +22,6 @@ where
   rn.reads(f) and
   f.getParameter(0) = hw.getResponseWriter() and
   hw.getHeaderName() = "cache-control"
-select "Wildcard Endpoint used with : " + httpHandleFuncCall.getArgument(0),
-  hw.getHeaderName() + " Header is used"
+select httpHandleFuncCall.getArgument(0),
+  "Wildcard Endpoint used with " + httpHandleFuncCall.getArgument(0) + " and '" + hw.getHeaderName()
+    + "' Header is used"
