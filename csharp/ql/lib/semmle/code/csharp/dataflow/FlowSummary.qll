@@ -168,7 +168,7 @@ private SummaryComponent delegateSelf() {
 
 private predicate mayInvokeCallback(Callable c, int n) {
   c.getParameter(n).getType() instanceof SystemLinqExpressions::DelegateExtType and
-  not c.fromSource()
+  not c.hasBody()
 }
 
 private class SummarizedCallableWithCallback extends SummarizedCallable {

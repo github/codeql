@@ -310,7 +310,7 @@ private module CallGraph {
       c = any(DelegateCall dc | e = dc.getExpr()) and
       libraryDelegateCall = false
       or
-      c.getTarget().fromLibrary() and
+      not c.getTarget().hasBody() and
       e = c.getAnArgument() and
       e.getType() instanceof SystemLinqExpressions::DelegateExtType and
       libraryDelegateCall = true
