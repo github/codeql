@@ -16,7 +16,7 @@ predicate pp(ClassOrInterface c, string s, int line) {
       exists(PpAst e | getEnclosingAst*(e) = c | ppPart(e, part, line, i))
     |
       part order by i
-  )
+    )
 }
 
 private PpAst getEnclosingAst(PpAst e) {
