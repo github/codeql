@@ -335,3 +335,50 @@ func test5(password: String, caseNum: Int) {
 		fatalError(password) // $ MISSING: hasCleartextLogging=335
 	}
 }
+
+func test6(passwordString: String) {
+    let e = NSException(name: NSExceptionName("exception"), reason: "\(passwordString) is incorrect!", userInfo: nil) // $ MISSING: hasCleartextLogging=
+    e.raise()
+
+    NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ MISSING: hasCleartextLogging=
+    NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ MISSING: hasCleartextLogging=
+
+    _ = dprintf(0, "\(passwordString) is incorrect!") // $ MISSING: hasCleartextLogging=
+    _ = dprintf(0, "%s is incorrect!", passwordString) // $ MISSING: hasCleartextLogging=
+    _ = dprintf(0, "%s: %s is incorrect!", "foo", passwordString) // $ MISSING: hasCleartextLogging=
+    _ = vprintf("\(passwordString) is incorrect!", getVaList([])) // $ MISSING: hasCleartextLogging=
+    _ = vprintf("%s is incorrect!", getVaList([passwordString])) // $ MISSING: hasCleartextLogging=
+    _ = vfprintf(nil, "\(passwordString) is incorrect!", getVaList([])) // $ hasCleartextLogging=351
+    _ = vfprintf(nil, "%s is incorrect!", getVaList([passwordString])) // $ hasCleartextLogging=352
+    _ = vasprintf_l(nil, nil, "\(passwordString) is incorrect!", getVaList([])) // good (`sprintf` is not logging)
+    _ = vasprintf_l(nil, nil, "%s is incorrect!", getVaList([passwordString])) // good (`sprintf` is not logging)
+}
+
+func test7(authKey: String, authKey2: Int, authKey3: Float) {
+    log(message: authKey) // $ MISSING: hasCleartextLogging=
+    log(message: String(authKey2)) // $ MISSING: hasCleartextLogging=
+    logging(message: authKey) // $ MISSING: hasCleartextLogging=
+    logfile(file: 0, message: authKey) // $ MISSING: hasCleartextLogging=
+    logMessage(NSString(string: authKey)) // $ MISSING: hasCleartextLogging=
+    logInfo(authKey) // $ MISSING: hasCleartextLogging=
+    logError(errorMsg: authKey) // $ MISSING: hasCleartextLogging=
+    harmless(authKey) // GOOD: not logging
+    logarithm(authKey3) // GOOD: not logging
+    doLogin(login: authKey) // GOOD: not logging
+
+    let logger = LogFile()
+    let msg = "authKey: " + authKey
+    logger.log(msg) // $ MISSING: hasCleartextLogging=
+    logger.trace(msg) // $ MISSING: hasCleartextLogging=
+    logger.debug(msg) // $ MISSING: hasCleartextLogging=
+    logger.info(NSString(string: msg)) // $ MISSING: hasCleartextLogging=
+    logger.notice(msg) // $ MISSING: hasCleartextLogging=
+    logger.warning(msg) // $ MISSING: hasCleartextLogging=
+    logger.error(msg) // $ MISSING: hasCleartextLogging=
+    logger.critical(msg) // $ MISSING: hasCleartextLogging=
+    logger.fatal(msg) // $ MISSING: hasCleartextLogging=
+
+    let logic = Logic()
+    logic.addInt(authKey2) // GOOD: not logging
+    logic.addString(authKey) // GOOD: not logging
+}
