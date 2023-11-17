@@ -25,7 +25,7 @@ public class Test {
 
     switch(i) {
       case C1 c1 -> { }
-      case null, default -> i.take(source()); // Can't call C1.take
+      case null, default -> i.take(source()); // Can't call C1.take (but we don't currently notice)
     }
 
     switch(i) {
@@ -51,6 +51,11 @@ public class Test {
     switch(i) {
       case WrapperWrapper(Wrapper(String s)) -> { }
       default -> i.take(source()); // Could call any implementation, because this might be a WrapperWrapper(Wrapper((Integer)) for example.
+    }
+
+    switch(i) {
+      case C1 c1: break;
+      case null: default: i.take(source()); // Can't call C1.take (but we don't currently notice)
     }
 
   }
