@@ -15,28 +15,49 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
+ 
+ControlFlowNode getControlFlowNodeSuccessor(ControlFlowNode node)
+{
+    result = node.getASuccessor()
+}
 
-predicate doesPackageContextLeadToInvokeMethod(
-  DataFlow::Node sinkPackageContext, MethodAccess maInvoke
-
-)
+MethodAccess getClassLoaderReachableMethodAccess(DataFlow::Node node)
 {
     exists(
-        MethodAccess maGetClassLoader,
-        MethodAccess maLoadClass,
-        MethodAccess maGetMethod |
+        MethodAccess maGetClassLoader, ControlFlowNode cfnGetClassLoader, ControlFlowNode cfnSuccessor |
         maGetClassLoader.getCallee().getName() = "getClassLoader" and
-        maGetClassLoader.getQualifier() = sinkPackageContext.asExpr() and
-        maLoadClass.getCallee().getName() = "loadClass" and
-        maLoadClass.getQualifier() = maGetClassLoader and
-        // check for arbitray code execution 
-        maGetMethod.getCallee().getName() = "getMethod" and
-        maGetMethod.getQualifier() = maLoadClass and
-        maInvoke.getCallee().getName() = "invoke" and
-        maInvoke.getQualifier() = maGetMethod
+        maGetClassLoader.getQualifier() = node.asExpr() and
+        maGetClassLoader.getControlFlowNode() = cfnGetClassLoader and
+        //cfnGetClassLoader.getASuccessor+() = cfnSuccessor and
+        getControlFlowNodeSuccessor+(cfnGetClassLoader) = cfnSuccessor and
+        cfnSuccessor instanceof MethodAccess and
+        result = cfnSuccessor.(MethodAccess)
     )
 }
 
+MethodAccess getDangerousReachableMethodAccess(MethodAccess ma)
+{
+    (ma.getCallee().hasName("getMethod") or
+     ma.getCallee().hasName("getDeclaredMethod")) and
+    (( 
+        exists(MethodAccess maInvoke | 
+            //ma.getControlFlowNode().getASuccessor*() = maInvoke and
+            getControlFlowNodeSuccessor+(ma.getControlFlowNode()) = maInvoke and
+            maInvoke.getCallee().hasName("invoke") and
+            result = maInvoke
+            )
+    ) or
+    (
+        exists(AssignExpr ae, VarAccess va1, VarAccess va2, MethodAccess maInvoke |
+            ae.getSource() = ma and
+            ae.getDest() = va1 and
+            maInvoke.getQualifier() = va2 and
+            va1.getVariable() = va2.getVariable() and
+            result = maInvoke
+            )
+    ))
+}
+ 
 predicate isSignaturesChecked(MethodAccess maCreatePackageContext)
 {
     exists(
@@ -49,22 +70,26 @@ predicate isSignaturesChecked(MethodAccess maCreatePackageContext)
             DataFlow::exprNode(maCreatePackageContext.getArgument(0)))
     )
 }
-
+ 
 from 
     MethodAccess maCreatePackageContext, 
     LocalVariableDeclExpr lvdePackageContext,
     DataFlow::Node sinkPackageContext,
-    MethodAccess maInvoke
+    MethodAccess maGetMethod,
+    MethodAccess maInvoke 
 where
-    maCreatePackageContext.getCallee().getDeclaringType().getQualifiedName() = "android.content.ContextWrapper" and
+    (maCreatePackageContext.getCallee().getDeclaringType().getQualifiedName() = "android.content.ContextWrapper" or
+     maCreatePackageContext.getCallee().getDeclaringType().getQualifiedName() = "android.content.Context") and 
     maCreatePackageContext.getCallee().getName() = "createPackageContext" and
     not isSignaturesChecked(maCreatePackageContext) and
     lvdePackageContext.getEnclosingStmt() = maCreatePackageContext.getEnclosingStmt() and
     TaintTracking::localTaint(DataFlow::exprNode(lvdePackageContext.getAnAccess()), sinkPackageContext) and
-    doesPackageContextLeadToInvokeMethod(sinkPackageContext, maInvoke)
+    getClassLoaderReachableMethodAccess(sinkPackageContext) = maGetMethod and
+    getDangerousReachableMethodAccess(maGetMethod) = maInvoke
 select
     lvdePackageContext, 
     sinkPackageContext, 
+    maGetMethod,
     maInvoke,
     "Potential arbitary code execution due to class loading without package signature checking."
-
+ 
