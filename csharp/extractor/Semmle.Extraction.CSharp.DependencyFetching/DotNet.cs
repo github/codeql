@@ -128,7 +128,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
         private static partial Regex RestoredProjectRegex();
 
-        [GeneratedRegex("[Assets\\sfile\\shas\\snot\\schanged.\\sSkipping\\sassets\\sfile\\swriting.|Writing\\sassets\\sfile\\sto\\sdisk.]\\sPath:\\s(.*)", RegexOptions.Compiled)]
+        [GeneratedRegex("[Assets\\sfile\\shas\\snot\\schanged.\\sSkipping\\sassets\\sfile\\swriting.|Writing\\sassets\\sfile\\sto\\sdisk.]\\sPath:\\s(.+)", RegexOptions.Compiled)]
         private static partial Regex AssetsFileRegex();
     }
 }
