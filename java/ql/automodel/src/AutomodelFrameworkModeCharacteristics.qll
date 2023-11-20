@@ -26,7 +26,13 @@ newtype JavaRelatedLocationType =
 newtype TFrameworkModeEndpoint =
   TExplicitParameter(Parameter p) or
   TQualifier(Callable c) { not c instanceof Constructor } or
-  TReturnValue(Callable c) or
+  TReturnValue(Callable c) {
+    c instanceof Constructor or
+    c instanceof Method and
+    (
+      not c.getReturnType() instanceof VoidType
+    )
+  } or
   TOverridableParameter(Method m, Parameter p) {
     p.getCallable() = m and
     m instanceof ModelExclusions::ModelApi and
