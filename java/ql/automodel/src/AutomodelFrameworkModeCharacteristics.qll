@@ -30,7 +30,8 @@ newtype TFrameworkModeEndpoint =
     c instanceof Constructor or
     c instanceof Method and
     (
-      not c.getReturnType() instanceof VoidType
+      not c.getReturnType() instanceof VoidType and
+      not c.getReturnType() instanceof PrimitiveType
     )
   } or
   TOverridableParameter(Method m, Parameter p) {

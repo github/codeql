@@ -5,9 +5,9 @@ public class File {
         File pathname // negative example - this is modeled as a neutral model
     ) {
         return 0;
-    } // also a negative example for ReturnValue source
+    }
 
     public boolean setLastModified(long time) { // time is a sink and source candidate, even though it's a primitive
         return false;
-    } // return value is a source candidate even though it's a primitive
+    } // return value is not a source candidate because it's a primitive
 }
