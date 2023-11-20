@@ -130,6 +130,30 @@ private class PrintfCleartextLoggingSink extends CleartextLoggingSink {
   }
 }
 
+/**
+ * Holds if `f` is a function that might be a logging function.
+ */
+private predicate logLikeHeuristic(Function f) {
+  f.getName().regexpMatch("(?i).*log.*") or
+  f.getDeclaringDecl().(NominalTypeDecl).getName().regexpMatch("(?i).*log.*")
+}
+
+/**
+ * A cleartext logging sink that is determined by imprecise methods.
+ */
+class HeuristicCleartextLoggingSink extends CleartextLoggingSink {
+  HeuristicCleartextLoggingSink() {
+    exists(CallExpr ce, Function f, Expr e |
+      // by function name
+      logLikeHeuristic(f) and
+      ce.getStaticTarget() = f and
+      ce.getAnArgument().getExpr() = e and
+      e.getType().getUnderlyingType().getName() = ["String", "NSString"] and
+      this.asExpr() = e
+    )
+  }
+}
+
 private class LoggingSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =

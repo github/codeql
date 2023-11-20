@@ -355,30 +355,30 @@ func test6(passwordString: String) {
 }
 
 func test7(authKey: String, authKey2: Int, authKey3: Float) {
-    log(message: authKey) // $ MISSING: hasCleartextLogging=
-    log(message: String(authKey2)) // $ MISSING: hasCleartextLogging=
-    logging(message: authKey) // $ MISSING: hasCleartextLogging=
-    logfile(file: 0, message: authKey) // $ MISSING: hasCleartextLogging=
-    logMessage(NSString(string: authKey)) // $ MISSING: hasCleartextLogging=
-    logInfo(authKey) // $ MISSING: hasCleartextLogging=
-    logError(errorMsg: authKey) // $ MISSING: hasCleartextLogging=
+    log(message: authKey) // $ hasCleartextLogging=358
+    log(message: String(authKey2)) // $ hasCleartextLogging=359
+    logging(message: authKey) // $ hasCleartextLogging=360
+    logfile(file: 0, message: authKey) // $ hasCleartextLogging=361
+    logMessage(NSString(string: authKey)) // $ hasCleartextLogging=362
+    logInfo(authKey) // $ hasCleartextLogging=363
+    logError(errorMsg: authKey) // $ hasCleartextLogging=364
     harmless(authKey) // GOOD: not logging
     logarithm(authKey3) // GOOD: not logging
-    doLogin(login: authKey) // GOOD: not logging
+    doLogin(login: authKey) // $ SPURIOUS: hasCleartextLogging=367 (not logging)
 
     let logger = LogFile()
     let msg = "authKey: " + authKey
-    logger.log(msg) // $ MISSING: hasCleartextLogging=
-    logger.trace(msg) // $ MISSING: hasCleartextLogging=
-    logger.debug(msg) // $ MISSING: hasCleartextLogging=
-    logger.info(NSString(string: msg)) // $ MISSING: hasCleartextLogging=
-    logger.notice(msg) // $ MISSING: hasCleartextLogging=
-    logger.warning(msg) // $ MISSING: hasCleartextLogging=
-    logger.error(msg) // $ MISSING: hasCleartextLogging=
-    logger.critical(msg) // $ MISSING: hasCleartextLogging=
-    logger.fatal(msg) // $ MISSING: hasCleartextLogging=
+    logger.log(msg) // $ hasCleartextLogging=370
+    logger.trace(msg) // $ hasCleartextLogging=370
+    logger.debug(msg) // $ hasCleartextLogging=370
+    logger.info(NSString(string: msg)) // $ hasCleartextLogging=370
+    logger.notice(msg) // $ hasCleartextLogging=370
+    logger.warning(msg) // $ hasCleartextLogging=370
+    logger.error(msg) // $ hasCleartextLogging=370
+    logger.critical(msg) // $ hasCleartextLogging=370
+    logger.fatal(msg) // $ hasCleartextLogging=370
 
     let logic = Logic()
     logic.addInt(authKey2) // GOOD: not logging
-    logic.addString(authKey) // GOOD: not logging
+    logic.addString(authKey) // $ SPURIOUS: hasCleartextLogging=383 (not logging)
 }
