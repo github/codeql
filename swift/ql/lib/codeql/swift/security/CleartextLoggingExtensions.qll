@@ -95,7 +95,7 @@ private class CleartextLoggingFieldAdditionalFlowStep extends CleartextLoggingAd
 
 /**
  * A function that appears to be an imported C `printf` variant.
- * TODO: merge code with similar cases from the cleartext logging PR.
+ * TODO: merge code with similar cases from the format string PR.
  */
 class PrintfFormat extends FreeFunction {
   int formatParamIndex;
@@ -144,7 +144,6 @@ private predicate logLikeHeuristic(Function f) {
 class HeuristicCleartextLoggingSink extends CleartextLoggingSink {
   HeuristicCleartextLoggingSink() {
     exists(CallExpr ce, Function f, Expr e |
-      // by function name
       logLikeHeuristic(f) and
       ce.getStaticTarget() = f and
       ce.getAnArgument().getExpr() = e and

@@ -105,7 +105,7 @@ class NSException : NSObject
 }
 
 class NSString : NSObject {
-	convenience init(string aString: String) { self.init() }
+    convenience init(string aString: String) { self.init() }
 }
 
 // from ObjC API; slightly simplified.
@@ -132,7 +132,7 @@ func logMessage(_ msg: NSString) {}
 func logInfo(_ infoMsg: String) {}
 func logError(errorMsg str: String) {}
 func harmless(_ str: String) {} // safe
-func logarithm(_ val: Float) {} // safe
+func logarithm(_ val: Float) -> Float { return 0.0 } // safe
 func doLogin(login: String) {} // safe
 
 // custom
@@ -363,7 +363,7 @@ func test7(authKey: String, authKey2: Int, authKey3: Float) {
     logInfo(authKey) // $ MISSING: hasCleartextLogging=363
     logError(errorMsg: authKey) // $ hasCleartextLogging=364
     harmless(authKey) // GOOD: not logging
-    logarithm(authKey3) // GOOD: not logging
+    _ = logarithm(authKey3) // GOOD: not logging
     doLogin(login: authKey) // GOOD: not logging
 
     let logger = LogFile()
