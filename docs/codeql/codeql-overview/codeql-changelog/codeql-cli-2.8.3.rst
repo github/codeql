@@ -120,7 +120,7 @@ Java
 JavaScript/TypeScript
 """""""""""""""""""""
 
-*   Added sources from the |codejszip5AUSaXsdmCDzPI_akPD5N|_ library to the :code:`js/zipslip` query.
+*   Added sources from the |link-code-jszip-1|_ library to the :code:`js/zipslip` query.
 
 Python
 """"""
@@ -147,6 +147,6 @@ Java
 *   Added :code:`RefType.getADescendant()`
 *   Added :code:`RefType.getAStrictAncestor()`
 
-.. |codejszip5AUSaXsdmCDzPI_akPD5N| replace:: :code:`jszip`\ 
-.. _codejszip5AUSaXsdmCDzPI_akPD5N: https://www.npmjs.com/package/jszip
+.. |link-code-jszip-1| replace:: :code:`jszip`\ 
+.. _link-code-jszip-1: https://www.npmjs.com/package/jszip
 

@@ -53,7 +53,7 @@ Minor Analysis Improvements
 JavaScript/TypeScript
 """""""""""""""""""""
 
-*   Added dataflow through the |codesnapdragonAqftq5qd1k377x_My6j0j|_ library.
+*   Added dataflow through the |link-code-snapdragon-1|_ library.
 
 New Queries
 ~~~~~~~~~~~
@@ -142,6 +142,6 @@ Java
 
 *   Added predicates :code:`ClassOrInterface.getAPermittedSubtype` and :code:`isSealed` exposing information about sealed classes.
 
-.. |codesnapdragonAqftq5qd1k377x_My6j0j| replace:: :code:`snapdragon`\ 
-.. _codesnapdragonAqftq5qd1k377x_My6j0j: https://npmjs.com/package/snapdragon
+.. |link-code-snapdragon-1| replace:: :code:`snapdragon`\ 
+.. _link-code-snapdragon-1: https://npmjs.com/package/snapdragon
 

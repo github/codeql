@@ -50,7 +50,7 @@ New Features
     
 *   The baseline information produced by :code:`codeql database init` and
     :code:`codeql database create` now accounts for
-    |codepathsandcodepathsignoreconfiguration55C42QG_NzP5oALcepCl|_.
+    |link-code-paths-and-code-paths-ignore-configuration-1|_.
     
 *   In the VS Code extension, recursive calls will be marked with inlay hints. These can be disabled with the global inlay hints setting
     (:code:`editor.inlayHints.enabled`). If you just want to disable them for
@@ -320,6 +320,6 @@ Utility Classes
 
 *   Initial release. Includes common utility classes and modules: Unit, Boolean, and Option.
 
-.. |codepathsandcodepathsignoreconfiguration55C42QG_NzP5oALcepCl| replace:: :code:`paths` and :code:`paths-ignore` configuration
-.. _codepathsandcodepathsignoreconfiguration55C42QG_NzP5oALcepCl: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#specifying-directories-to-scan
+.. |link-code-paths-and-code-paths-ignore-configuration-1| replace:: :code:`paths` and :code:`paths-ignore` configuration
+.. _link-code-paths-and-code-paths-ignore-configuration-1: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#specifying-directories-to-scan
 

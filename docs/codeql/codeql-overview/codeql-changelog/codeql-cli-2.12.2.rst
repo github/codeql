@@ -78,7 +78,7 @@ Java
 JavaScript/TypeScript
 """""""""""""""""""""
 
-*   Added sinks from the |codenodeptyZ_v589DXBeJncXrUgjwCC|_ library to the :code:`js/code-injection` query.
+*   Added sinks from the |link-code-node-pty-1|_ library to the :code:`js/code-injection` query.
 
 Ruby
 """"
@@ -87,6 +87,6 @@ Ruby
 *   Access to headers stored in the :code:`env` of Rack requests is now recognized as a source of remote input.
 *   Ruby 3.2: anonymous rest and keyword rest arguments can now be passed as arguments, instead of just used in method parameters.
 
-.. |codenodeptyZ_v589DXBeJncXrUgjwCC| replace:: :code:`node-pty`\ 
-.. _codenodeptyZ_v589DXBeJncXrUgjwCC: https://www.npmjs.com/package/node-pty
+.. |link-code-node-pty-1| replace:: :code:`node-pty`\ 
+.. _link-code-node-pty-1: https://www.npmjs.com/package/node-pty
 

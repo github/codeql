@@ -22,7 +22,7 @@ CodeQL CLI
 Potentially Breaking Changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*   CodeQL 2.11.1 to 2.11.3 contained a bug in `indirect build tracing <https://codeql.github.com/docs/codeql-cli/creating-codeql-databases/#using-indirect-build-tracing>`__ on Windows when using :code:`codeql database init` with the |codetraceprocesslevelE6wZP5lfDxkaj9MQTDMEU|_ flag.
+*   CodeQL 2.11.1 to 2.11.3 contained a bug in `indirect build tracing <https://codeql.github.com/docs/codeql-cli/creating-codeql-databases/#using-indirect-build-tracing>`__ on Windows when using :code:`codeql database init` with the |link-code-trace-process-level-1|_ flag.
     In these versions, when :code:`--trace-process-level` was set to a value greater than zero,
     (or left at the default value of 1), CodeQL attempted to inject its build tracer at a higher level in the process tree than the requested process level.
     This could lead to errors of the form "No source code found" or
@@ -142,6 +142,6 @@ Regular Expression Analysis
 
 *   Initial release. Extracted common regex related code, including the ReDoS analysis, into a library pack to share code between languages.
 
-.. |codetraceprocesslevelE6wZP5lfDxkaj9MQTDMEU| replace:: :code:`--trace-process-level`\ 
-.. _codetraceprocesslevelE6wZP5lfDxkaj9MQTDMEU: https://codeql.github.com/docs/codeql-cli/manual/database-init/#cmdoption-codeql-database-init-trace-process-level
+.. |link-code-trace-process-level-1| replace:: :code:`--trace-process-level`\ 
+.. _link-code-trace-process-level-1: https://codeql.github.com/docs/codeql-cli/manual/database-init/#cmdoption-codeql-database-init-trace-process-level
 
