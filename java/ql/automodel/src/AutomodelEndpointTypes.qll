@@ -18,6 +18,8 @@ abstract class EndpointType extends string {
    * Gets the name of the sink/source kind for this endpoint type as used in models-as-data.
    *
    * See https://github.com/github/codeql/blob/44213f0144fdd54bb679ca48d68b28dcf820f7a8/java/ql/lib/semmle/code/java/dataflow/ExternalFlow.qll#LL353C11-L357C31
+   * for sink types, and https://github.com/github/codeql/blob/44213f0144fdd54bb679ca48d68b28dcf820f7a8/java/ql/lib/semmle/code/java/dataflow/ExternalFlow.qll#L365
+   * for source types.
    */
   final string getKind() { result = this }
 }
