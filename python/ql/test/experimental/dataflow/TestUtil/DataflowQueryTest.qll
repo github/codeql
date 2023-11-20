@@ -64,54 +64,66 @@ module MakeQueryTest<QueryTestSig Impl> {
   }
 }
 
-module FromDataFlowConfig<DataFlow::ConfigSig C> {
-  module Impl implements QueryTestSig {
+signature class LegacyConfiguration extends DataFlow::Configuration;
+
+module GetQueryTest {
+  module FromDataFlowConfig<DataFlow::ConfigSig C> implements QueryTestSig {
     predicate isSink(DataFlow::Node sink) { C::isSink(sink) }
 
     predicate flowTo(DataFlow::Node sink) { DataFlow::Global<C>::flowTo(sink) }
   }
 
-  import MakeQueryTest<Impl>
-}
-
-module FromDataFlowStateConfig<DataFlow::StateConfigSig C> {
-  module Impl implements QueryTestSig {
+  module FromDataFlowStateConfig<DataFlow::StateConfigSig C> implements QueryTestSig {
     predicate isSink(DataFlow::Node sink) { C::isSink(sink) or C::isSink(sink, _) }
 
     predicate flowTo(DataFlow::Node sink) { DataFlow::GlobalWithState<C>::flowTo(sink) }
   }
 
-  import MakeQueryTest<Impl>
-}
-
-module FromTaintTrackingConfig<DataFlow::ConfigSig C> {
-  module Impl implements QueryTestSig {
+  module FromTaintTrackingConfig<DataFlow::ConfigSig C> implements QueryTestSig {
     predicate isSink(DataFlow::Node sink) { C::isSink(sink) }
 
     predicate flowTo(DataFlow::Node sink) { TaintTracking::Global<C>::flowTo(sink) }
   }
 
-  import MakeQueryTest<Impl>
-}
-
-module FromTaintTrackingStateConfig<DataFlow::StateConfigSig C> {
-  module Impl implements QueryTestSig {
+  module FromTaintTrackingStateConfig<DataFlow::StateConfigSig C> implements QueryTestSig {
     predicate isSink(DataFlow::Node sink) { C::isSink(sink) or C::isSink(sink, _) }
 
     predicate flowTo(DataFlow::Node sink) { TaintTracking::GlobalWithState<C>::flowTo(sink) }
   }
 
-  import MakeQueryTest<Impl>
-}
-
-signature class LegacyConfiguration extends DataFlow::Configuration;
-
-module FromLegacyConfiguration<LegacyConfiguration C> {
-  module Impl implements QueryTestSig {
+  module FromLegacyConfiguration<LegacyConfiguration C> implements QueryTestSig {
     predicate isSink(DataFlow::Node sink) { any(C c).isSink(sink) or any(C c).isSink(sink, _) }
 
     predicate flowTo(DataFlow::Node sink) { any(C c).hasFlowTo(sink) }
   }
+}
 
-  import MakeQueryTest<Impl>
+module FromDataFlowConfig<DataFlow::ConfigSig C> {
+  import MakeQueryTest<GetQueryTest::FromDataFlowConfig<C>>
+}
+
+module FromDataFlowStateConfig<DataFlow::StateConfigSig C> {
+  import MakeQueryTest<GetQueryTest::FromDataFlowStateConfig<C>>
+}
+
+module FromTaintTrackingConfig<DataFlow::ConfigSig C> {
+  import MakeQueryTest<GetQueryTest::FromTaintTrackingConfig<C>>
+}
+
+module FromTaintTrackingStateConfig<DataFlow::StateConfigSig C> {
+  import MakeQueryTest<GetQueryTest::FromTaintTrackingStateConfig<C>>
+}
+
+module FromLegacyConfiguration<LegacyConfiguration C> {
+  import MakeQueryTest<GetQueryTest::FromLegacyConfiguration<C>>
+}
+
+module IgnoreAbsolutePaths<QueryTestSig C> implements QueryTestSig {
+  predicate isSink(DataFlow::Node sink) {
+    C::isSink(sink) and exists(sink.getLocation().getFile().getRelativePath())
+  }
+
+  predicate flowTo(DataFlow::Node sink) {
+    C::flowTo(sink) and exists(sink.getLocation().getFile().getRelativePath())
+  }
 }
