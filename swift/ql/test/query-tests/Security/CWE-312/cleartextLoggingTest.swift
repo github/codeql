@@ -360,11 +360,11 @@ func test7(authKey: String, authKey2: Int, authKey3: Float) {
     logging(message: authKey) // $ hasCleartextLogging=360
     logfile(file: 0, message: authKey) // $ hasCleartextLogging=361
     logMessage(NSString(string: authKey)) // $ hasCleartextLogging=362
-    logInfo(authKey) // $ hasCleartextLogging=363
+    logInfo(authKey) // $ MISSING: hasCleartextLogging=363
     logError(errorMsg: authKey) // $ hasCleartextLogging=364
     harmless(authKey) // GOOD: not logging
     logarithm(authKey3) // GOOD: not logging
-    doLogin(login: authKey) // $ SPURIOUS: hasCleartextLogging=367 (not logging)
+    doLogin(login: authKey) // GOOD: not logging
 
     let logger = LogFile()
     let msg = "authKey: " + authKey

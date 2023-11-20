@@ -134,8 +134,8 @@ private class PrintfCleartextLoggingSink extends CleartextLoggingSink {
  * Holds if `f` is a function that might be a logging function.
  */
 private predicate logLikeHeuristic(Function f) {
-  f.getName().regexpMatch("(?i).*log.*") or
-  f.getDeclaringDecl().(NominalTypeDecl).getName().regexpMatch("(?i).*log.*")
+  f.getName().regexpMatch("(?i).*log(?!in).*") or
+  f.getDeclaringDecl().(NominalTypeDecl).getName().regexpMatch("(?i).*log(?!in).*")
 }
 
 /**
