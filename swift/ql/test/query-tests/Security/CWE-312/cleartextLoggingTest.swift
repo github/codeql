@@ -337,11 +337,11 @@ func test5(password: String, caseNum: Int) {
 }
 
 func test6(passwordString: String) {
-    let e = NSException(name: NSExceptionName("exception"), reason: "\(passwordString) is incorrect!", userInfo: nil) // $ MISSING: hasCleartextLogging=
+    let e = NSException(name: NSExceptionName("exception"), reason: "\(passwordString) is incorrect!", userInfo: nil) // $ hasCleartextLogging=340
     e.raise()
 
-    NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ MISSING: hasCleartextLogging=
-    NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ MISSING: hasCleartextLogging=
+    NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ hasCleartextLogging=343
+    NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ hasCleartextLogging=344
 
     _ = dprintf(0, "\(passwordString) is incorrect!") // $ hasCleartextLogging=346
     _ = dprintf(0, "%s is incorrect!", passwordString) // $ hasCleartextLogging=347

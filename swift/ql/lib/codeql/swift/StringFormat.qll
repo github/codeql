@@ -65,10 +65,13 @@ class NsLog extends FormattingFunction, FreeFunction {
 }
 
 /**
- * The `NSException.raise` method.
+ * The `NSException.init` and `NSException.raise` methods.
  */
 class NsExceptionRaise extends FormattingFunction, Method {
-  NsExceptionRaise() { this.hasQualifiedName("NSException", "raise(_:format:arguments:)") }
+  NsExceptionRaise() {
+    this.hasQualifiedName("NSException", "init(name:reason:userInfo:)") or
+    this.hasQualifiedName("NSException", "raise(_:format:arguments:)")
+  }
 
   override int getFormatParameterIndex() { result = 1 }
 }

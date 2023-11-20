@@ -160,6 +160,8 @@ private class LoggingSinks extends SinkModelCsv {
         ";;false;os_log(_:log:_:);;;Argument[2];log-injection",
         ";;false;os_log(_:dso:log:_:_:);;;Argument[0,4];log-injection",
         ";;false;os_log(_:dso:log:type:_:);;;Argument[0,4];log-injection",
+        ";NSException;true;init(name:reason:userInfo:);;;Argument[1];log-injection",
+        ";NSException;true;raise(_:format:arguments:);;;Argument[1..2];log-injection",
       ]
   }
 }
