@@ -350,8 +350,8 @@ func test6(passwordString: String) {
     _ = vprintf("%s is incorrect!", getVaList([passwordString])) // $ hasCleartextLogging=350
     _ = vfprintf(nil, "\(passwordString) is incorrect!", getVaList([])) // $ hasCleartextLogging=351
     _ = vfprintf(nil, "%s is incorrect!", getVaList([passwordString])) // $ hasCleartextLogging=352
-    _ = vasprintf_l(nil, nil, "\(passwordString) is incorrect!", getVaList([])) // $ SPURIOUS hasCleartextLogging=353 good (`sprintf` is not logging)
-    _ = vasprintf_l(nil, nil, "%s is incorrect!", getVaList([passwordString])) // $ SPURIOUS hasCleartextLogging=354 good (`sprintf` is not logging)
+    _ = vasprintf_l(nil, nil, "\(passwordString) is incorrect!", getVaList([])) // good (`sprintf` is not logging)
+    _ = vasprintf_l(nil, nil, "%s is incorrect!", getVaList([passwordString])) // good (`sprintf` is not logging)
 }
 
 func test7(authKey: String, authKey2: Int, authKey3: Float) {
