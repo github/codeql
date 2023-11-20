@@ -837,3 +837,13 @@ namespace MoreGlobalTests {
     indirect_sink(global_direct); // clean
   }
 }
+
+void test_references() {
+  int x = source();
+  int &y = x;
+  sink(y); // $ ast,ir
+
+  int* px = indirect_source();
+  int*& rpx = px;
+  indirect_sink((int*)rpx); // $ ast,ir
+}

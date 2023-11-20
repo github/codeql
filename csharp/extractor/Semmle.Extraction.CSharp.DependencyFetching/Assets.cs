@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -143,14 +144,31 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private static bool TryReadAllText(string path, ProgressMonitor progressMonitor, [NotNullWhen(returnValue: true)] out string? content)
+        {
+            try
+            {
+                content = File.ReadAllText(path);
+                return true;
+            }
+            catch (Exception e)
+            {
+                progressMonitor.LogInfo($"Failed to read assets file '{path}': {e.Message}");
+                content = null;
+                return false;
+            }
+        }
+
         public static DependencyContainer GetCompilationDependencies(ProgressMonitor progressMonitor, IEnumerable<string> assets)
         {
             var parser = new Assets(progressMonitor);
             var dependencies = new DependencyContainer();
             assets.ForEach(asset =>
             {
-                var json = File.ReadAllText(asset);
-                parser.TryParse(json, dependencies);
+                if (TryReadAllText(asset, progressMonitor, out var json))
+                {
+                    parser.TryParse(json, dependencies);
+                }
             });
             return dependencies;
         }
