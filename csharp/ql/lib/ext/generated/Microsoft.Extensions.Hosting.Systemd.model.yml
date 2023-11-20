@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -17,5 +18,4 @@ extensions:
       - ["Microsoft.Extensions.Hosting.Systemd", "SystemdLifetime", "SystemdLifetime", "(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Hosting.Systemd.ISystemdNotifier,Microsoft.Extensions.Logging.ILoggerFactory)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting.Systemd", "SystemdLifetime", "WaitForStartAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting.Systemd", "SystemdNotifier", "Notify", "(Microsoft.Extensions.Hosting.Systemd.ServiceState)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Hosting.Systemd", "SystemdNotifier", "SystemdNotifier", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting.Systemd", "SystemdNotifier", "get_IsEnabled", "()", "summary", "df-generated"]

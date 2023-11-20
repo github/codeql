@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -15,7 +16,7 @@ extensions:
       extensible: neutralModel
     data:
       - ["System.Runtime.Loader", "AssemblyDependencyResolver", "AssemblyDependencyResolver", "(System.String)", "summary", "df-generated"]
-      - ["System.Runtime.Loader", "AssemblyLoadContext", "AssemblyLoadContext", "()", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext+ContextualReflectionScope", "Dispose", "()", "summary", "df-generated"]
       - ["System.Runtime.Loader", "AssemblyLoadContext", "AssemblyLoadContext", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Runtime.Loader", "AssemblyLoadContext", "AssemblyLoadContext", "(System.String,System.Boolean)", "summary", "df-generated"]
       - ["System.Runtime.Loader", "AssemblyLoadContext", "EnterContextualReflection", "(System.Reflection.Assembly)", "summary", "df-generated"]
@@ -37,4 +38,3 @@ extensions:
       - ["System.Runtime.Loader", "AssemblyLoadContext", "get_CurrentContextualReflectionContext", "()", "summary", "df-generated"]
       - ["System.Runtime.Loader", "AssemblyLoadContext", "get_Default", "()", "summary", "df-generated"]
       - ["System.Runtime.Loader", "AssemblyLoadContext", "get_IsCollectible", "()", "summary", "df-generated"]
-      - ["System.Runtime.Loader", "AssemblyLoadContext+ContextualReflectionScope", "Dispose", "()", "summary", "df-generated"]

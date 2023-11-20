@@ -1479,6 +1479,26 @@ private module StdlibPrivate {
     }
   }
 
+  /**
+   * A call to the `io.FileIO` constructor.
+   * See https://docs.python.org/3/library/io.html#io.FileIO
+   */
+  private class FileIOCall extends FileSystemAccess::Range, API::CallNode {
+    FileIOCall() { this = API::moduleImport("io").getMember("FileIO").getACall() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "file").asSink() }
+  }
+
+  /**
+   * A call to the `io.open_code` function.
+   * See https://docs.python.org/3.11/library/io.html#io.open_code
+   */
+  private class OpenCodeCall extends FileSystemAccess::Range, API::CallNode {
+    OpenCodeCall() { this = API::moduleImport("io").getMember("open_code").getACall() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "path").asSink() }
+  }
+
   /** Gets a reference to an open file. */
   private DataFlow::TypeTrackingNode openFile(DataFlow::TypeTracker t, FileSystemAccess openCall) {
     t.start() and
@@ -2747,6 +2767,8 @@ private module StdlibPrivate {
       exists(this.getParameter(1, "data"))
     }
 
+    override DataFlow::Node getInitialization() { result = this }
+
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
     override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").asSink() }
@@ -2758,11 +2780,15 @@ private module StdlibPrivate {
    * A hashing operation by using the `update` method on the result of calling the `hashlib.new` function.
    */
   class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range, API::CallNode {
+    API::CallNode init;
     string hashName;
 
     HashlibNewUpdateCall() {
-      this = hashlibNewCall(hashName).getReturn().getMember("update").getACall()
+      init = hashlibNewCall(hashName) and
+      this = init.getReturn().getMember("update").getACall()
     }
+
+    override DataFlow::Node getInitialization() { result = init }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
@@ -2802,7 +2828,14 @@ private module StdlibPrivate {
    * (such as `hashlib.md5`), by calling its' `update` method.
    */
   class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
-    HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
+    API::CallNode init;
+
+    HashlibHashClassUpdateCall() {
+      init = hashClass.getACall() and
+      this = hashClass.getReturn().getMember("update").getACall()
+    }
+
+    override DataFlow::Node getInitialization() { result = init }
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
   }
@@ -2818,6 +2851,8 @@ private module StdlibPrivate {
       this = hashClass.getACall() and
       exists([this.getArg(0), this.getArgByName("string")])
     }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override DataFlow::Node getAnInput() {
       result = this.getArg(0)
@@ -2865,6 +2900,8 @@ private module StdlibPrivate {
       exists(this.getParameter(1, "msg").asSink())
     }
 
+    override DataFlow::Node getInitialization() { result = this }
+
     override API::Node getDigestArg() { result = digestArg }
 
     override DataFlow::Node getAnInput() { result = this.getParameter(1, "msg").asSink() }
@@ -2876,11 +2913,15 @@ private module StdlibPrivate {
    * See https://docs.python.org/3.11/library/hmac.html#hmac.HMAC.update
    */
   class HmacUpdateCall extends HmacCryptographicOperation {
+    API::CallNode init;
     API::Node digestArg;
 
     HmacUpdateCall() {
-      this = getHmacConstructorCall(digestArg).getReturn().getMember("update").getACall()
+      init = getHmacConstructorCall(digestArg) and
+      this = init.getReturn().getMember("update").getACall()
     }
+
+    override DataFlow::Node getInitialization() { result = init }
 
     override API::Node getDigestArg() { result = digestArg }
 
@@ -2894,6 +2935,8 @@ private module StdlibPrivate {
    */
   class HmacDigestCall extends HmacCryptographicOperation {
     HmacDigestCall() { this = API::moduleImport("hmac").getMember("digest").getACall() }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override API::Node getDigestArg() { result = this.getParameter(2, "digest") }
 

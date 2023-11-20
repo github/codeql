@@ -87,7 +87,7 @@ def write_arg_file(arg_file, args):
                 raise Exception('Single quote in argument: ' + arg)
             f.write("'" + arg.replace('\\', '/') + "'\n")
 
-def compile_to_dir(build_dir, srcs, language_version, classpath, java_classpath, output):
+def compile_to_dir(build_dir, srcs, version, classpath, java_classpath, output):
     # Use kotlinc to compile .kt files:
     kotlin_arg_file = build_dir + '/kotlin.args'
     kotlin_args = ['-Werror',
@@ -96,7 +96,7 @@ def compile_to_dir(build_dir, srcs, language_version, classpath, java_classpath,
                    '-d', output,
                    '-module-name', 'codeql-kotlin-extractor',
                    '-Xsuppress-version-warnings',
-                   '-language-version', language_version,
+                   '-language-version', version.toLanguageVersionString(),
                    '-no-reflect', '-no-stdlib',
                    '-jvm-target', '1.8',
                    '-classpath', classpath] + srcs
@@ -116,14 +116,14 @@ def compile_to_dir(build_dir, srcs, language_version, classpath, java_classpath,
     run_process([javac, '@' + java_arg_file])
 
 
-def compile_to_jar(build_dir, tmp_src_dir, srcs, language_version, classpath, java_classpath, output):
+def compile_to_jar(build_dir, tmp_src_dir, srcs, version, classpath, java_classpath, output):
     class_dir = build_dir + '/classes'
 
     if os.path.exists(class_dir):
         shutil.rmtree(class_dir)
     os.makedirs(class_dir)
 
-    compile_to_dir(build_dir, srcs, language_version, classpath, java_classpath, class_dir)
+    compile_to_dir(build_dir, srcs, version, classpath, java_classpath, class_dir)
 
     run_process(['jar', 'cf', output,
                  '-C', class_dir, '.',
@@ -161,7 +161,7 @@ def transform_to_embeddable(srcs):
             f.write(content)
 
 
-def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, build_dir, current_version):
+def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, build_dir, version_str):
     classpath = bases_to_classpath(dependency_folder, jars)
     java_classpath = bases_to_classpath(dependency_folder, java_jars)
 
@@ -179,22 +179,15 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
     with open(resource_dir + '/extractor.name', 'w') as f:
         f.write(output)
 
-    parsed_current_version = kotlin_plugin_versions.version_string_to_tuple(
-        current_version)
+    version = kotlin_plugin_versions.version_string_to_version(version_str)
 
-    for version in kotlin_plugin_versions.many_versions:
-        parsed_version = kotlin_plugin_versions.version_string_to_tuple(
-            version)
-        if parsed_version[0] < parsed_current_version[0] or \
-            (parsed_version[0] == parsed_current_version[0] and parsed_version[1] < parsed_current_version[1]) or \
-                (parsed_version[0] == parsed_current_version[0] and parsed_version[1] == parsed_current_version[1] and parsed_version[2] <= parsed_current_version[2]):
+    for a_version in kotlin_plugin_versions.many_versions_versions_asc:
+        if a_version.lessThanOrEqual(version):
             d = tmp_src_dir + '/main/kotlin/utils/versions/v_' + \
-                version.replace('.', '_')
+                a_version.toString().replace('.', '_')
             if os.path.exists(d):
                 # copy and overwrite files from the version folder to the include folder
                 shutil.copytree(d, include_version_folder, dirs_exist_ok=True)
-
-    language_version = str(parsed_current_version[0]) + '.' + str(parsed_current_version[1])
 
     # remove all version folders:
     shutil.rmtree(tmp_src_dir + '/main/kotlin/utils/versions')
@@ -203,7 +196,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
 
     transform_to_embeddable(srcs)
 
-    compile_to_jar(build_dir, tmp_src_dir, srcs, language_version, classpath, java_classpath, output)
+    compile_to_jar(build_dir, tmp_src_dir, srcs, version, classpath, java_classpath, output)
 
     shutil.rmtree(tmp_src_dir)
 

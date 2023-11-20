@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -12,11 +13,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["Microsoft.Extensions.DependencyModel.Resolution", "AppBaseCompilationAssemblyResolver", "AppBaseCompilationAssemblyResolver", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel.Resolution", "AppBaseCompilationAssemblyResolver", "AppBaseCompilationAssemblyResolver", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel.Resolution", "DotNetReferenceAssembliesPathResolver", "Resolve", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel.Resolution", "ICompilationAssemblyResolver", "TryResolveAssemblyPaths", "(Microsoft.Extensions.DependencyModel.CompilationLibrary,System.Collections.Generic.List<System.String>)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.DependencyModel.Resolution", "PackageCompilationAssemblyResolver", "PackageCompilationAssemblyResolver", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel.Resolution", "PackageCompilationAssemblyResolver", "PackageCompilationAssemblyResolver", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.DependencyModel.Resolution", "ReferenceAssemblyPathResolver", "ReferenceAssemblyPathResolver", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyModel.Resolution", "ReferenceAssemblyPathResolver", "ReferenceAssemblyPathResolver", "(System.String,System.String[])", "summary", "df-generated"]

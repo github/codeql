@@ -8,5 +8,5 @@ from Method m, TypeofExpr e
 where
   m.hasName("PrintTypes") and
   e.getEnclosingCallable() = m and
-  e.getTypeAccess().getTarget().hasName("Y<,>")
+  e.getTypeAccess().getTarget().hasName("Y`2")
 select m, e.getType().toString()

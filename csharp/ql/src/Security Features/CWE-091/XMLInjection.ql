@@ -25,7 +25,10 @@ module XmlInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       mc.getTarget().hasName("WriteRaw") and
-      mc.getTarget().getDeclaringType().getABaseType*().hasQualifiedName("System.Xml", "XmlWriter")
+      mc.getTarget()
+          .getDeclaringType()
+          .getABaseType*()
+          .hasFullyQualifiedName("System.Xml", "XmlWriter")
     |
       mc.getArgument(0) = sink.asExpr()
     )
@@ -37,7 +40,7 @@ module XmlInjectionConfig implements DataFlow::ConfigSig {
       mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
-          .hasQualifiedName("System.Security", "SecurityElement")
+          .hasFullyQualifiedName("System.Security", "SecurityElement")
     |
       mc = node.asExpr()
     )

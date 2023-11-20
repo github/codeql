@@ -94,16 +94,16 @@ types.cs:
 #   47|   3: [Struct] Struct
 #   50|   4: [Interface] Interface
 #   53|   5: [DelegateType] Delegate
-#   54|   6: [Class] GenericClass<>
+#   54|   6: [Class] GenericClass`1
 #-----|     1: (Type parameters)
 #   54|       0: [TypeParameter] T
-#   55|   7: [Interface] GenericInterface<>
+#   55|   7: [Interface] GenericInterface`1
 #-----|     1: (Type parameters)
 #   55|       0: [TypeParameter] T
-#   56|   8: [Struct] GenericStruct<>
+#   56|   8: [Struct] GenericStruct`1
 #-----|     1: (Type parameters)
 #   56|       0: [TypeParameter] T
-#   57|   9: [Class] Map<,>
+#   57|   9: [Class] Map`2
 #-----|     1: (Type parameters)
 #   57|       0: [TypeParameter] U
 #   57|       1: [TypeParameter] V

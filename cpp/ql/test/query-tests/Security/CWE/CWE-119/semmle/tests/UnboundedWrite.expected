@@ -1,4 +1,32 @@
 edges
-subpaths
+| main.cpp:6:27:6:30 | argv indirection | main.cpp:10:20:10:23 | argv indirection |
+| main.cpp:10:20:10:23 | argv indirection | tests.cpp:631:32:631:35 | argv indirection |
+| tests.cpp:613:19:613:24 | source indirection | tests.cpp:615:17:615:22 | source indirection |
+| tests.cpp:622:19:622:24 | source indirection | tests.cpp:625:2:625:16 | ... = ... indirection |
+| tests.cpp:625:2:625:16 | ... = ... indirection | tests.cpp:625:4:625:7 | s indirection [post update] [home indirection] |
+| tests.cpp:625:4:625:7 | s indirection [post update] [home indirection] | tests.cpp:628:14:628:14 | s indirection [home indirection] |
+| tests.cpp:628:14:628:14 | s indirection [home indirection] | tests.cpp:628:14:628:19 | home indirection |
+| tests.cpp:628:14:628:14 | s indirection [home indirection] | tests.cpp:628:16:628:19 | home indirection |
+| tests.cpp:628:16:628:19 | home indirection | tests.cpp:628:14:628:19 | home indirection |
+| tests.cpp:631:32:631:35 | argv indirection | tests.cpp:656:9:656:15 | access to array indirection |
+| tests.cpp:631:32:631:35 | argv indirection | tests.cpp:657:9:657:15 | access to array indirection |
+| tests.cpp:656:9:656:15 | access to array indirection | tests.cpp:613:19:613:24 | source indirection |
+| tests.cpp:657:9:657:15 | access to array indirection | tests.cpp:622:19:622:24 | source indirection |
 nodes
+| main.cpp:6:27:6:30 | argv indirection | semmle.label | argv indirection |
+| main.cpp:10:20:10:23 | argv indirection | semmle.label | argv indirection |
+| tests.cpp:613:19:613:24 | source indirection | semmle.label | source indirection |
+| tests.cpp:615:17:615:22 | source indirection | semmle.label | source indirection |
+| tests.cpp:622:19:622:24 | source indirection | semmle.label | source indirection |
+| tests.cpp:625:2:625:16 | ... = ... indirection | semmle.label | ... = ... indirection |
+| tests.cpp:625:4:625:7 | s indirection [post update] [home indirection] | semmle.label | s indirection [post update] [home indirection] |
+| tests.cpp:628:14:628:14 | s indirection [home indirection] | semmle.label | s indirection [home indirection] |
+| tests.cpp:628:14:628:19 | home indirection | semmle.label | home indirection |
+| tests.cpp:628:16:628:19 | home indirection | semmle.label | home indirection |
+| tests.cpp:631:32:631:35 | argv indirection | semmle.label | argv indirection |
+| tests.cpp:656:9:656:15 | access to array indirection | semmle.label | access to array indirection |
+| tests.cpp:657:9:657:15 | access to array indirection | semmle.label | access to array indirection |
+subpaths
 #select
+| tests.cpp:615:2:615:7 | call to strcpy | main.cpp:6:27:6:30 | argv indirection | tests.cpp:615:17:615:22 | source indirection | This 'call to strcpy' with input from $@ may overflow the destination. | main.cpp:6:27:6:30 | argv indirection | a command-line argument |
+| tests.cpp:628:2:628:7 | call to strcpy | main.cpp:6:27:6:30 | argv indirection | tests.cpp:628:14:628:19 | home indirection | This 'call to strcpy' with input from $@ may overflow the destination. | main.cpp:6:27:6:30 | argv indirection | a command-line argument |

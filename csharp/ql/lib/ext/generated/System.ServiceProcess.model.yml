@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -13,9 +14,9 @@ extensions:
       - ["System.ServiceProcess", "ServiceBase", "OnStart", "(System.String[])", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceBase", "OnStop", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceBase", "RequestAdditionalTime", "(System.Int32)", "summary", "df-generated"]
+      - ["System.ServiceProcess", "ServiceBase", "RequestAdditionalTime", "(System.TimeSpan)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceBase", "Run", "(System.ServiceProcess.ServiceBase)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceBase", "Run", "(System.ServiceProcess.ServiceBase[])", "summary", "df-generated"]
-      - ["System.ServiceProcess", "ServiceBase", "ServiceBase", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceBase", "ServiceMainCallback", "(System.Int32,System.IntPtr)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceBase", "Stop", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceBase", "get_AutoLog", "()", "summary", "df-generated"]
@@ -46,7 +47,6 @@ extensions:
       - ["System.ServiceProcess", "ServiceController", "GetServices", "(System.String)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceController", "Pause", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceController", "Refresh", "()", "summary", "df-generated"]
-      - ["System.ServiceProcess", "ServiceController", "ServiceController", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceController", "ServiceController", "(System.String)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceController", "ServiceController", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceController", "Start", "()", "summary", "df-generated"]
@@ -70,7 +70,6 @@ extensions:
       - ["System.ServiceProcess", "ServiceController", "set_DisplayName", "(System.String)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceController", "set_MachineName", "(System.String)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceController", "set_ServiceName", "(System.String)", "summary", "df-generated"]
-      - ["System.ServiceProcess", "ServiceControllerPermission", "ServiceControllerPermission", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceControllerPermission", "ServiceControllerPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceControllerPermission", "ServiceControllerPermission", "(System.ServiceProcess.ServiceControllerPermissionAccess,System.String,System.String)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceControllerPermission", "ServiceControllerPermission", "(System.ServiceProcess.ServiceControllerPermissionEntry[])", "summary", "df-generated"]
@@ -83,7 +82,6 @@ extensions:
       - ["System.ServiceProcess", "ServiceControllerPermissionAttribute", "set_MachineName", "(System.String)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceControllerPermissionAttribute", "set_PermissionAccess", "(System.ServiceProcess.ServiceControllerPermissionAccess)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceControllerPermissionAttribute", "set_ServiceName", "(System.String)", "summary", "df-generated"]
-      - ["System.ServiceProcess", "ServiceControllerPermissionEntry", "ServiceControllerPermissionEntry", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceControllerPermissionEntry", "ServiceControllerPermissionEntry", "(System.ServiceProcess.ServiceControllerPermissionAccess,System.String,System.String)", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceControllerPermissionEntry", "get_MachineName", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "ServiceControllerPermissionEntry", "get_PermissionAccess", "()", "summary", "df-generated"]
@@ -111,7 +109,6 @@ extensions:
       - ["System.ServiceProcess", "SessionChangeDescription", "get_SessionId", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "SessionChangeDescription", "op_Equality", "(System.ServiceProcess.SessionChangeDescription,System.ServiceProcess.SessionChangeDescription)", "summary", "df-generated"]
       - ["System.ServiceProcess", "SessionChangeDescription", "op_Inequality", "(System.ServiceProcess.SessionChangeDescription,System.ServiceProcess.SessionChangeDescription)", "summary", "df-generated"]
-      - ["System.ServiceProcess", "TimeoutException", "TimeoutException", "()", "summary", "df-generated"]
       - ["System.ServiceProcess", "TimeoutException", "TimeoutException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.ServiceProcess", "TimeoutException", "TimeoutException", "(System.String)", "summary", "df-generated"]
       - ["System.ServiceProcess", "TimeoutException", "TimeoutException", "(System.String,System.Exception)", "summary", "df-generated"]

@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -37,6 +38,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "Equals", "(System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo)", "summary", "df-generated"]
       - ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "GetHashCode", "()", "summary", "df-generated"]
       - ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "get_MemberType", "()", "summary", "df-generated"]

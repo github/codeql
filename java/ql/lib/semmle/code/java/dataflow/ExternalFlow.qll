@@ -93,7 +93,7 @@ private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
-private import ExternalFlowExtensions as Extensions
+private import internal.ExternalFlowExtensions as Extensions
 private import FlowSummary
 private import codeql.mad.ModelValidation as SharedModelVal
 

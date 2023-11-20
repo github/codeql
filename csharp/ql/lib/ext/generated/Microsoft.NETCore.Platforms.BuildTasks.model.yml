@@ -1,9 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.NETCore.Platforms.BuildTasks", "Extensions", False, "NullAsEmpty<>", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.NETCore.Platforms.BuildTasks", "Extensions", False, "NullAsEmpty<T>", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.NETCore.Platforms.BuildTasks", "RuntimeGroupCollection", False, "RuntimeGroupCollection", "(System.Collections.Generic.ICollection<Microsoft.NETCore.Platforms.BuildTasks.RuntimeGroup>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.NETCore.Platforms.BuildTasks", "RuntimeVersion", False, "RuntimeVersion", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.NETCore.Platforms.BuildTasks", "RuntimeVersion", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -11,7 +12,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["Microsoft.NETCore.Platforms.BuildTasks", "BuildTask", "BuildTask", "()", "summary", "df-generated"]
       - ["Microsoft.NETCore.Platforms.BuildTasks", "BuildTask", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.NETCore.Platforms.BuildTasks", "BuildTask", "get_BuildEngine", "()", "summary", "df-generated"]
       - ["Microsoft.NETCore.Platforms.BuildTasks", "BuildTask", "get_HostObject", "()", "summary", "df-generated"]

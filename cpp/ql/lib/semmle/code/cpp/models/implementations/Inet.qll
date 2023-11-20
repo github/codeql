@@ -157,7 +157,7 @@ private class Getaddrinfo extends TaintFunction, ArrayFunction, RemoteFlowSource
   override predicate hasArrayWithNullTerminator(int bufParam) { bufParam in [0, 1] }
 
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
-    output.isParameterDeref(3) and
+    output.isParameterDeref(3, 2) and
     description = "address returned by " + this.getName()
   }
 }

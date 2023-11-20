@@ -34,7 +34,8 @@ cached
 private newtype TIRDataFlowNode =
   TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
   TVariableNode(Variable var, int indirectionIndex) {
-    indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
+    indirectionIndex =
+      [getMinIndirectionsForType(var.getUnspecifiedType()) .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
   TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
     indirectionIndex =
@@ -346,7 +347,9 @@ class Node extends TIRDataFlowNode {
    * Gets the variable corresponding to this node, if any. This can be used for
    * modeling flow in and out of global variables.
    */
-  Variable asVariable() { this = TVariableNode(result, 1) }
+  Variable asVariable() {
+    this = TVariableNode(result, getMinIndirectionsForType(result.getUnspecifiedType()))
+  }
 
   /**
    * Gets the `indirectionIndex`'th indirection of this node's underlying variable, if any.
@@ -354,7 +357,7 @@ class Node extends TIRDataFlowNode {
    * This can be used for modeling flow in and out of global variables.
    */
   Variable asIndirectVariable(int indirectionIndex) {
-    indirectionIndex > 1 and
+    indirectionIndex > getMinIndirectionsForType(result.getUnspecifiedType()) and
     this = TVariableNode(result, indirectionIndex)
   }
 
@@ -432,6 +435,10 @@ private class Node0 extends Node, TNode0 {
 
   override Declaration getFunction() { result = node.getFunction() }
 
+  override Location getLocationImpl() { result = node.getLocation() }
+
+  override string toStringImpl() { result = node.toString() }
+
   override DataFlowType getType() { result = node.getType() }
 
   override predicate isGLValue() { node.isGLValue() }
@@ -448,18 +455,6 @@ class InstructionNode extends Node0 {
 
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
-
-  override Location getLocationImpl() {
-    if exists(instr.getAst().getLocation())
-    then result = instr.getAst().getLocation()
-    else result instanceof UnknownDefaultLocation
-  }
-
-  override string toStringImpl() {
-    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = instr.getAst().toString()
-  }
 }
 
 /**
@@ -473,18 +468,6 @@ class OperandNode extends Node, Node0 {
 
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
-
-  override Location getLocationImpl() {
-    if exists(op.getDef().getAst().getLocation())
-    then result = op.getDef().getAst().getLocation()
-    else result instanceof UnknownDefaultLocation
-  }
-
-  override string toStringImpl() {
-    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = op.getDef().getAst().toString()
-  }
 }
 
 /**
@@ -1293,31 +1276,90 @@ abstract private class IndirectExprNodeBase extends Node {
   }
 }
 
-private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase instanceof IndirectOperand
-{
-  IndirectOperandIndirectExprNode() {
-    exists(Expr e, int n, int indirectionIndex |
-      indirectExprNodeShouldBeIndirectOperand(this, e, n, indirectionIndex) and
-      not indirectExprNodeShouldBeIndirectOperand(_, e, n + 1, indirectionIndex)
-    )
+/** A signature for converting an indirect node to an expression. */
+private signature module IndirectNodeToIndirectExprSig {
+  /** The indirect node class to be converted to an expression */
+  class IndirectNode;
+
+  /**
+   * Holds if the indirect expression at indirection index `indirectionIndex`
+   * of `node` is `e`. The integer `n` specifies how many conversions has been
+   * applied to `node`.
+   */
+  predicate indirectNodeHasIndirectExpr(IndirectNode node, Expr e, int n, int indirectionIndex);
+}
+
+/**
+ * A module that implements the logic for deciding whether an indirect node
+ * should be an `IndirectExprNode`.
+ */
+private module IndirectNodeToIndirectExpr<IndirectNodeToIndirectExprSig Sig> {
+  import Sig
+
+  /**
+   * This predicate shifts the indirection index by one when `conv` is a
+   * `ReferenceDereferenceExpr`.
+   *
+   * This is necessary because `ReferenceDereferenceExpr` is a conversion
+   * in the AST, but appears as a `LoadInstruction` in the IR.
+   */
+  bindingset[e, indirectionIndex]
+  private predicate adjustForReference(
+    Expr e, int indirectionIndex, Expr conv, int adjustedIndirectionIndex
+  ) {
+    conv.(ReferenceDereferenceExpr).getExpr() = e and
+    adjustedIndirectionIndex = indirectionIndex - 1
+    or
+    not conv instanceof ReferenceDereferenceExpr and
+    conv = e and
+    adjustedIndirectionIndex = indirectionIndex
   }
 
-  final override Expr getConvertedExpr(int n, int index) {
-    indirectExprNodeShouldBeIndirectOperand(this, result, n, index)
+  /** Holds if `node` should be an `IndirectExprNode`. */
+  predicate charpred(IndirectNode node) {
+    exists(Expr e, int n, int indirectionIndex |
+      indirectNodeHasIndirectExpr(node, e, n, indirectionIndex) and
+      not exists(Expr conv, int adjustedIndirectionIndex |
+        adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
+        indirectNodeHasIndirectExpr(_, conv, n + 1, adjustedIndirectionIndex)
+      )
+    )
   }
 }
 
-private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase instanceof IndirectInstruction
+private module IndirectOperandIndirectExprNodeImpl implements IndirectNodeToIndirectExprSig {
+  class IndirectNode = IndirectOperand;
+
+  predicate indirectNodeHasIndirectExpr = indirectExprNodeShouldBeIndirectOperand/4;
+}
+
+module IndirectOperandToIndirectExpr =
+  IndirectNodeToIndirectExpr<IndirectOperandIndirectExprNodeImpl>;
+
+private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase instanceof IndirectOperand
 {
-  IndirectInstructionIndirectExprNode() {
-    exists(Expr e, int n, int indirectionIndex |
-      indirectExprNodeShouldBeIndirectInstruction(this, e, n, indirectionIndex) and
-      not indirectExprNodeShouldBeIndirectInstruction(_, e, n + 1, indirectionIndex)
-    )
-  }
+  IndirectOperandIndirectExprNode() { IndirectOperandToIndirectExpr::charpred(this) }
 
   final override Expr getConvertedExpr(int n, int index) {
-    indirectExprNodeShouldBeIndirectInstruction(this, result, n, index)
+    IndirectOperandToIndirectExpr::indirectNodeHasIndirectExpr(this, result, n, index)
+  }
+}
+
+private module IndirectInstructionIndirectExprNodeImpl implements IndirectNodeToIndirectExprSig {
+  class IndirectNode = IndirectInstruction;
+
+  predicate indirectNodeHasIndirectExpr = indirectExprNodeShouldBeIndirectInstruction/4;
+}
+
+module IndirectInstructionToIndirectExpr =
+  IndirectNodeToIndirectExpr<IndirectInstructionIndirectExprNodeImpl>;
+
+private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase instanceof IndirectInstruction
+{
+  IndirectInstructionIndirectExprNode() { IndirectInstructionToIndirectExpr::charpred(this) }
+
+  final override Expr getConvertedExpr(int n, int index) {
+    IndirectInstructionToIndirectExpr::indirectNodeHasIndirectExpr(this, result, n, index)
   }
 }
 

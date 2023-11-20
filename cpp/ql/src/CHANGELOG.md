@@ -1,3 +1,9 @@
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The `cpp/uninitialized-local` query has been improved to produce fewer false positives.
+
 ## 0.8.2
 
 No user-facing changes.

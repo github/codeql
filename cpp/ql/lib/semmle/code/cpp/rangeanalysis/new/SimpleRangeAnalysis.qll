@@ -100,7 +100,7 @@ predicate exprMightOverflowNegatively(Expr expr) {
   lowerBound(expr) < exprMinVal(expr)
   or
   exists(SemanticExprConfig::Expr semExpr |
-    semExpr.getUnconverted().getAst() = expr and
+    semExpr.getAst() = expr and
     ConstantStage::potentiallyOverflowingExpr(false, semExpr) and
     not ConstantStage::initialBounded(semExpr, _, _, false, _, _, _)
   )
@@ -126,7 +126,7 @@ predicate exprMightOverflowPositively(Expr expr) {
   upperBound(expr) > exprMaxVal(expr)
   or
   exists(SemanticExprConfig::Expr semExpr |
-    semExpr.getUnconverted().getAst() = expr and
+    semExpr.getAst() = expr and
     ConstantStage::potentiallyOverflowingExpr(true, semExpr) and
     not ConstantStage::initialBounded(semExpr, _, _, true, _, _, _)
   )
