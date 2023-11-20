@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* Added modeling of more `FileSystemAccess` in packages `cherrypy`, `aiofile`, `aiofiles`, `anyio`, `sanic`, `starlette`, `baize`, and `io`. This will mainly affect the _Uncontrolled data used in path expression_ (`py/path-injection`) query.

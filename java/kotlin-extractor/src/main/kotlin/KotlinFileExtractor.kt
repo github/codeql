@@ -2457,8 +2457,12 @@ open class KotlinFileExtractor(
 
         val fn = getFunctionsByFqName(pluginContext, functionPkg, functionName)
             .firstOrNull { fnSymbol ->
-                fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
-                fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
+                val owner = fnSymbol.owner
+                (owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type
+                 ||
+                 (owner.parent is IrExternalPackageFragment && getFileClassFqName(owner)?.asString() == type))
+                &&
+                owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
             }?.owner
 
         if (fn != null) {
