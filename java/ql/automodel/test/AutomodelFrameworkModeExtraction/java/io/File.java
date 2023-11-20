@@ -7,7 +7,7 @@ public class File {
         return 0;
     }
 
-    public boolean setLastModified(long time) { // time is a sink and source candidate, even though it's a primitive
+    public boolean setLastModified(long time) {
         return false;
     } // return value is not a source candidate because it's a primitive
 }
