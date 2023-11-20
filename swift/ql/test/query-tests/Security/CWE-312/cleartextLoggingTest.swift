@@ -324,15 +324,15 @@ func test5(password: String, caseNum: Int) {
 
 	switch caseNum {
 	case 0:
-		assert(false, password) // $ MISSING: hasCleartextLogging=327
+		assert(false, password) // $ hasCleartextLogging=327
 	case 1:
-		assertionFailure(password) // $ MISSING: hasCleartextLogging=329
+		assertionFailure(password) // $ hasCleartextLogging=329
 	case 2:
-		precondition(false, password) // $ MISSING: hasCleartextLogging=331
+		precondition(false, password) // $ hasCleartextLogging=331
 	case 3:
-		preconditionFailure(password) // $ MISSING: hasCleartextLogging=333
+		preconditionFailure(password) // $ hasCleartextLogging=333
 	default:
-		fatalError(password) // $ MISSING: hasCleartextLogging=335
+		fatalError(password) // $ hasCleartextLogging=335
 	}
 }
 
