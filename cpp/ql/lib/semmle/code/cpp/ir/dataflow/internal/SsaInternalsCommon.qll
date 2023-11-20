@@ -872,7 +872,7 @@ private module Cached {
       upper = countIndirectionsForCppType(type) and
       ind = ind0 + [lower .. upper] and
       indirectionIndex = ind - (ind0 + lower) and
-      (if type.hasType(any(Cpp::ArrayType arrayType), true) then lower = 0 else lower = 1)
+      lower = getMinIndirectionsForType(any(Type t | type.hasUnspecifiedType(t, _)))
     )
   }
 

@@ -1,5 +1,11 @@
 uniqueEnclosingCallable
+| test.cpp:864:44:864:58 | {...} | Node should have one enclosing callable but has 0. |
+| test.cpp:864:47:864:54 | call to source | Node should have one enclosing callable but has 0. |
+| test.cpp:872:46:872:51 | call to source | Node should have one enclosing callable but has 0. |
+| test.cpp:872:53:872:56 | 1 | Node should have one enclosing callable but has 0. |
 uniqueCallEnclosingCallable
+| test.cpp:864:47:864:54 | call to source | Call should have one enclosing callable but has 0. |
+| test.cpp:872:46:872:51 | call to source | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation
