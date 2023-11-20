@@ -388,7 +388,6 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> ClassExpr.bases = 3, expr_list */
 /* <Field> ClassExpr.keywords = 4, dict_item_list */
 /* <Field> ClassExpr.inner_scope = 5, Class */
-/* <Field> ClassExpr.type_parameters = 6, type_parameter_list */
 
 /* <Field> Compare.location = 0, location */
 /* <Field> Compare.parenthesised = 1, bool */
@@ -459,7 +458,6 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> Function.kwarg = 4, expr */
 /* <Field> Function.body = 5, stmt_list */
 /* <Field> Function.is_async = 6, bool */
-/* <Field> Function.type_parameters = 7, type_parameter_list */
 /* <Parent> Function = FunctionParent  */
 
 /* <Field> FunctionExpr.location = 0, location */
@@ -615,9 +613,6 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> Num.n = 2, number */
 /* <Field> Num.text = 3, number */
 
-/* <Field> ParamSpec.location = 0, location */
-/* <Field> ParamSpec.name = 1, expr */
-
 /* <Field> Pass.location = 0, location */
 
 /* <Field> PlaceHolder.location = 0, location */
@@ -707,18 +702,6 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> Tuple.ctx = 3, expr_context */
 /* <Parent> Tuple = ParameterList  */
 
-/* <Field> TypeAlias.location = 0, location */
-/* <Field> TypeAlias.name = 1, expr */
-/* <Field> TypeAlias.type_parameters = 2, type_parameter_list */
-/* <Field> TypeAlias.value = 3, expr */
-
-/* <Field> TypeVar.location = 0, location */
-/* <Field> TypeVar.name = 1, expr */
-/* <Field> TypeVar.bound = 2, expr */
-
-/* <Field> TypeVarTuple.location = 0, location */
-/* <Field> TypeVarTuple.name = 1, expr */
-
 /* <Field> UnaryExpr.location = 0, location */
 /* <Field> UnaryExpr.parenthesised = 1, bool */
 /* <Field> UnaryExpr.op = 2, unaryop */
@@ -795,10 +778,6 @@ py_extracted_version(int module : @py_Module ref,
 /* <Parent> StmtList = StmtListParent  */
 /* <Parent> string = StrParent  */
 /* <Parent> StringList = StrListParent  */
-
-/* <Field> TypeParameter.location = 0, location */
-/* <Parent> TypeParameter = TypeParameterList  */
-/* <Parent> TypeParameterList = TypeParameterListParent  */
 /* <Parent> Unaryop = UnaryExpr  */
 /* <Parent> Variable = VariableParent  */
 py_Classes(unique int id : @py_Class,
@@ -914,14 +893,6 @@ py_strs(varchar(1) id : string ref,
 
 py_str_lists(unique int id : @py_str_list,
     unique int parent : @py_str_list_parent ref);
-
-py_type_parameters(unique int id : @py_type_parameter,
-    int kind: int ref,
-    int parent : @py_type_parameter_list ref,
-    int idx : int ref);
-
-py_type_parameter_lists(unique int id : @py_type_parameter_list,
-    unique int parent : @py_type_parameter_list_parent ref);
 
 py_unaryops(unique int id : @py_unaryop,
     int kind: int ref,
@@ -1058,13 +1029,7 @@ case @py_stmt.kind of
 |   23 = @py_While
 |   24 = @py_With
 |   25 = @py_TemplateWrite
-|   26 = @py_AnnAssign
-|   27 = @py_TypeAlias;
-
-case @py_type_parameter.kind of
-    0 = @py_ParamSpec
-|   1 = @py_TypeVar
-|   2 = @py_TypeVarTuple;
+|   26 = @py_AnnAssign;
 
 case @py_unaryop.kind of
     0 = @py_Invert
@@ -1078,7 +1043,7 @@ case @py_unaryop.kind of
 
 @py_arguments_parent = @py_FunctionExpr | @py_Lambda;
 
-@py_ast_node = @py_Class | @py_Function | @py_Module | @py_StringPart | @py_comprehension | @py_dict_item | @py_expr | @py_pattern | @py_stmt | @py_type_parameter;
+@py_ast_node = @py_Class | @py_Function | @py_Module | @py_StringPart | @py_comprehension | @py_dict_item | @py_expr | @py_pattern | @py_stmt;
 
 @py_bool_parent = @py_For | @py_Function | @py_Print | @py_With | @py_expr | @py_pattern;
 
@@ -1090,9 +1055,9 @@ case @py_unaryop.kind of
 
 @py_expr_or_stmt = @py_expr | @py_stmt;
 
-@py_expr_parent = @py_AnnAssign | @py_Assert | @py_Assign | @py_AssignExpr | @py_Attribute | @py_AugAssign | @py_Await | @py_BinaryExpr | @py_Call | @py_Case | @py_Compare | @py_DictComp | @py_DictUnpacking | @py_ExceptGroupStmt | @py_ExceptStmt | @py_Exec | @py_Expr_stmt | @py_Filter | @py_For | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_GeneratorExp | @py_Guard | @py_If | @py_IfExp | @py_ImportMember | @py_ImportStar | @py_KeyValuePair | @py_ListComp | @py_MatchAsPattern | @py_MatchCapturePattern | @py_MatchClassPattern | @py_MatchKeywordPattern | @py_MatchLiteralPattern | @py_MatchStmt | @py_MatchValuePattern | @py_ParamSpec | @py_Print | @py_Raise | @py_Repr | @py_Return | @py_SetComp | @py_Slice | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_TemplateWrite | @py_TypeAlias | @py_TypeVar | @py_TypeVarTuple | @py_UnaryExpr | @py_While | @py_With | @py_Yield | @py_YieldFrom | @py_alias | @py_arguments | @py_comprehension | @py_expr_list | @py_keyword | @py_parameter_list;
+@py_expr_parent = @py_AnnAssign | @py_Assert | @py_Assign | @py_AssignExpr | @py_Attribute | @py_AugAssign | @py_Await | @py_BinaryExpr | @py_Call | @py_Case | @py_Compare | @py_DictComp | @py_DictUnpacking | @py_ExceptGroupStmt | @py_ExceptStmt | @py_Exec | @py_Expr_stmt | @py_Filter | @py_For | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_GeneratorExp | @py_Guard | @py_If | @py_IfExp | @py_ImportMember | @py_ImportStar | @py_KeyValuePair | @py_ListComp | @py_MatchAsPattern | @py_MatchCapturePattern | @py_MatchClassPattern | @py_MatchKeywordPattern | @py_MatchLiteralPattern | @py_MatchStmt | @py_MatchValuePattern | @py_Print | @py_Raise | @py_Repr | @py_Return | @py_SetComp | @py_Slice | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_TemplateWrite | @py_UnaryExpr | @py_While | @py_With | @py_Yield | @py_YieldFrom | @py_alias | @py_arguments | @py_comprehension | @py_expr_list | @py_keyword | @py_parameter_list;
 
-@py_location_parent = @py_DictUnpacking | @py_KeyValuePair | @py_StringPart | @py_comprehension | @py_expr | @py_keyword | @py_pattern | @py_stmt | @py_type_parameter;
+@py_location_parent = @py_DictUnpacking | @py_KeyValuePair | @py_StringPart | @py_comprehension | @py_expr | @py_keyword | @py_pattern | @py_stmt;
 
 @py_parameter = @py_Name | @py_Tuple;
 
@@ -1107,8 +1072,6 @@ case @py_unaryop.kind of
 @py_str_list_parent = @py_Global | @py_Nonlocal;
 
 @py_str_parent = @py_Attribute | @py_Class | @py_ClassExpr | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_ImportExpr | @py_ImportMember | @py_Module | @py_SpecialOperation | @py_Str | @py_StringPart | @py_TemplateDottedNotation | @py_keyword | @py_str_list;
-
-@py_type_parameter_list_parent = @py_ClassExpr | @py_Function | @py_TypeAlias;
 
 @py_variable_parent = @py_Name | @py_PlaceHolder;
 
