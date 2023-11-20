@@ -6,4 +6,8 @@ public class File {
     ) {
         return 0;
     } // also a negative example for ReturnValue source
+
+    public boolean setLastModified(long time) { // time is a sink and source candidate, even though it's a primitive
+        return false;
+    } // return value is a source candidate even though it's a primitive
 }
