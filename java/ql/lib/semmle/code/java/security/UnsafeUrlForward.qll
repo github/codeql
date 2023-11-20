@@ -1,10 +1,10 @@
 import java
-private import experimental.semmle.code.java.frameworks.Jsf
+private import semmle.code.java.Jsf
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
-private import experimental.semmle.code.java.frameworks.SpringResource
+private import semmle.code.java.SpringResource
 
 /** A sink for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
