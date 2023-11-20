@@ -11,31 +11,31 @@ public class UnsafeUrlForward {
 
 	@GetMapping("/bad1")
 	public ModelAndView bad1(String url) {
-		return new ModelAndView(url);
+		return new ModelAndView(url); // $ hasUnsafeUrlForward
 	}
 
 	@GetMapping("/bad2")
 	public ModelAndView bad2(String url) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(url);
+		modelAndView.setViewName(url); // $ hasUnsafeUrlForward
 		return modelAndView;
 	}
 
 	@GetMapping("/bad3")
 	public String bad3(String url) {
-		return "forward:" + url + "/swagger-ui/index.html";
+		return "forward:" + url + "/swagger-ui/index.html"; // $ hasUnsafeUrlForward
 	}
 
 	@GetMapping("/bad4")
 	public ModelAndView bad4(String url) {
-		ModelAndView modelAndView = new ModelAndView("forward:" + url);
+		ModelAndView modelAndView = new ModelAndView("forward:" + url); // $ hasUnsafeUrlForward
 		return modelAndView;
 	}
 
 	@GetMapping("/bad5")
 	public void bad5(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher(url).include(request, response);
+			request.getRequestDispatcher(url).include(request, response); // $ hasUnsafeUrlForward
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -46,7 +46,7 @@ public class UnsafeUrlForward {
 	@GetMapping("/bad6")
 	public void bad6(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response); // $ hasUnsafeUrlForward
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -57,7 +57,7 @@ public class UnsafeUrlForward {
 	@GetMapping("/bad7")
 	public void bad7(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").forward(request, response); // $ hasUnsafeUrlForward
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

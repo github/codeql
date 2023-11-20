@@ -16,7 +16,7 @@ public class UnsafeResourceGet2 {
 		Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
 		String loadUrl = params.get("loadUrl");
 
-		InputStreamReader isr = new InputStreamReader(fc.getExternalContext().getResourceAsStream(loadUrl));
+		InputStreamReader isr = new InputStreamReader(fc.getExternalContext().getResourceAsStream(loadUrl)); // $ hasUnsafeUrlForward (path-inj?)
 		BufferedReader br = new BufferedReader(isr);
 		if(br.ready()) {
 			//Do Stuff
@@ -34,7 +34,7 @@ public class UnsafeResourceGet2 {
 
 		URL url = fc.getExternalContext().getResource(loadUrl);
 
-		InputStream in = url.openStream();
+		InputStream in = url.openStream(); // $ hasUnsafeUrlForward (SSRF)
 		//Do Stuff
 		return "result";
 	}

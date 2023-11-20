@@ -38,7 +38,7 @@ public class UnsafeResourceGet extends HttpServlet {
 		// A sample request /fake.jsp/../WEB-INF/web.xml can load the web.xml file
 		URL url = sc.getResource(requestUrl);
 
-		InputStream in = url.openStream();
+		InputStream in = url.openStream(); // $ hasUnsafeUrlForward (SSRF)
 		byte[] buf = new byte[4 * 1024];  // 4K buffer
 		int bytesRead;
 		while ((bytesRead = in.read(buf)) != -1) {
@@ -112,7 +112,7 @@ public class UnsafeResourceGet extends HttpServlet {
 		ServletOutputStream out = response.getOutputStream();
 
 		// A sample request /fake.jsp/../WEB-INF/web.xml can load the web.xml file
-		InputStream in = request.getServletContext().getResourceAsStream(requestPath);
+		InputStream in = request.getServletContext().getResourceAsStream(requestPath); // $ hasUnsafeUrlForward (path-inj?)
 		byte[] buf = new byte[4 * 1024];  // 4K buffer
 		int bytesRead;
 		while ((bytesRead = in.read(buf)) != -1) {
@@ -147,7 +147,7 @@ public class UnsafeResourceGet extends HttpServlet {
 		// Note the class is in two levels of subpackages and `Class.getResource` starts from its own directory
 		URL url = getClass().getResource(requestUrl);
 
-		InputStream in = url.openStream();
+		InputStream in = url.openStream(); // $ hasUnsafeUrlForward (SSRF)
 		byte[] buf = new byte[4 * 1024];  // 4K buffer
 		int bytesRead;
 		while ((bytesRead = in.read(buf)) != -1) {
@@ -186,7 +186,7 @@ public class UnsafeResourceGet extends HttpServlet {
 
 		// A sample request /fake.jsp/../../../WEB-INF/web.xml can load the web.xml file
 		// Note the class is in two levels of subpackages and `ClassLoader.getResourceAsStream` starts from its own directory
-		InputStream in = getClass().getClassLoader().getResourceAsStream(requestPath);
+		InputStream in = getClass().getClassLoader().getResourceAsStream(requestPath); // $ hasUnsafeUrlForward (path-inj?)
 		byte[] buf = new byte[4 * 1024];  // 4K buffer
 		int bytesRead;
 		while ((bytesRead = in.read(buf)) != -1) {
@@ -223,7 +223,7 @@ public class UnsafeResourceGet extends HttpServlet {
 		// Note the class is in two levels of subpackages and `ClassLoader.getResource` starts from its own directory
 		URL url = getClass().getClassLoader().getResource(requestUrl);
 
-		InputStream in = url.openStream();
+		InputStream in = url.openStream(); // $ hasUnsafeUrlForward (SSRF)
 		byte[] buf = new byte[4 * 1024];  // 4K buffer
 		int bytesRead;
 		while ((bytesRead = in.read(buf)) != -1) {
@@ -242,7 +242,7 @@ public class UnsafeResourceGet extends HttpServlet {
 
 			VirtualFile overlay = VFS.getChild(new URI("EAP_HOME/modules/"));
 			// Do file operations
-			overlay.getChild(rs.getPath());
+			overlay.getChild(rs.getPath()); // $ hasUnsafeUrlForward (path-inj?)
 		} catch (URISyntaxException ue) {
 			throw new IOException("Cannot parse the URI");
 		}

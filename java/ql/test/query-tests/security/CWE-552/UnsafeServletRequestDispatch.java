@@ -29,13 +29,13 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 			rd.forward(request, response);
 		} else {
 			ServletContext sc = cfg.getServletContext();
-			RequestDispatcher rd = sc.getRequestDispatcher(returnURL);
+			RequestDispatcher rd = sc.getRequestDispatcher(returnURL); // $ hasUnsafeUrlForward
 			rd.forward(request, response);
 		}
 	}
 
 	@Override
-	// BAD: Request dispatcher constructed from `HttpServletRequest` without input validation 
+	// BAD: Request dispatcher constructed from `HttpServletRequest` without input validation
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
@@ -45,7 +45,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/Login.jsp");
 			rd.forward(request, response);
 		} else {
-			RequestDispatcher rd = request.getRequestDispatcher(returnURL);
+			RequestDispatcher rd = request.getRequestDispatcher(returnURL); // $ hasUnsafeUrlForward
 			rd.forward(request, response);
 		}
 	}
@@ -65,22 +65,22 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 		}
 	}
 
-	// BAD: Request dispatcher without path traversal check 
+	// BAD: Request dispatcher without path traversal check
 	protected void doHead2(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String path = request.getParameter("path");
 
-		// A sample payload "/pages/welcome.jsp/../WEB-INF/web.xml" can bypass the `startsWith` check 
-		// The payload "/pages/welcome.jsp/../../%57EB-INF/web.xml" can bypass the check as well since RequestDispatcher will decode `%57` as `W`  
+		// A sample payload "/pages/welcome.jsp/../WEB-INF/web.xml" can bypass the `startsWith` check
+		// The payload "/pages/welcome.jsp/../../%57EB-INF/web.xml" can bypass the check as well since RequestDispatcher will decode `%57` as `W`
 		if (path.startsWith(BASE_PATH)) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response);
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUnsafeUrlForward
 		}
 	}
 
-	// GOOD: Request dispatcher with path traversal check 
+	// GOOD: Request dispatcher with path traversal check
 	protected void doHead3(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getParameter("path");		
+		String path = request.getParameter("path");
 
 		if (path.startsWith(BASE_PATH) && !path.contains("..")) {
 			request.getServletContext().getRequestDispatcher(path).include(request, response);
@@ -110,7 +110,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 		Path requestedPath = Paths.get(BASE_PATH).resolve(path).normalize();
 
 		if (!requestedPath.startsWith("/WEB-INF") && !requestedPath.startsWith("/META-INF")) {
-			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response);
+			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ MISSING: hasUnsafeUrlForward
 		}
 	}
 

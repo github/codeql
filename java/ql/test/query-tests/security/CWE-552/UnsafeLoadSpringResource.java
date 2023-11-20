@@ -32,7 +32,7 @@ public class UnsafeLoadSpringResource {
 		char[] buffer = new char[4096];
 		StringBuilder out = new StringBuilder();
 		try {
-			Reader in = new FileReader(clr.getFilename());
+			Reader in = new FileReader(clr.getFilename()); // $ hasUnsafeUrlForward (path-inj?)
 			for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
 				out.append(buffer, 0, numRead);
 			}
@@ -67,13 +67,13 @@ public class UnsafeLoadSpringResource {
 	//BAD: Get resource from ResourceUtils without input validation
 	public String getFileContent2(@RequestParam(name="fileName") String fileName) {
 		String content = null;
-		
+
 		try {
 			// A request such as the following can disclose source code and system configuration
 			// fileName=/etc/hosts
 			// fileName=file:/etc/hosts
 			// fileName=/opt/appdir/WEB-INF/views/page.jsp
-			File file = ResourceUtils.getFile(fileName);
+			File file = ResourceUtils.getFile(fileName); // $ hasUnsafeUrlForward (path-inj?)
 			//Read File Content
 			content = new String(Files.readAllBytes(file.toPath()));
 		} catch (IOException ie) {
@@ -86,7 +86,7 @@ public class UnsafeLoadSpringResource {
 	//GOOD: Get resource from ResourceUtils with input path validation
 	public String getFileContent2a(@RequestParam(name="fileName") String fileName) {
 		String content = null;
-		
+
 		if (fileName.startsWith("/safe_dir") && !fileName.contains("..")) {
 			try {
 					File file = ResourceUtils.getFile(fileName);
@@ -113,7 +113,7 @@ public class UnsafeLoadSpringResource {
 			// fileName=/WEB-INF/views/page.jsp
 			// fileName=/WEB-INF/classes/com/example/package/SampleController.class
 			// fileName=file:/etc/hosts
-			Resource resource = resourceLoader.getResource(fileName);
+			Resource resource = resourceLoader.getResource(fileName); // $ hasUnsafeUrlForward (path-inj?)
 
 			char[] buffer = new char[4096];
 			StringBuilder out = new StringBuilder();
