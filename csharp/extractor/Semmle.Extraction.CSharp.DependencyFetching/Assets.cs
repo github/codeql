@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -143,7 +144,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private static bool TryReadAllText(string path, ProgressMonitor progressMonitor, out string content)
+        private static bool TryReadAllText(string path, ProgressMonitor progressMonitor, [NotNullWhen(returnValue: true)] out string? content)
         {
             try
             {
@@ -153,7 +154,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             catch (Exception e)
             {
                 progressMonitor.LogInfo($"Failed to read assets file '{path}': {e.Message}");
-                content = "";
+                content = null;
                 return false;
             }
         }
