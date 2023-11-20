@@ -60,7 +60,7 @@ module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { allocSink(_, sink) }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(Expr e | e = node.asExpr() |
+    exists(Expr e | e = [node.asExpr(), node.asDefinition()] |
       // There can be two separate reasons for `convertedExprMightOverflow` not holding:
       // 1. `e` really cannot overflow.
       // 2. `e` isn't analyzable.

@@ -68,9 +68,9 @@ predicate cannotContainString(Type t, boolean isIndirect) {
 
 predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
   exists(Expr e |
-    e = node.asExpr() and isIndirect = false
+    e = [node.asExpr(), node.asDefinition()] and isIndirect = false
     or
-    e = node.asIndirectExpr() and isIndirect = true
+    e = [node.asIndirectExpr(), node.asIndirectDefinition()] and isIndirect = true
   |
     exists(FunctionCall fc | fc = e |
       not (

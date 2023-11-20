@@ -35,10 +35,15 @@ predicate isSource(FS::FlowSource source, string sourceType) { sourceType = sour
 
 predicate isSink(DataFlow::Node sink, string kind) {
   exists(Expr use |
-    use = sink.asExpr() and
     not use.getUnspecifiedType() instanceof PointerType and
     outOfBoundsExpr(use, kind) and
     not inSystemMacroExpansion(use)
+  |
+    if
+      sink.asDefinition() instanceof CrementOperation or
+      sink.asDefinition() instanceof AssignOperation
+    then use = sink.asDefinition()
+    else use = sink.asExpr()
   )
 }
 
