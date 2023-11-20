@@ -5,7 +5,7 @@ private import python
 private import semmle.python.internal.CachedStages
 private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
-private import SummaryTypeTracker as SummaryTypeTracker
+private import codeql.typetracking.internal.SummaryTypeTracker as SummaryTypeTracker
 private import semmle.python.dataflow.new.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
 
@@ -14,13 +14,13 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   class Node = DataFlowPublic::Node;
 
   // Content
-  class TypeTrackerContent = DataFlowPublic::ContentSet;
+  class Content = DataFlowPublic::ContentSet;
 
-  class TypeTrackerContentFilter = TypeTrackingInput::ContentFilter;
+  class ContentFilter = TypeTrackingInput::ContentFilter;
 
-  TypeTrackerContentFilter getFilterFromWithoutContentStep(TypeTrackerContent content) { none() }
+  ContentFilter getFilterFromWithoutContentStep(Content content) { none() }
 
-  TypeTrackerContentFilter getFilterFromWithContentStep(TypeTrackerContent content) { none() }
+  ContentFilter getFilterFromWithContentStep(Content content) { none() }
 
   // Callables
   class SummarizedCallable = FlowSummaryImpl::Private::SummarizedCallableImpl;
@@ -37,9 +37,9 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   // Relating content to summaries
   predicate content = FlowSummaryImpl::Private::SummaryComponent::content/1;
 
-  SummaryComponent withoutContent(TypeTrackerContent contents) { none() }
+  SummaryComponent withoutContent(Content contents) { none() }
 
-  SummaryComponent withContent(TypeTrackerContent contents) { none() }
+  SummaryComponent withContent(Content contents) { none() }
 
   predicate return = FlowSummaryImpl::Private::SummaryComponent::return/0;
 
