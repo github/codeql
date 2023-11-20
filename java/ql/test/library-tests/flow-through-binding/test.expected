@@ -1,0 +1,3 @@
+| Test.java:35:23:35:30 | source(...) | Test.java:36:10:36:61 | testFlowThroughSwitchStmt(...) |
+| Test.java:35:23:35:30 | source(...) | Test.java:37:10:37:61 | testFlowThroughSwitchExpr(...) |
+| Test.java:35:23:35:30 | source(...) | Test.java:38:10:38:68 | testFlowThroughBindingInstanceOf(...) |
