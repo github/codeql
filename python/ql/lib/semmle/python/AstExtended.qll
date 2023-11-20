@@ -229,9 +229,12 @@ class TypeParameter extends TypeParameter_, AstNode {
   override AstNode getAChildNode() { none() }
 
   override Scope getScope() {
-    // `TypeParameter`s are children of `TypeParameterList`s which are children of `Function`s, `ClassExpr`s, and `TypeAlias`es.
+    exists(Function f | this = f.getATypeParameter() and result = f)
+    or
+    exists(ClassExpr c | this = c.getATypeParameter() and result = c.getInnerScope())
+    or
     // For `TypeAlias`, this is not quite right. Instead, `TypeAlias`es should define their own scopes, cf. https://docs.python.org/3.12/reference/executionmodel.html#annotation-scopes
-    result = this.getParent().getParent().(AstNode).getScope()
+    exists(TypeAlias t | this = t.getATypeParameter() and result = t.getScope())
   }
 
   /** Gets the location of this element */
