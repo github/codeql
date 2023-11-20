@@ -716,16 +716,16 @@
 | test.swift:624:7:624:7 | SSA def(f) | test.swift:625:24:625:24 | f |
 | test.swift:624:7:624:7 | f | test.swift:624:7:624:7 | SSA def(f) |
 | test.swift:624:11:624:14 | #keyPath(...) | test.swift:624:7:624:7 | f |
-| test.swift:624:11:624:14 | enter #keyPath(...) | test.swift:624:14:624:14 | KeyPathComponent |
-| test.swift:624:14:624:14 | [post] KeyPathComponent | test.swift:624:11:624:14 | [post] enter #keyPath(...) |
+| test.swift:624:11:624:14 | [post] exit #keyPath(...) | test.swift:624:14:624:14 | [post] KeyPathComponent |
+| test.swift:624:14:624:14 | KeyPathComponent | test.swift:624:11:624:14 | exit #keyPath(...) |
 | test.swift:625:13:625:13 | [post] s | test.swift:628:13:628:13 | s |
 | test.swift:625:13:625:13 | s | test.swift:628:13:628:13 | s |
 | test.swift:627:7:627:7 | SSA def(inferred) | test.swift:628:24:628:24 | inferred |
 | test.swift:627:7:627:7 | inferred | test.swift:627:7:627:7 | SSA def(inferred) |
 | test.swift:627:7:627:32 | ... as ... | test.swift:627:7:627:7 | inferred |
 | test.swift:627:36:627:38 | #keyPath(...) | test.swift:627:7:627:32 | ... as ... |
-| test.swift:627:36:627:38 | enter #keyPath(...) | test.swift:627:38:627:38 | KeyPathComponent |
-| test.swift:627:38:627:38 | [post] KeyPathComponent | test.swift:627:36:627:38 | [post] enter #keyPath(...) |
+| test.swift:627:36:627:38 | [post] exit #keyPath(...) | test.swift:627:38:627:38 | [post] KeyPathComponent |
+| test.swift:627:38:627:38 | KeyPathComponent | test.swift:627:36:627:38 | exit #keyPath(...) |
 | test.swift:632:7:632:7 | self | test.swift:632:7:632:7 | SSA def(self) |
 | test.swift:632:7:632:7 | self | test.swift:632:7:632:7 | SSA def(self) |
 | test.swift:632:7:632:7 | self | test.swift:632:7:632:7 | SSA def(self) |
@@ -745,16 +745,16 @@
 | test.swift:642:7:642:7 | SSA def(f) | test.swift:643:25:643:25 | f |
 | test.swift:642:7:642:7 | f | test.swift:642:7:642:7 | SSA def(f) |
 | test.swift:642:11:642:17 | #keyPath(...) | test.swift:642:7:642:7 | f |
-| test.swift:642:11:642:17 | enter #keyPath(...) | test.swift:642:15:642:15 | KeyPathComponent |
-| test.swift:642:15:642:15 | [post] KeyPathComponent | test.swift:642:11:642:17 | [post] enter #keyPath(...) |
+| test.swift:642:11:642:17 | [post] exit #keyPath(...) | test.swift:642:17:642:17 | [post] KeyPathComponent |
+| test.swift:642:17:642:17 | KeyPathComponent | test.swift:642:11:642:17 | exit #keyPath(...) |
 | test.swift:647:9:647:9 | SSA def(array) | test.swift:649:15:649:15 | array |
 | test.swift:647:9:647:9 | array | test.swift:647:9:647:9 | SSA def(array) |
 | test.swift:647:17:647:26 | [...] | test.swift:647:9:647:9 | array |
 | test.swift:648:9:648:9 | SSA def(f) | test.swift:649:30:649:30 | f |
 | test.swift:648:9:648:9 | f | test.swift:648:9:648:9 | SSA def(f) |
 | test.swift:648:13:648:22 | #keyPath(...) | test.swift:648:9:648:9 | f |
-| test.swift:648:13:648:22 | enter #keyPath(...) | test.swift:648:20:648:22 | KeyPathComponent |
-| test.swift:648:20:648:22 | [post] KeyPathComponent | test.swift:648:13:648:22 | [post] enter #keyPath(...) |
+| test.swift:648:13:648:22 | [post] exit #keyPath(...) | test.swift:648:20:648:22 | [post] KeyPathComponent |
+| test.swift:648:20:648:22 | KeyPathComponent | test.swift:648:13:648:22 | exit #keyPath(...) |
 | test.swift:653:7:653:7 | self | test.swift:653:7:653:7 | SSA def(self) |
 | test.swift:655:3:655:3 | SSA def(self) | test.swift:656:5:656:5 | self |
 | test.swift:655:3:655:3 | self | test.swift:655:3:655:3 | SSA def(self) |
@@ -771,8 +771,6 @@
 | test.swift:663:9:663:9 | SSA def(f) | test.swift:664:27:664:27 | f |
 | test.swift:663:9:663:9 | f | test.swift:663:9:663:9 | SSA def(f) |
 | test.swift:663:13:663:29 | #keyPath(...) | test.swift:663:9:663:9 | f |
-| test.swift:663:13:663:29 | enter #keyPath(...) | test.swift:663:26:663:26 | KeyPathComponent |
-| test.swift:663:26:663:26 | [post] KeyPathComponent | test.swift:663:13:663:29 | [post] enter #keyPath(...) |
 | test.swift:664:15:664:28 | \\...[...] | test.swift:664:15:664:29 | ...! |
 | test.swift:668:9:668:9 | SSA def(x) | test.swift:672:9:672:9 | x |
 | test.swift:668:9:668:9 | x | test.swift:668:9:668:9 | SSA def(x) |
@@ -950,8 +948,8 @@
 | test.swift:766:9:766:9 | SSA def(f) | test.swift:767:27:767:27 | f |
 | test.swift:766:9:766:9 | f | test.swift:766:9:766:9 | SSA def(f) |
 | test.swift:766:13:766:29 | #keyPath(...) | test.swift:766:9:766:9 | f |
-| test.swift:766:13:766:29 | enter #keyPath(...) | test.swift:766:26:766:26 | KeyPathComponent |
-| test.swift:766:26:766:26 | [post] KeyPathComponent | test.swift:766:13:766:29 | [post] enter #keyPath(...) |
+| test.swift:766:13:766:29 | [post] exit #keyPath(...) | test.swift:766:29:766:29 | [post] KeyPathComponent |
+| test.swift:766:29:766:29 | KeyPathComponent | test.swift:766:13:766:29 | exit #keyPath(...) |
 | test.swift:771:9:771:9 | SSA def(dict1) | test.swift:772:15:772:15 | dict1 |
 | test.swift:771:9:771:9 | dict1 | test.swift:771:9:771:9 | SSA def(dict1) |
 | test.swift:771:17:771:31 | [...] | test.swift:771:9:771:9 | dict1 |
@@ -1067,8 +1065,8 @@
 | test.swift:839:7:839:7 | SSA def(f) | test.swift:840:15:840:15 | f |
 | test.swift:839:7:839:7 | f | test.swift:839:7:839:7 | SSA def(f) |
 | test.swift:839:11:839:17 | #keyPath(...) | test.swift:839:7:839:7 | f |
-| test.swift:839:11:839:17 | enter #keyPath(...) | test.swift:839:15:839:15 | KeyPathComponent |
-| test.swift:839:15:839:15 | [post] KeyPathComponent | test.swift:839:11:839:17 | [post] enter #keyPath(...) |
+| test.swift:839:11:839:17 | [post] exit #keyPath(...) | test.swift:839:17:839:17 | [post] KeyPathComponent |
+| test.swift:839:17:839:17 | KeyPathComponent | test.swift:839:11:839:17 | exit #keyPath(...) |
 | test.swift:840:3:840:3 | [post] s2 | test.swift:841:13:841:13 | s2 |
 | test.swift:840:3:840:3 | s2 | test.swift:841:13:841:13 | s2 |
 | test.swift:840:20:840:27 | call to source() | test.swift:840:3:840:16 | \\...[...] |
@@ -1104,8 +1102,8 @@
 | test.swift:866:9:866:9 | SSA def(myKeyPath) | test.swift:867:29:867:29 | myKeyPath |
 | test.swift:866:9:866:9 | myKeyPath | test.swift:866:9:866:9 | SSA def(myKeyPath) |
 | test.swift:866:21:866:29 | #keyPath(...) | test.swift:866:9:866:9 | myKeyPath |
-| test.swift:866:21:866:29 | enter #keyPath(...) | test.swift:866:27:866:29 | KeyPathComponent |
-| test.swift:866:27:866:29 | [post] KeyPathComponent | test.swift:866:21:866:29 | [post] enter #keyPath(...) |
+| test.swift:866:21:866:29 | [post] exit #keyPath(...) | test.swift:866:27:866:29 | [post] KeyPathComponent |
+| test.swift:866:27:866:29 | KeyPathComponent | test.swift:866:21:866:29 | exit #keyPath(...) |
 | test.swift:871:24:871:31 | [...] | test.swift:871:24:871:31 | [...] |
 | test.swift:872:28:872:31 | [...] | test.swift:872:28:872:31 | [...] |
 | test.swift:873:21:873:31 | [...] | test.swift:873:21:873:31 | [...] |
