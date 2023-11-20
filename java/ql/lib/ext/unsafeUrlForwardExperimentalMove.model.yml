@@ -6,56 +6,18 @@ extensions:
       - ["jakarta.servlet.http", "HttpServletRequest", True, "getServletPath", "", "", "ReturnValue", "remote", "manual"]
       - ["javax.servlet.http", "HttpServletRequest", True, "getServletPath", "", "", "ReturnValue", "remote", "manual"]
 
-      # # ! below added by me when debugging CVEs:
-      # - ["org.springframework.cloud.config.server.resource", "ResourceController", True, "retrieve", "(String,String,String,ServletWebRequest,boolean)", "", "Parameter[3]", "remote", "manual"]
-      # - ["org.springframework.web.context.request", "ServletWebRequest", True, "getContextPath", "()", "", "ReturnValue", "remote", "manual"]
-
   - addsTo:
       pack: codeql/java-all
       extensible: sinkModel
     data:
       - ["java.util.concurrent", "TimeUnit", True, "sleep", "", "", "Argument[0]", "thread-pause", "manual"] # ! this seems like a typo; doesn't look like it's used in the query at all
 
-      - ["org.springframework.core.io", "ClassPathResource", True, "getFilename", "", "", "Argument[this]", "get-resource", "manual"] # ! Note: `ClassPathResource` implements `Resource`, so it might make more sense to model some of these as `Resource` with subtype True.
-      - ["org.springframework.core.io", "ClassPathResource", True, "getPath", "", "", "Argument[this]", "get-resource", "manual"]
-      - ["org.springframework.core.io", "ClassPathResource", True, "getURL", "", "", "Argument[this]", "get-resource", "manual"]
-      - ["org.springframework.core.io", "ClassPathResource", True, "resolveURL", "", "", "Argument[this]", "get-resource", "manual"]
-      # # ! below added by me when debugging CVEs:
-      # - ["org.springframework.cloud.config.server.resource", "ResourceController", True, "retrieve", "", "", "Argument[0]", "get-resource", "manual"] # don't need
-      # # - ["org.springframework.cloud.config.server.resource", "ResourceController", True, "getFilePath", "", "", "Argument[0..3]", "get-resource", "manual"] # don't need
-      # # - ["org.springframework.cloud.config.server.resource", "ResourceRepository", True, "findOne", "", "", "Argument[0..3]", "get-resource", "manual"] # convert to summary
-      # # - ["org.springframework.core.io", "InputStreamSource", True, "getInputStream", "", "", "Argument[this]", "get-resource", "manual"] # convert to summary
-      # - ["org.springframework.util", "StreamUtils", True, "copyToString", "", "", "Argument[0]", "get-resource", "manual"] # * public class with good docs
-      # # - ["org.springframework.cloud.config.server.environment", "SearchPathLocator", True, "getLocations", "(String,String,String)", "", "Argument[0..2]", "get-resource", "manual"] # convert to summary
-      # # - ["org.springframework.cloud.config.server.environment", "SearchPathLocator$Locations", True, "getLocations", "()", "", "Argument[this]", "get-resource", "manual"] # convert to summary
-      # - ["org.springframework.core.io", "ResourceLoader", True, "getResource", "", "", "Argument[0]", "get-resource", "manual"] # * public interface with good docs, might be problematic for FPs based on fact that the ext contributor changed this to a taint step to avoid "exists" FPS (maybe there's another way to exclude those FPs though).
-      # - ["javax.servlet", "ServletContext", True, "getResource", "", "", "Argument[0]", "get-resource", "manual"]
-      # - ["javax.servlet", "ServletContext", True, "getResourceAsStream", "", "", "Argument[0]", "get-resource", "manual"]
-      # - ["javax.servlet", "ServletContext", True, "getResourcePaths", "", "", "Argument[0]", "get-resource", "manual"]
-      # - ["javax.servlet", "ServletContext", True, "getResource", "", "", "Argument[this]", "get-resource", "manual"]
-      # - ["javax.servlet", "ServletContext", True, "getResourceAsStream", "", "", "Argument[this]", "get-resource", "manual"]
-      # - ["javax.servlet", "ServletContext", True, "getResourcePaths", "", "", "Argument[this]", "get-resource", "manual"]
-      # # - ["org.apache.tomcat.util.http", "RequestUtil", True, "normalize", "", "", "Argument[0]", "get-resource", "manual"]
-
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["io.undertow.server.handlers.resource", "Resource", True, "getFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["io.undertow.server.handlers.resource", "Resource", True, "getFilePath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["io.undertow.server.handlers.resource", "Resource", True, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # ! this as a taint step seems to contradict the fact that they did `ClassPathResource.getPath` as a sink for Spring...
-      - ["java.nio.file", "Path", True, "normalize", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # ! shouldn't this be a sanitizer instead??? Or no because WEB-INF ones don't care about normalization?
+      - ["java.nio.file", "Path", True, "normalize", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # ! check if this and the below are already in the default models
       - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Paths", True, "get", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
-
-      - ["org.springframework.core.io", "ClassPathResource", False, "ClassPathResource", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-      - ["org.springframework.core.io", "Resource", True, "createRelative", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      # # ! below added/modified by me when debugging CVEs:
-      - ["org.springframework.core.io", "ResourceLoader", True, "getResource", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      # - ["org.springframework.cloud.config.server.resource", "ResourceRepository", True, "findOne", "", "", "Argument[0..3]", "ReturnValue", "taint", "manual"] # * public interface, but might be too specific, no easily findable docs...
-      # - ["org.springframework.core.io", "InputStreamSource", True, "getInputStream", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # * public interface with good docs, Note: other `getInputStream`s are remote source and/or taint step, so this as taint step versus sink probably is more consistent
-      # - ["org.springframework.cloud.config.server.environment", "SearchPathLocator", True, "getLocations", "(String,String,String)", "", "Argument[0..2]", "ReturnValue", "taint", "manual"] # * public interface with docs: https://www.javadoc.io/static/org.springframework.cloud/spring-cloud-config-server/2.1.0.RELEASE/org/springframework/cloud/config/server/environment/SearchPathLocator.html
-      # - ["org.springframework.cloud.config.server.environment", "SearchPathLocator$Locations", True, "getLocations", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"] # ! is the `Locations` class package-private? Or does it inherit public from it's enclosing interface?
-      # - ["org.springframework.cloud.config.server.resource", "ResourceController", True, "getFilePath", "", "", "Argument[0..3]", "ReturnValue", "taint", "manual"] # don't need
