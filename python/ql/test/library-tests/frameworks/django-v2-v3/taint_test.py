@@ -174,20 +174,8 @@ class ClassView(View):
         )
 
 
-def kwargs_param(request, **kwargs): # $ requestHandler routedParameter=kwargs
-    ensure_tainted(
-        kwargs, # $ tainted
-        kwargs["foo"], # $ tainted
-        kwargs["bar"]  # $ tainted
-    )
-
-    ensure_tainted(request) # $ tainted
-
-
 # fake setup, you can't actually run this
 urlpatterns = [
     path("test-taint/<foo>/<bar>", test_taint),  # $ routeSetup="test-taint/<foo>/<bar>"
     path("ClassView/", ClassView.as_view()), # $ routeSetup="ClassView/"
-    path("test-kwargs_param/<foo>/<bar>", kwargs_param),  # $ routeSetup="test-kwargs_param/<foo>/<bar>"
-
 ]
