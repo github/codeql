@@ -6,5 +6,6 @@
 | Test.java:11:7:11:17 | case ... | Test.java:9:13:9:13 | s | Test.java:11:12:11:14 | "c" | true | true | Test.java:11:7:11:17 | case ... |
 | Test.java:12:7:12:17 | case ... | Test.java:9:13:9:13 | s | Test.java:12:12:12:14 | "d" | true | false | Test.java:13:7:13:16 | default |
 | Test.java:12:7:12:17 | case ... | Test.java:9:13:9:13 | s | Test.java:12:12:12:14 | "d" | true | true | Test.java:12:7:12:17 | case ... |
-| Test.java:17:7:17:17 | case ... | Test.java:15:13:15:13 | s | Test.java:17:12:17:14 | "e" | true | false | Test.java:18:7:18:16 | default |
-| Test.java:17:7:17:17 | case ... | Test.java:15:13:15:13 | s | Test.java:17:12:17:14 | "e" | true | true | Test.java:17:7:17:17 | case ... |
+| Test.java:17:27:17:34 | ... == ... | Test.java:17:27:17:29 | len | Test.java:17:34:17:34 | 4 | true | true | Test.java:17:39:17:41 | { ... } |
+| Test.java:18:7:18:17 | case ... | Test.java:16:13:16:13 | s | Test.java:18:12:18:14 | "e" | true | false | Test.java:19:7:19:16 | default |
+| Test.java:18:7:18:17 | case ... | Test.java:16:13:16:13 | s | Test.java:18:12:18:14 | "e" | true | true | Test.java:18:7:18:17 | case ... |
