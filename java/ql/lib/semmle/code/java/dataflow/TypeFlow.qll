@@ -627,7 +627,7 @@ private predicate instanceofDisjunctionGuarded(TypeFlowNode n, RefType t) {
     bb.bbDominates(va.getBasicBlock()) and
     va = v.getAUse() and
     instanceofDisjunct(ioe, bb, v) and
-    t = ioe.getCheckedType() and
+    t = ioe.getSyntacticCheckedType() and
     n.asExpr() = va
   )
 }

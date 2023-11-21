@@ -204,7 +204,7 @@ class TypeTestGuard extends Guard {
   TypeTestGuard() {
     exists(InstanceOfExpr ioe | this = ioe |
       testedExpr = ioe.getExpr() and
-      testedType = ioe.getCheckedType()
+      testedType = ioe.getSyntacticCheckedType()
     )
     or
     exists(PatternCase pc | this = pc |

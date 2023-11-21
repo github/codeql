@@ -1592,9 +1592,27 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
   /**
    * Gets the type this `instanceof` expression checks for.
    *
-   * For a match against a record pattern, this is the type of the outermost record type.
+   * For a match against a record pattern, this is the type of the outermost record type, and only holds if
+   * the record pattern matches that type unconditionally, i.e. it does not restrict field types more tightly
+   * than the fields' declared types and therefore match a subset of `rpe.getType()`.
    */
   RefType getCheckedType() {
+    result = this.getTypeName().getType()
+    or
+    exists(RecordPatternExpr rpe | rpe = this.getPattern().asRecordPattern() |
+      result = rpe.getType() and rpe.isUnrestricted()
+    )
+  }
+
+  /**
+   * Gets the type this `instanceof` expression checks for.
+   *
+   * For a match against a record pattern, this is the type of the outermost record type. Note that because
+   * the record match might additionally constrain field or sub-record fields to have a more specific type,
+   * and so while if the `instanceof` test passes we know that `this.getExpr()` has this type, if it fails
+   * we do not know that it doesn't.
+   */
+  RefType getSyntacticCheckedType() {
     result = this.getTypeName().getType()
     or
     result = this.getPattern().asRecordPattern().getType()

@@ -78,6 +78,8 @@ predicate depends(RefType t, RefType dep) {
     // the type accessed in an `instanceof` expression in `t`.
     exists(InstanceOfExpr ioe | t = ioe.getEnclosingCallable().getDeclaringType() |
       usesType(ioe.getCheckedType(), dep)
+      or
+      usesType(ioe.getPattern().getAChildExpr*().getType(), dep)
     )
     or
     // A type accessed in a pattern-switch case statement in `t`.
