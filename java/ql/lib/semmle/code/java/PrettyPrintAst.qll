@@ -745,13 +745,17 @@ private class PpSwitchStmt extends PpAst, SwitchStmt {
   }
 }
 
+private predicate isNonNullDefaultCase(SwitchCase sc) {
+  sc instanceof DefaultCase and not sc instanceof NullDefaultCase
+}
+
 private class PpSwitchCase extends PpAst, SwitchCase {
   PpSwitchCase() { not this instanceof PatternCase }
 
   override string getPart(int i) {
-    i = 0 and result = "default" and this instanceof DefaultCase
+    i = 0 and result = "default" and isNonNullDefaultCase(this)
     or
-    i = 0 and result = "case " and not this instanceof DefaultCase
+    i = 0 and result = "case " and not isNonNullDefaultCase(this)
     or
     i = this.lastConstCaseValueIndex() and result = "default" and this instanceof NullDefaultCase
     or
@@ -792,15 +796,11 @@ private class PpPatternCase extends PpAst, PatternCase {
     or
     i = 3 and result = this.getPattern().asBindingPattern().getName()
     or
-    i = 2 + this.getPatternOffset() and result = ":" and not this.isRule()
+    i = 4 and result = ":" and not this.isRule()
     or
-    i = 2 + this.getPatternOffset() and result = " -> " and this.isRule()
+    i = 4 and result = " -> " and this.isRule()
     or
-    i = 4 + this.getPatternOffset() and result = ";" and exists(this.getRuleExpression())
-  }
-
-  private int getPatternOffset() {
-    if this.getPattern() instanceof LocalVariableDeclExpr then result = 2 else result = 0
+    i = 6 and result = ";" and exists(this.getRuleExpression())
   }
 
   override PpAst getChild(int i) {
@@ -808,9 +808,9 @@ private class PpPatternCase extends PpAst, PatternCase {
     or
     i = 1 and result = this.getPattern().asRecordPattern()
     or
-    i = 4 and result = this.getRuleExpression()
+    i = 5 and result = this.getRuleExpression()
     or
-    i = 4 and result = this.getRuleStatement()
+    i = 5 and result = this.getRuleStatement()
   }
 }
 
