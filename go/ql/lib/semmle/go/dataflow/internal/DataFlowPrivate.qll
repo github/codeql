@@ -41,9 +41,10 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step, not taking function models into account.
+ * (intra-procedural) step, not taking function models into account, and also
+ * excluding flow from post-update nodes to their successors.
  */
-predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
+predicate basicLocalFlowStep0(Node nodeFrom, Node nodeTo) {
   // Instruction -> Instruction
   exists(Expr pred, Expr succ |
     succ.(LogicalBinaryExpr).getAnOperand() = pred or
@@ -87,6 +88,17 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // GlobalFunctionNode -> use
   nodeFrom =
     any(GlobalFunctionNode fn | fn.getFunction() = nodeTo.asExpr().(FunctionName).getTarget())
+}
+
+/**
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step, not taking function models into account.
+ */
+predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  basicLocalFlowStep0(nodeFrom, nodeTo)
+  or
+  // post-update node -> successor
+  nodeTo = nodeFrom.(DefaultPostUpdateNode).getSuccessor()
 }
 
 pragma[noinline]
