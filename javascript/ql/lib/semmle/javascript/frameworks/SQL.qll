@@ -122,7 +122,11 @@ private module Postgres {
     }
   }
 
-  /** Gets a Postgres Query member. */
+  /**
+   * Gets a Postgres Query class.
+   *
+   * Please note that according to [this documentation](https://node-postgres.com/apis/client) this is an advance feature
+   */
   API::Node query() { result = API::moduleImport("pg").getMember("Query") }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
