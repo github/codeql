@@ -3,15 +3,15 @@ public class Test {
   public static Object testFlowThroughSwitchStmt(String s, Integer i, boolean unknown) {
     Object o = unknown ? s : i;
     switch (o) {
-      case Integer i2 -> { return i2; }
+      case Integer i2 -> { return (Object)i2; }
       default -> { return null; }
     }
   }
 
   public static Object testFlowThroughSwitchExpr(String s, Integer i, boolean unknown) {
     Object o = unknown ? s : i;
-    Integer toRet = switch (o) {
-      case Integer i2 -> i2;
+    Object toRet = switch (o) {
+      case Integer i2 -> (Object)i2;
       default -> null;
     };
     return toRet;
@@ -20,7 +20,7 @@ public class Test {
   public static Object testFlowThroughBindingInstanceOf(String s, Integer i, boolean unknown) {
     Object o = unknown ? s : i;
     if (o instanceof Integer i2)
-      return i2;
+      return (Object)i2;
     else
       return null;
   }
