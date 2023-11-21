@@ -364,10 +364,10 @@ func test6(passwordString: String) {
 func test7(authKey: String, authKey2: Int, authKey3: Float, password: String, secret: String) {
     log(message: authKey) // $ hasCleartextLogging=365
     log(message: String(authKey2)) // $ hasCleartextLogging=366
-    logging(message: authKey) // $ hasCleartextLogging=367
-    logfile(file: 0, message: authKey) // $ hasCleartextLogging=368
+    logging(message: authKey) // $ MISSING: hasCleartextLogging=367
+    logfile(file: 0, message: authKey) // $ MISSING: hasCleartextLogging=368
     logMessage(NSString(string: authKey)) // $ hasCleartextLogging=369
-    logInfo(authKey) // $ MISSING: hasCleartextLogging=370
+    logInfo(authKey) // $ hasCleartextLogging=370
     logError(errorMsg: authKey) // $ hasCleartextLogging=371
     harmless(authKey) // GOOD: not logging
     _ = logarithm(authKey3) // GOOD: not logging
@@ -387,10 +387,10 @@ func test7(authKey: String, authKey2: Int, authKey3: Float, password: String, se
 
     let logic = Logic()
     logic.addInt(authKey2) // GOOD: not logging
-    logic.addString(authKey) // $ SPURIOUS: hasCleartextLogging=390 (not logging)
+    logic.addString(authKey) // GOOD: not logging
 
     let rlogger = MyRemoteLogger()
-    rlogger.setPassword(password: password) // $ SPURIOUS: hasCleartextLogging=393 (not logging)
-    rlogger.login(password: password) // $ SPURIOUS: hasCleartextLogging=394 (not logging)
-    rlogger.logout(secret: secret) // $ SPURIOUS: hasCleartextLogging=395 (not logging)
+    rlogger.setPassword(password: password) // GOOD: not logging
+    rlogger.login(password: password) // GOOD: not logging
+    rlogger.logout(secret: secret) // GOOD: not logging
 }

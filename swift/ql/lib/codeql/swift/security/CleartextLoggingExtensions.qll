@@ -134,11 +134,11 @@ private class PrintfCleartextLoggingSink extends CleartextLoggingSink {
 }
 
 /**
- * Holds if `f` is a function that might be a logging function.
+ * Holds if `label` looks like the name of a logging function.
  */
-private predicate logLikeHeuristic(Function f) {
-  f.getName().regexpMatch("(?i).*log(?!in).*") or
-  f.getDeclaringDecl().(NominalTypeDecl).getName().regexpMatch("(?i).*log(?!in).*")
+bindingset[label]
+private predicate logLikeHeuristic(string label) {
+  label.regexpMatch("(l|.*L)og([A-Z0-9].*)?") // e.g. "logMessage", "debugLog"
 }
 
 /**
@@ -147,7 +147,10 @@ private predicate logLikeHeuristic(Function f) {
 class HeuristicCleartextLoggingSink extends CleartextLoggingSink {
   HeuristicCleartextLoggingSink() {
     exists(CallExpr ce, Function f, Expr e |
-      logLikeHeuristic(f) and
+      (
+        logLikeHeuristic(f.getShortName()) or
+        logLikeHeuristic(f.getDeclaringDecl().(NominalTypeDecl).getName())
+      ) and
       ce.getStaticTarget() = f and
       ce.getAnArgument().getExpr() = e and
       e.getType().getUnderlyingType().getName() = ["String", "NSString"] and
