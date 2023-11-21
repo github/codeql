@@ -551,9 +551,9 @@ class PatternCase extends SwitchCase {
   /** Gets the guard applicable to this pattern case, if any. */
   Expr getGuard() { result.isNthChildOf(this, -3) }
 
-  override string pp() { result = "case T t ..." }
+  override string pp() { result = "case <Pattern>" }
 
-  override string toString() { result = "case T t ..." }
+  override string toString() { result = "case <Pattern>" }
 
   override string getHalsteadID() { result = "PatternCase" }
 
