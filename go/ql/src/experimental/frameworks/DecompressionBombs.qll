@@ -646,19 +646,6 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks for `"archive/tar` package
-   */
-  module ArchiveTar {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method f | f.hasQualifiedName("archive/tar", "Reader", "Read") |
-          this = f.getACall().getReceiver()
-        )
-      }
-    }
-  }
-
-  /**
    * Provides Decompression Sinks for packages that use some standard IO interfaces/methods for reading decompressed data
    */
   module GeneralReadIoSink {
