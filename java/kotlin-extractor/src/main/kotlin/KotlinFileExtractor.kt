@@ -80,6 +80,7 @@ open class KotlinFileExtractor(
     globalExtensionState: KotlinExtractorGlobalState,
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState) {
 
+    val usesK2 = usesK2(pluginContext)
     val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
 
     private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
@@ -172,7 +173,10 @@ open class KotlinFileExtractor(
         }
         catch (e: NotImplementedError) {
             // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
-            logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            // TODO: We need a replacement for this for Kotlin 2
+            if (!usesK2) {
+                logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            }
             return false
         }
     }
