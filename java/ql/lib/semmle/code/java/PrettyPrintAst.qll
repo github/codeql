@@ -929,6 +929,8 @@ private class PpAssertStmt extends PpAst, AssertStmt {
 
 private class PpLocalVariableDeclStmt extends PpAst, LocalVariableDeclStmt {
   override string getPart(int i) {
+    i = 0 and not exists(this.getAVariable().getTypeAccess()) and result = "var"
+    or
     i = 1 and result = " "
     or
     exists(int v | v > 1 and i = 2 * v - 1 and result = ", " and v = this.getAVariableIndex())
