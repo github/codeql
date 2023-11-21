@@ -90,7 +90,7 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
 
 
 class MyClass(APIView):
-    def initial(self, request, *args, **kwargs): # $ requestHandler
+    def initial(self, request, *args, **kwargs): # $ requestHandler routedParameter=kwargs
         # this method will be called before processing any request
         ensure_tainted(request) # $ tainted
 
