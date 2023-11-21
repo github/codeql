@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.decl.VarDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `NamedPattern` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::NamedPattern` class directly.

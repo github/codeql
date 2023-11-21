@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.decl.Decl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `IfConfigDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::IfConfigDecl` class directly.

@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.ArchetypeType
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `PackArchetypeType` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An archetype type of PackType.

@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.type.Type
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `Expr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * The base class for all expressions in Swift.

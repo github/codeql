@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.NominalTypeDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ClassDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::ClassDecl` class directly.
