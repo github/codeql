@@ -6,4 +6,7 @@
 
 private import codeql.swift.generated.decl.AccessorOrNamedFunction
 
+/**
+ * INTERNAL: Do not use.
+ */
 class AccessorOrNamedFunction extends Generated::AccessorOrNamedFunction { }

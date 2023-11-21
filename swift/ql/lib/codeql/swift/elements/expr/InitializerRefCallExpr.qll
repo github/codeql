@@ -6,4 +6,7 @@
 
 private import codeql.swift.generated.expr.InitializerRefCallExpr
 
+/**
+ * INTERNAL: Do not use.
+ */
 class InitializerRefCallExpr extends Generated::InitializerRefCallExpr { }

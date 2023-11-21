@@ -5,4 +5,8 @@
 
 private import codeql.swift.generated.expr.PropertyWrapperValuePlaceholderExpr
 
+/**
+ * A placeholder substituting property initializations with `=` when the property has a property
+ * wrapper with an initializer.
+ */
 class PropertyWrapperValuePlaceholderExpr extends Generated::PropertyWrapperValuePlaceholderExpr { }

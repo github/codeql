@@ -312,7 +312,43 @@ def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str)
     else:
         accessors = []
     return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix,
-                   synth_accessors=accessors, ql_internal="ql_internal" in cls.pragmas)
+                   doc=cls.doc, synth_accessors=accessors,
+                   ql_internal="ql_internal" in cls.pragmas)
+
+
+def _patch_class_qldocs(cls: str, qldoc: str, stub_file: pathlib.Path):
+    if not qldoc or not stub_file.exists():
+        return
+    qldoc = "\n".join(l.rstrip() for l in qldoc.splitlines())
+    tmp = stub_file.with_suffix(f'{stub_file.suffix}.bkp')
+    header = "// the following QLdoc is generated: if you need to edit it, do it in the schema file\n"
+    with open(stub_file) as input:
+        qldoc_start = None
+        qldoc_end = None
+        class_start = None
+        for lineno, line in enumerate(input, 1):
+            if line == header:
+                qldoc_start = lineno
+            if line.startswith("/**") and lineno - 1 != qldoc_start:
+                qldoc_start = lineno
+            if line.endswith(" */\n"):
+                qldoc_end = lineno + 1
+            elif line.startswith(f"class {cls}"):
+                class_start = lineno
+                break
+        assert class_start, stub_file
+        assert bool(qldoc_start) == bool(qldoc_end), stub_file
+        if not qldoc_start or qldoc_end != class_start:
+            qldoc_start = class_start
+        input.seek(0)
+        with open(tmp, 'w') as output:
+            for lineno, line in enumerate(input, 1):
+                if lineno == qldoc_start:
+                    print(header, end='', file=output)
+                    print(qldoc, file=output)
+                if lineno < qldoc_start or lineno >= class_start:
+                    print(line, end='', file=output)
+    tmp.rename(stub_file)
 
 
 def generate(opts, renderer):
@@ -362,9 +398,13 @@ def generate(opts, renderer):
         for c in data.classes.values():
             path = _get_path(c)
             stub_file = stub_out / path
+            base_import = get_import(out / path, opts.root_dir)
+            stub = _get_stub(c, base_import, generated_import_prefix)
             if not renderer.is_customized_stub(stub_file):
-                base_import = get_import(out / path, opts.root_dir)
-                renderer.render(_get_stub(c, base_import, generated_import_prefix), stub_file)
+                renderer.render(stub, stub_file)
+            else:
+                qldoc = renderer.render_str(stub, template='ql_stub_class_qldoc')
+                _patch_class_qldocs(c.name, qldoc, stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
         renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),

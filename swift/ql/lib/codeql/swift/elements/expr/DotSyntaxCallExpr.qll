@@ -6,4 +6,7 @@
 
 private import codeql.swift.generated.expr.DotSyntaxCallExpr
 
+/**
+ * INTERNAL: Do not use.
+ */
 class DotSyntaxCallExpr extends Generated::DotSyntaxCallExpr { }

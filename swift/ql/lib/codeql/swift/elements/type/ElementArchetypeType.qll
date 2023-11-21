@@ -5,4 +5,7 @@
 
 private import codeql.swift.generated.type.ElementArchetypeType
 
+/**
+ * An archetype type of PackElementType.
+ */
 class ElementArchetypeType extends Generated::ElementArchetypeType { }

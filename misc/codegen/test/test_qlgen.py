@@ -414,7 +414,7 @@ def test_class_with_doc(generate_classes):
     assert generate_classes([
         schema.Class("A", doc=doc),
     ]) == {
-        "A.qll": (a_ql_stub(name="A"), a_ql_class(name="A", final=True, doc=doc)),
+        "A.qll": (a_ql_stub(name="A", doc=doc), a_ql_class(name="A", final=True, doc=doc)),
     }
 
 
