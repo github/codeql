@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -1016,7 +1016,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             TestDotnetVersionWindows(() =>
             {
-                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
+                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel release -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
             },
             6);
         }
@@ -1026,8 +1026,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             TestDotnetVersionWindows(() =>
             {
-                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 1;
-                actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
+                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel release -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 1;
+                actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel release -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
             },
             7);
         }

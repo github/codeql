@@ -160,7 +160,7 @@ namespace Semmle.Autobuild.CSharp
         ///
         /// See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script.
         /// </summary>
-        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version)
+        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version, string? channel = "release")
         {
             return BuildScript.Bind(GetInstalledSdksScript(builder.Actions), (sdks, sdksRet) =>
                 {
@@ -174,7 +174,7 @@ namespace Semmle.Autobuild.CSharp
                     if (builder.Actions.IsWindows())
                     {
 
-                        var psCommand = $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version {version} -InstallDir {path}";
+                        var psCommand = $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel {channel} -Version {version} -InstallDir {path}";
 
                         BuildScript GetInstall(string pwsh) =>
                             new CommandBuilder(builder.Actions).
@@ -203,7 +203,7 @@ namespace Semmle.Autobuild.CSharp
                         var install = new CommandBuilder(builder.Actions).
                             RunCommand("./dotnet-install.sh").
                             Argument("--channel").
-                            Argument("release").
+                            Argument(channel).
                             Argument("--version").
                             Argument(version).
                             Argument("--install-dir").
