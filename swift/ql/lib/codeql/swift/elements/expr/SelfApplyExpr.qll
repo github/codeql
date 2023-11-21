@@ -6,7 +6,4 @@
 
 private import codeql.swift.generated.expr.SelfApplyExpr
 
-/**
- * INTERNAL: Do not use.
- */
 class SelfApplyExpr extends Generated::SelfApplyExpr { }
