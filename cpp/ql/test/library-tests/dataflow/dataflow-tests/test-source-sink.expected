@@ -120,6 +120,7 @@ astFlow
 | test.cpp:797:22:797:28 | ref arg content | test.cpp:798:19:798:25 | content |
 | test.cpp:842:11:842:16 | call to source | test.cpp:844:8:844:8 | y |
 | test.cpp:846:13:846:27 | call to indirect_source | test.cpp:848:23:848:25 | rpx |
+| test.cpp:860:54:860:59 | call to source | test.cpp:861:10:861:37 | static_local_pointer_dynamic |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
 | true_upon_entry.cpp:33:11:33:16 | call to source | true_upon_entry.cpp:39:8:39:8 | x |
@@ -282,6 +283,17 @@ irFlow
 | test.cpp:832:21:832:26 | call to source | test.cpp:836:10:836:22 | global_direct |
 | test.cpp:842:11:842:16 | call to source | test.cpp:844:8:844:8 | y |
 | test.cpp:846:13:846:27 | call to indirect_source indirection | test.cpp:848:17:848:25 | rpx indirection |
+| test.cpp:853:55:853:62 | call to source | test.cpp:854:10:854:36 | * ... |
+| test.cpp:860:54:860:59 | call to source | test.cpp:861:10:861:37 | static_local_pointer_dynamic |
+| test.cpp:872:46:872:51 | call to source | test.cpp:875:10:875:31 | global_pointer_dynamic |
+| test.cpp:880:64:880:83 | indirect_source(1) indirection | test.cpp:883:10:883:45 | static_local_array_static_indirect_1 |
+| test.cpp:881:64:881:83 | indirect_source(2) indirection | test.cpp:886:19:886:54 | static_local_array_static_indirect_2 indirection |
+| test.cpp:890:54:890:61 | source | test.cpp:893:10:893:36 | static_local_pointer_static |
+| test.cpp:891:65:891:84 | indirect_source(1) indirection | test.cpp:895:19:895:56 | static_local_pointer_static_indirect_1 indirection |
+| test.cpp:901:56:901:75 | indirect_source(1) indirection | test.cpp:907:10:907:39 | global_array_static_indirect_1 |
+| test.cpp:902:56:902:75 | indirect_source(2) indirection | test.cpp:911:19:911:48 | global_array_static_indirect_2 indirection |
+| test.cpp:914:46:914:53 | source | test.cpp:919:10:919:30 | global_pointer_static |
+| test.cpp:915:57:915:76 | indirect_source(1) indirection | test.cpp:921:19:921:50 | global_pointer_static_indirect_1 indirection |
 | true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |

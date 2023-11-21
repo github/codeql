@@ -71,6 +71,14 @@ module IRTest {
       or
       source.asIndirectExpr(1).(FunctionCall).getTarget().getName() = "indirect_source"
       or
+      source.asExpr().(StringLiteral).getValue() = "source"
+      or
+      // indirect_source(n) gives the dataflow node representing the indirect node after n dereferences.
+      exists(int n, string s |
+        n = s.regexpCapture("indirect_source\\((\\d)\\)", 1).toInt() and
+        source.asIndirectExpr(n).(StringLiteral).getValue() = s
+      )
+      or
       source.asParameter().getName().matches("source%")
       or
       source.(DataFlow::DefinitionByReferenceNode).getParameter().getName().matches("ref_source%")
