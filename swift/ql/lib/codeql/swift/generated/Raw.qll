@@ -248,7 +248,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * The role of a macro.
+   * The role of a macro, for example #freestanding(declaration) or @attached(member).
    */
   class MacroRole extends @macro_role, AstNode {
     override string toString() { result = "MacroRole" }

@@ -4,7 +4,13 @@
 
 private import codeql.swift.generated.MacroRole
 
+/**
+ * The role of a macro, for example #freestanding(declaration) or @attached(member).
+ */
 class MacroRole extends Generated::MacroRole {
+  /**
+   * String representation of the role kind.
+   */
   string getKindName() {
     this.getKind() = 1 and result = "expression"
     or
@@ -25,6 +31,9 @@ class MacroRole extends Generated::MacroRole {
     this.getKind() = 256 and result = "extension"
   }
 
+  /**
+   * String representation of the syntax kind.
+   */
   string getMacroSyntaxName() {
     this.getMacroSyntax() = 0 and result = "#freestanding"
     or

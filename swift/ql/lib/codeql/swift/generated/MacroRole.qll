@@ -11,7 +11,7 @@ import codeql.swift.elements.expr.TypeExpr
 
 module Generated {
   /**
-   * The role of a macro.
+   * The role of a macro, for example #freestanding(declaration) or @attached(member).
    * INTERNAL: Do not reference the `Generated::MacroRole` class directly.
    * Use the subclass `MacroRole`, where the following predicates are available.
    */
