@@ -8,7 +8,7 @@ compiled_pat = re.compile(pat)
 # see https://docs.python.org/3/library/re.html#functions
 ensure_not_tainted(
     # returns Match object, which is tested properly below. (note: with the flow summary
-    # modeling, objects containing tainted values are not itself tainted).
+    # modeling, objects containing tainted values are not themselves tainted).
     re.search(pat, ts),
     re.match(pat, ts),
     re.fullmatch(pat, ts),
@@ -36,7 +36,6 @@ ensure_tainted(
     tainted_match.groupdict()["key"], # $ tainted
 
     re.match(pat, ts).string, # $ tainted
-    re.match(ts, "safe").re, # $ MISSING: tainted
     re.match(ts, "safe").re.pattern, # $ tainted
 
     compiled_pat.match(ts).string, # $ tainted
