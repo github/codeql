@@ -461,7 +461,7 @@ class SwitchCase extends Stmt, @case {
    * Gets this case's ordinal in its switch block.
    */
   int getCaseIndex() {
-    this = this.getSwitch().getCase(result) or this = this.getSwitchExpr().getCase(result)
+    this = any(SwitchStmt ss).getCase(result) or this = any(SwitchExpr se).getCase(result)
   }
 
   /**
