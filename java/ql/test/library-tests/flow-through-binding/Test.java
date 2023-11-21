@@ -25,6 +25,31 @@ public class Test {
       return null;
   }
 
+  public static Object testFlowThroughSwitchStmtWrapper(Wrapper s, Wrapper i, boolean unknown) {
+    Wrapper o = unknown ? s : i;
+    switch (o) {
+      case Wrapper(Integer i2) -> { return (Object)i2; }
+      default -> { return null; }
+    }
+  }
+
+  public static Object testFlowThroughSwitchExprWrapper(Wrapper s, Wrapper i, boolean unknown) {
+    Wrapper o = unknown ? s : i;
+    Object toRet = switch (o) {
+      case Wrapper(Integer i2) -> (Object)i2;
+      default -> null;
+    };
+    return toRet;
+  }
+
+  public static Object testFlowThroughBindingInstanceOfWrapper(Wrapper s, Wrapper i, boolean unknown) {
+    Wrapper o = unknown ? s : i;
+    if (o instanceof Wrapper(Integer i2))
+      return (Object)i2;
+    else
+      return null;
+  }
+
   public static <T> T source() { return null; }
 
   public static void sink(Object o) { }
@@ -37,6 +62,14 @@ public class Test {
     sink(testFlowThroughSwitchExpr(source1, source2, unknown));
     sink(testFlowThroughBindingInstanceOf(source1, source2, unknown));
 
+    Wrapper source1Wrapper = new Wrapper((String)source());
+    Wrapper source2Wrapper = new Wrapper((Integer)source());
+    sink(testFlowThroughSwitchStmtWrapper(source1Wrapper, source2Wrapper, unknown));
+    sink(testFlowThroughSwitchExprWrapper(source1Wrapper, source2Wrapper, unknown));
+    sink(testFlowThroughBindingInstanceOfWrapper(source1Wrapper, source2Wrapper, unknown));
+
   }
+
+  record Wrapper(Object o) { }
 
 }
