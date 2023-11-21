@@ -862,11 +862,9 @@ private predicate closureFlowStep(CaptureInput::Expr e1, CaptureInput::Expr e2) 
   e2.(Pattern).getImmediateMatchingExpr() = e1
 }
 
-private module CaptureInput implements VariableCapture::InputSig {
+private module CaptureInput implements VariableCapture::InputSig<Location> {
   private import swift as S
   private import codeql.swift.controlflow.BasicBlocks as B
-
-  class Location = S::Location;
 
   class BasicBlock instanceof B::BasicBlock {
     string toString() { result = super.toString() }
@@ -976,7 +974,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class CapturedParameter = CaptureInput::CapturedParameter;
 
-module CaptureFlow = VariableCapture::Flow<CaptureInput>;
+module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()

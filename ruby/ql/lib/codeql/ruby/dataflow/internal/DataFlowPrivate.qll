@@ -278,13 +278,11 @@ module VariableCapture {
     )
   }
 
-  private module CaptureInput implements Shared::InputSig {
+  private module CaptureInput implements Shared::InputSig<Location> {
     private import ruby as R
     private import codeql.ruby.controlflow.ControlFlowGraph
     private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
-
-    class Location = R::Location;
 
     class BasicBlock extends BasicBlocks::BasicBlock {
       Callable getEnclosingCallable() { result = this.getScope() }
@@ -366,7 +364,7 @@ module VariableCapture {
 
   class ClosureExpr = CaptureInput::ClosureExpr;
 
-  module Flow = Shared::Flow<CaptureInput>;
+  module Flow = Shared::Flow<Location, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
     result = n.(CaptureNode).getSynthesizedCaptureNode()
