@@ -50,7 +50,16 @@ private module Input implements InputSig<PythonDataFlow> {
   }
 
   predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
-    isArgumentNode(arg, call, _)
+    // since we can have multiple DataFlowCall for a CallNode (for example if can
+    // resolve to multiple functions), but we only make _one_ ArgumentNode for each
+    // argument in the CallNode, we end up violating this consistency check in those
+    // cases. (see `getCallArg` in DataFlowDispatch.qll)
+    exists(DataFlowCall other, CallNode cfgCall | other != call |
+      call.getNode() = cfgCall and
+      other.getNode() = cfgCall and
+      isArgumentNode(arg, call, _) and
+      isArgumentNode(arg, other, _)
+    )
   }
 }
 
