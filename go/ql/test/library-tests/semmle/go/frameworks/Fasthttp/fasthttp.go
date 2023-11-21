@@ -24,19 +24,7 @@ func fasthttpClient() {
 	fasthttp.DialTimeout(userInput, 5)          // $ SsrfSink=userInput
 	fasthttp.DialDualStackTimeout(userInput, 5) // $ SsrfSink=userInput
 
-	res := &fasthttp.Response{}
-	req1 := &fasthttp.Request{}
-	req1.SetHost(source().(string))
-	sink(req1) // $ hasTaintFlow="req1"
-	req2 := &fasthttp.Request{}
-	req2.SetHostBytes(source().([]byte))
-	sink(req2) // $ hasTaintFlow="req2"
-	req3 := &fasthttp.Request{}
-	req3.SetRequestURI(source().(string))
-	sink(req3) // $ hasTaintFlow="req3"
-	req4 := &fasthttp.Request{}
-	req4.SetRequestURIBytes(source().([]byte))
-	sink(req4) // $ hasTaintFlow="req4"
+	req := &fasthttp.Request{}
 
 	uri1 := fasthttp.AcquireURI()
 	userInput = "UserControlled.com:80"
@@ -55,20 +43,19 @@ func fasthttpClient() {
 	uri5 := fasthttp.AcquireURI()
 	uri5.Parse(source().([]byte), source().([]byte))
 	sink(uri5) // $ hasTaintFlow="uri5"
-	req := &fasthttp.Request{}
-	uri6 := fasthttp.AcquireURI()
-	req.SetURI(uri6)
 
 	resByte := make([]byte, 1000)
 	userInput = "http://127.0.0.1:8909"
+	userInputBytes := []byte("http://127.0.0.1:8909")
+	req.SetURI(uri5)                                      // $ SsrfSink=uri5
+	req.SetHost(userInput)                                // $ SsrfSink=userInput
+	req.SetHostBytes(userInputBytes)                      // $ SsrfSink=userInputBytes
+	req.SetRequestURI(userInput)                          // $ SsrfSink=userInput
+	req.SetRequestURIBytes(userInputBytes)                // $ SsrfSink=userInputBytes
 	fasthttp.Get(resByte, userInput)                      // $ SsrfSink=userInput
 	fasthttp.GetDeadline(resByte, userInput, time.Time{}) // $ SsrfSink=userInput
 	fasthttp.GetTimeout(resByte, userInput, 5)            // $ SsrfSink=userInput
 	fasthttp.Post(resByte, userInput, nil)                // $ SsrfSink=userInput
-	fasthttp.Do(req, res)                                 // $ SsrfSink=req
-	fasthttp.DoRedirects(req, res, 2)                     // $ SsrfSink=req
-	fasthttp.DoDeadline(req, res, time.Time{})            // $ SsrfSink=req
-	fasthttp.DoTimeout(req, res, 5)                       // $ SsrfSink=req
 
 	hostClient := &fasthttp.HostClient{
 		Addr: "localhost:8080",
@@ -77,31 +64,15 @@ func fasthttpClient() {
 	hostClient.GetDeadline(resByte, userInput, time.Time{}) // $ SsrfSink=userInput
 	hostClient.GetTimeout(resByte, userInput, 5)            // $ SsrfSink=userInput
 	hostClient.Post(resByte, userInput, nil)                // $ SsrfSink=userInput
-	hostClient.Do(req, res)                                 // $ SsrfSink=req
-	hostClient.DoDeadline(req, res, time.Time{})            // $ SsrfSink=req
-	hostClient.DoRedirects(req, res, 2)                     // $ SsrfSink=req
-	hostClient.DoTimeout(req, res, 5)                       // $ SsrfSink=req
 
 	var lbclient fasthttp.LBClient
 	lbclient.Clients = append(lbclient.Clients, hostClient)
-	lbclient.Do(req, res)                      // $ SsrfSink=req
-	lbclient.DoDeadline(req, res, time.Time{}) // $ SsrfSink=req
-	lbclient.DoTimeout(req, res, 5)            // $ SsrfSink=req
 
 	client := fasthttp.Client{}
 	client.Get(resByte, userInput)                      // $ SsrfSink=userInput
 	client.GetDeadline(resByte, userInput, time.Time{}) // $ SsrfSink=userInput
 	client.GetTimeout(resByte, userInput, 5)            // $ SsrfSink=userInput
 	client.Post(resByte, userInput, nil)                // $ SsrfSink=userInput
-	client.Do(req, res)                                 // $ SsrfSink=req
-	client.DoDeadline(req, res, time.Time{})            // $ SsrfSink=req
-	client.DoRedirects(req, res, 2)                     // $ SsrfSink=req
-	client.DoTimeout(req, res, 5)                       // $ SsrfSink=req
-
-	pipelineClient := fasthttp.PipelineClient{}
-	pipelineClient.Do(req, res)                      // $ SsrfSink=req
-	pipelineClient.DoDeadline(req, res, time.Time{}) // $ SsrfSink=req
-	pipelineClient.DoTimeout(req, res, 5)            // $ SsrfSink=req
 
 	tcpDialer := fasthttp.TCPDialer{}
 	userInput = "127.0.0.1:8909"

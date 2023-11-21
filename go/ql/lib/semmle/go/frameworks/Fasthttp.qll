@@ -74,22 +74,6 @@ module Fasthttp {
     }
 
     /**
-     * A function that sends HTTP requests.
-     */
-    class RequestForgerySinkDo extends RequestForgery::Sink {
-      RequestForgerySinkDo() {
-        exists(Function f |
-          f.hasQualifiedName(packagePath(), ["Do", "DoDeadline", "DoTimeout", "DoRedirects"]) and
-          this = f.getACall().getArgument(0)
-        )
-      }
-
-      override DataFlow::Node getARequest() { result = this }
-
-      override string getKind() { result = "URL" }
-    }
-
-    /**
      * A function that create initial connection to a TCP address.
      * Following Functions only accept TCP address + Port in their first argument
      */
@@ -192,46 +176,6 @@ module Fasthttp {
 
       override string getKind() { result = "URL" }
     }
-
-    /**
-     * A method that sends HTTP requests.
-     */
-    class RequestForgerySinkDo extends RequestForgery::Sink {
-      RequestForgerySinkDo() {
-        exists(Method m |
-          m.hasQualifiedName(packagePath(), "Client",
-            ["Do", "DoDeadline", "DoTimeout", "DoRedirects"]) and
-          this = m.getACall().getArgument(0)
-        )
-      }
-
-      override DataFlow::Node getARequest() { result = this }
-
-      // Kind can be vary because input is a fasthttp.URI type
-      override string getKind() { result = "URL" }
-    }
-  }
-
-  /**
-   * Provide modeling for fasthttp.PipelineClient Type
-   */
-  module PipelineClient {
-    /**
-     * A method that sends HTTP requests.
-     */
-    class RequestForgerySinkDo extends RequestForgery::Sink {
-      RequestForgerySinkDo() {
-        exists(Method m |
-          m.hasQualifiedName(packagePath(), "PipelineClient", ["Do", "DoDeadline", "DoTimeout"]) and
-          this = m.getACall().getArgument(0)
-        )
-      }
-
-      override DataFlow::Node getARequest() { result = this }
-
-      // Kind can be vary because input is a fasthttp.URI type
-      override string getKind() { result = "URL" }
-    }
   }
 
   /**
@@ -255,46 +199,6 @@ module Fasthttp {
 
       override DataFlow::Node getARequest() { result = this }
 
-      override string getKind() { result = "URL" }
-    }
-
-    /**
-     * A method that sends HTTP requests.
-     */
-    class RequestForgerySinkDo extends RequestForgery::Sink {
-      RequestForgerySinkDo() {
-        exists(Method m |
-          m.hasQualifiedName(packagePath(), "HostClient",
-            ["Do", "DoDeadline", "DoTimeout", "DoRedirects"]) and
-          this = m.getACall().getArgument(0)
-        )
-      }
-
-      override DataFlow::Node getARequest() { result = this }
-
-      // Kind can be vary because input is a fasthttp.URI type
-      override string getKind() { result = "URL" }
-    }
-  }
-
-  /**
-   * Provide modeling for fasthttp.LBClient Type
-   */
-  module LBClient {
-    /**
-     * A method that sends HTTP requests.
-     */
-    class RequestForgerySinkDo extends RequestForgery::Sink {
-      RequestForgerySinkDo() {
-        exists(Method m |
-          m.hasQualifiedName(packagePath(), "LBClient", ["Do", "DoDeadline", "DoTimeout"]) and
-          this = m.getACall().getArgument(0)
-        )
-      }
-
-      override DataFlow::Node getARequest() { result = this }
-
-      // Kind can be vary because input is a fasthttp.URI type
       override string getKind() { result = "URL" }
     }
   }
@@ -353,6 +257,26 @@ module Fasthttp {
           this = m.getACall()
         )
       }
+    }
+
+    /**
+     * A method that create the URL and Host parts of a `Request` type.
+     *
+     * This instance of `Request` type can be used in some functions/methods
+     * like `func Do(req *Request, resp *Response) error` that will lead to server side request forgery vulnerability.
+     */
+    class RequestForgerySink extends RequestForgery::Sink {
+      RequestForgerySink() {
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "Request",
+            ["SetRequestURI", "SetRequestURIBytes", "SetURI", "SetHost", "SetHostBytes"]) and
+          this = m.getACall().getArgument(0)
+        )
+      }
+
+      override DataFlow::Node getARequest() { result = this }
+
+      override string getKind() { result = "URL" }
     }
   }
 
