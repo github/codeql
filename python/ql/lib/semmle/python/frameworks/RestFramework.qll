@@ -197,9 +197,6 @@ private module RestFramework {
       exists(RestFrameworkApiViewClass vc |
         this.getParameter() =
           vc.getARequestHandler().(PrivateDjango::DjangoRouteHandler).getRequestParam()
-        or
-        // retrieve(self, request, **kwargs)
-        this.getParameter() = vc.getARequestHandler().(PrivateDjango::DjangoRouteHandler).getKwarg()
       )
       or
       // annotated with @api_view decorator
