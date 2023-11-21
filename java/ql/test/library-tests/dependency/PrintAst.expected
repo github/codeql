@@ -62,7 +62,7 @@ dependency/A.java:
 #   30|           1: [ReturnStmt] return ...
 #   31|         1: [SwitchStmt] switch (...)
 #   31|           -1: [VarAccess] o
-#   32|           0: [PatternCase] case T t ...
+#   32|           0: [PatternCase] case <Pattern>
 #-----|             0: (Single Local Variable Declaration)
 #   32|               0: [TypeAccess] Used2
 #   32|               1: [LocalVariableDeclExpr] u2
@@ -73,7 +73,7 @@ dependency/A.java:
 #   35|           1: [LocalVariableDeclExpr] x
 #   35|             0: [SwitchExpr] switch (...)
 #   35|               -1: [VarAccess] o
-#   36|               0: [PatternCase] case T t ...
+#   36|               0: [PatternCase] case <Pattern>
 #-----|                 0: (Single Local Variable Declaration)
 #   36|                   0: [TypeAccess] Used3
 #   36|                   1: [LocalVariableDeclExpr] u3

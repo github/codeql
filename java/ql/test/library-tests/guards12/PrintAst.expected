@@ -45,7 +45,7 @@ Test.java:
 #   15|               -1: [VarAccess] s
 #   16|         3: [SwitchStmt] switch (...)
 #   16|           -1: [VarAccess] s
-#   17|           0: [PatternCase] case T t ...
+#   17|           0: [PatternCase] case <Pattern>
 #   17|             -3: [EQExpr] ... == ...
 #   17|               0: [VarAccess] len
 #   17|               1: [IntegerLiteral] 4
