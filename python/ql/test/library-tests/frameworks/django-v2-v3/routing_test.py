@@ -165,11 +165,11 @@ def kwargs_param(request, **kwargs): # $ requestHandler routedParameter=kwargs
     ensure_tainted(request) # $ tainted
 
 
-def star_args_param(request, *args): # $ requestHandler MISSING: routedParameter=args
+def star_args_param(request, *args): # $ requestHandler routedParameter=args
     ensure_tainted(
-        args, # $ MISSING: tainted
-        args[0], # $ MISSING: tainted
-        args[1], # $ MISSING: tainted
+        args, # $ tainted
+        args[0], # $ tainted
+        args[1], # $ tainted
     )
     ensure_tainted(request) # $ tainted
 

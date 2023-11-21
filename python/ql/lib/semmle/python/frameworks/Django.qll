@@ -2501,13 +2501,22 @@ module PrivateDjango {
         // either using named capture groups (passed as keyword arguments) or using
         // unnamed capture groups (passed as positional arguments)
         not exists(regex.getGroupName(_, _)) and
-        // first group will have group number 1
-        result =
-          routeHandler
-              .getArg(routeHandler.getFirstPossibleRoutedParamIndex() - 1 +
-                  regex.getGroupNumber(_, _))
+        (
+          // first group will have group number 1
+          result =
+            routeHandler
+                .getArg(routeHandler.getFirstPossibleRoutedParamIndex() - 1 +
+                    regex.getGroupNumber(_, _))
+          or
+          result = routeHandler.getVararg()
+        )
         or
-        result = routeHandler.getArgByName(regex.getGroupName(_, _))
+        exists(regex.getGroupName(_, _)) and
+        (
+          result = routeHandler.getArgByName(regex.getGroupName(_, _))
+          or
+          result = routeHandler.getKwarg()
+        )
       )
     }
   }
