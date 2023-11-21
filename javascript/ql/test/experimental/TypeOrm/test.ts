@@ -16,8 +16,8 @@ export class UserActiveRecord extends BaseEntity {
 
     static findByName(firstName: string, lastName: string) {
         return this.createQueryBuilder("user")
-            .where("user.firstName = " + firstName)
-            .andWhere("user.lastName = " + lastName)
+            .where("user.firstName = " + firstName)  // test: SQLInjectionPoint
+            .andWhere("user.lastName = " + lastName)  // test: SQLInjectionPoint
             .getMany()
     }
 }
@@ -71,19 +71,21 @@ function makePaginationQuery<T>(q: SelectQueryBuilder<T>): SelectQueryBuilder<T>
 }
 
 AppDataSource.initialize().then(async () => {
+    const BadInput = "A user controllable Remote Source like `' 1=1 --` "
+
     // Active record
-    await UserActiveRecord.findByName("FirstNameToFind", "LastNameToFind")
+    await UserActiveRecord.findByName(BadInput, "Saw")
 
     // data mapper
     const selectQueryBuilder = makePaginationQuery<User>(AppDataSource
         .createQueryBuilder(User, "User").select());
-    selectQueryBuilder.where('id > 5').getMany().then(result => {
+    selectQueryBuilder.where(BadInput).getMany().then(result => {    // test: SQLInjectionPoint
         console.log(result)
     });
 
     const selectQueryBuilder2 = makePaginationQuery<User>(AppDataSource
         .createQueryBuilder(User, "User"));
-    selectQueryBuilder2.where('id > 5').getMany().then(result => {
+    selectQueryBuilder2.where(BadInput).getMany().then(result => {   // test: SQLInjectionPoint
         console.log(result)
     });
 
@@ -92,7 +94,7 @@ AppDataSource.initialize().then(async () => {
     insertQueryBuilder.into(User2)
         .values({
             firstName: "Timber",
-            lastName: () => "LastNameToFind",
+            lastName: () => BadInput,   // test: SQLInjectionPoint
             age: 33,
         }).execute().then(result => {
             console.log(result)
@@ -106,45 +108,45 @@ AppDataSource.initialize().then(async () => {
         .into(User2)
         .values({
             firstName: "Timber",
-            lastName: () => "LastNameToFind",
+            lastName: () => BadInput,   // test: SQLInjectionPoint
             age: 33,
         })
         .orUpdate(
-            ["firstName", "lastName"],
-            ["externalId"],
+            [BadInput, BadInput],   // test: SQLInjectionPoint
+            [BadInput],   // test: SQLInjectionPoint
         )
         .getQueryAndParameters()
 
     await AppDataSource.getRepository(User2).createQueryBuilder("user2")
         .update(User2)
-        .set({ firstName: () => "firstname", lastName: "Saw2", age: 12 })
-        .where('id > 5')
+        .set({ firstName: () => BadInput, lastName: "Saw2", age: 12 })   // test: SQLInjectionPoint
+        .where(BadInput,)   // test: SQLInjectionPoint
         .execute()
 
     await AppDataSource.getRepository(User2).createQueryBuilder('user2')
         .delete()
         .from(User2)
-        .where('id > 5')
+        .where(BadInput)   // test: SQLInjectionPoint
         .execute()
 
 
     const queryRunner = AppDataSource.createQueryRunner()
-    await queryRunner.query('SELECT name,id FROM table1 WHERE id > 5')
+    await queryRunner.query(BadInput)   // test: SQLInjectionPoint
 
     await queryRunner.manager
         .createQueryBuilder(User2, "User")
-        .select("name,id")
-        .where("id > 5").execute()
+        .select(BadInput)   // test: SQLInjectionPoint
+        .where(BadInput).execute()   // test: SQLInjectionPoint
 
     await AppDataSource
         .createQueryBuilder(User, "User")
-        .innerJoin("User.profile", "profile", 'id > 5', {
+        .innerJoin("User.profile", "profile", BadInput, {   // test: SQLInjectionPoint
             id: 2,
         }).getMany().then(res => console.log(res))
 
     await AppDataSource
         .createQueryBuilder(User, "User")
-        .leftJoinAndMapOne("User.profile", "profile", "profile", 'id > 5', {
+        .leftJoinAndMapOne("User.profile", "profile", "profile", BadInput, {   // test: SQLInjectionPoint
             id: 2,
         }).getMany().then(res => console.log(res))
 
@@ -154,9 +156,9 @@ AppDataSource.initialize().then(async () => {
         .where((qb) => {
             const subQuery = qb
                 .subQuery()
-                .select("name,id")
+                .select(BadInput)   // test: SQLInjectionPoint
                 .from(User2, "user2")
-                .where('id > 5')
+                .where(BadInput)   // test: SQLInjectionPoint
                 .getQuery()
             return "User2.id IN " + subQuery
         })
@@ -165,54 +167,54 @@ AppDataSource.initialize().then(async () => {
 
 
     // Using repository
-    let users = await AppDataSource.getRepository(User2).createQueryBuilder("User2").where("User2.id =:kind", { kind: 1 }).getMany()
+    await AppDataSource.getRepository(User2).createQueryBuilder("User2").where("User2.id =:kind" + BadInput, { kind: 1 }).getMany()
 
     // Using DataSource
-    users = await AppDataSource
+    await AppDataSource
         .createQueryBuilder()
-        .select("User2")
+        .select(BadInput)   // test: SQLInjectionPoint
         .from(User2, "User2")
-        .where('id > 5', { id: 1 })
+        .where(BadInput, { id: 1 })   // test: SQLInjectionPoint
         .getMany()
 
     // Using entity manager
     await AppDataSource.manager
-        .createQueryBuilder(User2, "User2").where("User2.id =:kind and id > 5", { kind: '1' }).getMany()
+        .createQueryBuilder(User2, "User2").where("User2.id =:kind" + BadInput, { kind: '1' }).getMany()   // test: SQLInjectionPoint
     await AppDataSource
         .createQueryBuilder(User2, "User2")
-        .leftJoinAndSelect("user.photos", "photo", 'id > 5').getMany()
+        .leftJoinAndSelect("user.photos", "photo", BadInput).getMany()   // test: SQLInjectionPoint
     await AppDataSource
-        .createQueryBuilder(User2, "User2").groupBy("User2.id").having('id > 5').getMany()
+        .createQueryBuilder(User2, "User2").groupBy("User2.id").having(BadInput).getMany()   // test: SQLInjectionPoint
     // orderBy
     // it is a little bit restrictive, e.g. sqlite don't support it at all
     await AppDataSource
-        .createQueryBuilder(User2, "User2").where('id > 5', {
+        .createQueryBuilder(User2, "User2").where(BadInput, {   // test: SQLInjectionPoint
             firstName: "Timber",
         })
         .where(
             new Brackets((qb) => {
-                qb.where('id > 5').orWhere('id > 5');
+                qb.where(BadInput).orWhere(BadInput);   // test: SQLInjectionPoint
             })
         )
-        .orderBy("name").orWhere('id > 5').getMany()
+        .orderBy(BadInput).orWhere(BadInput).getMany()   // test: SQLInjectionPoint
 
     // relation
     AppDataSource.createQueryBuilder().relation(User, "name")
         .of(User)
-        .select().where('id > 5').getMany().then(results => {
+        .select().where(BadInput).getMany().then(results => {   // test: SQLInjectionPoint
             console.log(results)
         })
 
     // Brackets
     await AppDataSource.createQueryBuilder(User2, "User2")
-        .where('id > 5')
+        .where(BadInput)   // test: SQLInjectionPoint
         .andWhere(
             new Brackets((qb) => {
-                qb.where('id > 5').orWhere('id > 5');
+                qb.where(BadInput).orWhere(BadInput);  // test: SQLInjectionPoint
             })
         ).andWhere(
             new NotBrackets((qb) => {
-                qb.where('id > 5').orWhere('id > 5')
+                qb.where(BadInput).orWhere(BadInput)   // test: SQLInjectionPoint
             }),
         ).getMany()
 }).catch(error => console.log(error))

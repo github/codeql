@@ -126,7 +126,6 @@ import semmle.javascript.frameworks.ShellJS
 import semmle.javascript.frameworks.Snapdragon
 import semmle.javascript.frameworks.SystemCommandExecutors
 import semmle.javascript.frameworks.SQL
-import semmle.javascript.frameworks.TypeORM
 import semmle.javascript.frameworks.SocketIO
 import semmle.javascript.frameworks.StringFormatters
 import semmle.javascript.frameworks.TorrentLibraries
