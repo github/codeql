@@ -17,14 +17,14 @@ Validate user input before using it to construct a file path.
 </p>
 
 <p>
-The choice of validation depends on whether you want to allow the user to specify complex paths with multiple components that may span multiple folders, or only simple filenames without a path component.
+The validation method you should use depends on whether you want to allow the user to specify complex paths with multiple components that may span multiple folders, or only simple filenames without a path component.
 </p>
 
 <p>
 In the former case, a common strategy is to make sure that the constructed file path is contained within a safe root folder.
 First, normalize the path using <code>path.resolve</code> or <code>fs.realpathSync</code> to remove any ".." segments.
-Then check that the normalized path starts with the root folder.
-Note that the normalization step is important, since otherwise even a path that starts with the root folder could be used to access files outside the root folder.
+You should always normalize the file path since an unnormalized path that starts with the root folder can still be used to access files outside the root folder.
+Then, after you have normalized the path, check that the path starts with the root folder.
 </p>
 
 <p>
@@ -39,17 +39,17 @@ Finally, the simplest (but most restrictive) option is to use an allow list of s
 
 <example>
 <p>
-In the first example, a file name is read from an HTTP request and then used to access a file within a root folder.
-However, a malicious user could enter a file name containing "../" segments to navigate outside the root folder and access sensitive files.
+In the first (bad) example, the code reads the file name from an HTTP request, then accesses that file within a root folder.
+A malicious user could enter a file name containing "../" segments to navigate outside the root folder and access sensitive files.
 </p>
 
 <sample src="examples/TaintedPath.js" />
 
 <p>
-The second example shows how to fix this.
-First, the file name is resolved relative to a root folder, which has the side effect of normalizing the path and removing any "../" segments.
-Then, <code>fs.realpathSync</code> is used to resolve any symbolic links in the path.
-Finally, we check that the normalized path starts with the root folder's path, which ensures that the file is contained within the root folder.
+The second (good) example shows how to avoid access to sensitive files by sanitizing the file path.
+First, the code resolves the file name relative to a root folder, normalizing the path and removing any "../" segments in the process.
+Then, the code calls <code>fs.realpathSync</code> to resolve any symbolic links in the path.
+Finally, the code checks that the normalized path starts with the path of the root folder, ensuring the file is contained within the root folder.
 </p>
 
 <sample src="examples/TaintedPathGood.js" />
