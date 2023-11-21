@@ -18,4 +18,8 @@ public class PublicClass {
   void packagePrivateStuff(String arg) {
     System.out.println(arg);
   }
+
+  public PublicClass(Object input) {
+    // the `this` qualifier is not a candidate
+  }
 }

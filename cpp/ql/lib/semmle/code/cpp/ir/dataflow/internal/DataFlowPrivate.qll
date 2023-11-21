@@ -646,6 +646,24 @@ class GlobalLikeVariable extends Variable {
 }
 
 /**
+ * Returns the smallest indirection for the type `t`.
+ *
+ * For most types this is `1`, but for `ArrayType`s (which are allocated on
+ * the stack) this is `0`
+ */
+int getMinIndirectionsForType(Type t) {
+  if t.getUnspecifiedType() instanceof Cpp::ArrayType then result = 0 else result = 1
+}
+
+private int getMinIndirectionForGlobalUse(Ssa::GlobalUse use) {
+  result = getMinIndirectionsForType(use.getUnspecifiedType())
+}
+
+private int getMinIndirectionForGlobalDef(Ssa::GlobalDef def) {
+  result = getMinIndirectionsForType(def.getUnspecifiedType())
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
  * calling context. For example, this would happen with flow through a
  * global or static variable.
@@ -656,7 +674,7 @@ predicate jumpStep(Node n1, Node n2) {
       v = globalUse.getVariable() and
       n1.(FinalGlobalValue).getGlobalUse() = globalUse
     |
-      globalUse.getIndirection() = 1 and
+      globalUse.getIndirection() = getMinIndirectionForGlobalUse(globalUse) and
       v = n2.asVariable()
       or
       v = n2.asIndirectVariable(globalUse.getIndirection())
@@ -666,7 +684,7 @@ predicate jumpStep(Node n1, Node n2) {
       v = globalDef.getVariable() and
       n2.(InitialGlobalValue).getGlobalDef() = globalDef
     |
-      globalDef.getIndirection() = 1 and
+      globalDef.getIndirection() = getMinIndirectionForGlobalDef(globalDef) and
       v = n1.asVariable()
       or
       v = n1.asIndirectVariable(globalDef.getIndirection())
