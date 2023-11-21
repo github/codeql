@@ -1,13 +1,3 @@
-#-----| [MacroRole] #freestanding(expression)
-#-----| [MacroRole] #freestanding(expression)
-#-----| [MacroRole] #freestanding(expression)
-#-----| [MacroRole] #freestanding(expression)
-#-----| [MacroRole] #freestanding(expression)
-#-----| [MacroRole] #freestanding(expression)
-#-----| [MacroRole] #freestanding(expression)
-#-----| [MacroRole] #freestanding(expression)
-#-----| [MacroRole] #freestanding(declaration)
-#-----| [MacroRole] #freestanding(declaration)
 chained_conversion.swift:
 #    1| [NamedFunction] foo(x:)
 #    1|     InterfaceType = (inout Int) -> Int?
