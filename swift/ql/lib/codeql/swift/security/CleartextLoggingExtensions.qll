@@ -97,7 +97,7 @@ private class CleartextLoggingFieldAdditionalFlowStep extends CleartextLoggingAd
  * A function that appears to be an imported C `printf` variant.
  * TODO: merge code with similar cases from the format string PR.
  */
-class PrintfFormat extends FreeFunction {
+private class PrintfFormat extends FreeFunction {
   int formatParamIndex;
   string modeChars;
 
@@ -106,6 +106,9 @@ class PrintfFormat extends FreeFunction {
     this.getParam(formatParamIndex).getName() = "format"
   }
 
+  /**
+   * Gets the index of the format parameter.
+   */
   int getFormatParamIndex() { result = formatParamIndex }
 
   /**
