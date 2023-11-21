@@ -77,6 +77,12 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   codeql::UnresolvedType translateUnresolvedType(const swift::UnresolvedType& type);
   codeql::ParameterizedProtocolType translateParameterizedProtocolType(
       const swift::ParameterizedProtocolType& type);
+  codeql::PackArchetypeType translatePackArchetypeType(const swift::PackArchetypeType& type);
+  codeql::ElementArchetypeType translateElementArchetypeType(
+      const swift::ElementArchetypeType& type);
+  codeql::PackType translatePackType(const swift::PackType& type);
+  codeql::PackElementType translatePackElementType(const swift::PackElementType& type);
+  codeql::PackExpansionType translatePackExpansionType(const swift::PackExpansionType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);

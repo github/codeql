@@ -1,6 +1,6 @@
 import csharp
 import DataFlow
-import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow
 import ModelValidation
 import semmle.code.csharp.dataflow.FlowSummary
 import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch

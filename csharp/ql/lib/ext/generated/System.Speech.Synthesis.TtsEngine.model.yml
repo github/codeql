@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -35,7 +36,6 @@ extensions:
       - ["System.Speech.Synthesis.TtsEngine", "ITtsEngineSite", "get_Rate", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "ITtsEngineSite", "get_Volume", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "Prosody", "GetContourPoints", "()", "summary", "df-generated"]
-      - ["System.Speech.Synthesis.TtsEngine", "Prosody", "Prosody", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "Prosody", "SetContourPoints", "(System.Speech.Synthesis.TtsEngine.ContourPoint[])", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "Prosody", "get_Duration", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "Prosody", "get_Pitch", "()", "summary", "df-generated"]
@@ -58,14 +58,12 @@ extensions:
       - ["System.Speech.Synthesis.TtsEngine", "ProsodyNumber", "get_Unit", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "ProsodyNumber", "op_Equality", "(System.Speech.Synthesis.TtsEngine.ProsodyNumber,System.Speech.Synthesis.TtsEngine.ProsodyNumber)", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "ProsodyNumber", "op_Inequality", "(System.Speech.Synthesis.TtsEngine.ProsodyNumber,System.Speech.Synthesis.TtsEngine.ProsodyNumber)", "summary", "df-generated"]
-      - ["System.Speech.Synthesis.TtsEngine", "SayAs", "SayAs", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SayAs", "get_Detail", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SayAs", "get_Format", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SayAs", "get_InterpretAs", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SayAs", "set_Detail", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SayAs", "set_Format", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SayAs", "set_InterpretAs", "(System.String)", "summary", "df-generated"]
-      - ["System.Speech.Synthesis.TtsEngine", "SkipInfo", "SkipInfo", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SkipInfo", "get_Count", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SkipInfo", "get_Type", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SkipInfo", "set_Count", "(System.Int32)", "summary", "df-generated"]
@@ -80,7 +78,6 @@ extensions:
       - ["System.Speech.Synthesis.TtsEngine", "SpeechEventInfo", "get_ParameterType", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SpeechEventInfo", "op_Equality", "(System.Speech.Synthesis.TtsEngine.SpeechEventInfo,System.Speech.Synthesis.TtsEngine.SpeechEventInfo)", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "SpeechEventInfo", "op_Inequality", "(System.Speech.Synthesis.TtsEngine.SpeechEventInfo,System.Speech.Synthesis.TtsEngine.SpeechEventInfo)", "summary", "df-generated"]
-      - ["System.Speech.Synthesis.TtsEngine", "TextFragment", "TextFragment", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "TextFragment", "get_State", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "TextFragment", "get_TextLength", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis.TtsEngine", "TextFragment", "get_TextOffset", "()", "summary", "df-generated"]

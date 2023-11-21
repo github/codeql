@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -23,7 +24,6 @@ extensions:
       - ["System.Diagnostics.CodeAnalysis", "DynamicDependencyAttribute", "set_Condition", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "DynamicallyAccessedMembersAttribute", "DynamicallyAccessedMembersAttribute", "(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "DynamicallyAccessedMembersAttribute", "get_MemberTypes", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.CodeAnalysis", "ExcludeFromCodeCoverageAttribute", "ExcludeFromCodeCoverageAttribute", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "ExcludeFromCodeCoverageAttribute", "get_Justification", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "ExcludeFromCodeCoverageAttribute", "set_Justification", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "MaybeNullWhenAttribute", "MaybeNullWhenAttribute", "(System.Boolean)", "summary", "df-generated"]
@@ -39,7 +39,6 @@ extensions:
       - ["System.Diagnostics.CodeAnalysis", "NotNullIfNotNullAttribute", "get_ParameterName", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "NotNullWhenAttribute", "NotNullWhenAttribute", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "NotNullWhenAttribute", "get_ReturnValue", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.CodeAnalysis", "RequiresAssemblyFilesAttribute", "RequiresAssemblyFilesAttribute", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "RequiresAssemblyFilesAttribute", "RequiresAssemblyFilesAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "RequiresAssemblyFilesAttribute", "get_Message", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "RequiresAssemblyFilesAttribute", "get_Url", "()", "summary", "df-generated"]
@@ -52,6 +51,10 @@ extensions:
       - ["System.Diagnostics.CodeAnalysis", "RequiresUnreferencedCodeAttribute", "get_Message", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "RequiresUnreferencedCodeAttribute", "get_Url", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "RequiresUnreferencedCodeAttribute", "set_Url", "(System.String)", "summary", "df-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "StringSyntaxAttribute", "StringSyntaxAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "StringSyntaxAttribute", "StringSyntaxAttribute", "(System.String,System.Object[])", "summary", "df-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "StringSyntaxAttribute", "get_Arguments", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "StringSyntaxAttribute", "get_Syntax", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "SuppressMessageAttribute", "SuppressMessageAttribute", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "SuppressMessageAttribute", "get_Category", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "SuppressMessageAttribute", "get_CheckId", "()", "summary", "df-generated"]

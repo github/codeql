@@ -724,16 +724,19 @@ class GenericTypeInstantiationExpr extends Expr {
  * ```go
  * a[1:3]
  * a[1:3:5]
+ * a[1:]
+ * a[:3]
+ * a[:]
  * ```
  */
 class SliceExpr extends @sliceexpr, Expr {
   /** Gets the base of this slice expression. */
   Expr getBase() { result = this.getChildExpr(0) }
 
-  /** Gets the lower bound of this slice expression. */
+  /** Gets the lower bound of this slice expression, if any. */
   Expr getLow() { result = this.getChildExpr(1) }
 
-  /** Gets the upper bound of this slice expression. */
+  /** Gets the upper bound of this slice expression, if any. */
   Expr getHigh() { result = this.getChildExpr(2) }
 
   /** Gets the maximum of this slice expression, if any. */

@@ -117,14 +117,6 @@ newtype TNode =
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
   }
 
-/** Helper for `Node::getEnclosingCallable`. */
-private DataFlowCallable getCallableScope(Scope s) {
-  result.getScope() = s
-  or
-  not exists(DataFlowCallable c | c.getScope() = s) and
-  result = getCallableScope(s.getEnclosingScope())
-}
-
 private import semmle.python.internal.CachedStages
 
 /**

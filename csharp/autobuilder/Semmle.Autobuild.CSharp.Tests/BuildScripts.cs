@@ -159,9 +159,9 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         bool IBuildActions.IsMacOs() => IsMacOs;
 
-        public bool IsArm { get; set; }
+        public bool IsRunningOnAppleSilicon { get; set; }
 
-        bool IBuildActions.IsArm() => IsArm;
+        bool IBuildActions.IsRunningOnAppleSilicon() => IsRunningOnAppleSilicon;
 
         public string PathCombine(params string[] parts)
         {

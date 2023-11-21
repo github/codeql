@@ -1,5 +1,5 @@
 private import csharp
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate

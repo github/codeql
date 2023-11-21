@@ -1,11 +1,5 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
-  - addsTo:
-      pack: codeql/csharp-all
-      extensible: summaryModel
-    data:
-      - ["Microsoft.Win32", "RegistryKey", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Win32", "RegistryKey", False, "get_Handle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Win32", "RegistryKey", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -55,6 +49,9 @@ extensions:
       - ["Microsoft.Win32", "RegistryKey", "SetAccessControl", "(System.Security.AccessControl.RegistrySecurity)", "summary", "df-generated"]
       - ["Microsoft.Win32", "RegistryKey", "SetValue", "(System.String,System.Object)", "summary", "df-generated"]
       - ["Microsoft.Win32", "RegistryKey", "SetValue", "(System.String,System.Object,Microsoft.Win32.RegistryValueKind)", "summary", "df-generated"]
+      - ["Microsoft.Win32", "RegistryKey", "ToString", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32", "RegistryKey", "get_Handle", "()", "summary", "df-generated"]
+      - ["Microsoft.Win32", "RegistryKey", "get_Name", "()", "summary", "df-generated"]
       - ["Microsoft.Win32", "RegistryKey", "get_SubKeyCount", "()", "summary", "df-generated"]
       - ["Microsoft.Win32", "RegistryKey", "get_ValueCount", "()", "summary", "df-generated"]
       - ["Microsoft.Win32", "RegistryKey", "get_View", "()", "summary", "df-generated"]

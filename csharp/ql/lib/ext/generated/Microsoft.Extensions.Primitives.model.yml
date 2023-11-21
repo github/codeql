@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -6,11 +7,11 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "Extensions", False, "Append", "(System.Text.StringBuilder,Microsoft.Extensions.Primitives.StringSegment)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", False, "Split", "(System.Char[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", False, "Split", "(System.Char[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", False, "Enumerator", "(Microsoft.Extensions.Primitives.StringTokenizer)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer", False, "StringTokenizer", "(Microsoft.Extensions.Primitives.StringSegment,System.Char[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer", False, "StringTokenizer", "(Microsoft.Extensions.Primitives.StringSegment,System.Char[])", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer", False, "StringTokenizer", "(System.String,System.Char[])", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", False, "Enumerator", "(Microsoft.Extensions.Primitives.StringTokenizer)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -76,6 +77,10 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "Reset", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "get_Current", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", "set_Current", "(Microsoft.Extensions.Primitives.StringSegment)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Enumerator", "(Microsoft.Extensions.Primitives.StringValues)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "MoveNext", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Reset", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues", "op_Equality", "(Microsoft.Extensions.Primitives.StringValues,Microsoft.Extensions.Primitives.StringValues)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues", "op_Equality", "(Microsoft.Extensions.Primitives.StringValues,System.Object)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues", "op_Equality", "(Microsoft.Extensions.Primitives.StringValues,System.String)", "summary", "df-generated"]
@@ -90,7 +95,3 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "StringValues", "op_Inequality", "(System.Object,Microsoft.Extensions.Primitives.StringValues)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues", "op_Inequality", "(System.String,Microsoft.Extensions.Primitives.StringValues)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringValues", "op_Inequality", "(System.String[],Microsoft.Extensions.Primitives.StringValues)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Dispose", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Enumerator", "(Microsoft.Extensions.Primitives.StringValues)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "MoveNext", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Primitives", "StringValues+Enumerator", "Reset", "()", "summary", "df-generated"]

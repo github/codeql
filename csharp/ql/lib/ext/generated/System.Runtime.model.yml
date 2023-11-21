@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -10,7 +11,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Runtime", "AmbiguousImplementationException", "AmbiguousImplementationException", "()", "summary", "df-generated"]
       - ["System.Runtime", "AmbiguousImplementationException", "AmbiguousImplementationException", "(System.String)", "summary", "df-generated"]
       - ["System.Runtime", "AmbiguousImplementationException", "AmbiguousImplementationException", "(System.String,System.Exception)", "summary", "df-generated"]
       - ["System.Runtime", "AssemblyTargetedPatchBandAttribute", "AssemblyTargetedPatchBandAttribute", "(System.String)", "summary", "df-generated"]

@@ -107,10 +107,10 @@ private ValueOrRefType getAnInterestingBaseType(ValueOrRefType type) {
 
 private predicate isInterestingBaseType(ValueOrRefType type, ValueOrRefType base) {
   not base instanceof ObjectType and
-  not base.hasQualifiedName("System", "ValueType") and
-  not base.hasQualifiedName("System", "Delegate") and
-  not base.hasQualifiedName("System", "MulticastDelegate") and
-  not base.hasQualifiedName("System", "Enum") and
+  not base.hasFullyQualifiedName("System", "ValueType") and
+  not base.hasFullyQualifiedName("System", "Delegate") and
+  not base.hasFullyQualifiedName("System", "MulticastDelegate") and
+  not base.hasFullyQualifiedName("System", "Enum") and
   exists(TypeMention tm | tm.getTarget() = type and tm.getType() = base)
 }
 

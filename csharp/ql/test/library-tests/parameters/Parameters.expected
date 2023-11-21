@@ -31,9 +31,9 @@ withDefaultValue
 | Parameters.cs:13:17:13:18 | M7 | Parameters.cs:13:67:13:68 | e3 | 2 | Parameters.cs:13:72:13:83 | object creation of type MyEnum | 0 |
 | Parameters.cs:13:17:13:18 | M7 | Parameters.cs:13:93:13:94 | e4 | 3 | Parameters.cs:13:98:13:105 | access to constant A | 1 |
 | Parameters.cs:13:17:13:18 | M7 | Parameters.cs:13:115:13:116 | e5 | 4 | Parameters.cs:13:120:13:128 | (...) ... | 5 |
-| Parameters.cs:15:17:15:21 | M8<> | Parameters.cs:15:25:15:25 | t | 0 | Parameters.cs:15:29:15:35 | (...) ... | - |
-| Parameters.cs:16:17:16:21 | M9<> | Parameters.cs:16:25:16:25 | t | 0 | Parameters.cs:16:29:16:35 | (...) ... | - |
-| Parameters.cs:17:17:17:22 | M10<> | Parameters.cs:17:26:17:26 | t | 0 | Parameters.cs:17:30:17:36 | (...) ... | null |
+| Parameters.cs:15:17:15:21 | M8`1 | Parameters.cs:15:25:15:25 | t | 0 | Parameters.cs:15:29:15:35 | (...) ... | - |
+| Parameters.cs:16:17:16:21 | M9`1 | Parameters.cs:16:25:16:25 | t | 0 | Parameters.cs:16:29:16:35 | (...) ... | - |
+| Parameters.cs:17:17:17:22 | M10`1 | Parameters.cs:17:26:17:26 | t | 0 | Parameters.cs:17:30:17:36 | (...) ... | null |
 | Parameters.cs:19:17:19:19 | M11 | Parameters.cs:19:25:19:28 | arg1 | 0 | Parameters.cs:19:32:19:32 | 3 | 3 |
 | Parameters.cs:20:17:20:19 | M12 | Parameters.cs:20:30:20:33 | arg2 | 0 | Parameters.cs:20:37:20:43 | (...) ... | - |
 | Parameters.cs:21:17:21:19 | M13 | Parameters.cs:21:31:21:34 | arg3 | 0 | Parameters.cs:21:38:21:41 | null | null |
@@ -60,9 +60,9 @@ withDefaultValue
 | Parameters.dll:0:0:0:0 | M7 | Parameters.dll:0:0:0:0 | e3 | 2 | Parameters.dll:0:0:0:0 | (...) ... | 0 |
 | Parameters.dll:0:0:0:0 | M7 | Parameters.dll:0:0:0:0 | e4 | 3 | Parameters.dll:0:0:0:0 | (...) ... | 1 |
 | Parameters.dll:0:0:0:0 | M7 | Parameters.dll:0:0:0:0 | e5 | 4 | Parameters.dll:0:0:0:0 | (...) ... | 5 |
-| Parameters.dll:0:0:0:0 | M8<> | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | - |
-| Parameters.dll:0:0:0:0 | M9<> | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | - |
-| Parameters.dll:0:0:0:0 | M10<> | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | null |
+| Parameters.dll:0:0:0:0 | M8`1 | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | - |
+| Parameters.dll:0:0:0:0 | M9`1 | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | - |
+| Parameters.dll:0:0:0:0 | M10`1 | Parameters.dll:0:0:0:0 | t | 0 | Parameters.dll:0:0:0:0 | default | null |
 | Parameters.dll:0:0:0:0 | M11 | Parameters.dll:0:0:0:0 | arg1 | 0 | Parameters.dll:0:0:0:0 | 3 | 3 |
 | Parameters.dll:0:0:0:0 | M12 | Parameters.dll:0:0:0:0 | arg2 | 0 | Parameters.dll:0:0:0:0 | default | - |
 | Parameters.dll:0:0:0:0 | M13 | Parameters.dll:0:0:0:0 | arg3 | 0 | Parameters.dll:0:0:0:0 | default | - |

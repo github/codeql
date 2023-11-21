@@ -119,8 +119,8 @@ Testing CodeQL model packs
 
 You can test any CodeQL model packs you create in VS Code by toggling the "use model packs" setting on and off. This method works for both databases and for variant analysis repositories.
 
-- To run queries on a CodeQL database with any model packs that are stored within the ``.github/codeql/extensions`` directory of the workspace, update your ``settings.json`` file with: ``"codeQL.runningQueries.useModelPacks": all,``
-- To run queries on a CodeQL database without using model packs, update your ``settings.json`` file with: ``"codeQL.runningQueries.useModelPacks": none,``
+- To run queries on a CodeQL database with any model packs that are stored within the ``.github/codeql/extensions`` directory of the workspace, update your ``settings.json`` file with: ``"codeQL.runningQueries.useExtensionPacks": "all",``
+- To run queries on a CodeQL database without using model packs, update your ``settings.json`` file with: ``"codeQL.runningQueries.useExtensionPacks": "none",``
 
 If your model is working well, you should see a difference in the results of the two different runs. If you don't see any differences in results, you may need to introduce a known bug to verify that the model behaves as expected.
 

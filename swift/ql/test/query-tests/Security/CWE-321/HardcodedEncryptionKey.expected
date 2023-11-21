@@ -64,11 +64,11 @@ edges
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:81:102:81:102 | myConstKey |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:83:92:83:92 | myConstKey |
 | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) |
-| sqlite3_c_api.swift:33:19:33:38 | call to Data.init(_:) | sqlite3_c_api.swift:40:2:40:2 | myConstKey |
-| sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | sqlite3_c_api.swift:33:19:33:38 | call to Data.init(_:) |
-| sqlite3_c_api.swift:40:2:40:2 | myConstKey | sqlite3_c_api.swift:40:31:40:31 | buffer [Collection element] |
-| sqlite3_c_api.swift:40:31:40:31 | buffer [Collection element] | sqlite3_c_api.swift:41:36:41:36 | buffer |
-| sqlite3_c_api.swift:40:31:40:31 | buffer [Collection element] | sqlite3_c_api.swift:42:38:42:38 | buffer |
+| sqlite3_c_api.swift:41:19:41:38 | call to Data.init(_:) | sqlite3_c_api.swift:48:2:48:2 | myConstKey |
+| sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | sqlite3_c_api.swift:41:19:41:38 | call to Data.init(_:) |
+| sqlite3_c_api.swift:48:2:48:2 | myConstKey | sqlite3_c_api.swift:48:31:48:31 | buffer [Collection element] |
+| sqlite3_c_api.swift:48:31:48:31 | buffer [Collection element] | sqlite3_c_api.swift:49:36:49:36 | buffer |
+| sqlite3_c_api.swift:48:31:48:31 | buffer [Collection element] | sqlite3_c_api.swift:50:38:50:38 | buffer |
 nodes
 | SQLite.swift:43:13:43:13 | hardcoded_key | semmle.label | hardcoded_key |
 | SQLite.swift:45:23:45:23 | hardcoded_key | semmle.label | hardcoded_key |
@@ -143,12 +143,12 @@ nodes
 | rncryptor.swift:80:94:80:94 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:81:102:81:102 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:83:92:83:92 | myConstKey | semmle.label | myConstKey |
-| sqlite3_c_api.swift:33:19:33:38 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
-| sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | semmle.label | abcdef123456 |
-| sqlite3_c_api.swift:40:2:40:2 | myConstKey | semmle.label | myConstKey |
-| sqlite3_c_api.swift:40:31:40:31 | buffer [Collection element] | semmle.label | buffer [Collection element] |
-| sqlite3_c_api.swift:41:36:41:36 | buffer | semmle.label | buffer |
-| sqlite3_c_api.swift:42:38:42:38 | buffer | semmle.label | buffer |
+| sqlite3_c_api.swift:41:19:41:38 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | semmle.label | abcdef123456 |
+| sqlite3_c_api.swift:48:2:48:2 | myConstKey | semmle.label | myConstKey |
+| sqlite3_c_api.swift:48:31:48:31 | buffer [Collection element] | semmle.label | buffer [Collection element] |
+| sqlite3_c_api.swift:49:36:49:36 | buffer | semmle.label | buffer |
+| sqlite3_c_api.swift:50:38:50:38 | buffer | semmle.label | buffer |
 subpaths
 | misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self | misc.swift:53:2:53:2 | [post] config |
 | misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:53:2:53:2 | [post] config [encryptionKey] |
@@ -204,5 +204,5 @@ subpaths
 | rncryptor.swift:80:94:80:94 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:80:94:80:94 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
 | rncryptor.swift:81:102:81:102 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:81:102:81:102 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
 | rncryptor.swift:83:92:83:92 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:83:92:83:92 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
-| sqlite3_c_api.swift:41:36:41:36 | buffer | sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | sqlite3_c_api.swift:41:36:41:36 | buffer | The key 'buffer' has been initialized with hard-coded values from $@. | sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | abcdef123456 |
-| sqlite3_c_api.swift:42:38:42:38 | buffer | sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | sqlite3_c_api.swift:42:38:42:38 | buffer | The key 'buffer' has been initialized with hard-coded values from $@. | sqlite3_c_api.swift:33:24:33:24 | abcdef123456 | abcdef123456 |
+| sqlite3_c_api.swift:49:36:49:36 | buffer | sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | sqlite3_c_api.swift:49:36:49:36 | buffer | The key 'buffer' has been initialized with hard-coded values from $@. | sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | abcdef123456 |
+| sqlite3_c_api.swift:50:38:50:38 | buffer | sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | sqlite3_c_api.swift:50:38:50:38 | buffer | The key 'buffer' has been initialized with hard-coded values from $@. | sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | abcdef123456 |

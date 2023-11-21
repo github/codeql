@@ -18,7 +18,7 @@ where
   mc.getTarget().hasName("Encrypt") and
   mc.getTarget()
       .getDeclaringType()
-      .hasQualifiedName("System.Security.Cryptography", "RSACryptoServiceProvider") and
+      .hasFullyQualifiedName("System.Security.Cryptography", "RSACryptoServiceProvider") and
   mc.getArgument(1) = b and
   b.getValue() = "false"
 select b, "Enable RSA padding."
