@@ -2,7 +2,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 
 predicate step(Expr e1, Expr e2) {
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma.getMethod().hasName("step") and
     ma = e2 and
     ma.getQualifier() = e1
@@ -10,14 +10,14 @@ predicate step(Expr e1, Expr e2) {
 }
 
 predicate isSink0(Expr sink) {
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma.getMethod().hasName("sink") and
     ma.getAnArgument() = sink
   )
 }
 
 module FirstConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodAccess).getMethod().hasName("src") }
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("src") }
 
   predicate isSink(DataFlow::Node n) { any() }
 
@@ -29,7 +29,7 @@ module FirstConfig implements DataFlow::ConfigSig {
 module FirstFlow = DataFlow::Global<FirstConfig>;
 
 module SecondConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodAccess).getMethod().hasName("src") }
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("src") }
 
   predicate isSink(DataFlow::Node n) { isSink0(n.asExpr()) }
 

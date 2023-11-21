@@ -1,3 +1,10 @@
+## 0.0.8
+
+No user-facing changes.
+
+## 0.0.7
+
+Support for extracting source candidates.
 ## 0.0.6
 
 No user-facing changes.

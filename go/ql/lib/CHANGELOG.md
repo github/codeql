@@ -1,3 +1,23 @@
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Added the [gin cors](https://github.com/gin-contrib/cors) library to the CorsMisconfiguration.ql query
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through an array was not tracked correctly in some circumstances. Taint flow was tracked correctly.
+
+## 0.7.2
+
+### Minor Analysis Improvements
+
+* Added [Request.Cookie](https://pkg.go.dev/net/http#Request.Cookie) to reflected XSS sanitizers.
+
+### Bug Fixes
+
+* Fixed a bug where data flow nodes in files that are not in the project being analyzed (such as libraries) and are not contained within a function were not given an enclosing `Callable`. Note that for nodes that are not contained within a function, the enclosing callable is considered to be the file itself. This may cause some minor changes to results.
+
 ## 0.7.1
 
 ### Minor Analysis Improvements

@@ -120,7 +120,12 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
 
   override ValueOrRefType getDeclaringType() { properties(this, _, result, _, _) }
 
-  override Type getType() { properties(this, _, _, getTypeRef(result), _) }
+  override Type getType() {
+    properties(this, _, _, result, _)
+    or
+    not properties(this, _, _, any(Type t), _) and
+    properties(this, _, _, getTypeRef(result), _)
+  }
 
   /**
    * Holds if this property is automatically implemented. For example, `P1`
@@ -260,7 +265,12 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
 
   override ValueOrRefType getDeclaringType() { indexers(this, _, result, _, _) }
 
-  override Type getType() { indexers(this, _, _, getTypeRef(result), _) }
+  override Type getType() {
+    indexers(this, _, _, result, _)
+    or
+    not indexers(this, _, _, any(Type t), _) and
+    indexers(this, _, _, getTypeRef(result), _)
+  }
 
   override IndexerAccess getAnAccess() { result.getTarget() = this }
 

@@ -14,6 +14,7 @@ namespace Microsoft
                 public static object GetServiceOrCreateInstance(System.IServiceProvider provider, System.Type type) => throw null;
                 public static T GetServiceOrCreateInstance<T>(System.IServiceProvider provider) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)32767)]
             public class ActivatorUtilitiesConstructorAttribute : System.Attribute
             {
                 public ActivatorUtilitiesConstructorAttribute() => throw null;

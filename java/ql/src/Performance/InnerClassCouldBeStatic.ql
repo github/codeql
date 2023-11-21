@@ -74,7 +74,7 @@ RefType enclosingInstanceAccess(Expr expr) {
       not inherits(enclosing, fa.getVariable())
     )
     or
-    exists(MethodAccess ma | ma = expr |
+    exists(MethodCall ma | ma = expr |
       result = ma.getMethod().getDeclaringType() and
       not exists(ma.getQualifier()) and
       not ma.getMethod().isStatic() and

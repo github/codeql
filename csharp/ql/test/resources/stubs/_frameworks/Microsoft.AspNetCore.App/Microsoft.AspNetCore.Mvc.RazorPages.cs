@@ -400,6 +400,7 @@ namespace Microsoft
                         public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor> LoadAsync(Microsoft.AspNetCore.Mvc.RazorPages.PageActionDescriptor actionDescriptor);
                         public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor> LoadAsync(Microsoft.AspNetCore.Mvc.RazorPages.PageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Http.EndpointMetadataCollection endpointMetadata) => throw null;
                     }
+                    [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = true)]
                     public class PageModelAttribute : System.Attribute
                     {
                         public PageModelAttribute() => throw null;
@@ -464,6 +465,7 @@ namespace Microsoft
                     System.Action<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, object> CreateModelDisposer(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor);
                     System.Func<Microsoft.AspNetCore.Mvc.RazorPages.PageContext, object> CreateModelFactory(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor descriptor);
                 }
+                [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = true)]
                 public class NonHandlerAttribute : System.Attribute
                 {
                     public NonHandlerAttribute() => throw null;
@@ -604,6 +606,7 @@ namespace Microsoft
                     public virtual Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary ViewData { get => throw null; set { } }
                     public virtual System.Collections.Generic.IList<System.Func<Microsoft.AspNetCore.Mvc.Razor.IRazorPage>> ViewStartFactories { get => throw null; set { } }
                 }
+                [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
                 public class PageContextAttribute : System.Attribute
                 {
                     public PageContextAttribute() => throw null;

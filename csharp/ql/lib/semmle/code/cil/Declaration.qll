@@ -5,6 +5,7 @@
 import CIL
 private import dotnet
 private import semmle.code.csharp.Member as CS
+private import semmle.code.csharp.commons.QualifiedName
 
 /**
  * A declaration. Either a member (`Member`) or a variable (`Variable`).
@@ -23,6 +24,22 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
   }
 
   override Declaration getUnboundDeclaration() { result = this }
+
+  deprecated override predicate hasQualifiedName(string qualifier, string name) {
+    exists(string dqualifier, string dname |
+      this.getDeclaringType().hasQualifiedName(dqualifier, dname) and
+      qualifier = getQualifiedName(dqualifier, dname)
+    ) and
+    name = this.getName()
+  }
+
+  override predicate hasFullyQualifiedName(string qualifier, string name) {
+    exists(string dqualifier, string dname |
+      this.getDeclaringType().hasFullyQualifiedName(dqualifier, dname) and
+      qualifier = getQualifiedName(dqualifier, dname)
+    ) and
+    name = this.getName()
+  }
 }
 
 private CS::Declaration toCSharpNonTypeParameter(Declaration d) { result.matchesHandle(d) }

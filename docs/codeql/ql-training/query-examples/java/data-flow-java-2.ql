@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow::DataFlow
 
-from MethodAccess ma, StringConcat stringConcat
+from MethodCall ma, StringConcat stringConcat
 where
   ma.getMethod().getName().matches("sparql%Query") and
   localFlow(exprNode(stringConcat), exprNode(ma.getArgument(0)))

@@ -22,6 +22,7 @@ namespace Microsoft
                     public abstract System.Collections.Generic.IReadOnlyList<object> Metadata { get; }
                     public abstract System.Type Type { get; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)5, AllowMultiple = true, Inherited = false)]
                 public sealed class RazorCompiledItemAttribute : System.Attribute
                 {
                     public RazorCompiledItemAttribute(System.Type type, string kind, string identifier) => throw null;
@@ -40,28 +41,33 @@ namespace Microsoft
                     protected System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Razor.Hosting.RazorCompiledItemAttribute> LoadAttributes(System.Reflection.Assembly assembly) => throw null;
                     public virtual System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Razor.Hosting.RazorCompiledItem> LoadItems(System.Reflection.Assembly assembly) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = true)]
                 public sealed class RazorCompiledItemMetadataAttribute : System.Attribute
                 {
                     public RazorCompiledItemMetadataAttribute(string key, string value) => throw null;
                     public string Key { get => throw null; }
                     public string Value { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
                 public sealed class RazorConfigurationNameAttribute : System.Attribute
                 {
                     public string ConfigurationName { get => throw null; }
                     public RazorConfigurationNameAttribute(string configurationName) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true, Inherited = false)]
                 public sealed class RazorExtensionAssemblyNameAttribute : System.Attribute
                 {
                     public string AssemblyName { get => throw null; }
                     public RazorExtensionAssemblyNameAttribute(string extensionName, string assemblyName) => throw null;
                     public string ExtensionName { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
                 public sealed class RazorLanguageVersionAttribute : System.Attribute
                 {
                     public RazorLanguageVersionAttribute(string languageVersion) => throw null;
                     public string LanguageVersion { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = true)]
                 public sealed class RazorSourceChecksumAttribute : System.Attribute, Microsoft.AspNetCore.Razor.Hosting.IRazorSourceChecksumMetadata
                 {
                     public string Checksum { get => throw null; }

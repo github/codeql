@@ -34,7 +34,8 @@ cached
 private newtype TIRDataFlowNode =
   TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
   TVariableNode(Variable var, int indirectionIndex) {
-    indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
+    indirectionIndex =
+      [getMinIndirectionsForType(var.getUnspecifiedType()) .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
   TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
     indirectionIndex =
@@ -44,11 +45,12 @@ private newtype TIRDataFlowNode =
   TIndirectArgumentOutNode(ArgumentOperand operand, int indirectionIndex) {
     Ssa::isModifiableByCall(operand, indirectionIndex)
   } or
-  TRawIndirectOperand(Operand op, int indirectionIndex) {
-    Ssa::hasRawIndirectOperand(op, indirectionIndex)
+  TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
+    Ssa::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
   } or
-  TRawIndirectInstruction(Instruction instr, int indirectionIndex) {
-    Ssa::hasRawIndirectInstruction(instr, indirectionIndex)
+  TRawIndirectInstruction0(Node0Impl node, int indirectionIndex) {
+    not exists(node.asOperand()) and
+    Ssa::hasRawIndirectInstruction(node.asInstruction(), indirectionIndex)
   } or
   TFinalParameterNode(Parameter p, int indirectionIndex) {
     exists(Ssa::FinalParameterUse use |
@@ -345,7 +347,9 @@ class Node extends TIRDataFlowNode {
    * Gets the variable corresponding to this node, if any. This can be used for
    * modeling flow in and out of global variables.
    */
-  Variable asVariable() { this = TVariableNode(result, 1) }
+  Variable asVariable() {
+    this = TVariableNode(result, getMinIndirectionsForType(result.getUnspecifiedType()))
+  }
 
   /**
    * Gets the `indirectionIndex`'th indirection of this node's underlying variable, if any.
@@ -353,7 +357,7 @@ class Node extends TIRDataFlowNode {
    * This can be used for modeling flow in and out of global variables.
    */
   Variable asIndirectVariable(int indirectionIndex) {
-    indirectionIndex > 1 and
+    indirectionIndex > getMinIndirectionsForType(result.getUnspecifiedType()) and
     this = TVariableNode(result, indirectionIndex)
   }
 
@@ -431,6 +435,10 @@ private class Node0 extends Node, TNode0 {
 
   override Declaration getFunction() { result = node.getFunction() }
 
+  override Location getLocationImpl() { result = node.getLocation() }
+
+  override string toStringImpl() { result = node.toString() }
+
   override DataFlowType getType() { result = node.getType() }
 
   override predicate isGLValue() { node.isGLValue() }
@@ -447,18 +455,6 @@ class InstructionNode extends Node0 {
 
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
-
-  override Location getLocationImpl() {
-    if exists(instr.getAst().getLocation())
-    then result = instr.getAst().getLocation()
-    else result instanceof UnknownDefaultLocation
-  }
-
-  override string toStringImpl() {
-    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = instr.getAst().toString()
-  }
 }
 
 /**
@@ -472,18 +468,6 @@ class OperandNode extends Node, Node0 {
 
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
-
-  override Location getLocationImpl() {
-    if exists(op.getDef().getAst().getLocation())
-    then result = op.getDef().getAst().getLocation()
-    else result instanceof UnknownDefaultLocation
-  }
-
-  override string toStringImpl() {
-    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = op.getDef().getAst().toString()
-  }
 }
 
 /**
@@ -918,47 +902,145 @@ Type getTypeImpl(Type t, int indirectionIndex) {
   result instanceof UnknownType
 }
 
-/**
- * INTERNAL: Do not use.
- *
- * A node that represents the indirect value of an operand in the IR
- * after `index` number of loads.
- */
-class RawIndirectOperand extends Node, TRawIndirectOperand {
-  Operand operand;
-  int indirectionIndex;
+private module RawIndirectNodes {
+  /**
+   * INTERNAL: Do not use.
+   *
+   * A node that represents the indirect value of an operand in the IR
+   * after `index` number of loads.
+   */
+  private class RawIndirectOperand0 extends Node, TRawIndirectOperand0 {
+    Node0Impl node;
+    int indirectionIndex;
 
-  RawIndirectOperand() { this = TRawIndirectOperand(operand, indirectionIndex) }
+    RawIndirectOperand0() { this = TRawIndirectOperand0(node, indirectionIndex) }
 
-  /** Gets the underlying instruction. */
-  Operand getOperand() { result = operand }
+    /** Gets the underlying instruction. */
+    Operand getOperand() { result = node.asOperand() }
 
-  /** Gets the underlying indirection index. */
-  int getIndirectionIndex() { result = indirectionIndex }
+    /** Gets the underlying indirection index. */
+    int getIndirectionIndex() { result = indirectionIndex }
 
-  override Declaration getFunction() { result = this.getOperand().getDef().getEnclosingFunction() }
+    override Declaration getFunction() {
+      result = this.getOperand().getDef().getEnclosingFunction()
+    }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+    override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override DataFlowType getType() {
-    exists(int sub, DataFlowType type, boolean isGLValue |
-      type = getOperandType(operand, isGLValue) and
-      if isGLValue = true then sub = 1 else sub = 0
-    |
-      result = getTypeImpl(type.getUnspecifiedType(), indirectionIndex - sub)
-    )
+    override DataFlowType getType() {
+      exists(int sub, DataFlowType type, boolean isGLValue |
+        type = getOperandType(this.getOperand(), isGLValue) and
+        if isGLValue = true then sub = 1 else sub = 0
+      |
+        result = getTypeImpl(type.getUnspecifiedType(), indirectionIndex - sub)
+      )
+    }
+
+    final override Location getLocationImpl() {
+      if exists(this.getOperand().getLocation())
+      then result = this.getOperand().getLocation()
+      else result instanceof UnknownDefaultLocation
+    }
+
+    override string toStringImpl() {
+      result = operandNode(this.getOperand()).toStringImpl() + " indirection"
+    }
   }
 
-  final override Location getLocationImpl() {
-    if exists(this.getOperand().getLocation())
-    then result = this.getOperand().getLocation()
-    else result instanceof UnknownDefaultLocation
+  /**
+   * INTERNAL: Do not use.
+   *
+   * A node that represents the indirect value of an instruction in the IR
+   * after `index` number of loads.
+   */
+  private class RawIndirectInstruction0 extends Node, TRawIndirectInstruction0 {
+    Node0Impl node;
+    int indirectionIndex;
+
+    RawIndirectInstruction0() { this = TRawIndirectInstruction0(node, indirectionIndex) }
+
+    /** Gets the underlying instruction. */
+    Instruction getInstruction() { result = node.asInstruction() }
+
+    /** Gets the underlying indirection index. */
+    int getIndirectionIndex() { result = indirectionIndex }
+
+    override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
+
+    override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+    override DataFlowType getType() {
+      exists(int sub, DataFlowType type, boolean isGLValue |
+        type = getInstructionType(this.getInstruction(), isGLValue) and
+        if isGLValue = true then sub = 1 else sub = 0
+      |
+        result = getTypeImpl(type.getUnspecifiedType(), indirectionIndex - sub)
+      )
+    }
+
+    final override Location getLocationImpl() {
+      if exists(this.getInstruction().getLocation())
+      then result = this.getInstruction().getLocation()
+      else result instanceof UnknownDefaultLocation
+    }
+
+    override string toStringImpl() {
+      result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"
+    }
   }
 
-  override string toStringImpl() {
-    result = operandNode(this.getOperand()).toStringImpl() + " indirection"
+  /**
+   * INTERNAL: Do not use.
+   *
+   * A node that represents the indirect value of an operand in the IR
+   * after a number of loads.
+   */
+  class RawIndirectOperand extends Node {
+    int indirectionIndex;
+    Operand operand;
+
+    RawIndirectOperand() {
+      exists(Node0Impl node | operand = node.asOperand() |
+        this = TRawIndirectOperand0(node, indirectionIndex)
+        or
+        this = TRawIndirectInstruction0(node, indirectionIndex)
+      )
+    }
+
+    /** Gets the operand associated with this node. */
+    Operand getOperand() { result = operand }
+
+    /** Gets the underlying indirection index. */
+    int getIndirectionIndex() { result = indirectionIndex }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * A node that represents the indirect value of an instruction in the IR
+   * after a number of loads.
+   */
+  class RawIndirectInstruction extends Node {
+    int indirectionIndex;
+    Instruction instr;
+
+    RawIndirectInstruction() {
+      exists(Node0Impl node | instr = node.asInstruction() |
+        this = TRawIndirectOperand0(node, indirectionIndex)
+        or
+        this = TRawIndirectInstruction0(node, indirectionIndex)
+      )
+    }
+
+    /** Gets the instruction associated with this node. */
+    Instruction getInstruction() { result = instr }
+
+    /** Gets the underlying indirection index. */
+    int getIndirectionIndex() { result = indirectionIndex }
   }
 }
+
+import RawIndirectNodes
 
 /**
  * INTERNAL: do not use.
@@ -1019,48 +1101,6 @@ class UninitializedNode extends Node {
 
   /** Gets the uninitialized local variable corresponding to this node. */
   LocalVariable getLocalVariable() { result = v }
-}
-
-/**
- * INTERNAL: Do not use.
- *
- * A node that represents the indirect value of an instruction in the IR
- * after `index` number of loads.
- */
-class RawIndirectInstruction extends Node, TRawIndirectInstruction {
-  Instruction instr;
-  int indirectionIndex;
-
-  RawIndirectInstruction() { this = TRawIndirectInstruction(instr, indirectionIndex) }
-
-  /** Gets the underlying instruction. */
-  Instruction getInstruction() { result = instr }
-
-  /** Gets the underlying indirection index. */
-  int getIndirectionIndex() { result = indirectionIndex }
-
-  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
-
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
-
-  override DataFlowType getType() {
-    exists(int sub, DataFlowType type, boolean isGLValue |
-      type = getInstructionType(instr, isGLValue) and
-      if isGLValue = true then sub = 1 else sub = 0
-    |
-      result = getTypeImpl(type.getUnspecifiedType(), indirectionIndex - sub)
-    )
-  }
-
-  final override Location getLocationImpl() {
-    if exists(this.getInstruction().getLocation())
-    then result = this.getInstruction().getLocation()
-    else result instanceof UnknownDefaultLocation
-  }
-
-  override string toStringImpl() {
-    result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"
-  }
 }
 
 private module GetConvertedResultExpression {
@@ -1236,31 +1276,90 @@ abstract private class IndirectExprNodeBase extends Node {
   }
 }
 
-private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase instanceof IndirectOperand
-{
-  IndirectOperandIndirectExprNode() {
-    exists(Expr e, int n, int indirectionIndex |
-      indirectExprNodeShouldBeIndirectOperand(this, e, n, indirectionIndex) and
-      not indirectExprNodeShouldBeIndirectOperand(_, e, n + 1, indirectionIndex)
-    )
+/** A signature for converting an indirect node to an expression. */
+private signature module IndirectNodeToIndirectExprSig {
+  /** The indirect node class to be converted to an expression */
+  class IndirectNode;
+
+  /**
+   * Holds if the indirect expression at indirection index `indirectionIndex`
+   * of `node` is `e`. The integer `n` specifies how many conversions has been
+   * applied to `node`.
+   */
+  predicate indirectNodeHasIndirectExpr(IndirectNode node, Expr e, int n, int indirectionIndex);
+}
+
+/**
+ * A module that implements the logic for deciding whether an indirect node
+ * should be an `IndirectExprNode`.
+ */
+private module IndirectNodeToIndirectExpr<IndirectNodeToIndirectExprSig Sig> {
+  import Sig
+
+  /**
+   * This predicate shifts the indirection index by one when `conv` is a
+   * `ReferenceDereferenceExpr`.
+   *
+   * This is necessary because `ReferenceDereferenceExpr` is a conversion
+   * in the AST, but appears as a `LoadInstruction` in the IR.
+   */
+  bindingset[e, indirectionIndex]
+  private predicate adjustForReference(
+    Expr e, int indirectionIndex, Expr conv, int adjustedIndirectionIndex
+  ) {
+    conv.(ReferenceDereferenceExpr).getExpr() = e and
+    adjustedIndirectionIndex = indirectionIndex - 1
+    or
+    not conv instanceof ReferenceDereferenceExpr and
+    conv = e and
+    adjustedIndirectionIndex = indirectionIndex
   }
 
-  final override Expr getConvertedExpr(int n, int index) {
-    indirectExprNodeShouldBeIndirectOperand(this, result, n, index)
+  /** Holds if `node` should be an `IndirectExprNode`. */
+  predicate charpred(IndirectNode node) {
+    exists(Expr e, int n, int indirectionIndex |
+      indirectNodeHasIndirectExpr(node, e, n, indirectionIndex) and
+      not exists(Expr conv, int adjustedIndirectionIndex |
+        adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
+        indirectNodeHasIndirectExpr(_, conv, n + 1, adjustedIndirectionIndex)
+      )
+    )
   }
 }
 
-private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase instanceof IndirectInstruction
+private module IndirectOperandIndirectExprNodeImpl implements IndirectNodeToIndirectExprSig {
+  class IndirectNode = IndirectOperand;
+
+  predicate indirectNodeHasIndirectExpr = indirectExprNodeShouldBeIndirectOperand/4;
+}
+
+module IndirectOperandToIndirectExpr =
+  IndirectNodeToIndirectExpr<IndirectOperandIndirectExprNodeImpl>;
+
+private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase instanceof IndirectOperand
 {
-  IndirectInstructionIndirectExprNode() {
-    exists(Expr e, int n, int indirectionIndex |
-      indirectExprNodeShouldBeIndirectInstruction(this, e, n, indirectionIndex) and
-      not indirectExprNodeShouldBeIndirectInstruction(_, e, n + 1, indirectionIndex)
-    )
-  }
+  IndirectOperandIndirectExprNode() { IndirectOperandToIndirectExpr::charpred(this) }
 
   final override Expr getConvertedExpr(int n, int index) {
-    indirectExprNodeShouldBeIndirectInstruction(this, result, n, index)
+    IndirectOperandToIndirectExpr::indirectNodeHasIndirectExpr(this, result, n, index)
+  }
+}
+
+private module IndirectInstructionIndirectExprNodeImpl implements IndirectNodeToIndirectExprSig {
+  class IndirectNode = IndirectInstruction;
+
+  predicate indirectNodeHasIndirectExpr = indirectExprNodeShouldBeIndirectInstruction/4;
+}
+
+module IndirectInstructionToIndirectExpr =
+  IndirectNodeToIndirectExpr<IndirectInstructionIndirectExprNodeImpl>;
+
+private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase instanceof IndirectInstruction
+{
+  IndirectInstructionIndirectExprNode() { IndirectInstructionToIndirectExpr::charpred(this) }
+
+  final override Expr getConvertedExpr(int n, int index) {
+    IndirectInstructionToIndirectExpr::indirectNodeHasIndirectExpr(this, result, n, index)
   }
 }
 
@@ -1600,26 +1699,29 @@ private module Cached {
   predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
   private predicate indirectionOperandFlow(RawIndirectOperand nodeFrom, Node nodeTo) {
-    // Reduce the indirection count by 1 if we're passing through a `LoadInstruction`.
-    exists(int ind, LoadInstruction load |
-      hasOperandAndIndex(nodeFrom, load.getSourceAddressOperand(), ind) and
-      nodeHasInstruction(nodeTo, load, ind - 1)
-    )
-    or
-    // If an operand flows to an instruction, then the indirection of
-    // the operand also flows to the indirection of the instruction.
-    exists(Operand operand, Instruction instr, int indirectionIndex |
-      simpleInstructionLocalFlowStep(operand, instr) and
-      hasOperandAndIndex(nodeFrom, operand, pragma[only_bind_into](indirectionIndex)) and
-      hasInstructionAndIndex(nodeTo, instr, pragma[only_bind_into](indirectionIndex))
-    )
-    or
-    // If there's indirect flow to an operand, then there's also indirect
-    // flow to the operand after applying some pointer arithmetic.
-    exists(PointerArithmeticInstruction pointerArith, int indirectionIndex |
-      hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(),
-        pragma[only_bind_into](indirectionIndex)) and
-      hasInstructionAndIndex(nodeTo, pointerArith, pragma[only_bind_into](indirectionIndex))
+    nodeFrom != nodeTo and
+    (
+      // Reduce the indirection count by 1 if we're passing through a `LoadInstruction`.
+      exists(int ind, LoadInstruction load |
+        hasOperandAndIndex(nodeFrom, load.getSourceAddressOperand(), ind) and
+        nodeHasInstruction(nodeTo, load, ind - 1)
+      )
+      or
+      // If an operand flows to an instruction, then the indirection of
+      // the operand also flows to the indirection of the instruction.
+      exists(Operand operand, Instruction instr, int indirectionIndex |
+        simpleInstructionLocalFlowStep(operand, instr) and
+        hasOperandAndIndex(nodeFrom, operand, pragma[only_bind_into](indirectionIndex)) and
+        hasInstructionAndIndex(nodeTo, instr, pragma[only_bind_into](indirectionIndex))
+      )
+      or
+      // If there's indirect flow to an operand, then there's also indirect
+      // flow to the operand after applying some pointer arithmetic.
+      exists(PointerArithmeticInstruction pointerArith, int indirectionIndex |
+        hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(),
+          pragma[only_bind_into](indirectionIndex)) and
+        hasInstructionAndIndex(nodeTo, pointerArith, pragma[only_bind_into](indirectionIndex))
+      )
     )
   }
 
@@ -1645,6 +1747,7 @@ private module Cached {
   private predicate indirectionInstructionFlow(
     RawIndirectInstruction nodeFrom, IndirectOperand nodeTo
   ) {
+    nodeFrom != nodeTo and
     // If there's flow from an instruction to an operand, then there's also flow from the
     // indirect instruction to the indirect operand.
     exists(Operand operand, Instruction instr, int indirectionIndex |

@@ -46,7 +46,7 @@ predicate checksReferenceEquality(EqualsMethod em) {
   // Check whether `em` delegates to another method checking reference equality.
   // More precisely, we check whether the body of `em` is of the form `return super.equals(o);`,
   // where `o` is the (only) parameter of `em`, and the invoked method is a reference equality check.
-  exists(SuperMethodAccess sup |
+  exists(SuperMethodCall sup |
     sup = em.getBody().(SingletonBlock).getStmt().(ReturnStmt).getResult() and
     sup.getArgument(0) = em.getParameter(0).getAnAccess() and
     checksReferenceEquality(sup.getCallee())

@@ -341,6 +341,7 @@ namespace Microsoft
                 Success = 1,
                 SuccessRehashNeeded = 2,
             }
+            [System.AttributeUsage((System.AttributeTargets)128)]
             public class PersonalDataAttribute : System.Attribute
             {
                 public PersonalDataAttribute() => throw null;

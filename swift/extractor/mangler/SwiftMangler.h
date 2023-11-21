@@ -100,6 +100,10 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitUnboundGenericType(const swift::UnboundGenericType* type);
   SwiftMangledName visitReferenceStorageType(const swift::ReferenceStorageType* type);
   SwiftMangledName visitParametrizedProtocolType(const swift::ParameterizedProtocolType* type);
+  SwiftMangledName visitPackArchetypeType(const swift::PackArchetypeType* type);
+  SwiftMangledName visitPackType(const swift::PackType* type);
+  SwiftMangledName visitPackElementType(const swift::PackElementType* type);
+  SwiftMangledName visitPackExpansionType(const swift::PackExpansionType* type);
 
  private:
   std::unordered_map<const swift::Decl*, unsigned> preloadedExtensionIndexes;

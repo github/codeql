@@ -7,7 +7,7 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node n) {
-    n.asExpr() = any(MethodAccess ma | ma.getMethod().getName() = "sink").getAnArgument()
+    n.asExpr() = any(MethodCall ma | ma.getMethod().getName() = "sink").getAnArgument()
   }
 }
 

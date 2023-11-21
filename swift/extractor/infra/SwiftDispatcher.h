@@ -138,6 +138,12 @@ class SwiftDispatcher {
       // this will be treated on emission
       return undefined_label;
     }
+    if constexpr (std::derived_from<swift::VarDecl, E>) {
+      // canonicalize all VarDecls. For details, see doc of getCanonicalVarDecl
+      if (auto var = llvm::dyn_cast<const swift::VarDecl>(e)) {
+        e = var->getCanonicalVarDecl();
+      }
+    }
     auto& stored = store[e];
     if (!stored.valid()) {
       auto inserted = fetching.insert(e);

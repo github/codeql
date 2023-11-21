@@ -636,4 +636,37 @@ codeql::RegexLiteralExpr ExprTranslator::translateRegexLiteralExpr(
   return entry;
 }
 
+codeql::SingleValueStmtExpr ExprTranslator::translateSingleValueStmtExpr(
+    const swift::SingleValueStmtExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.stmt = dispatcher.fetchLabel(expr.getStmt());
+  return entry;
+}
+
+codeql::PackExpansionExpr ExprTranslator::translatePackExpansionExpr(
+    const swift::PackExpansionExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.pattern_expr = dispatcher.fetchLabel(expr.getPatternExpr());
+  return entry;
+}
+
+codeql::PackElementExpr ExprTranslator::translatePackElementExpr(
+    const swift::PackElementExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher.fetchLabel(expr.getPackRefExpr());
+  return entry;
+}
+
+codeql::CopyExpr ExprTranslator::translateCopyExpr(const swift::CopyExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
+  return entry;
+}
+
+codeql::ConsumeExpr ExprTranslator::translateConsumeExpr(const swift::ConsumeExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
+  return entry;
+}
+
 }  // namespace codeql

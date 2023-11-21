@@ -43,11 +43,9 @@ module KindValidation<KindValidationConfigSig Config> {
       or
       this.matches([
           // shared
-          "encryption-%", "qltest%", "test-%",
+          "credentials-%", "encryption-%", "qltest%", "test-%",
           // Java-only currently, but may be shared in the future
           "regex-use%",
-          // JavaScript-only currently, but may be shared in the future
-          "credentials-%",
           // Swift-only currently, but may be shared in the future
           "%string-%length", "weak-hash-input-%"
         ])

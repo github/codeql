@@ -79,6 +79,7 @@ namespace Microsoft
                     {
                         Microsoft.AspNetCore.Mvc.Razor.Compilation.IViewCompiler GetCompiler();
                     }
+                    [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true)]
                     public class RazorViewAttribute : System.Attribute
                     {
                         public RazorViewAttribute(string path, System.Type viewType) => throw null;
@@ -107,6 +108,7 @@ namespace Microsoft
                 }
                 namespace Internal
                 {
+                    [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
                     public class RazorInjectAttribute : System.Attribute
                     {
                         public RazorInjectAttribute() => throw null;

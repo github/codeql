@@ -4,7 +4,6 @@
  * @kind problem
  * @id cpp/quantum-readiness/cbom/hash-algorithms
  * @problem.severity error
- * @precision high
  * @tags cbom
  *       cryptography
  */

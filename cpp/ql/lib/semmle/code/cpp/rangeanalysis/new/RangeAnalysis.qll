@@ -17,9 +17,7 @@ private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
  * `upper` is true, and can be traced back to a guard represented by `reason`.
  */
 predicate bounded(Expr e, Bound b, float delta, boolean upper, Reason reason) {
-  exists(SemanticExprConfig::Expr semExpr |
-    semExpr.getUnconverted().getUnconvertedResultExpression() = e
-  |
+  exists(SemanticExprConfig::Expr semExpr | semExpr.getUnconvertedResultExpression() = e |
     semBounded(semExpr, b, delta, upper, reason)
   )
 }
@@ -30,9 +28,7 @@ predicate bounded(Expr e, Bound b, float delta, boolean upper, Reason reason) {
  * The `Expr` may be a conversion.
  */
 predicate convertedBounded(Expr e, Bound b, float delta, boolean upper, Reason reason) {
-  exists(SemanticExprConfig::Expr semExpr |
-    semExpr.getConverted().getConvertedResultExpression() = e
-  |
+  exists(SemanticExprConfig::Expr semExpr | semExpr.getConvertedResultExpression() = e |
     semBounded(semExpr, b, delta, upper, reason)
   )
 }

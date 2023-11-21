@@ -43,6 +43,7 @@ namespace Semmle.Extraction.Tests
                 "<PackageReference Include=\"DotNetAnalyzers.DocumentationAnalyzers\" Version=\"1.0.0-beta.59\" PrivateAssets=\"all\" />",
                 "<PackageReference Version=\"7.0.0\" Include=\"Microsoft.CodeAnalysis.NetAnalyzers\"PrivateAssets=\"all\" />",
                 "<PackageReference Include=\"StyleCop.Analyzers\" Version=\"1.2.0-beta.406\">",
+                "<!-- <PackageReference Include=\"NUnit\" Version=\"3.10.1\" /> -->",
                 "<FrameworkReference Include=\"My.Framework\"/>"
             };
             var fileContent = new TestFileContent(lines);

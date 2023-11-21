@@ -93,6 +93,7 @@ namespace Microsoft
                 public static Microsoft.Extensions.Logging.ILoggingBuilder Configure(this Microsoft.Extensions.Logging.ILoggingBuilder builder, System.Action<Microsoft.Extensions.Logging.LoggerFactoryOptions> action) => throw null;
                 public static Microsoft.Extensions.Logging.ILoggingBuilder SetMinimumLevel(this Microsoft.Extensions.Logging.ILoggingBuilder builder, Microsoft.Extensions.Logging.LogLevel level) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
             public class ProviderAliasAttribute : System.Attribute
             {
                 public string Alias { get => throw null; }

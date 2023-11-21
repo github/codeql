@@ -30,7 +30,7 @@ module BeanShellInjectionConfig implements DataFlow::ConfigSig {
       cie = succ.asExpr()
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("setScript") and
       ma.getMethod()
           .getDeclaringType()

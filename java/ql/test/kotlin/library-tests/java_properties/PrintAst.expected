@@ -18,5 +18,5 @@ Use.kt:
 #    3|         0: [ReturnStmt] return ...
 #    3|           0: [ImplicitNotNullExpr] <implicit not null>
 #    3|             0: [TypeAccess] String
-#    3|             1: [MethodAccess] getFoo(...)
+#    3|             1: [MethodCall] getFoo(...)
 #    3|               -1: [VarAccess] prop

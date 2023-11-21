@@ -148,6 +148,7 @@ use_for_null = _annotate(null=True)
 _Pragma("qltest_skip")
 _Pragma("qltest_collapse_hierarchy")
 _Pragma("qltest_uncollapse_hierarchy")
+qltest.test_with = lambda cls: _annotate(test_with=cls)
 
 ql.default_doc_name = lambda doc: _annotate(doc_name=doc)
 ql.hideable = _annotate(hideable=True)

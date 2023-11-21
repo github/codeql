@@ -45,7 +45,7 @@ class RightShiftOp extends Expr {
   }
 }
 
-private predicate boundedRead(RValue read) {
+private predicate boundedRead(VarRead read) {
   exists(SsaVariable v, ConditionBlock cb, ComparisonExpr comp, boolean testIsTrue |
     read = v.getAUse() and
     cb.controls(read.getBasicBlock(), testIsTrue) and
@@ -57,7 +57,7 @@ private predicate boundedRead(RValue read) {
   )
 }
 
-private predicate castCheck(RValue read) {
+private predicate castCheck(VarRead read) {
   exists(EqualityTest eq, CastExpr cast |
     cast.getExpr() = read and
     eq.hasOperands(cast, read.getVariable().getAnAccess())

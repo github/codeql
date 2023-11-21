@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "BinaryFormatter", "(System.Runtime.Serialization.ISurrogateSelector,System.Runtime.Serialization.StreamingContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "BinaryFormatter", "(System.Runtime.Serialization.ISurrogateSelector,System.Runtime.Serialization.StreamingContext)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "get_Binder", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "get_Context", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "get_SurrogateSelector", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "set_Binder", "(System.Runtime.Serialization.SerializationBinder)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "set_Context", "(System.Runtime.Serialization.StreamingContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "set_SurrogateSelector", "(System.Runtime.Serialization.ISurrogateSelector)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "Deserialize", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "Serialize", "(System.IO.Stream,System.Object)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "get_AssemblyFormat", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "get_FilterLevel", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "get_TypeFormat", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "set_AssemblyFormat", "(System.Runtime.Serialization.Formatters.FormatterAssemblyStyle)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "set_FilterLevel", "(System.Runtime.Serialization.Formatters.TypeFilterLevel)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "set_TypeFormat", "(System.Runtime.Serialization.Formatters.FormatterTypeStyle)", "summary", "df-generated"]

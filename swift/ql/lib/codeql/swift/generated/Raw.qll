@@ -1121,6 +1121,42 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that forces value to be moved. In the example below, `consume` marks the move expression:
+   *
+   * ```
+   * let y = ...
+   * let x = consume y
+   * ```
+   */
+  class ConsumeExpr extends @consume_expr, Expr {
+    override string toString() { result = "ConsumeExpr" }
+
+    /**
+     * Gets the sub expression of this consume expression.
+     */
+    Expr getSubExpr() { consume_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
+   *
+   * ```
+   * let y = ...
+   * let x = copy y
+   * ```
+   */
+  class CopyExpr extends @copy_expr, Expr {
+    override string toString() { result = "CopyExpr" }
+
+    /**
+     * Gets the sub expression of this copy expression.
+     */
+    Expr getSubExpr() { copy_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class DeclRefExpr extends @decl_ref_expr, Expr {
     override string toString() { result = "DeclRefExpr" }
@@ -1525,6 +1561,52 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A pack element expression is a child of PackExpansionExpr.
+   *
+   * In the following example, `each t` on the second line is the pack element expression:
+   * ```
+   * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+   *   return (repeat each t)
+   * }
+   * ```
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class PackElementExpr extends @pack_element_expr, Expr {
+    override string toString() { result = "PackElementExpr" }
+
+    /**
+     * Gets the sub expression of this pack element expression.
+     */
+    Expr getSubExpr() { pack_element_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A pack expansion expression.
+   *
+   * In the following example, `repeat each t` on the second line is the pack expansion expression:
+   * ```
+   * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+   *   return (repeat each t)
+   * }
+   * ```
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class PackExpansionExpr extends @pack_expansion_expr, Expr {
+    override string toString() { result = "PackExpansionExpr" }
+
+    /**
+     * Gets the pattern expression of this pack expansion expression.
+     */
+    Expr getPatternExpr() { pack_expansion_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A placeholder substituting property initializations with `=` when the property has a property
    * wrapper with an initializer.
    */
@@ -1569,6 +1651,19 @@ module Raw {
      * Gets the `index`th element of this sequence expression (0-based).
      */
     Expr getElement(int index) { sequence_expr_elements(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that wraps a statement which produces a single value.
+   */
+  class SingleValueStmtExpr extends @single_value_stmt_expr, Expr {
+    override string toString() { result = "SingleValueStmtExpr" }
+
+    /**
+     * Gets the statement of this single value statement expression.
+     */
+    Stmt getStmt() { single_value_stmt_exprs(this, result) }
   }
 
   /**
@@ -1782,6 +1877,19 @@ module Raw {
    */
   class BinaryExpr extends @binary_expr, ApplyExpr {
     override string toString() { result = "BinaryExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:
+   *
+   * ```
+   * let y = ...
+   * let x = _borrow y
+   * ```
+   */
+  class BorrowExpr extends @borrow_expr, IdentityExpr {
+    override string toString() { result = "BorrowExpr" }
   }
 
   /**
@@ -2454,9 +2562,9 @@ module Raw {
     override string toString() { result = "NamedPattern" }
 
     /**
-     * Gets the name of this named pattern.
+     * Gets the variable declaration of this named pattern.
      */
-    string getName() { named_patterns(this, result) }
+    VarDecl getVarDecl() { named_patterns(this, result) }
   }
 
   /**
@@ -2609,11 +2717,6 @@ module Raw {
     override string toString() { result = "CaseStmt" }
 
     /**
-     * Gets the body of this case statement.
-     */
-    Stmt getBody() { case_stmts(this, result) }
-
-    /**
      * Gets the `index`th label of this case statement (0-based).
      */
     CaseLabelItem getLabel(int index) { case_stmt_labels(this, index, result) }
@@ -2622,6 +2725,11 @@ module Raw {
      * Gets the `index`th variable of this case statement (0-based).
      */
     VarDecl getVariable(int index) { case_stmt_variables(this, index, result) }
+
+    /**
+     * Gets the body of this case statement.
+     */
+    Stmt getBody() { case_stmts(this, result) }
   }
 
   /**
@@ -2897,6 +3005,12 @@ module Raw {
 
     /**
      * Gets the canonical type of this type.
+     *
+     * This is the unique type we get after resolving aliases and desugaring. For example, given
+     * ```
+     * typealias MyInt = Int
+     * ```
+     * then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
      */
     Type getCanonicalType() { types(this, _, result) }
   }
@@ -3045,6 +3159,59 @@ module Raw {
      * Gets the module of this module type.
      */
     ModuleDecl getModule() { module_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A type of PackElementExpr, see PackElementExpr for more information.
+   */
+  class PackElementType extends @pack_element_type, Type {
+    override string toString() { result = "PackElementType" }
+
+    /**
+     * Gets the pack type of this pack element type.
+     */
+    Type getPackType() { pack_element_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A type of PackExpansionExpr, see PackExpansionExpr for more information.
+   */
+  class PackExpansionType extends @pack_expansion_type, Type {
+    override string toString() { result = "PackExpansionType" }
+
+    /**
+     * Gets the pattern type of this pack expansion type.
+     */
+    Type getPatternType() { pack_expansion_types(this, result, _) }
+
+    /**
+     * Gets the count type of this pack expansion type.
+     */
+    Type getCountType() { pack_expansion_types(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An actual type of a pack expression at the instatiation point.
+   *
+   * In the following example, PackType will appear around `makeTuple` call site as `Pack{String, Int}`:
+   * ```
+   * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) { ... }
+   * makeTuple("A", 2)
+   * ```
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class PackType extends @pack_type, Type {
+    override string toString() { result = "PackType" }
+
+    /**
+     * Gets the `index`th element of this pack type (0-based).
+     */
+    Type getElement(int index) { pack_type_elements(this, index, result) }
   }
 
   /**
@@ -3374,6 +3541,11 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class LocalArchetypeType extends @local_archetype_type, ArchetypeType { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class NominalType extends @nominal_type, NominalOrBoundGenericNominalType { }
 
   /**
@@ -3393,9 +3565,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An archetype type of PackType.
    */
-  class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {
-    override string toString() { result = "OpenedArchetypeType" }
+  class PackArchetypeType extends @pack_archetype_type, ArchetypeType {
+    override string toString() { result = "PackArchetypeType" }
   }
 
   /**
@@ -3452,9 +3625,24 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An archetype type of PackElementType.
+   */
+  class ElementArchetypeType extends @element_archetype_type, LocalArchetypeType {
+    override string toString() { result = "ElementArchetypeType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class EnumType extends @enum_type, NominalType {
     override string toString() { result = "EnumType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class OpenedArchetypeType extends @opened_archetype_type, LocalArchetypeType {
+    override string toString() { result = "OpenedArchetypeType" }
   }
 
   /**

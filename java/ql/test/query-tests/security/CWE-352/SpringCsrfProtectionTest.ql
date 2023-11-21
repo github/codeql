@@ -7,7 +7,7 @@ module SpringCsrfProtectionTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasSpringCsrfProtectionDisabled" and
-    exists(MethodAccess call | disablesSpringCsrfProtection(call) |
+    exists(MethodCall call | disablesSpringCsrfProtection(call) |
       call.getLocation() = location and
       element = call.toString() and
       value = ""

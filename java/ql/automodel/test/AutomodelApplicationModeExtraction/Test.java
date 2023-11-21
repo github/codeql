@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 import java.io.File;
 import java.nio.file.FileVisitOption;
 import java.net.URLConnection;
+import java.util.concurrent.FutureTask;
 
 class Test {
 	public static void main(String[] args) throws Exception {
@@ -66,5 +67,16 @@ class Test {
 class OverrideTest extends Exception {
 	public void printStackTrace(PrintWriter writer) { // writer is a source candidate because it overrides an existing method
 		return;
+	}
+
+}
+
+class TaskUtils {
+	public FutureTask getTask() {
+		FutureTask ft = new FutureTask(() -> {
+			//           ^-- no sink candidate for the `this` qualifier of a constructor
+			return 42;
+		});
+		return ft;
 	}
 }

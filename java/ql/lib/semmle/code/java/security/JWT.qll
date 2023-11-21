@@ -6,7 +6,7 @@ private import semmle.code.java.dataflow.DataFlow
 /** A method access that assigns signing keys to a JWT parser. */
 class JwtParserWithInsecureParseSource extends DataFlow::Node {
   JwtParserWithInsecureParseSource() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m.getDeclaringType().getAnAncestor() instanceof TypeJwtParser or
       m.getDeclaringType().getAnAncestor() instanceof TypeJwtParserBuilder
     |
@@ -25,7 +25,7 @@ class JwtParserWithInsecureParseSource extends DataFlow::Node {
  * where the `handler` is considered insecure.
  */
 class JwtParserWithInsecureParseSink extends DataFlow::Node {
-  MethodAccess insecureParseMa;
+  MethodCall insecureParseMa;
 
   JwtParserWithInsecureParseSink() {
     insecureParseMa.getQualifier() = this.asExpr() and
@@ -42,7 +42,10 @@ class JwtParserWithInsecureParseSink extends DataFlow::Node {
   }
 
   /** Gets the method access that does the insecure parsing. */
-  MethodAccess getParseMethodAccess() { result = insecureParseMa }
+  MethodCall getParseMethodCall() { result = insecureParseMa }
+
+  /** DEPRECATED: Alias for `getParseMethodCall`. */
+  deprecated MethodCall getParseMethodAccess() { result = this.getParseMethodCall() }
 }
 
 /**
@@ -63,7 +66,7 @@ private class DefaultJwtParserWithInsecureParseAdditionalFlowStep extends JwtPar
 }
 
 /** Models the builder style of `JwtParser` and `JwtParserBuilder`. */
-private predicate jwtParserStep(Expr parser, MethodAccess ma) {
+private predicate jwtParserStep(Expr parser, MethodCall ma) {
   (
     parser.getType().(RefType).getASourceSupertype*() instanceof TypeJwtParser or
     parser.getType().(RefType).getASourceSupertype*() instanceof TypeJwtParserBuilder
