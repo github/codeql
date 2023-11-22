@@ -316,39 +316,27 @@ def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str)
                    ql_internal="ql_internal" in cls.pragmas)
 
 
-def _patch_class_qldocs(cls: str, qldoc: str, stub_file: pathlib.Path):
+_stub_qldoc_header = "// the following QLdoc is generated: if you need to edit it, do it in the schema file\n"
+
+_class_qldoc_re = re.compile(rf"(?P<qldoc>(?:{_stub_qldoc_header})?/\*\*.*?\*/\s*|^\s*)class\s+(?P<class>\w+)",
+                             re.MULTILINE | re.DOTALL)
+
+
+def _patch_class_qldoc(cls: str, qldoc: str, stub_file: pathlib.Path):
     if not qldoc or not stub_file.exists():
         return
     qldoc = "\n".join(l.rstrip() for l in qldoc.splitlines())
-    tmp = stub_file.with_suffix(f'{stub_file.suffix}.bkp')
-    header = "// the following QLdoc is generated: if you need to edit it, do it in the schema file\n"
     with open(stub_file) as input:
-        qldoc_start = None
-        qldoc_end = None
-        class_start = None
-        for lineno, line in enumerate(input, 1):
-            if line == header:
-                qldoc_start = lineno
-            if line.startswith("/**") and lineno - 1 != qldoc_start:
-                qldoc_start = lineno
-            if line.endswith(" */\n"):
-                qldoc_end = lineno + 1
-            elif line.startswith(f"class {cls}"):
-                class_start = lineno
-                break
-        assert class_start, stub_file
-        assert bool(qldoc_start) == bool(qldoc_end), stub_file
-        if not qldoc_start or qldoc_end != class_start:
-            qldoc_start = class_start
-        input.seek(0)
-        with open(tmp, 'w') as output:
-            for lineno, line in enumerate(input, 1):
-                if lineno == qldoc_start:
-                    print(header, end='', file=output)
-                    print(qldoc, file=output)
-                if lineno < qldoc_start or lineno >= class_start:
-                    print(line, end='', file=output)
-    tmp.rename(stub_file)
+        contents = input.read()
+    for match in _class_qldoc_re.finditer(contents):
+        if match["class"] == cls:
+            qldoc_start, qldoc_end = match.span("qldoc")
+            contents = f"{contents[:qldoc_start]}{_stub_qldoc_header}{qldoc}\n{contents[qldoc_end:]}"
+            tmp = stub_file.with_suffix(f"{stub_file.suffix}.bkp")
+            with open(tmp, "w") as out:
+                out.write(contents)
+            tmp.rename(stub_file)
+            return
 
 
 def generate(opts, renderer):
@@ -404,7 +392,7 @@ def generate(opts, renderer):
                 renderer.render(stub, stub_file)
             else:
                 qldoc = renderer.render_str(stub, template='ql_stub_class_qldoc')
-                _patch_class_qldocs(c.name, qldoc, stub_file)
+                _patch_class_qldoc(c.name, qldoc, stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
         renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),
