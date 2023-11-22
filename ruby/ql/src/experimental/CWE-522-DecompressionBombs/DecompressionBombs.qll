@@ -6,11 +6,12 @@ import codeql.ruby.dataflow.RemoteFlowSources
 
 module DecompressionBomb {
   /**
-   * The Sinks of uncontrolled data decompression
+   * A abstract class responsible for extending new decompression sinks
+   *
+   * can be a path, stream of compressed data,
+   * or a call to function that use pipe
    */
-  class Sink extends DataFlow::Node {
-    Sink() { this = any(Range r).sink() }
-  }
+  abstract class Sink extends DataFlow::Node { }
 
   /**
    * The additional taint steps that need for creating taint tracking or dataflow.
@@ -22,19 +23,6 @@ module DecompressionBomb {
      * Holds if there is a additional taint step between pred and succ.
      */
     abstract predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ);
-  }
-
-  /**
-   * A abstract class responsible for extending new decompression sinks
-   */
-  abstract class Range extends API::Node {
-    /**
-     * Gets the sink of responsible for decompression node
-     *
-     * it can be a path, stream of compressed data,
-     * or a call to function that use pipe
-     */
-    abstract DataFlow::Node sink();
   }
 }
 
@@ -54,10 +42,10 @@ module Zlib {
    * `Zlib::GzipReader.zcat`
    * `Zlib::GzipReader.new`
    */
-  class DecompressionBombSink extends DecompressionBomb::Range {
-    DecompressionBombSink() { this = gzipReaderInstance().getMethod(["open", "new", "zcat"]) }
-
-    override DataFlow::Node sink() { result = this.getReturn().asSource() }
+  class DecompressionBombSink extends DecompressionBomb::Sink {
+    DecompressionBombSink() {
+      this = gzipReaderInstance().getMethod(["open", "new", "zcat"]).getReturn().asSource()
+    }
   }
 
   /**
@@ -94,10 +82,10 @@ module ZipInputStream {
    *
    * as source of decompression bombs, they need an additional taint step for a dataflow or taint tracking query
    */
-  class DecompressionBombSink extends DecompressionBomb::Range {
-    DecompressionBombSink() { this = zipInputStream().getMethod(["open", "new"]) }
-
-    override DataFlow::Node sink() { result = this.getReturn().asSource() }
+  class DecompressionBombSink extends DecompressionBomb::Sink {
+    DecompressionBombSink() {
+      this = zipInputStream().getMethod(["open", "new"]).getReturn().asSource()
+    }
   }
 
   /**
@@ -144,12 +132,14 @@ module ZipFile {
    * `ZipEntry.extract`
    * A sanitizer exists inside the nodes which have `entry.size > someOBJ`
    */
-  class DecompressionBombSink extends DecompressionBomb::Range {
-    DecompressionBombSink() { this = rubyZipNode(zipFile()) }
-
-    override DataFlow::Node sink() {
-      result = this.getMethod(["extract", "read"]).getReturn().asSource() and
-      not exists(this.getMethod("size").getReturn().getMethod(">").getParameter(0))
+  class DecompressionBombSink extends DecompressionBomb::Sink {
+    DecompressionBombSink() {
+      exists(API::Node rubyZip | rubyZip = rubyZipNode(zipFile()) |
+        this = rubyZip.getMethod(["extract", "read"]).getReturn().asSource() and
+        not exists(
+          rubyZip.getMethod("size").getReturn().getMethod([">", " <", "<=", " >="]).getParameter(0)
+        )
+      )
     }
   }
 
@@ -166,4 +156,60 @@ module ZipFile {
       )
     }
   }
+
+  predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    exists(API::Node zipFile | zipFile = zipFile().getMethod("open") |
+      nodeFrom = zipFile.getParameter(0).asSink() and
+      nodeTo = rubyZipNode(zipFile).getMethod(["extract", "read"]).getReturn().asSource()
+    )
+  }
+  // /**
+  //  * The additional taint steps that need for creating taint tracking or dataflow for `Zip::File`.
+  //  */
+  // class AdditionalTaintStep1 extends DecompressionBomb::AdditionalTaintStep {
+  //   AdditionalTaintStep1() { this = "AdditionalTaintStep" }
+  //   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  //     exists(API::Node zipFile | zipFile = zipFile().getMethod("open") |
+  //       nodeFrom = zipFile.getParameter(0).asSink() and
+  //       nodeTo = zipFile.asSource()
+  //     )
+  //   }
+  // }
+  // API::Node rubyZipNode2() {
+  //   result = zipFile().getMethod("open")
+  //   or
+  //   result = rubyZipNode2().getMethod(_)
+  //   or
+  //   result = rubyZipNode2().getReturn()
+  //   or
+  //   result = rubyZipNode2().getParameter(_)
+  //   or
+  //   result = rubyZipNode2().getAnElement()
+  //   or
+  //   result = rubyZipNode2().getBlock()
+  // }
+  // /**
+  //  * The additional taint steps that need for creating taint tracking or dataflow for `Zip::File`.
+  //  */
+  // class AdditionalTaintStep2 extends DecompressionBomb::AdditionalTaintStep {
+  //   AdditionalTaintStep2() { this = "AdditionalTaintStep" }
+  //   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  //     exists(API::Node zipFileOpen | zipFileOpen = rubyZipNode2() |
+  //       nodeFrom = zipFileOpen.getReturn().asSource() and
+  //       nodeTo = zipFileOpen.getMethod(["extract", "read"]).getReturn().asSource()
+  //     )
+  //   }
+  // }
+  // /**
+  //  * The additional taint steps that need for creating taint tracking or dataflow for `Zip::File`.
+  //  */
+  // class AdditionalTaintStep3 extends DecompressionBomb::AdditionalTaintStep {
+  //   AdditionalTaintStep3() { this = "AdditionalTaintStep" }
+  //   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  //     exists(API::Node zipFileOpen | zipFileOpen = rubyZipNode2() |
+  //       nodeFrom = zipFileOpen.asCall() and
+  //       nodeTo = zipFileOpen.getMethod(["extract", "read"]).getReturn().asSource()
+  //     )
+  //   }
+  // }
 }

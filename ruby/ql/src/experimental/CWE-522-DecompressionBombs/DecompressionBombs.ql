@@ -11,6 +11,7 @@
  *       external/cwe/cwe-409
  */
 
+import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
@@ -26,10 +27,6 @@ class IoCopyStream extends DataFlow::CallNode {
 }
 
 module BombsConfig implements DataFlow::ConfigSig {
-  predicate isBarrier(DataFlow::Node node) {
-    node.getLocation().hasLocationInfo("%spec%", _, _, _, _)
-  }
-
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionBomb::Sink }
@@ -37,29 +34,24 @@ module BombsConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(DecompressionBomb::AdditionalTaintStep ats).isAdditionalTaintStep(nodeFrom, nodeTo)
     or
-    exists(API::Node n | n = API::root().getMember("File").getMethod("open") |
+    exists(API::Node n | n = API::getTopLevelMember("File").getMethod("open") |
       nodeFrom = n.getParameter(0).asSink() and
       nodeTo = n.getReturn().asSource()
     )
     or
-    exists(File::FileOpen n |
-      nodeFrom = n.getAPathArgument() and
-      nodeTo = n
-    )
+    nodeFrom = nodeTo.(File::FileOpen).getAPathArgument()
     or
-    exists(API::Node n | n = API::root().getMember("StringIO").getMethod("new") |
+    exists(API::Node n | n = API::getTopLevelMember("StringIO").getMethod("new") |
       nodeFrom = n.getParameter(0).asSink() and
       nodeTo = n.getReturn().asSource()
     )
     or
-    exists(IoCopyStream n |
-      nodeFrom = n.getAPathArgument() and
-      nodeTo = n
-    )
+    nodeFrom = nodeTo.(IoCopyStream).getAPathArgument()
     or
     // following can be a global additional step
     exists(DataFlow::CallNode cn |
-      cn.getMethodName() = "open" and cn.getReceiver().toString() = "self"
+      cn.getMethodName() = "open" and
+      cn.getReceiver().getExprNode().getExpr() instanceof Ast::SelfVariableAccess
     |
       nodeFrom = cn.getArgument(0) and
       nodeTo = cn
