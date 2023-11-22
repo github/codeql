@@ -465,6 +465,14 @@ class SwitchCase extends Stmt, @case {
   }
 
   /**
+   * Holds if this is the `n`th case of switch block `parent`.
+   */
+  pragma[nomagic]
+  predicate isNthCaseOf(StmtParent parent, int n) {
+    this.getCaseIndex() = n and this.getParent() = parent
+  }
+
+  /**
    * Holds if this `case` is a switch labeled rule of the form `... -> ...`.
    */
   predicate isRule() {

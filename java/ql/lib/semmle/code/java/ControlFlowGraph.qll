@@ -460,6 +460,15 @@ private module ControlFlowGraphImpl {
     )
   }
 
+  private int lastCaseIndex(StmtParent switch) {
+    result = max(int i | any(SwitchCase c).isNthCaseOf(switch, i))
+  }
+
+  // Join order engineering -- first determine the switch block and the case indices required, then retrieve them.
+  bindingset[switch, i]
+  pragma[inline_late]
+  private predicate isNthCaseOf(StmtParent switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
+
   /**
    * Gets a `SwitchCase` that may be `pred`'s direct successor.
    *
@@ -469,14 +478,15 @@ private module ControlFlowGraphImpl {
    * that any default case comes after the last pattern case.
    */
   private SwitchCase getASuccessorSwitchCase(PatternCase pred) {
-    result.getParent() = pred.getParent() and
-    result.getIndex() > pred.getIndex() and
     // Note we do include `case null, default` (as well as plain old `default`) here.
     not result.(ConstCase).getValue(_) instanceof NullLiteral and
-    (
-      result.getIndex() <= getNextPatternCase(pred).getIndex()
-      or
-      not exists(getNextPatternCase(pred))
+    exists(int maxCaseIndex, StmtParent switch |
+      switch = pred.getParent() and
+      if exists(getNextPatternCase(pred))
+      then maxCaseIndex = getNextPatternCase(pred).getCaseIndex()
+      else maxCaseIndex = lastCaseIndex(switch)
+    |
+      isNthCaseOf(switch, result, [pred.getCaseIndex() + 1 .. maxCaseIndex])
     )
   }
 
