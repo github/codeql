@@ -25,3 +25,10 @@ query predicate passingPositiveTests(string res, string expectation, InlineTest 
   expectation = "SQLInjectionPoint" and
   exists(SQL::SqlString n | t.inNode(n))
 }
+
+query predicate failingPositiveTests(string res, string expectation, InlineTest t) {
+  res = "FAILED" and
+  t.hasPositiveTest(expectation) and
+  expectation = "SQLInjectionPoint" and
+  not exists(SQL::SqlString n | t.inNode(n))
+}
