@@ -38,6 +38,13 @@ public class Test {
     if (o instanceof String s) { }
     if (o instanceof R(S(int x), String y)) { }
 
+    switch(o) {
+      case R(S(var x), var y) -> { }
+      case null, default -> { }
+    }
+
+    if (o instanceof R(S(var x), var y)) { }
+
   }
 
 }

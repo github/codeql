@@ -1672,6 +1672,8 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     exists(InstanceOfExpr ioe | this.getParent() = ioe | result.isNthChildOf(ioe, 1))
     or
     exists(PatternCase pc | this.getParent() = pc | result.isNthChildOf(pc, -2))
+    or
+    exists(RecordPatternExpr rpe, int index | this.isNthChildOf(rpe, index) and result.isNthChildOf(rpe, -(index + 1)) )
   }
 
   /** Gets the name of the variable declared by this local variable declaration expression. */

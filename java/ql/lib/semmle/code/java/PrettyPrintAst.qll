@@ -1078,12 +1078,30 @@ private class PpRecordPattern extends PpAst, RecordPatternExpr {
     or
     i = 1 and result = "("
     or
-    i = 1 + ((any(int x | x >= 1 and exists(this.getSubPattern(x)))) * 2) and result = ", "
+    i = 1 + ((any(int x | x >= 1 and exists(this.getSubPattern(x)))) * 4) and result = ", "
     or
-    i = 1 + (count(this.getSubPattern(_)) * 2) and result = ")"
+    i = 1 + (count(this.getSubPattern(_)) * 4) and result = ")"
+    or
+    exists(int x, LocalVariableDeclExpr v, int offset | v = this.getSubPattern(x) |
+      i = (offset) + (x * 4) and
+      (
+        offset = 2 and not exists(v.getTypeAccess()) and result = "var"
+        or
+        offset = 3 and result = " "
+      )
+    )
   }
 
   override PpAst getChild(int i) {
-    exists(int x | result = this.getSubPattern(x) | i = 2 + (x * 2))
+    exists(int x, PatternExpr subPattern, int offset | subPattern = this.getSubPattern(x) |
+      i = (offset) + (x * 4) and
+      (
+        result = subPattern.(RecordPatternExpr) and offset = 2
+        or
+        result = subPattern.(LocalVariableDeclExpr).getTypeAccess() and offset = 2
+        or
+        result = subPattern.(LocalVariableDeclExpr) and offset = 4
+      )
+    )
   }
 }

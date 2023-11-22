@@ -46,7 +46,7 @@
 | Test.java:1:14:1:17 | Test | 45 |     switch (o) { |
 | Test.java:1:14:1:17 | Test | 46 |       case String s: |
 | Test.java:1:14:1:17 | Test | 47 |       break; |
-| Test.java:1:14:1:17 | Test | 48 |       case R(S(x), y): |
+| Test.java:1:14:1:17 | Test | 48 |       case R(S(int x), String y): |
 | Test.java:1:14:1:17 | Test | 49 |       break; |
 | Test.java:1:14:1:17 | Test | 50 |       default: |
 | Test.java:1:14:1:17 | Test | 51 |       break; |
@@ -54,7 +54,7 @@
 | Test.java:1:14:1:17 | Test | 53 |     switch (o) { |
 | Test.java:1:14:1:17 | Test | 54 |       case String s -> { |
 | Test.java:1:14:1:17 | Test | 55 |       } |
-| Test.java:1:14:1:17 | Test | 56 |       case R(S(x), y) -> { |
+| Test.java:1:14:1:17 | Test | 56 |       case R(S(int x), String y) -> { |
 | Test.java:1:14:1:17 | Test | 57 |       } |
 | Test.java:1:14:1:17 | Test | 58 |       case default -> { |
 | Test.java:1:14:1:17 | Test | 59 |       } |
@@ -62,19 +62,27 @@
 | Test.java:1:14:1:17 | Test | 61 |     var a = switch (o) { |
 | Test.java:1:14:1:17 | Test | 62 |       case String s: |
 | Test.java:1:14:1:17 | Test | 63 |       yield 1; |
-| Test.java:1:14:1:17 | Test | 64 |       case R(S(x), y): |
+| Test.java:1:14:1:17 | Test | 64 |       case R(S(int x), String y): |
 | Test.java:1:14:1:17 | Test | 65 |       yield x; |
 | Test.java:1:14:1:17 | Test | 66 |       case default: |
 | Test.java:1:14:1:17 | Test | 67 |       yield 2; |
 | Test.java:1:14:1:17 | Test | 68 |     }; |
 | Test.java:1:14:1:17 | Test | 69 |     var b = switch (o) { |
 | Test.java:1:14:1:17 | Test | 70 |       case String s -> 1; |
-| Test.java:1:14:1:17 | Test | 71 |       case R(S(x), y) -> x; |
+| Test.java:1:14:1:17 | Test | 71 |       case R(S(int x), String y) -> x; |
 | Test.java:1:14:1:17 | Test | 72 |       default -> 2; |
 | Test.java:1:14:1:17 | Test | 73 |     }; |
 | Test.java:1:14:1:17 | Test | 74 |     if (o instanceof String s) { |
 | Test.java:1:14:1:17 | Test | 75 |     } |
-| Test.java:1:14:1:17 | Test | 76 |     if (o instanceof R(S(x), y)) { |
+| Test.java:1:14:1:17 | Test | 76 |     if (o instanceof R(S(int x), String y)) { |
 | Test.java:1:14:1:17 | Test | 77 |     } |
-| Test.java:1:14:1:17 | Test | 78 |   } |
-| Test.java:1:14:1:17 | Test | 79 | } |
+| Test.java:1:14:1:17 | Test | 78 |     switch (o) { |
+| Test.java:1:14:1:17 | Test | 79 |       case R(S(var x), var y) -> { |
+| Test.java:1:14:1:17 | Test | 80 |       } |
+| Test.java:1:14:1:17 | Test | 81 |       case default -> { |
+| Test.java:1:14:1:17 | Test | 82 |       } |
+| Test.java:1:14:1:17 | Test | 83 |     } |
+| Test.java:1:14:1:17 | Test | 84 |     if (o instanceof R(S(var x), var y)) { |
+| Test.java:1:14:1:17 | Test | 85 |     } |
+| Test.java:1:14:1:17 | Test | 86 |   } |
+| Test.java:1:14:1:17 | Test | 87 | } |
