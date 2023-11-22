@@ -323,6 +323,7 @@ _class_qldoc_re = re.compile(rf"(?P<qldoc>(?:{_stub_qldoc_header})?/\*\*.*?\*/\s
 
 
 def _patch_class_qldoc(cls: str, qldoc: str, stub_file: pathlib.Path):
+    """ Replace or insert `qldoc` as the QLdoc of class `cls` in `stub_file` """
     if not qldoc or not stub_file.exists():
         return
     qldoc = "\n".join(l.rstrip() for l in qldoc.splitlines())
