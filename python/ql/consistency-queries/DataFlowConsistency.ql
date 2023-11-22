@@ -66,10 +66,26 @@ private module Input implements InputSig<PythonDataFlow> {
     // Example: In `bm = self.foo; bm(); bm()` both bm() calls use the same `self` as
     // the (pos self) argument
     exists(AttrRead attr, DataFlowCall other | other != call |
-      any(CfgNode n | n.asCfgNode() = call.getNode().(CallNode).getFunction()).getALocalSource() =
-        attr and
-      any(CfgNode n | n.asCfgNode() = other.getNode().(CallNode).getFunction()).getALocalSource() =
-        attr and
+      // for simple cases we can track the function back to the attr read but when the
+      // call appears in the body of a list-comprehension, we can't do that, and simply
+      // allow it instead.
+      (
+        call.getScope() = attr.getScope() and
+        any(CfgNode n | n.asCfgNode() = call.getNode().(CallNode).getFunction()).getALocalSource() =
+          attr
+        or
+        not exists(call.getScope().(Function).getDefinition()) and
+        call.getScope().getScope+() = attr.getScope()
+      ) and
+      (
+        other.getScope() = attr.getScope() and
+        any(CfgNode n | n.asCfgNode() = other.getNode().(CallNode).getFunction()).getALocalSource() =
+          attr
+        or
+        not exists(other.getScope().(Function).getDefinition()) and
+        other.getScope().getScope+() = attr.getScope()
+      ) and
+      arg = attr.getObject() and
       arg = call.getArgument(any(ArgumentPosition p | p.isSelf())) and
       arg = other.getArgument(any(ArgumentPosition p | p.isSelf()))
     )
