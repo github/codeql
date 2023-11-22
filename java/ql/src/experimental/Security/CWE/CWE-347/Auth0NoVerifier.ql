@@ -27,6 +27,9 @@ module JwtAuth0 {
     JWTVerifierType() { this.hasQualifiedName("com.auth0.jwt", "JWTVerifier") }
   }
 
+  /**
+   * A Method that returns a Decoded Claim of JWT
+   */
   class GetPayload extends MethodAccess {
     GetPayload() {
       this.getCallee().getDeclaringType() instanceof PayloadType and
@@ -34,6 +37,9 @@ module JwtAuth0 {
     }
   }
 
+  /**
+   * A Method that Decode JWT without signature verification
+   */
   class Decode extends MethodAccess {
     Decode() {
       this.getCallee().getDeclaringType() instanceof JWTType and
@@ -41,6 +47,9 @@ module JwtAuth0 {
     }
   }
 
+  /**
+   * A Method that Decode JWT with signature verification
+   */
   class Verify extends MethodAccess {
     Verify() {
       this.getCallee().getDeclaringType() instanceof JWTVerifierType and
