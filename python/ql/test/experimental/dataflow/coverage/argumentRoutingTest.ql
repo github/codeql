@@ -67,12 +67,10 @@ class Argument1ExtraRoutingConfig extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node node) {
     exists(AssignmentDefinition def, DataFlow::CallCfgNode call |
-      // def.getVariable() = node.(DataFlow::EssaNode).getVar() and
       def.getDefiningNode() = node.(DataFlow::CfgNode).getNode() and
       def.getValue() = call.getNode() and
       call.getFunction().asCfgNode().(NameNode).getId().matches("With\\_%")
     ) and
-    // node.(DataFlow::EssaNode).getVar().getName().matches("with\\_%")
     node.(DataFlow::CfgNode).getNode().(NameNode).getId().matches("with\\_%")
   }
 
