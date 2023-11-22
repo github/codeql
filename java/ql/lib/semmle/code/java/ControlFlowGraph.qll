@@ -936,7 +936,12 @@ private module ControlFlowGraphImpl {
       completion = NormalCompletion()
       or
       // if no default case exists, then normal completion of the expression may terminate the switch
+      // Note this can't happen if there are pattern cases or a null literal, as
+      // https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.11.2 requires that such
+      // an enhanced switch block is exhaustive.
       not exists(switch.getDefaultCase()) and
+      not exists(switch.getAPatternCase()) and
+      not switch.hasNullCase() and
       last(switch.getExpr(), last, completion) and
       completion = NormalCompletion()
     )
