@@ -6,7 +6,7 @@ module Ssa {
   private import codeql.swift.controlflow.ControlFlowGraph
   private import codeql.swift.controlflow.BasicBlocks as BasicBlocks
 
-  private module SsaInput implements SsaImplCommon::InputSig {
+  private module SsaInput implements SsaImplCommon::InputSig<Location> {
     private import internal.DataFlowPrivate
     private import codeql.swift.controlflow.ControlFlowGraph
     private import codeql.swift.controlflow.CfgNodes
@@ -33,6 +33,12 @@ module Ssa {
       EntryNode asKeyPath() { none() }
 
       DeclRefExpr getAnAccess() { result.getDecl() = this.asVarDecl() }
+
+      Location getLocation() {
+        result = this.asVarDecl().getLocation()
+        or
+        result = this.asKeyPath().getLocation()
+      }
     }
 
     private class NormalSourceVariable extends SourceVariable, TNormalSourceVariable {
@@ -127,7 +133,7 @@ module Ssa {
   /**
    * INTERNAL: Do not use.
    */
-  module SsaImpl = SsaImplCommon::Make<SsaInput>;
+  module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
   cached
   class Definition extends SsaImpl::Definition {

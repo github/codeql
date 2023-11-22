@@ -846,10 +846,27 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * ```
  * data flows from `x` to the attribute `foo` of  (the post-update node for) `obj`.
  */
-predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode nodeTo) {
-  exists(AttrWrite write |
-    write.accesses(nodeTo.getPreUpdateNode(), c.getAttribute()) and
-    nodeFrom = write.getValue()
+predicate attributeStoreStep(Node nodeFrom, AttributeContent c, Node nodeTo) {
+  exists(Node object |
+    // Normally we target a PostUpdateNode. However, for class definitions the class
+    // is only constructed after evaluating its' entire scope, so in terms of python
+    // evaluations there is no post or pre update nodes, just one node for the class
+    // expression. Therefore we target the class expression directly.
+    //
+    // Note: Due to the way we handle decorators, using a class decorator will result in
+    // there being a post-update node for the class (argument to the decorator). We do
+    // not want to differentiate between these two cases, so still target the class
+    // expression directly.
+    object = nodeTo.(PostUpdateNode).getPreUpdateNode() and
+    not object.asExpr() instanceof ClassExpr
+    or
+    object = nodeTo and
+    object.asExpr() instanceof ClassExpr
+  |
+    exists(AttrWrite write |
+      write.accesses(object, c.getAttribute()) and
+      nodeFrom = write.getValue()
+    )
   )
 }
 

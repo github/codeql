@@ -36,7 +36,7 @@ module PreSsa {
     scopeFirst(c, bb)
   }
 
-  module SsaInput implements SsaImplCommon::InputSig {
+  module SsaInput implements SsaImplCommon::InputSig<Location> {
     class BasicBlock = PreBasicBlocks::PreBasicBlock;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
@@ -137,7 +137,7 @@ module PreSsa {
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+  private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
   class Definition extends SsaImpl::Definition {
     final AssignableRead getARead() {

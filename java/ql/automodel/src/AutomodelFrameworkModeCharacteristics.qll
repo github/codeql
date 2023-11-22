@@ -25,7 +25,7 @@ newtype JavaRelatedLocationType =
 
 newtype TFrameworkModeEndpoint =
   TExplicitParameter(Parameter p) or
-  TQualifier(Callable c) or
+  TQualifier(Callable c) { not c instanceof Constructor } or
   TReturnValue(Callable c) or
   TOverridableParameter(Method m, Parameter p) {
     p.getCallable() = m and

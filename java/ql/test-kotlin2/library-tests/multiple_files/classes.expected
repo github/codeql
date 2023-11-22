@@ -1,0 +1,6 @@
+| file1.kt:2:1:13:1 | Class1 | Class1 |
+| file2.kt:2:1:4:1 | Class2 | Class2 |
+| file3.kt:0:0:0:0 | MyJvmName | MyJvmName |
+| file3.kt:3:1:3:16 | Class3 | Class3 |
+| file4.kt:0:0:0:0 | File4Kt | File4Kt |
+| file4.kt:2:1:2:16 | Class4 | Class4 |
