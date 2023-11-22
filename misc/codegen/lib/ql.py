@@ -141,10 +141,6 @@ class Class:
     def last_base(self) -> str:
         return self.bases[-1].base if self.bases else ""
 
-    @property
-    def has_doc(self) -> bool:
-        return bool(self.doc) or self.ql_internal
-
 
 @dataclass
 class SynthUnderlyingAccessor:
@@ -174,7 +170,7 @@ class Stub:
         return bool(self.synth_accessors)
 
     @property
-    def has_doc(self) -> bool:
+    def has_qldoc(self) -> bool:
         return bool(self.doc) or self.ql_internal
 
 
