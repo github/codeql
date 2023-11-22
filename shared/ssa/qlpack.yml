@@ -2,4 +2,6 @@ name: codeql/ssa
 version: 0.2.4-dev
 groups: shared
 library: true
+dependencies:
+  codeql/util: ${workspace}
 warnOnImplicitThis: true
