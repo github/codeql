@@ -15,14 +15,14 @@ private predicate isUninteresting(DataFlow::MethodNode c) {
   c.getLocation().getFile() instanceof TestFile
 }
 
-private predicate fileStep(Folder folder, File file, int n) {
-  n = 0 and folder.getAFile() = file
+private predicate gemFileStep(Gem::GemSpec gem, Folder folder, int n) {
+  n = 0 and folder.getAFile() = gem.(File)
   or
-  exists(int m | fileStep(folder.getAFolder(), file, m) | n = m + 1)
-}
-
-private predicate gemFileStep(Gem::GemSpec gem, File file, int n) {
-  fileStep(any(Folder f | f.getAFile() = gem.(File)), file, n)
+  exists(Folder parent, int m |
+    gemFileStep(gem, parent, m) and
+    parent.getAFolder() = folder and
+    n = m + 1
+  )
 }
 
 /**
@@ -40,11 +40,13 @@ class Endpoint extends DataFlow::MethodNode {
    */
   bindingset[this]
   string getNamespace() {
-    // The nearest gemspec to this endpoint, if one exists
-    result = min(Gem::GemSpec g, int n | gemFileStep(g, this.getFile(), n) | g order by n).getName()
-    or
-    not exists(Gem::GemSpec g) and
-    result = ""
+    exists(Folder folder | folder = this.getFile().getParentContainer() |
+      // The nearest gemspec to this endpoint, if one exists
+      result = min(Gem::GemSpec g, int n | gemFileStep(g, folder, n) | g order by n).getName()
+      or
+      not exists(Gem::GemSpec g | gemFileStep(g, folder, _)) and
+      result = ""
+    )
   }
 
   /**
