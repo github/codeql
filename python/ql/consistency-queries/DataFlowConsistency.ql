@@ -6,6 +6,7 @@
 private import python
 import semmle.python.dataflow.new.DataFlow::DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowImplSpecific
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 private import semmle.python.dataflow.new.internal.TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
@@ -59,6 +60,45 @@ private module Input implements InputSig<PythonDataFlow> {
       other.getNode() = cfgCall and
       isArgumentNode(arg, call, _) and
       isArgumentNode(arg, other, _)
+    )
+    or
+    // bound methods that refer to the same self argument.
+    // Example: In `bm = self.foo; bm(); bm()` both bm() calls use the same `self` as
+    // the (pos self) argument
+    exists(AttrRead attr, DataFlowCall other | other != call |
+      any(CfgNode n | n.asCfgNode() = call.getNode().(CallNode).getFunction()).getALocalSource() =
+        attr and
+      any(CfgNode n | n.asCfgNode() = other.getNode().(CallNode).getFunction()).getALocalSource() =
+        attr and
+      arg = call.getArgument(any(ArgumentPosition p | p.isSelf())) and
+      arg = other.getArgument(any(ArgumentPosition p | p.isSelf()))
+    )
+    or
+    // `f = getattr(obj, "foo"); f()` where `obj` is used as (pos self) argument for
+    // `f()` call
+    exists(DataFlowCall getAttrCall, DataFlowCall methodCall, AttrRead attr |
+      call in [getAttrCall, methodCall]
+    |
+      arg = getAttrCall.getArgument(any(ArgumentPosition p | p.isPositional(0))) and
+      arg = methodCall.getArgument(any(ArgumentPosition p | p.isSelf())) and
+      attr.getObject() = arg and
+      attr.(CfgNode).getNode() = getAttrCall.getNode()
+    )
+    or
+    // In the code `super(Base, self).foo()` we use `self` as an argument in both the
+    // super() call (pos 1) and in the .foo() call (pos self).
+    exists(DataFlowCall superCall, DataFlowCall methodCall | call in [superCall, methodCall] |
+      exists(superCallTwoArgumentTracker(_, arg)) and
+      arg = superCall.getArgument(any(ArgumentPosition p | p.isPositional(1))) and
+      arg = methodCall.getArgument(any(ArgumentPosition p | p.isSelf()))
+    )
+    or
+    // in the code `def func(self): super().foo(); super.bar()` we use `self` as the
+    // (pos self) argument in both .foo() and .bar() calls.
+    exists(Function f |
+      exprNode(f.getArg(0)) = arg and
+      call.getNode().getScope() = f and
+      arg = call.getArgument(any(ArgumentPosition p | p.isSelf()))
     )
   }
 }
