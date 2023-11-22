@@ -755,9 +755,9 @@ private class PpSwitchCase extends PpAst, SwitchCase {
   override string getPart(int i) {
     i = 0 and result = "default" and isNonNullDefaultCase(this)
     or
-    i = 0 and result = "case " and not isNonNullDefaultCase(this)
+    i = 0 and result = "case null, default" and this instanceof NullDefaultCase
     or
-    i = this.lastConstCaseValueIndex() and result = "default" and this instanceof NullDefaultCase
+    i = 0 and result = "case " and not this instanceof DefaultCase
     or
     exists(int j | i = 2 * j and j != 0 and result = ", " and exists(this.(ConstCase).getValue(j)))
     or
@@ -768,15 +768,8 @@ private class PpSwitchCase extends PpAst, SwitchCase {
     i = 3 + this.lastConstCaseValueIndex() and result = ";" and exists(this.getRuleExpression())
   }
 
-  private int getCaseDefaultOffset() {
-    if this instanceof NullDefaultCase then result = 1 else result = 0
-  }
-
   private int lastConstCaseValueIndex() {
-    result =
-      1 +
-        2 *
-          (max(int j | j = 0 or exists(this.(ConstCase).getValue(j))) + this.getCaseDefaultOffset())
+    result = 1 + 2 * (max(int j | j = 0 or exists(this.(ConstCase).getValue(j))))
   }
 
   override PpAst getChild(int i) {
