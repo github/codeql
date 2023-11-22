@@ -17,12 +17,30 @@ import CorsPermissiveConfigurationCustomizations::CorsPermissiveConfiguration
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "CorsPermissiveConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+    source instanceof TrueNullValue and label = truenullLabel()
+    or
+    source instanceof WildcardValue and label = wildcardLabel()
+    or
+    source instanceof RemoteFlowSource and label = DataFlow::FlowLabel::taint()
+  }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+    sink instanceof CorsApolloServer and label = [DataFlow::FlowLabel::taint(), truenullLabel()]
+    or
+    sink instanceof ExpressCors and label = [DataFlow::FlowLabel::taint(), wildcardLabel()]
+  }
 
   override predicate isSanitizer(DataFlow::Node node) {
     super.isSanitizer(node) or
     node instanceof Sanitizer
   }
+}
+
+private class WildcardActivated extends DataFlow::FlowLabel, Wildcard {
+  WildcardActivated() { this = this }
+}
+
+private class TrueAndNullActivated extends DataFlow::FlowLabel, TrueAndNull {
+  TrueAndNullActivated() { this = this }
 }

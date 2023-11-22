@@ -28,9 +28,28 @@ module CorsPermissiveConfiguration {
     RemoteFlowSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
   }
 
-  /** An overfly permissive value for `origin` */
-  class BadValues extends Source {
-    BadValues() { this.mayHaveBooleanValue(true) or this.asExpr() instanceof NullLiteral }
+  /** A flow label representing `true` and `null` values. */
+  abstract class TrueAndNull extends DataFlow::FlowLabel {
+    TrueAndNull() { this = "TrueAndNull" }
+  }
+
+  TrueAndNull truenullLabel() { any() }
+
+  /** A flow label representing `*` value. */
+  abstract class Wildcard extends DataFlow::FlowLabel {
+    Wildcard() { this = "Wildcard" }
+  }
+
+  Wildcard wildcardLabel() { any() }
+
+  /** An overly permissive value for `origin` (Apollo) */
+  class TrueNullValue extends Source {
+    TrueNullValue() { this.mayHaveBooleanValue(true) or this.asExpr() instanceof NullLiteral }
+  }
+
+  /** An overly permissive value for `origin` (Express) */
+  class WildcardValue extends Source {
+    WildcardValue() { this.mayHaveStringValue("*") }
   }
 
   /**
