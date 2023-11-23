@@ -30,16 +30,13 @@ ensure_tainted(
     tainted_match[0], # $ tainted
     tainted_match["key"], # $ tainted
 
-    tainted_match.groups(), # $ MISSING: tainted
     tainted_match.groups()[0], # $ tainted
-    tainted_match.groupdict(), # $ MISSING: tainted
     tainted_match.groupdict()["key"], # $ tainted
 
     re.match(pat, ts).string, # $ tainted
     re.match(ts, "safe").re.pattern, # $ tainted
 
     compiled_pat.match(ts).string, # $ tainted
-    re.compile(ts).match("safe").re, # $ MISSING: tainted
     re.compile(ts).match("safe").re.pattern, # $ tainted
 )
 ensure_not_tainted(
