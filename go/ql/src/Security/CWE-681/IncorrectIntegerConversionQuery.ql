@@ -24,7 +24,6 @@ where
   call.getResult(0) = source.getNode() and
   sinkConverted = sink.getNode().getASuccessor()
 select sinkConverted, source, sink,
-  "Incorrect conversion of " +
-    describeBitSize(getSourceBitSize(sink.getState()), getIntTypeBitSize(source.getNode().getFile()))
-    + " from $@ to a lower bit size type " + sinkConverted.getType().getUnderlyingType().getName() +
+  "Incorrect conversion of " + describeBitSize2(source.getNode()) +
+    " from $@ to a lower bit size type " + sinkConverted.getType().getUnderlyingType().getName() +
     " without an upper bound check.", source, call.getTarget().getQualifiedName()

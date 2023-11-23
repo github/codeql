@@ -1,3 +1,6 @@
 # github.com/astaxie/beego v1.12.3
 ## explicit
 github.com/astaxie/beego
+# github.com/beego/beego/v2 v2.1.2
+## explicit
+github.com/beego/beego/v2

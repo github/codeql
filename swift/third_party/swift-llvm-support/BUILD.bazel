@@ -1,21 +1,25 @@
 package(default_visibility = ["//swift:__subpackages__"])
 
-#TODO we will be introducing universal binaries at a later stage, when we have both architectures prebuilt for macOS
-# for the moment, we make arm build an x86_64 binary
-_arch_override = {
-    "darwin_arm64": "darwin_x86_64",
-}
+alias(
+    name = "swift-llvm-support",
+    actual = select({
+        "@bazel_tools//src/conditions:linux": "@swift_prebuilt_linux//:swift-llvm-support",
+        "@bazel_tools//src/conditions:darwin": "@swift_prebuilt_darwin_x86_64//:swift-llvm-support",
+    }),
+)
 
-[
-    alias(
-        name = name,
-        actual = select({
-            "@bazel_tools//src/conditions:%s" % arch: "@swift_prebuilt_%s//:%s" % (
-                _arch_override.get(arch, arch),
-                name,
-            )
-            for arch in ("linux", "darwin_x86_64", "darwin_arm64")
-        }),
-    )
-    for name in ("swift-llvm-support", "swift-test-sdk", "swift-resource-dir")
-]
+alias(
+    name = "swift-test-sdk",
+    actual = select({
+        "@bazel_tools//src/conditions:linux": "@swift_prebuilt_linux//:swift-test-sdk",
+        "@bazel_tools//src/conditions:darwin": "@swift_prebuilt_darwin_x86_64//:swift-test-sdk",
+    }),
+)
+
+alias(
+    name = "swift-resource-dir",
+    actual = select({
+        "@bazel_tools//src/conditions:linux": "@swift_toolchain_linux//:resource-dir",
+        "@bazel_tools//src/conditions:darwin": "@swift_toolchain_macos//:resource-dir",
+    }),
+)

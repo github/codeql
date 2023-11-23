@@ -55,19 +55,6 @@ namespace Semmle.Extraction.CSharp
                 : type;
         }
 
-        /// <summary>
-        /// Gets the name of this symbol.
-        ///
-        /// If the symbol implements an explicit interface, only the
-        /// name of the member being implemented is included, not the
-        /// explicit prefix.
-        /// </summary>
-        public static string GetName(this ISymbol symbol, bool useMetadataName = false)
-        {
-            var name = useMetadataName ? symbol.MetadataName : symbol.Name;
-            return symbol.CanBeReferencedByName ? name : name.Substring(symbol.Name.LastIndexOf('.') + 1);
-        }
-
         private static IEnumerable<SyntaxToken> GetModifiers<T>(this ISymbol symbol, Func<T, IEnumerable<SyntaxToken>> getModifierTokens) =>
             symbol.DeclaringSyntaxReferences
                 .Select(r => r.GetSyntax())

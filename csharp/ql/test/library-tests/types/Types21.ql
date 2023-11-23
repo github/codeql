@@ -6,5 +6,5 @@
 import csharp
 
 from UnboundGenericClass c
-where c.hasQualifiedName("Types", "GenericClass<>")
+where c.hasFullyQualifiedName("Types", "GenericClass`1")
 select c

@@ -2,7 +2,6 @@ private import cpp as Cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
-private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
@@ -82,6 +81,14 @@ class Node0Impl extends TIRDataFlowNode0 {
   /** Gets the operands corresponding to this node, if any. */
   Operand asOperand() { result = this.(OperandNode0).getOperand() }
 
+  /** Gets the location of this node. */
+  final Location getLocation() { result = this.getLocationImpl() }
+
+  /** INTERNAL: Do not use. */
+  Location getLocationImpl() {
+    none() // overridden by subclasses
+  }
+
   /** INTERNAL: Do not use. */
   string toStringImpl() {
     none() // overridden by subclasses
@@ -132,9 +139,15 @@ abstract class InstructionNode0 extends Node0Impl {
   override DataFlowType getType() { result = getInstructionType(instr, _) }
 
   override string toStringImpl() {
-    // This predicate is overridden in subclasses. This default implementation
-    // does not use `Instruction.toString` because that's expensive to compute.
-    result = instr.getOpcode().toString()
+    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = instr.getAst().toString()
+  }
+
+  override Location getLocationImpl() {
+    if exists(instr.getAst().getLocation())
+    then result = instr.getAst().getLocation()
+    else result instanceof UnknownDefaultLocation
   }
 
   final override predicate isGLValue() { exists(getInstructionType(instr, true)) }
@@ -174,7 +187,17 @@ abstract class OperandNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getOperandType(op, _) }
 
-  override string toStringImpl() { result = op.toString() }
+  override string toStringImpl() {
+    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = op.getDef().getAst().toString()
+  }
+
+  override Location getLocationImpl() {
+    if exists(op.getDef().getAst().getLocation())
+    then result = op.getDef().getAst().getLocation()
+    else result instanceof UnknownDefaultLocation
+  }
 
   final override predicate isGLValue() { exists(getOperandType(op, true)) }
 }
@@ -220,9 +243,10 @@ private module IndirectOperands {
     int indirectionIndex;
 
     IndirectOperandFromIRRepr() {
-      exists(Operand repr |
-        repr = Ssa::getIRRepresentationOfIndirectOperand(operand, indirectionIndex) and
-        nodeHasOperand(this, repr, indirectionIndex - 1)
+      exists(Operand repr, int indirectionIndexRepr |
+        Ssa::hasIRRepresentationOfIndirectOperand(operand, indirectionIndex, repr,
+          indirectionIndexRepr) and
+        nodeHasOperand(this, repr, indirectionIndexRepr)
       )
     }
 
@@ -262,9 +286,10 @@ private module IndirectInstructions {
     int indirectionIndex;
 
     IndirectInstructionFromIRRepr() {
-      exists(Instruction repr |
-        repr = Ssa::getIRRepresentationOfIndirectInstruction(instr, indirectionIndex) and
-        nodeHasInstruction(this, repr, indirectionIndex - 1)
+      exists(Instruction repr, int indirectionIndexRepr |
+        Ssa::hasIRRepresentationOfIndirectInstruction(instr, indirectionIndex, repr,
+          indirectionIndexRepr) and
+        nodeHasInstruction(this, repr, indirectionIndexRepr)
       )
     }
 
@@ -554,7 +579,7 @@ predicate instructionForFullyConvertedCall(Instruction instr, CallInstruction ca
 }
 
 /** Holds if `node` represents the output node for `call`. */
-private predicate simpleOutNode(Node node, CallInstruction call) {
+predicate simpleOutNode(Node node, CallInstruction call) {
   operandForFullyConvertedCall(node.asOperand(), call)
   or
   instructionForFullyConvertedCall(node.asInstruction(), call)
@@ -621,6 +646,24 @@ class GlobalLikeVariable extends Variable {
 }
 
 /**
+ * Returns the smallest indirection for the type `t`.
+ *
+ * For most types this is `1`, but for `ArrayType`s (which are allocated on
+ * the stack) this is `0`
+ */
+int getMinIndirectionsForType(Type t) {
+  if t.getUnspecifiedType() instanceof Cpp::ArrayType then result = 0 else result = 1
+}
+
+private int getMinIndirectionForGlobalUse(Ssa::GlobalUse use) {
+  result = getMinIndirectionsForType(use.getUnspecifiedType())
+}
+
+private int getMinIndirectionForGlobalDef(Ssa::GlobalDef def) {
+  result = getMinIndirectionsForType(def.getUnspecifiedType())
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
  * calling context. For example, this would happen with flow through a
  * global or static variable.
@@ -631,20 +674,20 @@ predicate jumpStep(Node n1, Node n2) {
       v = globalUse.getVariable() and
       n1.(FinalGlobalValue).getGlobalUse() = globalUse
     |
-      globalUse.getIndirectionIndex() = 1 and
+      globalUse.getIndirection() = getMinIndirectionForGlobalUse(globalUse) and
       v = n2.asVariable()
       or
-      v = n2.asIndirectVariable(globalUse.getIndirectionIndex())
+      v = n2.asIndirectVariable(globalUse.getIndirection())
     )
     or
     exists(Ssa::GlobalDef globalDef |
       v = globalDef.getVariable() and
       n2.(InitialGlobalValue).getGlobalDef() = globalDef
     |
-      globalDef.getIndirectionIndex() = 1 and
+      globalDef.getIndirection() = getMinIndirectionForGlobalDef(globalDef) and
       v = n1.asVariable()
       or
-      v = n1.asIndirectVariable(globalDef.getIndirectionIndex())
+      v = n1.asIndirectVariable(globalDef.getIndirection())
     )
   )
 }
@@ -690,7 +733,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) { storeStepImpl(node1,
 private predicate numberOfLoadsFromOperandRec(
   Operand operandFrom, Operand operandTo, int ind, boolean certain
 ) {
-  exists(Instruction load | Ssa::isDereference(load, operandFrom) |
+  exists(Instruction load | Ssa::isDereference(load, operandFrom, _) |
     operandTo = operandFrom and ind = 0 and certain = true
     or
     numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1, certain)
@@ -714,7 +757,7 @@ private predicate numberOfLoadsFromOperand(
 ) {
   numberOfLoadsFromOperandRec(operandFrom, operandTo, n, certain)
   or
-  not Ssa::isDereference(_, operandFrom) and
+  not Ssa::isDereference(_, operandFrom, _) and
   not conversionFlow(operandFrom, _, _, _) and
   operandFrom = operandTo and
   n = 0 and
@@ -802,6 +845,8 @@ predicate clearsContent(Node n, ContentSet c) {
 predicate expectsContent(Node n, ContentSet c) { none() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
@@ -1009,14 +1054,6 @@ ContentApprox getContentApprox(Content c) {
     u = c.(UnionContent).getUnion() and
     unionHasApproxName(u, prefix)
   )
-}
-
-private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    // The rules for whether an IR argument gets a post-update node are too
-    // complex to model here.
-    any()
-  }
 }
 
 /**

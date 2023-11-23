@@ -2399,7 +2399,7 @@
 | UseUseExplosion.rb:24:5:25:7 | use | UseUseExplosion.rb:1:1:26:3 | C |
 | local_dataflow.rb:1:1:7:3 | self (foo) | local_dataflow.rb:3:8:3:10 | self |
 | local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:1:1:7:3 | self (foo) |
-| local_dataflow.rb:1:1:150:3 | <uninitialized> | local_dataflow.rb:10:9:10:9 | x |
+| local_dataflow.rb:1:1:150:3 | <uninitialized> x | local_dataflow.rb:10:9:10:9 | x |
 | local_dataflow.rb:1:1:150:3 | self (local_dataflow.rb) | local_dataflow.rb:49:1:53:3 | self |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
@@ -2425,6 +2425,7 @@
 | local_dataflow.rb:9:1:9:5 | array | local_dataflow.rb:10:14:10:18 | array |
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:5 | array |
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:15 | ... = ... |
+| local_dataflow.rb:9:9:9:15 | synthetic splat argument | local_dataflow.rb:9:9:9:15 | call to [] |
 | local_dataflow.rb:10:5:13:3 | ... | local_dataflow.rb:10:1:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | <captured entry> self | local_dataflow.rb:11:1:11:2 | self |
 | local_dataflow.rb:10:5:13:3 | <captured exit> x | local_dataflow.rb:15:5:15:5 | x |
@@ -2487,6 +2488,7 @@
 | local_dataflow.rb:50:18:50:18 | [post] x | local_dataflow.rb:51:20:51:20 | x |
 | local_dataflow.rb:50:18:50:18 | x | local_dataflow.rb:51:20:51:20 | x |
 | local_dataflow.rb:51:9:51:15 | "break" | local_dataflow.rb:51:3:51:15 | break |
+| local_dataflow.rb:55:5:55:13 | synthetic splat argument | local_dataflow.rb:55:5:55:13 | call to [] |
 | local_dataflow.rb:60:1:90:3 | self (test_case) | local_dataflow.rb:78:12:78:20 | self |
 | local_dataflow.rb:60:1:90:3 | self in test_case | local_dataflow.rb:60:1:90:3 | self (test_case) |
 | local_dataflow.rb:60:15:60:15 | x | local_dataflow.rb:60:15:60:15 | x |
@@ -2545,6 +2547,7 @@
 | local_dataflow.rb:81:16:81:16 | e | local_dataflow.rb:84:12:84:12 | e |
 | local_dataflow.rb:81:20:84:33 | then ... | local_dataflow.rb:78:7:88:5 | case ... |
 | local_dataflow.rb:81:25:84:14 | call to [] | local_dataflow.rb:81:20:84:33 | then ... |
+| local_dataflow.rb:81:25:84:14 | synthetic splat argument | local_dataflow.rb:81:25:84:14 | call to [] |
 | local_dataflow.rb:82:7:82:13 | [post] self | local_dataflow.rb:83:7:83:13 | self |
 | local_dataflow.rb:82:7:82:13 | self | local_dataflow.rb:83:7:83:13 | self |
 | local_dataflow.rb:83:7:83:13 | [post] self | local_dataflow.rb:84:7:84:13 | self |

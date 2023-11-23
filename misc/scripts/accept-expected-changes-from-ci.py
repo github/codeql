@@ -114,7 +114,7 @@ def make_patches_from_log_file(log_file_lines) -> List[Patch]:
             while True:
                 next_line = parse_log_line(next(lines))
                 # it can be the case that
-                if next_line[0] in (" ", "-", "+", "@"):
+                if next_line and next_line[0] in (" ", "-", "+", "@"):
                     lines_changed.append(next_line)
                 if "FAILED" in next_line:
                     break

@@ -22,7 +22,7 @@ namespace Semmle.Extraction.Tests
         {
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
             Assert.True(options.Cache);
-            Assert.True(options.CIL);
+            Assert.False(options.CIL);
             Assert.Null(options.Framework);
             Assert.Null(options.CompilerName);
             Assert.Empty(options.CompilerArguments);
@@ -52,7 +52,7 @@ namespace Semmle.Extraction.Tests
         public void CIL()
         {
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.True(options.CIL);
+            Assert.False(options.CIL);
 
             Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_CIL", "false");
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
@@ -64,7 +64,7 @@ namespace Semmle.Extraction.Tests
 
             Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_CIL", null);
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.True(options.CIL);
+            Assert.False(options.CIL);
         }
 
         [Fact]
@@ -135,9 +135,8 @@ namespace Semmle.Extraction.Tests
         public void StandaloneDefaults()
         {
             standaloneOptions = CSharp.Standalone.Options.Create(Array.Empty<string>());
-            Assert.Equal(0, standaloneOptions.Dependencies.DllDirs.Count);
+            Assert.Empty(standaloneOptions.Dependencies.DllDirs);
             Assert.True(standaloneOptions.Dependencies.UseNuGet);
-            Assert.True(standaloneOptions.Dependencies.UseMscorlib);
             Assert.False(standaloneOptions.SkipExtraction);
             Assert.Null(standaloneOptions.Dependencies.SolutionFile);
             Assert.True(standaloneOptions.Dependencies.ScanNetFrameworkDlls);
@@ -147,12 +146,11 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void StandaloneOptions()
         {
-            standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--references:foo", "--silent", "--skip-nuget", "--skip-dotnet", "--exclude", "bar", "--nostdlib" });
+            standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--references:foo", "--silent", "--skip-nuget", "--skip-dotnet", "--exclude", "bar" });
             Assert.Equal("foo", standaloneOptions.Dependencies.DllDirs[0]);
             Assert.Equal("bar", standaloneOptions.Dependencies.Excludes[0]);
             Assert.Equal(Verbosity.Off, standaloneOptions.Verbosity);
             Assert.False(standaloneOptions.Dependencies.UseNuGet);
-            Assert.False(standaloneOptions.Dependencies.UseMscorlib);
             Assert.False(standaloneOptions.Dependencies.ScanNetFrameworkDlls);
             Assert.False(standaloneOptions.Errors);
             Assert.False(standaloneOptions.Help);

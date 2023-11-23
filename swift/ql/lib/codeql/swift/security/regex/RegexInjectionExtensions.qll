@@ -37,7 +37,7 @@ class RegexInjectionAdditionalFlowStep extends Unit {
  * These cases are modeled separately.
  */
 private class EvalRegexInjectionSink extends RegexInjectionSink {
-  EvalRegexInjectionSink() { this.asExpr() = any(RegexEval e).getRegexInput() }
+  EvalRegexInjectionSink() { this = any(RegexEval e).getRegexInputNode() }
 }
 
 /**
@@ -55,5 +55,15 @@ private class RegexInjectionSinks extends SinkModelCsv {
         ";Regex;true;init(_:as:);;;Argument[0];regex-use",
         ";NSRegularExpression;true;init(pattern:options:);;;Argument[0];regex-use",
       ]
+  }
+}
+
+/**
+ * A barrier for regular expression injection vulnerabilities.
+ */
+private class RegexInjectionDefaultBarrier extends RegexInjectionBarrier {
+  RegexInjectionDefaultBarrier() {
+    // any numeric type
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
   }
 }

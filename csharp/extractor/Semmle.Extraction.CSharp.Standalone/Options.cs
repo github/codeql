@@ -2,6 +2,7 @@ using System.IO;
 using Semmle.Util;
 using Semmle.Util.Logging;
 using Semmle.Extraction.CSharp.DependencyFetching;
+using System;
 
 namespace Semmle.Extraction.CSharp.Standalone
 {
@@ -29,9 +30,6 @@ namespace Semmle.Extraction.CSharp.Standalone
                 case "all-references":
                     AnalyseCsProjFiles = !value;
                     return true;
-                case "stdlib":
-                    dependencies.UseMscorlib = value;
-                    return true;
                 case "skip-dotnet":
                     dependencies.ScanNetFrameworkDlls = !value;
                     return true;
@@ -53,6 +51,9 @@ namespace Semmle.Extraction.CSharp.Standalone
                 case "references":
                     dependencies.DllDirs.Add(value);
                     return true;
+                case "dotnet":
+                    dependencies.DotNetPath = value;
+                    return true;
                 default:
                     return base.HandleOption(key, value);
             }
@@ -64,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             var fi = new FileInfo(dependencies.SolutionFile);
             if (!fi.Exists)
             {
-                System.Console.WriteLine("Error: The solution {0} does not exist", fi.FullName);
+                System.Console.WriteLine($"[{Environment.CurrentManagedThreadId:D3}] Error: The solution {fi.FullName} does not exist");
                 Errors = true;
             }
             return true;
@@ -72,7 +73,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         public override void InvalidArgument(string argument)
         {
-            System.Console.WriteLine($"Error: Invalid argument {argument}");
+            System.Console.WriteLine($"[{Environment.CurrentManagedThreadId:D3}] Error: Invalid argument {argument}");
             Errors = true;
         }
 
@@ -110,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// <summary>
         /// Outputs the command line options to the console.
         /// </summary>
-        public static void ShowHelp(System.IO.TextWriter output)
+        public static void ShowHelp(TextWriter output)
         {
             output.WriteLine("C# standalone extractor\n\nExtracts a C# project in the current directory without performing a build.\n");
             output.WriteLine("Additional options:\n");
@@ -121,7 +122,6 @@ namespace Semmle.Extraction.CSharp.Standalone
             output.WriteLine("    --dry-run        Stop before extraction");
             output.WriteLine("    --skip-nuget     Do not download nuget packages");
             output.WriteLine("    --all-references Use all references (default is to only use references in .csproj files)");
-            output.WriteLine("    --nostdlib       Do not link mscorlib.dll (use only for extracting mscorlib itself)");
             output.WriteLine("    --threads:nnn    Specify number of threads (default=CPU cores)");
             output.WriteLine("    --verbose        Produce more output");
             output.WriteLine("    --pdb            Cross-reference information from PDBs where available");

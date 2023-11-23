@@ -3,9 +3,12 @@
  */
 
 import codeql.ruby.AST
+import codeql.ruby.CFG
 import TestUtilities.InlineFlowTest
 import ValueFlowTest<DefaultFlowConfig>
-import PathGraph
+import ValueFlow::PathGraph
+
+query predicate hashLiteral(CfgNodes::ExprNodes::HashLiteralCfgNode n) { any() }
 
 from ValueFlow::PathNode source, ValueFlow::PathNode sink
 where ValueFlow::flowPath(source, sink)

@@ -246,12 +246,14 @@ private module PrintJavaScript {
     }
 
     /**
-     * Gets "var" or "const" or "let" depending on what type of declaration `decl` is.
+     * Gets "var" or "const" or "let" or "using" depending on what type of declaration `decl` is.
      */
     private string getDeclarationKeyword(DeclStmt decl) {
       decl instanceof VarDeclStmt and result = "var"
       or
       decl instanceof ConstDeclStmt and result = "const"
+      or
+      decl instanceof UsingDeclStmt and result = "using"
       or
       decl instanceof LetStmt and result = "let"
     }

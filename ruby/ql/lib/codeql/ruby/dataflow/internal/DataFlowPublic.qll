@@ -550,6 +550,73 @@ module Content {
   }
 
   /**
+   * INTERNAL: Do not use.
+   *
+   * An element inside a synthetic splat argument. All positional arguments
+   * (including splat arguments) are implicitly stored inside a synthetic
+   * splat argument. For example, in
+   *
+   * ```rb
+   * foo(1, 2, 3)
+   * ```
+   *
+   * we have an implicit splat argument containing `[1, 2, 3]`.
+   */
+  class SplatContent extends ElementContent, TSplatContent {
+    private int i;
+    private boolean shifted;
+
+    SplatContent() { this = TSplatContent(i, shifted) }
+
+    /** Gets the position of this splat element. */
+    int getPosition() { result = i }
+
+    /**
+     * Holds if this element represents a value from an actual splat argument
+     * that had its index shifted. For example, in
+     *
+     * ```rb
+     * foo(x, *args)
+     * ```
+     *
+     * the elements of `args` will have their index shifted by 1 before being
+     * put into the synthetic splat argument.
+     */
+    predicate isShifted() { shifted = true }
+
+    override string toString() {
+      exists(string s |
+        (if this.isShifted() then s = " (shifted)" else s = "") and
+        result = "splat position " + i + s
+      )
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * An element inside a synthetic hash-splat argument. All keyword arguments
+   * are implicitly stored inside a synthetic hash-splat argument. For example,
+   * in
+   *
+   * ```rb
+   * foo(a: 1, b: 2, c: 3)
+   * ```
+   *
+   * we have an implicit hash-splat argument containing `{:a => 1, :b => 2, :c => 3}`.
+   */
+  class HashSplatContent extends ElementContent, THashSplatContent {
+    private ConstantValue::ConstantSymbolValue cv;
+
+    HashSplatContent() { this = THashSplatContent(cv) }
+
+    /** Gets the hash key. */
+    ConstantValue::ConstantSymbolValue getKey() { result = cv }
+
+    override string toString() { result = "hash-splat position " + cv }
+  }
+
+  /**
    * A value stored behind a getter/setter pair.
    *
    * This is used (only) by type-tracking, as a heuristic since getter/setter pairs tend to operate
@@ -568,6 +635,18 @@ module Content {
 
   /** Gets `AttributeNameContent` of the given name. */
   AttributeNameContent getAttributeName(string name) { result.getName() = name }
+
+  /** A captured variable. */
+  class CapturedVariableContent extends Content, TCapturedVariableContent {
+    private LocalVariable v;
+
+    CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+    /** Gets the captured variable. */
+    LocalVariable getVariable() { result = v }
+
+    override string toString() { result = "captured " + v }
+  }
 }
 
 /**
@@ -693,6 +772,8 @@ class ContentSet extends TContentSet {
     or
     exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
       result = c or
+      result = TSplatContent(c.getIndex().getInt(), _) or
+      result = THashSplatContent(c.getIndex()) or
       result = TUnknownElementContent()
     )
     or
@@ -700,7 +781,9 @@ class ContentSet extends TContentSet {
       this = TElementLowerBoundContent(lower, includeUnknown)
     |
       exists(int i |
-        result.(Content::KnownElementContent).getIndex().isInt(i) and
+        result.(Content::KnownElementContent).getIndex().isInt(i) or
+        result = TSplatContent(i, _)
+      |
         i >= lower
       )
       or
@@ -712,6 +795,11 @@ class ContentSet extends TContentSet {
       this = TElementContentOfTypeContent(type, includeUnknown)
     |
       type = result.(Content::KnownElementContent).getIndex().getValueType()
+      or
+      type = "int" and
+      result instanceof Content::SplatContent
+      or
+      type = result.(Content::HashSplatContent).getKey().getValueType()
       or
       includeUnknown = true and
       result = TUnknownElementContent()
@@ -727,6 +815,12 @@ class ContentSet extends TContentSet {
  * the argument `x`.
  */
 signature predicate guardChecksSig(CfgNodes::AstCfgNode g, CfgNode e, boolean branch);
+
+bindingset[def1, def2]
+pragma[inline_late]
+private predicate sameSourceVariable(Ssa::Definition def1, Ssa::Definition def2) {
+  def1.getSourceVariable() = def2.getSourceVariable()
+}
 
 /**
  * Provides a set of barrier nodes for a guard that validates an expression.
@@ -765,16 +859,16 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * This is restricted to calls where the variable is captured inside a
    * block.
    */
-  private Ssa::Definition getAMaybeGuardedCapturedDef() {
+  private Ssa::CapturedEntryDefinition getAMaybeGuardedCapturedDef() {
     exists(
       CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode,
       Ssa::Definition def, CfgNodes::ExprNodes::CallCfgNode call
     |
       def.getARead() = testedNode and
       guardChecks(g, testedNode, branch) and
-      SsaImpl::captureFlowIn(call, def, result) and
       guardControlsBlock(g, call.getBasicBlock(), branch) and
-      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock() and
+      sameSourceVariable(def, result)
     )
   }
 }
@@ -786,73 +880,6 @@ private predicate guardControlsBlock(CfgNodes::AstCfgNode guard, BasicBlock bb, 
     s.getValue() = branch and
     conditionBlock.controls(bb, s)
   )
-}
-
-/**
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-abstract deprecated class BarrierGuard extends CfgNodes::ExprCfgNode {
-  private ConditionBlock conditionBlock;
-
-  BarrierGuard() { this = conditionBlock.getLastNode() }
-
-  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
-  private predicate controlsBlock(BasicBlock bb, boolean branch) {
-    exists(SuccessorTypes::BooleanSuccessor s | s.getValue() = branch |
-      conditionBlock.controls(bb, s)
-    )
-  }
-
-  /**
-   * Holds if this guard validates `expr` upon evaluating to `branch`.
-   * For example, the following code validates `foo` when the condition
-   * `foo == "foo"` is true.
-   * ```ruby
-   * if foo == "foo"
-   *   do_something
-   *  else
-   *   do_something_else
-   * end
-   * ```
-   */
-  abstract predicate checks(CfgNode expr, boolean branch);
-
-  /**
-   * Gets an implicit entry definition for a captured variable that
-   * may be guarded, because a call to the capturing callable is guarded.
-   *
-   * This is restricted to calls where the variable is captured inside a
-   * block.
-   */
-  private Ssa::Definition getAMaybeGuardedCapturedDef() {
-    exists(
-      boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def,
-      CfgNodes::ExprNodes::CallCfgNode call
-    |
-      def.getARead() = testedNode and
-      this.checks(testedNode, branch) and
-      SsaImpl::captureFlowIn(call, def, result) and
-      this.controlsBlock(call.getBasicBlock(), branch) and
-      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
-    )
-  }
-
-  final Node getAGuardedNode() {
-    exists(boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def |
-      def.getARead() = testedNode and
-      def.getARead() = result.asExpr() and
-      this.checks(testedNode, branch) and
-      this.controlsBlock(result.asExpr().getBasicBlock(), branch)
-    )
-    or
-    result.asExpr() = this.getAMaybeGuardedCapturedDef().getARead()
-  }
 }
 
 /**
@@ -1207,8 +1234,15 @@ class LhsExprNode extends ExprNode {
   /** Gets the underlying AST node as a `LhsExpr`. */
   LhsExpr asLhsExprAstNode() { result = lhsExprCfgNode.getExpr() }
 
-  /** Gets a variable used in (or introduced by) this LHS. */
-  Variable getAVariable() { result = lhsExprCfgNode.getAVariable() }
+  /**
+   * DEPRECATED: use `getVariable` instead.
+   *
+   * Gets a variable used in (or introduced by) this LHS.
+   */
+  deprecated Variable getAVariable() { result = lhsExprCfgNode.getAVariable() }
+
+  /** Gets the variable used in (or introduced by) this LHS. */
+  Variable getVariable() { result = lhsExprCfgNode.getVariable() }
 }
 
 /**

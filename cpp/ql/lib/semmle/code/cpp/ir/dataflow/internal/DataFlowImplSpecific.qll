@@ -18,4 +18,6 @@ module CppDataFlow implements InputSig {
   import Public
 
   Node exprNode(DataFlowExpr e) { result = Public::exprNode(e) }
+
+  predicate getAdditionalFlowIntoCallNodeTerm = Private::getAdditionalFlowIntoCallNodeTerm/2;
 }

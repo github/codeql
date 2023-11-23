@@ -210,7 +210,7 @@ public class B {
       r1.run();
     };
     r2.run();
-    sink(out.get(0)); // $ MISSING: hasValueFlow=double.capture.out
+    sink(out.get(0)); // $ hasValueFlow=double.capture.out
   }
 
   void testEnhancedForStmtCapture() {

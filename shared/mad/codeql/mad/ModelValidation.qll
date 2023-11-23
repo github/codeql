@@ -43,11 +43,9 @@ module KindValidation<KindValidationConfigSig Config> {
       or
       this.matches([
           // shared
-          "encryption-%", "qltest%", "test-%",
+          "credentials-%", "encryption-%", "qltest%", "test-%",
           // Java-only currently, but may be shared in the future
           "regex-use%",
-          // JavaScript-only currently, but may be shared in the future
-          "credentials-%",
           // Swift-only currently, but may be shared in the future
           "%string-%length", "weak-hash-input-%"
         ])
@@ -115,11 +113,11 @@ module KindValidation<KindValidationConfigSig Config> {
       this =
         [
           // shared
-          "local", "remote",
+          "local", "remote", "file",
           // Java
-          "android-external-storage-dir", "contentprovider",
+          "android-external-storage-dir", "contentprovider", "database", "environment",
           // C#
-          "file", "file-write",
+          "file-write",
           // JavaScript
           "database-access-result"
         ]

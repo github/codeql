@@ -8,13 +8,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal class Razor
     {
-        private readonly DotnetVersion sdk;
+        private readonly DotNetVersion sdk;
         private readonly ProgressMonitor progressMonitor;
-        private readonly DotNet dotNet;
+        private readonly IDotNet dotNet;
         private readonly string sourceGeneratorFolder;
         private readonly string cscPath;
 
-        public Razor(DotnetVersion sdk, DotNet dotNet, ProgressMonitor progressMonitor)
+        public Razor(DotNetVersion sdk, IDotNet dotNet, ProgressMonitor progressMonitor)
         {
             this.sdk = sdk;
             this.progressMonitor = progressMonitor;

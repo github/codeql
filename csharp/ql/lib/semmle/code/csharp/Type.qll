@@ -56,23 +56,6 @@ private predicate isObjectClass(Class c) { c instanceof ObjectType }
  * Either a value type (`ValueType`) or a reference type (`RefType`).
  */
 class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
-  /**
-   * Holds if this type has the qualified name `qualifier`.`name`.
-   *
-   * For example the class `System.IO.IOException` has
-   * `qualifier`=`System.IO` and `name`=`IOException`.
-   */
-  override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string enclosing |
-      this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and
-      name = enclosing + "+" + this.getUndecoratedName()
-    )
-    or
-    not exists(this.getDeclaringType()) and
-    qualifier = this.getNamespace().getFullName() and
-    name = this.getUndecoratedName()
-  }
-
   /** Gets the namespace containing this type. */
   Namespace getNamespace() {
     if exists(this.getDeclaringType())
@@ -110,9 +93,16 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     parent_namespace_declaration(this, result)
   }
 
+  private Class getExplicitBaseClass() {
+    extend(this, result)
+    or
+    not extend(this, any(Class c)) and
+    extend(this, getTypeRef(result))
+  }
+
   /** Gets the immediate base class of this class, if any. */
   final Class getBaseClass() {
-    extend(this, getTypeRef(result))
+    result = this.getExplicitBaseClass()
     or
     not extend(this, _) and
     not isObjectClass(this) and
@@ -122,7 +112,11 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   /** Gets an immediate base interface of this type, if any. */
-  Interface getABaseInterface() { implement(this, getTypeRef(result)) }
+  Interface getABaseInterface() {
+    implement(this, result)
+    or
+    implement(this, getTypeRef(result))
+  }
 
   /** Gets an immediate base type of this type, if any. */
   override ValueOrRefType getABaseType() {
@@ -293,7 +287,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
 
   /** Gets the length of *some* path to the root of the hierarchy. */
   int getADepth() {
-    this.hasQualifiedName("System", "Object") and result = 0
+    this.hasFullyQualifiedName("System", "Object") and result = 0
     or
     result = this.getABaseType().getADepth() + 1 and
     //prevent recursion on cyclic inheritance (only for incorrect databases)
@@ -397,12 +391,7 @@ class NonNestedType extends ValueOrRefType {
 /**
  * The `void` type.
  */
-class VoidType extends DotNet::ValueOrRefType, Type, @void_type {
-  override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = "System" and
-    name = "Void"
-  }
-
+class VoidType extends ValueOrRefType, @void_type {
   final override string getName() { result = "Void" }
 
   final override string getUndecoratedName() { result = "Void" }
@@ -672,7 +661,12 @@ class Enum extends ValueType, @enum_type {
    * }
    * ```
    */
-  IntegralType getUnderlyingType() { enum_underlying_type(this, getTypeRef(result)) }
+  IntegralType getUnderlyingType() {
+    enum_underlying_type(this, result)
+    or
+    not enum_underlying_type(this, any(Type t)) and
+    enum_underlying_type(this, getTypeRef(result))
+  }
 
   /**
    * Gets an `enum` constant declared in this `enum`, for example `Even`
@@ -815,7 +809,7 @@ class AnonymousClass extends Class {
  * The `object` type, `System.Object`.
  */
 class ObjectType extends Class {
-  ObjectType() { this.hasQualifiedName("System", "Object") }
+  ObjectType() { this.hasFullyQualifiedName("System", "Object") }
 
   override string toStringWithTypes() { result = "object" }
 
@@ -826,7 +820,7 @@ class ObjectType extends Class {
  * The `string` type, `System.String`.
  */
 class StringType extends Class {
-  StringType() { this.hasQualifiedName("System", "String") }
+  StringType() { this.hasFullyQualifiedName("System", "String") }
 
   override string toStringWithTypes() { result = "string" }
 
@@ -855,7 +849,12 @@ class Interface extends RefType, @interface_type {
  */
 class DelegateType extends RefType, Parameterizable, @delegate_type {
   /** Gets the return type of this delegate. */
-  Type getReturnType() { delegate_return_type(this, getTypeRef(result)) }
+  Type getReturnType() {
+    delegate_return_type(this, result)
+    or
+    not delegate_return_type(this, any(Type t)) and
+    delegate_return_type(this, getTypeRef(result))
+  }
 
   /** Gets the annotated return type of this delegate. */
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
@@ -939,7 +938,12 @@ class UnmanagedCallingConvention extends CallingConvention {
  */
 class FunctionPointerType extends Type, Parameterizable, @function_pointer_type {
   /** Gets the return type of this function pointer. */
-  Type getReturnType() { function_pointer_return_type(this, getTypeRef(result)) }
+  Type getReturnType() {
+    function_pointer_return_type(this, result)
+    or
+    not function_pointer_return_type(this, any(Type t)) and
+    function_pointer_return_type(this, getTypeRef(result))
+  }
 
   /** Gets the calling convention. */
   CallingConvention getCallingConvention() {
@@ -950,6 +954,9 @@ class FunctionPointerType extends Type, Parameterizable, @function_pointer_type 
 
   /** Gets the unmanaged calling convention at index `i`. */
   Type getUnmanagedCallingConvention(int i) {
+    has_unmanaged_calling_conventions(this, i, result)
+    or
+    not has_unmanaged_calling_conventions(this, i, any(Type t)) and
     has_unmanaged_calling_conventions(this, i, getTypeRef(result))
   }
 
@@ -979,10 +986,15 @@ class NullableType extends ValueType, ConstructedType, @nullable_type {
    * Gets the underlying value type of this nullable type.
    * For example `int` in `int?`.
    */
-  Type getUnderlyingType() { nullable_underlying_type(this, getTypeRef(result)) }
+  Type getUnderlyingType() {
+    nullable_underlying_type(this, result)
+    or
+    not nullable_underlying_type(this, any(Type t)) and
+    nullable_underlying_type(this, getTypeRef(result))
+  }
 
   override UnboundGenericStruct getUnboundGeneric() {
-    result.hasQualifiedName("System", "Nullable<>")
+    result.hasFullyQualifiedName("System", "Nullable`1")
   }
 
   override string toStringWithTypes() {
@@ -994,11 +1006,6 @@ class NullableType extends ValueType, ConstructedType, @nullable_type {
   override Type getTypeArgument(int p) { p = 0 and result = this.getUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "NullableType" }
-
-  final override predicate hasQualifiedName(string qualifier, string name) {
-    qualifier = "System" and
-    name = "Nullable<" + this.getUnderlyingType().getQualifiedName() + ">"
-  }
 }
 
 /**
@@ -1021,7 +1028,12 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   predicate isMultiDimensional() { this.getRank() > 1 }
 
   /** Gets the element type of this array, for example `int` in `int[]`. */
-  override Type getElementType() { array_element_type(this, _, _, getTypeRef(result)) }
+  override Type getElementType() {
+    array_element_type(this, _, _, result)
+    or
+    not array_element_type(this, _, _, any(Type t)) and
+    array_element_type(this, _, _, getTypeRef(result))
+  }
 
   /** Holds if this array type has the same shape (dimension and rank) as `that` array type. */
   predicate hasSameShapeAs(ArrayType that) {
@@ -1063,20 +1075,18 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     not type_location(this, _) and
     result = this.getElementType().getALocation()
   }
-
-  final override predicate hasQualifiedName(string qualifier, string name) {
-    exists(Type elementType, string name0 |
-      elementType.hasQualifiedName(qualifier, name0) and
-      name = name0 + this.getDimensionString(elementType)
-    )
-  }
 }
 
 /**
  * A pointer type, for example `char*`.
  */
 class PointerType extends DotNet::PointerType, Type, @pointer_type {
-  override Type getReferentType() { pointer_referent_type(this, getTypeRef(result)) }
+  override Type getReferentType() {
+    pointer_referent_type(this, result)
+    or
+    not pointer_referent_type(this, any(Type t)) and
+    pointer_referent_type(this, getTypeRef(result))
+  }
 
   override string toStringWithTypes() { result = DotNet::PointerType.super.toStringWithTypes() }
 
@@ -1093,13 +1103,6 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
   override string toString() { result = DotNet::PointerType.super.toString() }
 
   override string getAPrimaryQlClass() { result = "PointerType" }
-
-  final override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string name0 |
-      this.getReferentType().hasQualifiedName(qualifier, name0) and
-      name = name0 + "*"
-    )
-  }
 }
 
 /**
@@ -1134,7 +1137,12 @@ class UnknownType extends Type, @unknown_type {
  */
 class TupleType extends ValueType, @tuple_type {
   /** Gets the underlying type of this tuple, which is of type `System.ValueTuple`. */
-  Struct getUnderlyingType() { tuple_underlying_type(this, getTypeRef(result)) }
+  Struct getUnderlyingType() {
+    tuple_underlying_type(this, result)
+    or
+    not tuple_underlying_type(this, any(Type t)) and
+    tuple_underlying_type(this, getTypeRef(result))
+  }
 
   /**
    * Gets the `n`th element of this tuple, indexed from 0.
@@ -1181,10 +1189,6 @@ class TupleType extends ValueType, @tuple_type {
 
   override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
 
-  final override predicate hasQualifiedName(string qualifier, string name) {
-    this.getUnderlyingType().hasQualifiedName(qualifier, name)
-  }
-
   override string getAPrimaryQlClass() { result = "TupleType" }
 }
 
@@ -1196,7 +1200,11 @@ class TypeMention extends @type_mention {
   Type type;
   @type_mention_parent parent;
 
-  TypeMention() { type_mention(this, getTypeRef(type), parent) }
+  TypeMention() {
+    type_mention(this, type, parent)
+    or
+    type_mention(this, getTypeRef(type), parent)
+  }
 
   /** Gets the type being mentioned. */
   Type getType() { result = type }

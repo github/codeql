@@ -11,6 +11,10 @@ module ExternallyControlledFormatStringLocalConfig implements DataFlow::ConfigSi
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(StringFormat formatCall).getFormatArgument()
   }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.getType() instanceof NumericType or node.getType() instanceof BooleanType
+  }
 }
 
 /**

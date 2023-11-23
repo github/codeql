@@ -378,6 +378,68 @@ module SqlExecution {
   }
 }
 
+/** Provides a class for modeling NoSQL execution APIs. */
+module NoSqlExecution {
+  /**
+   * A data-flow node that executes NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSqlExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSQL query to be executed. */
+    abstract DataFlow::Node getQuery();
+
+    /** Holds if this query will unpack/interpret a dictionary */
+    abstract predicate interpretsDict();
+
+    /** Holds if this query can be dangerous when run on a user-controlled string */
+    abstract predicate vulnerableToStrings();
+  }
+}
+
+/**
+ * A data-flow node that executes NoSQL queries.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `NoSqlExecution::Range` instead.
+ */
+class NoSqlExecution extends DataFlow::Node instanceof NoSqlExecution::Range {
+  /** Gets the argument that specifies the NoSQL query to be executed. */
+  DataFlow::Node getQuery() { result = super.getQuery() }
+
+  /** Holds if this query will unpack/interpret a dictionary */
+  predicate interpretsDict() { super.interpretsDict() }
+
+  /** Holds if this query can be dangerous when run on a user-controlled string */
+  predicate vulnerableToStrings() { super.vulnerableToStrings() }
+}
+
+/** Provides classes for modeling NoSql sanitization-related APIs. */
+module NoSqlSanitizer {
+  /**
+   * A data-flow node that collects functions sanitizing NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSQLSanitizer` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSql query to be sanitized. */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * A data-flow node that collects functions sanitizing NoSQL queries.
+ *
+ * Extend this class to model new APIs. If you want to refine existing API models,
+ * extend `NoSQLSanitizer::Range` instead.
+ */
+class NoSqlSanitizer extends DataFlow::Node instanceof NoSqlSanitizer::Range {
+  /** Gets the argument that specifies the NoSql query to be sanitized. */
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
+}
+
 /**
  * A data-flow node that executes a regular expression.
  *
@@ -866,7 +928,10 @@ module Http {
 
       override Parameter getARoutedParameter() {
         result = rs.getARoutedParameter() and
-        result in [this.getArg(_), this.getArgByName(_)]
+        result in [
+            this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+            this.getKwarg().(Parameter)
+          ]
       }
 
       override string getFramework() { result = rs.getFramework() }

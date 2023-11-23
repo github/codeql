@@ -53,7 +53,8 @@ edges
 | path_injection.py:84:16:84:22 | ControlFlowNode for request | path_injection.py:84:16:84:27 | ControlFlowNode for Attribute |
 | path_injection.py:84:16:84:27 | ControlFlowNode for Attribute | path_injection.py:84:16:84:47 | ControlFlowNode for Attribute() |
 | path_injection.py:84:16:84:47 | ControlFlowNode for Attribute() | path_injection.py:84:5:84:12 | SSA variable filename |
-| path_injection.py:85:5:85:24 | SSA variable possibly_unsafe_path | path_injection.py:87:18:87:37 | ControlFlowNode for possibly_unsafe_path |
+| path_injection.py:85:5:85:24 | SSA variable possibly_unsafe_path | path_injection.py:86:24:86:43 | ControlFlowNode for possibly_unsafe_path |
+| path_injection.py:86:24:86:43 | ControlFlowNode for possibly_unsafe_path | path_injection.py:87:18:87:37 | ControlFlowNode for possibly_unsafe_path |
 | path_injection.py:91:20:91:25 | ControlFlowNode for foo_id | path_injection.py:93:5:93:8 | SSA variable path |
 | path_injection.py:93:5:93:8 | SSA variable path | path_injection.py:94:14:94:17 | ControlFlowNode for path |
 | path_injection.py:98:20:98:22 | ControlFlowNode for foo | path_injection.py:101:5:101:8 | SSA variable path |
@@ -78,7 +79,8 @@ edges
 | path_injection.py:138:16:138:22 | ControlFlowNode for request | path_injection.py:138:16:138:27 | ControlFlowNode for Attribute |
 | path_injection.py:138:16:138:27 | ControlFlowNode for Attribute | path_injection.py:138:16:138:47 | ControlFlowNode for Attribute() |
 | path_injection.py:138:16:138:47 | ControlFlowNode for Attribute() | path_injection.py:138:5:138:12 | SSA variable filename |
-| path_injection.py:139:5:139:8 | SSA variable path | path_injection.py:142:14:142:17 | ControlFlowNode for path |
+| path_injection.py:139:5:139:8 | SSA variable path | path_injection.py:140:47:140:50 | ControlFlowNode for path |
+| path_injection.py:140:47:140:50 | ControlFlowNode for path | path_injection.py:142:14:142:17 | ControlFlowNode for path |
 | path_injection.py:149:5:149:12 | SSA variable filename | path_injection.py:151:9:151:12 | SSA variable path |
 | path_injection.py:149:16:149:22 | ControlFlowNode for request | path_injection.py:149:16:149:27 | ControlFlowNode for Attribute |
 | path_injection.py:149:16:149:27 | ControlFlowNode for Attribute | path_injection.py:149:16:149:47 | ControlFlowNode for Attribute() |
@@ -171,6 +173,7 @@ nodes
 | path_injection.py:84:16:84:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | path_injection.py:84:16:84:47 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | path_injection.py:85:5:85:24 | SSA variable possibly_unsafe_path | semmle.label | SSA variable possibly_unsafe_path |
+| path_injection.py:86:24:86:43 | ControlFlowNode for possibly_unsafe_path | semmle.label | ControlFlowNode for possibly_unsafe_path |
 | path_injection.py:87:18:87:37 | ControlFlowNode for possibly_unsafe_path | semmle.label | ControlFlowNode for possibly_unsafe_path |
 | path_injection.py:91:20:91:25 | ControlFlowNode for foo_id | semmle.label | ControlFlowNode for foo_id |
 | path_injection.py:93:5:93:8 | SSA variable path | semmle.label | SSA variable path |
@@ -202,6 +205,7 @@ nodes
 | path_injection.py:138:16:138:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | path_injection.py:138:16:138:47 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | path_injection.py:139:5:139:8 | SSA variable path | semmle.label | SSA variable path |
+| path_injection.py:140:47:140:50 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
 | path_injection.py:142:14:142:17 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
 | path_injection.py:149:5:149:12 | SSA variable filename | semmle.label | SSA variable filename |
 | path_injection.py:149:16:149:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |

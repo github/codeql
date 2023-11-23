@@ -10,6 +10,7 @@ import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * IPA type for data flow nodes.
@@ -116,14 +117,6 @@ newtype TNode =
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
   }
-
-/** Helper for `Node::getEnclosingCallable`. */
-private DataFlowCallable getCallableScope(Scope s) {
-  result.getScope() = s
-  or
-  not exists(DataFlowCallable c | c.getScope() = s) and
-  result = getCallableScope(s.getEnclosingScope())
-}
 
 private import semmle.python.internal.CachedStages
 
@@ -400,7 +393,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Scope getScope() { result = mod }
 
   override string toString() {
-    result = "ModuleVariableNode in " + mod.toString() + " for " + var.getId()
+    result = "ModuleVariableNode in " + concat( | | mod.toString(), ",") + " for " + var.getId()
   }
 
   /** Gets the module in which this variable appears. */
@@ -581,32 +574,6 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 }
 
 /**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-deprecated class BarrierGuard extends GuardNode {
-  /** Holds if this guard validates `node` upon evaluating to `branch`. */
-  abstract predicate checks(ControlFlowNode node, boolean branch);
-
-  /** Gets a node guarded by this guard. */
-  final ExprNode getAGuardedNode() {
-    exists(EssaDefinition def, ControlFlowNode node, boolean branch |
-      AdjacentUses::useOfDef(def, node) and
-      this.checks(node, branch) and
-      AdjacentUses::useOfDef(def, result.asCfgNode()) and
-      this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
-    )
-  }
-}
-
-/**
  * Algebraic datatype for tracking data content associated with values.
  * Content can be collection elements or object attributes.
  */
@@ -621,6 +588,11 @@ newtype TContent =
     or
     // Arguments can overflow and end up in the starred parameter tuple.
     exists(any(CallNode cn).getArg(index))
+    or
+    // since flow summaries might use tuples, we ensure that we at least have valid
+    // TTupleElementContent for the 0..7 (7 was picked to match `small_tuple` in
+    // data-flow-private)
+    index in [0 .. 7]
   } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
@@ -631,7 +603,30 @@ newtype TContent =
   /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
   /** An object attribute. */
-  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
+  TAttributeContent(string attr) {
+    attr = any(Attribute a).getName()
+    or
+    // Flow summaries that target attributes rely on a TAttributeContent being
+    // available. However, since the code above only constructs a TAttributeContent
+    // based on the attribute names seen in the DB, we can end up in a scenario where
+    // flow summaries don't work due to missing TAttributeContent. To get around this,
+    // we need to add the attribute names used by flow summaries. This needs to be done
+    // both for the summaries written in QL and the ones written in data-extension
+    // files.
+    //
+    // 1) Summaries in QL. Sadly the following code leads to non-monotonic recursion
+    //   name = any(AccessPathToken a).getAnArgument("Attribute")
+    // instead we use a qltest to alert if we write a new summary in QL that uses an
+    // attribute -- see
+    // python/ql/test/experimental/dataflow/summaries-checks/missing-attribute-content.ql
+    attr in ["re", "string", "pattern"]
+    or
+    //
+    // 2) summaries in data-extension files
+    exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
+      attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
+    )
+  }
 
 /**
  * A data-flow value can have associated content.

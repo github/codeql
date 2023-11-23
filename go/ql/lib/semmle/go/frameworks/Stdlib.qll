@@ -117,6 +117,9 @@ module IntegerParser {
      * input is 0 then it means the bit size of `int` and `uint`.
      */
     FunctionInput getTargetBitSizeInput() { none() }
+
+    /** Gets whether the function is for parsing signed or unsigned integers. */
+    boolean isSigned() { none() }
   }
 }
 

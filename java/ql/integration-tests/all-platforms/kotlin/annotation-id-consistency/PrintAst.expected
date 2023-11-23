@@ -10,10 +10,10 @@ User.java:
 #    3|           0: [TypeAccess] Ann2
 #    3|       5: [BlockStmt] { ... }
 #    4|         0: [ExprStmt] <Expr>;
-#    4|           0: [MethodAccess] x(...)
+#    4|           0: [MethodCall] x(...)
 #    4|             -1: [VarAccess] a1
 #    4|         1: [ExprStmt] <Expr>;
-#    4|           0: [MethodAccess] z(...)
+#    4|           0: [MethodCall] z(...)
 #    4|             -1: [VarAccess] a2
 #    4|         2: [ExprStmt] <Expr>;
 #    4|           0: [ClassInstanceExpr] new Annotated(...)
@@ -49,7 +49,7 @@ ktUser.kt:
 #    8|         3: [ExprStmt] <Expr>;
 #    8|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    8|             0: [TypeAccess] Unit
-#    8|             1: [MethodAccess] isJavaLetter(...)
+#    8|             1: [MethodCall] isJavaLetter(...)
 #    8|               -1: [TypeAccess] Character
 #    8|               0: [CharacterLiteral] a
 test.kt:

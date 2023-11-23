@@ -4,10 +4,12 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
-private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.dataflow.BarrierGuards
+private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.frameworks.core.Kernel::Kernel
 private import codeql.ruby.frameworks.Files
+private import codeql.ruby.TaintTracking
 
 /** A call to a method that might access a file or start a process. */
 class AmbiguousPathCall extends DataFlow::CallNode {
@@ -72,3 +74,20 @@ abstract class Sanitizer extends DataFlow::Node { }
 private class FileJoinSanitizer extends Sanitizer {
   FileJoinSanitizer() { this = any(File::FileJoinSummary s).getParameter("1..") }
 }
+
+private module KernelOpenConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink = any(AmbiguousPathCall r).getPathArgument() }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof StringConstCompareBarrier or
+    node instanceof StringConstArrayInclusionCallBarrier or
+    node instanceof Sanitizer
+  }
+}
+
+/**
+ * Taint-tracking for detecting insecure uses of `Kernel.open` and similar sinks.
+ */
+module KernelOpenFlow = TaintTracking::Global<KernelOpenConfig>;

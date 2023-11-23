@@ -11,6 +11,7 @@ private newtype TNode =
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
+  MkSliceElementNode(SliceExpr se) or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
 
 /** Nodes intended for only use inside the data-flow libraries. */
@@ -21,9 +22,14 @@ module Private {
   DataFlowCallable nodeGetEnclosingCallable(Node n) {
     result.asCallable() = n.getEnclosingCallable()
     or
-    (n = MkInstructionNode(_) or n = MkSsaNode(_) or n = MkGlobalFunctionNode(_)) and
+    not n instanceof FlowSummaryNode and
     not exists(n.getEnclosingCallable()) and
-    result.asFileScope() = n.getFile()
+    (
+      result.asFileScope() = n.getFile()
+      or
+      not exists(n.getFile()) and
+      result.isExternalFileScope()
+    )
     or
     result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable()
   }
@@ -991,6 +997,37 @@ module Public {
 
     /** Gets the maximum of this slice node. */
     Node getMax() { result = DataFlow::instructionNode(insn.getMax()) }
+  }
+
+  /**
+   * A data-flow node which exists solely to model the value flow from array
+   * elements of the base of a `SliceNode` to array elements of the `SliceNode`
+   * itself.
+   */
+  class SliceElementNode extends Node, MkSliceElementNode {
+    IR::SliceInstruction si;
+
+    SliceElementNode() { this = MkSliceElementNode(si.getExpr()) }
+
+    override ControlFlow::Root getRoot() { result = this.getSliceNode().getRoot() }
+
+    override Type getType() {
+      result = si.getResultType().(ArrayType).getElementType() or
+      result = si.getResultType().(SliceType).getElementType()
+    }
+
+    override string getNodeKind() { result = "slice element node" }
+
+    override string toString() { result = "slice element node" }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      si.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the `SliceNode` which this node relates to. */
+    SliceNode getSliceNode() { result = DataFlow::instructionNode(si) }
   }
 
   /**

@@ -1,4 +1,5 @@
 import go
+import TestUtilities.InlineExpectationsTest
 import TestUtilities.InlineFlowTest
 
 module ValueFlow = DataFlow::Global<DefaultFlowConfig>;

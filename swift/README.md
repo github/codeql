@@ -1,12 +1,11 @@
 # Swift on CodeQL
 
-## Warning
+> [!NOTE]
+> CodeQL analysis for Swift is currently in beta. During the beta, analysis of Swift code, and the accompanying documentation, will not be as comprehensive as for other languages.
 
-The Swift CodeQL package is an experimental and unsupported work in progress.
+## Development
 
-##
-
-## Building the Swift extractor
+### Building the Swift extractor
 
 First ensure you have Bazel installed, for example with
 
@@ -29,8 +28,6 @@ Using `codeql ... --search-path=swift/extractor-pack` will then pick up the Swif
 set up the search path
 in [the per-user CodeQL configuration file](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/specifying-command-options-in-a-codeql-configuration-file#using-a-codeql-configuration-file)
 .
-
-## Development
 
 ### Code generation
 

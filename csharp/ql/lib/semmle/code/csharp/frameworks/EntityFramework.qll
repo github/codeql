@@ -21,7 +21,8 @@ module DataAnnotations {
   class NotMappedAttribute extends Attribute {
     NotMappedAttribute() {
       this.getType()
-          .hasQualifiedName("System.ComponentModel.DataAnnotations.Schema", "NotMappedAttribute")
+          .hasFullyQualifiedName("System.ComponentModel.DataAnnotations.Schema",
+            "NotMappedAttribute")
     }
   }
 }
@@ -67,9 +68,9 @@ module EntityFramework {
     Method getAnUpdateMethod() { result = this.getAMethod("Update") }
   }
 
-  /** The class `Microsoft.EntityFrameworkCore.DbSet<>` or `System.Data.Entity.DbSet<>`. */
+  /** The class ``Microsoft.EntityFrameworkCore.DbSet`1`` or ``System.Data.Entity.DbSet`1``. */
   class DbSet extends EFClass, UnboundGenericClass {
-    DbSet() { this.getName() = "DbSet<>" }
+    DbSet() { this.getName() = "DbSet`1" }
 
     /** Gets a method that adds or updates entities in a DB set. */
     Method getAnAddOrUpdateMethod(boolean range) {
@@ -89,9 +90,9 @@ module EntityFramework {
     EFSummarizedCallable() { any() }
   }
 
-  /** The class `Microsoft.EntityFrameworkCore.DbQuery<>` or `System.Data.Entity.DbQuery<>`. */
+  /** The class ``Microsoft.EntityFrameworkCore.DbQuery`1`` or ``System.Data.Entity.DbQuery`1``. */
   class DbQuery extends EFClass, UnboundGenericClass {
-    DbQuery() { this.hasName("DbQuery<>") }
+    DbQuery() { this.hasName("DbQuery`1") }
   }
 
   /** A generic type or method that takes a mapped type as its type argument. */
@@ -134,7 +135,9 @@ module EntityFramework {
 
   /** The struct `Microsoft.EntityFrameworkCore.RawSqlString`. */
   private class RawSqlStringStruct extends Struct {
-    RawSqlStringStruct() { this.hasQualifiedName("Microsoft.EntityFrameworkCore", "RawSqlString") }
+    RawSqlStringStruct() {
+      this.hasFullyQualifiedName("Microsoft.EntityFrameworkCore", "RawSqlString")
+    }
 
     /** Gets a conversion operator from `string` to `RawSqlString`. */
     ConversionOperator getAConversionTo() {
@@ -424,7 +427,7 @@ module EntityFramework {
      */
     string getFullName() {
       exists(string qualifier, string type, string name |
-        this.hasQualifiedName(qualifier, type, name)
+        this.hasFullyQualifiedName(qualifier, type, name)
       |
         result = getQualifiedName(qualifier, type, name)
       )

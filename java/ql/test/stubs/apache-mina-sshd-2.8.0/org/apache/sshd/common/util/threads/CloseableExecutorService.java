@@ -9,4 +9,6 @@ import org.apache.sshd.common.Closeable;
 public interface CloseableExecutorService extends Closeable, ExecutorService
 {
     default boolean awaitTermination(Duration p0){ return false; }
+
+    default void close() { }
 }

@@ -399,13 +399,20 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
+  private predicate isFullyConstructedSplits(Splits splits) { exists(TAstNode(_, _, splits)) }
+
   /**
    * A set of control flow node splits. The set is represented by a list of splits,
    * ordered by ascending rank.
    */
   class Splits extends TSplits {
     /** Gets a textual representation of this set of splits. */
-    string toString() { result = splitsToString(this) }
+    string toString() {
+      result = splitsToString(this)
+      or
+      not isFullyConstructedSplits(this) and
+      result = "<partial split set>"
+    }
 
     /** Gets a split belonging to this set of splits. */
     SplitImpl getASplit() {
@@ -857,23 +864,27 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         succEntrySplitsCons(_, _, head, tail, _)
       }
 
+    private string getSplitStringAt(Splits split, int index) {
+      exists(SplitImpl head, Splits tail | split = TSplitsCons(head, tail) |
+        index = 0 and result = head.toString() and result != ""
+        or
+        index > 0 and result = getSplitStringAt(tail, index - 1)
+      )
+    }
+
+    private string getSplitsStringPart(Splits splits, int index) {
+      isFullyConstructedSplits(splits) and
+      result = getSplitStringAt(splits, index)
+    }
+
     cached
     string splitsToString(Splits splits) {
-      splits = TSplitsNil() and
-      result = ""
-      or
-      exists(SplitImpl head, Splits tail, string headString, string tailString |
-        splits = TSplitsCons(head, tail)
-      |
-        headString = head.toString() and
-        tailString = tail.toString() and
-        if tailString = ""
-        then result = headString
-        else
-          if headString = ""
-          then result = tailString
-          else result = headString + ", " + tailString
-      )
+      result =
+        concat(string child, int index |
+          child = getSplitsStringPart(splits, index)
+        |
+          child, ", " order by index
+        )
     }
 
     /**

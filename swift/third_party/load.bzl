@@ -1,20 +1,102 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-# TODO: remove `remove-result-of.patch` once we update to a Swift version containing
-# https://github.com/apple/swift/commit/2ed2cea2
-# (probably when updating to 5.9)
-_swift_prebuilt_version = "swift-5.8.1-RELEASE.214"
+_swift_prebuilt_version = "swift-5.9.1-RELEASE.255"
 _swift_sha_map = {
-    "Linux-X64": "009594131d2f6327e0033c4b7b0479a5730427575eb59a81a439fe0e343aa777",
-    "macOS-ARM64": "304a918e3699d404f57e967eff79b982388d8c5330c2135272c9f3a825920a39",
-    "macOS-X64": "c763c493e5782869b54887dc72df2aad00d59af7272c6d96377f1debb98741f2",
+    "Linux-X64": "0d5682d8acbe3ab81c2a0b8dc0dfadc0240895e28722cca6467d2ab71a69e004",
+    "macOS-ARM64": "ee53def6f89f97ce0882375121629d71fd87a673baa194f4c510920720d7bce6",
+    "macOS-X64": "61c2879ee89d6796f3b58fada8a5890756f5a8c053597f4faca019d660743d70",
 }
 
 _swift_arch_map = {
     "Linux-X64": "linux",
     "macOS-X64": "darwin_x86_64",
 }
+
+_swift_version = _swift_prebuilt_version.rpartition(".")[0]
+
+_toolchain_info = {
+    "linux": struct(
+        platform = "ubuntu2004",
+        suffix = "ubuntu20.04",
+        extension = "tar.gz",
+        sha = "057f6c0c3c6472b733e4d5bd8f10e83dd8536c1db1d0ec4a1dca414cd023ab0d",
+    ),
+    "macos": struct(
+        platform = "xcode",
+        suffix = "osx",
+        extension = "pkg",
+        sha = "fa4d3a67c4db8d63897e10d52903af40599cc351e8a73d6f5a4eb3cfd07c4605",
+    ),
+}
+
+def _get_toolchain_url(info):
+    return "https://download.swift.org/%s/%s/%s/%s-%s.%s" % (
+        _swift_version.lower(),
+        info.platform,
+        _swift_version,
+        _swift_version,
+        info.suffix,
+        info.extension,
+    )
+
+def _toolchains(workspace_name):
+    rules = {
+        "tar.gz": http_archive,
+        "pkg": _pkg_archive,
+    }
+    for arch, info in _toolchain_info.items():
+        rule = rules[info.extension]
+        rule(
+            name = "swift_toolchain_%s" % arch,
+            url = _get_toolchain_url(info),
+            sha256 = info.sha,
+            build_file = _build(workspace_name, "swift-toolchain-%s" % arch),
+            strip_prefix = "%s-%s" % (_swift_version, info.suffix),
+        )
+
+def _run(repository_ctx, message, cmd, working_directory = "."):
+    repository_ctx.report_progress(message)
+    res = repository_ctx.execute(
+        ["bash", "-c", cmd],
+        working_directory = working_directory,
+    )
+    if res.return_code != 0:
+        fail(message)
+
+def _pkg_archive_impl(repository_ctx):
+    archive = "file.pkg"
+    url = repository_ctx.attr.url
+    dir = "%s-package.pkg" % repository_ctx.attr.strip_prefix
+    repository_ctx.report_progress("downloading %s" % url)
+    res = repository_ctx.download(
+        url,
+        output = archive,
+        sha256 = repository_ctx.attr.sha256,
+    )
+    if not repository_ctx.attr.sha256:
+        print("Rule '%s' indicated that a canonical reproducible form " % repository_ctx.name +
+              "can be obtained by modifying arguments sha256 = \"%s\"" % res.sha256)
+    _run(repository_ctx, "extracting %s" % dir, "xar -xf %s" % archive)
+    repository_ctx.delete(archive)
+    _run(
+        repository_ctx,
+        "extracting Payload from %s" % dir,
+        "cat %s/Payload | gunzip -dc | cpio -i" % dir,
+    )
+    repository_ctx.delete(dir)
+    repository_ctx.symlink(repository_ctx.attr.build_file, "BUILD")
+    repository_ctx.file("WORKSPACE")
+
+_pkg_archive = repository_rule(
+    implementation = _pkg_archive_impl,
+    attrs = {
+        "url": attr.string(mandatory = True),
+        "sha256": attr.string(),
+        "strip_prefix": attr.string(),
+        "build_file": attr.label(mandatory = True),
+    },
+)
 
 def _github_archive(*, name, repository, commit, build_file = None, sha256 = None):
     github_name = repository[repository.index("/") + 1:]
@@ -46,12 +128,13 @@ def load_dependencies(workspace_name):
             patches = [
                 "@%s//swift/third_party/swift-llvm-support:patches/%s.patch" % (workspace_name, patch_name)
                 for patch_name in (
-                    "remove-result-of",
                     "remove-redundant-operators",
                     "add-constructor-to-Compilation",
                 )
             ],
         )
+
+    _toolchains(workspace_name)
 
     _github_archive(
         name = "picosha2",

@@ -1,3 +1,63 @@
+## 0.11.3
+
+### Minor Analysis Improvements
+
+* Added basic flow for attributes defined on classes, when the attribute lookup is on a direct reference to that class (so not instance, cls parameter, or self parameter). Example: class definition `class Foo: my_tuples = (dangerous, safe)` and usage `SINK(Foo.my_tuples[0])`.
+
+## 0.11.2
+
+### Minor Analysis Improvements
+
+* Added support for functions decorated with `contextlib.contextmanager`.
+* Namespace packages in the form of regular packages with missing `__init__.py`-files are now allowed. This enables the analysis to resolve modules and functions inside such packages.
+
+## 0.11.1
+
+### Minor Analysis Improvements
+
+* Added better support for API graphs when encountering `from ... import *`. For example in the code `from foo import *; Bar()`, we will now find a result for `API::moduleImport("foo").getMember("Bar").getACall()`
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `getAUse`, `getAnImmediateUse`, `getARhs`, and `getAValueReachingRhs` predicates from the `API::Node` class.
+* Deleted the deprecated `fullyQualifiedToAPIGraphPath` class from `SubclassFinder.qll`, use `fullyQualifiedToApiGraphPath` instead.
+* Deleted the deprecated `Paths.qll` file.
+* Deleted the deprecated `semmle.python.security.performance` folder, use `semmle.python.security.regexp` instead.
+* Deleted the deprecated `semmle.python.security.strings` and `semmle.python.web` folders.
+* Improved modeling of decoding through pickle related functions (which can lead to code execution), resulting in additional sinks for the _Deserializing untrusted input_ query (`py/unsafe-deserialization`). Added support for `pandas.read_pickle`, `numpy.load` and `joblib.load`.
+
+## 0.11.0
+
+### Minor Analysis Improvements
+
+* Django Rest Framework better handles custom `ModelViewSet` classes functions
+* Regular expression fragments residing inside implicitly concatenated strings now have better location information.
+
+### Bug Fixes
+
+* Subterms of regular expressions encoded as single-line string literals now have better source-location information.
+
+## 0.10.5
+
+No user-facing changes.
+
+## 0.10.4
+
+### Minor Analysis Improvements
+
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+* Added `shlex.quote` as a sanitizer for the `py/shell-command-constructed-from-input` query.
+
+## 0.10.3
+
+### Minor Analysis Improvements
+
+* Support analyzing packages (folders with python code) that do not have `__init__.py` files, although this is technically required, we see real world projects that don't have this.
+* Added modeling of AWS Lambda handlers that can be identified with `AWS::Serverless::Function` in YAML files, where the event parameter is modeled as a remote-flow-source.
+* Improvements of the `aiohttp` models including remote-flow-sources from type annotations, new path manipulation, and SSRF sinks.
+
+### Bug Fixes
+
+* Fixed the computation of locations for imports with aliases in jump-to-definition.
+
 ## 0.10.2
 
 No user-facing changes.

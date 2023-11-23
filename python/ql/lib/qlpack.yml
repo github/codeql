@@ -1,5 +1,5 @@
 name: codeql/python-all
-version: 0.10.3-dev
+version: 0.11.4-dev
 groups: python
 dbscheme: semmlecode.python.dbscheme
 extractor: python
@@ -13,5 +13,5 @@ dependencies:
   codeql/util: ${workspace}
   codeql/yaml: ${workspace}
 dataExtensions:
-  - semmle/python/frameworks/**/model.yml
+  - semmle/python/frameworks/**/*.model.yml
 warnOnImplicitThis: true

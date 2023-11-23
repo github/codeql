@@ -1,3 +1,79 @@
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The predicate `UnboundGeneric::getName` now prints the number of type parameters as a `` `N`` suffix, instead of a `<,...,>` suffix. For example, the unbound generic type
+`System.Collections.Generic.IList<T>` is printed as ``IList`1`` instead of `IList<>`.
+* The predicates `hasQualifiedName`, `getQualifiedName`, and `getQualifiedNameWithTypes` have been deprecated, and are instead replaced by `hasFullyQualifiedName`, `getFullyQualifiedName`, and `getFullyQualifiedNameWithTypes`, respectively. The new predicates use the same format for unbound generic types as mentioned above.
+* These changes also affect models-as-data rows that refer to a field or a property belonging to a generic type. For example, instead of writing
+```yml
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+      data:
+        - ["System.Collections.Generic", "Dictionary<TKey,TValue>", False, "Add", "(System.Collections.Generic.KeyValuePair<TKey,TValue>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
+```
+one now writes
+```yml
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+      data:
+        - ["System.Collections.Generic", "Dictionary<TKey,TValue>", False, "Add", "(System.Collections.Generic.KeyValuePair<TKey,TValue>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
+```
+* The models-as-data format for types and methods with type parameters has been changed to include the names of the type parameters. For example, instead of writing
+```yml
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+      data:
+        - ["System.Collections.Generic", "IList<>", True, "Insert", "(System.Int32,T)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+        - ["System.Linq", "Enumerable", False, "Select<,>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,System.Int32,TResult>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
+```
+one now writes
+```yml
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+      data:
+        - ["System.Collections.Generic", "IList<T>", True, "Insert", "(System.Int32,T)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+        - ["System.Linq", "Enumerable", False, "Select<TSource,TResult>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,System.Int32,TResult>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
+```
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* The `--nostdlib` extractor option for the standalone extractor has been removed.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* The query library for `cs/hardcoded-credentials` now excludes benign properties such as `UserNameClaimType` and `AllowedUserNameCharacters` from `Microsoft.AspNetCore.Identity` options classes.
+
 ## 0.7.2
 
 No user-facing changes.

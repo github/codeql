@@ -16,16 +16,16 @@
    .NET Core up to 3.1
 
    .NET 5, .NET 6, .NET 7","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
-   Go (aka Golang), "Go up to 1.20", "Go 1.11 or more recent", ``.go``
+   Go (aka Golang), "Go up to 1.21", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 20 [4]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [5]_",``.java``
-   Kotlin [6]_,"Kotlin 1.5.0 to 1.9.0","kotlinc",``.kt``
+   Kotlin [6]_,"Kotlin 1.5.0 to 1.9.20","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [7]_"
    Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11",Not applicable,``.py``
    Ruby [9]_,"up to 3.2",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
    Swift [10]_,"Swift 5.4-5.8.1","Swift compiler","``.swift``"
-   TypeScript [11]_,"2.6-5.1",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   TypeScript [11]_,"2.6-5.3",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 

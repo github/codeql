@@ -3,7 +3,7 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow
 import Taint::PathGraph
 import ModelValidation
 

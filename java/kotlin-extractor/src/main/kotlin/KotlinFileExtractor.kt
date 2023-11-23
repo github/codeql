@@ -1,6 +1,7 @@
 package com.github.codeql
 
-import com.github.codeql.comments.CommentExtractor
+import com.github.codeql.comments.CommentExtractorPSI
+import com.github.codeql.comments.CommentExtractorLighterAST
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
@@ -79,6 +80,7 @@ open class KotlinFileExtractor(
     globalExtensionState: KotlinExtractorGlobalState,
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState) {
 
+    val usesK2 = usesK2(pluginContext)
     val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
 
     private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
@@ -107,7 +109,7 @@ open class KotlinFileExtractor(
     fun extractFileContents(file: IrFile, id: Label<DbFile>) {
         with("file", file) {
             val locId = tw.getWholeFileLocation()
-            val pkg = file.fqName.asString()
+            val pkg = file.packageFqName.asString()
             val pkgId = extractPackage(pkg)
             tw.writeHasLocation(id, locId)
             tw.writeCupackage(id, pkgId)
@@ -127,7 +129,15 @@ open class KotlinFileExtractor(
                 }
             }
             extractStaticInitializer(file, { extractFileClass(file) })
-            CommentExtractor(this, file, tw.fileId).extract()
+            val psiCommentsExtracted = CommentExtractorPSI(this, file, tw.fileId).extract()
+            val lighterAstCommentsExtracted = CommentExtractorLighterAST(this, file, tw.fileId).extract()
+            if (psiCommentsExtracted == lighterAstCommentsExtracted) {
+                if (psiCommentsExtracted) {
+                    logger.warnElement("Found both PSI and LightAST comments in ${file.path}.", file)
+                } else {
+                    logger.warnElement("Comments could not be processed in ${file.path}.", file)
+                }
+            }
 
             if (!declarationStack.isEmpty()) {
                 logger.errorElement("Declaration stack is not empty after processing the file", file)
@@ -157,22 +167,26 @@ open class KotlinFileExtractor(
             else -> false
         }
 
+    private fun FunctionDescriptor.tryIsHiddenToOvercomeSignatureClash(d: IrFunction): Boolean {
+        try {
+            return this.isHiddenToOvercomeSignatureClash
+        }
+        catch (e: NotImplementedError) {
+            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
+            // TODO: We need a replacement for this for Kotlin 2
+            if (!usesK2) {
+                logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            }
+            return false
+        }
+    }
+
     @OptIn(ObsoleteDescriptorBasedAPI::class)
     private fun isFake(d: IrDeclarationWithVisibility): Boolean {
         val hasFakeVisibility = d.visibility.let { it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake } || d.isFakeOverride
         if (hasFakeVisibility && !isJavaBinaryObjectMethodRedeclaration(d))
             return true
-        try {
-            if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
-                return true
-            }
-        }
-        catch (e: NotImplementedError) {
-            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
-            logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
-            return false
-        }
-        return false
+        return (d as? IrFunction)?.descriptor?.tryIsHiddenToOvercomeSignatureClash(d) == true
     }
 
     private fun shouldExtractDecl(declaration: IrDeclaration, extractPrivateMembers: Boolean) =
@@ -1901,8 +1915,9 @@ open class KotlinFileExtractor(
             verboseln("No match as didn't find target package")
             return false
         }
-        if (targetPkg.fqName.asString() != pName) {
-            verboseln("No match as package name is ${targetPkg.fqName.asString()}")
+        val targetName = targetPkg.packageFqName.asString()
+        if (targetName != pName) {
+            verboseln("No match as package name is $targetName")
             return false
         }
         verboseln("Match")
@@ -2385,7 +2400,7 @@ open class KotlinFileExtractor(
             // This is in a file class.
             val fqName = getFileClassFqName(target)
             if (fqName == null) {
-                logger.error("Can't get FqName for element in external package fragment ${target.javaClass}")
+                logger.error("Can't get FqName for static type access qualifier in external package fragment ${target.javaClass}")
             } else {
                 extractTypeAccess(useFileClassType(fqName), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
             }
@@ -2447,8 +2462,12 @@ open class KotlinFileExtractor(
 
         val fn = getFunctionsByFqName(pluginContext, functionPkg, functionName)
             .firstOrNull { fnSymbol ->
-                fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
-                fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
+                val owner = fnSymbol.owner
+                (owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type
+                 ||
+                 (owner.parent is IrExternalPackageFragment && getFileClassFqName(owner)?.asString() == type))
+                &&
+                owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
             }?.owner
 
         if (fn != null) {
@@ -2556,8 +2575,9 @@ open class KotlinFileExtractor(
             verboseln("No match as didn't find target package")
             return false
         }
-        if (targetPkg.fqName.asString() != pkgName) {
-            verboseln("No match as package name is ${targetPkg.fqName.asString()} not $pkgName")
+        val targetName = targetPkg.packageFqName.asString()
+        if (targetName != pkgName) {
+            verboseln("No match as package name is $targetName not $pkgName")
             return false
         }
         verboseln("Match")
@@ -4856,9 +4876,16 @@ open class KotlinFileExtractor(
                 logger.errorElement("Cannot find class for kPropertyType. ${kPropertyType.classFqName?.asString()}", propertyReferenceExpr)
                 return
             }
-            val parameterTypes = kPropertyType.arguments.map { it as? IrType }.requireNoNullsOrNull()
+            val parameterTypes: List<IrType>? = kPropertyType.arguments.map {
+                if (it is IrType) {
+                    it
+                } else {
+                    logger.errorElement("Unexpected: Non-IrType (${it.javaClass}) property reference parameter.", propertyReferenceExpr)
+                    null
+                }
+            }.requireNoNullsOrNull()
             if (parameterTypes == null) {
-                logger.errorElement("Unexpected: Non-IrType parameter.", propertyReferenceExpr)
+                logger.errorElement("Unexpected: One or more non-IrType property reference parameters.", propertyReferenceExpr)
                 return
             }
 
@@ -5039,9 +5066,16 @@ open class KotlinFileExtractor(
                 return
             }
 
-            val parameterTypes = type.arguments.map { it as? IrType }.requireNoNullsOrNull()
+            val parameterTypes: List<IrType>? = type.arguments.map {
+                if (it is IrType) {
+                    it
+                } else {
+                    logger.errorElement("Unexpected: Non-IrType (${it.javaClass}) function reference parameter.", functionReferenceExpr)
+                    null
+                }
+            }.requireNoNullsOrNull()
             if (parameterTypes == null) {
-                logger.errorElement("Unexpected: Non-IrType parameter.", functionReferenceExpr)
+                logger.errorElement("Unexpected: One or more non-IrType function reference parameters.", functionReferenceExpr)
                 return
             }
 

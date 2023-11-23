@@ -240,6 +240,19 @@ predicate hasPropertyDecorator(Function func) {
   )
 }
 
+/**
+ * Holds if the function `func` has a `contextlib.contextmanager`.
+ */
+predicate hasContextmanagerDecorator(Function func) {
+  exists(ControlFlowNode contextmanager |
+    contextmanager.(NameNode).getId() = "contextmanager" and contextmanager.(NameNode).isGlobal()
+    or
+    contextmanager.(AttrNode).getObject("contextmanager").(NameNode).getId() = "contextlib"
+  |
+    func.getADecorator() = contextmanager.getNode()
+  )
+}
+
 // =============================================================================
 // Callables
 // =============================================================================
@@ -1339,7 +1352,10 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract ControlFlowNode getNode();
 
   /** Gets the enclosing callable of this call. */
-  abstract DataFlowCallable getEnclosingCallable();
+  DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
+
+  /** Gets the scope of this node, if any. */
+  abstract Scope getScope();
 
   /** Gets the location of this dataflow call. */
   abstract Location getLocation();
@@ -1387,7 +1403,7 @@ class NormalCall extends ExtractedDataFlowCall, TNormalCall {
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+  override Scope getScope() { result = call.getScope() }
 
   override DataFlowCallable getCallable() { result.(DataFlowFunction).getScope() = target }
 
@@ -1437,7 +1453,7 @@ class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall 
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+  override Scope getScope() { result = call.getScope() }
 }
 
 /**
@@ -1460,6 +1476,8 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
+
+  override Scope getScope() { none() }
 
   override DataFlowCallable getCallable() { none() }
 
@@ -1604,6 +1622,24 @@ class ExtractedReturnNode extends ReturnNode, CfgNode {
   override ReturnKind getKind() { any() }
 }
 
+/**
+ * A data flow node that represents the value yielded by a callable with a
+ * `contextlib.contextmanager` decorator. We treat this as a normal return, which makes
+ * things just work when used in a `with` statement -- technically calling the function
+ * directly will give you a `contextlib._GeneratorContextManager` instance, so it's a
+ * slight workaround solution.
+ *
+ * See https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
+ */
+class YieldNodeInContextManagerFunction extends ReturnNode, CfgNode {
+  YieldNodeInContextManagerFunction() {
+    hasContextmanagerDecorator(node.getScope()) and
+    node = any(Yield yield).getValue().getAFlowNode()
+  }
+
+  override ReturnKind getKind() { any() }
+}
+
 /** A data-flow node that represents the output of a call. */
 abstract class OutNode extends Node {
   /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
@@ -1639,13 +1675,3 @@ private module OutNodes {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
-
-/**
- * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
- *
- * This is a temporary hook to support technical debt in the Go language; do not use.
- */
-pragma[inline]
-predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
-  any()
-}

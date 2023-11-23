@@ -129,11 +129,6 @@ private string getContentSpecific(ContentSet cs) {
     result = "EnumElement[" + c.getSignature() + "]"
   )
   or
-  exists(Content::ArrayContent c |
-    cs.isSingleton(c) and
-    result = "ArrayElement"
-  )
-  or
   exists(Content::CollectionContent c |
     cs.isSingleton(c) and
     result = "CollectionElement"

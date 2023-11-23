@@ -32,7 +32,12 @@ autoformat:
 	find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -w
 
 check-formatting:
-	test -z "$$(find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
+	@output=$$(find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -l 2>&1); \
+	if [ -n "$$output" ]; then \
+		echo "The following files need to be reformatted using gofmt or have compilation errors:"; \
+		echo "$$output"; \
+	fi; \
+	test -z "$$output"
 
 ifeq ($(QHELP_OUT_DIR),)
 # If not otherwise specified, compile qhelp to markdown in place
@@ -42,11 +47,11 @@ endif
 qhelp-to-markdown:
 	scripts/qhelp-to-markdown.sh ql/src "$(QHELP_OUT_DIR)"
 
-tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
+tools: tools-codeql tools/tokenizer.jar
 
 .PHONY: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES)))
 $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))):
-	go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
+	go build -C extractor -mod=vendor -o ../$@ ./cli/$(basename $(@F))
 
 tools-codeql: tools-$(CODEQL_PLATFORM)
 
@@ -56,19 +61,22 @@ tools-linux64: $(addprefix tools/linux64/,$(BINARIES))
 
 .PHONY: $(addprefix tools/linux64/,$(BINARIES))
 $(addprefix tools/linux64/,$(BINARIES)):
-	GOOS=linux GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(@F)
+	GOOS=linux GOARCH=amd64 go build -C extractor -mod=vendor -o ../$@ ./cli/$(@F)
 
 tools-osx64: $(addprefix tools/osx64/,$(BINARIES))
 
 .PHONY: $(addprefix tools/osx64/,$(BINARIES))
 $(addprefix tools/osx64/,$(BINARIES)):
-	GOOS=darwin GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(@F)
+	GOOS=darwin GOARCH=amd64 go build -C extractor -mod=vendor -o ../$@.amd64 ./cli/$(@F)
+	GOOS=darwin GOARCH=arm64 go build -C extractor -mod=vendor -o ../$@.arm64 ./cli/$(@F)
+	lipo -create $@.amd64 $@.arm64 -output $@
+	rm $@.amd64 $@.arm64
 
 tools-win64: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES)))
 
 .PHONY: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES)))
 $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))):
-	env GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
+	env GOOS=windows GOARCH=amd64 go build -C extractor -mod=vendor -o ../$@ ./cli/$(basename $(@F))
 
 .PHONY: extractor-common extractor extractor-full
 extractor-common: codeql-extractor.yml LICENSE ql/lib/go.dbscheme \

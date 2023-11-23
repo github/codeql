@@ -115,6 +115,8 @@ private module ConditionalCompletionSplitting {
   }
 }
 
+class ConditionalCompletionSplit = ConditionalCompletionSplitting::ConditionalCompletionSplit;
+
 module EnsureSplitting {
   /**
    * The type of a split `ensure` node.

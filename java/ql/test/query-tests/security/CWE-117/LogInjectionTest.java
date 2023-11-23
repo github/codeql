@@ -3,6 +3,7 @@ import java.util.logging.LogRecord;
 import java.util.regex.Pattern;
 import com.google.common.flogger.LoggingApi;
 import org.apache.commons.logging.Log;
+import org.apache.cxf.common.logging.LogUtils;
 import org.apache.log4j.Category;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogBuilder;
@@ -2121,6 +2122,22 @@ public class LogInjectionTest {
             android.util.Log.w("", (String) source()); // $ hasTaintFlow
             android.util.Log.e("", (String) source()); // $ hasTaintFlow
             android.util.Log.wtf("", (String) source()); // $ hasTaintFlow
+        }
+        {
+            // @formatter:off
+            // "org.apache.cxf.common.logging;LogUtils;true;log;(Logger,Level,String);;Argument[2];log-injection;manual"
+            LogUtils.log(null, null, (String) source()); // $ hasTaintFlow
+            // "org.apache.cxf.common.logging;LogUtils;true;log;(Logger,Level,String,Object);;Argument[2];log-injection;manual"
+            LogUtils.log(null, null, (String) source(), (Object) null); // $ hasTaintFlow
+            // "org.apache.cxf.common.logging;LogUtils;true;log;(Logger,Level,String,Object[]);;Argument[2];log-injection;manual"
+            LogUtils.log(null, null, (String) source(), (Object[]) null); // $ hasTaintFlow
+            // "org.apache.cxf.common.logging;LogUtils;true;log;(Logger,Level,String,Throwable);;Argument[2];log-injection;manual"
+            LogUtils.log(null, null, (String) source(), (Throwable) null); // $ hasTaintFlow
+            // "org.apache.cxf.common.logging;LogUtils;true;log;(Logger,Level,String,Throwable,Object);;Argument[2];log-injection;manual"
+            LogUtils.log(null, null, (String) source(), (Throwable) null, (Object) null); // $ hasTaintFlow
+            // "org.apache.cxf.common.logging;LogUtils;true;log;(Logger,Level,String,Throwable,Object[]);;Argument[2];log-injection;manual"
+            LogUtils.log(null, null, (String) source(), (Throwable) null, (Object) null, (Object) null); // $ hasTaintFlow
+            // @formatter:on
         }
     }
 }

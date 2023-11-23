@@ -1,9 +1,11 @@
 .. _annotations-in-java:
 
-Annotations in Java
-===================
+Annotations in Java and Kotlin
+==============================
 
-CodeQL databases of Java projects contain information about all annotations attached to program elements.
+CodeQL databases of Java/Kotlin projects contain information about all annotations attached to program elements.
+
+.. include:: ../reusables/kotlin-beta-note.rst
 
 About working with annotations
 ------------------------------
@@ -15,7 +17,7 @@ Annotations are represented by these CodeQL classes:
 -  The class ``AnnotationElement`` represents an annotation element, that is, a member of an annotation type.
 -  The class ``Annotation`` represents an annotation such as ``@Override``; annotation values can be accessed through member predicate ``getValue``.
 
-For example, the Java standard library defines an annotation ``SuppressWarnings`` that instructs the compiler not to emit certain kinds of warnings:
+For example, the Java/Kotlin standard library defines an annotation ``SuppressWarnings`` that instructs the compiler not to emit certain kinds of warnings:
 
 .. code-block:: java
 
@@ -101,7 +103,7 @@ As a first step, let's write a query that finds all ``@Override`` annotations. A
    where ann.getType().hasQualifiedName("java.lang", "Override")
    select ann
 
-As always, it is a good idea to try this query on a CodeQL database for a Java project to make sure it actually produces some results. On the earlier example, it should find the annotation on ``Sub1.m``. Next, we encapsulate the concept of an ``@Override`` annotation as a CodeQL class:
+As always, it is a good idea to try this query on a CodeQL database for a Java/Kotlin project to make sure it actually produces some results. On the earlier example, it should find the annotation on ``Sub1.m``. Next, we encapsulate the concept of an ``@Override`` annotation as a CodeQL class:
 
 ::
 
@@ -185,7 +187,7 @@ For more information about the class ``Call``, see ":doc:`Navigating the call gr
 Improvements
 ~~~~~~~~~~~~
 
-The Java standard library provides another annotation type ``java.lang.SupressWarnings`` that can be used to suppress certain categories of warnings. In particular, it can be used to turn off warnings about calls to deprecated methods. Therefore, it makes sense to improve our query to ignore calls to deprecated methods from inside methods that are marked with ``@SuppressWarnings("deprecation")``.
+The Java/Kotlin standard library provides another annotation type ``java.lang.SupressWarnings`` that can be used to suppress certain categories of warnings. In particular, it can be used to turn off warnings about calls to deprecated methods. Therefore, it makes sense to improve our query to ignore calls to deprecated methods from inside methods that are marked with ``@SuppressWarnings("deprecation")``.
 
 For instance, consider this slightly updated example:
 

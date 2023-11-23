@@ -43,23 +43,6 @@ module TaintedPath {
     }
   }
 
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for path-traversal vulnerabilities, as a `DataFlow::BarrierGuard`.
-   *
-   * Use this class if you want all `TaintedPath::SanitizerGuard`s as a `DataFlow::BarrierGuard`,
-   * e.g. to use directly in a `DataFlow::Configuration::isSanitizerGuard` method. If you want to
-   * provide a new instance of a tainted path sanitizer, extend `TaintedPath::SanitizerGuard` instead.
-   */
-  deprecated class SanitizerGuardAsBarrierGuard extends DataFlow::BarrierGuard {
-    SanitizerGuard guardImpl;
-
-    SanitizerGuardAsBarrierGuard() { this = guardImpl }
-
-    override predicate checks(Expr e, boolean branch) { guardImpl.checks(e, branch) }
-  }
-
   /** A source of untrusted data, considered as a taint source for path traversal. */
   class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
 

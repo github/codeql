@@ -128,3 +128,8 @@ extensions:
       # sink neutrals
       - ["java.io", "File", "compareTo", "", "sink", "hq-manual"]
       - ["java.io", "File", "exists", "()", "sink", "hq-manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.io", "FileInputStream", True, "FileInputStream", "", "", "Argument[this]", "file", "manual"]

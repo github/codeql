@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Interop.Analyzers", "CustomMarshallerAttributeAnalyzer+DefaultMarshalModeDiagnostics", False, "GetDefaultMarshalModeDiagnostic", "(Microsoft.CodeAnalysis.DiagnosticDescriptor)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Interop.Analyzers", "AddDisableRuntimeMarshallingAttributeFixer", "GetFixAllProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "AddDisableRuntimeMarshallingAttributeFixer", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "AddDisableRuntimeMarshallingAttributeFixer", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ConvertToLibraryImportAnalyzer", "Initialize", "(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ConvertToLibraryImportAnalyzer", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ConvertToLibraryImportFixer", "GetFixAllProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ConvertToLibraryImportFixer", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ConvertToLibraryImportFixer", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "CustomMarshallerAttributeAnalyzer+MissingMemberNames", "CreateDiagnosticPropertiesForMissingMembersDiagnostic", "(Microsoft.Interop.MarshalMode,System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "CustomMarshallerAttributeAnalyzer+MissingMemberNames", "CreateDiagnosticPropertiesForMissingMembersDiagnostic", "(Microsoft.Interop.MarshalMode,System.String[])", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "CustomMarshallerAttributeAnalyzer", "Initialize", "(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "CustomMarshallerAttributeAnalyzer", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "CustomMarshallerAttributeFixer", "GetFixAllProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "CustomMarshallerAttributeFixer", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "CustomMarshallerAttributeFixer", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "DiagnosticReporter", "CreateAndReportDiagnostic", "(Microsoft.CodeAnalysis.DiagnosticDescriptor,System.Collections.Immutable.ImmutableDictionary<System.String,System.String>,System.Object[])", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "DiagnosticReporter", "CreateAndReportDiagnostic", "(Microsoft.CodeAnalysis.DiagnosticDescriptor,System.Object[])", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "NativeMarshallingAttributeAnalyzer", "Initialize", "(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "NativeMarshallingAttributeAnalyzer", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ShapeBreakingDiagnosticSuppressor", "ReportSuppressions", "(Microsoft.CodeAnalysis.Diagnostics.SuppressionAnalysisContext)", "summary", "df-generated"]
+      - ["Microsoft.Interop.Analyzers", "ShapeBreakingDiagnosticSuppressor", "get_SupportedSuppressions", "()", "summary", "df-generated"]

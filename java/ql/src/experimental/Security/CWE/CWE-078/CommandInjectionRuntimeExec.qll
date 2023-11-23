@@ -9,7 +9,7 @@ module ExecCmdFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess call |
+    exists(MethodCall call |
       call.getMethod() instanceof RuntimeExecMethod and
       sink.asExpr() = call.getArgument(0) and
       sink.asExpr().getType() instanceof Array
@@ -34,7 +34,7 @@ module ExecUserFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess call |
+    exists(MethodCall call |
       call.getMethod() instanceof RuntimeExecMethod and
       sink.asExpr() = call.getArgument(_) and
       sink.asExpr().getType() instanceof Array
@@ -74,7 +74,7 @@ class ArrayInitAtNonZeroIndex extends DataFlow::Node {
 // Stream.concat(Arrays.stream(array_1), Arrays.stream(array_2))
 class StreamConcatAtNonZeroIndex extends DataFlow::Node {
   StreamConcatAtNonZeroIndex() {
-    exists(MethodAccess call, int index |
+    exists(MethodCall call, int index |
       call.getMethod().getQualifiedName() = "java.util.stream.Stream.concat" and
       call.getArgument(index) = this.asExpr() and
       index != 0
@@ -96,7 +96,7 @@ predicate callIsTaintedByUserInputAndDangerousCommand(
   ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, DataFlow::Node sourceCmd,
   DataFlow::Node sinkCmd
 ) {
-  exists(MethodAccess call |
+  exists(MethodCall call |
     call.getMethod() instanceof RuntimeExecMethod and
     // this is a command-accepting call to exec, e.g. rt.exec(new String[]{"/bin/sh", ...})
     ExecCmdFlow::flow(sourceCmd, sinkCmd) and

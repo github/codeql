@@ -24,8 +24,8 @@ private class TypeWebViewOrSubclass extends RefType {
  *
  * In Kotlin, member accesses are translated to getter methods.
  */
-private class PrivateGetterMethodAccess extends MethodAccess {
-  PrivateGetterMethodAccess() {
+private class PrivateGetterMethodCall extends MethodCall {
+  PrivateGetterMethodCall() {
     this.getMethod() instanceof GetterMethod and
     this.getMethod().isPrivate()
   }
@@ -39,11 +39,11 @@ class WebViewSource extends DataFlow::Node {
     // constructor and method calls, or method accesses which are cast to WebView.
     (
       this.asExpr() instanceof ClassInstanceExpr or
-      this.asExpr() instanceof MethodAccess or
-      this.asExpr().(CastExpr).getAChildExpr() instanceof MethodAccess
+      this.asExpr() instanceof MethodCall or
+      this.asExpr().(CastExpr).getAChildExpr() instanceof MethodCall
     ) and
     // Avoid duplicate results from Kotlin member accesses.
-    not this.asExpr() instanceof PrivateGetterMethodAccess
+    not this.asExpr() instanceof PrivateGetterMethodCall
   }
 }
 
@@ -53,7 +53,7 @@ class WebViewSource extends DataFlow::Node {
  */
 class WebSettingsDisallowContentAccessSink extends DataFlow::Node {
   WebSettingsDisallowContentAccessSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getQualifier() = this.asExpr() and
       ma.getMethod() instanceof AllowContentAccessMethod and
       ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = false
@@ -86,7 +86,7 @@ module WebViewDisallowContentAccessConfig implements DataFlow::StateConfigSig {
     state2 instanceof IsSettings and
     // settings = webView.getSettings()
     // ^node2   = ^node1
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma = node2.asExpr() and
       ma.getQualifier() = node1.asExpr() and
       ma.getMethod() instanceof WebViewGetSettingsMethod
@@ -105,7 +105,7 @@ module WebViewDisallowContentAccessFlow =
 from Expr e
 where
   // explicit: setAllowContentAccess(true)
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma = e and
     ma.getMethod() instanceof AllowContentAccessMethod and
     ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true

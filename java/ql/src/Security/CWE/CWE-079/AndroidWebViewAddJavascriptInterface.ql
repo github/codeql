@@ -13,6 +13,6 @@
 import java
 import semmle.code.java.frameworks.android.WebView
 
-from MethodAccess ma
+from MethodCall ma
 where ma.getMethod() instanceof WebViewAddJavascriptInterfaceMethod
 select ma, "JavaScript interface to Java object added in Android WebView."

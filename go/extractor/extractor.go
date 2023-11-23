@@ -91,6 +91,10 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
 	if err != nil {
+		// the toolchain directive is only supported in Go 1.21 and above
+		if strings.Contains(err.Error(), "unknown directive: toolchain") {
+			diagnostics.EmitNewerSystemGoRequired("1.21.0")
+		}
 		return err
 	}
 	log.Println("Done running packages.Load.")

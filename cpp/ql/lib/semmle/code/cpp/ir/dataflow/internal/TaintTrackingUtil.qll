@@ -57,7 +57,7 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
   )
   or
   // Taint flow from an address to its dereference.
-  Ssa::isDereference(instrTo, opFrom)
+  Ssa::isDereference(instrTo, opFrom, _)
   or
   // Unary instructions tend to preserve enough information in practice that we
   // want taint to flow through.

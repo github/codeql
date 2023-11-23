@@ -179,6 +179,12 @@ module Sinatra {
     }
   }
 
+  bindingset[local]
+  pragma[inline_late]
+  private predicate isPairKey(string local) {
+    local = any(Pair p).getKey().getConstantValue().getStringlikeValue()
+  }
+
   /**
    * A summary for accessing a local variable in an ERB template.
    * This is the second half of the modeling of the flow from the `locals`
@@ -192,7 +198,7 @@ module Sinatra {
     ErbLocalsAccessSummary() {
       this = "sinatra_erb_locals_access()" + global.getId() + "#" + local and
       local = any(MethodCall c | c.getLocation().getFile() = global.getErbFile()).getMethodName() and
-      local = any(Pair p).getKey().getConstantValue().getStringlikeValue()
+      isPairKey(local)
     }
 
     override MethodCall getACall() {
@@ -273,39 +279,19 @@ module Sinatra {
         filter.getApp() = route.getApp() and
         // the filter applies to all routes
         not filter.hasPattern() and
-        selfPostUpdate(pred, filter.getApp(), filter.getBody().asExpr().getExpr()) and
-        blockCapturedSelfParameterNode(succ, route.getBody().asExpr().getExpr())
+        blockPostUpdate(pred, filter.getBody()) and
+        blockSelfParameterNode(succ, route.getBody().asExpr().getExpr())
       )
     }
   }
 
-  /**
-   * Holds if `n` is a post-update node for the `self` parameter of `app` in block `b`.
-   *
-   * In this example, `n` is the post-update node for `@foo = 1`.
-   * ```rb
-   * class MyApp < Sinatra::Base
-   *   before do
-   *     @foo = 1
-   *   end
-   * end
-   * ```
-   */
-  private predicate selfPostUpdate(DataFlow::PostUpdateNode n, App app, Block b) {
-    n.getPreUpdateNode().asExpr().getExpr() =
-      any(SelfVariableAccess self |
-        pragma[only_bind_into](b) = self.getEnclosingCallable() and
-        self.getVariable().getDeclaringScope() = app.getADeclaration()
-      )
+  /** Holds if `n` is a post-update node for the block `b`. */
+  private predicate blockPostUpdate(DataFlow::PostUpdateNode n, DataFlow::BlockNode b) {
+    n.getPreUpdateNode() = b
   }
 
-  /**
-   * Holds if `n` is a node representing the `self` parameter captured by block `b`.
-   */
-  private predicate blockCapturedSelfParameterNode(DataFlow::Node n, Block b) {
-    exists(Ssa::CapturedSelfDefinition d |
-      n.(DataFlowPrivate::SsaDefinitionExtNode).getDefinitionExt() = d and
-      d.getBasicBlock().getScope() = b
-    )
+  /** Holds if `n` is a `self` parameter belonging to block `b`. */
+  private predicate blockSelfParameterNode(DataFlowPrivate::LambdaSelfReferenceNode n, Block b) {
+    n.getCallable() = b
   }
 }

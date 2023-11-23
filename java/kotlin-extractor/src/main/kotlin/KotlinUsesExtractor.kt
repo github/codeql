@@ -1,10 +1,7 @@
 package com.github.codeql
 
 import com.github.codeql.utils.*
-import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
-import com.github.codeql.utils.versions.getFileClassFqName
-import com.github.codeql.utils.versions.getKotlinType
-import com.github.codeql.utils.versions.isRawType
+import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.*
@@ -83,7 +80,7 @@ open class KotlinUsesExtractor(
     )
 
     fun extractFileClass(f: IrFile): Label<out DbClassorinterface> {
-        val pkg = f.fqName.asString()
+        val pkg = f.packageFqName.asString()
         val jvmName = getFileClassName(f)
         val id = extractFileClass(pkg, jvmName)
         if (tw.lm.fileClassLocationsExtracted.add(f)) {
@@ -142,7 +139,7 @@ open class KotlinUsesExtractor(
     }
 
     fun getJavaEquivalentClass(c: IrClass) =
-        getJavaEquivalentClassId(c)?.let { getClassByFqName(pluginContext, it.asSingleFqName()) }?.owner
+        getJavaEquivalentClassId(c)?.let { getClassByClassId(pluginContext, it) }?.owner
 
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
@@ -301,9 +298,23 @@ open class KotlinUsesExtractor(
             }
         }
 
+    private fun extractParentExternalClassLater(d: IrDeclaration) {
+        val p = d.parent
+        when (p) {
+            is IrClass -> extractExternalClassLater(p)
+            is IrExternalPackageFragment -> {
+                // The parent is a (multi)file class. We don't need to
+                // extract it separately.
+            }
+            else -> {
+                logger.warn("Unexpected parent type ${p.javaClass} for external file class member")
+            }
+        }
+    }
+
     private fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
         if (isExternalFileClassMember(p)) {
-            extractExternalClassLater(p.parentAsClass)
+            extractParentExternalClassLater(p)
             val signature = getTrapFileSignature(p)
             dependencyCollector?.addDependency(p, signature)
             externalClassExtractor.extractLater(p, signature)
@@ -312,7 +323,7 @@ open class KotlinUsesExtractor(
 
     private fun extractFieldLaterIfExternalFileMember(f: IrField) {
         if (isExternalFileClassMember(f)) {
-            extractExternalClassLater(f.parentAsClass)
+            extractParentExternalClassLater(f)
             val signature = getTrapFileSignature(f)
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
@@ -321,17 +332,7 @@ open class KotlinUsesExtractor(
 
     private fun extractFunctionLaterIfExternalFileMember(f: IrFunction) {
         if (isExternalFileClassMember(f)) {
-            val p = f.parent
-            when (p) {
-                is IrClass -> extractExternalClassLater(p)
-                is IrExternalPackageFragment -> {
-                    // The parent is a (multi)file class. We don't need
-                    // extract it separately.
-                }
-                else -> {
-                    logger.warn("Unexpected parent type ${p.javaClass} for external file class member")
-                }
-            }
+            extractParentExternalClassLater(f)
             (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
                 extractPropertyLaterIfExternalFileMember(it.owner)
                 // No need to extract the function specifically, as the property's
@@ -823,7 +824,7 @@ open class KotlinUsesExtractor(
             // This is in a file class.
             val fqName = getFileClassFqName(d)
             if (fqName == null) {
-                logger.error("Can't get FqName for element in external package fragment ${d.javaClass}")
+                logger.error("Can't get FqName for declaration in external package fragment ${d.javaClass}")
                 return null
             }
             return extractFileClass(fqName)
@@ -848,7 +849,7 @@ open class KotlinUsesExtractor(
         when(dp) {
             is IrFile ->
                 if(canBeTopLevel) {
-                    usePackage(dp.fqName.asString())
+                    usePackage(dp.packageFqName.asString())
                 } else {
                     extractFileClass(dp)
                 }

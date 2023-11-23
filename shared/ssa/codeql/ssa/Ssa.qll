@@ -3,8 +3,10 @@
  * (SSA) form.
  */
 
+private import codeql.util.Location
+
 /** Provides the input specification of the SSA implementation. */
-signature module InputSig {
+signature module InputSig<LocationSig Location> {
   /**
    * A basic block, that is, a maximal straight-line sequence of control flow nodes
    * without branches or joins.
@@ -12,6 +14,9 @@ signature module InputSig {
   class BasicBlock {
     /** Gets a textual representation of this basic block. */
     string toString();
+
+    /** Gets the location of this basic block. */
+    Location getLocation();
   }
 
   /**
@@ -49,6 +54,9 @@ signature module InputSig {
   class SourceVariable {
     /** Gets a textual representation of this variable. */
     string toString();
+
+    /** Gets the location of this variable. */
+    Location getLocation();
   }
 
   /**
@@ -88,7 +96,7 @@ signature module InputSig {
  * NB: If this predicate is exposed, it should be cached.
  * ```
  */
-module Make<InputSig Input> {
+module Make<LocationSig Location, InputSig<Location> Input> {
   private import Input
 
   private BasicBlock getABasicBlockPredecessor(BasicBlock bb) {

@@ -155,8 +155,8 @@ def test_class_with_children():
                              ([], True, True),
                          ])
 def test_has_doc(doc, ql_internal, expected):
-    cls = ql.Class("Class", doc=doc, ql_internal=ql_internal)
-    assert cls.has_doc is expected
+    stub = ql.Stub("Class", base_import="foo", import_prefix="bar", doc=doc, ql_internal=ql_internal)
+    assert stub.has_qldoc is expected
 
 
 def test_property_with_description():

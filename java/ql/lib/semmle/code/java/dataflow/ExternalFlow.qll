@@ -93,7 +93,7 @@ private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
-private import ExternalFlowExtensions as Extensions
+private import internal.ExternalFlowExtensions as Extensions
 private import FlowSummary
 private import codeql.mad.ModelValidation as SharedModelVal
 
@@ -345,6 +345,29 @@ private predicate elementSpec(
   neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
+private string getNestedName(Type t) {
+  not t instanceof RefType and result = t.toString()
+  or
+  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).nestedName()
+  or
+  result =
+    t.(Array).getElementType().(NestedType).getEnclosingType().nestedName() + "$" + t.getName()
+}
+
+private string getQualifiedName(Type t) {
+  not t instanceof RefType and result = t.toString()
+  or
+  result = t.(RefType).getQualifiedName()
+  or
+  exists(Array a, Type c | a = t and c = a.getElementType() |
+    not c instanceof RefType and result = t.toString()
+    or
+    exists(string pkgName | pkgName = c.(RefType).getPackage().getName() |
+      if pkgName = "" then result = getNestedName(a) else result = pkgName + "." + getNestedName(a)
+    )
+  )
+}
+
 /**
  * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
  *
@@ -354,31 +377,39 @@ private predicate elementSpec(
 cached
 string paramsString(Callable c) {
   result =
-    "(" + concat(int i | | c.getParameterType(i).getErasure().toString(), "," order by i) + ")"
+    "(" + concat(int i | | getNestedName(c.getParameterType(i).getErasure()), "," order by i) + ")"
+}
+
+private string paramsStringQualified(Callable c) {
+  result =
+    "(" + concat(int i | | getQualifiedName(c.getParameterType(i).getErasure()), "," order by i) +
+      ")"
 }
 
 private Element interpretElement0(
   string package, string type, boolean subtypes, string name, string signature
 ) {
   elementSpec(package, type, subtypes, name, signature, _) and
-  exists(RefType t | t.hasQualifiedName(package, type) |
+  (
     exists(Member m |
       (
         result = m
         or
         subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m)
       ) and
-      m.getDeclaringType() = t and
-      m.hasName(name)
+      m.hasQualifiedName(package, type, name)
     |
       signature = "" or
-      m.(Callable).getSignature() = any(string nameprefix) + signature or
+      paramsStringQualified(m) = signature or
       paramsString(m) = signature
     )
     or
-    (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
-    name = "" and
-    signature = ""
+    exists(RefType t |
+      t.hasQualifiedName(package, type) and
+      (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
+      name = "" and
+      signature = ""
+    )
   )
 }
 

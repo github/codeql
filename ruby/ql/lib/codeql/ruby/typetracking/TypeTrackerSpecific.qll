@@ -6,7 +6,6 @@ private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplC
 private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
-private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.internal.AccessPathSyntax
@@ -74,7 +73,7 @@ predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 /**
  * Holds if data can flow from `node1` to `node2` in a way that discards call contexts.
  */
-predicate jumpStep = DataFlowPrivate::jumpStepTypeTracker/2;
+predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
@@ -180,6 +179,7 @@ private predicate argumentPositionMatch(
 ) {
   exists(DataFlowDispatch::ArgumentPosition apos |
     arg.sourceArgumentOf(call, apos) and
+    not apos.isLambdaSelf() and
     DataFlowDispatch::parameterMatch(ppos, apos)
   )
 }
@@ -275,7 +275,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
  * Holds if a store step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
  * is a post-update node that should be treated as a local source node.
  */
-predicate storeStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
+private predicate storeStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     contents
@@ -311,7 +311,7 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
  * Holds if a read step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
  * should be treated as a local source node.
  */
-predicate readStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
+private predicate readStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
   DataFlowPrivate::readStepCommon(nodeFrom, contents, nodeTo)
 }
 
@@ -330,16 +330,17 @@ predicate basicLoadStoreStep(
  * Holds if a read+store step `nodeFrom -> nodeTo` exists, where the destination node
  * should be treated as a local source node.
  */
-predicate readStoreStepIntoSourceNode(
+private predicate readStoreStepIntoSourceNode(
   Node nodeFrom, Node nodeTo, DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent
 ) {
-  exists(DataFlowPrivate::SynthSplatParameterElementNode mid |
-    nodeFrom
-        .(DataFlowPrivate::SynthSplatArgParameterNode)
-        .isParameterOf(mid.getEnclosingCallable(), _) and
-    loadContent = DataFlowPrivate::getPositionalContent(mid.getReadPosition()) and
-    nodeTo = mid.getSplatParameterNode(_) and
-    storeContent = DataFlowPrivate::getPositionalContent(mid.getStorePosition())
+  exists(DataFlowPrivate::SynthSplatParameterShiftNode shift |
+    shift.readFrom(nodeFrom, loadContent) and
+    shift.storeInto(nodeTo, storeContent)
+  )
+  or
+  exists(DataFlowPrivate::SynthSplatArgumentShiftNode shift |
+    shift.readFrom(nodeFrom, loadContent) and
+    shift.storeInto(nodeTo, storeContent)
   )
 }
 
@@ -440,10 +441,14 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   class SummarizedCallable = FlowSummary::SummarizedCallable;
 
   // Relating nodes to summaries
-  Node argumentOf(Node call, SummaryComponent arg) {
-    exists(DataFlowDispatch::ParameterPosition pos |
+  Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
+    exists(DataFlowDispatch::ParameterPosition pos, DataFlowPrivate::ArgumentNode n |
       arg = SummaryComponent::argument(pos) and
-      argumentPositionMatch(call.asExpr(), result, pos)
+      argumentPositionMatch(call.asExpr(), n, pos)
+    |
+      isPostUpdate = false and result = n
+      or
+      isPostUpdate = true and result.(DataFlowPublic::PostUpdateNode).getPreUpdateNode() = n
     )
   }
 

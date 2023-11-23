@@ -42,3 +42,13 @@ private class DefaultUncontrolledFormatStringSink extends UncontrolledFormatStri
     sinkNode(this, "format-string")
   }
 }
+
+/**
+ * A barrier for uncontrolled format string vulnerabilities.
+ */
+private class UncontrolledFormatStringDefaultBarrier extends UncontrolledFormatStringBarrier {
+  UncontrolledFormatStringDefaultBarrier() {
+    // any numeric type
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+  }
+}

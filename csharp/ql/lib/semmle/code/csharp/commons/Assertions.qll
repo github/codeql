@@ -299,6 +299,12 @@ class NUnitAssertNonNullMethod extends NullnessAssertMethod, NUnitAssertMethod {
   override int getAnAssertionIndex(boolean b) { result = this.getAnAssertionIndex() and b = false }
 }
 
+pragma[nomagic]
+private predicate parameterAssertion(Assertion a, int index, Parameter p) {
+  strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
+  a.getExpr(index) = p.getAnAccess()
+}
+
 /** A method that forwards to another assertion method. */
 class ForwarderAssertMethod extends AssertMethod {
   private Assertion a;
@@ -307,10 +313,9 @@ class ForwarderAssertMethod extends AssertMethod {
 
   ForwarderAssertMethod() {
     p = this.getAParameter() and
-    strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
     forex(ControlFlowElement body | body = this.getBody() |
       bodyAsserts(this, body, a) and
-      a.getExpr(forwarderIndex) = p.getAnAccess()
+      parameterAssertion(a, forwarderIndex, p)
     )
   }
 

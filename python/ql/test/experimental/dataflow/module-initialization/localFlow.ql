@@ -12,7 +12,7 @@ module ImportTimeLocalFlowTest implements FlowTestSig {
     // results are displayed next to `nodeTo`, so we need a line to write on
     nodeTo.getLocation().getStartLine() > 0 and
     nodeTo.asVar() instanceof GlobalSsaVariable and
-    DP::importTimeLocalFlowStep(nodeFrom, nodeTo)
+    DP::PhaseDependentFlow<DP::LocalFlow::localFlowStep/2>::importTimeStep(nodeFrom, nodeTo)
   }
 }
 

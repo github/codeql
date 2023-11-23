@@ -24,7 +24,7 @@ module BaseSsa {
     )
   }
 
-  private module SsaInput implements SsaImplCommon::InputSig {
+  private module SsaInput implements SsaImplCommon::InputSig<Location> {
     class BasicBlock = ControlFlow::BasicBlock;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
@@ -60,7 +60,7 @@ module BaseSsa {
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+  private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
   class Definition extends SsaImpl::Definition {
     final AssignableRead getARead() {

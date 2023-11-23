@@ -153,6 +153,15 @@ def test_one_empty_class(generate_classes):
     }
 
 
+def test_one_empty_internal_class(generate_classes):
+    assert generate_classes([
+        schema.Class("A", pragmas=["ql_internal"])
+    ]) == {
+        "A.qll": (a_ql_stub(name="A", ql_internal=True),
+                  a_ql_class(name="A", final=True, ql_internal=True)),
+    }
+
+
 def test_hierarchy(generate_classes):
     assert generate_classes([
         schema.Class("D", bases=["B", "C"]),
@@ -405,7 +414,7 @@ def test_class_with_doc(generate_classes):
     assert generate_classes([
         schema.Class("A", doc=doc),
     ]) == {
-        "A.qll": (a_ql_stub(name="A"), a_ql_class(name="A", final=True, doc=doc)),
+        "A.qll": (a_ql_stub(name="A", doc=doc), a_ql_class(name="A", final=True, doc=doc)),
     }
 
 
@@ -685,6 +694,18 @@ def test_test_class_hierarchy_uncollapse_at_final(opts, generate_tests):
     ]) == {
         "Base/Base.ql": a_ql_class_tester(class_name="Base", show_ql_class=True),
         "D3/D3.ql": a_ql_class_tester(class_name="D3"),
+    }
+
+
+def test_test_with(opts, generate_tests):
+    write(opts.ql_test_output / "B" / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"A", "B"}),
+        schema.Class("A", bases=["Base"], test_with="B"),
+        schema.Class("B", bases=["Base"]),
+    ]) == {
+        "B/A.ql": a_ql_class_tester(class_name="A"),
+        "B/B.ql": a_ql_class_tester(class_name="B"),
     }
 
 

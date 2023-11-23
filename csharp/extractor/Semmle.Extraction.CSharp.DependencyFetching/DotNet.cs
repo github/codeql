@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
@@ -8,66 +10,100 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
-    internal class DotNet : IDotNet
+    internal partial class DotNet : IDotNet
     {
-        private const string dotnet = "dotnet";
+        private readonly IDotNetCliInvoker dotnetCliInvoker;
         private readonly ProgressMonitor progressMonitor;
+        private readonly TemporaryDirectory? tempWorkingDirectory;
 
-        public DotNet(ProgressMonitor progressMonitor)
+        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor, TemporaryDirectory? tempWorkingDirectory = null)
         {
             this.progressMonitor = progressMonitor;
+            this.tempWorkingDirectory = tempWorkingDirectory;
+            this.dotnetCliInvoker = dotnetCliInvoker;
             Info();
         }
+
+        private DotNet(IDependencyOptions options, ProgressMonitor progressMonitor, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor, tempWorkingDirectory) { }
+
+        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor) => new DotNet(dotnetCliInvoker, progressMonitor);
+
+        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor, TemporaryDirectory tempWorkingDirectory) => new DotNet(options, progressMonitor, tempWorkingDirectory);
 
         private void Info()
         {
             // TODO: make sure the below `dotnet` version is matching the one specified in global.json
-            var res = RunCommand("--info");
+            var res = dotnetCliInvoker.RunCommand("--info");
             if (!res)
             {
-                throw new Exception($"{dotnet} --info failed.");
+                throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
             }
         }
 
-        private static ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput) =>
-            new ProcessStartInfo(dotnet, args)
-            {
-                UseShellExecute = false,
-                RedirectStandardOutput = redirectStandardOutput
-            };
-
-        private bool RunCommand(string args)
+        private string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching)
         {
-            progressMonitor.RunningProcess($"{dotnet} {args}");
-            using var proc = Process.Start(MakeDotnetStartInfo(args, redirectStandardOutput: false));
-            proc?.WaitForExit();
-            var exitCode = proc?.ExitCode ?? -1;
-            if (exitCode != 0)
+            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
+
+            if (forceDotnetRefAssemblyFetching)
             {
-                progressMonitor.CommandFailed(dotnet, args, exitCode);
-                return false;
+                // Ugly hack: we set the TargetFrameworkRootPath and NetCoreTargetingPackRoot properties to an empty folder:
+                var path = ".empty";
+                if (tempWorkingDirectory != null)
+                {
+                    path = Path.Combine(tempWorkingDirectory.ToString(), "emptyFakeDotnetRoot");
+                    Directory.CreateDirectory(path);
+                }
+
+                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\"";
             }
-            return true;
+
+            return args;
         }
 
-        public bool RestoreToDirectory(string projectOrSolutionFile, string packageDirectory, string? pathToNugetConfig = null)
+        private static IEnumerable<string> GetFirstGroupOnMatch(Regex regex, IEnumerable<string> lines) =>
+            lines
+                .Select(line => regex.Match(line))
+                .Where(match => match.Success)
+                .Select(match => match.Groups[1].Value);
+
+        private static IEnumerable<string> GetAssetsFilePaths(IEnumerable<string> lines) =>
+            GetFirstGroupOnMatch(AssetsFileRegex(), lines);
+
+        private static IEnumerable<string> GetRestoredProjects(IEnumerable<string> lines) =>
+            GetFirstGroupOnMatch(RestoredProjectRegex(), lines);
+
+        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, string? pathToNugetConfig = null)
         {
-            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
+            var args = GetRestoreArgs(projectFile, packageDirectory, forceDotnetRefAssemblyFetching);
             if (pathToNugetConfig != null)
+            {
                 args += $" --configfile \"{pathToNugetConfig}\"";
-            return RunCommand(args);
+            }
+
+            var success = dotnetCliInvoker.RunCommand(args, out var output);
+            assets = success ? GetAssetsFilePaths(output) : Array.Empty<string>();
+            return success;
+        }
+
+        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> projects, out IEnumerable<string> assets)
+        {
+            var args = GetRestoreArgs(solutionFile, packageDirectory, forceDotnetRefAssemblyFetching);
+            var success = dotnetCliInvoker.RunCommand(args, out var output);
+            projects = success ? GetRestoredProjects(output) : Array.Empty<string>();
+            assets = success ? GetAssetsFilePaths(output) : Array.Empty<string>();
+            return success;
         }
 
         public bool New(string folder)
         {
             var args = $"new console --no-restore --output \"{folder}\"";
-            return RunCommand(args);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         public bool AddPackage(string folder, string package)
         {
             var args = $"add \"{folder}\" package \"{package}\" --no-restore";
-            return RunCommand(args);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         public IList<string> GetListedRuntimes() => GetListed("--list-runtimes", "runtime");
@@ -76,22 +112,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private IList<string> GetListed(string args, string artifact)
         {
-            progressMonitor.RunningProcess($"{dotnet} {args}");
-            var pi = MakeDotnetStartInfo(args, redirectStandardOutput: true);
-            var exitCode = pi.ReadOutput(out var artifacts);
-            if (exitCode != 0)
+            if (dotnetCliInvoker.RunCommand(args, out var artifacts))
             {
-                progressMonitor.CommandFailed(dotnet, args, exitCode);
-                return new List<string>();
+                return artifacts;
             }
-            progressMonitor.LogInfo($"Found {artifact}s: {string.Join("\n", artifacts)}");
-            return artifacts;
+            return new List<string>();
         }
 
         public bool Exec(string execArgs)
         {
             var args = $"exec {execArgs}";
-            return RunCommand(args);
+            return dotnetCliInvoker.RunCommand(args);
         }
+
+        [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
+        private static partial Regex RestoredProjectRegex();
+
+        [GeneratedRegex("[Assets\\sfile\\shas\\snot\\schanged.\\sSkipping\\sassets\\sfile\\swriting.|Writing\\sassets\\sfile\\sto\\sdisk.]\\sPath:\\s(.+)", RegexOptions.Compiled)]
+        private static partial Regex AssetsFileRegex();
     }
 }

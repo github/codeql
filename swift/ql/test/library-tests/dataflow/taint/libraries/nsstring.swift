@@ -25,8 +25,8 @@ protocol NSMutableCopying {
 
 class NSString : NSObject, NSCopying, NSMutableCopying {
   struct EncodingConversionOptions : OptionSet { let rawValue: Int }
-
   struct CompareOptions : OptionSet { let rawValue: Int }
+  struct EnumerationOptions : OptionSet { let rawValue: Int }
 
   init(characters: UnsafePointer<unichar>, length: Int) {}
   init(charactersNoCopy characters: UnsafeMutablePointer<unichar>, length: Int, freeWhenDone freeBuffer: Bool) {}
@@ -52,7 +52,7 @@ class NSString : NSObject, NSCopying, NSMutableCopying {
   func copy(with zone: NSZone? = nil) -> Any { return 0 }
   func mutableCopy(with zone: NSZone? = nil) -> Any { return 0 }
 
-  class func localizedStringWithFormat(_ format: NSString, _ args: CVarArg) -> Self { return (nil as Self?)! }
+  class func localizedStringWithFormat(_ format: NSString, _ args: CVarArg...) -> Self { return (nil as Self?)! }
   class func path(withComponents components: [String]) -> String { return "" }
   class func string(withCString bytes: UnsafePointer<CChar>) -> Any? { return nil }
   class func string(withCString bytes: UnsafePointer<CChar>, length: Int) -> Any? { return nil }
@@ -83,6 +83,7 @@ class NSString : NSObject, NSCopying, NSMutableCopying {
   func folding(options: NSString.CompareOptions = [], locale: Locale?) -> String { return "" }
   func applyingTransform(_ transform: StringTransform, reverse: Bool) -> String? { return "" }
   func enumerateLines(_ block: @escaping (String, UnsafeMutablePointer<ObjCBool>) -> Void) { }
+  func enumerateSubstrings(in range: NSRange, options opts: NSString.EnumerationOptions = [], using block: @escaping (String?, NSRange, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void) { }
   func replacingOccurrences(of target: String, with replacement: String) -> String { return "" }
   func replacingOccurrences(of target: String, with replacement: String, options: NSString.CompareOptions = [], range searchRange: NSRange) -> String { return "" }
   func propertyList() -> Any { return 0 }
@@ -136,8 +137,7 @@ class NSMutableString : NSString {
   func setString(_ aString: String) {}
 }
 
-class NSArray : NSObject {
-}
+class NSArray : NSObject { }
 
 struct _NSRange {
   init(location: Int, length: Int) {}
@@ -185,7 +185,7 @@ func sourceUnsafeMutableRawPointer() -> UnsafeMutableRawPointer { return (nil as
 func sourceCString() -> UnsafePointer<CChar> { return (nil as UnsafePointer<CChar>?)! }
 func sourceData() -> Data { return Data(0) }
 func sourceStringArray() -> [String] { return [] }
-
+func sourceInt() -> Int { return 0 }
 func sink(arg: Any) {}
 
 func taintThroughInterpolatedStrings() {
@@ -244,8 +244,8 @@ func taintThroughInterpolatedStrings() {
 
   let harmless = NSString(string: "harmless")
   let myRange = NSRange(location:0, length: 128)
-
-  sink(arg: NSString.localizedStringWithFormat(sourceNSString(), (nil as CVarArg?)!)) // $ tainted=248
+  sink(arg: NSString.localizedStringWithFormat(NSString(string: "%i %i %i"), 1, sourceInt(), 3)) // $ tainted=247
+  sink(arg: NSString.localizedStringWithFormat(sourceNSString(), 1, 2, 3)) // $ tainted=248
   sink(arg: sourceNSString().character(at: 0)) // $ tainted=249
   sink(arg: sourceNSString().cString(using: 0)!) // $ tainted=250
   sink(arg: sourceNSString().cString()) // $ tainted=251
@@ -275,8 +275,8 @@ func taintThroughInterpolatedStrings() {
   sink(arg: sourceNSString().replacingOccurrences(of: "a", with: "b", range: NSRange(location: 0, length: 10))) // $ tainted=275
   sink(arg: harmless.replacingOccurrences(of: "a", with: sourceString(), range: NSRange(location: 0, length: 10))) // $ tainted=276
   sink(arg: NSString.path(withComponents: ["a", "b", "c"]))
-  sink(arg: NSString.path(withComponents: sourceStringArray())) // $ tainted=278
-  sink(arg: NSString.path(withComponents: ["a", sourceString(), "c"])) // $ MISSING: tainted=
+  sink(arg: NSString.path(withComponents: sourceStringArray())) // $ MISSING: tainted=278
+  sink(arg: NSString.path(withComponents: ["a", sourceString(), "c"])) // $ tainted=279
   sink(arg: NSString.string(withCString: sourceCString())) // $ tainted=280
   sink(arg: NSString.string(withCString: sourceCString(), length: 128)) // $ tainted=281
   sink(arg: NSString.string(withContentsOfFile: sourceString())) // $ tainted=282
@@ -306,8 +306,8 @@ func taintThroughInterpolatedStrings() {
 
   sink(arg: harmless.strings(byAppendingPaths: [""]))
   sink(arg: harmless.strings(byAppendingPaths: [""])[0])
-  sink(arg: harmless.strings(byAppendingPaths: [sourceString()])) // $ MISSING: tainted=
-  sink(arg: harmless.strings(byAppendingPaths: [sourceString()])[0]) // $ MISSING: tainted=
+  sink(arg: harmless.strings(byAppendingPaths: [sourceString()])) // $ tainted=309
+  sink(arg: harmless.strings(byAppendingPaths: [sourceString()])[0]) // $ tainted=310
   sink(arg: sourceNSString().strings(byAppendingPaths: [""])) // $ tainted=311
   sink(arg: sourceNSString().strings(byAppendingPaths: [""])[0]) // $ tainted=312
 
@@ -355,7 +355,7 @@ func taintThroughInterpolatedStrings() {
   }))
   sink(arg: sourceNSString().enumerateLines({
     line, stop in
-    sink(arg: line) // $ MISSING: tainted=
+    sink(arg: line) // $ tainted=356
     sink(arg: stop)
   }))
 
@@ -484,4 +484,14 @@ func taintThroughData() {
   sink(arg: data1) // $ tainted=482
   let str2 = NSString(data: data1, encoding: 0)!
   sink(arg: str2) // $ tainted=482
+}
+
+func moreTests() {
+  let myTainted = sourceNSString()
+  let myRange = NSRange(location:0, length: 128)
+
+  sink(arg: myTainted.enumerateSubstrings(in: myRange, options: [], using: {
+    substring, substringRange, enclosingRange, stop in
+    sink(arg: substring!) // $ tainted=490
+  }))
 }
