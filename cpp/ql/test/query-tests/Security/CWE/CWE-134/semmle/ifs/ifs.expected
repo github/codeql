@@ -1,5 +1,4 @@
 edges
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:50:9:50:10 | c5 indirection |
 | ifs.c:16:27:16:30 | argv indirection | ifs.c:62:9:62:10 | c7 indirection |
 | ifs.c:16:27:16:30 | argv indirection | ifs.c:69:9:69:10 | c8 indirection |
 | ifs.c:16:27:16:30 | argv indirection | ifs.c:75:9:75:10 | i1 indirection |
@@ -13,7 +12,6 @@ edges
 | ifs.c:16:27:16:30 | argv indirection | ifs.c:124:9:124:10 | i9 indirection |
 nodes
 | ifs.c:16:27:16:30 | argv indirection | semmle.label | argv indirection |
-| ifs.c:50:9:50:10 | c5 indirection | semmle.label | c5 indirection |
 | ifs.c:62:9:62:10 | c7 indirection | semmle.label | c7 indirection |
 | ifs.c:69:9:69:10 | c8 indirection | semmle.label | c8 indirection |
 | ifs.c:75:9:75:10 | i1 indirection | semmle.label | i1 indirection |
@@ -27,7 +25,6 @@ nodes
 | ifs.c:124:9:124:10 | i9 indirection | semmle.label | i9 indirection |
 subpaths
 #select
-| ifs.c:50:9:50:10 | c5 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:50:9:50:10 | c5 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
 | ifs.c:62:9:62:10 | c7 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:62:9:62:10 | c7 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
 | ifs.c:69:9:69:10 | c8 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:69:9:69:10 | c8 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
 | ifs.c:75:9:75:10 | i1 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:75:9:75:10 | i1 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
