@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.expr.TypeExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `MacroRole` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * The role of a macro, for example #freestanding(declaration) or @attached(member).

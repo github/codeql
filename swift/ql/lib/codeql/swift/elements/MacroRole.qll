@@ -1,9 +1,4 @@
-/**
- * This module provides a hand-modifiable wrapper around the generated class `MacroRole`.
- */
-
-private import codeql.swift.generated.MacroRole
-
+// the following QLdoc is generated: if you need to edit it, do it in the schema file
 /**
  * The role of a macro, for example #freestanding(declaration) or @attached(member).
  */

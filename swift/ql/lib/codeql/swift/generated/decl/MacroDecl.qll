@@ -11,6 +11,10 @@ import codeql.swift.elements.MacroRole
 import codeql.swift.elements.decl.ParamDecl
 import codeql.swift.elements.decl.ValueDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `MacroDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A declaration of a macro. Some examples:
