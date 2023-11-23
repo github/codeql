@@ -1,3 +1,7 @@
+/**
+ * This module provides a hand-modifiable wrapper around the generated class `MacroRole`.
+ */
+
 private import codeql.swift.generated.MacroRole
 
 // the following QLdoc is generated: if you need to edit it, do it in the schema file
