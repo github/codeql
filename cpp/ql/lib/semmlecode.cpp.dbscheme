@@ -2149,7 +2149,7 @@ includes(
 );
 
 link_targets(
-    unique int id: @link_target,
+    int id: @link_target,
     int binary: @file ref
 );
 
