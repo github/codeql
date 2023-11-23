@@ -37,11 +37,12 @@ namespace Semmle.Extraction.CSharp
         ///
         /// <param name="type">The type to disambiguate.</param>
         /// <returns></returns>
-        public static ITypeSymbol? DisambiguateType(this ITypeSymbol? type)
+        public static ITypeSymbol? DisambiguateType(this ITypeSymbol? type, Context context)
         {
             /* A type could not be determined.
              * Sometimes this happens due to a missing reference,
-             * or sometimes because the same type is defined in multiple places.
+             * or sometimes because the same type is defined in multiple places,
+             * or due to an actual ambuiguity in Standalone mode.
              *
              * In the case that a symbol is multiply-defined, Roslyn tells you which
              * symbols are candidates. It usually resolves to the same DB entity,
@@ -50,11 +51,18 @@ namespace Semmle.Extraction.CSharp
              * The conservative option would be to resolve all error types as null.
              */
 
-            return type is IErrorTypeSymbol errorType && errorType.CandidateSymbols.Any()
-                ? errorType.CandidateSymbols.First() as ITypeSymbol
-                : type;
-        }
+            if (type is IErrorTypeSymbol errorType && errorType.CandidateSymbols.Any())
+            {
+                if (errorType.CandidateSymbols.Length > 1)
+                {
+                    TypeAmbiguityGroup.Create(context, errorType);
+                }
 
+                return errorType.CandidateSymbols.First() as ITypeSymbol;
+            }
+
+            return type;
+        }
         private static IEnumerable<SyntaxToken> GetModifiers<T>(this ISymbol symbol, Func<T, IEnumerable<SyntaxToken>> getModifierTokens) =>
             symbol.DeclaringSyntaxReferences
                 .Select(r => r.GetSyntax())
@@ -625,7 +633,7 @@ namespace Semmle.Extraction.CSharp
         public static AnnotatedTypeSymbol GetType(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node)
         {
             var info = GetTypeInfo(cx, node);
-            return new AnnotatedTypeSymbol(info.Type.DisambiguateType(), info.Nullability.Annotation);
+            return new AnnotatedTypeSymbol(info.Type.DisambiguateType(cx), info.Nullability.Annotation);
         }
 
         /// <summary>

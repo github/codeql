@@ -45,6 +45,23 @@ class Type extends DotNet::Type, Member, TypeContainer, @type {
 
   /** Holds if this type is a value type, or a type parameter that is a value type. */
   predicate isValueType() { none() }
+
+  /** Gets an alternative type that is reported by the compiler as being ambiguous with this type. */
+  Type getAnAmbiguousAlternativeType() {
+    exists(TypeAmbiguityGroup group |
+      group.getAType() = this and
+      group.getAType() = result and
+      result != this
+    )
+  }
+}
+
+private class TypeAmbiguityGroup extends @type_ambiguity_group {
+  string toString() { result = "type_ambiguity_group" }
+
+  int getReason() { type_ambiguity_groups(this, result) }
+
+  Type getAType() { type_ambiguity_group_candidates(this, result) }
 }
 
 pragma[nomagic]

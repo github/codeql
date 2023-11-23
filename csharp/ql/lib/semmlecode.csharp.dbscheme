@@ -593,6 +593,17 @@ type_nullability(int id: @has_type_annotation ref, int nullability: @nullability
  */
 expr_flowstate(unique int id: @expr ref, int state: int ref);
 
+type_ambiguity_groups(
+  unique int group_id: @type_ambiguity_group,
+  int reason: int ref
+);
+
+#keyset[group_id, type_id]
+type_ambiguity_group_candidates(
+  int group_id: @type_ambiguity_group ref,
+  int type_id: @type_or_ref ref
+);
+
 /** GENERICS **/
 
 @generic = @type | @method | @local_function;
@@ -1271,6 +1282,10 @@ expr_location(
 
 dynamic_member_name(
   unique int id: @late_bindable_expr ref,
+  string name: string ref);
+
+invocation_member_name(
+  unique int id: @call ref,
   string name: string ref);
 
 @qualifiable_expr = @member_access_expr

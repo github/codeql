@@ -33,8 +33,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public TypeInfo TypeInfo { get; }
         public Microsoft.CodeAnalysis.CSharp.Conversion Conversion { get; }
 
-        public AnnotatedTypeSymbol ResolvedType => new AnnotatedTypeSymbol(TypeInfo.Type.DisambiguateType(), TypeInfo.Nullability.Annotation);
-        public AnnotatedTypeSymbol ConvertedType => new AnnotatedTypeSymbol(TypeInfo.ConvertedType.DisambiguateType(), TypeInfo.ConvertedNullability.Annotation);
+        public AnnotatedTypeSymbol ResolvedType => new AnnotatedTypeSymbol(TypeInfo.Type.DisambiguateType(Context), TypeInfo.Nullability.Annotation);
+        public AnnotatedTypeSymbol ConvertedType => new AnnotatedTypeSymbol(TypeInfo.ConvertedType.DisambiguateType(Context), TypeInfo.ConvertedNullability.Annotation);
 
         private AnnotatedTypeSymbol? cachedType;
         private bool cachedTypeSet;
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 var type = ResolvedType;
 
                 if (type.Symbol is null)
-                    type.Symbol = (TypeInfo.Type ?? TypeInfo.ConvertedType).DisambiguateType();
+                    type.Symbol = (TypeInfo.Type ?? TypeInfo.ConvertedType).DisambiguateType(Context);
 
                 // Roslyn workaround: It can't work out the type of "new object[0]"
                 // Clearly a bug.

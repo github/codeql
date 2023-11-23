@@ -125,6 +125,9 @@ namespace Semmle.Extraction.CSharp
         internal static void dynamic_member_name(this TextWriter trapFile, Expression e, string name) =>
             trapFile.WriteTuple("dynamic_member_name", e, name);
 
+        internal static void invocation_member_name(this TextWriter trapFile, Expression e, string name) =>
+            trapFile.WriteTuple("invocation_member_name", e, name);
+
         internal static void enum_underlying_type(this TextWriter trapFile, Type @enum, Type type) =>
             trapFile.WriteTuple("enum_underlying_type", @enum, type);
 
@@ -364,6 +367,12 @@ namespace Semmle.Extraction.CSharp
 
         internal static void types(this TextWriter trapFile, Type type, TypeKind kind, string name) =>
             trapFile.WriteTuple("types", type, (int)kind, name);
+
+        internal static void type_ambiguity_groups(this TextWriter trapFile, TypeAmbiguityGroup group, int reason) =>
+            trapFile.WriteTuple("type_ambiguity_groups", group, reason);
+
+        internal static void type_ambiguity_group_candidates(this TextWriter trapFile, TypeAmbiguityGroup group, Type type) =>
+            trapFile.WriteTuple("type_ambiguity_group_candidates", group, type);
 
         internal static void using_namespace_directives(this TextWriter trapFile, UsingDirective @using, Namespace ns) =>
             trapFile.WriteTuple("using_namespace_directives", @using, ns);

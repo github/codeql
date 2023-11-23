@@ -145,7 +145,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         public static Expression Create(Context cx, DeclarationExpressionSyntax node, IExpressionParentEntity parent, int child) =>
-            Create(cx, node, node.Designation, parent, child, cx.GetTypeInfo(node).Type.DisambiguateType() as INamedTypeSymbol);
+            Create(cx, node, node.Designation, parent, child, cx.GetTypeInfo(node).Type.DisambiguateType(cx) as INamedTypeSymbol);
 
         public static VariableDeclaration Create(Context cx, CSharpSyntaxNode c, AnnotatedTypeSymbol? type, IExpressionParentEntity parent, int child) =>
             new VariableDeclaration(new ExpressionInfo(cx, type, cx.CreateLocation(c.FixedLocation()), ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
