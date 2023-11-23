@@ -1,39 +1,73 @@
-// the following QLdoc is generated: if you need to edit it, do it in the schema file
+/**
+ * This module provides a hand-modifiable wrapper around the generated class `MacroRole`.
+ */
+
+private import codeql.swift.generated.MacroRole
+
 /**
  * The role of a macro, for example #freestanding(declaration) or @attached(member).
  */
 class MacroRole extends Generated::MacroRole {
-  /**
-   * String representation of the role kind.
-   */
+  // String representation of the role kind.
   string getKindName() {
-    this.getKind() = 1 and result = "expression"
+    this.isExpressionKind() and result = "expression"
     or
-    this.getKind() = 2 and result = "declaration"
+    this.isDeclarationKind() and result = "declaration"
     or
-    this.getKind() = 4 and result = "accessor"
+    this.isAccessorKind() and result = "accessor"
     or
-    this.getKind() = 8 and result = "memberAttribute"
+    this.isMemberAttributeKind() and result = "memberAttribute"
     or
-    this.getKind() = 16 and result = "member"
+    this.isMemberKind() and result = "member"
     or
-    this.getKind() = 32 and result = "peer"
+    this.isPeerKind() and result = "peer"
     or
-    this.getKind() = 64 and result = "conformance"
+    this.isConformanceKind() and result = "conformance"
     or
-    this.getKind() = 128 and result = "codeItem"
+    this.isCodeItemKind() and result = "codeItem"
     or
-    this.getKind() = 256 and result = "extension"
+    this.isExtensionKind() and result = "extension"
   }
 
-  /**
-   * String representation of the syntax kind.
-   */
+  // Holds for `expression` roles.
+  predicate isExpressionKind() { this.getKind() = 1 }
+
+  // Holds for `declaration` roles.
+  predicate isDeclarationKind() { this.getKind() = 2 }
+
+  // Holds for `accessor` roles.
+  predicate isAccessorKind() { this.getKind() = 4 }
+
+  // Holds for `memberAttribute` roles.
+  predicate isMemberAttributeKind() { this.getKind() = 8 }
+
+  // Holds for `member` roles.
+  predicate isMemberKind() { this.getKind() = 16 }
+
+  // Holds for `peer` roles.
+  predicate isPeerKind() { this.getKind() = 32 }
+
+  // Holds for `conformance` roles.
+  predicate isConformanceKind() { this.getKind() = 64 }
+
+  // Holds for `codeItem` roles.
+  predicate isCodeItemKind() { this.getKind() = 128 }
+
+  // Holds for `extension` roles.
+  predicate isExtensionKind() { this.getKind() = 256 }
+
+  // String representation of the syntax kind.
   string getMacroSyntaxName() {
-    this.getMacroSyntax() = 0 and result = "#freestanding"
+    this.isFreestandingMacroSyntax() and result = "#freestanding"
     or
-    this.getMacroSyntax() = 1 and result = "@attached"
+    this.isAttachedMacroSyntax() and result = "@attached"
   }
+
+  // Holds for #freestanding macros.
+  predicate isFreestandingMacroSyntax() { this.getMacroSyntax() = 0 }
+
+  // Holds for @attached macros.
+  predicate isAttachedMacroSyntax() { this.getMacroSyntax() = 1 }
 
   override string toString() { result = this.getMacroSyntaxName() + "(" + this.getKindName() + ")" }
 }
