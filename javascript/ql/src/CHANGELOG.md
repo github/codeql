@@ -2,8 +2,8 @@
 
 ### Query Metadata Changes
 
-* Lower the severity of log-injection to medium.
-* Increase the severity of XSS to high.
+* Lower the security severity of log-injection to medium.
+* Increase the security severity of XSS to high.
 
 ## 0.8.2
 
