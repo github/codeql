@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.ConditionElement
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `StmtCondition` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::StmtCondition` class directly.

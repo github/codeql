@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `PackElementType` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A type of PackElementExpr, see PackElementExpr for more information.

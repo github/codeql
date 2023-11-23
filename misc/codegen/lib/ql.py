@@ -141,10 +141,6 @@ class Class:
     def last_base(self) -> str:
         return self.bases[-1].base if self.bases else ""
 
-    @property
-    def has_doc(self) -> bool:
-        return bool(self.doc) or self.ql_internal
-
 
 @dataclass
 class SynthUnderlyingAccessor:
@@ -167,10 +163,15 @@ class Stub:
     import_prefix: str
     synth_accessors: List[SynthUnderlyingAccessor] = field(default_factory=list)
     ql_internal: bool = False
+    doc: List[str] = field(default_factory=list)
 
     @property
     def has_synth_accessors(self) -> bool:
         return bool(self.synth_accessors)
+
+    @property
+    def has_qldoc(self) -> bool:
+        return bool(self.doc) or self.ql_internal
 
 
 @dataclass

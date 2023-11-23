@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.EnumElementDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `EnumCaseDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::EnumCaseDecl` class directly.

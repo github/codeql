@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
 import codeql.swift.elements.decl.GenericTypeParamDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `GenericContext` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::GenericContext` class directly.

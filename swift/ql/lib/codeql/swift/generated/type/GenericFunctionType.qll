@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.AnyFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `GenericFunctionType` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * The type of a generic function with type parameters

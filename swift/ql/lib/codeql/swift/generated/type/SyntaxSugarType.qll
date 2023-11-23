@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.SugarType
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `SyntaxSugarType` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::SyntaxSugarType` class directly.

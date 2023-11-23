@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
 import codeql.swift.elements.File
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `Location` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::Location` class directly.

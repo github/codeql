@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.File
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `UnknownFile` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::UnknownFile` class directly.

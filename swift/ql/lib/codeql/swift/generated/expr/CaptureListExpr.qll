@@ -11,6 +11,10 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.PatternBindingDecl
 import codeql.swift.elements.decl.VarDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `CaptureListExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::CaptureListExpr` class directly.

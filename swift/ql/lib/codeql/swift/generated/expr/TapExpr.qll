@@ -10,6 +10,10 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `TapExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::TapExpr` class directly.
