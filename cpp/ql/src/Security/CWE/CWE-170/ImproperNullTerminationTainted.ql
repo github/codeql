@@ -52,4 +52,4 @@ where
   Flow::flow(source, sink) and
   isSource(source, sourceType) and
   isSink(sink, va)
-select va, "String operation depends on a $@ that may not be null terminated.", source, sourceType
+select va, "String operation depends on $@ that may not be null terminated.", source, sourceType
