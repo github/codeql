@@ -160,7 +160,7 @@ Ruby
 """"
 
 *   Support for data flow through instance variables has been added.
-*   Support of the safe navigation operator (:code:`&amp;.`) has been added; there is a new predicate :code:`MethodCall.isSafeNavigation()`.
+*   Support of the safe navigation operator (:code:`&.`) has been added; there is a new predicate :code:`MethodCall.isSafeNavigation()`.
 
 Deprecated APIs
 ~~~~~~~~~~~~~~~
