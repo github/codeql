@@ -122,18 +122,16 @@ Major Analysis Improvements
 C#
 ""
 
-*   Added support for the following C# 10 features.* \ `Record structs <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#record-structs>`__.
+*   Added support for the following C# 10 features.
+*   \ `Record structs <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#record-structs>`__.
+*   \ `Improvements of structure types <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#improvements-of-structure-types>`__.
 
-    *   \ `Improvements of structure types <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#improvements-of-structure-types>`__.
+    *   Instance parameterless constructor in a structure type.
+    *   Enhance :code:`WithExpr` in QL to support :code:`structs` and anonymous classes.
     
-        *   Instance parameterless constructor in a structure type.
-        *   Enhance :code:`WithExpr` in QL to support :code:`structs` and anonymous classes.
-        
-    *   \ `Global using directives <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#global-using-directives>`__.
-    *   \ `File-scoped namespace declaration <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#file-scoped-namespace-declaration>`__.
-    *   \ `Enhanced #line pragma <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#enhanced-line-pragma>`__.
-    
-*   The query :code:`cs/local-shadows-member` no longer highlights parameters of :code:`record` types.
+*   \ `Global using directives <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#global-using-directives>`__.
+*   \ `File-scoped namespace declaration <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#file-scoped-namespace-declaration>`__.
+*   \ `Enhanced #line pragma <https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#enhanced-line-pragma>`__.
 
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,6 +140,11 @@ C/C++
 """""
 
 *   :code:`FormatLiteral::getMaxConvertedLength` now uses range analysis to provide a more accurate length for integers formatted with :code:`%x`
+
+C#
+""
+
+*   The query :code:`cs/local-shadows-member` no longer highlights parameters of :code:`record` types.
 
 Deprecated APIs
 ~~~~~~~~~~~~~~~

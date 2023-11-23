@@ -71,8 +71,8 @@ Java
 JavaScript/TypeScript
 """""""""""""""""""""
 
-*   Improved how the JavaScript parser handles ambiguities between plain JavaScript and dialects such as Flow and E4X that use the same file extension. The parser now prefers plain JavaScript if possible, falling back to dialects only if the source code can not be parsed as plain JavaScript. Previously, there were rare cases where parsing would fail because the parser would erroneously attempt to parse dialect-specific syntax in a regular JavaScript file.- The :code:`js/regexp/always-matches` query will no longer report an empty regular expression as always matching, as this is often the intended behavior.
-    
+*   Improved how the JavaScript parser handles ambiguities between plain JavaScript and dialects such as Flow and E4X that use the same file extension. The parser now prefers plain JavaScript if possible, falling back to dialects only if the source code can not be parsed as plain JavaScript. Previously, there were rare cases where parsing would fail because the parser would erroneously attempt to parse dialect-specific syntax in a regular JavaScript file.
+*   The :code:`js/regexp/always-matches` query will no longer report an empty regular expression as always matching, as this is often the intended behavior.
 *   The alert message of many queries have been changed to make the message consistent with other languages.
 
 Python

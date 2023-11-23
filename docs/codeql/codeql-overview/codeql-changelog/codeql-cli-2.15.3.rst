@@ -138,9 +138,11 @@ C/C++
 C#
 ""
 
-*   The predicate :code:`UnboundGeneric::getName` now prints the number of type parameters as a :code:` `N` suffix, instead of a :code:`<,...,>` suffix. For example, the unbound generic type
-    :code:`System.Collections.Generic.IList<T>` is printed as :code:`IList`1` instead of :code:`IList<>`.
+*   The predicate :code:`UnboundGeneric::getName` now prints the number of type parameters as a ```N`` suffix, instead of a :code:`<,...,>` suffix. For example, the unbound generic type
+    :code:`System.Collections.Generic.IList<T>` is printed as ``IList`1`` instead of :code:`IList<>`.
+    
 *   The predicates :code:`hasQualifiedName`, :code:`getQualifiedName`, and :code:`getQualifiedNameWithTypes` have been deprecated, and are instead replaced by :code:`hasFullyQualifiedName`, :code:`getFullyQualifiedName`, and :code:`getFullyQualifiedNameWithTypes`, respectively. The new predicates use the same format for unbound generic types as mentioned above.
+    
 *   These changes also affect models-as-data rows that refer to a field or a property belonging to a generic type. For example, instead of writing
 
     ..  code-block:: yaml
@@ -151,6 +153,17 @@ C#
               extensible: summaryModel
               data:
                 - ["System.Collections.Generic", "Dictionary<TKey,TValue>", False, "Add", "(System.Collections.Generic.KeyValuePair<TKey,TValue>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
+
+    one now writes
+
+    ..  code-block:: yaml
+    
+        extensions:
+          - addsTo:
+              pack: codeql/csharp-all
+              extensible: summaryModel
+              data:
+                - ["System.Collections.Generic", "Dictionary<TKey,TValue>", False, "Add", "(System.Collections.Generic.KeyValuePair<TKey,TValue>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
 
 *   The models-as-data format for types and methods with type parameters has been changed to include the names of the type parameters. For example, instead of writing
 
@@ -163,6 +176,18 @@ C#
               data:
                 - ["System.Collections.Generic", "IList<>", True, "Insert", "(System.Int32,T)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
                 - ["System.Linq", "Enumerable", False, "Select<,>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,System.Int32,TResult>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
+
+    one now writes
+
+    ..  code-block:: yaml
+    
+        extensions:
+          - addsTo:
+              pack: codeql/csharp-all
+              extensible: summaryModel
+              data:
+                - ["System.Collections.Generic", "IList<T>", True, "Insert", "(System.Int32,T)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+                - ["System.Linq", "Enumerable", False, "Select<TSource,TResult>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,System.Int32,TResult>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
 
 Golang
 """"""

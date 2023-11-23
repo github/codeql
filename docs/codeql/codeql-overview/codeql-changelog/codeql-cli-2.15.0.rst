@@ -147,15 +147,11 @@ Ruby
 Swift
 """""
 
-*   The predicates :code:`getABaseType`, :code:`getABaseTypeDecl`, :code:`getADerivedType` and :code:`getADerivedTypeDecl` on :code:`Type` and :code:`TypeDecl` now behave more usefully and consistently. They now explore through type aliases used in base class declarations, and include protocols added in extensions.To examine base class declarations at a low level without these enhancements, use :code:`TypeDecl.getInheritedType`.
-*   Modelled varargs function in :code:`NSString` more accurately.
-*   Modelled :code:`CustomStringConvertible.description` and :code:`CustomDebugStringConvertible.debugDescription`, replacing ad-hoc models of these properties on derived classes.
-*   The regular expressions library now accepts a wider range of mode flags in a regular expression mode flag group (such as :code:`(?u)`). The :code:`(?w`) flag has been renamed from "UNICODE" to "UNICODEBOUNDARY", and the :code:`(?u)` flag is called "UNICODE" in the libraries.
-*   Renamed :code:`TypeDecl.getBaseType/1` to :code:`getInheritedType`.
-*   Flow through writes via keypaths is now supported by the data flow library.
-*   Added flow through variadic arguments, and the :code:`getVaList` function.
-*   Added flow steps through :code:`Dictionary` keys and values.
-*   Added taint models for :code:`Numeric` conversions.
+*   The predicates :code:`getABaseType`, :code:`getABaseTypeDecl`, :code:`getADerivedType` and :code:`getADerivedTypeDecl` on :code:`Type` and :code:`TypeDecl` now behave more usefully and consistently. They now explore through type aliases used in base class declarations, and include protocols added in extensions.
+    
+    To examine base class declarations at a low level without these enhancements, use :code:`TypeDecl.getInheritedType`.
+    
+    :code:`Type.getABaseType` (only) previously resolved a type alias it was called directly on. This behaviour no longer exists. To find any base type of a type that could be an alias, the construct :code:`Type.getUnderlyingType().getABaseType*()` is recommended.
 
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -187,6 +183,18 @@ Python
 
 *   Django Rest Framework better handles custom :code:`ModelViewSet` classes functions
 *   Regular expression fragments residing inside implicitly concatenated strings now have better location information.
+
+Swift
+"""""
+
+*   Modelled varargs function in :code:`NSString` more accurately.
+*   Modelled :code:`CustomStringConvertible.description` and :code:`CustomDebugStringConvertible.debugDescription`, replacing ad-hoc models of these properties on derived classes.
+*   The regular expressions library now accepts a wider range of mode flags in a regular expression mode flag group (such as :code:`(?u)`). The :code:`(?w`) flag has been renamed from "UNICODE" to "UNICODEBOUNDARY", and the :code:`(?u)` flag is called "UNICODE" in the libraries.
+*   Renamed :code:`TypeDecl.getBaseType/1` to :code:`getInheritedType`.
+*   Flow through writes via keypaths is now supported by the data flow library.
+*   Added flow through variadic arguments, and the :code:`getVaList` function.
+*   Added flow steps through :code:`Dictionary` keys and values.
+*   Added taint models for :code:`Numeric` conversions.
 
 Deprecated APIs
 ~~~~~~~~~~~~~~~
