@@ -318,8 +318,9 @@ def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str)
 
 _stub_qldoc_header = "// the following QLdoc is generated: if you need to edit it, do it in the schema file\n"
 
-_class_qldoc_re = re.compile(rf"(?P<qldoc>(?:{_stub_qldoc_header})?/\*\*.*?\*/\s*|^\s*)class\s+(?P<class>\w+)",
-                             re.MULTILINE | re.DOTALL)
+_class_qldoc_re = re.compile(
+    rf"(?P<qldoc>(?:{re.escape(_stub_qldoc_header)})?/\*\*.*?\*/\s*|^\s*)class\s+(?P<class>\w+)",
+    re.MULTILINE | re.DOTALL)
 
 
 def _patch_class_qldoc(cls: str, qldoc: str, stub_file: pathlib.Path):
