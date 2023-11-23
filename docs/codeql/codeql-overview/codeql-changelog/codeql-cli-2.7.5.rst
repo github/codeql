@@ -68,7 +68,7 @@ Java
 JavaScript/TypeScript
 """""""""""""""""""""
 
-*   Support for handlebars templates has improved. Raw interpolation tags of the form :code:`{{&amp; ... }}` are now recognized,
+*   Support for handlebars templates has improved. Raw interpolation tags of the form :code:`{{& ... }}` are now recognized,
     as well as whitespace-trimming tags like :code:`{{~ ... }}`.
 *   Data flow is now tracked across middleware functions in more cases, leading to more security results in general. Affected packages are :code:`express` and :code:`fastify`.
 *   :code:`js/missing-token-validation` has been made more precise, yielding both fewer false positives and more true positives.
