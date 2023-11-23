@@ -5,4 +5,12 @@
 
 private import codeql.swift.generated.expr.CopyExpr
 
+/**
+ * An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
+ *
+ * ```
+ * let y = ...
+ * let x = copy y
+ * ```
+ */
 class CopyExpr extends Generated::CopyExpr { }

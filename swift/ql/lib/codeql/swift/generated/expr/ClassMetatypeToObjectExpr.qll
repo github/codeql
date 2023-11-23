@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ClassMetatypeToObjectExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::ClassMetatypeToObjectExpr` class directly.

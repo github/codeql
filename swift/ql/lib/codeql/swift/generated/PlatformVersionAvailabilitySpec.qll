@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AvailabilitySpec
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `PlatformVersionAvailabilitySpec` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An availability spec based on platform and version, for example `macOS 12` or `watchOS 14`

@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `CopyExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An expression that forces value to be copied. In the example below, `copy` marks the copy expression:

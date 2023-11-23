@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Function
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `Deinitializer` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::Deinitializer` class directly.

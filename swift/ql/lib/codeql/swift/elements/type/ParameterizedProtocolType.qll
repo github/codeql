@@ -5,4 +5,9 @@
 
 private import codeql.swift.generated.type.ParameterizedProtocolType
 
+/**
+ * A sugar type of the form `P<X>` with `P` a protocol.
+ *
+ * If `P` has primary associated type `A`, then `T: P<X>` is a shortcut for `T: P where T.A == X`.
+ */
 class ParameterizedProtocolType extends Generated::ParameterizedProtocolType { }

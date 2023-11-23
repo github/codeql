@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.StringLiteralExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `PoundDiagnosticDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A diagnostic directive, which is either `#error` or `#warning`.

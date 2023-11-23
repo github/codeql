@@ -5,4 +5,7 @@
 
 private import codeql.swift.generated.ErrorElement
 
+/**
+ * The superclass of all elements indicating some kind of error.
+ */
 class ErrorElement extends Generated::ErrorElement { }

@@ -5,4 +5,9 @@
 
 private import codeql.swift.generated.type.OpaqueTypeArchetypeType
 
+/**
+ * An opaque type, that is a type formally equivalent to an underlying type but abstracting it away.
+ *
+ * See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html.
+ */
 class OpaqueTypeArchetypeType extends Generated::OpaqueTypeArchetypeType { }

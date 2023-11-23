@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `AvailabilitySpec` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An availability spec, that is, part of an `AvailabilityInfo` condition. For example `iOS 12` and `*` in:

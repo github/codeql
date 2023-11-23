@@ -5,4 +5,12 @@
 
 private import codeql.swift.generated.expr.BorrowExpr
 
+/**
+ * An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:
+ *
+ * ```
+ * let y = ...
+ * let x = _borrow y
+ * ```
+ */
 class BorrowExpr extends Generated::BorrowExpr { }

@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AvailabilitySpec
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `OtherAvailabilitySpec` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A wildcard availability spec `*`

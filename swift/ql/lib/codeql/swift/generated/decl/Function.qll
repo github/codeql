@@ -10,6 +10,10 @@ import codeql.swift.elements.Callable
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.ValueDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `Function` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::Function` class directly.

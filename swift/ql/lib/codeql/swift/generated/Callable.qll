@@ -11,6 +11,10 @@ import codeql.swift.elements.decl.CapturedDecl
 import codeql.swift.elements.Element
 import codeql.swift.elements.decl.ParamDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `Callable` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::Callable` class directly.

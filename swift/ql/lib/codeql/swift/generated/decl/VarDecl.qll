@@ -12,6 +12,10 @@ import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.decl.PatternBindingDecl
 import codeql.swift.elements.type.Type
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `VarDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A declaration of a variable such as

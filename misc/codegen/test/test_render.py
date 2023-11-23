@@ -76,6 +76,45 @@ def test_render(pystache_renderer, sut):
     ]
 
 
+def test_render_provided_template(pystache_renderer, sut):
+    data = mock.Mock(spec=())
+    custom_template = object()
+    text = "some text"
+    pystache_renderer.render_name.side_effect = (text,)
+    output = paths.root_dir / "a/some/output.txt"
+    sut.render(data, output, template=custom_template)
+
+    assert_file(output, text)
+    assert pystache_renderer.mock_calls == [
+        mock.call.render_name(custom_template, data, generator=generator),
+    ]
+
+
+def test_render_to_string(pystache_renderer, sut):
+    data = mock.Mock(spec=("template",))
+    text = "some text"
+    pystache_renderer.render_name.side_effect = (text,)
+    result = sut.render_str(data)
+
+    assert result == text
+    assert pystache_renderer.mock_calls == [
+        mock.call.render_name(data.template, data, generator=generator),
+    ]
+
+
+def test_render_to_string_with_provided_template(pystache_renderer, sut):
+    data = mock.Mock(spec=())
+    custom_template = object()
+    text = "some text"
+    pystache_renderer.render_name.side_effect = (text,)
+    result = sut.render_str(data, custom_template)
+
+    assert result == text
+    assert pystache_renderer.mock_calls == [
+        mock.call.render_name(custom_template, data, generator=generator),
+    ]
+
+
 def test_managed_render(pystache_renderer, sut):
     data = mock.Mock(spec=("template",))
     text = "some text"

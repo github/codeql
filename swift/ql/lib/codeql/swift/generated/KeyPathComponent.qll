@@ -11,6 +11,10 @@ import codeql.swift.elements.AstNode
 import codeql.swift.elements.type.Type
 import codeql.swift.elements.decl.ValueDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `KeyPathComponent` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A component of a `KeyPathExpr`.
