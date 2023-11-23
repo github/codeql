@@ -6,6 +6,9 @@ import javascript
 
 /** Provides classes modeling [cors package](https://npmjs.com/package/cors) */
 module Cors {
+  /**
+   * An expression that creates a new CORS configuration.
+   */
   class Cors extends DataFlow::CallNode {
     /** Get an instanceof of `cors` */
     Cors() { this = DataFlow::moduleImport("cors").getAnInvocation() }
@@ -16,7 +19,7 @@ module Cors {
     /** Holds if cors is using default configuration */
     predicate isDefault() { this.getNumArgument() = 0 }
 
-    /** The value of origin */
+    /** Gets the value of origin */
     DataFlow::Node getOrigin() {
       result = this.getCorsArgument().getALocalSource().getAPropertyWrite("origin").getRhs()
     }

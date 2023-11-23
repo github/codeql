@@ -1073,22 +1073,22 @@ module Express {
     override predicate definitelyResumesDispatch() { none() }
   }
 
+  /**
+   * The CORS configuration used in Express
+   */
   class CorsConfiguration extends DataFlow::MethodCallNode {
     /** Get an `app.use` with a cors object as argument */
     CorsConfiguration() {
       this = appCreation().getAMethodCall("use") and this.getArgument(0) instanceof Cors::Cors
     }
 
-    /** Get Cors */
-    private Cors::Cors cors() { result = this.getArgument(0).(Cors::Cors) }
-
     /** Get Cors configuration */
-    DataFlow::Node getCorsArgument() { result = cors().getCorsArgument() }
+    DataFlow::Node getCorsArgument() { result = this.getArgument(0).(Cors::Cors).getCorsArgument() }
 
     /** Holds if cors is using default configuration */
-    predicate isDefault() { cors().isDefault() }
+    predicate isDefault() { this.getArgument(0).(Cors::Cors).isDefault() }
 
     /** Get Cors origin value */
-    DataFlow::Node getOrigin() { result = cors().getOrigin() }
+    DataFlow::Node getOrigin() { result = this.getArgument(0).(Cors::Cors).getOrigin() }
   }
 }
