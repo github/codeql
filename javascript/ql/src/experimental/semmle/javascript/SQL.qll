@@ -4,7 +4,7 @@
 
 import javascript
 
-module ExperimentalSQL {
+module ExperimentalSql {
   /**
    * Provides SQL injection Sinks for the [TypeORM](https://www.npmjs.com/package/typeorm) package
    */

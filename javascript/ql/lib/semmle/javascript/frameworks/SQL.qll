@@ -123,9 +123,8 @@ private module Postgres {
   }
 
   /**
-   * Gets a Postgres Query class.
-   *
-   * Please note that according to [this documentation](https://node-postgres.com/apis/client) this is an advance feature
+   * Gets the Postgres Query class.
+   * This class can be used to create reusable query objects (see https://node-postgres.com/apis/client).
    */
   API::Node query() { result = API::moduleImport("pg").getMember("Query") }
 
@@ -309,20 +308,16 @@ private module Sqlite {
  */
 private module BetterSqlite3 {
   /**
-   * Gets an expression that constructs or returns a `better-sqlite3` database instance.
+   * Gets a `better-sqlite3` database instance.
    */
   API::Node database() {
-    // initialDatabaseInstance is an instance of Database that constructed and instantiated in the first step of Database initialization,
-    // not from a return value of the other library functions
-    exists(API::Node initialDatabaseInstance |
-      initialDatabaseInstance =
-        [
-          API::moduleImport("better-sqlite3").getInstance(),
-          API::moduleImport("better-sqlite3").getReturn()
-        ]
-    |
-      result = [initialDatabaseInstance, initialDatabaseInstance.getMember("exec").getReturn()]
-    )
+    result =
+      [
+        API::moduleImport("better-sqlite3").getInstance(),
+        API::moduleImport("better-sqlite3").getReturn()
+      ]
+    or
+    result = database().getMember("exec").getReturn()
   }
 
   /** A call to a better-sqlite3 query method. */
