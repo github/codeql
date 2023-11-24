@@ -957,33 +957,20 @@ private module ControlFlowGraphImpl {
       not completion instanceof NormalOrBooleanCompletion
     )
     or
-    // the last node in a case rule in statement context is the last node in the right-hand side.
-    // If the rhs is a statement, we wrap the completion as a break.
-    exists(Completion caseCompletion, SwitchStmt parent, SwitchCase case |
+    exists(Completion caseCompletion, SwitchCase case |
       case = n and
-      case = parent.getACase() and
-      last(case.getRuleStatementOrExpressionStatement(), last, caseCompletion) and
-      if caseCompletion instanceof NormalOrBooleanCompletion
-      then completion = anonymousBreakCompletion()
-      else completion = caseCompletion
-    )
-    or
-    // ...and when a switch occurs in expression context, we wrap the RHS in a yield statement.
-    // Note the wrapping can only occur in the expression case, because a statement would need
-    // to have explicit `yield` statements.
-    exists(SwitchExpr parent, SwitchCase case |
-      case = n and
-      case = parent.getACase() and
       (
-        exists(Completion caseCompletion |
-          last(case.getRuleExpression(), last, caseCompletion) and
-          if caseCompletion instanceof NormalOrBooleanCompletion
-          then completion = YieldCompletion(caseCompletion)
-          else completion = caseCompletion
-        )
+        last(case.getRuleStatement(), last, caseCompletion)
         or
-        last(case.getRuleStatement(), last, completion)
+        last(case.getRuleExpression(), last, caseCompletion)
       )
+    |
+      if caseCompletion instanceof NormalOrBooleanCompletion
+      then
+        case.getParent() instanceof SwitchStmt and completion = anonymousBreakCompletion()
+        or
+        case.getParent() instanceof SwitchExpr and completion = YieldCompletion(caseCompletion)
+      else completion = caseCompletion
     )
     or
     // The normal last node in a non-rule pattern case is the last of its variable declaration(s),
