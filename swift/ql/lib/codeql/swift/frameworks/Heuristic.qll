@@ -8,6 +8,25 @@ private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.FlowSources
 
 /**
+ * An initializer call `ce` that has a "contentsOf" argument, along with a
+ * guess `isRemote` as to whether it is the contents of a remote source. For
+ * example:
+ * ```
+ * let myObject = MyClass(contentsOf: url) // isRemote = true
+ * let myObject = MyClass(contentsOfFile: "foo.txt") // isRemote = false
+ * ```
+ */
+private predicate contentsOfInitializer(InitializerCallExpr ce, boolean isRemote) {
+  exists(Argument arg |
+    ce.getAnArgument() = arg and
+    arg.getLabel() = ["contentsOf", "contentsOfFile", "contentsOfPath", "contentsOfDirectory"] and
+    if arg.getExpr().getType().getUnderlyingType().getName() = ["URL", "NSURL"]
+    then isRemote = true
+    else isRemote = false
+  )
+}
+
+/**
  * An imprecise flow source for an initializer call with a "contentsOf"
  * argument that appears to be remote. For example:
  * ```
@@ -15,14 +34,7 @@ private import codeql.swift.dataflow.FlowSources
  * ```
  */
 private class InitializerContentsOfRemoteSource extends RemoteFlowSource {
-  InitializerContentsOfRemoteSource() {
-    exists(InitializerCallExpr ce, Argument arg |
-      ce.getAnArgument() = arg and
-      arg.getLabel() = ["contentsOf", "contentsOfFile", "contentsOfPath", "contentsOfDirectory"] and
-      arg.getExpr().getType().getUnderlyingType().getName() = ["URL", "NSURL"] and
-      this.asExpr() = ce
-    )
-  }
+  InitializerContentsOfRemoteSource() { contentsOfInitializer(this.asExpr(), true) }
 
   override string getSourceType() { result = "contentsOf initializer" }
 }
@@ -35,14 +47,7 @@ private class InitializerContentsOfRemoteSource extends RemoteFlowSource {
  * ```
  */
 private class InitializerContentsOfLocalSource extends LocalFlowSource {
-  InitializerContentsOfLocalSource() {
-    exists(InitializerCallExpr ce, Argument arg |
-      ce.getAnArgument() = arg and
-      arg.getLabel() = ["contentsOf", "contentsOfFile", "contentsOfPath", "contentsOfDirectory"] and
-      not arg.getExpr().getType().getUnderlyingType().getName() = ["URL", "NSURL"] and
-      this.asExpr() = ce
-    )
-  }
+  InitializerContentsOfLocalSource() { contentsOfInitializer(this.asExpr(), false) }
 
   override string getSourceType() { result = "contentsOf initializer" }
 }
