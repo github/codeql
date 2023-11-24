@@ -61,7 +61,7 @@ module ActiveSupport {
             ]
         }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self]" and output = "ReturnValue" and preservesValue = false
         }
       }
@@ -75,7 +75,7 @@ module ActiveSupport {
       private class IdentitySummary extends SimpleSummarizedCallable {
         IdentitySummary() { this = ["presence", "deep_dup"] }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self]" and
           output = "ReturnValue" and
           preservesValue = true
@@ -109,7 +109,7 @@ module ActiveSupport {
       private class ToJsonSummary extends SimpleSummarizedCallable {
         ToJsonSummary() { this = "to_json" }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = ["Argument[self]", "Argument[self].Element[any]"] and
           output = "ReturnValue" and
           preservesValue = false
@@ -124,7 +124,7 @@ module ActiveSupport {
       private class WithIndifferentAccessSummary extends SimpleSummarizedCallable {
         WithIndifferentAccessSummary() { this = "with_indifferent_access" }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[any]" and
           output = "ReturnValue.Element[any]" and
           preservesValue = true
@@ -137,7 +137,7 @@ module ActiveSupport {
       private class ReverseMergeSummary extends SimpleSummarizedCallable {
         ReverseMergeSummary() { this = ["reverse_merge", "with_defaults"] }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self,0].WithElement[any]" and
           output = "ReturnValue" and
           preservesValue = true
@@ -150,7 +150,7 @@ module ActiveSupport {
       private class ReverseMergeBangSummary extends SimpleSummarizedCallable {
         ReverseMergeBangSummary() { this = ["reverse_merge!", "with_defaults!", "reverse_update"] }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self,0].WithElement[any]" and
           output = ["ReturnValue", "Argument[self]"] and
           preservesValue = true
@@ -166,7 +166,7 @@ module ActiveSupport {
             ]
         }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[any]" and
           output = "ReturnValue.Element[?]" and
           preservesValue = true
@@ -209,7 +209,7 @@ module ActiveSupport {
 
         final override MethodCall getACall() { result = mc }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           (
             exists(string s | s = getExtractComponent(mc, _) |
               input = "Argument[self].Element[" + s + "!]" and
@@ -244,7 +244,7 @@ module ActiveSupport {
       private class CompactBlankSummary extends SimpleSummarizedCallable {
         CompactBlankSummary() { this = "compact_blank" }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[any]" and
           output = "ReturnValue.Element[?]" and
           preservesValue = true
@@ -254,7 +254,7 @@ module ActiveSupport {
       private class ExcludingSummary extends SimpleSummarizedCallable {
         ExcludingSummary() { this = ["excluding", "without"] }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[any]" and
           output = "ReturnValue.Element[?]" and
           preservesValue = true
@@ -264,7 +264,7 @@ module ActiveSupport {
       private class InOrderOfSummary extends SimpleSummarizedCallable {
         InOrderOfSummary() { this = "in_order_of" }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[any]" and
           output = "ReturnValue.Element[?]" and
           preservesValue = true
@@ -277,7 +277,7 @@ module ActiveSupport {
       private class IncludingSummary extends SimpleSummarizedCallable {
         IncludingSummary() { this = "including" }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           (
             exists(ArrayIndex i |
               input = "Argument[self].Element[" + i + "]" and
@@ -299,7 +299,7 @@ module ActiveSupport {
       private class IndexBySummary extends SimpleSummarizedCallable {
         IndexBySummary() { this = "index_by" }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[any]" and
           output = ["Argument[block].Parameter[0]", "ReturnValue.Element[?]"] and
           preservesValue = true
@@ -309,7 +309,7 @@ module ActiveSupport {
       private class IndexWithSummary extends SimpleSummarizedCallable {
         IndexWithSummary() { this = "index_with" }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[any]" and
           output = "Argument[block].Parameter[0]" and
           preservesValue = true
@@ -338,7 +338,7 @@ module ActiveSupport {
 
         override MethodCall getACall() { result = mc }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[0].Element[" + key + "]" and
           output = "ReturnValue" and
           preservesValue = true
@@ -369,7 +369,7 @@ module ActiveSupport {
 
         override MethodCall getACall() { result = mc }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           exists(string s, int i |
             s = getKeyArgument(mc, i) and
             input = "Argument[self].Element[0].Element[" + s + "]" and
@@ -392,7 +392,7 @@ module ActiveSupport {
 
         override MethodCall getACall() { result = mc }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[any].Element[" + key + "]" and
           output = "ReturnValue.Element[any]" and
           preservesValue = true
@@ -423,7 +423,7 @@ module ActiveSupport {
 
         override MethodCall getACall() { result = mc }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           exists(string s, int i |
             s = getKeyArgument(mc, i) and
             input = "Argument[self].Element[any].Element[" + s + "]" and
@@ -436,7 +436,7 @@ module ActiveSupport {
       private class SoleSummary extends SimpleSummarizedCallable {
         SoleSummary() { this = "sole" }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[self].Element[0]" and
           output = "ReturnValue" and
           preservesValue = true
@@ -470,7 +470,7 @@ module ActiveSupport {
       private class JsonEscapeSummary extends SimpleSummarizedCallable {
         JsonEscapeSummary() { this = "json_escape" }
 
-        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
           input = "Argument[0]" and
           output = "ReturnValue" and
           preservesValue = false
