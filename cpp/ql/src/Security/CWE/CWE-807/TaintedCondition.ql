@@ -19,16 +19,10 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.ir.IR
 import Flow::PathGraph
 
-Expr getExprWithoutNot(Expr expr) {
-  result = expr and not expr instanceof NotExpr
-  or
-  result = getExprWithoutNot(expr.(NotExpr).getOperand()) and expr instanceof NotExpr
-}
-
 predicate sensitiveCondition(Expr condition, Expr raise) {
   raisesPrivilege(raise) and
   exists(IfStmt ifstmt |
-    getExprWithoutNot(ifstmt.getCondition()) = condition and
+    ifstmt.getCondition() = condition and
     raise.getEnclosingStmt().getParentStmt*() = ifstmt
   )
 }
