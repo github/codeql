@@ -143,7 +143,7 @@ class PatternBindingDecl(Decl):
 
 class PoundDiagnosticDecl(Decl):
     """ A diagnostic directive, which is either `#error` or `#warning`."""
-    kind: int | desc("""This is 1 for `#error` and 2 for `#warning`.""")
+    kind: int | desc("""This is 1 for `#error` and 2 for `#warning`.""") | ql.internal
     message: "StringLiteralExpr" | child
 
 class PrecedenceGroupDecl(Decl):
@@ -1367,8 +1367,8 @@ class MacroRole(AstNode):
     """
     The role of a macro, for example #freestanding(declaration) or @attached(member).
     """
-    kind: int | doc("kind of this macro role (declaration, expression, member, etc.)")
-    macro_syntax: int | doc("#freestanding or @attached")
+    kind: int | doc("kind of this macro role (declaration, expression, member, etc.)") | ql.internal
+    macro_syntax: int | doc("#freestanding or @attached") | ql.internal
     conformances: list[TypeExpr] | doc("conformances of this macro role")
     names: list[string] | doc("names of this macro role")
 
