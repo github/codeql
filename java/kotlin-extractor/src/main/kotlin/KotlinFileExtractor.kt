@@ -133,7 +133,7 @@ open class KotlinFileExtractor(
             val lighterAstCommentsExtracted = CommentExtractorLighterAST(this, file, tw.fileId).extract()
             if (psiCommentsExtracted == lighterAstCommentsExtracted) {
                 if (psiCommentsExtracted) {
-                    logger.warnElement("Found both PSI and LightAST comments in ${file.path}.", file)
+                    logger.warnElement("Found both PSI and LighterAST comments in ${file.path}.", file)
                 } else {
                     logger.warnElement("Comments could not be processed in ${file.path}.", file)
                 }
