@@ -82,6 +82,7 @@
 import java
 private import Completion
 private import controlflow.internal.Preconditions
+private import controlflow.internal.SwitchCases
 
 /** A node in the expression-level control-flow graph. */
 class ControlFlowNode extends Top, @exprparent {
@@ -434,34 +435,6 @@ private module ControlFlowGraphImpl {
         whenbranch.getRhs() = nonReturningStmt()
       )
     )
-  }
-
-  /**
-   * Gets the `i`th `SwitchCase` defined on `switch`, if one exists.
-   */
-  private SwitchCase getCase(StmtParent switch, int i) {
-    result = switch.(SwitchExpr).getCase(i) or result = switch.(SwitchStmt).getCase(i)
-  }
-
-  /**
-   * Gets the `i`th `PatternCase` defined on `switch`, if one exists.
-   */
-  private PatternCase getPatternCase(StmtParent switch, int i) {
-    result =
-      rank[i + 1](PatternCase pc, int caseIdx | pc = getCase(switch, caseIdx) | pc order by caseIdx)
-  }
-
-  /**
-   * Gets the PatternCase after pc, if one exists.
-   */
-  private PatternCase getNextPatternCase(PatternCase pc) {
-    exists(int idx, StmtParent switch |
-      pc = getPatternCase(switch, idx) and result = getPatternCase(switch, idx + 1)
-    )
-  }
-
-  private int lastCaseIndex(StmtParent switch) {
-    result = max(int i | any(SwitchCase c).isNthCaseOf(switch, i))
   }
 
   // Join order engineering -- first determine the switch block and the case indices required, then retrieve them.

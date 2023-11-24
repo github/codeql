@@ -7,6 +7,7 @@ import java
 private import semmle.code.java.controlflow.Dominance
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.controlflow.internal.Preconditions
+private import semmle.code.java.controlflow.internal.SwitchCases
 
 /**
  * A basic block that terminates in a condition, splitting the subsequent control flow.
@@ -72,6 +73,35 @@ class ConditionBlock extends BasicBlock {
   }
 }
 
+// Join order engineering -- first determine the switch block and the case indices required, then retrieve them.
+bindingset[switch, i]
+pragma[inline_late]
+private predicate isNthCaseOf(StmtParent switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
+
+/**
+ * Gets a switch case >= pred, up to but not including `pred`'s successor pattern case,
+ * where `pred` is declared on `switch`.
+ */
+private SwitchCase getACaseUpToNextPattern(PatternCase pred, StmtParent switch) {
+  // Note we do include `case null, default` (as well as plain old `default`) here.
+  not result.(ConstCase).getValue(_) instanceof NullLiteral and
+  exists(int maxCaseIndex |
+    switch = pred.getParent() and
+    if exists(getNextPatternCase(pred))
+    then maxCaseIndex = getNextPatternCase(pred).getCaseIndex() - 1
+    else maxCaseIndex = lastCaseIndex(switch)
+  |
+    isNthCaseOf(switch, result, [pred.getCaseIndex() .. maxCaseIndex])
+  )
+}
+
+/**
+ * Gets the closest pattern case preceding `case`, including `case` itself, if any.
+ */
+private PatternCase getClosestPrecedingPatternCase(SwitchCase case) {
+  case = getACaseUpToNextPattern(result, _)
+}
+
 /**
  * A condition that can be evaluated to either true or false. This can either
  * be an `Expr` of boolean type that isn't a boolean literal, or a case of a
@@ -113,17 +143,10 @@ class Guard extends ExprParent {
     result = this.(Expr).getBasicBlock()
     or
     // Return the closest pattern case statement before this one, including this one.
-    result =
-      max(int i, PatternCase c |
-        c = this.(SwitchCase).getSiblingCase(i) and i <= this.(SwitchCase).getCaseIndex()
-      |
-        c order by i
-      ).getBasicBlock()
+    result = getClosestPrecedingPatternCase(this).getBasicBlock()
     or
     // Not a pattern case and no preceding pattern case -- return the top of the switch block.
-    not exists(PatternCase c, int i |
-      c = this.(SwitchCase).getSiblingCase(i) and i <= this.(SwitchCase).getCaseIndex()
-    ) and
+    not exists(getClosestPrecedingPatternCase(this)) and
     result = this.(SwitchCase).getSelectorExpr().getBasicBlock()
   }
 
