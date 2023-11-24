@@ -470,17 +470,17 @@ private module ControlFlowGraphImpl {
   private predicate isNthCaseOf(StmtParent switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
 
   /**
-   * Gets a `SwitchCase` that may be `pred`'s direct successor.
+   * Gets a `SwitchCase` that may be `pred`'s direct successor, where `pred` is declared in block `switch`.
    *
    * This means any switch case that comes after `pred` up to the next pattern case, if any, except for `case null`.
    *
    * Because we know the switch block contains at least one pattern, we know by https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.11
    * that any default case comes after the last pattern case.
    */
-  private SwitchCase getASuccessorSwitchCase(PatternCase pred) {
+  private SwitchCase getASuccessorSwitchCase(PatternCase pred, StmtParent switch) {
     // Note we do include `case null, default` (as well as plain old `default`) here.
     not result.(ConstCase).getValue(_) instanceof NullLiteral and
-    exists(int maxCaseIndex, StmtParent switch |
+    exists(int maxCaseIndex |
       switch = pred.getParent() and
       if exists(getNextPatternCase(pred))
       then maxCaseIndex = getNextPatternCase(pred).getCaseIndex()
@@ -509,6 +509,24 @@ private module ControlFlowGraphImpl {
       or
       result.getIndex() <= getPatternCase(switch, 0).getIndex()
     )
+  }
+
+  private Stmt getSwitchStatement(StmtParent switch, int i) { result.isNthChildOf(switch, i) }
+
+  /**
+   * Holds if `last` is the last node in a pattern case `pc`'s succeeding bind-and-test operation,
+   * immediately before either falling through to execute successor statements or execute a rule body
+   * if present. `completion` is the completion kind of the last operation.
+   */
+  private predicate lastPatternCaseMatchingOp(
+    PatternCase pc, ControlFlowNode last, Completion completion
+  ) {
+    last(pc.getPattern(), last, completion) and
+    completion = NormalCompletion() and
+    not exists(pc.getGuard())
+    or
+    last(pc.getGuard(), last, completion) and
+    completion = BooleanCompletion(true, _)
   }
 
   /**
@@ -808,7 +826,10 @@ private module ControlFlowGraphImpl {
     or
     last(n, last, BooleanCompletion(_, _)) and
     not inBooleanContext(n) and
-    completion = NormalCompletion()
+    completion = NormalCompletion() and
+    // PatternCase has both a boolean-true completion (guard success) and a normal one
+    // (variable declaration completion, when no guard is present).
+    not n instanceof PatternCase
     or
     // Logic expressions and conditional expressions are executed in AST pre-order to facilitate
     // proper short-circuit representation. All other expressions are executed in post-order.
@@ -957,6 +978,9 @@ private module ControlFlowGraphImpl {
       not completion instanceof NormalOrBooleanCompletion
     )
     or
+    // If a case rule right-hand-side completes then the switch breaks or yields, depending
+    // on whether this is a switch expression or statement. If it completes abruptly then the
+    // switch completes the same way.
     exists(Completion caseCompletion, SwitchCase case |
       case = n and
       (
@@ -973,18 +997,24 @@ private module ControlFlowGraphImpl {
       else completion = caseCompletion
     )
     or
-    // The normal last node in a non-rule pattern case is the last of its variable declaration(s),
-    // or the successful matching of its guard if it has one.
-    // Note that either rule or non-rule pattern cases can end with pattern match failure, whereupon
-    // they branch to the next candidate pattern. This is accounted for in the `succ` relation.
+    // A pattern case statement can complete:
+    // * On failure of its type test (boolean false)
+    // * On failure of its guard test if any (boolean false)
+    // * On any abrupt completion of its guard
+    // * On completion of its variable declarations, if it is not a rule and has no guard (normal completion)
+    // * On success of its guard test, if it is not a rule (boolean true)
+    // (the latter two cases are accounted for by lastPatternCaseMatchingOp)
     exists(PatternCase pc | n = pc |
+      last = pc and completion = basicBooleanCompletion(false)
+      or
+      last(pc.getGuard(), last, completion) and
       (
-        if exists(pc.getGuard())
-        then last(pc.getGuard(), last, BooleanCompletion(true, _))
-        else last(pc.getPattern(), last, NormalCompletion())
-      ) and
+        completion = BooleanCompletion(false, _) or
+        not completion instanceof NormalOrBooleanCompletion
+      )
+      or
       not pc.isRule() and
-      completion = NormalCompletion()
+      lastPatternCaseMatchingOp(pc, last, completion)
     )
     or
     // the last statement of a synchronized statement is the last statement of its body
@@ -1296,90 +1326,66 @@ private module ControlFlowGraphImpl {
       last(cc.getVariable(), n, completion) and result = first(cc.getBlock())
     )
     or
-    // Switch statements
-    exists(SwitchStmt switch | completion = NormalCompletion() |
-      // From the entry point control is transferred first to the expression...
-      n = switch and result = first(switch.getExpr())
-      or
-      // ...and then to any case up to and including the first pattern case, if any.
-      last(switch.getExpr(), n, completion) and result = first(getAFirstSwitchCase(switch))
-      or
-      // Statements within a switch body execute sequentially.
-      // Note this includes non-rule case statements and the successful pattern match successor
-      // of a non-rule pattern case statement. Rule case statements do not complete normally
-      // (they always break or yield), and the case of pattern matching failure branching to the
-      // next case is specially handled in the `PatternCase` logic below.
-      exists(int i |
-        last(switch.getStmt(i), n, completion) and result = first(switch.getStmt(i + 1))
-      )
-    )
-    or
-    // Switch expressions
-    exists(SwitchExpr switch | completion = NormalCompletion() |
-      // From the entry point control is transferred first to the expression...
-      n = switch and result = first(switch.getExpr())
-      or
-      // ...and then to any case up to and including the first pattern case, if any.
-      last(switch.getExpr(), n, completion) and result = first(getAFirstSwitchCase(switch))
-      or
-      // Statements within a switch body execute sequentially.
-      // Note this includes non-rule case statements and the successful pattern match successor
-      // of a non-rule pattern case statement. Rule case statements do not complete normally
-      // (they always break or yield), and the case of pattern matching failure branching to the
-      // next case is specially handled in the `PatternCase` logic below.
-      exists(int i |
-        last(switch.getStmt(i), n, completion) and result = first(switch.getStmt(i + 1))
-      )
-    )
-    or
-    // Edge from rule SwitchCases to their body, after any variable assignment and/or guard test if applicable.
-    // No edges in a non-rule SwitchCase - the constant expression in a ConstCase isn't included in the CFG.
-    exists(SwitchCase case, ControlFlowNode preBodyNode |
-      if case instanceof PatternCase
-      then (
-        if exists(case.(PatternCase).getGuard())
-        then (
-          last(case.(PatternCase).getGuard(), preBodyNode, completion) and
-          completion = basicBooleanCompletion(true)
-        ) else (
-          last(case.(PatternCase).getPattern(), preBodyNode, completion) and
-          completion = NormalCompletion()
-        )
-      ) else (
-        preBodyNode = case and completion = NormalCompletion()
-      )
-    |
-      n = preBodyNode and result = first(case.getRuleExpression())
-      or
-      n = preBodyNode and result = first(case.getRuleStatement())
-    )
-    or
-    // A pattern case conducts a type test, then branches to the next case or the pattern assignment(s).
-    exists(PatternCase case |
-      n = case and
-      (
-        completion = basicBooleanCompletion(false) and
-        result = getASuccessorSwitchCase(case)
+    // Switch statements and expressions
+    exists(StmtParent switch |
+      exists(Expr switchExpr |
+        switchExpr = switch.(SwitchStmt).getExpr() or switchExpr = switch.(SwitchExpr).getExpr()
+      |
+        // From the entry point control is transferred first to the expression...
+        n = switch and result = first(switchExpr) and completion = NormalCompletion()
         or
-        completion = basicBooleanCompletion(true) and
-        result = first(case.getPattern())
-      )
-    )
-    or
-    // A pattern case with a guard evaluates that guard after declaring its pattern variable(s),
-    // and thereafter if the guard doesn't match will branch to the next case.
-    // The case of a matching guard is accounted for in the case-with-rule logic above, or for
-    // non-rule case statements in `last`.
-    exists(PatternCase case, Expr guard |
-      guard = case.getGuard() and
-      (
-        last(case.getPattern(), n, NormalCompletion()) and
-        result = first(guard) and
+        // ...and then to any case up to and including the first pattern case, if any.
+        last(switchExpr, n, completion) and
+        result = first(getAFirstSwitchCase(switch)) and
         completion = NormalCompletion()
+      )
+      or
+      // Statements within a switch body execute sequentially.
+      // Note this includes non-rule case statements and the successful pattern match successor
+      // of a non-rule pattern case statement. Rule case statements do not complete normally
+      // (they always break or yield).
+      exists(int i |
+        last(getSwitchStatement(switch, i), n, completion) and
+        result = first(getSwitchStatement(switch, i + 1)) and
+        (completion = NormalCompletion() or completion = BooleanCompletion(true, _))
+      )
+      or
+      // A pattern case that completes boolean false (type test or guard failure) continues to consider other cases:
+      exists(PatternCase case | completion = BooleanCompletion(false, _) |
+        last(case, n, completion) and result = getASuccessorSwitchCase(case, switch)
+      )
+    )
+    or
+    // Pattern cases have internal edges:
+    // * Type test success -true-> variable declarations
+    // * Variable declarations -normal-> guard evaluation
+    // * Variable declarations -normal-> rule execution (when there is no guard)
+    // * Guard success -true-> rule execution
+    exists(PatternCase pc |
+      n = pc and
+      completion = basicBooleanCompletion(true) and
+      result = first(pc.getPattern())
+      or
+      last(pc.getPattern(), n, completion) and
+      completion = NormalCompletion() and
+      result = first(pc.getGuard())
+      or
+      lastPatternCaseMatchingOp(pc, n, completion) and
+      (
+        result = first(pc.getRuleExpression())
         or
-        last(guard, n, completion) and
-        completion = basicBooleanCompletion(false) and
-        result = getASuccessorSwitchCase(case)
+        result = first(pc.getRuleStatement())
+      )
+    )
+    or
+    // Non-pattern cases have an internal edge leading to their rule body if any when the case matches.
+    exists(SwitchCase case | n = case |
+      not case instanceof PatternCase and
+      completion = NormalCompletion() and
+      (
+        result = first(case.getRuleExpression())
+        or
+        result = first(case.getRuleStatement())
       )
     )
     or
