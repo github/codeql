@@ -165,6 +165,39 @@ class Guard extends ExprParent {
   }
 
   /**
+   * Holds if this guard tests whether `testedExpr` has type `testedType`.
+   *
+   * `restricted` is true if the test applies additional restrictions on top of just `testedType`, and so
+   * this guard failing does not guarantee `testedExpr` is *not* a `testedType`-- for example,
+   * matching `record R(Object o)` with `case R(String s)` is a guard with an additional restriction on the
+   * type of field `o`, so the guard passing guarantees `testedExpr` is an `R`, but it failing does not
+   * guarantee `testedExpr` is not an `R`.
+   */
+  predicate appliesTypeTest(Expr testedExpr, Type testedType, boolean restricted) {
+    (
+      exists(InstanceOfExpr ioe | this = ioe |
+        testedExpr = ioe.getExpr() and
+        testedType = ioe.getSyntacticCheckedType()
+      )
+      or
+      exists(PatternCase pc | this = pc |
+        pc.getSelectorExpr() = testedExpr and
+        testedType = pc.getPattern().getType()
+      )
+    ) and
+    (
+      if
+        exists(RecordPatternExpr rpe |
+          rpe = [this.(InstanceOfExpr).getPattern(), this.(PatternCase).getPattern()]
+        |
+          not rpe.isUnrestricted()
+        )
+      then restricted = true
+      else restricted = false
+    )
+  }
+
+  /**
    * Holds if the evaluation of this guard to `branch` corresponds to the edge
    * from `bb1` to `bb2`.
    */
@@ -220,60 +253,6 @@ class Guard extends ExprParent {
    */
   predicate controls(BasicBlock controlled, boolean branch) {
     guardControls_v3(this, controlled, branch)
-  }
-}
-
-/**
- * A `Guard` that tests an expression's type -- that is, an `instanceof T` or a
- * `case T varname` pattern case.
- */
-class TypeTestGuard extends Guard {
-  Expr testedExpr;
-  Type testedType;
-
-  TypeTestGuard() {
-    exists(InstanceOfExpr ioe | this = ioe |
-      testedExpr = ioe.getExpr() and
-      testedType = ioe.getSyntacticCheckedType()
-    )
-    or
-    exists(PatternCase pc | this = pc |
-      pc.getSelectorExpr() = testedExpr and
-      testedType = pc.getPattern().getType()
-    )
-  }
-
-  /**
-   * Gets the record pattern this type test binds to, if any.
-   */
-  PatternExpr getPattern() {
-    result = this.(InstanceOfExpr).getPattern()
-    or
-    result = this.(PatternCase).getPattern()
-  }
-
-  /**
-   * Holds if this guard tests whether `e` has type `t` on `testedBranch`.
-   *
-   * Note that record patterns that make at least one tighter restriction than the record's definition
-   * (e.g. matching `record R(Object)` with `case R(String)`) means this only guarantees the tested type
-   * on the true branch (i.e., entering such a case guarantees `testedExpr` is a `testedType`, but failing
-   * the type test could mean a nested record or binding pattern didn't match but `testedExpr` is still
-   * of type `testedType`.)
-   */
-  predicate appliesTypeTest(Expr e, Type t, boolean testedBranch) {
-    e = testedExpr and
-    t = testedType and
-    (
-      testedBranch = true
-      or
-      testedBranch = false and
-      (
-        this.getPattern().asRecordPattern().isUnrestricted()
-        or
-        not this.getPattern() instanceof RecordPatternExpr
-      )
-    )
   }
 }
 

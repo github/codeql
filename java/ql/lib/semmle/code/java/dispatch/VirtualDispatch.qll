@@ -194,7 +194,7 @@ private module Dispatch {
    */
   private predicate impossibleDispatchTarget(MethodCall source, Method tgt) {
     tgt = viableImpl_v1_cand(source) and
-    exists(TypeTestGuard typeTest, BaseSsaVariable v, Expr q, RefType t |
+    exists(Guard typeTest, BaseSsaVariable v, Expr q, RefType t |
       source.getQualifier() = q and
       v.getAUse() = q and
       typeTest.appliesTypeTest(v.getAUse(), t, false) and

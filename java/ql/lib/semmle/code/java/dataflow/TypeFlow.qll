@@ -417,8 +417,8 @@ private predicate downcastSuccessor(VarAccess va, RefType t) {
  * Holds if `va` is an access to a value that is guarded by `instanceof t` or `case e t`.
  */
 private predicate typeTestGuarded(VarAccess va, RefType t) {
-  exists(TypeTestGuard typeTest, BaseSsaVariable v |
-    typeTest.appliesTypeTest(v.getAUse(), t, true) and
+  exists(Guard typeTest, BaseSsaVariable v |
+    typeTest.appliesTypeTest(v.getAUse(), t, _) and
     va = v.getAUse() and
     guardControls_v1(typeTest, va.getBasicBlock(), true)
   )
@@ -428,8 +428,8 @@ private predicate typeTestGuarded(VarAccess va, RefType t) {
  * Holds if `aa` is an access to a value that is guarded by `instanceof t` or `case e t`.
  */
 predicate arrayTypeTestGuarded(ArrayAccess aa, RefType t) {
-  exists(TypeTestGuard typeTest, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
-    typeTest.appliesTypeTest(aa1, t, true) and
+  exists(Guard typeTest, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
+    typeTest.appliesTypeTest(aa1, t, _) and
     aa1.getArray() = v1.getAUse() and
     aa1.getIndexExpr() = v2.getAUse() and
     aa.getArray() = v1.getAUse() and
