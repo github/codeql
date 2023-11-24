@@ -34,7 +34,7 @@ func testSet(ix: Int) {
   }
   for (ix, elem) in taintedSet.enumerated() {
     sink(arg: ix)
-    sink(arg: elem) // $ MISSING: tainte=t1
+    sink(arg: elem) // $ tainted=t1
   }
   taintedSet.forEach {
     elem in
