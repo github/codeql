@@ -9,6 +9,7 @@ import codeql.swift.elements.DbFileConstructor
 import codeql.swift.elements.DbLocationConstructor
 import codeql.swift.elements.DiagnosticsConstructor
 import codeql.swift.elements.KeyPathComponentConstructor
+import codeql.swift.elements.MacroRoleConstructor
 import codeql.swift.elements.OtherAvailabilitySpecConstructor
 import codeql.swift.elements.PlatformVersionAvailabilitySpecConstructor
 import codeql.swift.elements.UnspecifiedElementConstructor
@@ -27,6 +28,7 @@ import codeql.swift.elements.decl.IfConfigDeclConstructor
 import codeql.swift.elements.decl.ImportDeclConstructor
 import codeql.swift.elements.decl.InfixOperatorDeclConstructor
 import codeql.swift.elements.decl.InitializerConstructor
+import codeql.swift.elements.decl.MacroDeclConstructor
 import codeql.swift.elements.decl.MissingMemberDeclConstructor
 import codeql.swift.elements.decl.ModuleDeclConstructor
 import codeql.swift.elements.decl.NamedFunctionConstructor

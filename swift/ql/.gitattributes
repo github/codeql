@@ -10,6 +10,7 @@
 /lib/codeql/swift/elements/DiagnosticsConstructor.qll linguist-generated
 /lib/codeql/swift/elements/ErrorElement.qll linguist-generated
 /lib/codeql/swift/elements/KeyPathComponentConstructor.qll linguist-generated
+/lib/codeql/swift/elements/MacroRoleConstructor.qll linguist-generated
 /lib/codeql/swift/elements/OtherAvailabilitySpecConstructor.qll linguist-generated
 /lib/codeql/swift/elements/PlatformVersionAvailabilitySpecConstructor.qll linguist-generated
 /lib/codeql/swift/elements/UnspecifiedElementConstructor.qll linguist-generated
@@ -38,6 +39,8 @@
 /lib/codeql/swift/elements/decl/InfixOperatorDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/InfixOperatorDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/InitializerConstructor.qll linguist-generated
+/lib/codeql/swift/elements/decl/MacroDecl.qll linguist-generated
+/lib/codeql/swift/elements/decl/MacroDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/MissingMemberDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/ModuleDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/ModuleDeclConstructor.qll linguist-generated
@@ -400,6 +403,7 @@
 /lib/codeql/swift/generated/KeyPathComponent.qll linguist-generated
 /lib/codeql/swift/generated/Locatable.qll linguist-generated
 /lib/codeql/swift/generated/Location.qll linguist-generated
+/lib/codeql/swift/generated/MacroRole.qll linguist-generated
 /lib/codeql/swift/generated/OtherAvailabilitySpec.qll linguist-generated
 /lib/codeql/swift/generated/ParentChild.qll linguist-generated
 /lib/codeql/swift/generated/PlatformVersionAvailabilitySpec.qll linguist-generated
@@ -432,6 +436,7 @@
 /lib/codeql/swift/generated/decl/ImportDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/InfixOperatorDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/Initializer.qll linguist-generated
+/lib/codeql/swift/generated/decl/MacroDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/MissingMemberDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/ModuleDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/NamedFunction.qll linguist-generated
@@ -751,6 +756,14 @@
 /test/extractor-tests/generated/decl/ImportDecl/ImportDecl_getMember.ql linguist-generated
 /test/extractor-tests/generated/decl/InfixOperatorDecl/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/decl/Initializer/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/decl/MacroDecl/MacroDecl.ql linguist-generated
+/test/extractor-tests/generated/decl/MacroDecl/MacroDecl_getGenericTypeParam.ql linguist-generated
+/test/extractor-tests/generated/decl/MacroDecl/MacroDecl_getMember.ql linguist-generated
+/test/extractor-tests/generated/decl/MacroDecl/MacroDecl_getParameter.ql linguist-generated
+/test/extractor-tests/generated/decl/MacroDecl/MacroDecl_getRole.ql linguist-generated
+/test/extractor-tests/generated/decl/MacroDecl/MacroRole.ql linguist-generated
+/test/extractor-tests/generated/decl/MacroDecl/MacroRole_getConformance.ql linguist-generated
+/test/extractor-tests/generated/decl/MacroDecl/MacroRole_getName.ql linguist-generated
 /test/extractor-tests/generated/decl/ModuleDecl/ModuleDecl.ql linguist-generated
 /test/extractor-tests/generated/decl/ModuleDecl/ModuleDecl_getAnExportedModule.ql linguist-generated
 /test/extractor-tests/generated/decl/ModuleDecl/ModuleDecl_getAnImportedModule.ql linguist-generated

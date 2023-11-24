@@ -114,6 +114,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         description=prop.description,
         synth=bool(cls.synth) or prop.synth,
         type_is_hideable=lookup[prop.type].hideable if prop.type in lookup else False,
+        internal="ql_internal" in prop.pragmas,
     )
     if prop.is_single:
         args.update(
@@ -151,7 +152,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
 
 
 def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> ql.Class:
-    pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
+    pragmas = {k: True for k in cls.pragmas if k.startswith("qltest")}
     prev_child = ""
     properties = []
     for p in cls.properties:
@@ -167,6 +168,7 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> q
         dir=pathlib.Path(cls.group or ""),
         doc=cls.doc,
         hideable=cls.hideable,
+        internal="ql_internal" in cls.pragmas,
         **pragmas,
     )
 
@@ -313,13 +315,13 @@ def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str)
         accessors = []
     return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix,
                    doc=cls.doc, synth_accessors=accessors,
-                   ql_internal="ql_internal" in cls.pragmas)
+                   internal="ql_internal" in cls.pragmas)
 
 
 _stub_qldoc_header = "// the following QLdoc is generated: if you need to edit it, do it in the schema file\n"
 
 _class_qldoc_re = re.compile(
-    rf"(?P<qldoc>(?:{re.escape(_stub_qldoc_header)})?/\*\*.*?\*/\s*|^\s*)class\s+(?P<class>\w+)",
+    rf"(?P<qldoc>(?:{re.escape(_stub_qldoc_header)})?/\*\*.*?\*/\s*|^\s*)(?:class\s+(?P<class>\w+))?",
     re.MULTILINE | re.DOTALL)
 
 
@@ -397,7 +399,7 @@ def generate(opts, renderer):
                 _patch_class_qldoc(c.name, qldoc, stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
-        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),
+        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].internal]),
                         include_file)
 
         elements_module = get_import(include_file, opts.root_dir)
@@ -405,7 +407,7 @@ def generate(opts, renderer):
         renderer.render(
             ql.GetParentImplementation(
                 classes=list(classes.values()),
-                imports=[elements_module] + [i for name, i in imports.items() if classes[name].ql_internal],
+                imports=[elements_module] + [i for name, i in imports.items() if classes[name].internal],
             ),
             out / 'ParentChild.qll')
 

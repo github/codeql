@@ -26,6 +26,7 @@ module Generated {
      * Gets the kind of this pound diagnostic declaration.
      *
      * This is 1 for `#error` and 2 for `#warning`.
+     * INTERNAL: Do not use.
      */
     int getKind() {
       result = Synth::convertPoundDiagnosticDeclToRaw(this).(Raw::PoundDiagnosticDecl).getKind()
