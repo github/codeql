@@ -71,6 +71,9 @@ module Generated {
      * {{>ql_property_doc}}     *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
+    {{#internal}}
+     * INTERNAL: Do not use.
+    {{/internal}}
      */
     {{type}} get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{^synth}}
@@ -86,6 +89,9 @@ module Generated {
     {{#description}}
      * {{.}}
     {{/description}}
+    {{#internal}}
+     * INTERNAL: Do not use.
+    {{/internal}}
      */
     final {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       exists({{type}} immediate | immediate = this.get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}) and
@@ -99,6 +105,9 @@ module Generated {
     {{#description}}
      * {{.}}
     {{/description}}
+    {{#internal}}
+     * INTERNAL: Do not use.
+    {{/internal}}
      */
     {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{^synth}}
@@ -113,6 +122,9 @@ module Generated {
     {{#is_optional}}
     /**
      * Holds if `{{getter}}({{#is_repeated}}index{{/is_repeated}})` exists.
+    {{#internal}}
+     * INTERNAL: Do not use.
+    {{/internal}}
      */
     final predicate has{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
       exists(this.{{getter}}({{#is_repeated}}index{{/is_repeated}}))
@@ -122,6 +134,9 @@ module Generated {
 
     /**
      * Gets any of the {{doc_plural}}.
+    {{#internal}}
+     * INTERNAL: Do not use.
+    {{/internal}}
      */
     final {{type}} {{indefinite_getter}}() {
       result = this.{{getter}}(_)
@@ -130,6 +145,9 @@ module Generated {
 
     /**
      * Gets the number of {{doc_plural}}.
+    {{#internal}}
+     * INTERNAL: Do not use.
+    {{/internal}}
      */
     final int getNumberOf{{plural}}() {
       result = count(int i | exists(this.{{getter}}(i)))
@@ -139,6 +157,9 @@ module Generated {
     {{#is_unordered}}
     /**
      * Gets the number of {{doc_plural}}.
+    {{#internal}}
+     * INTERNAL: Do not use.
+    {{/internal}}
      */
     final int getNumberOf{{plural}}() {
       result = count(this.{{getter}}())
