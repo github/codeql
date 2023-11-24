@@ -676,11 +676,11 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       f instanceof InstanceFieldOrProperty
       or
       exists(
-        FlowSummaryImpl::Public::SummarizedCallable sc,
-        FlowSummaryImpl::Public::SummaryComponentStack input
+        FlowSummaryImpl::Private::SummarizedCallableImpl sc,
+        FlowSummaryImpl::Private::SummaryComponentStack input
       |
         sc.propagatesFlow(input, _, _) and
-        input.contains(FlowSummary::SummaryComponent::content(f.getContent()))
+        input.contains(FlowSummaryImpl::Private::SummaryComponent::content(f.getContent()))
       )
     )
   |
@@ -1393,11 +1393,11 @@ private module ArgumentNodes {
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNodeImpl {
-    private DataFlowCall call_;
+    private SummaryCall call_;
     private ArgumentPosition pos_;
 
     SummaryArgumentNode() {
-      FlowSummaryImpl::Private::summaryArgumentNode(call_, this.getSummaryNode(), pos_)
+      FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -1683,11 +1683,11 @@ private module OutNodes {
   }
 
   private class SummaryOutNode extends FlowSummaryNode, OutNode {
-    private DataFlowCall call;
+    private SummaryCall call;
     private ReturnKind kind_;
 
     SummaryOutNode() {
-      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), kind_)
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
     }
 
     override DataFlowCall getCall(ReturnKind kind) { result = call and kind = kind_ }
@@ -1700,7 +1700,7 @@ import OutNodes
 class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+  FlowSummary::SummarizedCallable getSummarizedCallable() {
     result = this.getSummaryNode().getSummarizedCallable()
   }
 
@@ -2424,7 +2424,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
-  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  exists(DataFlowCallable c, ParameterPosition pos |
+    parameterNode(p, c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
+  )
 }
 
 /** An approximated `Content`. */
