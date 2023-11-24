@@ -147,15 +147,15 @@ def test_class_with_children():
     assert cls.has_children is True
 
 
-@pytest.mark.parametrize("doc,ql_internal,expected",
+@pytest.mark.parametrize("doc,internal,expected",
                          [
                              (["foo", "bar"], False, True),
                              (["foo", "bar"], True, True),
                              ([], False, False),
                              ([], True, True),
                          ])
-def test_has_doc(doc, ql_internal, expected):
-    stub = ql.Stub("Class", base_import="foo", import_prefix="bar", doc=doc, ql_internal=ql_internal)
+def test_has_doc(doc, internal, expected):
+    stub = ql.Stub("Class", base_import="foo", import_prefix="bar", doc=doc, internal=internal)
     assert stub.has_qldoc is expected
 
 
