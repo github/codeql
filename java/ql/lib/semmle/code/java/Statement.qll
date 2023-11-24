@@ -502,17 +502,7 @@ class SwitchCase extends Stmt, @case {
    * This predicate is mutually exclusive with `getRuleExpression`.
    */
   Stmt getRuleStatement() {
-    result = this.getRuleStatementOrExpressionStatement() and not result instanceof ExprStmt
-  }
-
-  /**
-   * Gets the statement, including an expression statement, on the RHS of the arrow, if any.
-   *
-   * This means this could be an explicit `case e1 -> { s1; ... }` or an implicit
-   * `case e1 -> stmt;` rule.
-   */
-  Stmt getRuleStatementOrExpressionStatement() {
-    result.getParent() = this and result.getIndex() = -1
+    result.getParent() = this and result.getIndex() = -1 and not result instanceof ExprStmt
   }
 }
 
