@@ -190,10 +190,7 @@ private predicate isNativeCondition(Expr expr) {
  * depending on context.
  */
 private predicate isFlexibleCondition(Expr expr) {
-  (
-    expr instanceof ParenthesisExpr or
-    expr instanceof NotExpr
-  ) and
+  expr instanceof ParenthesisExpr and
   usedAsCondition(expr) and
   not isIRConstant(expr)
 }
@@ -216,11 +213,6 @@ private predicate usedAsCondition(Expr expr) {
     // The two-operand form of `ConditionalExpr` treats its condition as a value, since it needs to
     // be reused as a value if the condition is true.
     condExpr.getCondition().getFullyConverted() = expr and not condExpr.isTwoOperand()
-  )
-  or
-  exists(NotExpr notExpr |
-    notExpr.getOperand().getFullyConverted() = expr and
-    usedAsCondition(notExpr)
   )
   or
   exists(ParenthesisExpr paren |

@@ -30,11 +30,6 @@ class GuardCondition extends Expr {
     or
     // no binary operators in the IR
     this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
-    or
-    // the IR short-circuits if(!x)
-    // don't produce a guard condition for `y = !x` and other non-short-circuited cases
-    not exists(Instruction inst | this.getFullyConverted() = inst.getAst()) and
-    exists(IRGuardCondition ir | this.(NotExpr).getOperand() = ir.getAst())
   }
 
   /**
@@ -137,39 +132,6 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
     exists(boolean testIsTrue |
       this.comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
     )
-  }
-}
-
-/**
- * A `!` operator in the AST that guards one or more basic blocks, and does not have a corresponding
- * IR instruction.
- */
-private class GuardConditionFromShortCircuitNot extends GuardCondition, NotExpr {
-  GuardConditionFromShortCircuitNot() {
-    not exists(Instruction inst | this.getFullyConverted() = inst.getAst()) and
-    exists(IRGuardCondition ir | this.getOperand() = ir.getAst())
-  }
-
-  override predicate controls(BasicBlock controlled, boolean testIsTrue) {
-    this.getOperand().(GuardCondition).controls(controlled, testIsTrue.booleanNot())
-  }
-
-  override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
-    this.getOperand()
-        .(GuardCondition)
-        .comparesLt(left, right, k, isLessThan, testIsTrue.booleanNot())
-  }
-
-  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
-    this.getOperand().(GuardCondition).ensuresLt(left, right, k, block, isLessThan.booleanNot())
-  }
-
-  override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
-    this.getOperand().(GuardCondition).comparesEq(left, right, k, areEqual, testIsTrue.booleanNot())
-  }
-
-  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
-    this.getOperand().(GuardCondition).ensuresEq(left, right, k, block, areEqual.booleanNot())
   }
 }
 
