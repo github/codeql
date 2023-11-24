@@ -56,7 +56,6 @@
   "DataFlow Java/C#/Go/Ruby/Python/Swift Flow Summaries": [
     "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
     "go/ql/lib/semmle/go/dataflow/internal/FlowSummaryImpl.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/FlowSummaryImpl.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/FlowSummaryImpl.qll"
   ],
   "SsaReadPosition Java/C#": [
@@ -467,7 +466,6 @@
   "AccessPathSyntax": [
     "go/ql/lib/semmle/go/dataflow/internal/AccessPathSyntax.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/AccessPathSyntax.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/AccessPathSyntax.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/AccessPathSyntax.qll"
   ],
   "IncompleteUrlSubstringSanitization": [

@@ -624,7 +624,7 @@ module Flask {
             .getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -650,7 +650,7 @@ module Flask {
             .getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       // Technically it's `Iterator[str]`, but list will do :)
       output = "ReturnValue.ListElement" and
