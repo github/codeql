@@ -258,6 +258,8 @@ class Guard extends ExprParent {
 
 private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
   exists(BasicBlock caseblock |
+    // Pattern cases are handled as condition blocks
+    not sc instanceof PatternCase and
     caseblock.getFirstNode() = sc.getControlFlowNode() and
     caseblock.bbDominates(bb) and
     // Check we can't fall through from a previous block:
