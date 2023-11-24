@@ -3,6 +3,9 @@ func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
 }
 let _ = makeTuple("A", 2)
 
+
+/*
+The following shows an example of MaterizliePackExpr which only compiles on macOS 14
 struct Packs<each C> {
   func a() -> (repeat each C) {
     fatalError()
@@ -11,3 +14,4 @@ struct Packs<each C> {
     return (repeat each a())
   }
 }
+*/
