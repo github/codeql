@@ -291,6 +291,7 @@ A.java:
 #  105|                         -1: [VarAccess] field
 #  105|                         0: [RecordPatternExpr] Middle(...)
 #  105|                           0: [RecordPatternExpr] Inner(...)
+#  105|                             -1: [TypeAccess] String
 #  105|                             0: [LocalVariableDeclExpr] field
 #  106|                       1: [DefaultCase] default
 #  106|                         -1: [StringLiteral] "Doesn't match pattern Middle(Inner(...))"

@@ -50,7 +50,9 @@ predicate gapInChildren(Element e, int i) {
   // Pattern case statements legitimately have a TypeAccess (-2) and a pattern (0) but not a rule (-1)
   not (i = -1 and e instanceof PatternCase and not e.(PatternCase).isRule()) and
   // Instanceof with a record pattern is not expected to have a type access in position 1
-  not (i = 1 and e.(InstanceOfExpr).getPattern() instanceof RecordPatternExpr)
+  not (i = 1 and e.(InstanceOfExpr).getPattern() instanceof RecordPatternExpr) and
+  // RecordPatternExpr extracts type-accesses only for its LocalVariableDeclExpr children
+  not (i < 0 and e instanceof RecordPatternExpr)
 }
 
 predicate lateFirstChild(Element e, int i) {
