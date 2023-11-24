@@ -28,9 +28,9 @@ Displaying the CodeQL model editor
 #. Open your CodeQL workspace in VS Code, for example, the ``vscode-codeql-starter`` workspace.
    If you haven't updated the ``ql`` submodule for a while, update it from ``main`` to ensure that you have the queries used to gather data for the model editor.
 #. Open the CodeQL extension and select the CodeQL database that you want to model from the "Databases" section of the left side pane.
-#. In the left side panel, expand the "CodeQL method modeling" section and click **Start modeling** to display the model editor.
-#. The CodeQL model editor runs a series of telemetry queries to identify APIs in the code and opens in a new tab.
-#. When the queries are complete, the APIs that have been identified are shown in the editor.
+#. In the left side panel, expand the "CodeQL method modeling" section and click **Start modeling** to display the model editor. Alternatively, use the command palette to run the “CodeQL: Open Model Editor (Beta)” command
+#. The CodeQL model editor runs a series of telemetry queries to identify APIs in the code and the editor is displayed in a new tab.
+#. When the telemetry queries are complete, the APIs that have been identified are shown in the editor.
 
 Modeling the calls your codebase makes to external APIs
 -------------------------------------------------------
@@ -56,13 +56,13 @@ You typically use this approach when you are looking at a specific codebase wher
       :width: 800
       :alt: Screenshot of a file showing a place where your codebase calls the API is highlighted with a dark orange outline.
 
-#. The file containing the first call from your codebase to the API is opened and a "CodeQL methods usage" view opened (typically this is co-located with the "Problems" and "Terminal" views. The "CodeQL methods usage" view lists of all the calls from your code to the API, grouped by method. You can click through each use to decide how to a model the method.
+#. The file containing the first call from your codebase to the API is opened and a "CodeQL methods usage" view opened (typically this is co-located with the "Problems" and "Terminal" views. The "CodeQL methods usage" view lists of all the calls from your code to the API, grouped by method. You can click through each use to decide how to model your use of the method.
 
    .. image:: ../images/codeql-for-visual-studio-code/model-application-mode-view-list.png
       :width: 800
-      :alt: Screenshot of the "CodeQL methods usage" view. The currently displayed method call is highlighted blue.
+      :alt: Screenshot of the "CodeQL methods usage" view. The currently displayed call to an external method is highlighted blue.
 
-#. When you have determined how to model the call or method, define the **Model type** in either the main model editor tab, or in the "CodeQL method modeling" tab.
+#. When you have determined how to model your use of the method, define the **Model type** in either the main model editor tab, or in the "CodeQL method modeling" tab.
 #. The remaining fields are updated with available options:
 
    - **Source**: choose the **Output** element to model.
@@ -72,7 +72,7 @@ You typically use this approach when you are looking at a specific codebase wher
 #. Define the **Kind** of dataflow for the model.
 #. When you have finished modeling, display the main model editor and click **Save all** or **Save** (shown at the bottom right of each expanded list of methods). The percentage of methods modeled in the editor is updated.
 
-The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-pack>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL.
+The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-pack>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL. For more information, see "`Using CodeQL model packs with code scanning <#using-codeql-model-packs-with-code-scanning>`__".
 
 The models are stored in a series of YAML data extension files, one for each external API. For example:
 
@@ -112,7 +112,7 @@ You typically use this method when you want to model a framework or library that
 #. Define the **Kind** of dataflow for the model.
 #. When you have finished modeling, click **Save all** or **Save** (shown at the bottom right of each expanded list of calls). The percentage of calls modeled in the editor is updated.
 
-The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-pack>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL.
+The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-pack>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL. For more information, see "`Using CodeQL model packs with code scanning <#using-codeql-model-packs-with-code-scanning>`__".
 
 The models are stored in a series of YAML data extension files, one for each public method. For example:
 
@@ -134,10 +134,10 @@ Some methods behave differently according to how they are called. In this case, 
       :width: 800
       :alt: Screenshot of the "Dependency mode" view of the CodeQL model pack editor in Visual Studio Code showing one model for the ``com.alipay.sofa.jraft.option.BallotBoxOptions.getClosureQueue()`` method. The "+" button is outlined in dark orange. Click this button to create a second model for the method.
 
-Testing CodeQL model packs
---------------------------
+Testing CodeQL model packs in VS Code
+-------------------------------------
 
-You can test any CodeQL model packs you create in VS Code by toggling the "use model packs" setting on and off. This method works for both databases and for variant analysis repositories.
+You can test any CodeQL model packs you create in VS Code by turning the "use model packs" setting on and off. This method works for both databases and for variant analysis repositories.
 
 - To run queries on a CodeQL database with any model packs that are stored within the ``.github/codeql/extensions`` directory of the workspace, update your ``settings.json`` file with: ``"codeQL.runningQueries.useExtensionPacks": "all",``
 - To run queries on a CodeQL database without using model packs, update your ``settings.json`` file with: ``"codeQL.runningQueries.useExtensionPacks": "none",``
@@ -156,4 +156,4 @@ For more information, see the following articles on the GitHub Docs site:
 
 - Default setup of code scanning: `Extending CodeQL coverage with CodeQL model packs in default setup <https://docs.github.com/en/code-security/code-scanning/managing-your-code-scanning-configuration/editing-your-configuration-of-default-setup#extending-codeql-coverage-with-codeql-model-packs-in-default-setup>`__
 - Advanced setup of code scanning: `Extending CodeQL coverage with CodeQL model packs <https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-codeql-model-packs>`__
-- CodeQL CLI setup in external CI system: `Using model packs to analyze calls to custom dependencies <https://docs.github.com/en/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system#using-model-packs-to-analyze-calls-to-custom-dependencies>`__
+- CodeQL CLI setup in external CI system: `Using model packs to analyze calls to custom dependencies <https://docs.github.com/en/code-security/codeql-cli/getting-started-with-the-codeql-cli/customizing-analysis-with-codeql-packs#using-model-packs-to-analyze-calls-to-custom-dependencies>`__
