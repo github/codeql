@@ -89,7 +89,7 @@ predicate isWritableFileHandle(DataFlow::Node source, DataFlow::CallNode call) {
 /**
  * Holds if `os.File.Close` is called on `sink`.
  */
-predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode closeCall) {
+predicate isCloseSink(DataFlow::Node sink, DataFlow::MethodCallNode closeCall) {
   // find calls to the os.File.Close function
   closeCall = any(CloseFileFun f).getACall() and
   // that are unhandled
@@ -114,7 +114,7 @@ predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode closeCall) {
  * Holds if `os.File.Sync` is called on `sink` and the result of the call is neither
  * deferred nor discarded.
  */
-predicate isHandledSync(DataFlow::Node sink, DataFlow::CallNode syncCall) {
+predicate isHandledSync(DataFlow::Node sink, DataFlow::MethodCallNode syncCall) {
   // find a call of the `os.File.Sync` function
   syncCall = any(SyncFileFun f).getACall() and
   // match the sink with the object on which the method is called

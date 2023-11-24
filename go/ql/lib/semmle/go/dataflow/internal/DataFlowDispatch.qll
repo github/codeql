@@ -8,7 +8,7 @@ private import DataFlowPrivate
 private predicate isInterfaceCallReceiver(
   DataFlow::CallNode call, DataFlow::Node recv, InterfaceType tp, string m
 ) {
-  call.getReceiver() = recv and
+  call.(DataFlow::MethodCallNode).getReceiver() = recv and
   recv.getType().getUnderlyingType() = tp and
   m = call.getACalleeIncludingExternals().asFunction().getName()
 }

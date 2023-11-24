@@ -105,7 +105,7 @@ module PrivateUrlFlowsToAuthCodeUrlCallConfig implements DataFlow::ConfigSig {
     )
   }
 
-  additional predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
+  additional predicate isSinkCall(DataFlow::Node sink, DataFlow::MethodCallNode call) {
     exists(AuthCodeUrl m | call = m.getACall() | sink = call.getReceiver())
   }
 
