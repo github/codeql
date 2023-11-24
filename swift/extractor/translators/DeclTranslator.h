@@ -49,6 +49,8 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   codeql::PoundDiagnosticDecl translatePoundDiagnosticDecl(const swift::PoundDiagnosticDecl& decl);
   codeql::MissingMemberDecl translateMissingMemberDecl(const swift::MissingMemberDecl& decl);
   codeql::CapturedDecl translateCapturedValue(const swift::CapturedValue& capture);
+  codeql::MacroDecl translateMacroDecl(const swift::MacroDecl& decl);
+  codeql::MacroRole translateMacroRoleAttr(const swift::MacroRoleAttr& attr);
 
  private:
   void fillFunction(const swift::AbstractFunctionDecl& decl, codeql::Function& entry);
