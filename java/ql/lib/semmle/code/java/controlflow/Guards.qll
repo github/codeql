@@ -231,8 +231,7 @@ class Guard extends ExprParent {
       branch = true and
       bb2.getFirstNode() = sc.getControlFlowNode() and
       pred = sc.getControlFlowNode().getAPredecessor() and
-      isNonFallThroughPredecessor(sc, pred)
-       and
+      isNonFallThroughPredecessor(sc, pred) and
       bb1 = pred.getBasicBlock()
     )
     or
