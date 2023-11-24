@@ -175,16 +175,23 @@ class Guard extends ExprParent {
       bb2 = cb.getTestSuccessor(branch)
     )
     or
-    exists(SwitchCase sc |
+    exists(SwitchCase sc, ControlFlowNode pred |
       sc = this and
       // Pattern cases are handled as ConditionBlocks above.
       not sc instanceof PatternCase and
       branch = true and
       bb2.getFirstNode() = sc.getControlFlowNode() and
-      bb1 = sc.getControlFlowNode().getAPredecessor().getBasicBlock() and
+      pred = sc.getControlFlowNode().getAPredecessor() and
       // This is either the top of the switch block, or a preceding pattern case
-      // if one exists.
-      this.getBasicBlock() = bb1
+      // if one exists (in which case the edge might come from the case itself or its guard)
+      (
+        pred.(Expr).getParent*() = sc.getSelectorExpr()
+        or
+        pred.(Expr).getParent*() = getClosestPrecedingPatternCase(sc).getGuard()
+        or
+        pred = getClosestPrecedingPatternCase(sc)
+      ) and
+      bb1 = pred.getBasicBlock()
     )
     or
     preconditionBranchEdge(this, bb1, bb2, branch)

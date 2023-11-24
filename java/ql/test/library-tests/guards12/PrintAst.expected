@@ -6,6 +6,8 @@ Test.java:
 #-----|       4: (Parameters)
 #    2|         0: [Parameter] s
 #    2|           0: [TypeAccess] String
+#    2|         1: [Parameter] unknown
+#    2|           0: [TypeAccess] boolean
 #    2|       5: [BlockStmt] { ... }
 #    3|         0: [LocalVariableDeclStmt] var ...;
 #    3|           0: [TypeAccess] int
@@ -58,3 +60,25 @@ Test.java:
 #   18|             0: [StringLiteral] "e"
 #   19|           2: [DefaultCase] default
 #   19|             -1: [BlockStmt] { ... }
+#   21|         4: [SwitchStmt] switch (...)
+#   21|           -1: [ConditionalExpr] ...?...:...
+#   21|             0: [VarAccess] unknown
+#   21|             1: [VarAccess] s
+#   21|             2: [MethodCall] toLowerCase(...)
+#   21|               -1: [VarAccess] s
+#   22|           0: [ConstCase] case ...
+#   22|             -1: [BlockStmt] { ... }
+#   22|             0: [StringLiteral] "f"
+#   23|           1: [PatternCase] case <Pattern>
+#   23|             -3: [EQExpr] ... == ...
+#   23|               0: [VarAccess] len
+#   23|               1: [IntegerLiteral] 4
+#   23|             -1: [BlockStmt] { ... }
+#-----|             0: (Single Local Variable Declaration)
+#   23|               0: [TypeAccess] String
+#   23|               1: [LocalVariableDeclExpr] s2
+#   24|           2: [ConstCase] case ...
+#   24|             -1: [BlockStmt] { ... }
+#   24|             0: [StringLiteral] "g"
+#   25|           3: [DefaultCase] default
+#   25|             -1: [BlockStmt] { ... }
