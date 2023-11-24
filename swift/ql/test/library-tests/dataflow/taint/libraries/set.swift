@@ -38,7 +38,7 @@ func testSet(ix: Int) {
   }
   taintedSet.forEach {
     elem in
-    sink(arg: elem) // $ MISSING: tainted=
+    sink(arg: elem) // $ tainted=t1
   }
 
   var set1 = Set<Int>()
