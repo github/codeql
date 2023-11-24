@@ -32,6 +32,10 @@ Displaying the CodeQL model editor
 #. The CodeQL model editor runs a series of telemetry queries to identify APIs in the code and the editor is displayed in a new tab.
 #. When the telemetry queries are complete, the APIs that have been identified are shown in the editor.
 
+.. tip::
+
+   The "CodeQL method modeling" section is a view that you can move from the primary sidebar to the secondary sidebar, when you want more space while you are modeling calls or methods. If you close the view, you can reopen it from the "Open Views" option in the **View** menu.
+
 Modeling the calls your codebase makes to external APIs
 -------------------------------------------------------
 
@@ -56,13 +60,13 @@ You typically use this approach when you are looking at a specific codebase wher
       :width: 800
       :alt: Screenshot of a file showing a place where your codebase calls the API is highlighted with a dark orange outline.
 
-#. The file containing the first call from your codebase to the API is opened and a "CodeQL methods usage" view opened (typically this is co-located with the "Problems" and "Terminal" views. The "CodeQL methods usage" view lists of all the calls from your code to the API, grouped by method. You can click through each use to decide how to model your use of the method.
+#. The file containing the first call from your codebase to the API is opened and a "CodeQL methods usage" view is displayed in the VS Code Panel (where the "Problems" and "Terminal" views are usually displayed). The "CodeQL methods usage" view lists of all the calls from your code to the API, grouped by method. You can click through each use to decide how to model your use of the method.
 
    .. image:: ../images/codeql-for-visual-studio-code/model-application-mode-view-list.png
       :width: 800
       :alt: Screenshot of the "CodeQL methods usage" view. The currently displayed call to an external method is highlighted blue.
 
-#. When you have determined how to model your use of the method, define the **Model type** in either the main model editor tab, or in the "CodeQL method modeling" tab.
+#. When you have determined how to model your use of the method, you can define the **Model type** in the "CodeQL method modeling" tab of the CodeQL extension and this change is automatically reflected in the main model editor.
 #. The remaining fields are updated with available options:
 
    - **Source**: choose the **Output** element to model.
