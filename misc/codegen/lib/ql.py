@@ -82,10 +82,6 @@ class Property:
         return self.prev_child is not None
 
     @property
-    def has_description(self) -> bool:
-        return bool(self.description)
-
-    @property
     def is_indexed(self) -> bool:
         return self.is_repeated and not self.is_unordered
 

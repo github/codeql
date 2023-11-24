@@ -83,11 +83,9 @@ module Generated {
 
     /**
      * {{>ql_property_doc}}     *
-    {{#has_description}}
     {{#description}}
      * {{.}}
     {{/description}}
-    {{/has_description}}
      */
     final {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       exists({{type}} immediate | immediate = this.get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}) and
@@ -98,11 +96,9 @@ module Generated {
     {{^type_is_hideable}}
     /**
      * {{>ql_property_doc}}     *
-    {{#has_description}}
     {{#description}}
      * {{.}}
     {{/description}}
-    {{/has_description}}
      */
     {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{^synth}}

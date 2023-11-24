@@ -18,11 +18,9 @@ module Raw {
     {{^synth}}
     /**
      * {{>ql_property_doc}}     *
-    {{#has_description}}
     {{#description}}
      * {{.}}
     {{/description}}
-    {{/has_description}}
      */
     {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})

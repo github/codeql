@@ -159,16 +159,6 @@ def test_has_doc(doc, internal, expected):
     assert stub.has_qldoc is expected
 
 
-def test_property_with_description():
-    prop = ql.Property("X", "int", description=["foo", "bar"])
-    assert prop.has_description is True
-
-
-def test_class_without_description():
-    prop = ql.Property("X", "int")
-    assert prop.has_description is False
-
-
 def test_synth_accessor_has_first_constructor_param_marked():
     params = ["a", "b", "c"]
     x = ql.SynthUnderlyingAccessor("foo", "bar", params)
