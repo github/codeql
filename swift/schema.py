@@ -1367,8 +1367,8 @@ class MacroRole(AstNode):
     """
     The role of a macro, for example #freestanding(declaration) or @attached(member).
     """
-    kind: int | doc("kind of this macro role (declaration, expression, member, etc.)")
-    macro_syntax: int | doc("#freestanding or @attached")
+    kind: int | doc("kind of this macro role (declaration, expression, member, etc.)") | ql.internal
+    macro_syntax: int | doc("#freestanding or @attached") | ql.internal
     conformances: list[TypeExpr] | doc("conformances of this macro role")
     names: list[string] | doc("names of this macro role")
 

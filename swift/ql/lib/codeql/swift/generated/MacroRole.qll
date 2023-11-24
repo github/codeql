@@ -24,11 +24,15 @@ module Generated {
 
     /**
      * Gets the kind of this macro role (declaration, expression, member, etc.).
+     *
+     * INTERNAL: Do not use.
      */
     int getKind() { result = Synth::convertMacroRoleToRaw(this).(Raw::MacroRole).getKind() }
 
     /**
      * Gets the #freestanding or @attached.
+     *
+     * INTERNAL: Do not use.
      */
     int getMacroSyntax() {
       result = Synth::convertMacroRoleToRaw(this).(Raw::MacroRole).getMacroSyntax()
