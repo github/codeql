@@ -143,7 +143,7 @@ class PatternBindingDecl(Decl):
 
 class PoundDiagnosticDecl(Decl):
     """ A diagnostic directive, which is either `#error` or `#warning`."""
-    kind: int | desc("""This is 1 for `#error` and 2 for `#warning`.""")
+    kind: int | desc("""This is 1 for `#error` and 2 for `#warning`.""") | ql.internal
     message: "StringLiteralExpr" | child
 
 class PrecedenceGroupDecl(Decl):
