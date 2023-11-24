@@ -113,7 +113,6 @@ locations(
 | @decl
 | @expr
 | @key_path_component
-| @macro_role
 | @pattern
 | @stmt
 | @stmt_condition
@@ -200,26 +199,6 @@ key_path_component_decl_refs(
   int decl_ref: @value_decl_or_none ref
 );
 
-macro_roles(
-  unique int id: @macro_role,
-  int kind: int ref,
-  int macro_syntax: int ref
-);
-
-#keyset[id, index]
-macro_role_conformances(
-  int id: @macro_role ref,
-  int index: int ref,
-  int conformance: @type_expr_or_none ref
-);
-
-#keyset[id, index]
-macro_role_names(
-  int id: @macro_role ref,
-  int index: int ref,
-  string name: string ref
-);
-
 unspecified_elements(
   unique int id: @unspecified_element,
   string property: string ref,
@@ -287,7 +266,6 @@ decl_members(  //dir=decl
   @extension_decl
 | @function
 | @generic_type_decl
-| @macro_decl
 | @subscript_decl
 ;
 
@@ -423,7 +401,6 @@ top_level_code_decls(  //dir=decl
   @abstract_storage_decl
 | @enum_element_decl
 | @function
-| @macro_decl
 | @type_decl
 ;
 
@@ -471,25 +448,6 @@ infix_operator_decls(  //dir=decl
 infix_operator_decl_precedence_groups(  //dir=decl
   int id: @infix_operator_decl ref,
   int precedence_group: @precedence_group_decl_or_none ref
-);
-
-macro_decls(  //dir=decl
-  unique int id: @macro_decl,
-  string name: string ref
-);
-
-#keyset[id, index]
-macro_decl_parameters(  //dir=decl
-  int id: @macro_decl ref,
-  int index: int ref,
-  int parameter: @param_decl_or_none ref
-);
-
-#keyset[id, index]
-macro_decl_roles(  //dir=decl
-  int id: @macro_decl ref,
-  int index: int ref,
-  int role: @macro_role_or_none ref
 );
 
 postfix_operator_decls(  //dir=decl
@@ -2656,11 +2614,6 @@ variadic_sequence_types(  //dir=type
 | @unspecified_element
 ;
 
-@macro_role_or_none =
-  @macro_role
-| @unspecified_element
-;
-
 @module_decl_or_none =
   @module_decl
 | @unspecified_element
@@ -2738,11 +2691,6 @@ variadic_sequence_types(  //dir=type
 
 @type_alias_decl_or_none =
   @type_alias_decl
-| @unspecified_element
-;
-
-@type_expr_or_none =
-  @type_expr
 | @unspecified_element
 ;
 
