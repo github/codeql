@@ -62,9 +62,7 @@ predicate hardCodedAddressInCondition(Expr subexpression, Expr condition) {
   condition = any(IfStmt ifStmt).getCondition()
 }
 
-predicate isSource(FS::FlowSource source, string sourceType) {
-  source.getSourceType() = sourceType and not source instanceof DataFlow::ExprNode
-}
+predicate isSource(FS::FlowSource source, string sourceType) { source.getSourceType() = sourceType }
 
 predicate isSink(DataFlow::Node sink, Expr condition) {
   hardCodedAddressInCondition([sink.asExpr(), sink.asIndirectExpr()], condition)
