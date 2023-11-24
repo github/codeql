@@ -24,7 +24,11 @@ newtype JavaRelatedLocationType =
   ClassDoc()
 
 newtype TFrameworkModeEndpoint =
-  TExplicitParameter(Parameter p) { not p.getType() instanceof PrimitiveType } or
+  TExplicitParameter(Parameter p) {
+    not p.getType() instanceof PrimitiveType and
+    not p.getType() instanceof BoxedType and
+    not p.getType() instanceof NumberType
+  } or
   TQualifier(Callable c) { not c instanceof Constructor } or
   TReturnValue(Callable c) {
     c instanceof Constructor
