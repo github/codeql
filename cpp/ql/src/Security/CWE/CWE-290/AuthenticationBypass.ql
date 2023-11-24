@@ -48,12 +48,6 @@ predicate useOfHardCodedAddressOrIP(Expr use) {
   )
 }
 
-Expr getExprWithoutNot(Expr expr) {
-  result = expr and not expr instanceof NotExpr
-  or
-  result = getExprWithoutNot(expr.(NotExpr).getOperand()) and expr instanceof NotExpr
-}
-
 /**
  * Find `IfStmt`s that have a hard-coded IP or web address in
  * their condition. If the condition also depends on an
@@ -65,7 +59,7 @@ predicate hardCodedAddressInCondition(Expr subexpression, Expr condition) {
   // One of the sub-expressions of the condition is a hard-coded
   // IP or web-address.
   exists(Expr use | use = condition.getAChild+() | useOfHardCodedAddressOrIP(use)) and
-  condition = getExprWithoutNot(any(IfStmt ifStmt).getCondition())
+  condition = any(IfStmt ifStmt).getCondition()
 }
 
 predicate isSource(FS::FlowSource source, string sourceType) {
