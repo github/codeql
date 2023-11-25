@@ -17,19 +17,19 @@ module Fasthttp {
   string packagePath() { result = package(v1modulePath(), "") }
 
   /**
-   * Provide models for sanitizer/Dangerous Functions of fasthttp
+   * Provide models for sanitizer/Dangerous Functions of fasthttp.
    */
   module Functions {
     /**
-     * A function that doesn't sanitize user-provided file paths
+     * A function that doesn't sanitize user-provided file paths.
      */
     class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
         exists(Function f |
           f.hasQualifiedName(packagePath(),
             [
-              "ServeFile", "ServeFileUncompressed", "ServeFileBytes", "ServeFileBytesUncompressed",
-              "SaveMultipartFile"
+              "SaveMultipartFile", "ServeFile", "ServeFileBytes", "ServeFileBytesUncompressed",
+              "ServeFileUncompressed"
             ]) and
           this = f.getACall()
         )
@@ -39,7 +39,7 @@ module Fasthttp {
     }
 
     /**
-     * A function that can be used as a sanitizer for XSS
+     * A function that can be used as a sanitizer for XSS.
      */
     class HtmlQuoteSanitizer extends SharedXss::Sanitizer {
       HtmlQuoteSanitizer() {
@@ -75,13 +75,13 @@ module Fasthttp {
 
     /**
      * A function that create initial connection to a TCP address.
-     * Following Functions only accept TCP address + Port in their first argument
+     * Following Functions only accept TCP address + Port in their first argument.
      */
     class RequestForgerySinkDial extends RequestForgery::Sink {
       RequestForgerySinkDial() {
         exists(Function f |
           f.hasQualifiedName(packagePath(),
-            ["DialDualStack", "Dial", "DialTimeout", "DialDualStackTimeout"]) and
+            ["Dial", "DialDualStack", "DialDualStackTimeout", "DialTimeout"]) and
           this = f.getACall().getArgument(0)
         )
       }
@@ -93,57 +93,57 @@ module Fasthttp {
   }
 
   /**
-   * Provide modeling for fasthttp.URI Type
+   * Provide modeling for fasthttp.URI Type.
    */
   module URI {
     /**
-     * The methods as Remote user controllable source which are part of the incoming URL
+     * The methods as Remote user controllable source which are part of the incoming URL.
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "URI",
-            ["Path", "PathOriginal", "LastPathSegment", "FullURI", "QueryString", "String"]) and
-          this = m.getACall()
+            ["FullURI", "LastPathSegment", "Path", "PathOriginal", "QueryString", "String"]) and
+          this = m.getACall().getResult(0)
         )
       }
     }
   }
 
   /**
-   * Provide modeling for fasthttp.Args Type
+   * Provide modeling for fasthttp.Args Type.
    */
   module Args {
     /**
      * The methods as Remote user controllable source which are part of the incoming URL Parameters.
      *
-     * When support for lambdas has been implemented we should model "VisitAll"
+     * When support for lambdas has been implemented we should model "VisitAll".
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Args",
             ["Peek", "PeekBytes", "PeekMulti", "PeekMultiBytes", "QueryString", "String"]) and
-          this = m.getACall()
+          this = m.getACall().getResult(0)
         )
       }
     }
   }
 
   /**
-   * Provide modeling for fasthttp.TCPDialer Type
+   * Provide modeling for fasthttp.TCPDialer Type.
    */
   module TcpDialer {
     /**
      * A method that create initial connection to a TCP address.
      * Provide Methods which can be used as dangerous RequestForgery Sinks.
-     * Following Methods only accept TCP address + Port in their first argument
+     * Following Methods only accept TCP address + Port in their first argument.
      */
     class RequestForgerySinkDial extends RequestForgery::Sink {
       RequestForgerySinkDial() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "TCPDialer",
-            ["Dial", "DialTimeout", "DialDualStack", "DialDualStackTimeout"]) and
+            ["Dial", "DialDualStack", "DialDualStackTimeout", "DialTimeout"]) and
           this = m.getACall().getArgument(0)
         )
       }
@@ -155,7 +155,7 @@ module Fasthttp {
   }
 
   /**
-   * Provide modeling for fasthttp.Client Type
+   * Provide modeling for fasthttp.Client Type.
    */
   module Client {
     /**
@@ -179,7 +179,7 @@ module Fasthttp {
   }
 
   /**
-   * Provide modeling for fasthttp.HostClient Type
+   * Provide modeling for fasthttp.HostClient Type.
    */
   module HostClient {
     /**
@@ -204,11 +204,12 @@ module Fasthttp {
   }
 
   /**
-   * Provide modeling for fasthttp.Response Type
+   * Provide modeling for fasthttp.Response Type.
    */
   module Response {
     /**
-     * A Method That send files from its input and it does not check input path against path traversal attacks, so it is a dangerous method
+     * A Method That send files from its input.
+     * It does not check the input path against path traversal attacks, So it is a dangerous method.
      */
     class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
@@ -230,8 +231,8 @@ module Fasthttp {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Response",
             [
-              "AppendBody", "AppendBodyString", "SetBody", "SetBodyString", "SetBodyRaw",
-              "SetBodyStream"
+              "AppendBody", "AppendBodyString", "SetBody", "SetBodyRaw", "SetBodyStream",
+              "SetBodyString"
             ]) and
           this = m.getACall().getArgument(0)
         )
@@ -240,21 +241,21 @@ module Fasthttp {
   }
 
   /**
-   * Provide modeling for fasthttp.Request Type
+   * Provide modeling for fasthttp.Request Type.
    */
   module Request {
     /**
-     * The methods as Remote user controllable source which can be many part of request
+     * The methods as Remote user controllable source which can be many part of request.
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Request",
             [
-              "Host", "RequestURI", "Body", "BodyGunzip", "BodyInflate", "BodyUnbrotli",
-              "BodyStream", "BodyUncompressed"
+              "Body", "BodyGunzip", "BodyInflate", "BodyStream", "BodyUnbrotli", "BodyUncompressed",
+              "Host", "RequestURI"
             ]) and
-          this = m.getACall()
+          this = m.getACall().getResult(0)
         )
       }
     }
@@ -269,7 +270,7 @@ module Fasthttp {
       RequestForgerySink() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "Request",
-            ["SetRequestURI", "SetRequestURIBytes", "SetURI", "SetHost", "SetHostBytes"]) and
+            ["SetHost", "SetHostBytes", "SetRequestURI", "SetRequestURIBytes", "SetURI"]) and
           this = m.getACall().getArgument(0)
         )
       }
@@ -281,16 +282,16 @@ module Fasthttp {
   }
 
   /**
-   * Provide modeling for fasthttp.RequestCtx Type
+   * Provide modeling for fasthttp.RequestCtx Type.
    */
   module RequestCtx {
     /**
-     * The Methods that don't sanitize user provided file paths
+     * The Methods that don't sanitize user provided file paths.
      */
     class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
         exists(Method mcn |
-          mcn.hasQualifiedName(packagePath(), "RequestCtx", ["SendFileBytes", "SendFile"]) and
+          mcn.hasQualifiedName(packagePath(), "RequestCtx", ["SendFile", "SendFileBytes"]) and
           this = mcn.getACall()
         )
       }
@@ -299,7 +300,7 @@ module Fasthttp {
     }
 
     /**
-     * The Methods that can be dangerous if they take user controlled URL as their first argument
+     * The Methods that can be dangerous if they take user controlled URL as their first argument.
      */
     class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
       Redirect() {
@@ -317,17 +318,17 @@ module Fasthttp {
     /**
      * The methods as Remote user controllable source which are generally related to HTTP request.
      *
-     * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer"
+     * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestCtx",
             [
-              "Path", "Referer", "PostBody", "RequestBodyStream", "RequestURI", "UserAgent", "Host",
-              "String"
+              "Host", "Path", "PostBody", "Referer", "RequestBodyStream", "RequestURI", "String",
+              "UserAgent"
             ]) and
-          this = m.getACall()
+          this = m.getACall().getResult(0)
         )
       }
     }
@@ -347,24 +348,25 @@ module Fasthttp {
   }
 
   /**
-   * Provide Methods of fasthttp.RequestHeader which mostly used as remote user controlled sources
+   * Provide Methods of fasthttp.RequestHeader which mostly used as remote user controlled sources.
    */
   module RequestHeader {
     /**
      * The methods as Remote user controllable source which are mostly related to HTTP Request Headers.
      *
-     * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer"
+     * When support for lambdas has been implemented we should model "VisitAll", "VisitAllCookie", "VisitAllInOrder", "VisitAllTrailer".
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
         exists(Method m |
           m.hasQualifiedName(packagePath(), "RequestHeader",
             [
-              "Header", "TrailerHeader", "RequestURI", "Host", "UserAgent", "ContentEncoding",
-              "ContentType", "Cookie", "CookieBytes", "MultipartFormBoundary", "Peek", "PeekAll",
-              "PeekBytes", "PeekKeys", "PeekTrailerKeys", "Referer", "RawHeaders", "String"
+              "ContentEncoding", "ContentType", "Cookie", "CookieBytes", "Header", "Host",
+              "MultipartFormBoundary", "Peek", "PeekAll", "PeekBytes", "PeekKeys",
+              "PeekTrailerKeys", "RawHeaders", "Referer", "RequestURI", "String", "TrailerHeader",
+              "UserAgent"
             ]) and
-          this = m.getACall()
+          this = m.getACall().getResult(0)
         )
       }
     }

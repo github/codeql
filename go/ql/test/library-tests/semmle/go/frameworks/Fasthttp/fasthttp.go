@@ -40,9 +40,12 @@ func fasthttpClient() {
 	uri4 := fasthttp.AcquireURI()
 	uri4.UpdateBytes(source().([]byte))
 	sink(uri4) // $ hasTaintFlow="uri4"
-	uri5 := fasthttp.AcquireURI()
-	uri5.Parse(source().([]byte), source().([]byte))
-	sink(uri5) // $ hasTaintFlow="uri5"
+    uri5 := fasthttp.AcquireURI()  
+    uri5.Parse(source().([]byte), nil)  
+    sink(uri5) // $ hasTaintFlow="uri5"  
+    uri6 := fasthttp.AcquireURI()  
+    uri6.Parse(nil, source().([]byte))  
+    sink(uri6) // $ hasTaintFlow="uri6" 
 
 	resByte := make([]byte, 1000)
 	userInput = "http://127.0.0.1:8909"
