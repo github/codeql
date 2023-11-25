@@ -1,5 +1,2 @@
 testFailures
-| fasthttp.go:165:41:165:86 | comment | Missing result:UntrustedFlowSource="call to BodyInflate" |
-| fasthttp.go:166:41:166:87 | comment | Missing result:UntrustedFlowSource="call to BodyUnbrotli" |
-| fasthttp.go:168:41:168:91 | comment | Missing result:UntrustedFlowSource="call to BodyUncompressed" |
 failures

@@ -4,6 +4,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"net"
 	"time"
 
@@ -40,12 +41,12 @@ func fasthttpClient() {
 	uri4 := fasthttp.AcquireURI()
 	uri4.UpdateBytes(source().([]byte))
 	sink(uri4) // $ hasTaintFlow="uri4"
-    uri5 := fasthttp.AcquireURI()  
-    uri5.Parse(source().([]byte), nil)  
-    sink(uri5) // $ hasTaintFlow="uri5"  
-    uri6 := fasthttp.AcquireURI()  
-    uri6.Parse(nil, source().([]byte))  
-    sink(uri6) // $ hasTaintFlow="uri6" 
+	uri5 := fasthttp.AcquireURI()
+	uri5.Parse(source().([]byte), nil)
+	sink(uri5) // $ hasTaintFlow="uri5"
+	uri6 := fasthttp.AcquireURI()
+	uri6.Parse(nil, source().([]byte))
+	sink(uri6) // $ hasTaintFlow="uri6"
 
 	resByte := make([]byte, 1000)
 	userInput = "http://127.0.0.1:8909"
@@ -144,8 +145,6 @@ func fasthttpServer() {
 		requestCtx.URI().QueryArgs().QueryString()                  // $ UntrustedFlowSource="call to QueryString"
 		requestCtx.URI().QueryArgs().String()                       // $ UntrustedFlowSource="call to String"
 		requestCtx.String()                                         // $ UntrustedFlowSource="call to String"
-		// not sure what is the best way to write query for following
-		//requestCtx.URI().QueryArgs().VisitAll(type func(,))
 
 		requestCtx.Path() // $ UntrustedFlowSource="call to Path"
 		// multipart.Form is already implemented
@@ -158,29 +157,28 @@ func fasthttpServer() {
 		requestCtx.UserAgent()         // $ UntrustedFlowSource="call to UserAgent"
 		requestCtx.Host()              // $ UntrustedFlowSource="call to Host"
 
-		requestCtx.Request.Host()             // $ UntrustedFlowSource="call to Host"
-		requestCtx.Request.Body()             // $ UntrustedFlowSource="call to Body"
-		requestCtx.Request.RequestURI()       // $ UntrustedFlowSource="call to RequestURI"
-		requestCtx.Request.BodyGunzip()       // $ UntrustedFlowSource="call to BodyGunzip"
-		requestCtx.Request.BodyInflate()      // $ UntrustedFlowSource="call to BodyInflate"
-		requestCtx.Request.BodyUnbrotli()     // $ UntrustedFlowSource="call to BodyUnbrotli"
-		requestCtx.Request.BodyStream()       // $ UntrustedFlowSource="call to BodyStream"
-		requestCtx.Request.BodyUncompressed() // $ UntrustedFlowSource="call to BodyUncompressed"
+		requestCtx.Request.Host()                         // $ UntrustedFlowSource="call to Host"
+		requestCtx.Request.Body()                         // $ UntrustedFlowSource="call to Body"
+		requestCtx.Request.RequestURI()                   // $ UntrustedFlowSource="call to RequestURI"
+		body1, _ := requestCtx.Request.BodyGunzip()       //$ UntrustedFlowSource="... := ...[0]"
+		body2, _ := requestCtx.Request.BodyInflate()      //$ UntrustedFlowSource="... := ...[0]"
+		body3, _ := requestCtx.Request.BodyUnbrotli()     //$ UntrustedFlowSource="... := ...[0]"
+		body4, _ := requestCtx.Request.BodyUncompressed() //$ UntrustedFlowSource="... := ...[0]"
+		requestCtx.Request.BodyStream()                   // $ UntrustedFlowSource="call to BodyStream"
 		requestCtx.Request.ReadBody(dstReader, 100, 1000)
 		requestCtx.Request.ReadLimitBody(dstReader, 100)
 		requestCtx.Request.ContinueReadBodyStream(dstReader, 100, true)
 		requestCtx.Request.ContinueReadBody(dstReader, 100)
-		// not sure what is the best way to write query for following
-		//requestCtx.Request.Header.VisitAllCookie()
+		fmt.Println(body1, body2, body3, body4)
 
 		// Response methods
 		// Xss Sinks Related method
 		userInput := "user Controlled input"
 		userInputByte := []byte("user Controlled input")
-		requestCtx.Response.AppendBody(userInputByte)   // $ XssSink=userInputByte
-		requestCtx.Response.AppendBodyString(userInput) // $ XssSink=userInput
-		rspWriter := requestCtx.Response.BodyWriter()   // IDK how to handle this that returns a `io.Writer`
-		rspWriter.Write(userInputByte)
+		requestCtx.Response.AppendBody(userInputByte)     // $ XssSink=userInputByte
+		requestCtx.Response.AppendBodyString(userInput)   // $ XssSink=userInput
+		rspWriter := requestCtx.Response.BodyWriter()     // IDK how to handle this that returns a `io.Writer`
+		rspWriter.Write(userInputByte)                    // $ XssSink=userInputByte
 		requestCtx.Response.SetBody(userInputByte)        // $ XssSink=userInputByte
 		requestCtx.Response.SetBodyString(userInput)      // $ XssSink=userInput
 		requestCtx.Response.SetBodyRaw(userInputByte)     // $ XssSink=userInputByte

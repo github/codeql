@@ -236,8 +236,24 @@ module Fasthttp {
             ]) and
           this = m.getACall().getArgument(0)
         )
+        or
+        exists(Method write, DataFlow::CallNode writeCall |
+          write.hasQualifiedName("io", "Writer", "Write") and
+          writeCall = write.getACall() and
+          ResponseBodyWriterFlow::flowsTo(writeCall.getReceiver()) and
+          this = writeCall.getArgument(0)
+        )
       }
     }
+
+    private predicate responseBodyWriterResult(DataFlow::Node src) {
+      exists(Method responseBodyWriter |
+        responseBodyWriter.hasQualifiedName(packagePath(), "Response", "BodyWriter") and
+        src = responseBodyWriter.getACall().getResult(0)
+      )
+    }
+
+    private module ResponseBodyWriterFlow = DataFlow::SimpleGlobal<responseBodyWriterResult/1>;
   }
 
   /**
