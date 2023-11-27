@@ -478,9 +478,9 @@ private module ControlFlowGraphImpl {
       or
       result instanceof NullDefaultCase
       or
-      not exists(getPatternCase(switch, _))
+      not exists(getFirstPatternCase(switch))
       or
-      result.getIndex() <= getPatternCase(switch, 0).getIndex()
+      result.getIndex() <= getFirstPatternCase(switch).getIndex()
     )
   }
 
