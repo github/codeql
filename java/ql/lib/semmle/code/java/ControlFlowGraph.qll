@@ -440,7 +440,9 @@ private module ControlFlowGraphImpl {
   // Join order engineering -- first determine the switch block and the case indices required, then retrieve them.
   bindingset[switch, i]
   pragma[inline_late]
-  private predicate isNthCaseOf(SwitchBlock switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
+  private predicate isNthCaseOf(SwitchBlock switch, SwitchCase c, int i) {
+    c.isNthCaseOf(switch, i)
+  }
 
   /**
    * Gets a `SwitchCase` that may be `pred`'s direct successor, where `pred` is declared in block `switch`.

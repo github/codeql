@@ -13,9 +13,7 @@ private PatternCase getPatternCase(SwitchBlock switch, int i) {
 /**
  * Gets the first `PatternCase` defined on `switch`, if one exists.
  */
-PatternCase getFirstPatternCase(SwitchBlock switch) {
-  result = getPatternCase(switch, 0)
-}
+PatternCase getFirstPatternCase(SwitchBlock switch) { result = getPatternCase(switch, 0) }
 
 /**
  * Gets the PatternCase after pc, if one exists.
