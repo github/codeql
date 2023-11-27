@@ -113,6 +113,16 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   predicate isDeleted() { function_deleted(underlyingElement(this)) }
 
   /**
+   * Holds if this function has a prototyped interface.
+   *
+   * Functions generally have a prototyped interface, unless they are
+   * K&R-style functions either without any forward function declaration,
+   * or with all the forward declarations omitting the parameters of the
+   * function.
+   */
+  predicate isPrototyped() { function_prototyped(underlyingElement(this)) }
+
+  /**
    * Holds if this function is explicitly defaulted with the `= default`
    * specifier.
    */

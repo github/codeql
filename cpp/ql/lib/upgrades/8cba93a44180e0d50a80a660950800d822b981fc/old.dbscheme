@@ -405,8 +405,6 @@ function_deleted(unique int id: @function ref);
 
 function_defaulted(unique int id: @function ref);
 
-function_prototyped(unique int id: @function ref)
-
 member_function_this_type(
     unique int id: @function ref,
     int this_type: @type ref
