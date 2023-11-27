@@ -43,29 +43,29 @@ class UIScene {
 
 // --- tests ---
 
-func source() -> Any { return "" }
+func source(_ label: String) -> Any { return "" }
 func sink(_: Any) {}
 
 func testUIOpenURLContext() {
     let safe = UIOpenURLContext()
-    let tainted = source() as! UIOpenURLContext
+    let tainted = source("OpenURLContext") as! UIOpenURLContext
 
     sink(safe.url)
     sink(safe.options)
-    sink(tainted.url) // $ tainted=51
+    sink(tainted.url) // $ tainted=OpenURLContext
     sink(tainted.options)
 }
 
 func testConnectionOptions() {
     let safe = UIScene.ConnectionOptions()
-    let tainted = source() as! UIScene.ConnectionOptions
+    let tainted = source("ConnectionOptions") as! UIScene.ConnectionOptions
 
     sink(safe.userActivities)
-    sink(tainted.userActivities) // $ tainted=61
+    sink(tainted.userActivities) // $ tainted=ConnectionOptions
     sink(safe.shortcutItem)
     sink(tainted.shortcutItem)
     sink(safe.urlContexts)
-    sink(tainted.urlContexts) // $ tainted=61
+    sink(tainted.urlContexts) // $ tainted=ConnectionOptions
     sink(safe.handoffUserActivityType)
     sink(tainted.handoffUserActivityType)
     sink(safe.cloudKitShareMetadata)
