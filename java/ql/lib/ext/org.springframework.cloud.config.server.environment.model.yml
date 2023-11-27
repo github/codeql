@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: summaryModel
-    data:
-      - ["org.springframework.cloud.config.server.environment", "SearchPathLocator", True, "getLocations", "(String,String,String)", "", "Argument[0..2]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.cloud.config.server.environment", "SearchPathLocator$Locations", True, "getLocations", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
