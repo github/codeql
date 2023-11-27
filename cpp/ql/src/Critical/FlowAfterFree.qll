@@ -101,7 +101,7 @@ predicate isFree(DataFlow::Node n, Expr e, DeallocationExpr dealloc) {
   exists(Expr conv |
     e = conv.getUnconverted() and
     conv = dealloc.getFreedExpr().getFullyConverted() and
-    conv = n.asConvertedExpr()
+    conv = n.(DataFlow::PostUpdateNode).getPreUpdateNode().asConvertedExpr()
   ) and
   // Ignore realloc functions
   not exists(dealloc.(FunctionCall).getTarget().(AllocationFunction).getReallocPtrArg())

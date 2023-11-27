@@ -275,12 +275,12 @@ struct MyStruct {
 
 void test_free_struct(MyStruct* s) {
   free(s->buf);
-  char c = s->buf[0]; // BAD [FALSE NEGATIVE]
+  char c = s->buf[0]; // BAD
 }
 
 void test_free_struct2(MyStruct s) {
   free(s.buf);
-  char c = s.buf[0]; // BAD [FALSE NEGATIVE]
+  char c = s.buf[0]; // BAD
 }
 
 void test_free_struct3(MyStruct s) {

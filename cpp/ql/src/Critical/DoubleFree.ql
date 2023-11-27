@@ -16,7 +16,10 @@ import semmle.code.cpp.dataflow.new.DataFlow
 import FlowAfterFree
 import DoubleFree::PathGraph
 
-predicate isFree(DataFlow::Node n, Expr e) { isFree(n, e, _) }
+predicate isFree(DataFlow::Node n, Expr e) {
+  n.asExpr() = e and
+  isFree(_, e, _)
+}
 
 /**
  * `dealloc1` is a deallocation expression and `e` is an expression such
