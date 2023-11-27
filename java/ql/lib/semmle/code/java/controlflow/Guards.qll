@@ -76,13 +76,13 @@ class ConditionBlock extends BasicBlock {
 // Join order engineering -- first determine the switch block and the case indices required, then retrieve them.
 bindingset[switch, i]
 pragma[inline_late]
-private predicate isNthCaseOf(StmtParent switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
+private predicate isNthCaseOf(SwitchBlock switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
 
 /**
  * Gets a switch case >= pred, up to but not including `pred`'s successor pattern case,
  * where `pred` is declared on `switch`.
  */
-private SwitchCase getACaseUpToNextPattern(PatternCase pred, StmtParent switch) {
+private SwitchCase getACaseUpToNextPattern(PatternCase pred, SwitchBlock switch) {
   // Note we do include `case null, default` (as well as plain old `default`) here.
   not result.(ConstCase).getValue(_) instanceof NullLiteral and
   exists(int maxCaseIndex |

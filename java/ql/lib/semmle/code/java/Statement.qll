@@ -429,6 +429,13 @@ class SwitchStmt extends Stmt, @switchstmt {
 }
 
 /**
+ * A `switch` statement or expression.
+ */
+class SwitchBlock extends StmtParent {
+  SwitchBlock() { this instanceof SwitchStmt or this instanceof SwitchExpr }
+}
+
+/**
  * A case of a `switch` statement or expression.
  *
  * This includes both normal `case`s and the `default` case.

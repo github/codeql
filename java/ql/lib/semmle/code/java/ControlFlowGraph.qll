@@ -440,7 +440,7 @@ private module ControlFlowGraphImpl {
   // Join order engineering -- first determine the switch block and the case indices required, then retrieve them.
   bindingset[switch, i]
   pragma[inline_late]
-  private predicate isNthCaseOf(StmtParent switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
+  private predicate isNthCaseOf(SwitchBlock switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
 
   /**
    * Gets a `SwitchCase` that may be `pred`'s direct successor, where `pred` is declared in block `switch`.
@@ -450,7 +450,7 @@ private module ControlFlowGraphImpl {
    * Because we know the switch block contains at least one pattern, we know by https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.11
    * that any default case comes after the last pattern case.
    */
-  private SwitchCase getASuccessorSwitchCase(PatternCase pred, StmtParent switch) {
+  private SwitchCase getASuccessorSwitchCase(PatternCase pred, SwitchBlock switch) {
     // Note we do include `case null, default` (as well as plain old `default`) here.
     not result.(ConstCase).getValue(_) instanceof NullLiteral and
     exists(int maxCaseIndex |
@@ -471,7 +471,7 @@ private module ControlFlowGraphImpl {
    *
    * Otherwise it is any case in the switch block.
    */
-  private SwitchCase getAFirstSwitchCase(StmtParent switch) {
+  private SwitchCase getAFirstSwitchCase(SwitchBlock switch) {
     result.getParent() = switch and
     (
       result.(ConstCase).getValue(_) instanceof NullLiteral
@@ -484,7 +484,7 @@ private module ControlFlowGraphImpl {
     )
   }
 
-  private Stmt getSwitchStatement(StmtParent switch, int i) { result.isNthChildOf(switch, i) }
+  private Stmt getSwitchStatement(SwitchBlock switch, int i) { result.isNthChildOf(switch, i) }
 
   /**
    * Holds if `last` is the last node in a pattern case `pc`'s succeeding bind-and-test operation,
@@ -1296,7 +1296,7 @@ private module ControlFlowGraphImpl {
     )
     or
     // Switch statements and expressions
-    exists(StmtParent switch | switch instanceof SwitchStmt or switch instanceof SwitchExpr |
+    exists(SwitchBlock switch |
       exists(Expr switchExpr |
         switchExpr = switch.(SwitchStmt).getExpr() or switchExpr = switch.(SwitchExpr).getExpr()
       |
