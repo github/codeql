@@ -28,7 +28,7 @@ Displaying the CodeQL model editor
 #. Open your CodeQL workspace in VS Code, for example, the ``vscode-codeql-starter`` workspace.
    If you haven't updated the ``ql`` submodule for a while, update it from ``main`` to ensure that you have the queries used to gather data for the model editor.
 #. Open the CodeQL extension and select the CodeQL database that you want to model from the "Databases" section of the left side pane.
-#. In the left side panel, expand the "CodeQL method modeling" section and click **Start modeling** to display the model editor. Alternatively, use the command palette to run the “CodeQL: Open Model Editor (Beta)” command
+#. In the left side panel, expand the "CodeQL method modeling" section and click **Start modeling** to display the model editor. Alternatively, use the command palette to run the “CodeQL: Open Model Editor (Beta)” command.
 #. The CodeQL model editor runs a series of telemetry queries to identify APIs in the code and the editor is displayed in a new tab.
 #. When the telemetry queries are complete, the APIs that have been identified are shown in the editor.
 
@@ -66,7 +66,7 @@ You typically use this approach when you are looking at a specific codebase wher
       :width: 800
       :alt: Screenshot of the "CodeQL methods usage" view. The currently displayed call to an external method is highlighted blue.
 
-#. When you have determined how to model your use of the method, you can define the **Model type** in the "CodeQL method modeling" tab of the CodeQL extension and this change is automatically reflected in the main model editor.
+#. When you have determined how to model your use of the method, you can define the **Model type** in the "CodeQL method modeling" tab of the CodeQL extension. This change is automatically reflected in the main model editor.
 #. The remaining fields are updated with available options:
 
    - **Source**: choose the **Output** element to model.
