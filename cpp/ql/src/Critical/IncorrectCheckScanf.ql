@@ -19,4 +19,4 @@ import ScanfChecks
 
 from ScanfFunctionCall call
 where incorrectlyCheckedScanf(call)
-select call, "The result of scanf is onyl checkeck against 0, but it can also return EOF."
+select call, "The result of scanf is only checked against 0, but it can also return EOF."

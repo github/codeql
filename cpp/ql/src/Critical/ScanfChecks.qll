@@ -22,7 +22,8 @@ private predicate exprInBooleanContext(Expr e) {
 }
 
 private predicate isLinuxKernel() {
-  exists(Macro macro | macro.getName() = "_LINUX_KERNEL_SPRINTF_H_")
+  // For the purpose of sscanf, we check the header guards for the files that it is defined in (which have changed)
+  exists(Macro macro | macro.getName() in ["_LINUX_KERNEL_SPRINTF_H_", "_LINUX_KERNEL_H"])
 }
 
 /**
