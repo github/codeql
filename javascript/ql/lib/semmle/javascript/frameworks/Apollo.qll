@@ -15,7 +15,7 @@ module Apollo {
         ]).getMember("ApolloServer")
   }
 
-  /** Get an instanceof of the `gql` function that parses GraphQL strings. */
+  /** Gets a reference to the `gql` function that parses GraphQL strings. */
   private API::Node gql() {
     result =
       API::moduleImport([
