@@ -75,8 +75,8 @@ private class InitializerFromDataStep extends AdditionalTaintStep {
  * An imprecise flow step for an `append`, `insert` or similar function.  For
  * example:
  * ```
- *	mc.append(taintedObj)
- *	mc.insert(taintedObj, at: 0)
+ * mc.append(taintedObj)
+ * mc.insert(taintedObj, at: 0)
  * ```
  */
 private class AppendCallStep extends AdditionalTaintStep {
@@ -95,7 +95,7 @@ private class AppendCallStep extends AdditionalTaintStep {
  * An imprecise flow step for an `appending` or similar function.  For
  * example:
  * ```
- *	let mc2 = mc.appending(taintedObj)
+ * let mc2 = mc.appending(taintedObj)
  * ```
  */
 private class AppendingCallStep extends AdditionalTaintStep {
