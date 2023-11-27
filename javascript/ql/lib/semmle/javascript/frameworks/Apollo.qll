@@ -6,7 +6,7 @@ import javascript
 
 /** Provides classes modeling the apollo packages [@apollo/server](https://npmjs.com/package/@apollo/server`) */
 module Apollo {
-  /** Get an instanceof of `Apollo` */
+  /** Get a reference to the `ApolloServer` class. */
   private API::Node apollo() {
     result =
       API::moduleImport([
@@ -30,7 +30,7 @@ module Apollo {
   }
 
   /** A string that is interpreted as a GraphQL query by a `apollo` package. */
-  class ApolloGraphQLString extends GraphQL::GraphQLString {
+  private class ApolloGraphQLString extends GraphQL::GraphQLString {
     ApolloGraphQLString() { this = gql().getACall().getArgument(0) }
   }
 }

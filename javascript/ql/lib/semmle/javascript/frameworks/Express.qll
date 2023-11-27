@@ -1074,21 +1074,20 @@ module Express {
   }
 
   /**
-   * The CORS configuration used in Express
+   * An express route setup configured with the `cors` package.
    */
   class CorsConfiguration extends DataFlow::MethodCallNode {
-    /** Get an `app.use` with a cors object as argument */
     CorsConfiguration() {
       this = appCreation().getAMethodCall("use") and this.getArgument(0) instanceof Cors::Cors
     }
 
-    /** Get Cors configuration */
+    /** Gets the options used to configure `cors`. */
     DataFlow::Node getCorsArgument() { result = this.getArgument(0).(Cors::Cors).getCorsArgument() }
 
-    /** Holds if cors is using default configuration */
+    /** Holds if cors is using its default configuration. */
     predicate isDefault() { this.getArgument(0).(Cors::Cors).isDefault() }
 
-    /** Get Cors origin value */
+    /** Gets the `origin` option that the call to `cors` is configured with. */
     DataFlow::Node getOrigin() { result = this.getArgument(0).(Cors::Cors).getOrigin() }
   }
 }
