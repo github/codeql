@@ -1081,13 +1081,15 @@ module Express {
       this = appCreation().getAMethodCall("use") and this.getArgument(0) instanceof Cors::Cors
     }
 
+    Cors::Cors getArgument() { result = this.getArgument(0) }
+
     /** Gets the options used to configure `cors`. */
-    DataFlow::Node getCorsArgument() { result = this.getArgument(0).(Cors::Cors).getCorsArgument() }
+    DataFlow::Node getCorsArgument() { result = this.getArgument().getOptionsArgument() }
 
     /** Holds if cors is using its default configuration. */
-    predicate isDefault() { this.getArgument(0).(Cors::Cors).isDefault() }
+    predicate isDefault() { this.getArgument().isDefault() }
 
     /** Gets the `origin` option that the call to `cors` is configured with. */
-    DataFlow::Node getOrigin() { result = this.getArgument(0).(Cors::Cors).getOrigin() }
+    DataFlow::Node getOrigin() { result = this.getArgument().getOrigin() }
   }
 }
