@@ -41,6 +41,17 @@ class UIScene {
     class OpenURLOptions {}
 }
 
+struct CGFloat { }
+
+class Data {
+    init<S>(_ elements: S) {}
+}
+
+class UIImage {
+    init?(data: Data) { }
+    init?(data: Data, scale: CGFloat) { }
+}
+
 // --- tests ---
 
 func source(_ label: String) -> Any { return "" }
@@ -74,4 +85,13 @@ func testConnectionOptions() {
     sink(tainted.notificationResponse)
     sink(safe.sourceApplication)
     sink(tainted.sourceApplication)
+}
+
+func testUIImage(scale: CGFloat) {
+    let taintedData = source("UIImage") as! Data
+
+    sink(UIImage(data: Data(0))!)
+    sink(UIImage(data: Data(taintedData))!) // $ MISSING: tainted=UIImage
+    sink(UIImage(data: Data(0), scale: scale)!)
+    sink(UIImage(data: Data(taintedData), scale: scale)!) // $ MISSING: tainted=UIImage
 }
