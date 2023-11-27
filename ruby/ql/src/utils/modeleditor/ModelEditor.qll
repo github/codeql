@@ -44,7 +44,7 @@ class Endpoint extends DataFlow::MethodNode {
       // The nearest gemspec to this endpoint, if one exists
       result = min(Gem::GemSpec g, int n | gemFileStep(g, folder, n) | g order by n).getName()
       or
-      not exists(Gem::GemSpec g | gemFileStep(g, folder, _)) and
+      not gemFileStep(_, folder, _) and
       result = ""
     )
   }
