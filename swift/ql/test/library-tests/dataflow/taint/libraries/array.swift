@@ -33,7 +33,7 @@ func testArray() {
   arr4.insert(contentsOf: arrClean, at: 0)
   sink(arg: arr4[0])
   arr4.insert(contentsOf: arr3, at: 0)
-  sink(arg: arr4[0]) // $ MISSING: tainted=int3
+  sink(arg: arr4[0]) // $ tainted=int3
 
   var arr5 = Array<Int>()
   arr5.insert(contentsOf: 1...10, at: 0)

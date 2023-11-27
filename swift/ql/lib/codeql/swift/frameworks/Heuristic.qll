@@ -70,3 +70,42 @@ private class InitializerFromDataStep extends AdditionalTaintStep {
     )
   }
 }
+
+/**
+ * An imprecise flow step for an `append`, `insert` or similar function.  For
+ * example:
+ * ```
+ *	mc.append(taintedObj)
+ *	mc.insert(taintedObj, at: 0)
+ * ```
+ */
+private class AppendCallStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(CallExpr ce, Argument arg |
+      ce.getAnArgument() = arg and
+      ce.getStaticTarget().(Function).getShortName() = ["append", "insert"] and
+      arg.getLabel() = ["", "contentsOf"] and
+      node1.asExpr() = arg.getExpr() and
+      node2.asExpr() = ce.getQualifier()
+    )
+  }
+}
+
+/**
+ * An imprecise flow step for an `appending` or similar function.  For
+ * example:
+ * ```
+ *	let mc2 = mc.appending(taintedObj)
+ * ```
+ */
+private class AppendingCallStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(CallExpr ce, Argument arg |
+      ce.getAnArgument() = arg and
+      ce.getStaticTarget().(Function).getShortName() = ["appending", "inserting"] and
+      arg.getLabel() = ["", "contentsOf"] and
+      node1.asExpr() = arg.getExpr() and
+      node2.asExpr() = ce
+    )
+  }
+}
