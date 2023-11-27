@@ -6,6 +6,7 @@
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.FlowSources
+private import codeql.swift.dataflow.FlowSteps
 
 /**
  * An initializer call `ce` that has a "contentsOf" argument, along with a
@@ -50,4 +51,22 @@ private class InitializerContentsOfLocalSource extends LocalFlowSource {
   InitializerContentsOfLocalSource() { contentsOfInitializer(this.asExpr(), false) }
 
   override string getSourceType() { result = "contentsOf initializer" }
+}
+
+/**
+ * An imprecise flow step for an initializer call with a "data" argument.  For
+ * example:
+ * ```
+ * let mc = MyClass(data: taintedData)
+ * ```
+ */
+private class InitializerFromDataStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(InitializerCallExpr ce, Argument arg |
+      ce.getAnArgument() = arg and
+      arg.getLabel() = "data" and
+      node1.asExpr() = arg.getExpr() and
+      node2.asExpr() = ce
+    )
+  }
 }

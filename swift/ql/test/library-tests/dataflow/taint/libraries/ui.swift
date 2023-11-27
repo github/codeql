@@ -91,7 +91,7 @@ func testUIImage(scale: CGFloat) {
     let taintedData = source("UIImage") as! Data
 
     sink(UIImage(data: Data(0))!)
-    sink(UIImage(data: Data(taintedData))!) // $ MISSING: tainted=UIImage
+    sink(UIImage(data: Data(taintedData))!) // $ tainted=UIImage
     sink(UIImage(data: Data(0), scale: scale)!)
-    sink(UIImage(data: Data(taintedData), scale: scale)!) // $ MISSING: tainted=UIImage
+    sink(UIImage(data: Data(taintedData), scale: scale)!) // $ tainted=UIImage
 }

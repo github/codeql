@@ -44,10 +44,10 @@ func testCustom() {
 	let tainted2 = MyContainer(data: source("data2"), flags: 123)
 	sink(arg: clean)
 	sink(arg: clean[0])
-	sink(arg: tainted) // $ MISSING: tainted=data1
-	sink(arg: tainted[0]) // $ MISSING: tainted=data1
-	sink(arg: tainted2) // $ MISSING: tainted=data2
-	sink(arg: tainted2[0]) // $ MISSING: tainted=data2
+	sink(arg: tainted) // $ tainted=data1
+	sink(arg: tainted[0]) // $ tainted=data1
+	sink(arg: tainted2) // $ tainted=data2
+	sink(arg: tainted2[0]) // $ tainted=data2
 
 	var mc1 = MyContainer()
 	mc1.append(Data(0))
