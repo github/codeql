@@ -506,6 +506,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TMaterializePackExpr(Raw::MaterializePackExpr id) { constructMaterializePackExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TMemberRefExpr(Raw::MemberRefExpr id) { constructMemberRefExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -767,6 +771,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TDeferStmt(Raw::DeferStmt id) { constructDeferStmt(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TDiscardStmt(Raw::DiscardStmt id) { constructDiscardStmt(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1223,13 +1231,14 @@ module Synth {
         TExplicitCastExpr or TForceValueExpr or TIdentityExpr or TIfExpr or
         TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or TKeyPathDotExpr or
         TKeyPathExpr or TLazyInitializationExpr or TLiteralExpr or TLookupExpr or
-        TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or TOneWayExpr or TOpaqueValueExpr or
-        TOpenExistentialExpr or TOptionalEvaluationExpr or TOtherInitializerRefExpr or
-        TOverloadedDeclRefExpr or TPackElementExpr or TPackExpansionExpr or
-        TPropertyWrapperValuePlaceholderExpr or TRebindSelfInInitializerExpr or TSequenceExpr or
-        TSingleValueStmtExpr or TSuperRefExpr or TTapExpr or TTupleElementExpr or TTupleExpr or
-        TTypeExpr or TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
-        TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or TVarargExpansionExpr;
+        TMakeTemporarilyEscapableExpr or TMaterializePackExpr or TObjCSelectorExpr or TOneWayExpr or
+        TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
+        TOtherInitializerRefExpr or TOverloadedDeclRefExpr or TPackElementExpr or
+        TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
+        TRebindSelfInInitializerExpr or TSequenceExpr or TSingleValueStmtExpr or TSuperRefExpr or
+        TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
+        TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
+        TUnresolvedSpecializeExpr or TVarargExpansionExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1300,9 +1309,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TStmt =
-    TBraceStmt or TBreakStmt or TCaseStmt or TContinueStmt or TDeferStmt or TFailStmt or
-        TFallthroughStmt or TLabeledStmt or TPoundAssertStmt or TReturnStmt or TThrowStmt or
-        TYieldStmt;
+    TBraceStmt or TBreakStmt or TCaseStmt or TContinueStmt or TDeferStmt or TDiscardStmt or
+        TFailStmt or TFallthroughStmt or TLabeledStmt or TPoundAssertStmt or TReturnStmt or
+        TThrowStmt or TYieldStmt;
 
   /**
    * INTERNAL: Do not use.
@@ -2296,6 +2305,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMaterializePackExpr`, if possible.
+   */
+  cached
+  TMaterializePackExpr convertMaterializePackExprFromRaw(Raw::Element e) {
+    result = TMaterializePackExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TMemberRefExpr`, if possible.
    */
   cached
@@ -2781,6 +2799,13 @@ module Synth {
    */
   cached
   TDeferStmt convertDeferStmtFromRaw(Raw::Element e) { result = TDeferStmt(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TDiscardStmt`, if possible.
+   */
+  cached
+  TDiscardStmt convertDiscardStmtFromRaw(Raw::Element e) { result = TDiscardStmt(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3809,6 +3834,8 @@ module Synth {
     or
     result = convertMakeTemporarilyEscapableExprFromRaw(e)
     or
+    result = convertMaterializePackExprFromRaw(e)
+    or
     result = convertObjCSelectorExprFromRaw(e)
     or
     result = convertOneWayExprFromRaw(e)
@@ -4076,6 +4103,8 @@ module Synth {
     result = convertContinueStmtFromRaw(e)
     or
     result = convertDeferStmtFromRaw(e)
+    or
+    result = convertDiscardStmtFromRaw(e)
     or
     result = convertFailStmtFromRaw(e)
     or
@@ -5239,6 +5268,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TMaterializePackExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMaterializePackExprToRaw(TMaterializePackExpr e) {
+    e = TMaterializePackExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TMemberRefExpr` to a raw DB element, if possible.
    */
   cached
@@ -5724,6 +5762,13 @@ module Synth {
    */
   cached
   Raw::Element convertDeferStmtToRaw(TDeferStmt e) { e = TDeferStmt(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TDiscardStmt` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertDiscardStmtToRaw(TDiscardStmt e) { e = TDiscardStmt(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -6752,6 +6797,8 @@ module Synth {
     or
     result = convertMakeTemporarilyEscapableExprToRaw(e)
     or
+    result = convertMaterializePackExprToRaw(e)
+    or
     result = convertObjCSelectorExprToRaw(e)
     or
     result = convertOneWayExprToRaw(e)
@@ -7019,6 +7066,8 @@ module Synth {
     result = convertContinueStmtToRaw(e)
     or
     result = convertDeferStmtToRaw(e)
+    or
+    result = convertDiscardStmtToRaw(e)
     or
     result = convertFailStmtToRaw(e)
     or

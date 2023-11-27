@@ -1328,6 +1328,16 @@ class PackElementExpr(Expr):
     """
     sub_expr: Expr | child
 
+@qltest.test_with(PackExpansionExpr)
+class MaterializePackExpr(Expr):
+    """
+    An expression that materializes a pack during expansion. Appears around PackExpansionExpr.
+
+    More details:
+    https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+    """
+    sub_expr: Expr | child
+
 class CopyExpr(Expr):
     """
     An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
@@ -1389,3 +1399,14 @@ class MacroDecl(GenericContext, ValueDecl):
     parameters: list[ParamDecl] | doc("parameters of this macro")
     roles: list[MacroRole] | doc("roles of this macro")
     pass
+
+class DiscardStmt(Stmt):
+    """
+    A statement that takes a non-copyable value and destructs its members/fields.
+
+    The only valid syntax:
+    ```
+    destruct self
+    ```
+    """
+    sub_expr: Expr | child

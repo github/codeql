@@ -798,7 +798,6 @@ arguments(  //dir=expr
 | @literal_expr
 | @lookup_expr
 | @make_temporarily_escapable_expr
-| @materialize_pack_expr
 | @obj_c_selector_expr
 | @one_way_expr
 | @opaque_value_expr
@@ -1128,11 +1127,6 @@ make_temporarily_escapable_exprs(  //dir=expr
   unique int id: @make_temporarily_escapable_expr,
   int escaping_closure: @opaque_value_expr_or_none ref,
   int nonescaping_closure: @expr_or_none ref,
-  int sub_expr: @expr_or_none ref
-);
-
-materialize_pack_exprs(  //dir=expr
-  unique int id: @materialize_pack_expr,
   int sub_expr: @expr_or_none ref
 );
 
@@ -1834,7 +1828,6 @@ condition_element_availabilities(  //dir=stmt
 | @case_stmt
 | @continue_stmt
 | @defer_stmt
-| @discard_stmt
 | @fail_stmt
 | @fallthrough_stmt
 | @labeled_stmt
@@ -1920,11 +1913,6 @@ continue_stmt_targets(  //dir=stmt
 defer_stmts(  //dir=stmt
   unique int id: @defer_stmt,
   int body: @brace_stmt_or_none ref
-);
-
-discard_stmts(  //dir=stmt
-  unique int id: @discard_stmt,
-  int sub_expr: @expr_or_none ref
 );
 
 fail_stmts(  //dir=stmt

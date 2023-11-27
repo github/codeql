@@ -61,9 +61,7 @@ MAP(swift::Stmt, StmtTag)
   MAP(swift::FailStmt, FailStmtTag)
   MAP(swift::ThrowStmt, ThrowStmtTag)
   MAP(swift::PoundAssertStmt, PoundAssertStmtTag)
-#if CODEQL_SWIFT_VERSION_GE(5, 9)
-  MAP(swift::DiscardStmt, void) // TODO (introduced in 5.9)
-#endif
+  MAP(swift::DiscardStmt, DiscardStmtTag)
 
 MAP(swift::Argument, ArgumentTag)
 MAP(swift::KeyPathExpr::Component, KeyPathComponentTag)
@@ -195,11 +193,11 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::KeyPathDotExpr, KeyPathDotExprTag)
   MAP(swift::OneWayExpr, OneWayExprTag)
   MAP(swift::TapExpr, TapExprTag)
-  MAP(swift::TypeJoinExpr, void)  // TODO (introduced in 5.8)
+  MAP(swift::TypeJoinExpr, void)  // does not appear in a visible AST, skipping
   MAP(swift::MacroExpansionExpr, void) // unexpanded macro in an expr context, skipping
   MAP(swift::CopyExpr, CopyExprTag)
   MAP(swift::ConsumeExpr, ConsumeExprTag)
-  MAP(swift::MaterializePackExpr, void)  // TODO (introduced in 5.9)
+  MAP(swift::MaterializePackExpr, MaterializePackExprTag)
   MAP(swift::SingleValueStmtExpr, SingleValueStmtExprTag)
 
 MAP(swift::Decl, DeclTag)

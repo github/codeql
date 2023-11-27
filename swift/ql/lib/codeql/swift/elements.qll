@@ -146,6 +146,7 @@ import codeql.swift.elements.expr.LoadExpr
 import codeql.swift.elements.expr.LookupExpr
 import codeql.swift.elements.expr.MagicIdentifierLiteralExpr
 import codeql.swift.elements.expr.MakeTemporarilyEscapableExpr
+import codeql.swift.elements.expr.MaterializePackExpr
 import codeql.swift.elements.expr.MemberRefExpr
 import codeql.swift.elements.expr.MetatypeConversionExpr
 import codeql.swift.elements.expr.MethodLookupExpr
@@ -210,6 +211,7 @@ import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.ConditionElement
 import codeql.swift.elements.stmt.ContinueStmt
 import codeql.swift.elements.stmt.DeferStmt
+import codeql.swift.elements.stmt.DiscardStmt
 import codeql.swift.elements.stmt.DoCatchStmt
 import codeql.swift.elements.stmt.DoStmt
 import codeql.swift.elements.stmt.FailStmt
