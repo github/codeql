@@ -1300,7 +1300,7 @@ private module ControlFlowGraphImpl {
     )
     or
     // Switch statements and expressions
-    exists(StmtParent switch |
+    exists(StmtParent switch | switch instanceof SwitchStmt or switch instanceof SwitchExpr |
       exists(Expr switchExpr |
         switchExpr = switch.(SwitchStmt).getExpr() or switchExpr = switch.(SwitchExpr).getExpr()
       |
