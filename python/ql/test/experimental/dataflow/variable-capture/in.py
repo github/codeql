@@ -78,7 +78,7 @@ def inLocal():
         m()
     captureIn2()
 
-    captureIn3 = lambda arg: SINK(tainted)
+    captureIn3 = lambda arg: SINK(tainted) #$ MISSING:captured
     captureIn3("")
 
     def captureIn1NotCalled():
