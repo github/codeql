@@ -1,6 +1,6 @@
 /**
  * @name Incorrect return-value check for a 'scanf'-like function
- * @description Failing to account for EOF in a call to a scanf-like function can lead to 
+ * @description Failing to account for EOF in a call to a scanf-like function can lead to
  *             undefined behavior.
  * @kind problem
  * @problem.severity warning
