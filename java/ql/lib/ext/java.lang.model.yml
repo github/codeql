@@ -77,6 +77,8 @@ extensions:
       - ["java.lang", "Exception", False, "Exception", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "Exception", False, "Exception", "(String,Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "Exception", False, "Exception", "(String,Throwable)", "", "Argument[1]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "Exception", False, "Exception", "(Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "Exception", False, "Exception", "(Throwable)", "", "Argument[0].SyntheticField[java.lang.Throwable.message]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "taint", "manual"]
       - ["java.lang", "IllegalArgumentException", False, "IllegalArgumentException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "IllegalStateException", False, "IllegalStateException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "IndexOutOfBoundsException", False, "IndexOutOfBoundsException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
