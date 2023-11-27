@@ -1077,9 +1077,7 @@ module Express {
    * An express route setup configured with the `cors` package.
    */
   class CorsConfiguration extends DataFlow::MethodCallNode {
-    CorsConfiguration() {
-      this = appCreation().getAMethodCall("use") and this.getArgument(0) instanceof Cors::Cors
-    }
+    CorsConfiguration() { exists(Express::RouteSetup setup | this = setup | setup.isUseCall()) }
 
     Cors::Cors getArgument() { result = this.getArgument(0) }
 
