@@ -973,7 +973,6 @@ private module ControlFlowGraphImpl {
     // A pattern case statement can complete:
     // * On failure of its type test (boolean false)
     // * On failure of its guard test if any (boolean false)
-    // * On any abrupt completion of its guard
     // * On completion of its variable declarations, if it is not a rule and has no guard (normal completion)
     // * On success of its guard test, if it is not a rule (boolean true)
     // (the latter two cases are accounted for by lastPatternCaseMatchingOp)
@@ -981,10 +980,7 @@ private module ControlFlowGraphImpl {
       last = pc and completion = basicBooleanCompletion(false)
       or
       last(pc.getGuard(), last, completion) and
-      (
-        completion = BooleanCompletion(false, _) or
-        not completion instanceof NormalOrBooleanCompletion
-      )
+      completion = BooleanCompletion(false, _)
       or
       not pc.isRule() and
       lastPatternCaseMatchingOp(pc, last, completion)
