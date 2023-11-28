@@ -31,18 +31,21 @@ func deferredCalls() {
 	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
 		closeFileDeferred(f)         // NOT OK
 		closeFileDeferredIndirect(f) // NOT OK
+		closeFileDeferredIndirectReturn(f)
 	}
 
 	// open file for reading
 	if f, err := os.OpenFile("foo.txt", os.O_RDONLY|os.O_CREATE, 0666); err != nil {
 		closeFileDeferred(f)         // OK
 		closeFileDeferredIndirect(f) // OK
+		closeFileDeferredIndirectReturn(f)
 	}
 
 	// open file for reading and writing
 	if f, err := os.OpenFile("foo.txt", os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
 		closeFileDeferred(f)         // NOT OK
 		closeFileDeferredIndirect(f) // NOT OK
+		closeFileDeferredIndirectReturn(f)
 	}
 }
 
