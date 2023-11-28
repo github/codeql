@@ -1,0 +1,11 @@
+[package]
+name = "yeast"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tree-sitter = "0.20.10"
+
+[dev-dependencies]
+tree-sitter-ruby = "0.20.0"
+tree-sitter-python = "0.20.4"
