@@ -14,25 +14,44 @@
 
 import cpp
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
-import TaintedWithPath
+import semmle.code.cpp.security.FlowSources
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import semmle.code.cpp.ir.IR
+import Flow::PathGraph
 
-predicate isProcessOperationExplanation(Expr arg, string processOperation) {
+predicate isProcessOperationExplanation(DataFlow::Node arg, string processOperation) {
   exists(int processOperationArg, FunctionCall call |
     isProcessOperationArgument(processOperation, processOperationArg) and
     call.getTarget().getName() = processOperation and
-    call.getArgument(processOperationArg) = arg
+    call.getArgument(processOperationArg) = [arg.asExpr(), arg.asIndirectExpr()]
   )
 }
 
-class Configuration extends TaintTrackingConfiguration {
-  override predicate isSink(Element arg) { isProcessOperationExplanation(arg, _) }
+predicate isSource(FlowSource source, string sourceType) { sourceType = source.getSourceType() }
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { isSource(node, _) }
+
+  predicate isSink(DataFlow::Node node) { isProcessOperationExplanation(node, _) }
+
+  predicate isBarrier(DataFlow::Node node) {
+    isSink(node) and node.asExpr().getUnspecifiedType() instanceof ArithmeticType
+    or
+    node.asInstruction().(StoreInstruction).getResultType() instanceof ArithmeticType
+  }
 }
 
-from string processOperation, Expr arg, Expr source, PathNode sourceNode, PathNode sinkNode
+module Flow = TaintTracking::Global<Config>;
+
+from
+  string processOperation, string sourceType, DataFlow::Node source, DataFlow::Node sink,
+  Flow::PathNode sourceNode, Flow::PathNode sinkNode
 where
-  isProcessOperationExplanation(arg, processOperation) and
-  taintedWithPath(source, arg, sourceNode, sinkNode)
-select arg, sourceNode, sinkNode,
+  source = sourceNode.getNode() and
+  sink = sinkNode.getNode() and
+  isSource(source, sourceType) and
+  isProcessOperationExplanation(sink, processOperation) and
+  Flow::flowPath(sourceNode, sinkNode)
+select sink, sourceNode, sinkNode,
   "The value of this argument may come from $@ and is being passed to " + processOperation + ".",
-  source, source.toString()
+  source, sourceType

@@ -10,6 +10,10 @@ import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.decl.ValueDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ImportDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::ImportDecl` class directly.

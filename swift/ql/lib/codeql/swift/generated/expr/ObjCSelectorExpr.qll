@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.Function
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ObjCSelectorExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::ObjCSelectorExpr` class directly.

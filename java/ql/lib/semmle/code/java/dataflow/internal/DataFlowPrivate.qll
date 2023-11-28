@@ -61,10 +61,8 @@ private predicate closureFlowStep(Expr e1, Expr e2) {
   )
 }
 
-private module CaptureInput implements VariableCapture::InputSig {
+private module CaptureInput implements VariableCapture::InputSig<Location> {
   private import java as J
-
-  class Location = J::Location;
 
   class BasicBlock instanceof J::BasicBlock {
     string toString() { result = super.toString() }
@@ -146,7 +144,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class CapturedParameter = CaptureInput::CapturedParameter;
 
-module CaptureFlow = VariableCapture::Flow<CaptureInput>;
+module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()

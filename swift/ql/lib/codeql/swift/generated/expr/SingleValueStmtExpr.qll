@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `SingleValueStmtExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An expression that wraps a statement which produces a single value.

@@ -5,4 +5,7 @@
 
 private import codeql.swift.generated.expr.SingleValueStmtExpr
 
+/**
+ * An expression that wraps a statement which produces a single value.
+ */
 class SingleValueStmtExpr extends Generated::SingleValueStmtExpr { }

@@ -1479,6 +1479,26 @@ private module StdlibPrivate {
     }
   }
 
+  /**
+   * A call to the `io.FileIO` constructor.
+   * See https://docs.python.org/3/library/io.html#io.FileIO
+   */
+  private class FileIOCall extends FileSystemAccess::Range, API::CallNode {
+    FileIOCall() { this = API::moduleImport("io").getMember("FileIO").getACall() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "file").asSink() }
+  }
+
+  /**
+   * A call to the `io.open_code` function.
+   * See https://docs.python.org/3.11/library/io.html#io.open_code
+   */
+  private class OpenCodeCall extends FileSystemAccess::Range, API::CallNode {
+    OpenCodeCall() { this = API::moduleImport("io").getMember("open_code").getACall() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "path").asSink() }
+  }
+
   /** Gets a reference to an open file. */
   private DataFlow::TypeTrackingNode openFile(DataFlow::TypeTracker t, FileSystemAccess openCall) {
     t.start() and
@@ -3047,6 +3067,212 @@ private module StdlibPrivate {
     }
 
     override string getName() { result = "re." + method }
+  }
+
+  /**
+   * A flow summary for compiled regex objects
+   *
+   * See https://docs.python.org/3.11/library/re.html#re-objects
+   */
+  class RePatternSummary extends SummarizedCallable {
+    RePatternSummary() { this = "re.Pattern" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("re").getMember("compile").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::moduleImport("re").getMember("compile").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input in ["Argument[0]", "Argument[pattern:]"] and
+      output = "ReturnValue.Attribute[pattern]" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for methods returning a `re.Match` object
+   *
+   * See https://docs.python.org/3/library/re.html#re.Match
+   */
+  class ReMatchSummary extends SummarizedCallable {
+    ReMatchSummary() { this = ["re.Match", "compiled re.Match"] }
+
+    override DataFlow::CallCfgNode getACall() {
+      this = "re.Match" and
+      result = API::moduleImport("re").getMember(["match", "search", "fullmatch"]).getACall()
+      or
+      this = "compiled re.Match" and
+      result =
+        any(RePatternSummary c)
+            .getACall()
+            .(API::CallNode)
+            .getReturn()
+            .getMember(["match", "search", "fullmatch"])
+            .getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(string arg |
+        this = "re.Match" and arg = "Argument[1]"
+        or
+        this = "compiled re.Match" and arg = "Argument[0]"
+      |
+        input in [arg, "Argument[string:]"] and
+        (
+          output = "ReturnValue.Attribute[string]" and
+          preservesValue = true
+          or
+          // indexing such as `match[g]` is the same as `match.group(g)`
+          // since you can index with both integers and strings, we model it as
+          // both list element and dictionary... a bit of a hack, but no way to model
+          // subscript operators directly with flow-summaries :|
+          output in ["ReturnValue.ListElement", "ReturnValue.DictionaryElementAny"] and
+          preservesValue = false
+        )
+      )
+      or
+      // regex pattern
+      (
+        this = "re.Match" and input in ["Argument[0]", "Argument[pattern:]"]
+        or
+        // for compiled regexes, this it is already stored in the `pattern` attribute
+        this = "compiled re.Match" and input = "Argument[self].Attribute[pattern]"
+      ) and
+      output = "ReturnValue.Attribute[re].Attribute[pattern]" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for methods on a `re.Match` object
+   *
+   * See https://docs.python.org/3/library/re.html#re.Match
+   */
+  class ReMatchMethodsSummary extends SummarizedCallable {
+    string methodName;
+
+    ReMatchMethodsSummary() {
+      this = "re.Match." + methodName and
+      methodName in ["expand", "group", "groups", "groupdict"]
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      result =
+        any(ReMatchSummary c)
+            .getACall()
+            .(API::CallNode)
+            .getReturn()
+            .getMember(methodName)
+            .getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      methodName = "expand" and
+      preservesValue = false and
+      (
+        input = "Argument[0]" and output = "ReturnValue"
+        or
+        input = "Argument[self].Attribute[string]" and
+        output = "ReturnValue"
+      )
+      or
+      methodName = "group" and
+      input = "Argument[self].Attribute[string]" and
+      output in ["ReturnValue", "ReturnValue.ListElement"] and
+      preservesValue = false
+      or
+      methodName = "groups" and
+      input = "Argument[self].Attribute[string]" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = false
+      or
+      methodName = "groupdict" and
+      input = "Argument[self].Attribute[string]" and
+      output = "ReturnValue.DictionaryElementAny" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `re` methods not returning a `re.Match` object
+   *
+   * See https://docs.python.org/3/library/re.html#functions
+   */
+  class ReFunctionsSummary extends SummarizedCallable {
+    string methodName;
+
+    ReFunctionsSummary() {
+      methodName in ["split", "findall", "finditer", "sub", "subn"] and
+      this = ["re.", "compiled re."] + methodName
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      this = "re." + methodName and
+      result = API::moduleImport("re").getMember(methodName).getACall()
+      or
+      this = "compiled re." + methodName and
+      result =
+        any(RePatternSummary c)
+            .getACall()
+            .(API::CallNode)
+            .getReturn()
+            .getMember(methodName)
+            .getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(int offset |
+        // for non-compiled regex the first argument is the pattern, so we need to
+        // account for this difference
+        this = "re." + methodName and offset = 0
+        or
+        this = "compiled re." + methodName and offset = 1
+      |
+        // flow from input string to results
+        exists(int arg | arg = methodName.(RegexExecutionMethod).getStringArgIndex() - offset |
+          preservesValue = false and
+          input in ["Argument[" + arg + "]", "Argument[string:]"] and
+          (
+            methodName in ["split", "findall", "finditer"] and
+            output = "ReturnValue.ListElement"
+            or
+            // TODO: Since we currently model iterables as tainted when their elements
+            // are, the result of findall, finditer, split needs to be tainted
+            methodName in ["split", "findall", "finditer"] and
+            output = "ReturnValue"
+            or
+            methodName = "sub" and
+            output = "ReturnValue"
+            or
+            methodName = "subn" and
+            output = "ReturnValue.TupleElement[0]"
+          )
+        )
+        or
+        // flow from replacement value for substitution
+        exists(string argumentSpec |
+          argumentSpec in ["Argument[" + (1 - offset) + "]", "Argument[repl:]"] and
+          // `repl` can also be a function
+          input = [argumentSpec, argumentSpec + ".ReturnValue"]
+        |
+          (
+            methodName = "sub" and output = "ReturnValue"
+            or
+            methodName = "subn" and output = "ReturnValue.TupleElement[0]"
+          ) and
+          preservesValue = false
+        )
+      )
+    }
   }
 
   /**

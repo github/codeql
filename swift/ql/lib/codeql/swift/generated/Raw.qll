@@ -248,6 +248,34 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The role of a macro, for example #freestanding(declaration) or @attached(member).
+   */
+  class MacroRole extends @macro_role, AstNode {
+    override string toString() { result = "MacroRole" }
+
+    /**
+     * Gets the kind of this macro role (declaration, expression, member, etc.).
+     */
+    int getKind() { macro_roles(this, result, _) }
+
+    /**
+     * Gets the #freestanding or @attached.
+     */
+    int getMacroSyntax() { macro_roles(this, _, result) }
+
+    /**
+     * Gets the `index`th conformance of this macro role (0-based).
+     */
+    TypeExpr getConformance(int index) { macro_role_conformances(this, index, result) }
+
+    /**
+     * Gets the `index`th name of this macro role (0-based).
+     */
+    string getName(int index) { macro_role_names(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class UnspecifiedElement extends @unspecified_element, ErrorElement {
     override string toString() { result = "UnspecifiedElement" }
@@ -555,6 +583,38 @@ module Raw {
      * Gets the precedence group of this infix operator declaration, if it exists.
      */
     PrecedenceGroupDecl getPrecedenceGroup() { infix_operator_decl_precedence_groups(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A declaration of a macro. Some examples:
+   *
+   * ```
+   * @freestanding(declaration)
+   * macro A() = #externalMacro(module: "A", type: "A")
+   * @freestanding(expression)
+   * macro B() = Builtin.B
+   * @attached(member)
+   * macro C() = C.C
+   * ```
+   */
+  class MacroDecl extends @macro_decl, GenericContext, ValueDecl {
+    override string toString() { result = "MacroDecl" }
+
+    /**
+     * Gets the name of this macro.
+     */
+    string getName() { macro_decls(this, result) }
+
+    /**
+     * Gets the `index`th parameter of this macro (0-based).
+     */
+    ParamDecl getParameter(int index) { macro_decl_parameters(this, index, result) }
+
+    /**
+     * Gets the `index`th role of this macro (0-based).
+     */
+    MacroRole getRole(int index) { macro_decl_roles(this, index, result) }
   }
 
   /**
@@ -1121,6 +1181,42 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that forces value to be moved. In the example below, `consume` marks the move expression:
+   *
+   * ```
+   * let y = ...
+   * let x = consume y
+   * ```
+   */
+  class ConsumeExpr extends @consume_expr, Expr {
+    override string toString() { result = "ConsumeExpr" }
+
+    /**
+     * Gets the sub expression of this consume expression.
+     */
+    Expr getSubExpr() { consume_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
+   *
+   * ```
+   * let y = ...
+   * let x = copy y
+   * ```
+   */
+  class CopyExpr extends @copy_expr, Expr {
+    override string toString() { result = "CopyExpr" }
+
+    /**
+     * Gets the sub expression of this copy expression.
+     */
+    Expr getSubExpr() { copy_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class DeclRefExpr extends @decl_ref_expr, Expr {
     override string toString() { result = "DeclRefExpr" }
@@ -1410,6 +1506,22 @@ module Raw {
      * Gets the sub expression of this make temporarily escapable expression.
      */
     Expr getSubExpr() { make_temporarily_escapable_exprs(this, _, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that materializes a pack during expansion. Appears around PackExpansionExpr.
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class MaterializePackExpr extends @materialize_pack_expr, Expr {
+    override string toString() { result = "MaterializePackExpr" }
+
+    /**
+     * Gets the sub expression of this materialize pack expression.
+     */
+    Expr getSubExpr() { materialize_pack_exprs(this, result) }
   }
 
   /**
@@ -1841,6 +1953,19 @@ module Raw {
    */
   class BinaryExpr extends @binary_expr, ApplyExpr {
     override string toString() { result = "BinaryExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:
+   *
+   * ```
+   * let y = ...
+   * let x = _borrow y
+   * ```
+   */
+  class BorrowExpr extends @borrow_expr, IdentityExpr {
+    override string toString() { result = "BorrowExpr" }
   }
 
   /**
@@ -2710,6 +2835,24 @@ module Raw {
      * Gets the body of this defer statement.
      */
     BraceStmt getBody() { defer_stmts(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A statement that takes a non-copyable value and destructs its members/fields.
+   *
+   * The only valid syntax:
+   * ```
+   * destruct self
+   * ```
+   */
+  class DiscardStmt extends @discard_stmt, Stmt {
+    override string toString() { result = "DiscardStmt" }
+
+    /**
+     * Gets the sub expression of this discard statement.
+     */
+    Expr getSubExpr() { discard_stmts(this, result) }
   }
 
   /**

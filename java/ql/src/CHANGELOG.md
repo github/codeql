@@ -1,3 +1,9 @@
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The query `java/unsafe-deserialization` has been improved to detect insecure calls to `ObjectMessage.getObject` in JMS.
+
 ## 0.8.2
 
 ### Minor Analysis Improvements

@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ApplyExpr
 import codeql.swift.elements.expr.Expr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `SelfApplyExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An internal raw instance of method lookups like `x.foo` in `x.foo()`.

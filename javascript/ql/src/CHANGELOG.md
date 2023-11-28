@@ -1,3 +1,10 @@
+## 0.8.3
+
+### Query Metadata Changes
+
+* Lower the security severity of log-injection to medium.
+* Increase the security severity of XSS to high.
+
 ## 0.8.2
 
 ### Minor Analysis Improvements

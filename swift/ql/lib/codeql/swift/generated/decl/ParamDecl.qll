@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.PatternBindingDecl
 import codeql.swift.elements.decl.VarDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ParamDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::ParamDecl` class directly.

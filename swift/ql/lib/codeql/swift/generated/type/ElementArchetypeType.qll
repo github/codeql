@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.LocalArchetypeType
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ElementArchetypeType` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An archetype type of PackElementType.

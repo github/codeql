@@ -4,7 +4,6 @@
  * @kind problem
  * @id py/quantum-readiness/cbom/key-derivation
  * @problem.severity error
- * @precision high
  * @tags cbom
  *       cryptography
  */
