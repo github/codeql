@@ -72,3 +72,32 @@ void test_modify_copy_via_strdup(char* p) { // $ ast-def=p
   modify_copy_via_strdup(p);
   sink(*p); // $ SPURIOUS: ir
 }
+
+int* deref(int** p) { // $ ast-def=p
+  int* q = *p;
+  return q;
+}
+
+void test1() {
+  int x = 0;
+  int* p = &x;
+  deref(&p)[0] = source();
+  sink(*p); // $ ir MISSING: ast
+}
+
+
+void addtaint1(int* q) { // $ ast-def=q ir-def=*q
+  *q = source();
+}
+
+void addtaint2(int** p) { // $ ast-def=p
+  int* q = *p;
+  addtaint1(q);
+}
+
+void test2() {
+  int x = 0;
+  int* p = &x;
+  addtaint2(&p);
+  sink(*p); // $ ir MISSING: ast
+}

@@ -58,6 +58,12 @@ postWithInFlow
 | flowOut.cpp:30:12:30:12 | x [inner post update] | PostUpdateNode should not be the target of local flow. |
 | flowOut.cpp:37:5:37:6 | p2 [inner post update] | PostUpdateNode should not be the target of local flow. |
 | flowOut.cpp:37:5:37:9 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:84:3:84:7 | call to deref [inner post update] | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:84:3:84:14 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:84:10:84:10 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:90:3:90:4 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:90:4:90:4 | q [inner post update] | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:101:14:101:14 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:13:5:13:19 | flowTestGlobal1 [post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:23:5:23:19 | flowTestGlobal2 [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:23:3:23:14 | v [post update] | PostUpdateNode should not be the target of local flow. |
