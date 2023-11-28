@@ -55,21 +55,6 @@ module TarSlip {
     ExcludeTarFilePy() { this.getLocation().getFile().getBaseName() = "tarfile.py" }
   }
 
-  private DataFlow::TypeTrackingNode unsafeFilter(DataFlow::TypeTracker t) {
-    t.start() and
-    (
-      result.asExpr().(StrConst).getS() = "fully_trusted"
-      or
-      result.asExpr() instanceof None
-    )
-    or
-    exists(DataFlow::TypeTracker t2 | result = unsafeFilter(t2).track(t2, t))
-  }
-
-  private DataFlow::Node unsafeFilter() {
-    unsafeFilter(DataFlow::TypeTracker::end()).flowsTo(result)
-  }
-
   /**
    * Holds if `call` has an unsafe extraction filter, either by default (as the default is unsafe),
    * or by being set to an explicitly unsafe value, such as `"fully_trusted"`, or `None`.
