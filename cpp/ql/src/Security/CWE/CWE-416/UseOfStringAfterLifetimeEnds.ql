@@ -22,6 +22,8 @@ import semmle.code.cpp.models.implementations.StdContainer
  * a temporary object.
  */
 predicate isTemporary(Expr e) {
+  e instanceof TemporaryObjectExpr
+  or
   e.isPRValueCategory() and
   e.getUnspecifiedType() instanceof Class and
   not e.hasLValueToRValueConversion()
@@ -92,7 +94,7 @@ from Call c
 where
   outlivesFullExpr(c) and
   not c.isFromUninstantiatedTemplate(_) and
-  c.getTarget() instanceof StdStringCStr and
+  (c.getTarget() instanceof StdStringCStr or c.getTarget() instanceof StdStringData) and
   isTemporary(c.getQualifier().getFullyConverted())
 select c,
   "The underlying string object is destroyed after the call to '" + c.getTarget() + "' returns."

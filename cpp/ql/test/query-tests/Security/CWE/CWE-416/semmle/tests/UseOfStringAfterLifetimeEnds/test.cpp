@@ -184,6 +184,12 @@ const char* test1(bool b1, bool b2) {
 
   char c = std::string("hello").c_str()[0]; // GOOD
 
+  auto s6 = std::string("hello").data(); // BAD
+  auto s7 = b1 ? std::string("hello").data() : ""; // BAD
+  auto s8 = b2 ? "" : std::string("hello").data(); // BAD
+  char* s9;
+  s9 = std::string("hello").data(); // BAD
+
   return std::string("hello").c_str(); // BAD
 }
 
