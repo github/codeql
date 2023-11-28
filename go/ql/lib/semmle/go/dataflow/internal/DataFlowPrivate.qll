@@ -83,7 +83,8 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
   or
   // SSA defn -> first SSA use
-  exists(SsaExplicitDefinition pred, IR::Instruction succ | succ = pred.getAFirstUse() |
+  exists(SsaDefinition pred, IR::Instruction succ | succ = pred.getAFirstUse() |
+    (pred instanceof SsaExplicitDefinition or pred instanceof SsaVariableCapture) and
     nodeFrom = ssaNode(pred.getVariable()) and
     nodeTo = instructionNode(succ)
   )

@@ -166,6 +166,13 @@ class SsaDefinition extends TSsaDefinition {
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /**
+   * Gets the first instruction that the value of this `SsaDefinition` can
+   * reach without passing through any other instructions, but possibly through
+   * phi nodes.
+   */
+  IR::Instruction getAFirstUse() { firstUse(this, result) }
 }
 
 /**
@@ -197,13 +204,6 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   override string prettyPrintDef() { result = "definition of " + this.getSourceVariable() }
 
   override Location getLocation() { result = this.getInstruction().getLocation() }
-
-  /**
-   * Gets the first instruction that the value of this `SsaDefinition` can
-   * reach without passing through any other instructions, but possibly through
-   * phi nodes.
-   */
-  IR::Instruction getAFirstUse() { firstUse(this, result) }
 }
 
 /** Provides a helper predicate for working with explicit SSA definitions. */
