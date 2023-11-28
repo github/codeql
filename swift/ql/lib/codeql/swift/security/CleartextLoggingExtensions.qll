@@ -4,6 +4,7 @@ import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.security.SensitiveExprs
+private import codeql.swift.StringFormat
 
 /** A data flow sink for cleartext logging of sensitive data vulnerabilities. */
 abstract class CleartextLoggingSink extends DataFlow::Node { }
@@ -94,30 +95,6 @@ private class CleartextLoggingFieldAdditionalFlowStep extends CleartextLoggingAd
 }
 
 /**
- * A function that appears to be an imported C `printf` variant.
- * TODO: merge code with similar cases from the format string PR.
- */
-private class PrintfFormat extends FreeFunction {
-  int formatParamIndex;
-  string modeChars;
-
-  PrintfFormat() {
-    modeChars = this.getShortName().regexpCapture("(.*)printf.*", 1) and
-    this.getParam(formatParamIndex).getName() = "format"
-  }
-
-  /**
-   * Gets the index of the format parameter.
-   */
-  int getFormatParamIndex() { result = formatParamIndex }
-
-  /**
-   * Holds if this `printf` is a variant of `sprintf`.
-   */
-  predicate isSprintf() { modeChars.charAt(_) = "s" }
-}
-
-/**
  * A sink that appears to be an imported C `printf` variant.
  */
 private class PrintfCleartextLoggingSink extends CleartextLoggingSink {
@@ -125,7 +102,7 @@ private class PrintfCleartextLoggingSink extends CleartextLoggingSink {
     exists(CallExpr ce, PrintfFormat f |
       ce.getStaticTarget() = f and
       (
-        this.asExpr() = ce.getArgument(f.getFormatParamIndex()).getExpr() or
+        this.asExpr() = ce.getArgument(f.getFormatParameterIndex()).getExpr() or
         this.asExpr() = ce.getArgument(f.getNumberOfParams() - 1).getExpr()
       ) and
       not f.isSprintf()
