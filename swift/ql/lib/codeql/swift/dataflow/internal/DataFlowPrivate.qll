@@ -1482,11 +1482,21 @@ Type stripType(Type t) {
     result = stripType(iot.getObjectType().getCanonicalType())
   )
   or
+  exists(TupleType labeled, TupleType unlabeled |
+    labeled = t and
+    forall(int index | index in [0 .. labeled.getNumberOfTypes() - 1] |
+      labeled.getType(index) = unlabeled.getType(index) and
+      not exists(unlabeled.getName(index))
+    ) and
+    result = unlabeled
+  )
+  or
   not exists(BoundGenericEnumType optional |
     optional = t and
     optional.getDeclaration().getFullName() = "Optional"
   ) and
   not t instanceof InOutType and
+  not t instanceof TupleType and
   result = t.getCanonicalType()
 }
 
