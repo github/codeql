@@ -161,7 +161,7 @@ void call_by_cref(const S&);
 
 void call(const char*);
 
-const char* test(bool b1, bool b2) {
+const char* test1(bool b1, bool b2) {
   auto s1 = std::string("hello").c_str(); // BAD
   auto s2 = b1 ? std::string("hello").c_str() : ""; // BAD
   auto s3 = b2 ? "" : std::string("hello").c_str(); // BAD
@@ -185,4 +185,29 @@ const char* test(bool b1, bool b2) {
   char c = std::string("hello").c_str()[0]; // GOOD
 
   return std::string("hello").c_str(); // BAD
+}
+
+void test2(bool b1, bool b2) {
+  std::string s("hello");
+  auto s1 = s.c_str(); // GOOD
+  auto s2 = b1 ? s.c_str() : ""; // GOOD
+  auto s3 = b2 ? "" : s.c_str(); // GOOD
+  const char* s4;
+  s4 = s.c_str(); // GOOD
+
+  std::string& sRef = s;
+
+  auto s5 = sRef.c_str(); // GOOD
+  auto s6 = b1 ? sRef.c_str() : ""; // GOOD
+  auto s7 = b2 ? "" : sRef.c_str(); // GOOD
+  const char* s8;
+  s8 = sRef.c_str(); // GOOD
+
+  std::string&& sRefRef = std::string("hello");
+
+  auto s9 = sRefRef.c_str(); // GOOD
+  auto s10 = b1 ? sRefRef.c_str() : ""; // GOOD
+  auto s11 = b2 ? "" : sRefRef.c_str(); // GOOD
+  const char* s12;
+  s12 = sRefRef.c_str(); // GOOD
 }
