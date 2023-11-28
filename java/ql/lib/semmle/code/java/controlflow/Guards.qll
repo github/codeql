@@ -111,11 +111,14 @@ private PatternCase getClosestPrecedingPatternCase(SwitchCase case) {
  * test or guard failing and proceeding to then consider subsequent cases.
  */
 private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pred) {
-  pred.(Expr).getParent*() = sc.getSelectorExpr()
-  or
-  pred.(Expr).getParent*() = getClosestPrecedingPatternCase(sc).getGuard()
-  or
-  pred = getClosestPrecedingPatternCase(sc)
+  pred = sc.getControlFlowNode().getAPredecessor() and
+  (
+    pred.(Expr).getParent*() = sc.getSelectorExpr()
+    or
+    pred.(Expr).getParent*() = getClosestPrecedingPatternCase(sc).getGuard()
+    or
+    pred = getClosestPrecedingPatternCase(sc)
+  )
 }
 
 /**
@@ -230,7 +233,6 @@ class Guard extends ExprParent {
       not sc instanceof PatternCase and
       branch = true and
       bb2.getFirstNode() = sc.getControlFlowNode() and
-      pred = sc.getControlFlowNode().getAPredecessor() and
       isNonFallThroughPredecessor(sc, pred) and
       bb1 = pred.getBasicBlock()
     )
