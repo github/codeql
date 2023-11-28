@@ -1684,7 +1684,7 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   /**
    * Gets the switch statement or expression whose pattern declares this identifier, if any.
    */
-  StmtParent getAssociatedSwitch() {
+  SwitchBlock getAssociatedSwitch() {
     exists(PatternCase pc |
       pc = result.(SwitchStmt).getAPatternCase()
       or
