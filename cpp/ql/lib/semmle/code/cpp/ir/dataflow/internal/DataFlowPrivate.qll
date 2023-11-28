@@ -1151,14 +1151,16 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
 }
 
 /**
- * Holds if the dataflow step from `node1` to `node2` should not be used when
- * computing flow-through summaries because the dataflow step copies the value
- * of `node1` to `node2` in a way that does not preserve the identity of the
- * value. For example the assignment to `x` that reads the value of `*p` in:
+ * Holds if the data-flow step from `node1` to `node2` can be used to
+ * determine where side-effects may return from a callable.
+ * For C/C++, this means that the step from `node1` to `node2` not only
+ * preserves the value, but also preserves the identity of the value.
+ * For example, the assignment to `x` that reads the value of `*p` in
  * ```cpp
  * int* p = ...
  * int x = *p;
  * ```
+ * does not preserve the identity of `*p`.
  */
 bindingset[node1, node2]
 pragma[inline_late]
