@@ -129,10 +129,10 @@ The models are stored in a series of YAML data extension files, one for each pub
 
 The editor will create a separate model file for each package that you model.
 
-Modeling methods that can be called in different ways
------------------------------------------------------
+Modeling methods with multiple potential flows
+----------------------------------------------
 
-Some methods behave differently according to how they are called. In this case, once you have created one model for the method, you can add a second model using the **+** button in the method row.
+Some methods support more than one data flow. It is important to model all the data flows for a method, otherwise you cannot detect all the potential problems associated with using the method. First you model one data flow for the method, and then use the **+** button in the method row to specify a second data flow model.
 
    .. image:: ../images/codeql-for-visual-studio-code/model-dependency-mode-plus.png
       :width: 800
