@@ -111,10 +111,12 @@ private module Input implements InputSig<PythonDataFlow> {
     or
     // in the code `def func(self): super().foo(); super.bar()` we use `self` as the
     // (pos self) argument in both .foo() and .bar() calls.
-    exists(Function f |
+    exists(Function f, DataFlowCall other | other != call |
       exprNode(f.getArg(0)) = arg and
       call.getNode().getScope() = f and
-      arg = call.getArgument(any(ArgumentPosition p | p.isSelf()))
+      arg = call.getArgument(any(ArgumentPosition p | p.isSelf())) and
+      arg = other.getArgument(any(ArgumentPosition p | p.isSelf())) and
+      other.getNode().getScope() = f
     )
   }
 }
