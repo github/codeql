@@ -552,7 +552,7 @@ module MakeImplCommon<InputSig Lang> {
           exists(Node mid |
             parameterValueFlowCand(p, mid, read) and
             simpleLocalFlowStep(mid, node) and
-            flowThroughStepAllowed(mid, node)
+            validParameterAliasStep(mid, node)
           )
           or
           // read
@@ -672,7 +672,7 @@ module MakeImplCommon<InputSig Lang> {
           exists(Node mid |
             parameterValueFlow(p, mid, read) and
             simpleLocalFlowStep(mid, node) and
-            flowThroughStepAllowed(mid, node)
+            validParameterAliasStep(mid, node)
           )
           or
           // read

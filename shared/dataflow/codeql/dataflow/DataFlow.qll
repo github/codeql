@@ -175,7 +175,7 @@ signature module InputSig {
    * computing flow-through summaries.
    */
   bindingset[node1, node2]
-  default predicate flowThroughStepAllowed(Node node1, Node node2) { any() }
+  default predicate validParameterAliasStep(Node node1, Node node2) { any() }
 
   /**
    * Holds if data can flow from `node1` to `node2` through a non-local step

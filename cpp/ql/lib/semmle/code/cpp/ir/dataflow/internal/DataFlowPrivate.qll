@@ -1162,7 +1162,7 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
  */
 bindingset[node1, node2]
 pragma[inline_late]
-predicate flowThroughStepAllowed(Node node1, Node node2) {
+predicate validParameterAliasStep(Node node1, Node node2) {
   // When flow-through summaries are computed we track which parameters flow to out-going parameters.
   // In an example such as:
   // ```
