@@ -74,7 +74,7 @@ module TarSlip {
    * Holds if `call` has an unsafe extraction filter, either by default (as the default is unsafe),
    * or by being set to an explicitly unsafe value, such as `"fully_trusted"`, or `None`.
    */
-  private predicate hasUnsafeFilter(DataFlow::CallCfgNode call) {
+  private predicate hasUnsafeFilter(API::CallNode call) {
     call =
       API::moduleImport("tarfile")
           .getMember("open")
@@ -82,11 +82,16 @@ module TarSlip {
           .getMember(["extract", "extractall"])
           .getACall() and
     (
-      call.getArg(4) = unsafeFilter()
+      exists(Expr filterValue |
+        filterValue = call.getParameter(4, "filter").getAValueReachingSink().asExpr() and
+        (
+          filterValue.(StrConst).getText() = "fully_trusted"
+          or
+          filterValue instanceof None
+        )
+      )
       or
-      call.getArgByName("filter") = unsafeFilter()
-      or
-      not exists(call.getArg(4)) and not exists(call.getArgByName("filter"))
+      not exists(call.getParameter(4, "filter"))
     )
   }
 
