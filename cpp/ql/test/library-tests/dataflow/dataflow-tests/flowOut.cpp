@@ -28,7 +28,7 @@ void modify(int* ptr) { // $ ast-def=ptr
 void test_output() {
    int x = 0;
    modify(&x);
-   sink(x); // $ SPURIOUS: ir MISSING: ast
+   sink(x); // $ ir MISSING: ast
 }
 
 void modify_copy_of_pointer(int* p, unsigned len) { // $ ast-def=p
