@@ -20,7 +20,7 @@ fn test_ruby_multiple_assignment() {
     let transform = |captures| {
         // construct the new tree here maybe
         // captures is probably a HashMap from capture name to AST node
-        Ast {}
+        Ast::example(tree_sitter_ruby::language())
     };
     let rule = Rule::new(query, transform);
 
