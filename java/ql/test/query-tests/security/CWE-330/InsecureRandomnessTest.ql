@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.security.WeakRandomnessQuery
+import semmle.code.java.security.InsecureRandomnessQuery
 import TestUtilities.InlineExpectationsTest
 
 module WeakRandomTest implements TestSig {
@@ -8,7 +8,7 @@ module WeakRandomTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasWeakRandomFlow" and
-    exists(DataFlow::Node sink | WeakRandomnessFlow::flowTo(sink) |
+    exists(DataFlow::Node sink | InsecureRandomnessFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
