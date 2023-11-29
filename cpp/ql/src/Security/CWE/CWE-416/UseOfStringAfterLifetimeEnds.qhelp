@@ -5,7 +5,7 @@
 
 <overview>
 <p>Calling <code>c_str</code> on a <code>std::string</code> object returns a pointer to the underlying character array.
-However, if the <code>std::string</code> object is destroyed, then the pointer returned by <code>c_str</code> is no
+When the <code>std::string</code> object is destroyed, the pointer returned by <code>c_str</code> is no
 longer valid. If the pointer is used after the <code>std::string</code> object is destroyed, then the behavior is undefined.
 </p>
 </overview>
@@ -18,7 +18,7 @@ Ensure that the pointer returned by <code>c_str</code> does not outlive the unde
 
 <example>
 <p>
-The following example concatenates two <code>std::string</code> objects, and then convert the resulting string to a
+The following example concatenates two <code>std::string</code> objects, and then converts the resulting string to a
 C string using <code>c_str</code> so that it can be passed to the <code>work</code> function.
 
 However, the underlying <code>std::string</code> object that represents the concatenated string is destroyed as soon as the call
