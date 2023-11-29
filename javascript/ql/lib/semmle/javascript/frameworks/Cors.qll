@@ -19,8 +19,6 @@ module Cors {
     predicate isDefault() { this.getNumArgument() = 0 }
 
     /** Gets the value of origin */
-    DataFlow::Node getOrigin() {
-      result = this.getOptionArgument(0, "origin")
-    }
+    DataFlow::Node getOrigin() { result = this.getOptionArgument(0, "origin") }
   }
 }
