@@ -264,12 +264,14 @@ private module Cached {
     // Flow from the last component in a key path chain to
     // the return node for the key path.
     exists(KeyPathExpr keyPath |
-      nodeFrom.(KeyPathComponentNodeImpl).getComponent() = keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
+      nodeFrom.(KeyPathComponentNodeImpl).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
       nodeTo.(KeyPathReturnNodeImpl).getKeyPathExpr() = keyPath
     )
     or
     exists(KeyPathExpr keyPath |
-      nodeTo.(KeyPathComponentPostUpdateNode).getComponent() = keyPath.getComponent(keyPath.getNumberOfComponents()-1) and
+      nodeTo.(KeyPathComponentPostUpdateNode).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
       nodeFrom.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = keyPath
     )
     or
@@ -958,9 +960,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     // the first node is either the previous element in the chain
     node1.(KeyPathComponentNodeImpl).getComponent().getNextComponent() = component
     or
-    // or the start node, if this is the first component in the chain 
-    component =
-      node1.(KeyPathParameterNode).getComponent(0)
+    // or the start node, if this is the first component in the chain
+    component = node1.(KeyPathParameterNode).getComponent(0)
   |
     component = node2.(KeyPathComponentNodeImpl).getComponent() and
     (
