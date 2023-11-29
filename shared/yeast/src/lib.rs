@@ -3,10 +3,9 @@
 
 use std::collections::BTreeMap;
 
+pub mod captures;
 pub mod query;
 pub mod tree_builder;
-pub mod captures;
-
 
 use captures::Captures;
 use query::QueryNode;
@@ -23,6 +22,9 @@ type Id = usize;
 /// Field and Kind ids are provided by tree-sitter
 type FieldId = u16;
 type KindId = u16;
+
+pub const CHILD_FIELD: u16 = u16::MAX;
+const CHILD_FIELD_NAME: &str = "child";
 
 #[derive(Debug)]
 pub struct Cursor<'a> {
@@ -65,10 +67,7 @@ impl<'a> Cursor<'a> {
             Some((_field_id, child_ids)) if !child_ids.is_empty() => {
                 self.ast.get_node(child_ids[0]).unwrap()
             }
-            _ => match self.node.children.first() {
-                None => return false,
-                Some(child_id) => self.ast.get_node(*child_id).unwrap(),
-            },
+            _ => return false,
         };
         self.locations.push(location);
         self.parents.push(parent);
@@ -83,14 +82,7 @@ impl<'a> Cursor<'a> {
                 let parent = self.ast.get_node(*parent).unwrap();
                 let (field_index, child_index) = self.locations.pop().unwrap();
                 if field_index == parent.fields.len() {
-                    if parent.children.is_empty() || child_index == parent.children.len() - 1 {
-                        return false;
-                    } else {
-                        (
-                            parent.children[child_index + 1],
-                            (field_index, child_index + 1),
-                        )
-                    }
+                    return false;
                 } else {
                     let (_field_id, children) = parent.fields.iter().nth(field_index).unwrap();
                     if child_index == children.len() - 1 {
@@ -98,13 +90,7 @@ impl<'a> Cursor<'a> {
                         let location = (field_index + 1, 0);
                         let node_id = match parent.fields.iter().nth(field_index + 1) {
                             Some((_field_id, children)) => children[0],
-                            None => {
-                                if parent.children.is_empty() {
-                                    return false;
-                                } else {
-                                    parent.children[0]
-                                }
-                            }
+                            None => return false,
                         };
                         (node_id, location)
                     } else {
@@ -159,16 +145,38 @@ impl Ast {
         serde_json::to_value(self.print_node(root, source)).unwrap()
     }
 
-    fn create_node(&mut self, kind: KindId, content: NodeContent, fields: BTreeMap<FieldId, Vec<Id>>, children: Vec<Id>) -> Id {
+    fn create_node(
+        &mut self,
+        kind: KindId,
+        content: NodeContent,
+        mut fields: BTreeMap<FieldId, Vec<Id>>,
+        children: Vec<Id>,
+    ) -> Id {
         let id = self.nodes.len();
-        self.nodes.push(Node { id, kind, children, fields, content });
+        fields.insert(CHILD_FIELD, children);
+        self.nodes.push(Node {
+            id,
+            kind,
+            fields,
+            content,
+        });
         id
+    }
+
+    fn field_name_for_id(&self, id: FieldId) -> Option<&str> {
+        if id == CHILD_FIELD {
+            Some(CHILD_FIELD_NAME)
+        } else {
+            self.language.field_name_for_id(id)
+        }
     }
 
     /// Print a node for debugging
     fn print_node(&self, node: &Node, source: &str) -> Value {
         let children: Vec<Value> = node
-            .children
+            .fields
+            .get(&CHILD_FIELD)
+            .unwrap_or(&vec![])
             .iter()
             .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
             .collect();
@@ -177,7 +185,10 @@ impl Ast {
             fields.insert("rest", children);
         }
         for (field_id, nodes) in &node.fields {
-            let field_name = self.language.field_name_for_id(*field_id).unwrap();
+            if field_id == &CHILD_FIELD {
+                continue;
+            }
+            let field_name = self.field_name_for_id(*field_id).unwrap();
             let nodes: Vec<Value> = nodes
                 .iter()
                 .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
@@ -218,7 +229,6 @@ impl Ast {
                 Node {
                     id: 0,
                     kind: 276,
-                    children: vec![2],
                     fields: {
                         let mut map = BTreeMap::new();
                         map.insert(18, vec![1]);
@@ -231,7 +241,6 @@ impl Ast {
                 Node {
                     id: 1,
                     kind: 1,
-                    children: vec![],
                     fields: BTreeMap::new(),
                     content: NodeContent::String("x"),
                 },
@@ -239,7 +248,6 @@ impl Ast {
                 Node {
                     id: 2,
                     kind: 17,
-                    children: vec![],
                     fields: BTreeMap::new(),
                     content: NodeContent::String("="),
                 },
@@ -247,7 +255,6 @@ impl Ast {
                 Node {
                     id: 3,
                     kind: 110,
-                    children: vec![],
                     fields: BTreeMap::new(),
                     content: NodeContent::String("1"),
                 },
@@ -261,7 +268,6 @@ impl Ast {
 pub struct Node {
     id: Id,
     kind: KindId,
-    children: Vec<Id>,
     fields: BTreeMap<FieldId, Vec<Id>>,
     content: NodeContent,
 }

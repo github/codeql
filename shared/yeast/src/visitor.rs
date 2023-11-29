@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 use tree_sitter::{Language, Tree};
 
-use crate::{Ast, Id, Node, NodeContent};
+use crate::{Ast, Id, Node, NodeContent, CHILD_FIELD};
 
 #[derive(Debug)]
 struct VisitorNode {
@@ -61,7 +61,6 @@ impl Visitor {
                 id,
                 kind: self.language.id_for_node_kind(n.kind(), is_named),
                 content,
-                children: vec![],
                 fields: BTreeMap::new(),
             },
             parent: self.current,
@@ -91,7 +90,12 @@ impl Visitor {
                     .or_default()
                     .push(node_id);
             } else {
-                parent.inner.children.push(node_id);
+                parent
+                    .inner
+                    .fields
+                    .entry(CHILD_FIELD)
+                    .or_default()
+                    .push(node_id);
             }
         }
 
