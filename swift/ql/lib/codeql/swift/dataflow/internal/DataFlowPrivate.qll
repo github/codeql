@@ -261,8 +261,8 @@ private module Cached {
         nodeFrom.asPattern().(TypedPattern).getSubPattern()
       ]
     or
-    // Flow from the unique parameter of a key path expression to
-    // the first component in the chain.
+    // Flow from the last component in a key path chain to
+    // the return node for the key path.
     exists(KeyPathExpr keyPath |
       nodeFrom.(KeyPathComponentNodeImpl).getComponent() = keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
       nodeTo.(KeyPathReturnNodeImpl).getKeyPathExpr() = keyPath
@@ -272,9 +272,6 @@ private module Cached {
       nodeTo.(KeyPathComponentPostUpdateNode).getComponent() = keyPath.getComponent(keyPath.getNumberOfComponents()-1) and
       nodeFrom.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = keyPath
     )
-    
-  //  nodeFrom.(KeyPathComponentPostUpdateNode).getComponent() =
-  //    nodeTo.(KeyPathParameterPostUpdateNode).getComponent(0)
     or
     // Flow to the result of a keypath assignment
     exists(KeyPathApplicationExpr apply, AssignExpr assign |
