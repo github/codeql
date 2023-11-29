@@ -213,7 +213,7 @@ fn isMatch(query: &Query, ast: &Ast, node: &Node) -> bool {
 
             return true;
         }
-        Query::Conjunction { conjuncts } => {
+        Query::Conjunction { conjuncts: _ } => {
             return false;
         }
     }
