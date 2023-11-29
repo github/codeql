@@ -289,6 +289,10 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   predicate ignoreExprBound(Sem::Expr e);
 
   default predicate javaCompatibility() { none() }
+
+  default predicate includeConstantBounds() { any() }
+
+  default predicate includeRelativeBounds() { any() }
 }
 
 signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
@@ -983,6 +987,13 @@ module RangeStage<
     )
   }
 
+  private predicate includeBound(SemBound b) {
+    // always include phi bounds
+    b.(SemSsaBound).getVariable() instanceof Sem::SsaPhiNode
+    or
+    if b instanceof SemZeroBound then includeConstantBounds() else includeRelativeBounds()
+  }
+
   /**
    * Holds if `e` has an upper (for `upper = true`) or lower
    * (for `upper = false`) bound of `b`.
@@ -1122,13 +1133,15 @@ module RangeStage<
       (upper = true or upper = false) and
       fromBackEdge = false and
       origdelta = delta and
-      reason = TSemNoReason()
+      reason = TSemNoReason() and
+      includeBound(b)
       or
       baseBound(e, delta, upper) and
       b instanceof SemZeroBound and
       fromBackEdge = false and
       origdelta = delta and
-      reason = TSemNoReason()
+      reason = TSemNoReason() and
+      includeBound(b)
       or
       exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
         boundedSsa(v, b, delta, bb, upper, fromBackEdge, origdelta, reason) and
