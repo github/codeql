@@ -2,7 +2,7 @@
 use std::path::Path;
 
 use yeast::captures::Captures;
-use yeast::*;
+use yeast::{print::Printer, *};
 #[test]
 fn test_ruby_multiple_assignment() {
     // We want to convert this
@@ -11,10 +11,10 @@ fn test_ruby_multiple_assignment() {
     //
     // into this
     //
-    // __tmp_1 = e
-    // x = __tmp_1[0]
-    // y = __tmp_1[1]
-    // z = __tmp_1[2]
+    // tmp = e
+    // x = tmp[0]
+    // y = tmp[1]
+    // z = tmp[2]
 
     // Define a desugaring rule, which is a query together with a transformation.
 
@@ -146,4 +146,17 @@ fn write_expected<P: AsRef<Path>>(file: P, content: &str) {
         .unwrap()
         .write_all(content.as_bytes())
         .unwrap();
+}
+
+#[test]
+fn test_output() {
+    let input = std::fs::read_to_string("tests/fixtures/1.rb").unwrap();
+    let parsed_expected = std::fs::read_to_string("tests/fixtures/1.parsed.json").unwrap();
+
+    let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
+    let ast = runner.run(&input);
+    let cursor = Cursor::new(&ast);
+    let mut printer = Printer {};
+    printer.visit(cursor);
+    panic!()
 }

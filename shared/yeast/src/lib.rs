@@ -13,6 +13,7 @@ use query::QueryNode;
 use serde::Serialize;
 use serde_json::{json, Value};
 
+pub mod print;
 mod range;
 mod visitor;
 
@@ -22,6 +23,113 @@ type Id = usize;
 /// Field and Kind ids are provided by tree-sitter
 type FieldId = u16;
 type KindId = u16;
+
+#[derive(Debug)]
+pub struct Cursor<'a> {
+    ast: &'a Ast,
+    parents: Vec<Id>,
+    node: &'a Node,
+    locations: Vec<(usize, usize)>,
+}
+
+impl<'a> Cursor<'a> {
+    pub fn new(ast: &'a Ast) -> Self {
+        let node = ast.get_node(0).unwrap();
+        Self {
+            ast,
+            parents: vec![],
+            node,
+            locations: vec![],
+        }
+    }
+
+    pub fn node(&mut self) -> &'a Node {
+        self.node
+    }
+    pub fn field_id(&self) -> Option<FieldId> {
+        let parent_id = self.parents.last()?;
+        let (field_index, _) = self.locations.last().unwrap();
+        let (field_id, _) = self
+            .ast
+            .get_node(*parent_id)
+            .unwrap()
+            .fields
+            .iter()
+            .nth(*field_index)?;
+        Some(*field_id)
+    }
+    pub fn goto_first_child(&mut self) -> bool {
+        let location = (0, 0);
+        let parent = self.node.id;
+        self.node = match self.node.fields.iter().next() {
+            Some((_field_id, child_ids)) if !child_ids.is_empty() => {
+                self.ast.get_node(child_ids[0]).unwrap()
+            }
+            _ => match self.node.children.first() {
+                None => return false,
+                Some(child_id) => self.ast.get_node(*child_id).unwrap(),
+            },
+        };
+        self.locations.push(location);
+        self.parents.push(parent);
+        true
+    }
+    pub fn goto_next_sibling(&mut self) -> bool {
+        let (node_id, location) = match self.parents.last() {
+            None => {
+                return false;
+            }
+            Some(parent) => {
+                let parent = self.ast.get_node(*parent).unwrap();
+                let (field_index, child_index) = self.locations.pop().unwrap();
+                if field_index == parent.fields.len() {
+                    if parent.children.is_empty() || child_index == parent.children.len() - 1 {
+                        return false;
+                    } else {
+                        (
+                            parent.children[child_index + 1],
+                            (field_index, child_index + 1),
+                        )
+                    }
+                } else {
+                    let (_field_id, children) = parent.fields.iter().nth(field_index).unwrap();
+                    if child_index == children.len() - 1 {
+                        // end of field
+                        let location = (field_index + 1, 0);
+                        let node_id = match parent.fields.iter().nth(field_index + 1) {
+                            Some((_field_id, children)) => children[0],
+                            None => {
+                                if parent.children.is_empty() {
+                                    return false;
+                                } else {
+                                    parent.children[0]
+                                }
+                            }
+                        };
+                        (node_id, location)
+                    } else {
+                        let loc = (field_index, child_index + 1);
+                        let (_, children) = parent.fields.iter().nth(field_index).unwrap();
+                        let node_id = children[child_index + 1];
+                        (node_id, loc)
+                    }
+                }
+            }
+        };
+        self.locations.push(location);
+        self.node = self.ast.get_node(node_id).unwrap();
+        true
+    }
+    pub fn goto_parent(&mut self) -> bool {
+        match self.parents.pop() {
+            None => false,
+            Some(parent) => {
+                self.node = self.ast.get_node(parent).unwrap();
+                true
+            }
+        }
+    }
+}
 
 /// Our AST
 #[derive(PartialEq, Eq, Debug)]
