@@ -2,6 +2,7 @@
 //#![feature(trace_macros)]
 
 use std::collections::BTreeMap;
+use std::option::Option;
 
 pub mod query;
 pub mod tree_builder;
@@ -176,16 +177,46 @@ impl From<tree_sitter::Range> for NodeContent {
     }
 }
 
-pub struct Query {}
-impl Query {
-    pub fn new() -> Self {
-        Self {}
-    }
+pub enum Query {
+    NodeKind { kind: KindId },
+    FieldContent { field: String, contents: Vec<Query> },
+    Conjunction { conjuncts: Vec<Query> },
 }
 
 fn isMatch(query: &Query, ast: &Ast, node: &Node) -> bool {
-    // TODO after the final Query class is merged in
-    return false;
+    match query {
+        Query::NodeKind { kind } => {
+            return *kind == node.kind;
+        }
+        Query::FieldContent { field, contents } => {
+            let fields = match ast.language.field_id_for_name(field) {
+                Some(fieldName) => {
+                    if !node.fields.contains_key(&fieldName) {
+                        return false;
+                    }
+                    &node.fields[&fieldName]
+                }
+                None => {
+                    return false;
+                }
+            };
+
+            if fields.len() != contents.len() {
+                return false;
+            }
+
+            for i in 0..fields.len() {
+                if !isMatch(&contents[i], ast, &ast.nodes[fields[i]]) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        Query::Conjunction { conjuncts } => {
+            return false;
+        }
+    }
 }
 
 pub struct Rule {

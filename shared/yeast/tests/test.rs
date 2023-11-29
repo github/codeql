@@ -18,12 +18,14 @@ fn test_ruby_multiple_assignment() {
 
     // Define a desugaring rule, which is a query together with a transformation.
 
-    let query = Query::new();
+
+    let query = Query::NodeKind { kind: 1 };
     let transform = |ast: &mut Ast, match_: Match| {
         // construct the new tree here maybe
         // captures is probably a HashMap from capture name to AST node
         match_.node
     };
+
     let rule = Rule::new(query, Box::new(transform));
 
     let input = "x, y, z = e";
