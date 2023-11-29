@@ -1,7 +1,9 @@
 use std::collections::BTreeMap;
 
 use serde::Serialize;
+use serde_json::{json, Value};
 
+mod range;
 mod visitor;
 
 /// Node ids are indexes into the arena
@@ -30,11 +32,63 @@ impl Ast {
         &self.nodes
     }
 
+    pub fn get_node(&self, id: Id) -> Option<&Node> {
+        self.nodes.get(id)
+    }
+
+    pub fn print(&self, source: &str) -> Value {
+        let root = self.nodes().first().unwrap();
+        serde_json::to_value(self.print_node(root, source)).unwrap()
+    }
+
+    /// Print a node for debugging
+    fn print_node(&self, node: &Node, source: &str) -> Value {
+        let children: Vec<Value> = node
+            .children
+            .iter()
+            .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
+            .collect();
+        let mut fields = BTreeMap::new();
+        if !children.is_empty() {
+            fields.insert("rest", children);
+        }
+        for (field_id, nodes) in &node.fields {
+            let field_name = self.language.field_name_for_id(*field_id).unwrap();
+            let nodes: Vec<Value> = nodes
+                .iter()
+                .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
+                .collect();
+            fields.insert(field_name, nodes);
+        }
+        let mut value = BTreeMap::new();
+        let kind = self.language.node_kind_for_id(node.kind).unwrap();
+        let content = match node.content {
+            NodeContent::Range(range) => {
+                let len = range.end_byte - range.start_byte;
+                let end = range.start_byte + len;
+                source.as_bytes()[range.start_byte..end]
+                    .iter()
+                    .map(|b| *b as char)
+                    .collect()
+            }
+            NodeContent::String(s) => s.to_string(),
+        };
+        if fields.is_empty() {
+            value.insert(kind, json!(content));
+        } else {
+            let mut fields: BTreeMap<_, _> =
+                fields.into_iter().map(|(k, v)| (k, json!(v))).collect();
+            fields.insert("content", json!(content));
+            value.insert(kind, json!(fields));
+        }
+        json!(value)
+    }
+
     /// Return an example AST, for testing and to fill implementation gaps
     pub fn example(language: tree_sitter::Language) -> Self {
         // x = 1
         Self {
-            language: language,
+            language,
             nodes: vec![
                 // assignment
                 Node {
@@ -85,15 +139,14 @@ pub struct Node {
     kind: KindId,
     children: Vec<Id>,
     fields: BTreeMap<FieldId, Vec<Id>>,
-    #[serde(skip_serializing)]
     content: NodeContent,
 }
 
 /// The contents of a node is either a range in the original source file,
 /// or a new string if the node is synthesized.
-#[derive(PartialEq, Eq, Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone, Serialize)]
 enum NodeContent {
-    Range(tree_sitter::Range),
+    Range(#[serde(with = "range::Range")] tree_sitter::Range),
     String(&'static str),
 }
 

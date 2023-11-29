@@ -1,4 +1,6 @@
 #![cfg(test)]
+use std::path::Path;
+
 use yeast::*;
 
 #[test]
@@ -72,7 +74,19 @@ fn test_parse_input() {
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
     let ast = runner.run(&input);
-    let parsed_actual = serde_json::to_string_pretty(ast.nodes()).unwrap();
+    let parsed_actual = serde_json::to_string_pretty(&ast.print(&input)).unwrap();
 
     assert_eq!(parsed_actual, parsed_expected);
+}
+
+/// Useful for updating fixtures
+/// ```
+/// write_expected("tests/fixtures/1.parsed.json", &parsed_actual);
+/// ```
+fn write_expected<P: AsRef<Path>>(file: P, content: &str) {
+    use std::io::Write;
+    std::fs::File::create(file)
+        .unwrap()
+        .write_all(content.as_bytes())
+        .unwrap();
 }
