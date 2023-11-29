@@ -69,7 +69,7 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
  * synthesized call that targets a callback of type `t`.
  */
 DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
-  exists(t) and 
+  exists(t) and
   exists(pos) and
   result.asType() instanceof AnyType
 }

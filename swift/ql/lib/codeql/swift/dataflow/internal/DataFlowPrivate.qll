@@ -1404,7 +1404,7 @@ string ppReprType(DataFlowType t) { none() }
  */
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-    subType(t1) = subType(t2)
+  subType(t1) = subType(t2)
   or
   exists(BoundGenericType bound1, BoundGenericType bound2 |
     stripType(t1.asType()).(BoundGenericType) = bound1 and
