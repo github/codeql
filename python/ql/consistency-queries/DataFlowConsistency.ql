@@ -44,6 +44,24 @@ private module Input implements InputSig<PythonDataFlow> {
     )
   }
 
+  predicate uniqueEnclosingCallableExclude(Node n) {
+    // `CaptureNode`s miss enclosing calables in some cases.
+    exists(Function func |
+      func = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable()
+    |
+      // This can happen if `func` is a comprehension.
+      // In that case, there is no associated DataFlowCallable.
+      not exists(func.getDefinition())
+      or
+      func.getADecorator().(Name).getId() = "property"
+    )
+    or
+    // We only have a selection of valid callables.
+    // For instance, we do not have classes as `DataFlowCallable`s.
+    not n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Function and
+    not n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Module
+  }
+
   predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
     not exists(call.getLocation().getFile().getRelativePath())
   }
