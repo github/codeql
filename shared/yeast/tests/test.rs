@@ -64,3 +64,15 @@ fn test_ruby_multiple_assignment() {
 
     assert_eq!(output, expected_output);
 }
+
+#[test]
+fn test_parse_input() {
+    let input = std::fs::read_to_string("tests/fixtures/1.rb").unwrap();
+    let parsed_expected = std::fs::read_to_string("tests/fixtures/1.parsed.json").unwrap();
+
+    let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
+    let ast = runner.run(&input);
+    let parsed_actual = serde_json::to_string_pretty(ast.nodes()).unwrap();
+
+    assert_eq!(parsed_actual, parsed_expected);
+}
