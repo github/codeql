@@ -1,5 +1,9 @@
 use std::collections::BTreeMap;
 
+use serde::Serialize;
+
+mod visitor;
+
 /// Node ids are indexes into the arena
 type Id = usize;
 
@@ -15,6 +19,17 @@ pub struct Ast {
 }
 
 impl Ast {
+    /// Construct an AST from a TS tree
+    pub fn from_tree(language: tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
+        let mut visitor = visitor::Visitor::new(language);
+        visitor.visit(tree);
+        visitor.build()
+    }
+
+    pub fn nodes(&self) -> &[Node] {
+        &self.nodes
+    }
+
     /// Return an example AST, for testing and to fill implementation gaps
     pub fn example(language: tree_sitter::Language) -> Self {
         // x = 1
@@ -64,12 +79,13 @@ impl Ast {
 }
 
 /// A node in our AST
-#[derive(PartialEq, Eq, Debug, Clone)]
-struct Node {
+#[derive(PartialEq, Eq, Debug, Clone, Serialize)]
+pub struct Node {
     id: Id,
     kind: KindId,
     children: Vec<Id>,
     fields: BTreeMap<FieldId, Vec<Id>>,
+    #[serde(skip_serializing)]
     content: NodeContent,
 }
 
@@ -79,6 +95,18 @@ struct Node {
 enum NodeContent {
     Range(tree_sitter::Range),
     String(&'static str),
+}
+
+impl From<&'static str> for NodeContent {
+    fn from(value: &'static str) -> Self {
+        NodeContent::String(value)
+    }
+}
+
+impl From<tree_sitter::Range> for NodeContent {
+    fn from(value: tree_sitter::Range) -> Self {
+        NodeContent::Range(value)
+    }
 }
 
 pub struct Query {}
@@ -106,7 +134,13 @@ impl Runner {
         Self { language }
     }
 
-    pub fn run(&self, _input: &str) -> Ast {
-        Ast::example(self.language)
+    pub fn run(&self, input: &str) -> Ast {
+        // Parse the input into an AST
+
+        let mut parser = tree_sitter::Parser::new();
+        parser.set_language(self.language).unwrap();
+        let tree = parser.parse(input, None).unwrap();
+        let ast = Ast::from_tree(self.language, &tree);
+        ast
     }
 }
