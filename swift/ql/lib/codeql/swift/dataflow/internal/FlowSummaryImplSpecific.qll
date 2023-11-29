@@ -55,12 +55,12 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
   or
   exists(ParamDecl p |
     p = c.getParam(rk.(ParamReturnKind).getIndex()) and
-//    p.isInout() and
+    p.isInout() and
     result = getDataFlowType(p.getType())
   )
   or
   rk.(ParamReturnKind).getIndex() = -1 and
-//  c.getSelfParam().isInout() and
+  c.getSelfParam().isInout() and
   result = getDataFlowType(c.getSelfParam().getType())
 }
 
