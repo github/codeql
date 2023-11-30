@@ -25,7 +25,7 @@ type KindId = u16;
 /// Our AST
 #[derive(PartialEq, Eq, Debug)]
 pub struct Ast {
-    nodes: Vec<Node>,
+    pub nodes: Vec<Node>,
     language: tree_sitter::Language,
 }
 
@@ -37,16 +37,12 @@ impl Ast {
         visitor.build()
     }
 
-    pub fn nodes(&self) -> &[Node] {
-        &self.nodes
-    }
-
     pub fn get_node(&self, id: Id) -> Option<&Node> {
         self.nodes.get(id)
     }
 
     pub fn print(&self, source: &str, rootId: Id) -> Value {
-        let root = &self.nodes()[rootId];
+        let root = &self.nodes[rootId];
         serde_json::to_value(self.print_node(root, source)).unwrap()
     }
 
@@ -150,17 +146,17 @@ impl Ast {
 /// A node in our AST
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
 pub struct Node {
-    id: Id,
-    kind: KindId,
-    children: Vec<Id>,
-    fields: BTreeMap<FieldId, Vec<Id>>,
-    content: NodeContent,
+    pub id: Id,
+    pub kind: KindId,
+    pub children: Vec<Id>,
+    pub fields: BTreeMap<FieldId, Vec<Id>>,
+    pub content: NodeContent,
 }
 
 /// The contents of a node is either a range in the original source file,
 /// or a new string if the node is synthesized.
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
-enum NodeContent {
+pub enum NodeContent {
     Range(#[serde(with = "range::Range")] tree_sitter::Range),
     String(&'static str),
 }
@@ -180,6 +176,7 @@ impl From<tree_sitter::Range> for NodeContent {
 pub enum Query {
     NodeKind { kind: KindId },
     FieldContent { field: String, contents: Vec<Query> },
+    MultipleChildren ,
     Conjunction { conjuncts: Vec<Query> },
 }
 
@@ -213,8 +210,16 @@ fn isMatch(query: &Query, ast: &Ast, node: &Node) -> bool {
 
             return true;
         }
-        Query::Conjunction { conjuncts: _ } => {
-            return false;
+        Query::MultipleChildren  => {
+            return node.children.len() > 1
+        }
+        Query::Conjunction { conjuncts } => {
+            for conjunct in conjuncts {
+                if !isMatch(conjunct, ast, node) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

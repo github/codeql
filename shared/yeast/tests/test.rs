@@ -18,12 +18,38 @@ fn test_ruby_multiple_assignment() {
 
     // Define a desugaring rule, which is a query together with a transformation.
 
+    /* List all  node kinds
+    for i in 0..1000 {
+        match tree_sitter_ruby::language().node_kind_for_id(i) {
+            Some(name) => println!("{}", name),
+            None => {}
+        }
+    }*/
 
-    let query = Query::NodeKind { kind: 1 };
+    let conjuncts = vec![
+        Query::NodeKind {
+            kind: tree_sitter_ruby::language().id_for_node_kind("left_assignment_list", true),
+        },
+        Query::MultipleChildren
+    ];
+
+    let query = Query::Conjunction { conjuncts };
+
     let transform = |ast: &mut Ast, match_: Match| {
-        // construct the new tree here maybe
-        // captures is probably a HashMap from capture name to AST node
-        match_.node
+        let mut newChildren = Vec::new();
+        newChildren.push(ast.nodes[match_.node].children[0]);
+
+        let newNode = Node {
+            id: ast.nodes.len(),
+            kind: ast.nodes[match_.node].kind,
+            children: newChildren,
+            fields: ast.nodes[match_.node].fields.clone(),
+            content: ast.nodes[match_.node].content.clone(),
+        };
+
+        ast.nodes.push(newNode);
+
+        return ast.nodes.len() - 1;
     };
 
     let rule = Rule::new(query, Box::new(transform));
