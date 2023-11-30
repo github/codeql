@@ -49,9 +49,11 @@ def _get_includes(includes):
     return [_cmake_path(i) for i in includes.to_list() if "/_virtual_includes/" not in i]
 
 def _cmake_aspect_impl(target, ctx):
-    if not ctx.rule.kind.startswith("cc_"):
+    if not ctx.rule.kind.startswith(("cc_", "_cc_add_features")):
         return [CmakeInfo(name = None, transitive_deps = depset())]
-    if ctx.rule.kind == "cc_binary_add_features":
+
+    # TODO: remove cc_binary_add_features once we remove it from internal repo
+    if ctx.rule.kind in ("cc_binary_add_features", "_cc_add_features_binary", "_cc_add_features_test"):
         dep = ctx.rule.attr.dep[0][CmakeInfo]
         return [CmakeInfo(
             name = None,

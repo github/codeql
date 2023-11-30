@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `MissingMemberDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A placeholder for missing declarations that can arise on object deserialization.

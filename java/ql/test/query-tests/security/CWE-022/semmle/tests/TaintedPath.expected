@@ -1,4 +1,9 @@
 edges
+| TaintedPath.java:11:38:11:110 | new BufferedReader(...) : BufferedReader | TaintedPath.java:12:24:12:37 | filenameReader : BufferedReader |
+| TaintedPath.java:11:57:11:109 | new InputStreamReader(...) : InputStreamReader | TaintedPath.java:11:38:11:110 | new BufferedReader(...) : BufferedReader |
+| TaintedPath.java:11:79:11:99 | getInputStream(...) : InputStream | TaintedPath.java:11:57:11:109 | new InputStreamReader(...) : InputStreamReader |
+| TaintedPath.java:12:24:12:37 | filenameReader : BufferedReader | TaintedPath.java:12:24:12:48 | readLine(...) : String |
+| TaintedPath.java:12:24:12:48 | readLine(...) : String | TaintedPath.java:14:68:14:75 | filename |
 | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp |
 | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:27:21:27:24 | temp |
 | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:30:44:30:47 | temp |
@@ -184,6 +189,12 @@ edges
 | mad/Test.java:221:26:221:33 | source(...) : String | mad/Test.java:221:19:221:33 | (...)... |
 | mad/Test.java:226:29:226:36 | source(...) : String | mad/Test.java:226:20:226:36 | (...)... |
 nodes
+| TaintedPath.java:11:38:11:110 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| TaintedPath.java:11:57:11:109 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| TaintedPath.java:11:79:11:99 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TaintedPath.java:12:24:12:37 | filenameReader : BufferedReader | semmle.label | filenameReader : BufferedReader |
+| TaintedPath.java:12:24:12:48 | readLine(...) : String | semmle.label | readLine(...) : String |
+| TaintedPath.java:14:68:14:75 | filename | semmle.label | filename |
 | Test.java:19:18:19:38 | getHostName(...) : String | semmle.label | getHostName(...) : String |
 | Test.java:24:20:24:23 | temp | semmle.label | temp |
 | Test.java:27:21:27:24 | temp | semmle.label | temp |
@@ -375,6 +386,7 @@ nodes
 | mad/Test.java:226:29:226:36 | source(...) : String | semmle.label | source(...) : String |
 subpaths
 #select
+| TaintedPath.java:14:53:14:76 | new FileReader(...) | TaintedPath.java:11:79:11:99 | getInputStream(...) : InputStream | TaintedPath.java:14:68:14:75 | filename | This path depends on a $@. | TaintedPath.java:11:79:11:99 | getInputStream(...) | user-provided value |
 | Test.java:24:11:24:24 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |
 | Test.java:27:11:27:25 | get(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:27:21:27:24 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |
 | Test.java:30:11:30:48 | getPath(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:30:44:30:47 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |

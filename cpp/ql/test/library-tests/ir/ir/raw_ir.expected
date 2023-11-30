@@ -2725,43 +2725,64 @@ ir.cpp:
 #  462|     mu462_2(int)        = Uninitialized[x]       : &:r462_1
 #  463|     r463_1(glval<bool>) = VariableAddress[a]     : 
 #  463|     r463_2(bool)        = Load[a]                : &:r463_1, ~m?
-#  463|     v463_3(void)        = ConditionalBranch      : r463_2
-#-----|   False -> Block 1
-#-----|   True -> Block 2
+#  463|     r463_3(bool)        = LogicalNot             : r463_2
+#  463|     v463_4(void)        = ConditionalBranch      : r463_3
+#-----|   False -> Block 5
+#-----|   True -> Block 1
 
 #  464|   Block 1
 #  464|     r464_1(int)        = Constant[1]        : 
 #  464|     r464_2(glval<int>) = VariableAddress[x] : 
 #  464|     mu464_3(int)       = Store[x]           : &:r464_2, r464_1
-#-----|   Goto -> Block 2
+#-----|   Goto -> Block 5
 
 #  467|   Block 2
-#  467|     r467_1(glval<bool>) = VariableAddress[a] : 
-#  467|     r467_2(bool)        = Load[a]            : &:r467_1, ~m?
-#  467|     v467_3(void)        = ConditionalBranch  : r467_2
-#-----|   False -> Block 4
-#-----|   True -> Block 3
+#  467|     r467_1(glval<bool>) = VariableAddress[#temp467:11] : 
+#  467|     r467_2(bool)        = Constant[0]                  : 
+#  467|     mu467_3(bool)       = Store[#temp467:11]           : &:r467_1, r467_2
+#-----|   Goto -> Block 3
 
 #  467|   Block 3
-#  467|     r467_4(glval<bool>) = VariableAddress[b] : 
-#  467|     r467_5(bool)        = Load[b]            : &:r467_4, ~m?
-#  467|     v467_6(void)        = ConditionalBranch  : r467_5
-#-----|   False -> Block 4
-#-----|   True -> Block 5
+#  467|     r467_4(glval<bool>) = VariableAddress[#temp467:11] : 
+#  467|     r467_5(bool)        = Load[#temp467:11]            : &:r467_4, ~m?
+#  467|     r467_6(bool)        = LogicalNot                   : r467_5
+#  467|     v467_7(void)        = ConditionalBranch            : r467_6
+#-----|   False -> Block 8
+#-----|   True -> Block 7
 
-#  468|   Block 4
+#  467|   Block 4
+#  467|     r467_8(glval<bool>) = VariableAddress[#temp467:11] : 
+#  467|     r467_9(bool)        = Constant[1]                  : 
+#  467|     mu467_10(bool)      = Store[#temp467:11]           : &:r467_8, r467_9
+#-----|   Goto -> Block 3
+
+#  467|   Block 5
+#  467|     r467_11(glval<bool>) = VariableAddress[a] : 
+#  467|     r467_12(bool)        = Load[a]            : &:r467_11, ~m?
+#  467|     v467_13(void)        = ConditionalBranch  : r467_12
+#-----|   False -> Block 2
+#-----|   True -> Block 6
+
+#  467|   Block 6
+#  467|     r467_14(glval<bool>) = VariableAddress[b] : 
+#  467|     r467_15(bool)        = Load[b]            : &:r467_14, ~m?
+#  467|     v467_16(void)        = ConditionalBranch  : r467_15
+#-----|   False -> Block 2
+#-----|   True -> Block 4
+
+#  468|   Block 7
 #  468|     r468_1(int)        = Constant[2]        : 
 #  468|     r468_2(glval<int>) = VariableAddress[x] : 
 #  468|     mu468_3(int)       = Store[x]           : &:r468_2, r468_1
-#-----|   Goto -> Block 6
+#-----|   Goto -> Block 9
 
-#  471|   Block 5
+#  471|   Block 8
 #  471|     r471_1(int)        = Constant[3]        : 
 #  471|     r471_2(glval<int>) = VariableAddress[x] : 
 #  471|     mu471_3(int)       = Store[x]           : &:r471_2, r471_1
-#-----|   Goto -> Block 6
+#-----|   Goto -> Block 9
 
-#  473|   Block 6
+#  473|   Block 9
 #  473|     v473_1(void)  = NoOp         : 
 #  461|     v461_8(void)  = ReturnVoid   : 
 #  461|     v461_9(void)  = AliasedUse   : ~m?

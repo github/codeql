@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.decl.ModuleDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `Decl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::Decl` class directly.

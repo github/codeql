@@ -1,5 +1,5 @@
 int source();
-void sink(int); void sink(const int *); void sink(int **); void indirect_sink(...);
+void sink(...); void indirect_sink(...);
 
 void intraprocedural_with_local_flow() {
   int t2;
@@ -835,5 +835,91 @@ namespace MoreGlobalTests {
   void read_direct() {
     sink(global_direct); // $ ir MISSING: ast
     indirect_sink(global_direct); // clean
+  }
+}
+
+void test_references() {
+  int x = source();
+  int &y = x;
+  sink(y); // $ ast,ir
+
+  int* px = indirect_source();
+  int*& rpx = px;
+  indirect_sink((int*)rpx); // $ ast,ir
+}
+
+namespace GlobalArrays {
+  void test1() {
+    static const int static_local_array_dynamic[] = { ::source() };
+    sink(*static_local_array_dynamic); // $ ir MISSING: ast
+  }
+
+  const int* source(bool);
+
+  void test2() {
+    static const int* static_local_pointer_dynamic = source(true);
+    sink(static_local_pointer_dynamic); // $ ast,ir
+  }
+
+  static const int global_array_dynamic[] = { ::source() };
+
+  void test3() {
+    sink(*global_array_dynamic); // $ MISSING: ir,ast // Missing in IR because no 'IRFunction' for global_array is generated because the type of global_array_dynamic is "deeply const".
+  }
+
+  const int* source(bool);
+
+  static const int* global_pointer_dynamic = source(true);
+
+  void test4() {
+    sink(global_pointer_dynamic); // $ ir MISSING: ast
+  }
+
+  void test5() {
+    static const char static_local_array_static[] = "source";
+    static const char static_local_array_static_indirect_1[] = "indirect_source(1)";
+    static const char static_local_array_static_indirect_2[] = "indirect_source(2)";
+    sink(static_local_array_static); // clean
+    sink(static_local_array_static_indirect_1); // $ ir MISSING: ast
+    indirect_sink(static_local_array_static_indirect_1); // clean
+    sink(static_local_array_static_indirect_2); // clean
+    indirect_sink(static_local_array_static_indirect_2); // $ ir MISSING: ast
+  }
+
+  void test6() {
+    static const char* static_local_pointer_static = "source";
+    static const char* static_local_pointer_static_indirect_1 = "indirect_source(1)";
+    static const char* static_local_pointer_static_indirect_2 = "indirect_source(2)";
+    sink(static_local_pointer_static); // $ ir MISSING: ast
+    sink(static_local_pointer_static_indirect_1); // clean
+    indirect_sink(static_local_pointer_static_indirect_1); // $ ir MISSING: ast
+    sink(static_local_pointer_static_indirect_2); // clean: static_local_pointer_static_indirect_2 does not have 2 indirections
+    indirect_sink(static_local_pointer_static_indirect_2); // clean: static_local_pointer_static_indirect_2 does not have 2 indirections
+  }
+
+  static const char global_array_static[] = "source";
+  static const char global_array_static_indirect_1[] = "indirect_source(1)";
+  static const char global_array_static_indirect_2[] = "indirect_source(2)";
+
+  void test7() {
+    sink(global_array_static); // clean
+    sink(*global_array_static); // clean
+    sink(global_array_static_indirect_1); // $ ir MISSING: ast
+    sink(*global_array_static_indirect_1); // clean
+    indirect_sink(global_array_static); // clean
+    indirect_sink(global_array_static_indirect_1); // clean
+    indirect_sink(global_array_static_indirect_2); // $ ir MISSING: ast
+  }
+
+  static const char* global_pointer_static = "source";
+  static const char* global_pointer_static_indirect_1 = "indirect_source(1)";
+  static const char* global_pointer_static_indirect_2 = "indirect_source(2)";
+
+  void test8() {
+    sink(global_pointer_static); // $ ir MISSING: ast
+    sink(global_pointer_static_indirect_1); // clean
+    indirect_sink(global_pointer_static_indirect_1); // $ ir MISSING: ast
+    sink(global_pointer_static_indirect_2); // clean: global_pointer_static_indirect_2 does not have 2 indirections
+    indirect_sink(global_pointer_static_indirect_2); // clean: global_pointer_static_indirect_2 does not have 2 indirections
   }
 }

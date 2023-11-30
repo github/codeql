@@ -11,6 +11,10 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.NominalTypeDecl
 import codeql.swift.elements.decl.ProtocolDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ExtensionDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::ExtensionDecl` class directly.

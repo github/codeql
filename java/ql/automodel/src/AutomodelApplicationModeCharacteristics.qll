@@ -30,7 +30,9 @@ newtype TApplicationModeEndpoint =
       arg.asExpr() = argExpr and call = argExpr.getCall() and not argExpr.isVararg()
     )
   } or
-  TInstanceArgument(Call call, DataFlow::Node arg) { arg = DataFlow::getInstanceArgument(call) } or
+  TInstanceArgument(Call call, DataFlow::Node arg) {
+    arg = DataFlow::getInstanceArgument(call) and not call instanceof ConstructorCall
+  } or
   TImplicitVarargsArray(Call call, DataFlow::Node arg, int idx) {
     exists(Argument argExpr |
       arg.asExpr() = argExpr and
@@ -98,7 +100,7 @@ class ExplicitArgument extends ApplicationModeEndpoint, TExplicitArgument {
 
   ExplicitArgument() { this = TExplicitArgument(call, arg) }
 
-  override Callable getCallable() { result = call.getCallee() }
+  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
 
   override Call getCall() { result = call }
 
@@ -121,7 +123,7 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
 
   InstanceArgument() { this = TInstanceArgument(call, arg) }
 
-  override Callable getCallable() { result = call.getCallee() }
+  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
 
   override Call getCall() { result = call }
 
@@ -152,7 +154,7 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
 
   ImplicitVarargsArray() { this = TImplicitVarargsArray(call, vararg, idx) }
 
-  override Callable getCallable() { result = call.getCallee() }
+  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
 
   override Call getCall() { result = call }
 
@@ -176,7 +178,7 @@ class MethodReturnValue extends ApplicationModeEndpoint, TMethodReturnValue {
 
   MethodReturnValue() { this = TMethodReturnValue(call) }
 
-  override Callable getCallable() { result = call.getCallee() }
+  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
 
   override Call getCall() { result = call }
 
@@ -206,7 +208,7 @@ class OverriddenParameter extends ApplicationModeEndpoint, TOverriddenParameter 
     // candidate model will be about the overridden method, not the overriding
     // method. This is a more general model, that also applies to other
     // subclasses of the overridden class.
-    result = overriddenMethod
+    result = overriddenMethod.getSourceDeclaration()
   }
 
   override Call getCall() { none() }
@@ -333,6 +335,9 @@ private module ApplicationModeGetCallable implements AutomodelSharedGetCallable:
 
   /**
    * Returns the API callable being modeled.
+   *
+   * We usually want to use `.getSourceDeclaration()` instead of just 'the' callable,
+   * because the source declaration callable has erased generic type parameters.
    */
   Callable getCallable(Endpoint e) { result = e.getCall().getCallee() }
 }

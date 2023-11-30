@@ -42,6 +42,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TMacroRole(Raw::MacroRole id) { constructMacroRole(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TOtherAvailabilitySpec(Raw::OtherAvailabilitySpec id) { constructOtherAvailabilitySpec(id) } or
     /**
      * INTERNAL: Do not use.
@@ -121,6 +125,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TInitializer(Raw::Initializer id) { constructInitializer(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TMacroDecl(Raw::MacroDecl id) { constructMacroDecl(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -238,6 +246,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TBorrowExpr(Raw::BorrowExpr id) { constructBorrowExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TBridgeFromObjCExpr(Raw::BridgeFromObjCExpr id) { constructBridgeFromObjCExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -279,6 +291,14 @@ module Synth {
     TConditionalCheckedCastExpr(Raw::ConditionalCheckedCastExpr id) {
       constructConditionalCheckedCastExpr(id)
     } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TConsumeExpr(Raw::ConsumeExpr id) { constructConsumeExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCopyExpr(Raw::CopyExpr id) { constructCopyExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -483,6 +503,10 @@ module Synth {
     TMakeTemporarilyEscapableExpr(Raw::MakeTemporarilyEscapableExpr id) {
       constructMakeTemporarilyEscapableExpr(id)
     } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TMaterializePackExpr(Raw::MaterializePackExpr id) { constructMaterializePackExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -747,6 +771,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TDeferStmt(Raw::DeferStmt id) { constructDeferStmt(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TDiscardStmt(Raw::DiscardStmt id) { constructDiscardStmt(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1049,7 +1077,7 @@ module Synth {
    */
   class TAstNode =
     TAvailabilityInfo or TAvailabilitySpec or TCaseLabelItem or TConditionElement or TDecl or
-        TExpr or TKeyPathComponent or TPattern or TStmt or TStmtCondition or TTypeRepr;
+        TExpr or TKeyPathComponent or TMacroRole or TPattern or TStmt or TStmtCondition or TTypeRepr;
 
   /**
    * INTERNAL: Do not use.
@@ -1116,7 +1144,8 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TGenericContext = TExtensionDecl or TFunction or TGenericTypeDecl or TSubscriptDecl;
+  class TGenericContext =
+    TExtensionDecl or TFunction or TGenericTypeDecl or TMacroDecl or TSubscriptDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1141,7 +1170,8 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TValueDecl = TAbstractStorageDecl or TEnumElementDecl or TFunction or TTypeDecl;
+  class TValueDecl =
+    TAbstractStorageDecl or TEnumElementDecl or TFunction or TMacroDecl or TTypeDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1195,13 +1225,14 @@ module Synth {
    */
   class TExpr =
     TAnyTryExpr or TAppliedPropertyWrapperExpr or TApplyExpr or TAssignExpr or TBindOptionalExpr or
-        TCaptureListExpr or TClosureExpr or TCollectionExpr or TDeclRefExpr or
-        TDefaultArgumentExpr or TDiscardAssignmentExpr or TDotSyntaxBaseIgnoredExpr or
-        TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or TExplicitCastExpr or TForceValueExpr or
-        TIdentityExpr or TIfExpr or TImplicitConversionExpr or TInOutExpr or
-        TKeyPathApplicationExpr or TKeyPathDotExpr or TKeyPathExpr or TLazyInitializationExpr or
-        TLiteralExpr or TLookupExpr or TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or
-        TOneWayExpr or TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
+        TCaptureListExpr or TClosureExpr or TCollectionExpr or TConsumeExpr or TCopyExpr or
+        TDeclRefExpr or TDefaultArgumentExpr or TDiscardAssignmentExpr or
+        TDotSyntaxBaseIgnoredExpr or TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or
+        TExplicitCastExpr or TForceValueExpr or TIdentityExpr or TIfExpr or
+        TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or TKeyPathDotExpr or
+        TKeyPathExpr or TLazyInitializationExpr or TLiteralExpr or TLookupExpr or
+        TMakeTemporarilyEscapableExpr or TMaterializePackExpr or TObjCSelectorExpr or TOneWayExpr or
+        TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
         TOtherInitializerRefExpr or TOverloadedDeclRefExpr or TPackElementExpr or
         TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
         TRebindSelfInInitializerExpr or TSequenceExpr or TSingleValueStmtExpr or TSuperRefExpr or
@@ -1213,7 +1244,7 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TIdentityExpr =
-    TAwaitExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
+    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1278,9 +1309,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TStmt =
-    TBraceStmt or TBreakStmt or TCaseStmt or TContinueStmt or TDeferStmt or TFailStmt or
-        TFallthroughStmt or TLabeledStmt or TPoundAssertStmt or TReturnStmt or TThrowStmt or
-        TYieldStmt;
+    TBraceStmt or TBreakStmt or TCaseStmt or TContinueStmt or TDeferStmt or TDiscardStmt or
+        TFailStmt or TFallthroughStmt or TLabeledStmt or TPoundAssertStmt or TReturnStmt or
+        TThrowStmt or TYieldStmt;
 
   /**
    * INTERNAL: Do not use.
@@ -1414,6 +1445,13 @@ module Synth {
    */
   cached
   TKeyPathComponent convertKeyPathComponentFromRaw(Raw::Element e) { result = TKeyPathComponent(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMacroRole`, if possible.
+   */
+  cached
+  TMacroRole convertMacroRoleFromRaw(Raw::Element e) { result = TMacroRole(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1566,6 +1604,13 @@ module Synth {
    */
   cached
   TInitializer convertInitializerFromRaw(Raw::Element e) { result = TInitializer(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMacroDecl`, if possible.
+   */
+  cached
+  TMacroDecl convertMacroDeclFromRaw(Raw::Element e) { result = TMacroDecl(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1789,6 +1834,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TBorrowExpr`, if possible.
+   */
+  cached
+  TBorrowExpr convertBorrowExprFromRaw(Raw::Element e) { result = TBorrowExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TBridgeFromObjCExpr`, if possible.
    */
   cached
@@ -1859,6 +1911,20 @@ module Synth {
   TConditionalCheckedCastExpr convertConditionalCheckedCastExprFromRaw(Raw::Element e) {
     result = TConditionalCheckedCastExpr(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TConsumeExpr`, if possible.
+   */
+  cached
+  TConsumeExpr convertConsumeExprFromRaw(Raw::Element e) { result = TConsumeExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TCopyExpr`, if possible.
+   */
+  cached
+  TCopyExpr convertCopyExprFromRaw(Raw::Element e) { result = TCopyExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2235,6 +2301,15 @@ module Synth {
   cached
   TMakeTemporarilyEscapableExpr convertMakeTemporarilyEscapableExprFromRaw(Raw::Element e) {
     result = TMakeTemporarilyEscapableExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMaterializePackExpr`, if possible.
+   */
+  cached
+  TMaterializePackExpr convertMaterializePackExprFromRaw(Raw::Element e) {
+    result = TMaterializePackExpr(e)
   }
 
   /**
@@ -2724,6 +2799,13 @@ module Synth {
    */
   cached
   TDeferStmt convertDeferStmtFromRaw(Raw::Element e) { result = TDeferStmt(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TDiscardStmt`, if possible.
+   */
+  cached
+  TDiscardStmt convertDiscardStmtFromRaw(Raw::Element e) { result = TDiscardStmt(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3286,6 +3368,8 @@ module Synth {
     or
     result = convertKeyPathComponentFromRaw(e)
     or
+    result = convertMacroRoleFromRaw(e)
+    or
     result = convertPatternFromRaw(e)
     or
     result = convertStmtFromRaw(e)
@@ -3495,6 +3579,8 @@ module Synth {
     or
     result = convertGenericTypeDeclFromRaw(e)
     or
+    result = convertMacroDeclFromRaw(e)
+    or
     result = convertSubscriptDeclFromRaw(e)
   }
 
@@ -3563,6 +3649,8 @@ module Synth {
     result = convertEnumElementDeclFromRaw(e)
     or
     result = convertFunctionFromRaw(e)
+    or
+    result = convertMacroDeclFromRaw(e)
     or
     result = convertTypeDeclFromRaw(e)
   }
@@ -3702,6 +3790,10 @@ module Synth {
     or
     result = convertCollectionExprFromRaw(e)
     or
+    result = convertConsumeExprFromRaw(e)
+    or
+    result = convertCopyExprFromRaw(e)
+    or
     result = convertDeclRefExprFromRaw(e)
     or
     result = convertDefaultArgumentExprFromRaw(e)
@@ -3741,6 +3833,8 @@ module Synth {
     result = convertLookupExprFromRaw(e)
     or
     result = convertMakeTemporarilyEscapableExprFromRaw(e)
+    or
+    result = convertMaterializePackExprFromRaw(e)
     or
     result = convertObjCSelectorExprFromRaw(e)
     or
@@ -3798,6 +3892,8 @@ module Synth {
   cached
   TIdentityExpr convertIdentityExprFromRaw(Raw::Element e) {
     result = convertAwaitExprFromRaw(e)
+    or
+    result = convertBorrowExprFromRaw(e)
     or
     result = convertDotSelfExprFromRaw(e)
     or
@@ -4007,6 +4103,8 @@ module Synth {
     result = convertContinueStmtFromRaw(e)
     or
     result = convertDeferStmtFromRaw(e)
+    or
+    result = convertDiscardStmtFromRaw(e)
     or
     result = convertFailStmtFromRaw(e)
     or
@@ -4315,6 +4413,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TMacroRole` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMacroRoleToRaw(TMacroRole e) { e = TMacroRole(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TOtherAvailabilitySpec` to a raw DB element, if possible.
    */
   cached
@@ -4464,6 +4569,13 @@ module Synth {
    */
   cached
   Raw::Element convertInitializerToRaw(TInitializer e) { e = TInitializer(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TMacroDecl` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMacroDeclToRaw(TMacroDecl e) { e = TMacroDecl(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -4687,6 +4799,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TBorrowExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertBorrowExprToRaw(TBorrowExpr e) { e = TBorrowExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TBridgeFromObjCExpr` to a raw DB element, if possible.
    */
   cached
@@ -4757,6 +4876,20 @@ module Synth {
   Raw::Element convertConditionalCheckedCastExprToRaw(TConditionalCheckedCastExpr e) {
     e = TConditionalCheckedCastExpr(result)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TConsumeExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertConsumeExprToRaw(TConsumeExpr e) { e = TConsumeExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCopyExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertCopyExprToRaw(TCopyExpr e) { e = TCopyExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -5131,6 +5264,15 @@ module Synth {
   cached
   Raw::Element convertMakeTemporarilyEscapableExprToRaw(TMakeTemporarilyEscapableExpr e) {
     e = TMakeTemporarilyEscapableExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TMaterializePackExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMaterializePackExprToRaw(TMaterializePackExpr e) {
+    e = TMaterializePackExpr(result)
   }
 
   /**
@@ -5620,6 +5762,13 @@ module Synth {
    */
   cached
   Raw::Element convertDeferStmtToRaw(TDeferStmt e) { e = TDeferStmt(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TDiscardStmt` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertDiscardStmtToRaw(TDiscardStmt e) { e = TDiscardStmt(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -6182,6 +6331,8 @@ module Synth {
     or
     result = convertKeyPathComponentToRaw(e)
     or
+    result = convertMacroRoleToRaw(e)
+    or
     result = convertPatternToRaw(e)
     or
     result = convertStmtToRaw(e)
@@ -6391,6 +6542,8 @@ module Synth {
     or
     result = convertGenericTypeDeclToRaw(e)
     or
+    result = convertMacroDeclToRaw(e)
+    or
     result = convertSubscriptDeclToRaw(e)
   }
 
@@ -6459,6 +6612,8 @@ module Synth {
     result = convertEnumElementDeclToRaw(e)
     or
     result = convertFunctionToRaw(e)
+    or
+    result = convertMacroDeclToRaw(e)
     or
     result = convertTypeDeclToRaw(e)
   }
@@ -6598,6 +6753,10 @@ module Synth {
     or
     result = convertCollectionExprToRaw(e)
     or
+    result = convertConsumeExprToRaw(e)
+    or
+    result = convertCopyExprToRaw(e)
+    or
     result = convertDeclRefExprToRaw(e)
     or
     result = convertDefaultArgumentExprToRaw(e)
@@ -6637,6 +6796,8 @@ module Synth {
     result = convertLookupExprToRaw(e)
     or
     result = convertMakeTemporarilyEscapableExprToRaw(e)
+    or
+    result = convertMaterializePackExprToRaw(e)
     or
     result = convertObjCSelectorExprToRaw(e)
     or
@@ -6694,6 +6855,8 @@ module Synth {
   cached
   Raw::Element convertIdentityExprToRaw(TIdentityExpr e) {
     result = convertAwaitExprToRaw(e)
+    or
+    result = convertBorrowExprToRaw(e)
     or
     result = convertDotSelfExprToRaw(e)
     or
@@ -6903,6 +7066,8 @@ module Synth {
     result = convertContinueStmtToRaw(e)
     or
     result = convertDeferStmtToRaw(e)
+    or
+    result = convertDiscardStmtToRaw(e)
     or
     result = convertFailStmtToRaw(e)
     or

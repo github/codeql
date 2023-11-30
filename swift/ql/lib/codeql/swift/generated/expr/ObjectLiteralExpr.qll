@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Argument
 import codeql.swift.elements.expr.LiteralExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ObjectLiteralExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An instance of `#fileLiteral`, `#imageLiteral` or `#colorLiteral` expressions, which are used in playgrounds.

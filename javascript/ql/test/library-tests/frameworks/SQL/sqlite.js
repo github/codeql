@@ -1,10 +1,33 @@
-// Adapted from https://github.com/mapbox/node-sqlite3/wiki/API, which is
-// part of the node-sqlite3 project, which is licensed under the BSD 3-Clause
-// License; see file node-sqlite3-LICENSE.
-var sqlite = require('sqlite3');
+import sqlite3 from 'sqlite3'
+import { open } from 'sqlite'
 
-var db = new sqlite.Database(":memory:");
-db.run("UPDATE tbl SET name = ? WHERE id = ?", "bar", 2)
-  .run("UPDATE tbl SET name = ? WHERE id = ?", "foo", 3);
+open({
+  filename: 'database.sqlite',
+  driver: sqlite3.Database
+}).then(async (db) => {
+  db.get('SELECT name,id FROM table1 WHERE id > 5' + " OR id = 1").then(results => {
+    console.log(results)
+  })
+  db.all('SELECT name,id FROM table1 WHERE id > 5' + " OR id = 1").then(results => {
+    console.log(results)
+  })
+  db.run('SELECT name,id FROM table1 WHERE id > 5').then(results => {
+    console.log(results)
+  })
+  db.prepare('SELECT name,id FROM table1 WHERE id > 5'
+    + " OR id = 1").then(results => {
+      results.all().then(result => {
+        console.log(result)
+      })
+    })
+  try {
+    await db.each('SELECT name,id FROM table1 WHERE id > 5' + " OR id = 1", (err, row) => {
+      console.log(row)
+    })
 
-exports.db = db;
+  } catch (e) {
+    throw e
+  }
+})
+
+

@@ -163,4 +163,16 @@ module Starlette {
 
   /** DEPRECATED: Alias for Url */
   deprecated module URL = Url;
+
+  /**
+   * A call to the `starlette.responses.FileResponse` constructor as a sink for Filesystem access.
+   */
+  class FileResponseCall extends FileSystemAccess::Range, API::CallNode {
+    FileResponseCall() {
+      this =
+        API::moduleImport("starlette").getMember("responses").getMember("FileResponse").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "path").asSink() }
+  }
 }

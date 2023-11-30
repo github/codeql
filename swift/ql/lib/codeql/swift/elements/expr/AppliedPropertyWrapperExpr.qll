@@ -5,4 +5,7 @@
 
 private import codeql.swift.generated.expr.AppliedPropertyWrapperExpr
 
+/**
+ * An implicit application of a property wrapper on the argument of a call.
+ */
 class AppliedPropertyWrapperExpr extends Generated::AppliedPropertyWrapperExpr { }

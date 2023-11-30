@@ -15,6 +15,7 @@ private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
+private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.cil.Ssa::Ssa as CilSsa
