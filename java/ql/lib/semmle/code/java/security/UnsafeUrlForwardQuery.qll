@@ -12,7 +12,7 @@ import semmle.code.java.security.PathSanitizer
 module UnsafeUrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof ThreatModelFlowSource and
-    // TODO: move below logic to class in UnsafeUrlForward.qll?
+    // TODO: move below logic to class in UnsafeUrlForward.qll? And check exactly why these were excluded.
     not exists(MethodCall ma, Method m | ma.getMethod() = m |
       (
         m instanceof HttpServletRequestGetRequestUriMethod or
