@@ -24,7 +24,7 @@ fn test_ruby_multiple_assignment() {
         // captures is probably a HashMap from capture name to AST node
         Ast::example(tree_sitter_ruby::language())
     };
-    let rule = Rule::new(query, transform);
+    let rule = Rule::new(query, Box::new(transform));
 
     let input = "x, y, z = e";
 

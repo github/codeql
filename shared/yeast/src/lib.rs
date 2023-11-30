@@ -169,10 +169,16 @@ impl Query {
     }
 }
 
-pub struct Rule {}
+pub struct Rule {
+    query: Query,
+    transform: Box<dyn Fn(Match) -> Ast>,
+}
 impl Rule {
-    pub fn new(query: Query, transform: impl Fn(Match) -> Ast) -> Self {
-        Self {}
+    pub fn new(query: Query, transform: Box<dyn Fn(Match) -> Ast>) -> Self {
+        Self {
+            query: query,
+            transform: transform,
+        }
     }
 }
 
@@ -180,7 +186,7 @@ pub struct Match {}
 
 pub struct Runner {
     language: tree_sitter::Language,
-    rules: Vec<Rule>
+    rules: Vec<Rule>,
 }
 
 impl Runner {
