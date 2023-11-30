@@ -5,7 +5,6 @@ namespace codeql {
 codeql::NamedPattern PatternTranslator::translateNamedPattern(const swift::NamedPattern& pattern) {
 
   auto entry = createPatternEntry(pattern);
-  entry.name = pattern.getNameStr().str();
   entry.var_decl = dispatcher.fetchLabel(pattern.getDecl());
   return entry;
 }
