@@ -1,5 +1,5 @@
-use std::collections::{HashSet, BTreeMap, BTreeSet};
-use crate::{Ast, Id, FieldId, NodeContent, captures::{Captures, self}};
+use std::collections::{BTreeMap, BTreeSet};
+use crate::{Ast, Id, FieldId, NodeContent, captures::{Captures}};
 
 #[derive(Debug, Clone)]
 pub enum TreeBuilder {
@@ -28,7 +28,7 @@ impl TreeChildBuilder {
     fn get_opt_contained(&self) -> BTreeSet<&'static str> {
         match self {
             TreeChildBuilder::Repeated { child } => child.get_opt_contained(),
-            TreeChildBuilder::Field { field_name, node } => {
+            TreeChildBuilder::Field { field_name: _, node } => {
                 let mut contained = BTreeSet::new();
                 for child in node {
                     contained.extend(child.get_opt_contained());
@@ -86,7 +86,7 @@ impl TreeChildBuilder {
 impl TreeBuilder {
     fn get_opt_contained(&self) -> BTreeSet<&'static str> {
         match self {
-            TreeBuilder::Node { kind, children } => {
+            TreeBuilder::Node { kind: _, children } => {
                 let mut contained = BTreeSet::new();
                 for child in children {
                     contained.extend(child.get_opt_contained());

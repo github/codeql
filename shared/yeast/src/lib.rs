@@ -49,7 +49,7 @@ impl Ast {
         serde_json::to_value(self.print_node(root, source)).unwrap()
     }
 
-    pub fn create_node(&mut self, kind: KindId, content: NodeContent, fields: BTreeMap<FieldId, Vec<Id>>, children: Vec<Id>) -> Id {
+    fn create_node(&mut self, kind: KindId, content: NodeContent, fields: BTreeMap<FieldId, Vec<Id>>, children: Vec<Id>) -> Id {
         let id = self.nodes.len();
         self.nodes.push(Node { id, kind, children, fields, content });
         id
