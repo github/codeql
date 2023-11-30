@@ -196,13 +196,13 @@ impl Runner {
         Self { language, rules }
     }
 
-    pub fn run(&self, input: &str) -> Ast {
+    pub fn run(&self, input: &str) -> (Ast, Id) {
         // Parse the input into an AST
 
         let mut parser = tree_sitter::Parser::new();
         parser.set_language(self.language).unwrap();
         let tree = parser.parse(input, None).unwrap();
         let ast = Ast::from_tree(self.language, &tree);
-        ast
+        (ast, 0)
     }
 }
