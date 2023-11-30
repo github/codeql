@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.ktor.websocket","WebSocketSession",true,"getIncoming","()","","ReturnValue","remote","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.ktor.websocket","FrameCommonKt",true,"readText","","","Argument[0]","ReturnValue","taint","manual"]
+      - ["io.ktor.websocket","FrameCommonKt",true,"readBytes","","","Argument[0]","ReturnValue","taint","manual"]
+      - ["io.ktor.websocket","Frame",true,"getBuffer","","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.websocket","Frame",true,"getData","","","Argument[this]","ReturnValue","taint","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data: []

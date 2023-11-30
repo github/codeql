@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["kotlinx.html","Unsafe",true,"raw","(String)","","Argument[0]","js-injection","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data: []

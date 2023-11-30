@@ -495,6 +495,11 @@ private predicate otherApiCallableCredentialParam(string s) {
       "com.auth0.jwt.algorithms.Algorithm;HMAC384(String);0",
       "com.auth0.jwt.algorithms.Algorithm;HMAC384(byte[]);0",
       "com.auth0.jwt.algorithms.Algorithm;HMAC512(String);0",
-      "com.auth0.jwt.algorithms.Algorithm;HMAC512(byte[]);0"
+      "com.auth0.jwt.algorithms.Algorithm;HMAC512(byte[]);0",
+      "io.ktor.server.sessions.SessionTransportTransformerMessageAuthentication;SessionTransportTransformerMessageAuthentication(byte[], String, int, DefaultConstructorMarker);0",
+      "io.ktor.server.sessions.SessionTransportTransformerEncrypt;SessionTransportTransformerEncrypt(byte[], byte[], Function1<>, String, String, int, DefaultConstructorMarker);0",
+      "io.ktor.server.sessions.SessionTransportTransformerEncrypt;SessionTransportTransformerEncrypt(byte[], byte[], Function1<>, String, String, int, DefaultConstructorMarker);1",
+      "io.ktor.server.auth.UserPasswordCredential;UserPasswordCredential(String, String);0",
+      "io.ktor.server.auth.UserPasswordCredential;UserPasswordCredential(String, String);1"
     ]
 }

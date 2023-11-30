@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.ktor.util","StringValues",true,"get","(String)","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.util","StringValues",true,"entries","()","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.util","StringValues",true,"getAll","(String)","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.util","StringValues",true,"names","()","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.util","ByteChannelsKt",true,"toByteArray","(ByteReadChannel)","","Argument[0]","ReturnValue","taint","manual"] 
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data: []

@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.ktor.server.sessions","SessionDataKt",true,"get","(CurrentSession)","","ReturnValue","remote","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data: []

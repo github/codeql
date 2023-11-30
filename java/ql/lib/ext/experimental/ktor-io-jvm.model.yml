@@ -1,0 +1,36 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.ktor.utils.io","ByteReadChannel",true,"readUTF8Line","(int)","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io","ByteReadChannel",true,"readUTF8Line","()","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io","ByteReadChannel",true,"readAvailable","(ByteBuffer)","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io","ByteReadChannelKt",true,"copyAndClose$default","(ByteReadChannel,ByteWriteChannel,long,int,Object)","","Argument[this]","Argument[0]","taint","manual"]
+      - ["io.ktor.utils.io","ByteReadChannel",true,"readByte","()","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io","ByteReadChannel",true,"readPacket","(int)","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io.core","ByteBuffersKt",true,"readAvailable","(ByteReadPacket,ByteBuffer)","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io.core","ByteReadPacket",true,"copy","()","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io","ByteReadChannelKt",true,"readUTF8Line","(ByteReadChannel)","","Argument[this]","ReturnValue","value","manual"]
+      - ["io.ktor.utils.io","ByteReadChannel",true,"readFully","(ByteBuffer)","","Argument[this]","Argument[0]","taint","manual"]
+      - ["io.ktor.utils.io","ByteReadChannel",true,"readRemaining$default","(ByteReadChannel,long,int,Object)","","Argument[0]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io.core","ByteBuffersKt",true,"readFully","(ByteReadPacket,ByteBuffer)","","Argument[this]","Argument[1]","taint","manual"]
+      - ["io.ktor.utils.io.core","Input",true,"readTextExact","(int)","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io.core","Input",true,"readText$default","(Input,int,int,int,Object)","","Argument[0]","ReturnValue","taint","manual"]
+      - ["io.ktor.utils.io.core","Input",true,"readText$default","(Input,Appendable,int,int,int,Object)","","Argument[0]","Argument[1]","taint","manual"]
+      - ["io.ktor.utils.io.core","StringsKt",true,"readBytes","(ByteReadPacket,int)","","Argument[0]","ReturnValue","taint","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data: []

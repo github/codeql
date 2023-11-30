@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.ktor.server.auth.ldap","LdapKt",true,"ldapAuthenticate","(UserPasswordCredential,String,String)","","Argument[1]","ldap-injection","manual"]
+      - ["io.ktor.server.auth.ldap","LdapKt",true,"ldapAuthenticate","(UserPasswordCredential,String,String)","","Argument[2]","ldap-injection","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data: []

@@ -1,0 +1,35 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.ktor.server.request","ApplicationReceiveFunctionsKt",true,"receiveParameters","(ApplicationCall)","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationReceiveFunctionsKt",true,"receive","(ApplicationCall)","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.application","ApplicationCall",true,"getParameters","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationRequestPropertiesKt",true,"getUri","(ApplicationRequest)","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationRequest",true,"getCookies","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","RequestCookies",true,"getRawCookies","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationRequest",true,"getHeaders","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationRequest",true,"getQueryParameters","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationRequest",true,"getRawQueryParameters","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationReceiveFunctionsJvmKt",true,"receiveStream","(ApplicationCall)","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationReceiveFunctionsKt",true,"receiveText","(ApplicationCall)","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationReceiveFunctionsKt",true,"receiveChannel","(ApplicationCall)","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationReceiveFunctionsKt",true,"receiveNullable","(ApplicationCall)","","ReturnValue","remote","manual"]
+      - ["io.ktor.server.request","ApplicationReceiveFunctionsKt",true,"receiveOrNull","(ApplicationCall)","","ReturnValue","remote","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.ktor.server.request","RequestCookies",true,"get$default","(RequestCookies,String,CookieEncoding,int,Object)","","Argument[0]","ReturnValue","taint","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data: []

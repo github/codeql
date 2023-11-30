@@ -1,0 +1,66 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.ktor.client.engine","ProxyConfigKt",true,"http","(ProxyBuilder,String)","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.plugins","DefaultRequest$DefaultRequestBuilder",true,"setHost","(String)","","Argument[0]","request-forgery","manual"]
+      - ["io.ktor.client.plugins","DefaultRequest$DefaultRequestBuilder",true,"url","(String)","","Argument[0]","request-forgery","manual"]
+      - ["io.ktor.client.request","UtilsKt",true,"setHost","(HttpRequestBuilder,String)","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","HttpRequestKt",true,"url","(HttpRequestBuilder,String)","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"get","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"post","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"put","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"patch","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"head","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"delete","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"options","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"prepareGet","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"preparePost","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"preparePut","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"preparePatch","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"prepareHead","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"prepareDelete","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"prepareOptions","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request.forms","FormBuildersKt",true,"submitFormWithBinaryData","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request.forms","FormBuildersKt",true,"submitForm","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.request","HttpRequestKt",true,"url","","","Argument[1]","request-forgery","manual"]
+      - ["io.ktor.client.plugins","DefaultRequest$DefaultRequestBuilder",true,"url","","","Argument[0]","request-forgery","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.ktor.client.request.forms","FormBuildersKt",true,"submitFormWithBinaryData","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request.forms","FormBuildersKt",true,"submitForm","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.call","HttpClientCallKt",true,"body","(HttpResponse)","","Argument[0]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.statement","HttpStatement",true,"body","()","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.statement","ReadersKt",true,"readBytes","(HttpResponse)","","Argument[0]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.statement","ReadersKt",true,"readBytes","(HttpResponse,int)","","Argument[0]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.statement","HttpStatement",true,"execute","()","","Argument[this]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.statement","HttpResponseKt",true,"bodyAsText$default","(HttpResponse,Charset,int,Object)","","Argument[0]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.statement","HttpResponseKt",true,"bodyAsChannel","","","Argument[0]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"get","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"post","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"put","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"patch","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"head","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"delete","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"options","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"prepareGet","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"preparePost","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"preparePut","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"preparePatch","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"prepareHead","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"prepareDelete","","","Argument[1]","ReturnValue","taint","manual"]
+      - ["io.ktor.client.request","BuildersKt",true,"prepareOptions","","","Argument[1]","ReturnValue","taint","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data: []

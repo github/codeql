@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.ktor.http","HttpHeaders",true,"getAuthorization","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.http.content","PartData",true,"getHeaders","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.http.content","PartData",true,"getName","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.http.content","PartData",true,"getContentDisposition","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.http.content","PartData",true,"getContentType","()","","ReturnValue","remote","manual"]
+      - ["io.ktor.http","URLBuilder",true,"setHost","(String)","","Argument[0]","request-forgery","manual"] # doesn't work!
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data: 
+      - ["io.ktor.http","HttpMessage",true,"getHeaders","()","","Argument[this]","ReturnValue","taint","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data: []
