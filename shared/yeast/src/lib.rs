@@ -68,10 +68,10 @@ impl Ast {
         id
     }
 
-    pub fn create_token(
+    pub fn create_string_token(
         &mut self,
         kind: &str,
-        content: String,
+        content: &'static str,
     ) -> Id {
         let kind_id = self.language.id_for_node_kind(kind, true);
         let id = self.nodes.len();
