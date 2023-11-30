@@ -1,10 +1,14 @@
 #![cfg(test)]
+use std::cell::Cell;
 use std::path::Path;
+use std::rc::Rc;
 
 use yeast::captures::Captures;
 use yeast::*;
 #[test]
 fn test_ruby_multiple_assignment() {
+
+
     // We want to convert this
     //
     // x, y, z = e
@@ -18,19 +22,61 @@ fn test_ruby_multiple_assignment() {
 
     // Define a desugaring rule, which is a query together with a transformation.
 
+    let fresh_ids = Rc::new(Cell::new(0));
+
     let query = query!(
             (assignment
-                left: _
-                right: _
-            ) @ root
+                left: (
+                    left_assignment_list (@left)*
+                )
+                right: (@right)
+            )
     );
-    let transform = |ast: &mut Ast, match_: Captures| {
+    let transform = move |ast: &mut Ast, mut match_: Captures| {
+        let fresh = fresh_ids.get();
+        fresh_ids.set(fresh + 1);
+
+        let new_ident = format!("tmp-{}", fresh);
+        match_.insert("tmp_lhs", ast.create_token("identifier", new_ident.clone()));
+        
+        let mut i = 0;
+        match_.map_captures_to("left", "assigns", &mut |old_id| {
+            let mut local_capture = Captures::new();
+            local_capture.insert("lhs", old_id);
+            local_capture.insert("tmp", ast.create_token("identifier", new_ident.clone()));
+            let index: i32 = i;
+            i += 1;
+            local_capture.insert("index", ast.create_token("integer", index.to_string()));
+
+            return tree_builder!(
+                (assignment
+                    left: (identifier (@lhs))
+                    right: (
+                        element_reference
+                            left: (@tmp)
+                            right: (integer (@index))
+                    )
+                )
+            )
+            .build_tree(ast, &local_capture)
+            .unwrap();
+        });
+
         // construct the new tree here maybe
         // captures is probably a HashMap from capture name to AST node
-        tree_builder!(
-            @root
-        ).build_tree(ast, &match_).unwrap()
+        trees_builder!(
+            (assignment
+                left: (@tmp_lhs)
+                right: (@right)
+            )
+            (
+                @assigns
+            )*
+        )
+        .build_trees(ast, &match_)
+        .unwrap()
     };
+    
     let rule = Rule::new(query, Box::new(transform));
 
     let input = "x, y, z = e";
