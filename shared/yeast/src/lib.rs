@@ -171,10 +171,10 @@ impl Query {
 
 pub struct Rule {
     query: Query,
-    transform: Box<dyn Fn(Match) -> Ast>,
+    transform: Box<dyn Fn(&mut Ast, Match) -> Id>,
 }
 impl Rule {
-    pub fn new(query: Query, transform: Box<dyn Fn(Match) -> Ast>) -> Self {
+    pub fn new(query: Query, transform: Box<dyn Fn(&mut Ast, Match) -> Id>) -> Self {
         Self {
             query: query,
             transform: transform,
@@ -182,7 +182,9 @@ impl Rule {
     }
 }
 
-pub struct Match {}
+pub struct Match {
+    pub node: Id,
+}
 
 pub struct Runner {
     language: tree_sitter::Language,
