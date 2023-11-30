@@ -35,6 +35,20 @@ impl Captures {
         self.captures.entry(key).or_insert_with(Vec::new).push(id);
     }
 
+    pub fn map_captures(&mut self, kind : &str, f: &mut impl FnMut(Id) -> Id) {
+        self.captures.get_mut(kind).map( |ids| {
+            for id in ids {
+                *id = f(*id);
+            }
+        });
+    }
+    pub fn map_captures_to(&mut self, from : &str, to: &'static str, f: &mut  impl FnMut(Id) -> Id) {
+        if let Some(from_ids) = self.captures.get(from) {
+            let new_values = from_ids.iter().copied().map(|id| f(id)).collect();
+            self.captures.insert(to, new_values);
+        }
+    }
+
     pub fn merge(&mut self, other: &Captures) {
         for (key, ids) in &other.captures {
             self.captures.entry(key).or_insert_with(Vec::new).extend(ids);
