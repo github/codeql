@@ -737,10 +737,17 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
   /** Gets the number of fields declared in this declaration. */
   int getNumField() { result = max(int idx | fieldDeclaredIn(_, this, idx) | idx) + 1 }
 
+  private string stringifyType() {
+    // Necessary because record fields are missing their type access.
+    if exists(this.getTypeAccess())
+    then result = this.getTypeAccess().toString()
+    else result = this.getAField().getType().toString()
+  }
+
   override string toString() {
     if this.getNumField() = 1
-    then result = this.getTypeAccess() + " " + this.getField(0) + ";"
-    else result = this.getTypeAccess() + " " + this.getField(0) + ", ...;"
+    then result = this.stringifyType() + " " + this.getField(0) + ";"
+    else result = this.stringifyType() + " " + this.getField(0) + ", ...;"
   }
 
   override string getAPrimaryQlClass() { result = "FieldDeclaration" }
