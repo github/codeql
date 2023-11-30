@@ -293,7 +293,7 @@ The first four values identify the callable (in this case a method) to be modele
 - The sixth value ``manual`` is the provenance of the neutral.
 
 Threat models
-~~~~~~~~~~~~~
+-------------
 
 .. include:: ../reusables/beta-note-threat-models-java.rst
 
@@ -304,6 +304,7 @@ Threat models
  You can extend the CodeQL threat model to specify other sources of untrusted data. For example, if your codebase considers local files to be sources of tainted data, you can specify the `local` threat model to be used in CodeQL analysis.
 
  The shared `threat-models` library pack exposes the following extensible predicates:
+
  - ``threatModelConfiguration(string kind, boolean enabled, int priority)``. This is used to configure which threat models are enabled or disabled for the analysis.
  - ``threatModelGrouping(string kind, string group)``. This is used to define the taxonomy of threat models as a parent-child hierarchy.
 
