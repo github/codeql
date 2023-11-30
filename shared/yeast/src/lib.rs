@@ -3,18 +3,20 @@
 
 use std::collections::BTreeMap;
 
-pub mod captures;
-pub mod query;
-pub mod tree_builder;
-
-use captures::Captures;
-use query::QueryNode;
 use serde::Serialize;
 use serde_json::{json, Value};
 
+pub mod captures;
+pub mod cursor;
 pub mod print;
+pub mod query;
 mod range;
+pub mod tree_builder;
 mod visitor;
+
+use captures::Captures;
+pub use cursor::Cursor;
+use query::QueryNode;
 
 /// Node ids are indexes into the arena
 type Id = usize;
@@ -27,92 +29,117 @@ pub const CHILD_FIELD: u16 = u16::MAX;
 const CHILD_FIELD_NAME: &str = "child";
 
 #[derive(Debug)]
-pub struct Cursor<'a> {
+pub struct AstCursor<'a> {
     ast: &'a Ast,
-    parents: Vec<Id>,
+    /// A stack of parents, along with iterators for their children
+    parents: Vec<(&'a Node, ChildrenIter<'a>)>,
     node: &'a Node,
-    locations: Vec<(usize, usize)>,
 }
 
-impl<'a> Cursor<'a> {
+impl<'a> AstCursor<'a> {
     pub fn new(ast: &'a Ast) -> Self {
         let node = ast.get_node(0).unwrap();
         Self {
             ast,
             parents: vec![],
             node,
-            locations: vec![],
         }
     }
 
-    pub fn node(&mut self) -> &'a Node {
+    fn goto_next_sibling_opt(&mut self) -> Option<()> {
+        self.node = self.parents.last_mut()?.1.next()?;
+        Some(())
+    }
+
+    fn goto_first_child_opt(&mut self) -> Option<()> {
+        let parent = self.node;
+        let mut children = ChildrenIter::new(self.ast, parent);
+        let first_child = children.next()?;
+        self.node = first_child;
+        self.parents.push((parent, children));
+        Some(())
+    }
+
+    fn goto_parent_opt(&mut self) -> Option<()> {
+        self.node = self.parents.pop()?.0;
+        Some(())
+    }
+}
+impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
+    fn node(&self) -> &'a Node {
         self.node
     }
-    pub fn field_id(&self) -> Option<FieldId> {
-        let parent_id = self.parents.last()?;
-        let (field_index, _) = self.locations.last().unwrap();
-        let (field_id, _) = self
-            .ast
-            .get_node(*parent_id)
-            .unwrap()
-            .fields
-            .iter()
-            .nth(*field_index)?;
-        Some(*field_id)
+
+    fn field_id(&self) -> Option<FieldId> {
+        let (_, children) = self.parents.last()?;
+        children.current_field()
     }
-    pub fn goto_first_child(&mut self) -> bool {
-        let location = (0, 0);
-        let parent = self.node.id;
-        self.node = match self.node.fields.iter().next() {
-            Some((_field_id, child_ids)) if !child_ids.is_empty() => {
-                self.ast.get_node(child_ids[0]).unwrap()
-            }
-            _ => return false,
-        };
-        self.locations.push(location);
-        self.parents.push(parent);
-        true
+
+    fn goto_first_child(&mut self) -> bool {
+        self.goto_first_child_opt().is_some()
     }
-    pub fn goto_next_sibling(&mut self) -> bool {
-        let (node_id, location) = match self.parents.last() {
-            None => {
-                return false;
-            }
-            Some(parent) => {
-                let parent = self.ast.get_node(*parent).unwrap();
-                let (field_index, child_index) = self.locations.pop().unwrap();
-                if field_index == parent.fields.len() {
-                    return false;
-                } else {
-                    let (_field_id, children) = parent.fields.iter().nth(field_index).unwrap();
-                    if child_index == children.len() - 1 {
-                        // end of field
-                        let location = (field_index + 1, 0);
-                        let node_id = match parent.fields.iter().nth(field_index + 1) {
-                            Some((_field_id, children)) => children[0],
-                            None => return false,
-                        };
-                        (node_id, location)
-                    } else {
-                        let loc = (field_index, child_index + 1);
-                        let (_, children) = parent.fields.iter().nth(field_index).unwrap();
-                        let node_id = children[child_index + 1];
-                        (node_id, loc)
-                    }
+
+    fn goto_next_sibling(&mut self) -> bool {
+        self.goto_next_sibling_opt().is_some()
+    }
+
+    fn goto_parent(&mut self) -> bool {
+        self.goto_parent_opt().is_some()
+    }
+}
+
+/// An iterator over all the child nodes of a node.
+#[derive(Debug)]
+struct ChildrenIter<'a> {
+    ast: &'a Ast,
+    current_field: Option<FieldId>,
+    fields: std::collections::btree_map::Iter<'a, FieldId, Vec<Id>>,
+    field_children: Option<std::slice::Iter<'a, Id>>,
+}
+
+impl<'a> ChildrenIter<'a> {
+    fn new(ast: &'a Ast, node: &'a Node) -> Self {
+        Self {
+            ast,
+            current_field: None,
+            fields: node.fields.iter(),
+            field_children: None,
+        }
+    }
+
+    fn get_node(&self, id: Id) -> &'a Node {
+        self.ast.get_node(id).unwrap()
+    }
+
+    fn current_field(&self) -> Option<FieldId> {
+        self.current_field
+    }
+}
+
+impl<'a> Iterator for ChildrenIter<'a> {
+    type Item = &'a Node;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.field_children.as_mut() {
+            None => match self.fields.next() {
+                Some((field, children)) => {
+                    self.current_field = Some(*field);
+                    self.field_children = Some(children.iter());
+                    self.next()
                 }
-            }
-        };
-        self.locations.push(location);
-        self.node = self.ast.get_node(node_id).unwrap();
-        true
-    }
-    pub fn goto_parent(&mut self) -> bool {
-        match self.parents.pop() {
-            None => false,
-            Some(parent) => {
-                self.node = self.ast.get_node(parent).unwrap();
-                true
-            }
+                None => None,
+            },
+            Some(children) => match children.next() {
+                None => match self.fields.next() {
+                    None => None,
+                    Some((field, children)) => {
+                        self.current_field = Some(*field);
+                        self.field_children = Some(children.iter());
+                        self.next()
+                    }
+                },
+                Some(child_id) => Some(self.get_node(*child_id)),
+            },
         }
     }
 }
@@ -140,9 +167,9 @@ impl Ast {
         self.nodes.get(id)
     }
 
-    pub fn print(&self, source: &str, rootId: Id) -> Value {
-        let root = &self.nodes()[rootId];
-        serde_json::to_value(self.print_node(root, source)).unwrap()
+    pub fn print(&self, source: &str, root_id: Id) -> Value {
+        let root = &self.nodes()[root_id];
+        self.print_node(root, source)
     }
 
     fn create_node(
@@ -173,28 +200,22 @@ impl Ast {
 
     /// Print a node for debugging
     fn print_node(&self, node: &Node, source: &str) -> Value {
-        let children: Vec<Value> = node
+        let fields: BTreeMap<_, _> = node
             .fields
-            .get(&CHILD_FIELD)
-            .unwrap_or(&vec![])
             .iter()
-            .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
+            .map(|(field_id, nodes)| {
+                let field_name = if field_id == &CHILD_FIELD {
+                    "rest"
+                } else {
+                    self.field_name_for_id(*field_id).unwrap()
+                };
+                let nodes: Vec<Value> = nodes
+                    .iter()
+                    .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
+                    .collect();
+                (field_name, nodes)
+            })
             .collect();
-        let mut fields = BTreeMap::new();
-        if !children.is_empty() {
-            fields.insert("rest", children);
-        }
-        for (field_id, nodes) in &node.fields {
-            if field_id == &CHILD_FIELD {
-                continue;
-            }
-            let field_name = self.field_name_for_id(*field_id).unwrap();
-            let nodes: Vec<Value> = nodes
-                .iter()
-                .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
-                .collect();
-            fields.insert(field_name, nodes);
-        }
         let mut value = BTreeMap::new();
         let kind = self.language.node_kind_for_id(node.kind).unwrap();
         let content = match node.content {
@@ -272,6 +293,15 @@ pub struct Node {
     content: NodeContent,
 }
 
+impl Node {
+    pub fn id(&self) -> Id {
+        self.id
+    }
+    pub fn kind(&self) -> KindId {
+        self.kind
+    }
+}
+
 /// The contents of a node is either a range in the original source file,
 /// or a new string if the node is synthesized.
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
@@ -342,11 +372,6 @@ fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Id {
         for v in vec {
             *v = applyRules(rules, ast, *v)
         }
-    }
-
-    // recursively descend into all the non-field children
-    for child in &mut node.children {
-        *child = applyRules(rules, ast, *child)
     }
 
     node.id = ast.nodes.len() - 1;

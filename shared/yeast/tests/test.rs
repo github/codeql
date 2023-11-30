@@ -2,7 +2,8 @@
 use std::path::Path;
 
 use yeast::captures::Captures;
-use yeast::{print::Printer, *};
+use yeast::{cursor::Cursor, print::Printer, *};
+
 #[test]
 fn test_ruby_multiple_assignment() {
     // We want to convert this
@@ -149,14 +150,41 @@ fn write_expected<P: AsRef<Path>>(file: P, content: &str) {
 }
 
 #[test]
-fn test_output() {
+fn test_cursor() {
     let input = std::fs::read_to_string("tests/fixtures/1.rb").unwrap();
-    let parsed_expected = std::fs::read_to_string("tests/fixtures/1.parsed.json").unwrap();
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
     let ast = runner.run(&input);
-    let cursor = Cursor::new(&ast);
+    let mut cursor = AstCursor::new(&ast);
+
+    assert_eq!(cursor.node().id(), 0);
+    assert_eq!(cursor.field_id(), None);
+
+    assert_eq!(cursor.goto_first_child(), true);
+    assert_eq!(cursor.node().id(), 1);
+
+    assert_eq!(cursor.goto_next_sibling(), false);
+    assert_eq!(cursor.node().id(), 1);
+
+    assert_eq!(cursor.goto_first_child(), true);
+    assert_eq!(cursor.node().id(), 2);
+
+    assert_eq!(cursor.goto_first_child(), true);
+    assert_eq!(cursor.node().id(), 3);
+
+    assert_eq!(cursor.goto_first_child(), false);
+    assert_eq!(cursor.node().id(), 3);
+
+    assert_eq!(cursor.goto_next_sibling(), true);
+    assert_eq!(cursor.node().id(), 4);
+    assert_eq!(cursor.field_id(), Some(CHILD_FIELD));
+
+    assert_eq!(cursor.goto_parent(), true);
+    assert_eq!(cursor.node().id(), 2);
+
+    assert_eq!(cursor.field_id(), Some(18));
+
+    let cursor = AstCursor::new(&ast);
     let mut printer = Printer {};
     printer.visit(cursor);
-    panic!()
 }

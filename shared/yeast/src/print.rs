@@ -1,9 +1,9 @@
-use crate::{Cursor, Node};
+use crate::{cursor::Cursor, AstCursor, Node};
 
 pub struct Printer {}
 
 impl Printer {
-    pub fn visit<'a>(&mut self, mut cursor: Cursor<'a>) {
+    pub fn visit<'a>(&mut self, mut cursor: AstCursor<'a>) {
         self.enter_node(cursor.node());
         let mut recurse = true;
         loop {
