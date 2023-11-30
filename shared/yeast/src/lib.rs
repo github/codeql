@@ -67,6 +67,9 @@ impl<'a> AstCursor<'a> {
     }
 
     pub fn field_name(&self) -> Option<&'static str> {
+        if self.field_id() == Some(CHILD_FIELD) {
+            return None;
+        }
         self.field_id()
             .and_then(|id| self.ast.field_name_for_id(id))
     }
