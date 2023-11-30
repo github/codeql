@@ -8,6 +8,8 @@ pub mod tree_builder;
 pub mod captures;
 
 
+use captures::Captures;
+use query::QueryNode;
 use serde::Serialize;
 use serde_json::{json, Value};
 
@@ -176,25 +178,13 @@ impl From<tree_sitter::Range> for NodeContent {
     }
 }
 
-pub struct Query {}
-impl Query {
-    pub fn new() -> Self {
-        Self {}
-    }
-}
-
-fn isMatch(query: &Query, ast: &Ast, node: &Node) -> bool {
-    // TODO after the final Query class is merged in
-    return false;
-}
-
 pub struct Rule {
-    query: Query,
-    transform: Box<dyn Fn(&mut Ast, Match) -> Id>,
+    query: QueryNode,
+    transform: Box<dyn Fn(&mut Ast, Captures) -> Id>,
 }
 
 impl Rule {
-    pub fn new(query: Query, transform: Box<dyn Fn(&mut Ast, Match) -> Id>) -> Self {
+    pub fn new(query: QueryNode, transform: Box<dyn Fn(&mut Ast, Captures) -> Id>) -> Self {
         Self {
             query: query,
             transform: transform,
@@ -202,10 +192,12 @@ impl Rule {
     }
 
     fn tryRule(&self, ast: &mut Ast, node: Id) -> Option<Id> {
-        if isMatch(&self.query, ast, &ast.nodes[node]) {
-            return Option::Some((*self.transform)(ast, Match { node: node }));
+        let mut captures = Captures::new();
+        if self.query.do_match(ast, node, &mut captures).unwrap() {
+            Some((self.transform)(ast, captures))
+        } else {
+            None
         }
-        return Option::None;
     }
 }
 
@@ -246,10 +238,6 @@ fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Id {
     node.id = ast.nodes.len() - 1;
     ast.nodes.push(node);
     return ast.nodes.len() - 1;
-}
-
-pub struct Match {
-    pub node: Id,
 }
 
 pub struct Runner {
