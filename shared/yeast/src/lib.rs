@@ -1,12 +1,11 @@
 // Uncomment to debug macros
 //#![feature(trace_macros)]
 
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, mem};
 
+pub mod captures;
 pub mod query;
 pub mod tree_builder;
-pub mod captures;
-
 
 use captures::Captures;
 use query::QueryNode;
@@ -180,18 +179,18 @@ impl From<tree_sitter::Range> for NodeContent {
 
 pub struct Rule {
     query: QueryNode,
-    transform: Box<dyn Fn(&mut Ast, Captures) -> Id>,
+    transform: Box<dyn Fn(&mut Ast, Captures) -> Vec<Id>>,
 }
 
 impl Rule {
-    pub fn new(query: QueryNode, transform: Box<dyn Fn(&mut Ast, Captures) -> Id>) -> Self {
+    pub fn new(query: QueryNode, transform: Box<dyn Fn(&mut Ast, Captures) -> Vec<Id>>) -> Self {
         Self {
             query: query,
             transform: transform,
         }
     }
 
-    fn tryRule(&self, ast: &mut Ast, node: Id) -> Option<Id> {
+    fn tryRule(&self, ast: &mut Ast, node: Id) -> Option<Vec<Id>> {
         let mut captures = Captures::new();
         if self.query.do_match(ast, node, &mut captures).unwrap() {
             Some((self.transform)(ast, captures))
@@ -201,43 +200,45 @@ impl Rule {
     }
 }
 
-fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Id {
-    let mut transformedId = id;
-    // apply the transformation rules on this node until fixpoint
-    loop {
-        let mut newTransformedId = transformedId;
-        for rule in rules {
-            newTransformedId = match rule.tryRule(ast, newTransformedId) {
-                Some(resultNode) => resultNode,
-                None => newTransformedId,
+fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Vec<Id> {
+    // apply the transformation rules on this node
+    for rule in rules {
+        match rule.tryRule(ast, id) {
+            Some(resultNode) => {
+                // We transformed it so now recurse into the result
+                return resultNode
+                    .iter()
+                    .map(|node| applyRules(rules, ast, *node))
+                    .flatten()
+                    .collect();
             }
-        }
-
-        if newTransformedId == transformedId {
-            break;
-        } else {
-            transformedId = newTransformedId
+            None => {}
         }
     }
 
     // copy the current node
-    let mut node = ast.nodes[transformedId].clone();
+    let mut node = ast.nodes[id].clone();
 
     // recursively descend into all the fields
     for (_, vec) in &mut node.fields {
-        for v in vec {
-            *v = applyRules(rules, ast, *v)
-        }
+        let mut old = Vec::new();
+        mem::swap(vec, &mut old);
+        *vec = old
+            .iter()
+            .map(|node| applyRules(rules, ast, *node))
+            .flatten()
+            .collect();
     }
 
-    // recursively descend into all the non-field children
-    for child in &mut node.children {
-        *child = applyRules(rules, ast, *child)
-    }
+    node.children = node.children
+        .iter()
+        .map(|node| applyRules(rules, ast, *node))
+        .flatten().collect();
+
 
     node.id = ast.nodes.len() - 1;
     ast.nodes.push(node);
-    return ast.nodes.len() - 1;
+    return vec![ast.nodes.len() - 1];
 }
 
 pub struct Runner {
@@ -258,6 +259,9 @@ impl Runner {
         let tree = parser.parse(input, None).unwrap();
         let mut ast = Ast::from_tree(self.language, &tree);
         let res = applyRules(&self.rules, &mut ast, 0);
-        (ast, res)
+        if res.len() != 1 {
+            panic!("Expected at exactly one result node, got {}", res.len());
+        }
+        (ast, res[0])
     }
 }

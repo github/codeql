@@ -1,5 +1,5 @@
+use crate::{captures::Captures, Ast, FieldId, Id, NodeContent};
 use std::collections::{BTreeMap, BTreeSet};
-use crate::{Ast, Id, FieldId, NodeContent, captures::{Captures}};
 
 #[derive(Debug, Clone)]
 pub enum TreeBuilder {
@@ -28,7 +28,10 @@ impl TreeChildBuilder {
     fn get_opt_contained(&self) -> BTreeSet<&'static str> {
         match self {
             TreeChildBuilder::Repeated { child } => child.get_opt_contained(),
-            TreeChildBuilder::Field { field_name: _, node } => {
+            TreeChildBuilder::Field {
+                field_name: _,
+                node,
+            } => {
                 let mut contained = BTreeSet::new();
                 for child in node {
                     contained.extend(child.get_opt_contained());
@@ -101,15 +104,9 @@ impl TreeBuilder {
         }
     }
 
-    pub fn build_tree(
-        &self,
-        target: &mut Ast,
-        vars: &Captures,
-    ) -> Result<Id, String> {
+    pub fn build_tree(&self, target: &mut Ast, vars: &Captures) -> Result<Id, String> {
         match self {
-            TreeBuilder::Capture { capture } => {
-                 vars.get_var(capture)
-            }
+            TreeBuilder::Capture { capture } => vars.get_var(capture),
             TreeBuilder::Node { kind, children } => {
                 let mut child_ids = Vec::new();
                 let mut child_vars = BTreeMap::new();
@@ -120,7 +117,7 @@ impl TreeBuilder {
                 for child in children {
                     child.build_tree(target, vars, &mut child_ids, &mut child_vars)?;
                 }
-                Ok(target.create_node(ast_kind, NodeContent::String(""), child_vars, child_ids))
+                Ok(target.create_node(ast_kind, "".into(), child_vars, child_ids))
             }
         }
     }
@@ -159,7 +156,30 @@ macro_rules! _tree_builder_child {
     (@ACC [$($acc:tt)*] $sub_node:tt $($rest:tt)*) => { _tree_builder_child!( @ACC [ $($acc)* $crate::tree_builder::TreeChildBuilder::SingleNode(tree_builder!($sub_node)),] $($rest)*)};
 }
 
+pub struct TreesBuilder {
+    pub children: Vec<TreeChildBuilder>,
+}
+
+impl TreesBuilder {
+    pub fn build_trees(&self, target: &mut Ast, vars: &Captures) -> Result<Vec<Id>, String> {
+        let mut child_fields = BTreeMap::new();
+        let mut child_ids = Vec::new();
+        for child in &self.children {
+            child.build_tree(target, vars, &mut child_ids, &mut child_fields)?;
+        }
+        if !child_fields.is_empty() {
+            return Err(format!("Top level cannot have fields"));
+        }
+        Ok(child_ids)
+    }
+}
+
+#[macro_export]
+macro_rules! trees_builder {
+    () => { $crate::tree_builder::TreesBuilder { children: Vec::new()}};
+    ($($rest:tt)*) => {$crate::tree_builder::TreesBuilder { children: _tree_builder_child!( @ACC [] $($rest)* )}};
+}
 
 pub use tree_builder;
 pub use tree_builder_child;
-
+pub use trees_builder;
