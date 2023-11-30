@@ -4,7 +4,6 @@ import java
 import semmle.code.java.security.UnsafeUrlForward
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.Jsf
 import semmle.code.java.security.PathSanitizer
 
 /**
