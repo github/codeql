@@ -106,6 +106,8 @@ signature module Semantic {
 
   class ShiftRightUnsignedExpr extends BinaryExpr;
 
+  default predicate isAssignOp(BinaryExpr bin) { none() }
+
   class RelationalExpr extends Expr {
     Expr getLesserOperand();
 
@@ -126,15 +128,37 @@ signature module Semantic {
 
   class NegateExpr extends UnaryExpr;
 
-  class AddOneExpr extends UnaryExpr;
+  class PreIncExpr extends UnaryExpr;
 
-  class SubOneExpr extends UnaryExpr;
+  class PreDecExpr extends UnaryExpr;
+
+  class PostIncExpr extends UnaryExpr;
+
+  class PostDecExpr extends UnaryExpr;
+
+  class CopyValueExpr extends UnaryExpr;
 
   class ConditionalExpr extends Expr {
     Expr getBranchExpr(boolean branch);
   }
 
-  class BasicBlock;
+  class BasicBlock {
+    /** Holds if this block (transitively) dominates `otherblock`. */
+    predicate bbDominates(BasicBlock otherBlock);
+  }
+
+  /** Gets an immediate successor of basic block `bb`, if any. */
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb);
+
+  /**
+   * Gets an ideally unique integer for `bb`. If it is undesirable to make this
+   * unique, then `getBlock2` must provide a tiebreaker, such that the pair
+   * `(getBlockId1(bb),getBlockId2(bb))` becomes unique.
+   */
+  int getBlockId1(BasicBlock bb);
+
+  /** Gets a tiebreaker id in case `getBlockId1` is not unique. */
+  default string getBlockId2(BasicBlock bb) { result = "" }
 
   class Guard {
     string toString();
@@ -144,11 +168,13 @@ signature module Semantic {
     Expr asExpr();
 
     predicate directlyControls(BasicBlock controlled, boolean branch);
+
+    predicate isEquality(Expr e1, Expr e2, boolean polarity);
+
+    predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
 
   predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2);
-
-  predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue);
 
   class Type;
 
@@ -162,27 +188,31 @@ signature module Semantic {
 
   class AddressType extends Type;
 
+  /** Gets the type of an SSA variable. */
+  Type getSsaType(SsaVariable var);
+
+  /** Gets the type of an expression. */
+  Type getExprType(Expr e);
+
   class SsaVariable {
     Expr getAUse();
+
+    BasicBlock getBasicBlock();
   }
 
-  class SsaPhiNode extends SsaVariable;
-
-  class SsaExplicitUpdate extends SsaVariable;
-
-  class SsaReadPosition {
-    predicate hasReadOfVar(SsaVariable v);
+  class SsaPhiNode extends SsaVariable {
+    /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+    predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb);
   }
 
-  class SsaReadPositionPhiInputEdge extends SsaReadPosition {
-    predicate phiInput(SsaPhiNode phi, SsaVariable inp);
+  class SsaExplicitUpdate extends SsaVariable {
+    Expr getDefiningExpr();
   }
 
-  class SsaReadPositionBlock extends SsaReadPosition {
-    BasicBlock getBlock();
-  }
-
-  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge);
+  /**
+   * Holds if the value of `dest` is known to be `src + delta`.
+   */
+  predicate additionalValueFlowStep(Expr dest, Expr src, int delta);
 
   predicate conversionCannotOverflow(Type fromType, Type toType);
 }
@@ -216,7 +246,7 @@ signature module SignAnalysisSig<Semantic Sem> {
 signature module ModulusAnalysisSig<Semantic Sem> {
   class ModBound;
 
-  predicate semExprModulus(Sem::Expr e, ModBound b, int val, int mod);
+  predicate exprModulus(Sem::Expr e, ModBound b, int val, int mod);
 }
 
 signature module DeltaSig {
@@ -241,22 +271,14 @@ signature module DeltaSig {
 
 signature module LangSig<Semantic Sem, DeltaSig D> {
   /**
-   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadCopy(Sem::Expr e);
-
-  /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
   predicate hasConstantBound(Sem::Expr e, D::Delta bound, boolean upper);
 
   /**
-   * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
+   * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
-  predicate hasBound(Sem::Expr e, Sem::Expr bound, D::Delta delta, boolean upper);
+  predicate additionalBoundFlowStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper);
 
   /**
    * Ignore the bound on this expression.
@@ -266,105 +288,7 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
    */
   predicate ignoreExprBound(Sem::Expr e);
 
-  /**
-   * Ignore any inferred zero lower bound on this expression.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreZeroLowerBound(Sem::Expr e);
-
-  /**
-   * Holds if the specified expression should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadArithmeticExpr(Sem::Expr e);
-
-  /**
-   * Holds if the specified variable should be excluded from the result of `ssaRead()`.
-   *
-   * This predicate is to keep the results identical to the original Java implementation. It should be
-   * removed once we have the new implementation matching the old results exactly.
-   */
-  predicate ignoreSsaReadAssignment(Sem::SsaVariable v);
-
-  /**
-   * Adds additional results to `ssaRead()` that are specific to Java.
-   *
-   * This predicate handles propagation of offsets for post-increment and post-decrement expressions
-   * in exactly the same way as the old Java implementation. Once the new implementation matches the
-   * old one, we should remove this predicate and propagate deltas for all similar patterns, whether
-   * or not they come from a post-increment/decrement expression.
-   */
-  Sem::Expr specificSsaRead(Sem::SsaVariable v, D::Delta delta);
-
-  /**
-   * Holds if the value of `dest` is known to be `src + delta`.
-   */
-  predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, D::Delta delta);
-
-  /**
-   * Gets the type that range analysis should use to track the result of the specified expression,
-   * if a type other than the original type of the expression is to be used.
-   *
-   * This predicate is commonly used in languages that support immutable "boxed" types that are
-   * actually references but whose values can be tracked as the type contained in the box.
-   */
-  Sem::Type getAlternateType(Sem::Expr e);
-
-  /**
-   * Gets the type that range analysis should use to track the result of the specified source
-   * variable, if a type other than the original type of the expression is to be used.
-   *
-   * This predicate is commonly used in languages that support immutable "boxed" types that are
-   * actually references but whose values can be tracked as the type contained in the box.
-   */
-  Sem::Type getAlternateTypeForSsaVariable(Sem::SsaVariable var);
-
   default predicate javaCompatibility() { none() }
-}
-
-signature module UtilSig<Semantic Sem, DeltaSig DeltaParam> {
-  Sem::Expr semSsaRead(Sem::SsaVariable v, DeltaParam::Delta delta);
-
-  Sem::Guard semEqFlowCond(
-    Sem::SsaVariable v, Sem::Expr e, DeltaParam::Delta delta, boolean isEq, boolean testIsTrue
-  );
-
-  predicate semSsaUpdateStep(Sem::SsaExplicitUpdate v, Sem::Expr e, DeltaParam::Delta delta);
-
-  predicate semValueFlowStep(Sem::Expr e2, Sem::Expr e1, DeltaParam::Delta delta);
-
-  /**
-   * Gets the type used to track the specified source variable's range information.
-   *
-   * Usually, this just `e.getType()`, but the language can override this to track immutable boxed
-   * primitive types as the underlying primitive type.
-   */
-  Sem::Type getTrackedTypeForSsaVariable(Sem::SsaVariable var);
-
-  /**
-   * Gets the type used to track the specified expression's range information.
-   *
-   * Usually, this just `e.getSemType()`, but the language can override this to track immutable boxed
-   * primitive types as the underlying primitive type.
-   */
-  Sem::Type getTrackedType(Sem::Expr e);
-
-  /**
-   * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
-   * in an arbitrary 1-based numbering of the input edges to `phi`.
-   */
-  predicate rankedPhiInput(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int r
-  );
-
-  /**
-   * Holds if `rix` is the number of input edges to `phi`.
-   */
-  predicate maxPhiInputRank(Sem::SsaPhiNode phi, int rix);
 }
 
 signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
@@ -379,7 +303,7 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
   class SemZeroBound extends SemBound;
 
   class SemSsaBound extends SemBound {
-    Sem::SsaVariable getAVariable();
+    Sem::SsaVariable getVariable();
   }
 }
 
@@ -390,15 +314,15 @@ signature module OverflowSig<Semantic Sem, DeltaSig D> {
 module RangeStage<
   LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
   OverflowSig<Sem, D> OverflowParam, LangSig<Sem, D> LangParam, SignAnalysisSig<Sem> SignAnalysis,
-  ModulusAnalysisSig<Sem> ModulusAnalysis, UtilSig<Sem, D> UtilParam>
+  ModulusAnalysisSig<Sem> ModulusAnalysisParam>
 {
   private import Bounds
   private import LangParam
-  private import UtilParam
   private import D
   private import OverflowParam
   private import SignAnalysis
-  private import ModulusAnalysis
+  private import ModulusAnalysisParam
+  private import internal.RangeUtils::MakeUtils<Sem, D>
 
   /**
    * An expression that does conversion, boxing, or unboxing
@@ -438,8 +362,8 @@ module RangeStage<
    */
   private class SafeCastExpr extends ConvertOrBoxExpr {
     SafeCastExpr() {
-      Sem::conversionCannotOverflow(getTrackedType(pragma[only_bind_into](this.getOperand())),
-        pragma[only_bind_out](getTrackedType(this)))
+      Sem::conversionCannotOverflow(Sem::getExprType(pragma[only_bind_into](this.getOperand())),
+        pragma[only_bind_out](Sem::getExprType(this)))
     }
   }
 
@@ -449,14 +373,14 @@ module RangeStage<
   private class NarrowingCastExpr extends ConvertOrBoxExpr {
     NarrowingCastExpr() {
       not this instanceof SafeCastExpr and
-      typeBound(getTrackedType(this), _, _)
+      typeBound(Sem::getExprType(this), _, _)
     }
 
     /** Gets the lower bound of the resulting type. */
-    float getLowerBound() { typeBound(getTrackedType(this), result, _) }
+    float getLowerBound() { typeBound(Sem::getExprType(this), result, _) }
 
     /** Gets the upper bound of the resulting type. */
-    float getUpperBound() { typeBound(getTrackedType(this), _, result) }
+    float getUpperBound() { typeBound(Sem::getExprType(this), _, result) }
   }
 
   cached
@@ -484,7 +408,7 @@ module RangeStage<
      */
     cached
     predicate possibleReason(Sem::Guard guard) {
-      guard = boundFlowCond(_, _, _, _, _) or guard = semEqFlowCond(_, _, _, _, _)
+      guard = boundFlowCond(_, _, _, _, _) or guard = eqFlowCond(_, _, _, _, _)
     }
   }
 
@@ -512,11 +436,11 @@ module RangeStage<
   private predicate boundCondition(
     Sem::RelationalExpr comp, Sem::SsaVariable v, Sem::Expr e, D::Delta delta, boolean upper
   ) {
-    comp.getLesserOperand() = semSsaRead(v, delta) and
+    comp.getLesserOperand() = ssaRead(v, delta) and
     e = comp.getGreaterOperand() and
     upper = true
     or
-    comp.getGreaterOperand() = semSsaRead(v, delta) and
+    comp.getGreaterOperand() = ssaRead(v, delta) and
     e = comp.getLesserOperand() and
     upper = false
     or
@@ -524,7 +448,7 @@ module RangeStage<
       // (v - d) - e < c
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
-      sub.getLeftOperand() = semSsaRead(v, d) and
+      sub.getLeftOperand() = ssaRead(v, d) and
       sub.getRightOperand() = e and
       upper = true and
       delta = D::fromFloat(D::toFloat(d) + c.getIntValue())
@@ -532,7 +456,7 @@ module RangeStage<
       // (v - d) - e > c
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
-      sub.getLeftOperand() = semSsaRead(v, d) and
+      sub.getLeftOperand() = ssaRead(v, d) and
       sub.getRightOperand() = e and
       upper = false and
       delta = D::fromFloat(D::toFloat(d) + c.getIntValue())
@@ -541,7 +465,7 @@ module RangeStage<
       comp.getLesserOperand() = sub and
       comp.getGreaterOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = semSsaRead(v, d) and
+      sub.getRightOperand() = ssaRead(v, d) and
       upper = false and
       delta = D::fromFloat(D::toFloat(d) - c.getIntValue())
       or
@@ -549,7 +473,7 @@ module RangeStage<
       comp.getGreaterOperand() = sub and
       comp.getLesserOperand() = c and
       sub.getLeftOperand() = e and
-      sub.getRightOperand() = semSsaRead(v, d) and
+      sub.getRightOperand() = ssaRead(v, d) and
       upper = true and
       delta = D::fromFloat(D::toFloat(d) - c.getIntValue())
     )
@@ -570,8 +494,8 @@ module RangeStage<
       // strict then the strengthening amount is instead `k - 1` modulo `mod`:
       // `x < y` means `0 <= y - x - 1 =(mod) k - 1` so `k - 1 <= y - x - 1` and
       // thus `k - 1 < y - x` with `0 <= k - 1 < mod`.
-      semExprModulus(comp.getLesserOperand(), b, v1, mod1) and
-      semExprModulus(comp.getGreaterOperand(), b, v2, mod2) and
+      exprModulus(comp.getLesserOperand(), b, v1, mod1) and
+      exprModulus(comp.getGreaterOperand(), b, v2, mod2) and
       mod = mod1.gcd(mod2) and
       mod != 1 and
       (testIsTrue = true or testIsTrue = false) and
@@ -619,8 +543,8 @@ module RangeStage<
       ) and
       (
         if
-          getTrackedTypeForSsaVariable(v) instanceof Sem::IntegerType or
-          getTrackedTypeForSsaVariable(v) instanceof Sem::AddressType
+          Sem::getSsaType(v) instanceof Sem::IntegerType or
+          Sem::getSsaType(v) instanceof Sem::AddressType
         then
           upper = true and strengthen = -1
           or
@@ -646,7 +570,7 @@ module RangeStage<
         testIsTrue0)
     )
     or
-    result = semEqFlowCond(v, e, delta, true, testIsTrue) and
+    result = eqFlowCond(v, e, delta, true, testIsTrue) and
     (upper = true or upper = false)
     or
     // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
@@ -667,7 +591,7 @@ module RangeStage<
     Sem::SsaVariable v1, Sem::SsaVariable v2, float delta
   ) {
     exists(Sem::Guard guardEq, D::Delta d1, D::Delta d2, boolean eqIsTrue |
-      guardEq = semEqFlowCond(v1, semSsaRead(v2, d1), d2, true, eqIsTrue) and
+      guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
       delta = D::toFloat(d2) - D::toFloat(d1) and
       guardEq.directlyControls(result, eqIsTrue)
     )
@@ -709,10 +633,10 @@ module RangeStage<
    * - `upper = false` : `v >= e + delta`
    */
   private predicate boundFlowStepSsa(
-    Sem::SsaVariable v, Sem::SsaReadPosition pos, Sem::Expr e, D::Delta delta, boolean upper,
+    Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, D::Delta delta, boolean upper,
     SemReason reason
   ) {
-    semSsaUpdateStep(v, e, delta) and
+    ssaUpdateStep(v, e, delta) and
     pos.hasReadOfVar(v) and
     (upper = true or upper = false) and
     reason = TSemNoReason()
@@ -720,32 +644,32 @@ module RangeStage<
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = boundFlowCond(v, e, delta, upper, testIsTrue) and
-      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
+      guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
   }
 
   /** Holds if `v != e + delta` at `pos` and `v` is of integral type. */
   private predicate unequalFlowStepIntegralSsa(
-    Sem::SsaVariable v, Sem::SsaReadPosition pos, Sem::Expr e, D::Delta delta, SemReason reason
+    Sem::SsaVariable v, SsaReadPosition pos, Sem::Expr e, D::Delta delta, SemReason reason
   ) {
-    getTrackedTypeForSsaVariable(v) instanceof Sem::IntegerType and
+    Sem::getSsaType(v) instanceof Sem::IntegerType and
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
-      guard = semEqFlowCond(v, e, delta, false, testIsTrue) and
-      Sem::guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
+      guard = eqFlowCond(v, e, delta, false, testIsTrue) and
+      guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
   }
 
   /** Holds if `e >= 1` as determined by sign analysis. */
   private predicate strictlyPositiveIntegralExpr(Sem::Expr e) {
-    semStrictlyPositive(e) and getTrackedType(e) instanceof Sem::IntegerType
+    semStrictlyPositive(e) and Sem::getExprType(e) instanceof Sem::IntegerType
   }
 
   /** Holds if `e <= -1` as determined by sign analysis. */
   private predicate strictlyNegativeIntegralExpr(Sem::Expr e) {
-    semStrictlyNegative(e) and getTrackedType(e) instanceof Sem::IntegerType
+    semStrictlyNegative(e) and Sem::getExprType(e) instanceof Sem::IntegerType
   }
 
   /**
@@ -754,7 +678,7 @@ module RangeStage<
    * - `upper = false` : `e2 >= e1 + delta`
    */
   private predicate boundFlowStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
-    semValueFlowStep(e2, e1, delta) and
+    valueFlowStep(e2, e1, delta) and
     (upper = true or upper = false)
     or
     e2.(SafeCastExpr).getOperand() = e1 and
@@ -803,7 +727,7 @@ module RangeStage<
     delta = D::fromInt(0) and
     upper = false
     or
-    hasBound(e2, e1, delta, upper)
+    additionalBoundFlowStep(e2, e1, delta, upper)
   }
 
   /** Holds if `e2 = e1 * factor` and `factor > 0`. */
@@ -827,7 +751,7 @@ module RangeStage<
    * therefore only valid for non-negative numbers.
    */
   private predicate boundFlowStepDiv(Sem::Expr e2, Sem::Expr e1, D::Delta factor) {
-    getTrackedType(e2) instanceof Sem::IntegerType and
+    Sem::getExprType(e2) instanceof Sem::IntegerType and
     exists(Sem::ConstantIntegerExpr c, D::Delta k |
       k = D::fromInt(c.getIntValue()) and D::toFloat(k) > 0
     |
@@ -857,7 +781,7 @@ module RangeStage<
    * - `upper = false` : `v >= b + delta`
    */
   private predicate boundedSsa(
-    Sem::SsaVariable v, SemBound b, D::Delta delta, Sem::SsaReadPosition pos, boolean upper,
+    Sem::SsaVariable v, SemBound b, D::Delta delta, SsaReadPosition pos, boolean upper,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
     exists(Sem::Expr mid, D::Delta d1, D::Delta d2, SemReason r1, SemReason r2 |
@@ -870,11 +794,9 @@ module RangeStage<
     )
     or
     exists(D::Delta d, SemReason r1, SemReason r2 |
-      boundedSsa(pragma[only_bind_into](v), pragma[only_bind_into](b), pragma[only_bind_into](d),
-        pragma[only_bind_into](pos), upper, fromBackEdge, origdelta, r2)
+      boundedSsa(v, b, d, pos, upper, fromBackEdge, origdelta, r2)
       or
-      boundedPhi(pragma[only_bind_into](v), pragma[only_bind_into](b), pragma[only_bind_into](d),
-        upper, fromBackEdge, origdelta, r2)
+      boundedPhi(v, b, d, upper, fromBackEdge, origdelta, r2)
     |
       unequalIntegralSsa(v, b, d, pos, r1) and
       (
@@ -894,34 +816,14 @@ module RangeStage<
    * Holds if `v != b + delta` at `pos` and `v` is of integral type.
    */
   private predicate unequalIntegralSsa(
-    Sem::SsaVariable v, SemBound b, D::Delta delta, Sem::SsaReadPosition pos, SemReason reason
+    Sem::SsaVariable v, SemBound b, D::Delta delta, SsaReadPosition pos, SemReason reason
   ) {
     exists(Sem::Expr e, D::Delta d1, D::Delta d2 |
       unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
-      boundedUpper(e, b, d2) and
-      boundedLower(e, b, d2) and
+      bounded(e, b, d2, true, _, _, _) and
+      bounded(e, b, d2, false, _, _, _) and
       delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
     )
-  }
-
-  /**
-   * Holds if `b + delta` is an upper bound for `e`.
-   *
-   * This predicate only exists to prevent a bad standard order in `unequalIntegralSsa`.
-   */
-  pragma[nomagic]
-  private predicate boundedUpper(Sem::Expr e, SemBound b, D::Delta delta) {
-    bounded(e, b, delta, true, _, _, _)
-  }
-
-  /**
-   * Holds if `b + delta` is a lower bound for `e`.
-   *
-   * This predicate only exists to prevent a bad standard order in `unequalIntegralSsa`.
-   */
-  pragma[nomagic]
-  private predicate boundedLower(Sem::Expr e, SemBound b, D::Delta delta) {
-    bounded(e, b, delta, false, _, _, _)
   }
 
   /** Weakens a delta to lie in the range `[-1..1]`. */
@@ -941,7 +843,7 @@ module RangeStage<
    * - `upper = false` : `inp >= b + delta`
    */
   private predicate boundedPhiInp(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, SemBound b,
+    Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, SemBound b,
     D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
     edge.phiInput(phi, inp) and
@@ -950,14 +852,14 @@ module RangeStage<
       or
       boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason)
       or
-      b.(SemSsaBound).getAVariable() = inp and
+      b.(SemSsaBound).getVariable() = inp and
       d = D::fromFloat(0) and
       (upper = true or upper = false) and
       fromBackEdge0 = false and
       origdelta = D::fromFloat(0) and
       reason = TSemNoReason()
     |
-      if Sem::backEdge(phi, inp, edge)
+      if backEdge(phi, inp, edge)
       then
         fromBackEdge = true and
         (
@@ -985,7 +887,7 @@ module RangeStage<
   pragma[noinline]
   private predicate boundedPhiInp1(
     Sem::SsaPhiNode phi, SemBound b, boolean upper, Sem::SsaVariable inp,
-    Sem::SsaReadPositionPhiInputEdge edge, D::Delta delta
+    SsaReadPositionPhiInputEdge edge, D::Delta delta
   ) {
     boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)
   }
@@ -997,10 +899,10 @@ module RangeStage<
    * - `upper = false` : `inp >= phi`
    */
   private predicate selfBoundedPhiInp(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, boolean upper
+    Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, boolean upper
   ) {
     exists(D::Delta d, SemSsaBound phibound |
-      phibound.getAVariable() = phi and
+      phibound.getVariable() = phi and
       boundedPhiInp(phi, inp, edge, phibound, d, upper, _, _, _) and
       (
         upper = true and D::toFloat(d) <= 0
@@ -1030,8 +932,7 @@ module RangeStage<
    */
   private predicate boundedPhiCandValidForEdge(
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason, Sem::SsaVariable inp,
-    Sem::SsaReadPositionPhiInputEdge edge
+    D::Delta origdelta, SemReason reason, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge
   ) {
     boundedPhiCand(phi, upper, b, delta, fromBackEdge, origdelta, reason) and
     (
@@ -1057,7 +958,7 @@ module RangeStage<
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason, int rix
   ) {
-    exists(Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge |
+    exists(Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge |
       rankedPhiInput(phi, inp, edge, rix) and
       boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
     |
@@ -1091,9 +992,7 @@ module RangeStage<
     or
     upper = false and
     b = D::fromInt(0) and
-    semPositive(e.(Sem::BitAndExpr).getAnOperand()) and
-    // REVIEW: We let the language opt out here to preserve original results.
-    not ignoreZeroLowerBound(e)
+    semPositive(e.(Sem::BitAndExpr).getAnOperand())
   }
 
   /**
@@ -1188,12 +1087,12 @@ module RangeStage<
     positively = false and
     (
       expr instanceof Sem::NegateExpr or
-      expr instanceof Sem::SubOneExpr or
-      getTrackedType(expr.(Sem::DivExpr)) instanceof Sem::FloatingPointType
+      expr instanceof Sem::PreDecExpr or
+      Sem::getExprType(expr.(Sem::DivExpr)) instanceof Sem::FloatingPointType
     )
     or
     positively = true and
-    expr instanceof Sem::AddOneExpr
+    expr instanceof Sem::PreIncExpr
   }
 
   /**
@@ -1231,10 +1130,9 @@ module RangeStage<
       origdelta = delta and
       reason = TSemNoReason()
       or
-      exists(Sem::SsaVariable v, Sem::SsaReadPositionBlock bb |
+      exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
         boundedSsa(v, b, delta, bb, upper, fromBackEdge, origdelta, reason) and
-        e = v.getAUse() and
-        bb.getBlock() = e.getBasicBlock()
+        bb.getAnSsaRead(v) = e
       )
       or
       exists(Sem::Expr mid, D::Delta d1, D::Delta d2 |
@@ -1390,8 +1288,8 @@ module RangeStage<
     Sem::AddExpr add, boolean upper, SemBound b, boolean isLeft, D::Delta delta,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
-    // `semValueFlowStep` already handles the case where one of the operands is a constant.
-    not semValueFlowStep(add, _, _) and
+    // `valueFlowStep` already handles the case where one of the operands is a constant.
+    not valueFlowStep(add, _, _) and
     (
       isLeft = true and
       bounded(add.getLeftOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
@@ -1410,8 +1308,8 @@ module RangeStage<
     Sem::SubExpr sub, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
   ) {
-    // `semValueFlowStep` already handles the case where one of the operands is a constant.
-    not semValueFlowStep(sub, _, _) and
+    // `valueFlowStep` already handles the case where one of the operands is a constant.
+    not valueFlowStep(sub, _, _) and
     bounded(sub.getLeftOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
@@ -1426,8 +1324,8 @@ module RangeStage<
   private predicate boundedSubOperandRight(
     Sem::SubExpr sub, boolean upper, D::Delta delta, boolean fromBackEdge
   ) {
-    // `semValueFlowStep` already handles the case where one of the operands is a constant.
-    not semValueFlowStep(sub, _, _) and
+    // `valueFlowStep` already handles the case where one of the operands is a constant.
+    not valueFlowStep(sub, _, _) and
     bounded(sub.getRightOperand(), any(SemZeroBound zb), delta, upper.booleanNot(), fromBackEdge, _,
       _)
   }

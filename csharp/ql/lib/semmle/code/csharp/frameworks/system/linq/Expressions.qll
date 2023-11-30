@@ -22,7 +22,7 @@ module SystemLinqExpressions {
 
   /** The `Expression<TDelegate>` class. */
   class ExpressionDelegate extends Class, CSharp::UnboundGenericClass {
-    ExpressionDelegate() { this.hasName("Expression<>") }
+    ExpressionDelegate() { this.hasName("Expression`1") }
   }
 
   /**

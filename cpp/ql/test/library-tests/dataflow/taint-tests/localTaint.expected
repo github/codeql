@@ -6643,6 +6643,20 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:729:27:729:32 | endptr | taint.cpp:729:26:729:32 | & ... |  |
 | taint.cpp:731:7:731:12 | ref arg endptr | taint.cpp:732:8:732:13 | endptr |  |
 | taint.cpp:732:8:732:13 | endptr | taint.cpp:732:7:732:13 | * ... | TAINT |
+| taint.cpp:738:17:738:31 | call to indirect_source | taint.cpp:739:30:739:35 | source |  |
+| taint.cpp:739:22:739:28 | call to realloc | taint.cpp:740:7:740:10 | dest |  |
+| taint.cpp:739:30:739:35 | source | taint.cpp:739:22:739:28 | call to realloc | TAINT |
+| taint.cpp:743:40:743:45 | buffer | taint.cpp:744:5:744:10 | buffer |  |
+| taint.cpp:743:40:743:45 | buffer | taint.cpp:745:27:745:32 | buffer |  |
+| taint.cpp:744:4:744:10 | * ... | taint.cpp:744:3:744:10 | * ... | TAINT |
+| taint.cpp:744:5:744:10 | buffer | taint.cpp:744:4:744:10 | * ... | TAINT |
+| taint.cpp:744:14:744:19 | call to source | taint.cpp:744:3:744:21 | ... = ... |  |
+| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:743:40:743:45 | buffer |  |
+| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:745:3:745:37 | ... = ... |  |
+| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:746:10:746:15 | buffer |  |
+| taint.cpp:745:27:745:32 | buffer | taint.cpp:745:19:745:25 | call to realloc | TAINT |
+| taint.cpp:746:9:746:15 | * ... | taint.cpp:746:8:746:15 | * ... | TAINT |
+| taint.cpp:746:10:746:15 | buffer | taint.cpp:746:9:746:15 | * ... | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

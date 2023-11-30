@@ -22,31 +22,19 @@ edges
 | tests5.cpp:88:2:88:2 | p indirection | tests5.cpp:89:2:89:2 | p indirection |
 | tests.cpp:15:23:15:43 | call to XercesDOMParser | tests.cpp:17:2:17:2 | p indirection |
 | tests.cpp:28:23:28:43 | call to XercesDOMParser | tests.cpp:31:2:31:2 | p indirection |
-| tests.cpp:35:23:35:43 | call to XercesDOMParser | tests.cpp:37:2:37:2 | (AbstractDOMParser *)... indirection |
 | tests.cpp:35:23:35:43 | call to XercesDOMParser | tests.cpp:37:2:37:2 | p indirection |
-| tests.cpp:37:2:37:2 | (AbstractDOMParser *)... indirection | tests.cpp:37:2:37:2 | p indirection |
 | tests.cpp:37:2:37:2 | p indirection | tests.cpp:37:2:37:2 | p indirection |
-| tests.cpp:37:2:37:2 | p indirection | tests.cpp:38:2:38:2 | (AbstractDOMParser *)... indirection |
 | tests.cpp:37:2:37:2 | p indirection | tests.cpp:38:2:38:2 | p indirection |
-| tests.cpp:38:2:38:2 | (AbstractDOMParser *)... indirection | tests.cpp:38:2:38:2 | p indirection |
 | tests.cpp:38:2:38:2 | p indirection | tests.cpp:38:2:38:2 | p indirection |
 | tests.cpp:38:2:38:2 | p indirection | tests.cpp:39:2:39:2 | p indirection |
-| tests.cpp:51:23:51:43 | call to XercesDOMParser | tests.cpp:53:2:53:2 | (AbstractDOMParser *)... indirection |
 | tests.cpp:51:23:51:43 | call to XercesDOMParser | tests.cpp:53:2:53:2 | p indirection |
-| tests.cpp:53:2:53:2 | (AbstractDOMParser *)... indirection | tests.cpp:53:2:53:2 | p indirection |
 | tests.cpp:53:2:53:2 | p indirection | tests.cpp:53:2:53:2 | p indirection |
-| tests.cpp:53:2:53:2 | p indirection | tests.cpp:55:2:55:2 | (AbstractDOMParser *)... indirection |
 | tests.cpp:53:2:53:2 | p indirection | tests.cpp:55:2:55:2 | p indirection |
-| tests.cpp:55:2:55:2 | (AbstractDOMParser *)... indirection | tests.cpp:55:2:55:2 | p indirection |
 | tests.cpp:55:2:55:2 | p indirection | tests.cpp:55:2:55:2 | p indirection |
 | tests.cpp:55:2:55:2 | p indirection | tests.cpp:56:2:56:2 | p indirection |
-| tests.cpp:55:2:55:2 | p indirection | tests.cpp:57:2:57:2 | (AbstractDOMParser *)... indirection |
 | tests.cpp:55:2:55:2 | p indirection | tests.cpp:57:2:57:2 | p indirection |
-| tests.cpp:57:2:57:2 | (AbstractDOMParser *)... indirection | tests.cpp:57:2:57:2 | p indirection |
 | tests.cpp:57:2:57:2 | p indirection | tests.cpp:57:2:57:2 | p indirection |
-| tests.cpp:57:2:57:2 | p indirection | tests.cpp:59:2:59:2 | (AbstractDOMParser *)... indirection |
 | tests.cpp:57:2:57:2 | p indirection | tests.cpp:59:2:59:2 | p indirection |
-| tests.cpp:59:2:59:2 | (AbstractDOMParser *)... indirection | tests.cpp:59:2:59:2 | p indirection |
 | tests.cpp:59:2:59:2 | p indirection | tests.cpp:59:2:59:2 | p indirection |
 | tests.cpp:59:2:59:2 | p indirection | tests.cpp:60:2:60:2 | p indirection |
 | tests.cpp:66:23:66:43 | call to XercesDOMParser | tests.cpp:69:2:69:2 | p indirection |
@@ -104,25 +92,19 @@ nodes
 | tests.cpp:28:23:28:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:31:2:31:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:35:23:35:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
-| tests.cpp:37:2:37:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:37:2:37:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:37:2:37:2 | p indirection | semmle.label | p indirection |
-| tests.cpp:38:2:38:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:38:2:38:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:38:2:38:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:39:2:39:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:51:23:51:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
-| tests.cpp:53:2:53:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:53:2:53:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:53:2:53:2 | p indirection | semmle.label | p indirection |
-| tests.cpp:55:2:55:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:55:2:55:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:55:2:55:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:56:2:56:2 | p indirection | semmle.label | p indirection |
-| tests.cpp:57:2:57:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:57:2:57:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:57:2:57:2 | p indirection | semmle.label | p indirection |
-| tests.cpp:59:2:59:2 | (AbstractDOMParser *)... indirection | semmle.label | (AbstractDOMParser *)... indirection |
 | tests.cpp:59:2:59:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:59:2:59:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:60:2:60:2 | p indirection | semmle.label | p indirection |

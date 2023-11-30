@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms+HashCodeBuilder", "Append", "(System.String)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms+HashCodeBuilder", "HashCodeBuilder", "(System.String)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms+HashCodeBuilder", "ToHashCode", "()", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeASCIINameHashCode", "(System.Byte*,System.Int32,System.Boolean)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeArrayTypeHashCode", "(System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeArrayTypeHashCode<T>", "(T,System.Int32)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeByrefTypeHashCode", "(System.Int32)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeByrefTypeHashCode<T>", "(T)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeGenericInstanceHashCode<ARG>", "(System.Int32,ARG[])", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeMethodHashCode", "(System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeMethodSignatureHashCode<ARG>", "(System.Int32,ARG[])", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeNameHashCode", "(System.String)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeNestedTypeHashCode", "(System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputePointerTypeHashCode", "(System.Int32)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputePointerTypeHashCode<T>", "(T)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeSignatureVariableHashCode", "(System.Int32,System.Boolean)", "summary", "df-generated"]

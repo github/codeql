@@ -618,6 +618,10 @@ module Express {
         or
         kind = "body" and
         this = ref.getAPropertyRead("body")
+        or
+        // `req.path`
+        kind = "url" and
+        this = ref.getAPropertyRead("path")
       )
     }
 

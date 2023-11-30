@@ -214,10 +214,11 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   predicate return = FlowSummary::SummaryComponent::return/0;
 
   // Relating nodes to summaries
-  Node argumentOf(Node call, SummaryComponent arg) {
+  Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
     exists(DataFlowDispatch::ParameterPosition pos |
       arg = FlowSummary::SummaryComponent::argument(pos) and
-      argumentPositionMatch(call, result, pos)
+      argumentPositionMatch(call, result, pos) and
+      isPostUpdate = [false, true] // todo: implement when/if Python uses post-update nodes in type tracking
     )
   }
 

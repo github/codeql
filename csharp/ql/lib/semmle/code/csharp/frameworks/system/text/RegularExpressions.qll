@@ -36,7 +36,7 @@ class SystemTextRegularExpressionsRegexClass extends SystemTextRegularExpression
  */
 class RegexGlobalTimeout extends MethodCall {
   RegexGlobalTimeout() {
-    this.getTarget().hasQualifiedName("System.AppDomain", "SetData") and
+    this.getTarget().hasFullyQualifiedName("System.AppDomain", "SetData") and
     this.getArgumentForName("name").getValue() = "REGEX_DEFAULT_MATCH_TIMEOUT"
   }
 }

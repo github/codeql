@@ -66,11 +66,9 @@
 import java
 private import SSA
 private import RangeUtils
-private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.security.RandomDataSource
 private import SignAnalysis
-private import ModulusAnalysis
 private import semmle.code.java.Reflection
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
@@ -81,7 +79,6 @@ module Sem implements Semantic {
   private import java as J
   private import SSA as SSA
   private import RangeUtils as RU
-  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SsaReadPos
   private import semmle.code.java.controlflow.internal.GuardsLogic as GL
 
   class Expr = J::Expr;
@@ -150,6 +147,8 @@ module Sem implements Semantic {
     }
   }
 
+  predicate isAssignOp(BinaryExpr bin) { bin instanceof AssignOp }
+
   class RelationalExpr = J::ComparisonExpr;
 
   abstract class UnaryExpr extends Expr {
@@ -176,34 +175,56 @@ module Sem implements Semantic {
     override Expr getOperand() { result = super.getExpr() }
   }
 
-  // TODO: Implement once utils are properly shared
-  class AddOneExpr extends UnaryExpr {
-    AddOneExpr() { none() }
-
-    override Expr getOperand() { none() }
+  class PreIncExpr extends UnaryExpr instanceof J::PreIncExpr {
+    override Expr getOperand() { result = super.getExpr() }
   }
 
-  // TODO: Implement once utils are properly shared
-  class SubOneExpr extends UnaryExpr {
-    SubOneExpr() { none() }
+  class PreDecExpr extends UnaryExpr instanceof J::PreDecExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
 
-    override Expr getOperand() { none() }
+  class PostIncExpr extends UnaryExpr instanceof J::PostIncExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
+
+  class PostDecExpr extends UnaryExpr instanceof J::PostDecExpr {
+    override Expr getOperand() { result = super.getExpr() }
+  }
+
+  class CopyValueExpr extends UnaryExpr {
+    CopyValueExpr() {
+      this instanceof J::PlusExpr or
+      this instanceof J::AssignExpr or
+      this instanceof LocalVariableDeclExpr
+    }
+
+    override Expr getOperand() {
+      result = this.(J::PlusExpr).getExpr() or
+      result = this.(J::AssignExpr).getSource() or
+      result = this.(J::LocalVariableDeclExpr).getInit()
+    }
   }
 
   class ConditionalExpr = J::ConditionalExpr;
 
   class BasicBlock = J::BasicBlock;
 
-  class Guard extends GL::Guard {
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
+
+  private predicate id(BasicBlock x, BasicBlock y) { x = y }
+
+  private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
+
+  int getBlockId1(BasicBlock bb) { idOf(bb, result) }
+
+  final private class FinalGuard = GL::Guard;
+
+  class Guard extends FinalGuard {
     Expr asExpr() { result = this }
   }
 
   predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
     GL::implies_v2(g1, b1, g2, b2)
-  }
-
-  predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    RU::guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
   }
 
   class Type = J::Type;
@@ -220,34 +241,25 @@ module Sem implements Semantic {
     AddressType() { none() }
   }
 
+  Type getExprType(Expr e) { result = e.getType() }
+
+  Type getSsaType(SsaVariable var) { result = var.getSourceVariable().getType() }
+
   final private class FinalSsaVariable = SSA::SsaVariable;
 
   class SsaVariable extends FinalSsaVariable {
     Expr getAUse() { result = super.getAUse() }
   }
 
-  class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiNode { }
-
-  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate { }
-
-  final private class FinalSsaReadPosition = SsaReadPos::SsaReadPosition;
-
-  class SsaReadPosition extends FinalSsaReadPosition {
-    predicate hasReadOfVar(SsaVariable v) { super.hasReadOfVar(v) }
+  class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiNode {
+    predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb) { super.hasInputFromBlock(inp, bb) }
   }
 
-  class SsaReadPositionPhiInputEdge extends SsaReadPosition instanceof SsaReadPos::SsaReadPositionPhiInputEdge
-  {
-    predicate phiInput(SsaPhiNode phi, SsaVariable inp) { super.phiInput(phi, inp) }
+  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate {
+    Expr getDefiningExpr() { result = super.getDefiningExpr() }
   }
 
-  class SsaReadPositionBlock extends SsaReadPosition instanceof SsaReadPos::SsaReadPositionBlock {
-    BasicBlock getBlock() { result = super.getBlock() }
-  }
-
-  predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
-    RU::backEdge(phi, inp, edge)
-  }
+  predicate additionalValueFlowStep = RU::additionalValueFlowStep/3;
 
   predicate conversionCannotOverflow = safeCast/2;
 }
@@ -272,7 +284,8 @@ module SignInp implements SignAnalysisSig<Sem> {
 module Modulus implements ModulusAnalysisSig<Sem> {
   class ModBound = Bound;
 
-  predicate semExprModulus = exprModulus/4;
+  private import codeql.rangeanalysis.ModulusAnalysis as Mod
+  import Mod::ModulusAnalysis<Location, Sem, IntDelta, Bounds>
 }
 
 module IntDelta implements DeltaSig {
@@ -295,8 +308,6 @@ module IntDelta implements DeltaSig {
 }
 
 module JavaLangImpl implements LangSig<Sem, IntDelta> {
-  predicate ignoreSsaReadCopy(Sem::Expr e) { none() }
-
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
@@ -325,7 +336,7 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
   /**
    * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
-  predicate hasBound(Sem::Expr e2, Sem::Expr e1, int delta, boolean upper) {
+  predicate additionalBoundFlowStep(Sem::Expr e2, Sem::Expr e1, int delta, boolean upper) {
     exists(RandomDataSource rds |
       e2 = rds.getOutput() and
       (
@@ -355,54 +366,7 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
 
   predicate ignoreExprBound(Sem::Expr e) { none() }
 
-  predicate ignoreZeroLowerBound(Sem::Expr e) { none() }
-
-  predicate ignoreSsaReadArithmeticExpr(Sem::Expr e) { none() }
-
-  predicate ignoreSsaReadAssignment(Sem::SsaVariable v) { none() }
-
-  Sem::Expr specificSsaRead(Sem::SsaVariable v, int delta) { none() }
-
-  predicate additionalValueFlowStep(Sem::Expr dest, Sem::Expr src, int delta) { none() }
-
-  Sem::Type getAlternateType(Sem::Expr e) { none() }
-
-  Sem::Type getAlternateTypeForSsaVariable(Sem::SsaVariable var) { none() }
-
   predicate javaCompatibility() { any() }
-}
-
-module Utils implements UtilSig<Sem, IntDelta> {
-  private import RangeUtils as RU
-  private import semmle.code.java.dataflow.internal.rangeanalysis.SsaReadPositionCommon as SsaReadPos
-
-  Sem::Expr semSsaRead(Sem::SsaVariable v, int delta) { result = RU::ssaRead(v, delta) }
-
-  Sem::Guard semEqFlowCond(
-    Sem::SsaVariable v, Sem::Expr e, int delta, boolean isEq, boolean testIsTrue
-  ) {
-    result = RU::eqFlowCond(v, e, delta, isEq, testIsTrue)
-  }
-
-  predicate semSsaUpdateStep(Sem::SsaExplicitUpdate v, Sem::Expr e, int delta) {
-    RU::ssaUpdateStep(v, e, delta)
-  }
-
-  predicate semValueFlowStep = RU::valueFlowStep/3;
-
-  Sem::Type getTrackedTypeForSsaVariable(Sem::SsaVariable var) {
-    result = var.getSourceVariable().getType()
-  }
-
-  Sem::Type getTrackedType(Sem::Expr e) { result = e.getType() }
-
-  predicate rankedPhiInput(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, Sem::SsaReadPositionPhiInputEdge edge, int r
-  ) {
-    SsaReadPos::rankedPhiInput(phi, inp, edge, r)
-  }
-
-  predicate maxPhiInputRank(Sem::SsaPhiNode phi, int rix) { SsaReadPos::maxPhiInputRank(phi, rix) }
 }
 
 module Bounds implements BoundSig<Location, Sem, IntDelta> {
@@ -411,7 +375,7 @@ module Bounds implements BoundSig<Location, Sem, IntDelta> {
   class SemZeroBound = ZeroBound;
 
   class SemSsaBound extends SsaBound {
-    Sem::SsaVariable getAVariable() { result = super.getSsa() }
+    Sem::SsaVariable getVariable() { result = super.getSsa() }
   }
 }
 
@@ -422,7 +386,7 @@ module Overflow implements OverflowSig<Sem, IntDelta> {
 }
 
 module Range =
-  RangeStage<Location, Sem, IntDelta, Bounds, Overflow, JavaLangImpl, SignInp, Modulus, Utils>;
+  RangeStage<Location, Sem, IntDelta, Bounds, Overflow, JavaLangImpl, SignInp, Modulus>;
 
 predicate bounded = Range::semBounded/5;
 

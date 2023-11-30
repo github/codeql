@@ -1,3 +1,13 @@
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Added the [gin cors](https://github.com/gin-contrib/cors) library to the CorsMisconfiguration.ql query
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through an array was not tracked correctly in some circumstances. Taint flow was tracked correctly.
+
 ## 0.7.2
 
 ### Minor Analysis Improvements

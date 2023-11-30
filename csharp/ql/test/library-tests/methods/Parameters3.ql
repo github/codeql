@@ -7,7 +7,7 @@ import csharp
 from Method m
 where
   m.hasName("Write") and
-  m.getDeclaringType().hasQualifiedName("Methods", "Console") and
+  m.getDeclaringType().hasFullyQualifiedName("Methods", "Console") and
   m.getParameter(0).isValue() and
   m.getParameter(0).hasName("fmt") and
   m.getParameter(0).getType() instanceof StringType and

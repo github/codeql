@@ -1,2 +1,2 @@
-| comments2.cs:118:5:118:21 | // ... | comments2.cs:119:11:119:25 | GenericClass<> |
-| comments2.cs:124:5:124:16 | // ... | comments2.cs:125:9:125:20 | GenericFn<> |
+| comments2.cs:118:5:118:21 | // ... | comments2.cs:119:11:119:25 | GenericClass`1 |
+| comments2.cs:124:5:124:16 | // ... | comments2.cs:125:9:125:20 | GenericFn`1 |

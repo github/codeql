@@ -1,7 +1,6 @@
 private import RangeAnalysisConstantSpecific
 private import RangeAnalysisRelativeSpecific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
-private import RangeUtils
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExpr
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticCFG
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticGuard
@@ -52,19 +51,33 @@ module Sem implements Semantic {
 
   class NegateExpr = SemNegateExpr;
 
-  class AddOneExpr = SemAddOneExpr;
+  class PreIncExpr = SemAddOneExpr;
 
-  class SubOneExpr = SemSubOneExpr;
+  class PreDecExpr = SemSubOneExpr;
+
+  class PostIncExpr extends SemUnaryExpr {
+    PostIncExpr() { none() }
+  }
+
+  class PostDecExpr extends SemUnaryExpr {
+    PostDecExpr() { none() }
+  }
+
+  class CopyValueExpr extends SemUnaryExpr {
+    CopyValueExpr() { this instanceof SemCopyValueExpr or this instanceof SemStoreExpr }
+  }
 
   class ConditionalExpr = SemConditionalExpr;
 
   class BasicBlock = SemBasicBlock;
 
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+
+  int getBlockId1(BasicBlock bb) { result = bb.getUniqueId() }
+
   class Guard = SemGuard;
 
   predicate implies_v2 = semImplies_v2/4;
-
-  predicate guardDirectlyControlsSsaRead = semGuardDirectlyControlsSsaRead/3;
 
   class Type = SemType;
 
@@ -74,19 +87,17 @@ module Sem implements Semantic {
 
   class AddressType = SemAddressType;
 
+  SemType getExprType(SemExpr e) { result = e.getSemType() }
+
+  SemType getSsaType(SemSsaVariable var) { result = var.getType() }
+
   class SsaVariable = SemSsaVariable;
 
   class SsaPhiNode = SemSsaPhiNode;
 
   class SsaExplicitUpdate = SemSsaExplicitUpdate;
 
-  class SsaReadPosition = SemSsaReadPosition;
-
-  class SsaReadPositionPhiInputEdge = SemSsaReadPositionPhiInputEdge;
-
-  class SsaReadPositionBlock = SemSsaReadPositionBlock;
-
-  predicate backEdge = semBackEdge/3;
+  predicate additionalValueFlowStep(SemExpr dest, SemExpr src, int delta) { none() }
 
   predicate conversionCannotOverflow(Type fromType, Type toType) {
     SemanticType::conversionCannotOverflow(fromType, toType)
@@ -95,7 +106,7 @@ module Sem implements Semantic {
 
 module SignAnalysis implements SignAnalysisSig<Sem> {
   private import SignAnalysisCommon as SA
-  import SA::SignAnalysis<FloatDelta, Util>
+  import SA::SignAnalysis<FloatDelta>
 }
 
 module ConstantBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
@@ -116,7 +127,7 @@ module ConstantBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
 
   class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+    SemSsaVariable getVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
 
@@ -134,7 +145,7 @@ module RelativeBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
 
   class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+    SemSsaVariable getVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
 
@@ -150,26 +161,24 @@ module AllBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
 
   class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+    SemSsaVariable getVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
 
 private module ModulusAnalysisInstantiated implements ModulusAnalysisSig<Sem> {
   class ModBound = AllBounds::SemBound;
 
-  private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.ModulusAnalysis as MA
-  import MA::ModulusAnalysis<FloatDelta, AllBounds, Util>
+  private import codeql.rangeanalysis.ModulusAnalysis as MA
+  import MA::ModulusAnalysis<SemLocation, Sem, FloatDelta, AllBounds>
 }
-
-module Util = RangeUtil<FloatDelta, CppLangImplConstant>;
 
 module ConstantStage =
   RangeStage<SemLocation, Sem, FloatDelta, ConstantBounds, FloatOverflow, CppLangImplConstant,
-    SignAnalysis, ModulusAnalysisInstantiated, Util>;
+    SignAnalysis, ModulusAnalysisInstantiated>;
 
 module RelativeStage =
   RangeStage<SemLocation, Sem, FloatDelta, RelativeBounds, FloatOverflow, CppLangImplRelative,
-    SignAnalysis, ModulusAnalysisInstantiated, Util>;
+    SignAnalysis, ModulusAnalysisInstantiated>;
 
 private newtype TSemReason =
   TSemNoReason() or

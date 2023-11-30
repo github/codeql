@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.sun.jndi.ldap", "DigestClientId", False, "DigestClientId", "(int,String,int,String,Control[],OutputStream,String,String,Object,Hashtable)", "", "Argument[7]", "credentials-username", "hq-generated"]
+      - ["com.sun.jndi.ldap", "LdapClient", False, "getInstance", "(boolean,String,int,String,int,int,OutputStream,int,String,Control[],String,String,Object,Hashtable)", "", "Argument[11]", "credentials-username", "hq-generated"]
+      - ["com.sun.jndi.ldap", "LdapPoolManager", False, "getLdapClient", "(String,int,String,int,int,OutputStream,int,String,Control[],String,String,Object,Hashtable)", "", "Argument[10]", "credentials-username", "hq-generated"]
+      - ["com.sun.jndi.ldap", "SimpleClientId", False, "SimpleClientId", "(int,String,int,String,Control[],OutputStream,String,String,Object)", "", "Argument[7]", "credentials-username", "hq-generated"]

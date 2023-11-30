@@ -15,7 +15,7 @@ import csharp
 from ValueOrRefType c
 where
   c.fromSource() and
-  c.getABaseInterface+().hasQualifiedName("System", "ICloneable") and
+  c.getABaseInterface+().hasFullyQualifiedName("System", "ICloneable") and
   not c.isSealed() and
   exists(Method m | m.getDeclaringType() = c and m.hasName("Clone"))
 select c, "Class '" + c.getName() + "' implements 'ICloneable'."
