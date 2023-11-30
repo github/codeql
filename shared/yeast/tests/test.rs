@@ -19,12 +19,12 @@ fn test_ruby_multiple_assignment() {
     // Define a desugaring rule, which is a query together with a transformation.
 
     let query = Query::new();
-    let transform = |captures| {
+    let transform = |ast: &mut Ast, match_: Match| {
         // construct the new tree here maybe
         // captures is probably a HashMap from capture name to AST node
-        Ast::example(tree_sitter_ruby::language())
+        match_.node
     };
-    let rule = Rule::new(query, transform);
+    let rule = Rule::new(query, Box::new(transform));
 
     let input = "x, y, z = e";
 
@@ -32,7 +32,13 @@ fn test_ruby_multiple_assignment() {
     let runner = Runner::new(tree_sitter_ruby::language(), vec![rule]);
 
     // Run it on our example
-    let output = runner.run(input);
+    let (ast, newRootId) = runner.run(input);
+
+    let formattedInput = serde_json::to_string_pretty(&ast.print(&input, 0)).unwrap();
+    let formattedOutput = serde_json::to_string_pretty(&ast.print(&input, newRootId)).unwrap();
+
+    println!("before transformation: {}", formattedInput);
+    println!("after transformation: {}", formattedOutput);
 
     // we could create a macro for this
     // let expected_output = ast! {
@@ -64,7 +70,7 @@ fn test_ruby_multiple_assignment() {
     // };
     let expected_output = todo!();
 
-    assert_eq!(output, expected_output);
+    assert_eq!(ast, expected_output);
 }
 
 #[test]
@@ -73,8 +79,8 @@ fn test_parse_input() {
     let parsed_expected = std::fs::read_to_string("tests/fixtures/1.parsed.json").unwrap();
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
-    let ast = runner.run(&input);
-    let parsed_actual = serde_json::to_string_pretty(&ast.print(&input)).unwrap();
+    let (ast, newRootId) = runner.run(&input);
+    let parsed_actual = serde_json::to_string_pretty(&ast.print(&input, newRootId)).unwrap();
 
     assert_eq!(parsed_actual, parsed_expected);
 }

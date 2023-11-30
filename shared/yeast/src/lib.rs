@@ -36,8 +36,8 @@ impl Ast {
         self.nodes.get(id)
     }
 
-    pub fn print(&self, source: &str) -> Value {
-        let root = self.nodes().first().unwrap();
+    pub fn print(&self, source: &str, rootId: Id) -> Value {
+        let root = &self.nodes()[rootId];
         serde_json::to_value(self.print_node(root, source)).unwrap()
     }
 
@@ -169,31 +169,40 @@ impl Query {
     }
 }
 
-pub struct Rule {}
+pub struct Rule {
+    query: Query,
+    transform: Box<dyn Fn(&mut Ast, Match) -> Id>,
+}
 impl Rule {
-    pub fn new(query: Query, transform: impl Fn(Match) -> Ast) -> Self {
-        Self {}
+    pub fn new(query: Query, transform: Box<dyn Fn(&mut Ast, Match) -> Id>) -> Self {
+        Self {
+            query: query,
+            transform: transform,
+        }
     }
 }
 
-pub struct Match {}
+pub struct Match {
+    pub node: Id,
+}
 
 pub struct Runner {
     language: tree_sitter::Language,
+    rules: Vec<Rule>,
 }
 
 impl Runner {
     pub fn new(language: tree_sitter::Language, rules: Vec<Rule>) -> Self {
-        Self { language }
+        Self { language, rules }
     }
 
-    pub fn run(&self, input: &str) -> Ast {
+    pub fn run(&self, input: &str) -> (Ast, Id) {
         // Parse the input into an AST
 
         let mut parser = tree_sitter::Parser::new();
         parser.set_language(self.language).unwrap();
         let tree = parser.parse(input, None).unwrap();
         let ast = Ast::from_tree(self.language, &tree);
-        ast
+        (ast, 0)
     }
 }
