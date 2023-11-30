@@ -64,6 +64,11 @@ impl<'a> AstCursor<'a> {
         self.node = self.parents.pop()?.0;
         Some(())
     }
+
+    pub fn field_name(&self) -> Option<&'static str> {
+        self.field_id()
+            .and_then(|id| self.ast.field_name_for_id(id))
+    }
 }
 impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
     fn node(&self) -> &'a Node {
@@ -159,6 +164,10 @@ impl Ast {
         visitor.build()
     }
 
+    pub fn walk(&self) -> AstCursor {
+        AstCursor::new(self)
+    }
+
     pub fn nodes(&self) -> &[Node] {
         &self.nodes
     }
@@ -190,12 +199,16 @@ impl Ast {
         id
     }
 
-    fn field_name_for_id(&self, id: FieldId) -> Option<&str> {
+    fn field_name_for_id(&self, id: FieldId) -> Option<&'static str> {
         if id == CHILD_FIELD {
             Some(CHILD_FIELD_NAME)
         } else {
             self.language.field_name_for_id(id)
         }
+    }
+
+    fn kind_name_for_id(&self, id: KindId) -> Option<&'static str> {
+        self.language.node_kind_for_id(id)
     }
 
     /// Print a node for debugging
@@ -250,6 +263,7 @@ impl Ast {
                 Node {
                     id: 0,
                     kind: 276,
+                    kind_name: "assignment",
                     fields: {
                         let mut map = BTreeMap::new();
                         map.insert(18, vec![1]);
@@ -257,27 +271,46 @@ impl Ast {
                         map
                     },
                     content: NodeContent::String("x = 1"),
+                    is_missing: false,
+                    is_error: false,
+                    is_extra: false,
+                    is_named: true,
                 },
                 // identifier
                 Node {
                     id: 1,
                     kind: 1,
+                    kind_name: "identifier",
                     fields: BTreeMap::new(),
                     content: NodeContent::String("x"),
+                    is_missing: false,
+                    is_error: false,
+                    is_extra: false,
+                    is_named: true,
                 },
                 // "="
                 Node {
                     id: 2,
                     kind: 17,
+                    kind_name: "=",
                     fields: BTreeMap::new(),
                     content: NodeContent::String("="),
+                    is_missing: false,
+                    is_error: false,
+                    is_extra: false,
+                    is_named: false,
                 },
                 // integer
                 Node {
                     id: 3,
                     kind: 110,
+                    kind_name: "integer",
                     fields: BTreeMap::new(),
                     content: NodeContent::String("1"),
+                    is_missing: false,
+                    is_error: false,
+                    is_extra: false,
+                    is_named: true,
                 },
             ],
         }
@@ -289,16 +322,70 @@ impl Ast {
 pub struct Node {
     id: Id,
     kind: KindId,
+    kind_name: &'static str,
     fields: BTreeMap<FieldId, Vec<Id>>,
     content: NodeContent,
+    is_named: bool,
+    is_missing: bool,
+    is_extra: bool,
+    is_error: bool,
 }
 
 impl Node {
     pub fn id(&self) -> Id {
         self.id
     }
-    pub fn kind(&self) -> KindId {
-        self.kind
+
+    pub fn kind(&self) -> &'static str {
+        self.kind_name
+    }
+
+    pub fn is_named(&self) -> bool {
+        self.is_named
+    }
+
+    pub fn is_missing(&self) -> bool {
+        self.is_missing
+    }
+
+    pub fn is_extra(&self) -> bool {
+        self.is_extra
+    }
+
+    pub fn is_error(&self) -> bool {
+        self.is_error
+    }
+
+    pub fn start_position(&self) -> tree_sitter::Point {
+        match self.content {
+            NodeContent::Range(range) => range.start_point,
+            _ => todo!(),
+        }
+    }
+
+    pub fn end_position(&self) -> tree_sitter::Point {
+        match self.content {
+            NodeContent::Range(range) => range.end_point,
+            _ => todo!(),
+        }
+    }
+
+    pub fn start_byte(&self) -> usize {
+        match self.content {
+            NodeContent::Range(range) => range.start_byte,
+            _ => todo!(),
+        }
+    }
+
+    pub fn end_byte(&self) -> usize {
+        match self.content {
+            NodeContent::Range(range) => range.end_byte,
+            _ => todo!(),
+        }
+    }
+
+    pub fn byte_range(&self) -> std::ops::Range<usize> {
+        self.start_byte()..self.end_byte()
     }
 }
 

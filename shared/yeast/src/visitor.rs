@@ -60,8 +60,13 @@ impl Visitor {
             inner: Node {
                 id,
                 kind: self.language.id_for_node_kind(n.kind(), is_named),
+                kind_name: n.kind(),
                 content,
                 fields: BTreeMap::new(),
+                is_missing: n.is_missing(),
+                is_named: n.is_named(),
+                is_extra: n.is_extra(),
+                is_error: n.is_error(),
             },
             parent: self.current,
         });
