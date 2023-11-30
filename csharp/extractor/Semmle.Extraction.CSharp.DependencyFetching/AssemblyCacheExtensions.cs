@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public static IOrderedEnumerable<AssemblyInfo> OrderAssemblyInfosByPreference(this IEnumerable<AssemblyInfo> assemblies, IEnumerable<string> frameworkPaths)
         {
             // prefer framework assemblies over others
-            bool initialOrdering(AssemblyInfo info) => frameworkPaths.Any(framework => info.Filename.StartsWith(framework, StringComparison.OrdinalIgnoreCase));
+            Version initialOrdering(AssemblyInfo info) => info.Version ?? emptyVersion; //frameworkPaths.Any(framework => info.Filename.StartsWith(framework, StringComparison.OrdinalIgnoreCase));
 
             var ordered = assemblies is IOrderedEnumerable<AssemblyInfo> o
                 ? o.ThenBy(initialOrdering)
@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             return ordered
                 .ThenBy(info => info.NetCoreVersion ?? emptyVersion)
-                .ThenBy(info => info.Version ?? emptyVersion)
+                //.ThenBy(info => info.Version ?? emptyVersion)
                 .ThenBy(info => info.Filename);
         }
     }
