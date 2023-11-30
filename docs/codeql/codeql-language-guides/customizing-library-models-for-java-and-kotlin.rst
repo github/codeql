@@ -301,9 +301,9 @@ Threat models
  
  The ``default`` threat model is included by default. The ``default`` grouping only contains one child threat model, the ``remote`` threat model, which represents remote HTTP requests. 
  
- You can extend the CodeQL threat model to specify other sources of untrusted data. For example, if your codebase considers local files to be sources of tainted data, you can specify the `local` threat model to be used in CodeQL analysis.
+ You can extend the CodeQL threat model to specify other sources of untrusted data. For example, if your codebase considers local files to be sources of tainted data, you can specify the ``local`` threat model to be used in CodeQL analysis.
 
- The shared `threat-models` library pack exposes the following extensible predicates:
+ The shared ``threat-models`` library pack exposes the following extensible predicates:
 
  - ``threatModelConfiguration(string kind, boolean enabled, int priority)``. This is used to configure which threat models are enabled or disabled for the analysis.
  - ``threatModelGrouping(string kind, string group)``. This is used to define the taxonomy of threat models as a parent-child hierarchy.
@@ -324,5 +324,5 @@ Each data row consists of three columns:
 
 - The first value ``local`` is the name of the threat model to enable or disable.
 - The second value ``true`` is a boolean that you can set to ``true`` to enable the named threat model, or ``false`` to disable it.
-- The third value `0` is an integer specifying the order in which to process the row. Rows are processed in ascending order of priority.
+- The third value ``0`` is an integer specifying the order in which to process the row. Rows are processed in ascending order of priority.
 
