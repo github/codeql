@@ -18,7 +18,8 @@ import semmle.go.security.IncorrectIntegerConversionLib
 import Flow::PathGraph
 
 from
-  Flow::PathNode source, Flow::PathNode sink, DataFlow::CallNode call, DataFlow::Node sinkConverted
+  Flow::PathNode source, Flow::PathNode sink, DataFlow::CallNode call,
+  DataFlow::TypeCastNode sinkConverted
 where
   Flow::flowPath(source, sink) and
   call.getResult(0) = source.getNode() and
