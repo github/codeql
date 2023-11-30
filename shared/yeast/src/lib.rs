@@ -47,6 +47,12 @@ impl Ast {
         serde_json::to_value(self.print_node(root, source)).unwrap()
     }
 
+    pub fn create_node(&mut self, kind: KindId, content: NodeContent, children: Vec<Id>, fields: BTreeMap<FieldId, Vec<Id>>) -> Id {
+        let id = self.nodes.len();
+        self.nodes.push(Node { id, kind, children, fields, content });
+        id
+    }
+
     /// Print a node for debugging
     fn print_node(&self, node: &Node, source: &str) -> Value {
         let children: Vec<Value> = node
