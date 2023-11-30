@@ -1,5 +1,6 @@
 // Uncomment to debug macros
-//#![feature(trace_macros)]
+#![feature(trace_macros)]
+
 
 use std::{collections::BTreeMap, mem};
 
@@ -12,6 +13,7 @@ use query::QueryNode;
 use serde::Serialize;
 use serde_json::{json, Value};
 
+pub mod print;
 mod range;
 mod visitor;
 
@@ -21,6 +23,100 @@ type Id = usize;
 /// Field and Kind ids are provided by tree-sitter
 type FieldId = u16;
 type KindId = u16;
+
+pub const CHILD_FIELD: u16 = u16::MAX;
+const CHILD_FIELD_NAME: &str = "child";
+
+#[derive(Debug)]
+pub struct Cursor<'a> {
+    ast: &'a Ast,
+    parents: Vec<Id>,
+    node: &'a Node,
+    locations: Vec<(usize, usize)>,
+}
+
+impl<'a> Cursor<'a> {
+    pub fn new(ast: &'a Ast, root: usize) -> Self {
+        let node = ast.get_node(root).unwrap();
+        Self {
+            ast,
+            parents: vec![],
+            node,
+            locations: vec![],
+        }
+    }
+
+    pub fn node(&mut self) -> &'a Node {
+        self.node
+    }
+    pub fn field_id(&self) -> Option<FieldId> {
+        let parent_id = self.parents.last()?;
+        let (field_index, _) = self.locations.last().unwrap();
+        let (field_id, _) = self
+            .ast
+            .get_node(*parent_id)
+            .unwrap()
+            .fields
+            .iter()
+            .nth(*field_index)?;
+        Some(*field_id)
+    }
+    pub fn goto_first_child(&mut self) -> bool {
+        let location = (0, 0);
+        let parent = self.node.id;
+        self.node = match self.node.fields.iter().next() {
+            Some((_field_id, child_ids)) if !child_ids.is_empty() => {
+                self.ast.get_node(child_ids[0]).unwrap()
+            }
+            _ => return false,
+        };
+        self.locations.push(location);
+        self.parents.push(parent);
+        true
+    }
+    pub fn goto_next_sibling(&mut self) -> bool {
+        let (node_id, location) = match self.parents.last() {
+            None => {
+                return false;
+            }
+            Some(parent) => {
+                let parent = self.ast.get_node(*parent).unwrap();
+                let (field_index, child_index) = self.locations.pop().unwrap();
+                if field_index == parent.fields.len() {
+                    return false;
+                } else {
+                    let (_field_id, children) = parent.fields.iter().nth(field_index).unwrap();
+                    if child_index == children.len() - 1 {
+                        // end of field
+                        let location = (field_index + 1, 0);
+                        let node_id = match parent.fields.iter().nth(field_index + 1) {
+                            Some((_field_id, children)) => children[0],
+                            None => return false,
+                        };
+                        (node_id, location)
+                    } else {
+                        let loc = (field_index, child_index + 1);
+                        let (_, children) = parent.fields.iter().nth(field_index).unwrap();
+                        let node_id = children[child_index + 1];
+                        (node_id, loc)
+                    }
+                }
+            }
+        };
+        self.locations.push(location);
+        self.node = self.ast.get_node(node_id).unwrap();
+        true
+    }
+    pub fn goto_parent(&mut self) -> bool {
+        match self.parents.pop() {
+            None => false,
+            Some(parent) => {
+                self.node = self.ast.get_node(parent).unwrap();
+                true
+            }
+        }
+    }
+}
 
 /// Our AST
 #[derive(PartialEq, Eq, Debug)]
@@ -55,13 +151,11 @@ impl Ast {
         kind: KindId,
         content: NodeContent,
         fields: BTreeMap<FieldId, Vec<Id>>,
-        children: Vec<Id>,
     ) -> Id {
         let id = self.nodes.len();
         self.nodes.push(Node {
             id,
             kind,
-            children,
             fields,
             content,
         });
@@ -78,18 +172,34 @@ impl Ast {
         self.nodes.push(Node {
             id,
             kind: kind_id,
-            children: Vec::new(),
             fields: BTreeMap::new(),
             content: NodeContent::String(content),
         });
         id
     }
 
+    fn field_name_for_id(&self, id: FieldId) -> Option<&str> {
+        if id == CHILD_FIELD {
+            Some(CHILD_FIELD_NAME)
+        } else {
+            self.language.field_name_for_id(id)
+        }
+    }
+
+    fn field_id_for_name(&self, name : &str) -> Option<FieldId> {
+        if name == CHILD_FIELD_NAME {
+            Some(CHILD_FIELD)
+        } else {
+            self.language.field_id_for_name(name)
+        }
+    }
 
     /// Print a node for debugging
     fn print_node(&self, node: &Node, source: &str) -> Value {
         let children: Vec<Value> = node
-            .children
+            .fields
+            .get(&CHILD_FIELD)
+            .unwrap_or(&vec![])
             .iter()
             .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
             .collect();
@@ -98,7 +208,10 @@ impl Ast {
             fields.insert("rest", children);
         }
         for (field_id, nodes) in &node.fields {
-            let field_name = self.language.field_name_for_id(*field_id).unwrap();
+            if field_id == &CHILD_FIELD {
+                continue;
+            }
+            let field_name = self.field_name_for_id(*field_id).unwrap();
             let nodes: Vec<Value> = nodes
                 .iter()
                 .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
@@ -139,7 +252,6 @@ impl Ast {
                 Node {
                     id: 0,
                     kind: 276,
-                    children: vec![2],
                     fields: {
                         let mut map = BTreeMap::new();
                         map.insert(18, vec![1]);
@@ -152,7 +264,6 @@ impl Ast {
                 Node {
                     id: 1,
                     kind: 1,
-                    children: vec![],
                     fields: BTreeMap::new(),
                     content: "x".into(),
                 },
@@ -160,7 +271,6 @@ impl Ast {
                 Node {
                     id: 2,
                     kind: 17,
-                    children: vec![],
                     fields: BTreeMap::new(),
                     content: "=".into(),
                 },
@@ -168,11 +278,28 @@ impl Ast {
                 Node {
                     id: 3,
                     kind: 110,
-                    children: vec![],
                     fields: BTreeMap::new(),
                     content: "1".into(),
                 },
             ],
+        }
+    }
+
+    fn id_for_node_kind(&self, kind: &str) -> Option<KindId> {
+        let id = self.language.id_for_node_kind(kind, true);
+        if id == 0 {
+            None
+        } else {
+            Some(id)
+        }
+    }
+
+    fn id_for_unnamed_node_kind(&self, kind: &str) -> Option<KindId> {
+        let id = self.language.id_for_node_kind(kind, false);
+        if id == 0 {
+            None
+        } else {
+            Some(id)
         }
     }
 }
@@ -182,7 +309,6 @@ impl Ast {
 pub struct Node {
     id: Id,
     kind: KindId,
-    children: Vec<Id>,
     fields: BTreeMap<FieldId, Vec<Id>>,
     content: NodeContent,
 }
@@ -259,13 +385,6 @@ fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Vec<Id> {
             .flatten()
             .collect();
     }
-
-    node.children = node.children
-        .iter()
-        .map(|node| applyRules(rules, ast, *node))
-        .flatten().collect();
-
-
     node.id = ast.nodes.len() - 1;
     ast.nodes.push(node);
     return vec![ast.nodes.len() - 1];
