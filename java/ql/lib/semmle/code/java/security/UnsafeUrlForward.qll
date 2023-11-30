@@ -15,7 +15,6 @@ private class DefaultUnsafeUrlForwardSink extends UnsafeUrlForwardSink {
   DefaultUnsafeUrlForwardSink() { sinkNode(this, "url-forward") }
 }
 
-// TODO: look into `StaplerResponse.forward`, etc., and think about re-adding the MaD "request-forgery" sinks as a result
 /** An argument to `new ModelAndView` or `ModelAndView.setViewName`. */
 private class SpringModelAndViewSink extends UnsafeUrlForwardSink {
   SpringModelAndViewSink() {
