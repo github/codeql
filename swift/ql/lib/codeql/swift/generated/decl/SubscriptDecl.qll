@@ -11,6 +11,10 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.ParamDecl
 import codeql.swift.elements.type.Type
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `SubscriptDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::SubscriptDecl` class directly.

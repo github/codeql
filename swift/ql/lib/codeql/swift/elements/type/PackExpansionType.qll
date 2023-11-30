@@ -5,4 +5,7 @@
 
 private import codeql.swift.generated.type.PackExpansionType
 
+/**
+ * A type of PackExpansionExpr, see PackExpansionExpr for more information.
+ */
 class PackExpansionType extends Generated::PackExpansionType { }

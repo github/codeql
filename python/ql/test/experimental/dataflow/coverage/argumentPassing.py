@@ -5,6 +5,7 @@ import functools
 sys.path.append(os.path.dirname(os.path.dirname((__file__))))
 from testlib import expects
 
+SOURCE = "source"
 arg = "source"
 arg1 = "source1"
 arg2 = "source2"
@@ -269,3 +270,68 @@ def test_stararg_mixed():
     starargs_mixed(arg1, *args, *empty_args) # $ arg1
     args = (arg2, "safe")
     starargs_mixed(arg1, *empty_args, *args) # $ arg1 MISSING: arg2
+
+# ------------------------------------------------------------------------------
+# Test updating field of argument
+# ------------------------------------------------------------------------------
+
+class MyClass: pass
+
+def kwargsSideEffect(**kwargs):
+    kwargs["a"].foo = kwargs["b"]
+
+@expects(2)
+def test_kwargsSideEffect():
+    a = MyClass()
+    kwargs = {"a": a, "b": SOURCE}
+    kwargsSideEffect(**kwargs)
+    SINK(a.foo) # $ MISSING: flow
+
+    a = MyClass()
+    kwargsSideEffect(a=a, b=SOURCE)
+    SINK(a.foo) # $ MISSING: flow
+
+
+def keywordArgSideEffect(a, b):
+    a.foo = b
+
+@expects(2)
+def test_keywordArgSideEffect():
+    a = MyClass()
+    kwargs = {"a": a, "b": SOURCE}
+    keywordArgSideEffect(**kwargs)
+    SINK(a.foo) # $ MISSING: flow
+
+    a = MyClass()
+    keywordArgSideEffect(a=a, b=SOURCE)
+    SINK(a.foo) # $ flow="SOURCE, l:-1 -> a.foo"
+
+
+def starargsSideEffect(*args):
+    args[0].foo = args[1]
+
+@expects(2)
+def test_starargsSideEffect():
+    a = MyClass()
+    args = (a, SOURCE)
+    starargsSideEffect(*args)
+    SINK(a.foo) # $ MISSING: flow
+
+    a = MyClass()
+    starargsSideEffect(a, SOURCE)
+    SINK(a.foo) # $ MISSING: flow
+
+
+def positionalArgSideEffect(a, b):
+    a.foo = b
+
+@expects(2)
+def test_positionalArgSideEffect():
+    a = MyClass()
+    args = (a, SOURCE)
+    positionalArgSideEffect(*args)
+    SINK(a.foo) # $ MISSING: flow
+
+    a = MyClass()
+    positionalArgSideEffect(a, SOURCE)
+    SINK(a.foo) # $ flow="SOURCE, l:-1 -> a.foo"

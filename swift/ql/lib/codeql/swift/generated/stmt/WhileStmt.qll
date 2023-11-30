@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 import codeql.swift.elements.stmt.Stmt
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `WhileStmt` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::WhileStmt` class directly.

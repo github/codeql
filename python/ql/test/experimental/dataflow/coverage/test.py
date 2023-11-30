@@ -120,6 +120,27 @@ def test_nested_list_display():
     SINK(x[0]) #$ MISSING:flow="SOURCE, l:-1 -> x[0]"
 
 
+@expects(6)
+def test_list_comprehension_with_tuple_result():
+    # confirms that this simple case works as expected
+    t = (SOURCE, NONSOURCE)
+    SINK(t[0]) # $ flow="SOURCE, l:-1 -> t[0]"
+    SINK_F(t[1])
+
+    # confirms that this simple case works as expected
+    l1 = [(SOURCE, NONSOURCE) for _ in [1]]
+    SINK(l1[0][0]) # $ flow="SOURCE, l:-1 -> l1[0][0]"
+    SINK_F(l1[0][1])
+
+    # stops working when using reference to variable, due to variables being captured by
+    # the function we internally generate for the comprehension body.
+    s = SOURCE
+    ns = NONSOURCE
+    l3 = [(s, ns) for _ in [1]]
+    SINK(l3[0][0]) # $ MISSING: flow="SOURCE, l:-3 -> l3[0][0]"
+    SINK_F(l3[0][1])
+
+
 # 6.2.6. Set displays
 def test_set_display():
     x = {SOURCE}

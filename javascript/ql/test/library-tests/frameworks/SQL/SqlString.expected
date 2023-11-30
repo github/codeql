@@ -1,3 +1,9 @@
+| better-sqlite3.js:6:23:6:25 | sql |
+| better-sqlite3.js:7:20:7:22 | sql |
+| better-sqlite3.js:8:14:8:16 | sql |
+| better-sqlite3.js:12:20:12:22 | sql |
+| better-sqlite3.js:13:17:13:19 | sql |
+| better-sqlite3.js:14:14:14:16 | sql |
 | mssql1.js:7:40:7:72 | select  ... e id =  |
 | mssql1.js:7:75:7:79 | value |
 | mssql1.js:10:19:10:30 | 'SELECT 123' |
@@ -32,6 +38,9 @@
 | postgres2.js:46:26:46:46 | 'SELECT ...  users' |
 | postgres3.js:15:16:15:40 | 'SELECT ... s name' |
 | postgres5.js:8:21:8:25 | query |
+| postgres6.js:13:11:13:44 | 'SELECT ... E id=6' |
+| postgres6.js:16:20:16:27 | queryObj |
+| postgres6.js:18:11:18:44 | 'SELECT ... E id=7' |
 | postgres-types.ts:4:18:4:29 | 'SELECT 123' |
 | postgresImport.js:4:18:4:43 | 'SELECT ... number' |
 | sequelize2.js:10:17:10:118 | 'SELECT ... Y name' |
@@ -70,8 +79,12 @@
 | spanner.js:26:12:26:38 | 'UPDATE ... = @baz' |
 | spanner.js:31:18:31:24 | queries |
 | spannerImport.js:4:8:4:17 | "SQL code" |
+| sqlite3.js:7:8:7:45 | "UPDATE ... id = ?" |
+| sqlite3.js:8:8:8:45 | "UPDATE ... id = ?" |
 | sqlite-types.ts:4:12:4:49 | "UPDATE ... id = ?" |
-| sqlite.js:7:8:7:45 | "UPDATE ... id = ?" |
-| sqlite.js:8:8:8:45 | "UPDATE ... id = ?" |
+| sqlite.js:8:10:8:65 | 'SELECT ... id = 1" |
+| sqlite.js:11:10:11:65 | 'SELECT ... id = 1" |
+| sqlite.js:14:10:14:50 | 'SELECT ... id > 5' |
+| sqlite.js:17:14:18:18 | 'SELECT ... id = 1" |
+| sqlite.js:24:19:24:74 | 'SELECT ... id = 1" |
 | sqliteArray.js:6:12:6:49 | "UPDATE ... id = ?" |
-| sqliteImport.js:2:8:2:44 | "UPDATE ... id = ?" |

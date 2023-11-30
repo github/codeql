@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.OperatorDecl
 import codeql.swift.elements.decl.PrecedenceGroupDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `InfixOperatorDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::InfixOperatorDecl` class directly.

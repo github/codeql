@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `PropertyWrapperValuePlaceholderExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A placeholder substituting property initializations with `=` when the property has a property

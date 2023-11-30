@@ -10,6 +10,10 @@ import codeql.swift.elements.decl.GenericTypeDecl
 import codeql.swift.elements.type.GenericTypeParamType
 import codeql.swift.elements.decl.ValueDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `OpaqueTypeDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A declaration of an opaque type, that is formally equivalent to a given type but abstracts it

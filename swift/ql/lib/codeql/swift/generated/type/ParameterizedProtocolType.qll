@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.ProtocolType
 import codeql.swift.elements.type.Type
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ParameterizedProtocolType` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A sugar type of the form `P<X>` with `P` a protocol.

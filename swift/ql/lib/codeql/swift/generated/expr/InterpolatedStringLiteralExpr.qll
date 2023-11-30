@@ -10,6 +10,10 @@ import codeql.swift.elements.expr.LiteralExpr
 import codeql.swift.elements.expr.OpaqueValueExpr
 import codeql.swift.elements.expr.TapExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `InterpolatedStringLiteralExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::InterpolatedStringLiteralExpr` class directly.

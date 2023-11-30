@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `MakeTemporarilyEscapableExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::MakeTemporarilyEscapableExpr` class directly.

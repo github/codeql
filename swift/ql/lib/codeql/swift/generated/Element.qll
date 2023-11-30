@@ -7,6 +7,10 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `Element` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::Element` class directly.
