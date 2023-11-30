@@ -29,23 +29,23 @@ func closeFileDeferredIndirectReturn(f *os.File) {
 func deferredCalls() {
 	// open file for writing
 	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
-		closeFileDeferred(f)         // NOT OK
-		closeFileDeferredIndirect(f) // NOT OK
-		closeFileDeferredIndirectReturn(f)
+		closeFileDeferred(f)               // NOT OK
+		closeFileDeferredIndirect(f)       // NOT OK
+		closeFileDeferredIndirectReturn(f) // OK - the error is not discarded at the call to Close (though it is discarded later)
 	}
 
 	// open file for reading
 	if f, err := os.OpenFile("foo.txt", os.O_RDONLY|os.O_CREATE, 0666); err != nil {
-		closeFileDeferred(f)         // OK
-		closeFileDeferredIndirect(f) // OK
-		closeFileDeferredIndirectReturn(f)
+		closeFileDeferred(f)               // OK
+		closeFileDeferredIndirect(f)       // OK
+		closeFileDeferredIndirectReturn(f) // OK
 	}
 
 	// open file for reading and writing
 	if f, err := os.OpenFile("foo.txt", os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
-		closeFileDeferred(f)         // NOT OK
-		closeFileDeferredIndirect(f) // NOT OK
-		closeFileDeferredIndirectReturn(f)
+		closeFileDeferred(f)               // NOT OK
+		closeFileDeferredIndirect(f)       // NOT OK
+		closeFileDeferredIndirectReturn(f) // OK - the error is not discarded at the call to Close (though it is discarded later)
 	}
 }
 
