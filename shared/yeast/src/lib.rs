@@ -50,11 +50,41 @@ impl Ast {
         serde_json::to_value(self.print_node(root, source)).unwrap()
     }
 
-    fn create_node(&mut self, kind: KindId, content: NodeContent, fields: BTreeMap<FieldId, Vec<Id>>, children: Vec<Id>) -> Id {
+    pub fn create_node(
+        &mut self,
+        kind: KindId,
+        content: NodeContent,
+        fields: BTreeMap<FieldId, Vec<Id>>,
+        children: Vec<Id>,
+    ) -> Id {
         let id = self.nodes.len();
-        self.nodes.push(Node { id, kind, children, fields, content });
+        self.nodes.push(Node {
+            id,
+            kind,
+            children,
+            fields,
+            content,
+        });
         id
     }
+
+    pub fn create_token(
+        &mut self,
+        kind: &str,
+        content: String,
+    ) -> Id {
+        let kind_id = self.language.id_for_node_kind(kind, true);
+        let id = self.nodes.len();
+        self.nodes.push(Node {
+            id,
+            kind: kind_id,
+            children: Vec::new(),
+            fields: BTreeMap::new(),
+            content: NodeContent::String(content),
+        });
+        id
+    }
+
 
     /// Print a node for debugging
     fn print_node(&self, node: &Node, source: &str) -> Value {
