@@ -36,8 +36,8 @@ impl Ast {
         self.nodes.get(id)
     }
 
-    pub fn print(&self, source: &str) -> Value {
-        let root = self.nodes().first().unwrap();
+    pub fn print(&self, source: &str, rootId: Id) -> Value {
+        let root = &self.nodes()[rootId];
         serde_json::to_value(self.print_node(root, source)).unwrap()
     }
 

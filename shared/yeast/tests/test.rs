@@ -74,7 +74,7 @@ fn test_parse_input() {
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
     let ast = runner.run(&input);
-    let parsed_actual = serde_json::to_string_pretty(&ast.print(&input)).unwrap();
+    let parsed_actual = serde_json::to_string_pretty(&ast.print(&input, 0)).unwrap();
 
     assert_eq!(parsed_actual, parsed_expected);
 }
