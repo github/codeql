@@ -291,3 +291,37 @@ The first four values identify the callable (in this case a method) to be modele
 - The fourth value ``()`` is the method input type signature.
 - The fifth value ``summary`` is the kind of the neutral.
 - The sixth value ``manual`` is the provenance of the neutral.
+
+Threat models
+~~~~~~~~~~~~~
+
+.. include:: ../reusables/beta-note-threat-models-java.rst
+
+ A threat model is a named class of dataflow sources that can be enabled or disabled independently. Threat models allow you to control the set of dataflow sources that you want to consider unsafe. Threat models are defined in a hierarchy. A threat model can have child threat models, so that enabling or disabling the parent threat model does the same for each of its children.
+ 
+ The ``default`` threat model is included by default. The ``default`` grouping only contains one child threat model, the ``remote`` threat model, which represents remote HTTP requests. 
+ 
+ You can extend the CodeQL threat model to specify other sources of untrusted data. For example, if your codebase considers local files to be sources of tainted data, you can specify the `local` threat model to be used in CodeQL analysis.
+
+ The shared `threat-models` library pack exposes the following extensible predicates:
+ - ``threatModelConfiguration(string kind, boolean enabled, int priority)``. This is used to configure which threat models are enabled or disabled for the analysis.
+ - ``threatModelGrouping(string kind, string group)``. This is used to define the taxonomy of threat models as a parent-child hierarchy.
+
+You can specify a threat model to use during analysis by adding a data extension YAML file named ``<test-name>.ext.yml`` in your test directory. In the YAML file, you can extend the ``threatModelConfiguration`` predicate.
+
+.. code-block:: yaml
+
+   extensions:
+   - addsTo:
+       pack: codeql/threat-models
+       extensible: threatModelConfiguration
+     data:
+       - [local, true, 0]
+       - [environment, false, 1]
+
+Each data row consists of three columns:
+
+- The first value ``local`` is the name of the threat model to enable or disable.
+- The second value ``true`` is a boolean that you can set to ``true`` to enable the named threat model, or ``false`` to disable it.
+- The third value `0` is an integer specifying the order in which to process the row. Rows are processed in ascending order of priority.
+
