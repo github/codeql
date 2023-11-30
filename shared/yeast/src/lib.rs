@@ -38,6 +38,7 @@ pub struct AstCursor<'a> {
 
 impl<'a> AstCursor<'a> {
     pub fn new(ast: &'a Ast) -> Self {
+        // TODO: handle non-zero root
         let node = ast.get_node(0).unwrap();
         Self {
             ast,
@@ -187,14 +188,20 @@ impl Ast {
         content: NodeContent,
         mut fields: BTreeMap<FieldId, Vec<Id>>,
         children: Vec<Id>,
+        is_named: bool,
     ) -> Id {
         let id = self.nodes.len();
         fields.insert(CHILD_FIELD, children);
         self.nodes.push(Node {
             id,
             kind,
+            kind_name: self.language.node_kind_for_id(kind).unwrap(),
             fields,
             content,
+            is_missing: false,
+            is_error: false,
+            is_extra: false,
+            is_named,
         });
         id
     }

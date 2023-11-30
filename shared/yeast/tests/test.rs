@@ -154,7 +154,7 @@ fn test_cursor() {
     let input = std::fs::read_to_string("tests/fixtures/1.rb").unwrap();
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
-    let ast = runner.run(&input);
+    let (ast, _root) = runner.run(&input);
     let mut cursor = AstCursor::new(&ast);
 
     assert_eq!(cursor.node().id(), 0);
