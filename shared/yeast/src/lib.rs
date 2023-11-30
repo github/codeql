@@ -180,11 +180,12 @@ pub struct Match {}
 
 pub struct Runner {
     language: tree_sitter::Language,
+    rules: Vec<Rule>
 }
 
 impl Runner {
     pub fn new(language: tree_sitter::Language, rules: Vec<Rule>) -> Self {
-        Self { language }
+        Self { language, rules }
     }
 
     pub fn run(&self, input: &str) -> Ast {
