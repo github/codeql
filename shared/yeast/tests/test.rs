@@ -1,8 +1,8 @@
 #![cfg(test)]
 use std::path::Path;
 
+use yeast::captures::Captures;
 use yeast::*;
-
 #[test]
 fn test_ruby_multiple_assignment() {
     // We want to convert this
@@ -83,6 +83,50 @@ fn test_parse_input() {
     let parsed_actual = serde_json::to_string_pretty(&ast.print(&input, newRootId)).unwrap();
 
     assert_eq!(parsed_actual, parsed_expected);
+}
+
+#[test]
+fn test_query_input() {
+    let input = std::fs::read_to_string("tests/fixtures/1.rb").unwrap();
+    let rewritten_expected = std::fs::read_to_string("tests/fixtures/1.rewritten.json").unwrap();
+
+    let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
+    let mut ast = runner.run(&input);
+
+    let query = yeast::query::query!(
+        program (
+            (assignment
+                left: (@left)
+                right: (@right)
+                (@rest)*
+            )
+        )
+    );
+    print!("query: {:?}", query);
+
+    let mut matches = Captures::new();
+    if query.do_match(&ast, 0, &mut matches).unwrap() {
+        println!("match: {:?}", matches);
+    } else {
+        println!("no match");
+    }
+
+    let builder = yeast::tree_builder::tree_builder!(
+        program (
+            (assignment
+                left: (@right)
+                right: (@left)
+                (@rest)*
+            )
+        )
+    );
+
+    let new_id = builder.build_tree(&mut ast, &matches).unwrap();
+
+    let rewritten_actual = serde_json::to_string_pretty(&ast.print_id(new_id, &input)).unwrap();
+
+    write_expected("tests/fixtures/1.rewritten.json", &rewritten_actual);
+    assert_eq!(rewritten_actual, rewritten_expected);
 }
 
 /// Useful for updating fixtures

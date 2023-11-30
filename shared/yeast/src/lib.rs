@@ -1,4 +1,10 @@
+// Uncomment to debug macros
+//#![feature(trace_macros)]
+
 use std::collections::BTreeMap;
+
+mod query;
+
 
 use serde::Serialize;
 use serde_json::{json, Value};
