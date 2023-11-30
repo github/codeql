@@ -169,10 +169,16 @@ impl Query {
     }
 }
 
+fn isMatch(query: &Query, ast: &Ast, node: &Node) -> bool {
+    // TODO after the final Query class is merged in
+    return false;
+}
+
 pub struct Rule {
     query: Query,
     transform: Box<dyn Fn(&mut Ast, Match) -> Id>,
 }
+
 impl Rule {
     pub fn new(query: Query, transform: Box<dyn Fn(&mut Ast, Match) -> Id>) -> Self {
         Self {
@@ -180,6 +186,18 @@ impl Rule {
             transform: transform,
         }
     }
+
+    fn tryRule(&self, ast: &mut Ast, node: Id) -> Option<Id> {
+        if isMatch(&self.query, ast, &ast.nodes[node]) {
+            return Option::Some((*self.transform)(ast, Match { node: node }));
+        }
+        return Option::None;
+    }
+}
+
+fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Id {
+    //TODO
+    return id;
 }
 
 pub struct Match {
@@ -202,7 +220,8 @@ impl Runner {
         let mut parser = tree_sitter::Parser::new();
         parser.set_language(self.language).unwrap();
         let tree = parser.parse(input, None).unwrap();
-        let ast = Ast::from_tree(self.language, &tree);
-        (ast, 0)
+        let mut ast = Ast::from_tree(self.language, &tree);
+        let res = applyRules(&self.rules, &mut ast, 0);
+        (ast, res)
     }
 }
