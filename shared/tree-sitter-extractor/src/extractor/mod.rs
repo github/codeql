@@ -6,7 +6,8 @@ use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::path::Path;
 
-use tree_sitter::{Language, Node, Parser, Range, Tree};
+use tree_sitter::{Language, Parser, Range};
+use yeast::{Cursor, Node};
 
 pub mod simple;
 
@@ -151,7 +152,11 @@ pub fn extract(
         language_prefix,
         schema,
     );
-    traverse(&tree, &mut visitor);
+
+    // HACK: Pass the tree through yeast
+    let ast = yeast::Ast::from_tree(language, &tree);
+
+    traverse(&ast, &mut visitor);
 
     parser.reset();
 }
@@ -242,7 +247,7 @@ impl<'a> Visitor<'a> {
         &mut self,
         message: &str,
         args: &[diagnostics::MessageArg],
-        node: Node,
+        node: &Node,
         status_page: bool,
     ) {
         let (start_line, start_column, end_line, end_column) = location_for(self, node);
@@ -267,7 +272,7 @@ impl<'a> Visitor<'a> {
         self.record_parse_error(loc, &mesg);
     }
 
-    fn enter_node(&mut self, node: Node) -> bool {
+    fn enter_node(&mut self, node: &Node) -> bool {
         if node.is_missing() {
             self.record_parse_error_for_node(
                 "A parse error occurred (expected {} symbol). Check the syntax of the file. If the file is invalid, correct the error or {} the file from analysis.",
@@ -293,7 +298,7 @@ impl<'a> Visitor<'a> {
         true
     }
 
-    fn leave_node(&mut self, field_name: Option<&'static str>, node: Node) {
+    fn leave_node(&mut self, field_name: Option<&'static str>, node: &Node) {
         if node.is_error() || node.is_missing() {
             return;
         }
@@ -433,7 +438,7 @@ impl<'a> Visitor<'a> {
                             diagnostics::MessageArg::Code(&format!("{:?}", child_node.type_name)),
                             diagnostics::MessageArg::Code(&format!("{:?}", field.type_info)),
                         ],
-                        *node,
+                        node,
                         false,
                     );
                 }
@@ -445,7 +450,7 @@ impl<'a> Visitor<'a> {
                         diagnostics::MessageArg::Code(child_node.field_name.unwrap_or("child")),
                         diagnostics::MessageArg::Code(&format!("{:?}", child_node.type_name)),
                     ],
-                    *node,
+                    node,
                     false,
                 );
             }
@@ -470,7 +475,7 @@ impl<'a> Visitor<'a> {
                             node.kind(),
                             column_name
                         );
-                        self.record_parse_error_for_node(&error_message, &[], *node, false);
+                        self.record_parse_error_for_node(&error_message, &[], node, false);
                     }
                 }
                 Storage::Table {
@@ -486,7 +491,7 @@ impl<'a> Visitor<'a> {
                                     diagnostics::MessageArg::Code(node.kind()),
                                     diagnostics::MessageArg::Code(table_name),
                                 ],
-                                *node,
+                                node,
                                 false,
                             );
                             break;
@@ -547,7 +552,7 @@ impl<'a> Visitor<'a> {
 }
 
 // Emit a slice of a source file as an Arg.
-fn sliced_source_arg(source: &[u8], n: Node) -> trap::Arg {
+fn sliced_source_arg(source: &[u8], n: &Node) -> trap::Arg {
     let range = n.byte_range();
     trap::Arg::String(String::from_utf8_lossy(&source[range.start..range.end]).into_owned())
 }
@@ -555,7 +560,7 @@ fn sliced_source_arg(source: &[u8], n: Node) -> trap::Arg {
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
 // The first is the location and label definition, and the second is the
 // 'Located' entry.
-fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) {
+fn location_for(visitor: &mut Visitor, n: &Node) -> (usize, usize, usize, usize) {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -615,8 +620,8 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
     (start_line, start_col, end_line, end_col)
 }
 
-fn traverse(tree: &Tree, visitor: &mut Visitor) {
-    let cursor = &mut tree.walk();
+fn traverse(tree: &yeast::Ast, visitor: &mut Visitor) {
+    let mut cursor = tree.walk();
     visitor.enter_node(cursor.node());
     let mut recurse = true;
     loop {
