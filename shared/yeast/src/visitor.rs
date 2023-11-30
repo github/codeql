@@ -49,6 +49,7 @@ impl Visitor {
 
     pub fn build(self) -> Ast {
         Ast {
+            root: self.nodes[0].inner.id, // this is likely always just 0
             language: self.language,
             nodes: self.nodes.into_iter().map(|n| n.inner).collect(),
         }

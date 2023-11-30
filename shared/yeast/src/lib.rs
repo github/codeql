@@ -39,7 +39,7 @@ pub struct AstCursor<'a> {
 impl<'a> AstCursor<'a> {
     pub fn new(ast: &'a Ast) -> Self {
         // TODO: handle non-zero root
-        let node = ast.get_node(0).unwrap();
+        let node = ast.get_node(ast.root).unwrap();
         Self {
             ast,
             parents: vec![],
@@ -156,6 +156,7 @@ impl<'a> Iterator for ChildrenIter<'a> {
 /// Our AST
 #[derive(PartialEq, Eq, Debug)]
 pub struct Ast {
+    root: Id,
     nodes: Vec<Node>,
     language: tree_sitter::Language,
 }
@@ -174,6 +175,14 @@ impl Ast {
 
     pub fn nodes(&self) -> &[Node] {
         &self.nodes
+    }
+
+    pub fn get_root(&self) -> Id {
+        self.root
+    }
+
+    pub fn set_root(&mut self, root: Id) {
+        self.root = root;
     }
 
     pub fn get_node(&self, id: Id) -> Option<&Node> {
@@ -267,6 +276,7 @@ impl Ast {
     pub fn example(language: tree_sitter::Language) -> Self {
         // x = 1
         Self {
+            root: 0,
             language,
             nodes: vec![
                 // assignment
@@ -486,7 +496,7 @@ impl Runner {
         Self { language, rules }
     }
 
-    pub fn run(&self, input: &str) -> (Ast, Id) {
+    pub fn run(&self, input: &str) -> Ast {
         // Parse the input into an AST
 
         let mut parser = tree_sitter::Parser::new();
@@ -494,6 +504,7 @@ impl Runner {
         let tree = parser.parse(input, None).unwrap();
         let mut ast = Ast::from_tree(self.language, &tree);
         let res = applyRules(&self.rules, &mut ast, 0);
-        (ast, res)
+        ast.set_root(res);
+        ast
     }
 }
