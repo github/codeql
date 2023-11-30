@@ -11,8 +11,8 @@ and the CodeQL library pack ``codeql/cpp-all`` (`changelog <https://github.com/g
    :widths: auto
 
    Name, Category
-   `Bloomberg Standard Library <https://github.com/bloomberg/bde>`__, Utility library
    `Berkeley socket API library <https://en.wikipedia.org/wiki/Berkeley_sockets#Socket_API_functions>`__, Network communicator
+   `Bloomberg Standard Library <https://github.com/bloomberg/bde>`__, Utility library
    string.h, String library
 
 C# built-in support
@@ -82,8 +82,8 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
    `nhooyr.io/websocket <http://nhooyr.io/websocket>`_, Network communicator
    `protobuf <https://pkg.go.dev/google.golang.org/protobuf>`_, Serialization
    `Revel <http://revel.github.io/>`_, Web framework
-   `sqlx <http://jmoiron.github.io/sqlx/>`_, Database
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_, Email library
+   `sqlx <http://jmoiron.github.io/sqlx/>`_, Database
    `Squirrel <https://github.com/Masterminds/squirrel>`_, Database
    `ws <https://github.com/gobwas/ws>`_, Network communicator
    `xmlpath <https://gopkg.in/xmlpath.v2>`_, XPath library
@@ -108,19 +108,20 @@ and the CodeQL library pack ``codeql/java-all`` (`changelog <https://github.com/
    :widths: auto
 
    Name, Category
-   Apache Commons Lang, Utility library
    Apache Commons Collections, Data structure utility library
+   Apache Commons Lang, Utility library
    Apache HTTP components, Network communicator
    Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
    Jackson, Serialization
-   JSON-java, Serialization
    Java Persistence API (JPA), Database
    JaxRS, Jakarta EE API specification
    JDBC, Database
-   Protobuf, Serialization
+   JSON-java, Serialization
    Kryo deserialization, Serialization
+   Project Lombok, Utility library
+   Protobuf, Serialization
    SnakeYaml, Serialization
    Spring JDBC, Database
    Spring MVC, Web application framework
@@ -159,8 +160,8 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    mssql, Database
    mustache, templating language
    mysql, Database
-   node, Runtime environment
    nest.js, Server
+   node, Runtime environment
    nunjucks, templating language
    postgres, Database
    ramda, Utility library
@@ -190,17 +191,18 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    :widths: auto
 
    Name, Category
+   AWS Lambda, Web framework
    aiohttp.web, Web framework
    Django, Web framework
    djangorestframework, Web framework
    FastAPI, Web framework
    Flask, Web framework
+   Flask-Admin, Web framework
    Tornado, Web framework
    Twisted, Web framework
-   Flask-Admin, Web framework
    starlette, Asynchronous Server Gateway Interface (ASGI)
-   python-ldap, Lightweight Directory Access Protocol (LDAP)
    ldap3, Lightweight Directory Access Protocol (LDAP)
+   python-ldap, Lightweight Directory Access Protocol (LDAP)
    httpx, HTTP client
    pycurl, HTTP client
    requests, HTTP client
@@ -228,8 +230,8 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    cassandra-driver, Database
    clickhouse-driver, Database
    cx_Oracle, Database
-   mysql-connector-python, Database
    mysql-connector, Database
+   mysql-connector-python, Database
    MySQL-python, Database
    mysqlclient, Database
    oracledb, Database
@@ -308,4 +310,5 @@ and the CodeQL library pack ``codeql/swift-all`` (`changelog <https://github.com
    `RNCryptor <https://github.com/RNCryptor/RNCryptor>`__, Cryptography library
    `SQLite3 <https://sqlite.org/index.html>`__, Database
    `SQLite.swift <https://github.com/stephencelis/SQLite.swift>`__, Database
+   `UIKit <https://developer.apple.com/documentation/uikit>`__, User interface library
    `WebKit <https://developer.apple.com/documentation/webkit>`__, User interface library

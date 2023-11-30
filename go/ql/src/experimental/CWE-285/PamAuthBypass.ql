@@ -33,34 +33,34 @@ class PamStartFunc extends Function {
   PamStartFunc() { this.hasQualifiedName("github.com/msteinert/pam", ["StartFunc", "Start"]) }
 }
 
-class PamStartToAcctMgmtConfig extends TaintTracking::Configuration {
-  PamStartToAcctMgmtConfig() { this = "PAM auth bypass (Start to AcctMgmt)" }
-
-  override predicate isSource(DataFlow::Node source) {
+// PAM auth bypass (Start to AcctMgmt)
+module PamStartToAcctMgmtConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(PamStartFunc p | p.getACall().getResult(0) = source)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(PamAcctMgmt p | p.getACall().getReceiver() = sink)
   }
 }
 
-class PamStartToAuthenticateConfig extends TaintTracking::Configuration {
-  PamStartToAuthenticateConfig() { this = "PAM auth bypass (Start to Authenticate)" }
+module PamStartToAcctMgmtFlow = TaintTracking::Global<PamStartToAcctMgmtConfig>;
 
-  override predicate isSource(DataFlow::Node source) {
+// PAM auth bypass (Start to Authenticate)
+module PamStartToAuthenticateConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(PamStartFunc p | p.getACall().getResult(0) = source)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(PamAuthenticate p | p.getACall().getReceiver() = sink)
   }
 }
 
-from
-  PamStartToAcctMgmtConfig acctMgmtConfig, PamStartToAuthenticateConfig authConfig,
-  DataFlow::Node source, DataFlow::Node sink
+module PamStartToAuthenticateFlow = TaintTracking::Global<PamStartToAuthenticateConfig>;
+
+from DataFlow::Node source, DataFlow::Node sink
 where
   not isInTestFile(source.asExpr()) and
-  (authConfig.hasFlow(source, sink) and not acctMgmtConfig.hasFlow(source, _))
+  (PamStartToAuthenticateFlow::flow(source, sink) and not PamStartToAcctMgmtFlow::flow(source, _))
 select source, "This Pam transaction may not be secure."

@@ -1,7 +1,7 @@
 import csharp
 import ControlFlow
 import Common
-import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as Impl
 import semmle.code.csharp.controlflow.internal.Splitting as Splitting
 import Nodes
 
@@ -16,11 +16,11 @@ class MyFinallySplitControlFlowNode extends ElementNode {
     )
   }
 
-  Statements::TryStmtTree getTryStmt() { this.getElement() = result.getAFinallyDescendant() }
+  Impl::Statements::TryStmtTree getTryStmt() { this.getAstNode() = result.getAFinallyDescendant() }
 }
 
 query predicate finallyNode(MyFinallySplitControlFlowNode f, TryStmt try) { try = f.getTryStmt() }
 
 query predicate entryPoint(Callable c, SourceControlFlowElement cfn) {
-  c.getEntryPoint().getASuccessor().getElement() = cfn
+  c.getEntryPoint().getASuccessor().getAstNode() = cfn
 }

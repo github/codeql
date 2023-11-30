@@ -58,7 +58,7 @@ predicate overwritten(SsaExplicitUpdate ssa) {
  * A local variable with a read access.
  */
 predicate read(LocalScopeVariable v) {
-  exists(VarAccess va | va = v.getAnAccess() | va.isRValue())
+  exists(VarAccess va | va = v.getAnAccess() | va.isVarRead())
   or
   readImplicitly(_, v)
 }
@@ -72,7 +72,7 @@ private predicate readImplicitly(SsaExplicitUpdate ssa, LocalScopeVariable v) {
  * A local variable with a write access.
  */
 predicate assigned(LocalScopeVariable v) {
-  exists(VarAccess va | va = v.getAnAccess() | va.isLValue())
+  exists(VarAccess va | va = v.getAnAccess() | va.isVarWrite())
 }
 
 /**
@@ -91,9 +91,7 @@ predicate exprHasNoEffect(Expr e) {
       constructorHasEffect(c)
     )
     or
-    exists(MethodAccess ma, Method m |
-      bad = ma and m = ma.getMethod().getAPossibleImplementation()
-    |
+    exists(MethodCall ma, Method m | bad = ma and m = ma.getMethod().getAPossibleImplementation() |
       methodHasEffect(m) or not m.fromSource()
     )
   )
@@ -107,7 +105,7 @@ private predicate inInitializer(Expr e) {
 private predicate constructorHasEffect(Constructor c) {
   // Only assign fields of the class - do not call methods,
   // create new objects or assign any other variables.
-  exists(MethodAccess ma | ma.getEnclosingCallable() = c)
+  exists(MethodCall ma | ma.getEnclosingCallable() = c)
   or
   exists(ClassInstanceExpr cie | cie.getEnclosingCallable() = c)
   or
@@ -120,7 +118,7 @@ private predicate constructorHasEffect(Constructor c) {
 }
 
 private predicate methodHasEffect(Method m) {
-  exists(MethodAccess ma | ma.getEnclosingCallable() = m) or
+  exists(MethodCall ma | ma.getEnclosingCallable() = m) or
   exists(Assignment a | a.getEnclosingCallable() = m) or
   exists(ClassInstanceExpr cie | cie.getEnclosingCallable() = m) or
   exists(ThrowStmt throw | throw.getEnclosingCallable() = m) or

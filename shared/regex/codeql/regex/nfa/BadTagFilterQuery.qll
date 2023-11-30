@@ -55,7 +55,7 @@ module Make<RegexTreeViewSig TreeImpl> {
   /**
    * A regexp that matches some string from the `isBadTagFilterCandidate` predicate.
    */
-  class HtmlMatchingRegExp instanceof RootTerm {
+  class HtmlMatchingRegExp extends RootTerm {
     HtmlMatchingRegExp() { RegexpMatching<isBadTagFilterCandidate/4>::matches(this, _) }
 
     /** Holds if this regexp matched `str`, where `str` is one of the string from `isBadTagFilterCandidate`. */
@@ -64,16 +64,6 @@ module Make<RegexTreeViewSig TreeImpl> {
     /** Holds if this regexp fills capture group `g' when matching `str', where `str` is one of the string from `isBadTagFilterCandidate`. */
     predicate fillsCaptureGroup(string str, int g) {
       RegexpMatching<isBadTagFilterCandidate/4>::fillsCaptureGroup(this, str, g)
-    }
-
-    /** Gets a string representation of this term. */
-    string toString() { result = super.toString() }
-
-    /** Holds if this term has the specified location. */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
 

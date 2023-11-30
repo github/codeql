@@ -11,7 +11,7 @@ module DataFlowTest implements FlowTestSig {
   }
 }
 
-import MakeFlowTest<DataFlowTest>
+import MakeTest<MakeTestSig<DataFlowTest>>
 
 query predicate missingAnnotationOnSink(Location location, string error, string element) {
   error = "ERROR, you should add `# $ MISSING: flow` annotation" and

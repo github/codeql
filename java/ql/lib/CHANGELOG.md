@@ -1,3 +1,179 @@
+## 0.8.3
+
+### Deprecated APIs
+
+* In `SensitiveApi.qll`, `javaApiCallablePasswordParam`, `javaApiCallableUsernameParam`, `javaApiCallableCryptoKeyParam`, and `otherApiCallableCredentialParam` predicates have been deprecated. They have been replaced with a new class `CredentialsSinkNode` and its child classes `PasswordSink`, `UsernameSink`, and `CryptoKeySink`. The predicates have been changed to using the new classes, so there may be minor changes in results relying on these predicates.
+
+### Minor Analysis Improvements
+
+* The types `java.util.SequencedCollection`, `SequencedSet` and `SequencedMap`, as well as the related `Collections.unmodifiableSequenced*` methods are now modelled. This means alerts may be raised relating to data flow through these types and methods.
+
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* Java classes `MethodAccess`, `LValue` and `RValue` were renamed to `MethodCall`, `VarWrite` and `VarRead` respectively, along with related predicates and class names. The old names remain usable for the time being but are deprecated and should be replaced.
+* New class `NewClassExpr` was added to represent specifically an explicit `new ClassName(...)` invocation, in contrast to `ClassInstanceExpr` which also includes expressions that implicitly instantiate classes, such as defining a lambda or taking a method reference.
+* Added up to date models related to Spring Framework 6's `org.springframework.http.ResponseEntity`.
+* Added models for the following packages:
+
+  * com.alibaba.fastjson2
+  * javax.management
+  * org.apache.http.client.utils
+
+## 0.8.1
+
+### New Features
+
+* Added predicate `MemberRefExpr::getReceiverExpr`
+
+### Minor Analysis Improvements
+
+* The `isBarrier`, `isBarrierIn`, `isBarrierOut`, and `isAdditionalFlowStep` methods of the taint-tracking configurations for local queries in the `ArithmeticTaintedLocalQuery`, `ExternallyControlledFormatStringLocalQuery`, `ImproperValidationOfArrayIndexQuery`, `NumericCastTaintedQuery`, `ResponseSplittingLocalQuery`, `SqlTaintedLocalQuery`, and `XssLocalQuery` libraries have been changed to match their remote counterpart configurations.
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `getAValue` predicate from the `Annotation` class.
+* Deleted the deprecated alias `FloatingPointLiteral`, use `FloatLiteral` instead.
+* Deleted the deprecated `getASuppressedWarningLiteral` predicate from the `SuppressWarningsAnnotation` class.
+* Deleted the deprecated `getATargetExpression` predicate form the `TargetAnnotation` class.
+* Deleted the deprecated `getRetentionPolicyExpression` predicate from the `RetentionAnnotation` class.
+* Deleted the deprecated `conditionCheck` predicate from `Preconditions.qll`.
+* Deleted the deprecated `semmle.code.java.security.performance` folder, use `semmle.code.java.security.regexp` instead.
+* Deleted the deprecated `ExternalAPI` class from `ExternalApi.qll`, use `ExternalApi` instead.
+* Modified the `EnvInput` class in `semmle.code.java.dataflow.FlowSources` to include `environment` and `file` source nodes.
+  There are no changes to results unless you add source models using the `environment` or `file` source kinds.
+* Added `environment` source models for the following methods:
+  * `java.lang.System#getenv`
+  * `java.lang.System#getProperties`
+  * `java.lang.System#getProperty`
+  * `java.util.Properties#get`
+  * `java.util.Properties#getProperty`
+* Added `file` source models for the following methods:
+  * the `java.io.FileInputStream` constructor
+  * `hudson.FilePath#newInputStreamDenyingSymlinkAsNeeded`
+  * `hudson.FilePath#openInputStream`
+  * `hudson.FilePath#read`
+  * `hudson.FilePath#readFromOffset`
+  * `hudson.FilePath#readToString`
+* Modified the `DatabaseInput` class in `semmle.code.java.dataflow.FlowSources` to include `database` source nodes.
+  There are no changes to results unless you add source models using the `database` source kind.
+* Added `database` source models for the following method:
+  * `java.sql.ResultSet#getString`
+
+## 0.8.0
+
+### New Features
+
+* Kotlin versions up to 1.9.20 are now supported.
+
+### Minor Analysis Improvements
+
+* Fixed a control-flow bug where case rule statements would incorrectly include a fall-through edge.
+* Added support for default cases as proper guards in switch expressions to match switch statements.
+* Improved the class `ArithExpr` of the `Overflow.qll` module to also include compound operators. Because of this, new alerts may be raised in queries related to overflows/underflows.
+* Added new dataflow models for the Apache CXF framework.
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+
+### Bug Fixes
+
+* The regular expressions library no longer incorrectly matches mode flag characters against the input.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Features
+
+* Kotlin versions up to 1.9.10 are now supported.
+
+### Minor Analysis Improvements
+
+* Fixed the MaD signature specifications to use proper nested type names.
+* Added new sanitizer to Java command injection model
+* Added more dataflow models for JAX-RS.
+* The predicate `JaxWsEndpoint::getARemoteMethod` no longer requires the result to be annotated with `@WebMethod`. Instead, the requirements listed in the JAX-RPC Specification 1.1 for required parameter and return types are used. Applications using JAX-RS may see an increase in results.
+
+## 0.7.3
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
+### Minor Analysis Improvements
+
+* Modified the `getSecureAlgorithmName` predicate in `Encryption.qll` to also include `SHA-256` and `SHA-512`. Previously only the versions of the names without dashes were considered secure.
+* Add support for `WithElement` and `WithoutElement` for MaD access paths.
+
+## 0.7.2
+
+### New Features
+
+* A `Diagnostic.getCompilationInfo()` predicate has been added.
+
+### Minor Analysis Improvements
+
+* Fixed a typo in the `StdlibRandomSource` class in `RandomDataSource.qll`, which caused the class to improperly model calls to the `nextBytes` method. Queries relying on `StdlibRandomSource` may see an increase in results.
+* Improved the precision of virtual dispatch of `java.io.InputStream` methods. Now, calls to these methods will not dispatch to arbitrary implementations of `InputStream` if there is a high-confidence alternative (like a models-as-data summary).
+* Added more dataflow steps for `java.io.InputStream`s that wrap other `java.io.InputStream`s.
+* Added models for the Struts 2 framework.
+* Improved the modeling of Struts 2 sources of untrusted data by tainting the whole object graph of the objects unmarshaled from an HTTP request.
+
+## 0.7.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+* A `Class.isFileClass()` predicate, to identify Kotlin file classes, has been added.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* Added models for Apache Commons Lang3 `ToStringBuilder.reflectionToString` method.
+* Added support for the Kotlin method `apply`.
+* Added models for the following packages:
+
+  * java.io
+  * java.lang
+  * java.net
+  * java.nio.channels
+  * java.nio.file
+  * java.util.zip
+  * okhttp3
+  * org.gradle.api.file
+  * retrofit2
+
+## 0.7.0
+
+### Deprecated APIs
+
+* The `ExecCallable` class in `ExternalProcess.qll` has been deprecated.
+
+### Major Analysis Improvements
+
+* The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
+
+### Minor Analysis Improvements
+
+* Added automatically-generated dataflow models for `javax.portlet`.
+* Added a missing summary model for the method `java.net.URL.toString`.
+* Added automatically-generated dataflow models for the following frameworks and libraries:
+  * `hudson`
+  * `jenkins`
+  * `net.sf.json`
+  * `stapler`
+* Added more models for the Hudson framework.
+* Added more models for the Stapler framework.
+
+## 0.6.4
+
+No user-facing changes.
+
 ## 0.6.3
 
 ### New Features

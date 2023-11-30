@@ -27,9 +27,22 @@
 	</p>
 
 	<p>
-		Alternatively, if the shell command must be constructed
-		dynamically, then add code to ensure that special characters 
-		do not alter the shell command unexpectedly.
+
+		If given arguments as a single string, avoid simply splitting the string
+		on whitespace. Arguments may contain quoted whitespace, causing them to
+		split into multiple arguments. Use a library like
+		<code>shell-quote</code> to parse the string into an array of arguments
+		instead.
+
+	</p>
+
+	<p>
+
+		Alternatively, if the command must be interpreted by a shell (for
+		example because it includes I/O redirections), you can use
+		<code>shell-quote</code> to escape any special characters in the input
+		before embedding it in the command.
+
 	</p>
 
 </recommendation>
@@ -63,12 +76,38 @@
 
 	<sample src="examples/unsafe-shell-command-construction_fixed.js" />
 
+	<p>
+
+		As another example, consider the following code which is similar to the
+		preceding example, but pipes the output of <code>wget</code> into <code>wc -l</code>
+		to count the number of lines in the downloaded file.
+
+	</p>
+
+	<sample src="examples/unsafe-shell-command-construction_pipe.js" />
+
+	<p>
+
+		In this case, using <code>child_process.execFile</code> is not an option
+		because the shell is needed to interpret the pipe operator. Instead, you
+		can use <code>shell-quote</code> to escape the input before embedding it
+		in the command:
+
+	</p>
+
+	<sample src="examples/unsafe-shell-command-construction_pipe_fixed.js" />
+
 </example>
 <references>
 
 	<li>
 		OWASP:
 		<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+	</li>
+
+	<li>
+		npm:
+		<a href="https://www.npmjs.com/package/shell-quote">shell-quote</a>.
 	</li>
 
 </references>

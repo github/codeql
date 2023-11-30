@@ -70,6 +70,32 @@ private class CopyFunction extends TaintTracking::FunctionModel {
   }
 }
 
+/**
+ * A model of the built-in `min` function, which computes the smallest value of a fixed number of
+ * arguments of ordered types. There is at least one argument and "ordered types" includes e.g.
+ * strings, so we care about data flow through `min`.
+ */
+private class MinFunction extends DataFlow::FunctionModel {
+  MinFunction() { this = Builtin::min_() }
+
+  override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp) {
+    inp.isParameter(_) and outp.isResult()
+  }
+}
+
+/**
+ * A model of the built-in `max` function, which computes the largest value of a fixed number of
+ * arguments of ordered types. There is at least one argument and "ordered types" includes e.g.
+ * strings, so we care about data flow through `max`.
+ */
+private class MaxFunction extends DataFlow::FunctionModel {
+  MaxFunction() { this = Builtin::max_() }
+
+  override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp) {
+    inp.isParameter(_) and outp.isResult()
+  }
+}
+
 /** Provides a class for modeling functions which convert strings into integers. */
 module IntegerParser {
   /**
@@ -91,6 +117,9 @@ module IntegerParser {
      * input is 0 then it means the bit size of `int` and `uint`.
      */
     FunctionInput getTargetBitSizeInput() { none() }
+
+    /** Gets whether the function is for parsing signed or unsigned integers. */
+    boolean isSigned() { none() }
   }
 }
 

@@ -10,7 +10,14 @@ private import codeql.swift.elements.expr.MethodLookupExpr
 private import codeql.swift.elements.decl.EnumElementDecl
 
 /**
- * An expression that constructs a case of an enum.
+ * An expression that references a case of an enum. For example both `enumElement` in:
+ * ```
+ * let value = MyEnum.enumElement
+ * ...
+ * switch (anotherValue) {
+ *   case .enumElement:
+ *   ...
+ * ```
  */
 class EnumElementExpr extends Expr {
   EnumElementDecl decl;

@@ -32,17 +32,17 @@ app.get('/normalize-notAbsolute', (req, res) => {
 
   if (pathModule.isAbsolute(path))
     return;
-   
+
   fs.readFileSync(path); // NOT OK
 
   if (!path.startsWith("."))
     fs.readFileSync(path); // OK
   else
     fs.readFileSync(path); // NOT OK - wrong polarity
-  
+
   if (!path.startsWith(".."))
     fs.readFileSync(path); // OK
-  
+
   if (!path.startsWith("../"))
     fs.readFileSync(path); // OK
 
@@ -52,7 +52,7 @@ app.get('/normalize-notAbsolute', (req, res) => {
 
 app.get('/normalize-noInitialDotDot', (req, res) => {
   let path = pathModule.normalize(req.query.path);
-  
+
   if (path.startsWith(".."))
     return;
 
@@ -80,7 +80,7 @@ app.get('/prepend-normalize', (req, res) => {
 
 app.get('/absolute', (req, res) => {
   let path = req.query.path;
-  
+
   if (!pathModule.isAbsolute(path))
     return;
 
@@ -92,10 +92,10 @@ app.get('/absolute', (req, res) => {
 
 app.get('/normalized-absolute', (req, res) => {
   let path = pathModule.normalize(req.query.path);
-  
+
   if (!pathModule.isAbsolute(path))
     return;
-  
+
   res.write(fs.readFileSync(path)); // NOT OK
 
   if (path.startsWith('/home/user/www'))
@@ -104,7 +104,7 @@ app.get('/normalized-absolute', (req, res) => {
 
 app.get('/combined-check', (req, res) => {
   let path = pathModule.normalize(req.query.path);
-  
+
   // Combined absoluteness and folder check in one startsWith call
   if (path.startsWith("/home/user/www"))
     fs.readFileSync(path); // OK
@@ -121,7 +121,7 @@ app.get('/realpath', (req, res) => {
 
   if (path.startsWith("/home/user/www"))
     fs.readFileSync(path); // OK - both absolute and normalized before check
-    
+
   fs.readFileSync(pathModule.join('.', path)); // OK - normalized and coerced to relative
   fs.readFileSync(pathModule.join('/home/user/www', path)); // OK
 });
@@ -212,7 +212,7 @@ app.get('/join-regression', (req, res) => {
 
 app.get('/decode-after-normalization', (req, res) => {
   let path = pathModule.normalize(req.query.path);
-  
+
   if (!pathModule.isAbsolute(path) && !path.startsWith('..'))
     fs.readFileSync(path); // OK
 
@@ -238,7 +238,7 @@ app.get('/resolve-path', (req, res) => {
   fs.readFileSync(path); // NOT OK
 
   var self = something();
-	
+
   if (path.substring(0, self.dir.length) === self.dir)
     fs.readFileSync(path); // OK
   else
@@ -256,12 +256,12 @@ app.get('/relative-startswith', (req, res) => {
   fs.readFileSync(path); // NOT OK
 
   var self = something();
-	
+
   var relative = pathModule.relative(self.webroot, path);
   if(relative.startsWith(".." + pathModule.sep) || relative == "..") {
-    fs.readFileSync(path); // NOT OK! 
+    fs.readFileSync(path); // NOT OK!
   } else {
-    fs.readFileSync(path); // OK! 
+    fs.readFileSync(path); // OK!
   }
 
   let newpath = pathModule.normalize(path);
@@ -277,7 +277,7 @@ app.get('/relative-startswith', (req, res) => {
   if (relativePath.indexOf('../') === 0) {
     fs.readFileSync(newpath); // NOT OK!
   } else {
-    fs.readFileSync(newpath); // OK! 
+    fs.readFileSync(newpath); // OK!
   }
 
   let newpath = pathModule.normalize(path);
@@ -285,7 +285,7 @@ app.get('/relative-startswith', (req, res) => {
   if (pathModule.normalize(relativePath).indexOf('../') === 0) {
     fs.readFileSync(newpath); // NOT OK!
   } else {
-    fs.readFileSync(newpath); // OK! 
+    fs.readFileSync(newpath); // OK!
   }
 
   let newpath = pathModule.normalize(path);
@@ -293,7 +293,7 @@ app.get('/relative-startswith', (req, res) => {
   if (pathModule.normalize(relativePath).indexOf('../')) {
     fs.readFileSync(newpath); // OK!
   } else {
-    fs.readFileSync(newpath); // NOT OK! 
+    fs.readFileSync(newpath); // NOT OK!
   }
 });
 
@@ -340,7 +340,7 @@ app.get('/yet-another-prefix', (req, res) => {
 
 	fs.readFileSync(path); // NOT OK
 
-	var abs = pathModule.resolve(path); 
+	var abs = pathModule.resolve(path);
 
 	if (abs.indexOf(root) !== 0) {
 		fs.readFileSync(path); // NOT OK
@@ -401,4 +401,9 @@ app.get('/dotdot-regexp', (req, res) => {
   if (!path.match(/(\.\.\/|\.\.\\)/)) {
     fs.readFileSync(path); // OK
   }
+});
+
+app.get('/join-spread', (req, res) => {
+  fs.readFileSync(pathModule.join('foo', ...req.query.x.split('/'))); // NOT OK
+  fs.readFileSync(pathModule.join(...req.query.x.split('/'))); // NOT OK
 });

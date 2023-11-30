@@ -1,6 +1,6 @@
-package(default_visibility = ["//cpp:__pkg__"])
-
 load("@rules_pkg//:mappings.bzl", "pkg_files")
+
+package(default_visibility = ["//cpp:__pkg__"])
 
 pkg_files(
     name = "dbscheme",

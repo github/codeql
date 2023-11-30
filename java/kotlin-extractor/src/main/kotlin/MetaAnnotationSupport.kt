@@ -276,8 +276,8 @@ class MetaAnnotationSupport(private val logger: FileLogger, private val pluginCo
             run { logger.warnElement("Expected property's parent class to have a receiver parameter", parentClass); return }
             val newParam = copyParameterToFunction(thisReceiever, this)
             dispatchReceiverParameter = newParam
-            body = factory.createBlockBody(
-                UNDEFINED_OFFSET, UNDEFINED_OFFSET, listOf(
+            body = factory.createBlockBody(UNDEFINED_OFFSET, UNDEFINED_OFFSET).apply({
+                this.statements.add(
                     IrReturnImpl(
                         UNDEFINED_OFFSET, UNDEFINED_OFFSET,
                         pluginContext.irBuiltIns.nothingType,
@@ -294,7 +294,7 @@ class MetaAnnotationSupport(private val logger: FileLogger, private val pluginCo
                         )
                     )
                 )
-            )
+            })
         }
     }
 

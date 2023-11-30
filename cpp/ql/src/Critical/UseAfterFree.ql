@@ -2,7 +2,7 @@
  * @name Potential use after free
  * @description An allocated memory block is used after it has been freed. Behavior in such cases is undefined and can cause memory corruption.
  * @kind path-problem
- * @precision medium
+ * @precision high
  * @id cpp/use-after-free
  * @problem.severity warning
  * @security-severity 9.3
@@ -29,8 +29,7 @@ private predicate externalCallNeverDereferences(FormattingFunctionCall call, int
   )
 }
 
-predicate isUse0(DataFlow::Node n, Expr e) {
-  e = n.asExpr() and
+predicate isUse0(Expr e) {
   not isFree(_, e, _) and
   (
     e = any(PointerDereferenceExpr pde).getOperand()
@@ -43,7 +42,7 @@ predicate isUse0(DataFlow::Node n, Expr e) {
     or
     // Assume any function without a body will dereference the pointer
     exists(int i, Call call, Function f |
-      n.asExpr() = call.getArgument(i) and
+      e = call.getArgument(i) and
       f = call.getTarget() and
       not f.hasEntryPoint() and
       // Exclude known functions we know won't dereference the pointer.
@@ -57,7 +56,7 @@ module ParameterSinks {
   import semmle.code.cpp.ir.ValueNumbering
 
   predicate flowsToUse(DataFlow::Node n) {
-    isUse0(n, _)
+    isUse0(n.asExpr())
     or
     exists(DataFlow::Node succ |
       flowsToUse(succ) and
@@ -90,7 +89,7 @@ module ParameterSinks {
   ) {
     pragma[only_bind_out](source.asParameter()) = pragma[only_bind_out](init.getParameter()) and
     paramToUse(source, sink) and
-    isUse0(sink, _)
+    isUse0(sink.asExpr())
   }
 
   private InitializeParameterInstruction getAnAlwaysDereferencedParameter0() {
@@ -135,17 +134,23 @@ module ParameterSinks {
   }
 }
 
-predicate isUse(DataFlow::Node n, Expr e) {
-  isUse0(n, e)
-  or
-  exists(CallInstruction call, int i, InitializeParameterInstruction init |
-    n.asOperand().getDef().getUnconvertedResultExpression() = e and
-    init = ParameterSinks::getAnAlwaysDereferencedParameter() and
-    call.getArgumentOperand(i) = n.asOperand() and
-    init.hasIndex(i) and
-    init.getEnclosingFunction() = call.getStaticCallTarget()
-  )
+module IsUse {
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
+
+  predicate isUse(DataFlow::Node n, Expr e) {
+    isUse0(e) and n.asExpr() = e
+    or
+    exists(CallInstruction call, InitializeParameterInstruction init |
+      n.asOperand().getDef().getUnconvertedResultExpression() = e and
+      pragma[only_bind_into](init) = ParameterSinks::getAnAlwaysDereferencedParameter() and
+      viableParamArg(call, DataFlow::instructionNode(init), n) and
+      pragma[only_bind_out](init.getEnclosingFunction()) =
+        pragma[only_bind_out](call.getStaticCallTarget())
+    )
+  }
 }
+
+import IsUse
 
 /**
  * `dealloc1` is a deallocation expression, `e` is an expression that dereferences a

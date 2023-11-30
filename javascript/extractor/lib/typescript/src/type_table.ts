@@ -659,11 +659,16 @@ export class TypeTable {
    */
   public getSymbolId(symbol: AugmentedSymbol): number {
     if (symbol.flags & ts.SymbolFlags.Alias) {
-      symbol = this.typeChecker.getAliasedSymbol(symbol);
+      let aliasedSymbol: AugmentedSymbol = this.typeChecker.getAliasedSymbol(symbol);
+      if (aliasedSymbol.$id !== -1) { // Check if aliased symbol is on-stack
+        // Follow aliases eagerly, except in cases where this leads to cycles (for things like `import Foo = Foo.Bar`)
+        symbol = aliasedSymbol;
+      }
     }
     // We cache the symbol ID to avoid rebuilding long symbol strings.
     let id = symbol.$id;
     if (id != null) return id;
+    symbol.$id = -1; // Mark as on-stack while we are computing the ID
     let content = this.getSymbolString(symbol);
     id = this.symbolIds.get(content);
     if (id != null) {

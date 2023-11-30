@@ -13,9 +13,9 @@
 
 import codeql.ruby.DataFlow
 import codeql.ruby.security.TemplateInjectionQuery
-import DataFlow::PathGraph
+import TemplateInjectionFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from TemplateInjectionFlow::PathNode source, TemplateInjectionFlow::PathNode sink
+where TemplateInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This template depends on a $@.", source.getNode(),
   "user-provided value"

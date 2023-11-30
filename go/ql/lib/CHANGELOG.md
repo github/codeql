@@ -1,3 +1,91 @@
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Added the [gin cors](https://github.com/gin-contrib/cors) library to the CorsMisconfiguration.ql query
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through an array was not tracked correctly in some circumstances. Taint flow was tracked correctly.
+
+## 0.7.2
+
+### Minor Analysis Improvements
+
+* Added [Request.Cookie](https://pkg.go.dev/net/http#Request.Cookie) to reflected XSS sanitizers.
+
+### Bug Fixes
+
+* Fixed a bug where data flow nodes in files that are not in the project being analyzed (such as libraries) and are not contained within a function were not given an enclosing `Callable`. Note that for nodes that are not contained within a function, the enclosing callable is considered to be the file itself. This may cause some minor changes to results.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Support has been added for file system access sinks in the following libraries: [net/http](https://pkg.go.dev/net/http), [Afero](https://github.com/spf13/afero), [beego](https://pkg.go.dev/github.com/astaxie/beego), [Echo](https://pkg.go.dev/github.com/labstack/echo), [Fiber](https://github.com/kataras/iris), [Gin](https://pkg.go.dev/github.com/gin-gonic/gin), [Iris](https://github.com/kataras/iris).
+* Added `GoKit.qll` to `go.qll` enabling the GoKit framework by default
+
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* Added Numeric and Boolean types to SQL injection sanitzers.
+
+## 0.6.5
+
+No user-facing changes.
+
+## 0.6.4
+
+### Minor Analysis Improvements
+
+* Added [http.Error](https://pkg.go.dev/net/http#Error) to XSS sanitzers.
+
+## 0.6.3
+
+No user-facing changes.
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Logrus' `WithContext` methods are no longer treated as if they output the values stored in that context to a log message.
+
+## 0.6.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* Parameter nodes now exist for unused parameters as well as used parameters.
+* Add support for v4 of the [Go Micro framework](https://github.com/go-micro/go-micro).
+* Support for the [Bun framework](https://bun.uptrace.dev/) has been added.
+* Support for [gqlgen](https://github.com/99designs/gqlgen) has been added.
+* Support for the [go-pg framework](https://github.com/go-pg/pg) has been improved.
+
+## 0.6.0
+
+### Deprecated APIs
+
+* The `LogInjection::Configuration` taint flow configuration class has been deprecated. Use the `LogInjection::Flow` module instead.
+
+### Minor Analysis Improvements
+
+* When a result of path query flows through a function modeled using `DataFlow::FunctionModel` or `TaintTracking::FunctionModel`, the path now includes nodes corresponding to the input and output to the function. This brings it in line with functions modeled using Models-as-Data.
+
+## 0.5.4
+
+No user-facing changes.
+
 ## 0.5.3
 
 No user-facing changes.

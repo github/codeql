@@ -2674,17 +2674,43 @@ public class Parser {
   // - 'async /*foo*/ function' is OK.
   // - 'async /*\n*/ function' is invalid.
   boolean isAsyncFunction() {
+    return isAsyncKeyword("async", "function");
+  }
+
+  boolean isAwaitUsing() {
+    return isAsyncKeyword("await", "using");
+  }
+
+  // check 'pre [no LineTerminator here] keyword'
+  // e.g. `await using" or `async function`.
+  // is only used for async/await parsing, so it requires ecmaVersion >= 8.
+  boolean isAsyncKeyword(String pre, String keyword) {
     if (this.type != TokenType.name
         || this.options.ecmaVersion() < 8
-        || !this.value.equals("async")) return false;
+        || !this.value.equals(pre)) return false;
 
     Matcher m = Whitespace.skipWhiteSpace.matcher(this.input);
     m.find(this.pos);
     int next = m.end();
+    int len = keyword.length();
     return !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
-        && inputSubstring(next, next + 8).equals("function")
-        && (next + 8 == this.input.length()
-            || !Identifiers.isIdentifierChar(this.input.codePointAt(next + 8), false));
+        && inputSubstring(next, next + len).equals(keyword)
+        && (next + len == this.input.length()
+            || !Identifiers.isIdentifierChar(this.input.codePointAt(next + len), false));
+  }
+
+  // matches "using [identifier]"
+  boolean isUsingDecl() {
+    if (this.type != TokenType.name
+        || this.options.ecmaVersion() < 8
+        || !this.value.equals("using")) return false;
+
+    Matcher m = Whitespace.skipWhiteSpace.matcher(this.input);
+    m.find(this.pos);
+    int next = m.end();
+    return this.input.length() > next &&
+        !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
+        && Identifiers.isIdentifierChar(this.input.codePointAt(next), false);
   }
 
   /**
@@ -2737,7 +2763,7 @@ public class Parser {
       return this.parseThrowStatement(startLoc);
     } else if (starttype == TokenType._try) {
       return this.parseTryStatement(startLoc);
-    } else if (starttype == TokenType._const || starttype == TokenType._var) {
+    } else if (starttype == TokenType._const || starttype == TokenType._var || this.isUsingDecl()) {
       if (kind == null) kind = String.valueOf(this.value);
       if (!declaration && !kind.equals("var")) this.unexpected();
       return this.parseVarStatement(startLoc, kind);
@@ -2761,6 +2787,10 @@ public class Parser {
           : this.parseExport(startLoc, exports);
 
     } else {
+      if (this.isAwaitUsing() && (this.inAsync || options.esnext() && !this.inFunction)) {
+        this.next();
+        return this.parseVarStatement(startLoc, "using");
+      }
       if (this.isAsyncFunction() && declaration) {
         this.next();
         return this.parseFunctionStatement(startLoc, true);
@@ -2840,7 +2870,10 @@ public class Parser {
     this.expect(TokenType.parenL);
     if (this.type == TokenType.semi) return this.parseFor(startLoc, null);
     boolean isLet = this.isLet();
-    if (this.type == TokenType._var || this.type == TokenType._const || isLet) {
+    if (this.isAwaitUsing() && this.inAsync) {
+      this.next(); // just skip the await and treat it as a `using` statement
+    }
+    if (this.type == TokenType._var || this.type == TokenType._const || isLet || (this.type == TokenType.name && this.value.equals("using"))) {
       Position initStartLoc = this.startLoc;
       String kind = isLet ? "let" : String.valueOf(this.value);
       this.next();
@@ -3122,7 +3155,7 @@ public class Parser {
       Expression init = null;
       if (this.eat(TokenType.eq)) {
         init = this.parseMaybeAssign(isFor, null, null);
-      } else if (kind.equals("const")
+      } else if ((kind.equals("const") || kind.equals("using"))
           && !(this.type == TokenType._in
               || (this.options.ecmaVersion() >= 6 && this.isContextual("of")))) {
         this.raiseRecoverable(
@@ -3414,7 +3447,7 @@ public class Parser {
     Statement declaration;
     List<ExportSpecifier> specifiers;
     Expression source = null;
-    Expression assertion = null;
+    Expression attributes = null;
     if (this.shouldParseExportStatement()) {
       declaration = this.parseStatement(true, false);
       if (declaration == null) return null;
@@ -3430,10 +3463,10 @@ public class Parser {
       declaration = null;
       specifiers = this.parseExportSpecifiers(exports);
       source = parseExportFrom(specifiers, source, false);
-      assertion = parseImportOrExportAssertionAndSemicolon();
+      attributes = parseImportOrExportAttributesAndSemicolon();
     }
     return this.finishNode(
-        new ExportNamedDeclaration(loc, declaration, specifiers, (Literal) source, assertion));
+        new ExportNamedDeclaration(loc, declaration, specifiers, (Literal) source, attributes));
   }
 
   /** Parses the 'from' clause of an export, not including the assertion or semicolon. */
@@ -3461,8 +3494,8 @@ public class Parser {
   protected ExportDeclaration parseExportAll(
       SourceLocation loc, Position starLoc, Set<String> exports) {
     Expression source = parseExportFrom(null, null, true);
-    Expression assertion = parseImportOrExportAssertionAndSemicolon();
-    return this.finishNode(new ExportAllDeclaration(loc, (Literal) source, assertion));
+    Expression attributes = parseImportOrExportAttributesAndSemicolon();
+    return this.finishNode(new ExportAllDeclaration(loc, (Literal) source, attributes));
   }
 
   private void checkExport(Set<String> exports, String name, Position pos) {
@@ -3527,10 +3560,12 @@ public class Parser {
     return parseImportRest(loc);
   }
 
-  protected Expression parseImportOrExportAssertionAndSemicolon() {
+  protected Expression parseImportOrExportAttributesAndSemicolon() {
     Expression result = null;
     if (!this.eagerlyTrySemicolon()) {
-      this.expectContextual("assert");
+      if (!this.eatContextual("assert")) {
+        this.expect(TokenType._with);
+      }
       result = this.parseObj(false, null);
       this.semicolon();
     }
@@ -3550,9 +3585,9 @@ public class Parser {
       if (this.type != TokenType.string) this.unexpected();
       source = (Literal) this.parseExprAtom(null);
     }
-    Expression assertion = this.parseImportOrExportAssertionAndSemicolon();
+    Expression attributes = this.parseImportOrExportAttributesAndSemicolon();
     if (specifiers == null) return null;
-    return this.finishNode(new ImportDeclaration(loc, specifiers, source, assertion));
+    return this.finishNode(new ImportDeclaration(loc, specifiers, source, attributes));
   }
 
   // Parses a comma-separated list of module imports.

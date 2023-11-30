@@ -7,6 +7,6 @@ where
   v2.getFile().getStem() = "NativeInt" and
   t = v1.getType() and
   t = v2.getType() and
-  t.hasQualifiedName(qualifier, name) and
+  t.hasFullyQualifiedName(qualifier, name) and
   v1 != v2
 select v1, v2, getQualifiedName(qualifier, name)

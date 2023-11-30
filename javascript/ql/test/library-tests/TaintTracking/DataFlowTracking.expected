@@ -109,3 +109,4 @@
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
+| tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |

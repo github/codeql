@@ -15,6 +15,7 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
+import semmle.code.cpp.models.implementations.Memset
 import ExposedSystemData::PathGraph
 import SystemData
 
@@ -28,19 +29,15 @@ module ExposedSystemDataConfig implements DataFlow::ConfigSig {
       fc.getArgument(arg).getAChild*() = sink.asIndirectExpr()
     )
   }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.asIndirectArgument() = any(MemsetFunction func).getACallToThisFunction().getAnArgument()
+  }
 }
 
 module ExposedSystemData = TaintTracking::Global<ExposedSystemDataConfig>;
 
 from ExposedSystemData::PathNode source, ExposedSystemData::PathNode sink
-where
-  ExposedSystemData::flowPath(source, sink) and
-  not exists(
-    DataFlow::Node alt // remove duplicate results on conversions
-  |
-    ExposedSystemData::flow(source.getNode(), alt) and
-    alt.asConvertedExpr() = sink.getNode().asIndirectExpr() and
-    alt != sink.getNode()
-  )
+where ExposedSystemData::flowPath(source, sink)
 select sink, source, sink, "This operation exposes system data from $@.", source,
   source.getNode().toString()

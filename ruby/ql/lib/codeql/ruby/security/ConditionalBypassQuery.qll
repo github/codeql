@@ -2,7 +2,7 @@
  * Provides a taint tracking configuration for reasoning about bypass of sensitive action guards.
  *
  * Note, for performance reasons: only import this file if
- * `ConditionalBypass::Configuration` is needed, otherwise
+ * `ConditionalBypassFlow` is needed, otherwise
  * `ConditionalBypassCustomizations` should be imported instead.
  */
 
@@ -13,8 +13,9 @@ import ConditionalBypassCustomizations::ConditionalBypass
 
 /**
  * A taint tracking configuration for bypass of sensitive action guards.
+ * DEPRECATED: Use `ConditionalBypassFlow` instead
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "ConditionalBypass" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -26,3 +27,16 @@ class Configuration extends TaintTracking::Configuration {
     node instanceof Sanitizer
   }
 }
+
+private module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * Taint-tracking for bypass of sensitive action guards.
+ */
+module ConditionalBypassFlow = TaintTracking::Global<Config>;

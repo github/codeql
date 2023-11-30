@@ -886,8 +886,6 @@ module API {
       )
       or
       implicitCallEdge(pred, succ)
-      or
-      exists(DataFlow::HashLiteralNode splat | hashSplatEdge(splat, pred, succ))
     }
 
     /**
@@ -978,28 +976,11 @@ module API {
         pred = Impl::MkModuleInstanceUp(mod) and
         succ = getBackwardEndNode(mod.getOwnInstanceMethod("call"))
       )
-    }
-
-    pragma[nomagic]
-    private DataFlow::Node getHashSplatArgument(DataFlow::HashLiteralNode literal) {
-      result = DataFlowPrivate::TSynthHashSplatArgumentNode(literal.asExpr())
-    }
-
-    /**
-     * Holds if the epsilon edge `pred -> succ` should be generated to account for the members of a hash literal.
-     *
-     * This currently exists because hash literals are desugared to `Hash.[]` calls, whose summary relies on `WithContent`.
-     * However, `contentEdge` does not currently generate edges for `WithContent` steps.
-     */
-    bindingset[literal]
-    pragma[inline_late]
-    private predicate hashSplatEdge(DataFlow::HashLiteralNode literal, ApiNode pred, ApiNode succ) {
-      exists(TypeTracker t |
-        pred = Impl::MkForwardNode(getALocalSourceStrict(getHashSplatArgument(literal)), t) and
-        succ = Impl::MkForwardNode(pragma[only_bind_out](literal), pragma[only_bind_out](t))
-        or
-        succ = Impl::MkBackwardNode(getALocalSourceStrict(getHashSplatArgument(literal)), t) and
-        pred = Impl::MkBackwardNode(pragma[only_bind_out](literal), pragma[only_bind_out](t))
+      or
+      // Step through callable wrappers like `proc` and `lambda` calls.
+      exists(DataFlow::Node node |
+        pred = getBackwardEndNode(node) and
+        succ = getBackwardStartNode(node.asCallable())
       )
     }
 
@@ -1096,13 +1077,13 @@ module API {
       /** The method accessed at `call`, synthetically treated as a separate object. */
       MkMethodAccessNode(DataFlow::CallNode call) or
       /** The module object `mod` with epsilon edges to its ancestors. */
-      MkModuleObjectUp(DataFlow::ModuleNode mod) or
+      MkModuleObjectUp(DataFlow::ModuleNode mod) { not mod.getQualifiedName() = "Object" } or
       /** The module object `mod` with epsilon edges to its descendents. */
-      MkModuleObjectDown(DataFlow::ModuleNode mod) or
+      MkModuleObjectDown(DataFlow::ModuleNode mod) { not mod.getQualifiedName() = "Object" } or
       /** Instances of `mod` with epsilon edges to its ancestors. */
-      MkModuleInstanceUp(DataFlow::ModuleNode mod) or
+      MkModuleInstanceUp(DataFlow::ModuleNode mod) { not mod.getQualifiedName() = "Object" } or
       /** Instances of `mod` with epsilon edges to its descendents, and to its upward node. */
-      MkModuleInstanceDown(DataFlow::ModuleNode mod) or
+      MkModuleInstanceDown(DataFlow::ModuleNode mod) { not mod.getQualifiedName() = "Object" } or
       /** Intermediate node for following forward data flow. */
       MkForwardNode(DataFlow::LocalSourceNode node, TypeTracker t) { isReachable(node, t) } or
       /** Intermediate node for following backward data flow. */

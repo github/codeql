@@ -145,9 +145,9 @@ namespace Semmle.Autobuild.Cpp.Tests
 
         bool IBuildActions.IsMacOs() => IsMacOs;
 
-        public bool IsArm { get; set; }
+        public bool IsRunningOnAppleSilicon { get; set; }
 
-        bool IBuildActions.IsArm() => IsArm;
+        bool IBuildActions.IsRunningOnAppleSilicon() => IsRunningOnAppleSilicon;
 
         string IBuildActions.PathCombine(params string[] parts)
         {
@@ -327,7 +327,7 @@ namespace Semmle.Autobuild.Cpp.Tests
         {
             Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test.sln -DisableParallelProcessing"] = 1;
             Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test.sln -DisableParallelProcessing"] = 0;
-            Actions.RunProcess[@"cmd.exe /C CALL ^""C:\Program Files ^(x86^)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat^"" && set Platform=&& type NUL && msbuild C:\Project\test.sln /t:rebuild /p:Platform=""x86"" /p:Configuration=""Release"""] = 0;
+            Actions.RunProcess[@"cmd.exe /C CALL ^""C:\Program^ Files^ ^(x86^)\Microsoft^ Visual^ Studio^ 14.0\VC\vcvarsall.bat^"" && set Platform=&& type NUL && msbuild C:\Project\test.sln /t:rebuild /p:Platform=""x86"" /p:Configuration=""Release"""] = 0;
             Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = "";
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = 1;
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationVersion"] = 0;

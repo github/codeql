@@ -103,7 +103,7 @@ public class FileExtractor {
 
   /** Information about supported file types. */
   public static enum FileType {
-    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".erb", ".dot") {
+    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".erb", ".jsp", ".dot") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new HTMLExtractor(config, state);

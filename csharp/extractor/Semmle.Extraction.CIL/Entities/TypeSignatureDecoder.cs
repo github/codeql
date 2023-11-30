@@ -1,7 +1,7 @@
 using System;
-using System.Reflection.Metadata;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace Semmle.Extraction.CIL.Entities
 {

@@ -15,12 +15,10 @@ private DataFlow::TypeTrackingNode tracked(TypeTracker t) {
   exists(TypeTracker t2 | result = tracked(t2).track(t2, t))
 }
 
-class TrackedTest extends InlineExpectationsTest {
-  TrackedTest() { this = "TrackedTest" }
+module TrackedTest implements TestSig {
+  string getARelevantTag() { result = "tracked" }
 
-  override string getARelevantTag() { result = "tracked" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node e, TypeTracker t |
       exists(e.getLocation().getFile().getRelativePath()) and
       e.getLocation().getStartLine() > 0 and
@@ -34,3 +32,5 @@ class TrackedTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<TrackedTest>

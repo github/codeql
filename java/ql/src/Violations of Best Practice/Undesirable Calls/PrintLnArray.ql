@@ -16,7 +16,7 @@ import semmle.code.java.StringFormat
  * Holds if `e` is an argument of `Arrays.toString(..)`.
  */
 predicate arraysToStringArgument(Expr e) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     ma.getAnArgument() = e and
     ma.getMethod() = m and
     m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and

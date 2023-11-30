@@ -1,3 +1,63 @@
+## 0.9.3
+
+### Minor Analysis Improvements
+
+* Added modeling of more `FileSystemAccess` in packages `cherrypy`, `aiofile`, `aiofiles`, `anyio`, `sanic`, `starlette`, `baize`, and `io`. This will mainly affect the _Uncontrolled data used in path expression_ (`py/path-injection`) query.
+
+## 0.9.2
+
+No user-facing changes.
+
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### New Queries
+
+* The query `py/nosql-injection` for finding NoSQL injection vulnerabilities is now available in the default security suite.
+
+### Minor Analysis Improvements
+
+* Improved _URL redirection from remote source_ (`py/url-redirection`) query to not alert when URL has been checked with `django.utils.http. url_has_allowed_host_and_scheme`.
+* Extended the `py/command-line-injection` query with sinks from Python's `asyncio` module.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Improved _Reflected server-side cross-site scripting_ (`py/reflective-xss`) query to not alert on data passed to `flask.jsonify`. Since these HTTP responses are returned with mime-type `application/json`, they do not pose a security risk for XSS.
+* Updated path explanations for `@kind path-problem` queries to always include left hand side of assignments, making paths easier to understand.
+
+## 0.8.3
+
+No user-facing changes.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Fixed modeling of `aiohttp.ClientSession` so we properly handle `async with` uses. This can impact results of server-side request forgery queries (`py/full-ssrf`, `py/partial-ssrf`).
+
+## 0.8.0
+
+### Bug Fixes
+
+* The query "Arbitrary file write during archive extraction ("Zip Slip")" (`py/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.7.4
+
+No user-facing changes.
+
 ## 0.7.3
 
 ### Bug Fixes

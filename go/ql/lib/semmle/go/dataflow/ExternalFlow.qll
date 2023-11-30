@@ -74,30 +74,13 @@
  */
 
 private import go
-private import ExternalFlowExtensions as Extensions
+import internal.ExternalFlowExtensions
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import FlowSummary
 private import codeql.mad.ModelValidation as SharedModelVal
-
-/**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import semmle.go.frameworks.Stdlib
-}
-
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel = Extensions::sourceModel/9;
-
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel = Extensions::sinkModel/9;
-
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel = Extensions::summaryModel/10;
 
 /** Holds if `package` have MaD framework coverage. */
 private predicate packageHasMaDCoverage(string package) {

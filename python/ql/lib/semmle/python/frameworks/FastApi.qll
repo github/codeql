@@ -66,6 +66,9 @@ private module FastApi {
       result = this.getARequestHandler().getArgByName(_) and
       // type-annotated with `Response`
       not any(Response::RequestHandlerParam src).asExpr() = result
+      or
+      // **kwargs
+      result = this.getARequestHandler().getKwarg()
     }
 
     override DataFlow::Node getUrlPatternArg() {

@@ -8,4 +8,3 @@ multipleSuccessors
 deadEnd
 | cfg.swift:33:49:33:60 | call to isZero(x:) |
 | cfg.swift:144:18:144:34 | ... .&&(_:_:) ... |
-| patterns.swift:16:10:16:14 | =~ ... |

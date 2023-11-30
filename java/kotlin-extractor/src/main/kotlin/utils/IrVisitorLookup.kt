@@ -1,6 +1,6 @@
 package com.github.codeql.utils
 
-import com.github.codeql.utils.versions.Psi2IrFacade
+import com.github.codeql.utils.Psi2IrFacade
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration

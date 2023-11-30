@@ -48,6 +48,8 @@ namespace System.Web
     public class HttpApplication : IHttpHandler
     {
         public HttpServerUtility Server { get; }
+
+        public Routing.RouteTable RouteTable { get; }
     }
 }
 
@@ -79,6 +81,8 @@ namespace System.Web.UI
 
     public class Page
     {
+        public System.Security.Principal.IPrincipal User { get; } 
+        public System.Web.HttpRequest Request { get; }
     }
 
     interface IPostBackDataHandler
@@ -300,6 +304,19 @@ namespace System.Web.Routing
 {
     public class RequestContext
     {
+    }
+
+    public class Route 
+    {
+    }
+
+    public class RouteTable {
+        public RouteCollection Routes { get; }
+    }
+
+    public class RouteCollection 
+    {
+        public Route MapPageRoute(string routeName, string routeUrl, string physicalFile, bool checkPhysicalUrlAccess) { return null; }
     }
 }
 

@@ -17,7 +17,7 @@ predicate xmlSerializerConstructorArgument(Expr e) {
     c = oc.getTarget() and
     c.getDeclaringType()
         .getABaseType*()
-        .hasQualifiedName("System.Xml.Serialization", "XmlSerializer")
+        .hasFullyQualifiedName("System.Xml.Serialization", "XmlSerializer")
   )
 }
 

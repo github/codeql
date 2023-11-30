@@ -10,4 +10,4 @@ module LocalFlowStepTest implements FlowTestSig {
   }
 }
 
-import MakeFlowTest<LocalFlowStepTest>
+import MakeTest<MakeTestSig<LocalFlowStepTest>>

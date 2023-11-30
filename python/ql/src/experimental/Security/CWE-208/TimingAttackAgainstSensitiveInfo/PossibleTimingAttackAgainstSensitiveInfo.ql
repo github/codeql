@@ -15,20 +15,24 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import experimental.semmle.python.security.TimingAttack
-import DataFlow::PathGraph
 
 /**
  * A configuration tracing flow from obtaining a client Secret to a unsafe Comparison.
  */
-class ClientSuppliedSecretConfig extends TaintTracking::Configuration {
-  ClientSuppliedSecretConfig() { this = "ClientSuppliedSecretConfig" }
+private module PossibleTimingAttackAgainstSensitiveInfoConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof SecretSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof SecretSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 }
 
-from ClientSuppliedSecretConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+module PossibleTimingAttackAgainstSensitiveInfoFlow =
+  TaintTracking::Global<PossibleTimingAttackAgainstSensitiveInfoConfig>;
+
+import PossibleTimingAttackAgainstSensitiveInfoFlow::PathGraph
+
+from
+  PossibleTimingAttackAgainstSensitiveInfoFlow::PathNode source,
+  PossibleTimingAttackAgainstSensitiveInfoFlow::PathNode sink
+where PossibleTimingAttackAgainstSensitiveInfoFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
   "client-supplied token"

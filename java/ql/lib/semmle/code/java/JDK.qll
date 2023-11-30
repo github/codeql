@@ -177,6 +177,11 @@ class TypeObjectInputStream extends RefType {
   TypeObjectInputStream() { this.hasQualifiedName("java.io", "ObjectInputStream") }
 }
 
+/** The class `java.io.InputStream`. */
+class TypeInputStream extends RefType {
+  TypeInputStream() { this.hasQualifiedName("java.io", "InputStream") }
+}
+
 /** The class `java.nio.file.Paths`. */
 class TypePaths extends Class {
   TypePaths() { this.hasQualifiedName("java.nio.file", "Paths") }
@@ -254,10 +259,10 @@ class MethodSystemGetProperty extends ValuePreservingMethod {
 }
 
 /**
- * An access to a method named `getProperty` on class `java.lang.System`.
+ * A call to a method named `getProperty` on class `java.lang.System`.
  */
-class MethodAccessSystemGetProperty extends MethodAccess {
-  MethodAccessSystemGetProperty() { this.getMethod() instanceof MethodSystemGetProperty }
+class MethodCallSystemGetProperty extends MethodCall {
+  MethodCallSystemGetProperty() { this.getMethod() instanceof MethodSystemGetProperty }
 
   /**
    * Holds if this call has a compile-time constant first argument with the value `propertyName`.
@@ -270,6 +275,9 @@ class MethodAccessSystemGetProperty extends MethodAccess {
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
   }
 }
+
+/** DEPRECATED: Alias for `MethodCallSystemGetProperty`. */
+deprecated class MethodAccessSystemGetProperty = MethodCallSystemGetProperty;
 
 /**
  * Any method named `exit` on class `java.lang.Runtime` or `java.lang.System`.

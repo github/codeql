@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.ConstrainedExecution", "ReliabilityContractAttribute", "ReliabilityContractAttribute", "(System.Runtime.ConstrainedExecution.Consistency,System.Runtime.ConstrainedExecution.Cer)", "summary", "df-generated"]
+      - ["System.Runtime.ConstrainedExecution", "ReliabilityContractAttribute", "get_Cer", "()", "summary", "df-generated"]
+      - ["System.Runtime.ConstrainedExecution", "ReliabilityContractAttribute", "get_ConsistencyGuarantee", "()", "summary", "df-generated"]

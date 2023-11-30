@@ -1,11 +1,12 @@
 name: codeql/swift-all
-version: 0.1.2-dev
+version: 0.3.4-dev
 groups: swift
 extractor: swift
 dbscheme: swift.dbscheme
 upgrades: upgrades
 library: true
 dependencies:
+  codeql/dataflow: ${workspace}
   codeql/regex: ${workspace}
   codeql/mad: ${workspace}
   codeql/ssa: ${workspace}

@@ -4,6 +4,7 @@ import codeql.swift.elements
 import codeql.swift.elements.expr.ArithmeticOperation
 import codeql.swift.elements.expr.BitwiseOperation
 import codeql.swift.elements.expr.LogicalOperation
+import codeql.swift.elements.expr.NilCoalescingExpr
 import codeql.swift.elements.expr.InitializerLookupExpr
 import codeql.swift.elements.expr.MethodCallExpr
 import codeql.swift.elements.expr.InitializerCallExpr

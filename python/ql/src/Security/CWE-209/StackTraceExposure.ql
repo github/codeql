@@ -15,10 +15,10 @@
 
 import python
 import semmle.python.security.dataflow.StackTraceExposureQuery
-import DataFlow::PathGraph
+import StackTraceExposureFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from StackTraceExposureFlow::PathNode source, StackTraceExposureFlow::PathNode sink
+where StackTraceExposureFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "$@ flows to this location and may be exposed to an external user.", source.getNode(),
   "Stack trace information"

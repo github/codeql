@@ -15,7 +15,15 @@ private module FlowSummaries {
   private import semmle.go.dataflow.FlowSummary as F
 }
 
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
 class SummarizedCallableBase = Callable;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = Callable;
 
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c or none() }
 
@@ -73,11 +81,11 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenance`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
  * Note. Neutral models have not been implemented for Go.
  */
-predicate neutralSummaryElement(SummarizedCallable c, string provenance) { none() }
+predicate neutralElement(NeutralCallableBase c, string kind, string provenance) { none() }
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
@@ -110,8 +118,8 @@ private string getContentSpecific(Content c) {
   c instanceof PointerContent and result = "Dereference"
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of the content in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   exists(ReturnKind rk |

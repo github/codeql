@@ -44,14 +44,6 @@ module CastToPointerArithFlowConfig implements DataFlow::StateConfigSig {
     ) and
     getFullyConvertedType(node) = state
   }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
-
-  predicate isAdditionalFlowStep(
-    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
-  ) {
-    none()
-  }
 }
 
 /**

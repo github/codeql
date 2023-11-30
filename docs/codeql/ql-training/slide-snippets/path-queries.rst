@@ -13,10 +13,14 @@ Use this template:
     */
    
    import semmle.code.<language>.dataflow.TaintTracking
-   import DataFlow::PathGraph
+
    ...
-   from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-   where cfg.hasFlowPath(source, sink)
+
+   module Flow = TaintTracking::Global<Configuration>;
+   import Flow::PathGraph
+
+   from Flow::PathNode source, Flow::PathNode sink
+   where Flow::flowPath(source, sink)
    select sink, source, sink, "<message>"
 
 .. note::

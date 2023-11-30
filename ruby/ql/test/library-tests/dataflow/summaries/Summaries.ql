@@ -145,6 +145,7 @@ private class SinkFromModel extends ModelInput::SinkModelCsv {
         "Foo!;Method[getSinks].ReturnValue.Element[any].Method[mySink].Argument[0];test-sink", //
         "Foo!;Method[arraySink].Argument[0].Element[any];test-sink", //
         "Foo!;Method[secondArrayElementIsSink].Argument[0].Element[1];test-sink", //
+        "FuzzyLib!;Fuzzy.Method[fuzzyCall].Argument[0];test-sink"
       ]
   }
 }

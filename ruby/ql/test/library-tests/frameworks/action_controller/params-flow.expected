@@ -1,4 +1,3 @@
-failures
 testFailures
 | filter_flow.rb:21:10:21:13 | @foo | Unexpected result: hasTaintFlow= |
 | filter_flow.rb:38:10:38:13 | @foo | Unexpected result: hasTaintFlow= |
@@ -61,20 +60,32 @@ edges
 | params_flow.rb:83:10:83:15 | call to params | params_flow.rb:83:10:83:27 | call to to_unsafe_h |
 | params_flow.rb:87:10:87:15 | call to params | params_flow.rb:87:10:87:30 | call to to_unsafe_hash |
 | params_flow.rb:91:10:91:15 | call to params | params_flow.rb:91:10:91:40 | call to transform_keys |
+| params_flow.rb:91:10:91:15 | call to params | params_flow.rb:91:10:91:40 | call to transform_keys [element] |
+| params_flow.rb:91:10:91:40 | call to transform_keys [element] | params_flow.rb:91:10:91:40 | call to transform_keys |
 | params_flow.rb:95:10:95:15 | call to params | params_flow.rb:95:10:95:41 | call to transform_keys! |
 | params_flow.rb:99:10:99:15 | call to params | params_flow.rb:99:10:99:42 | call to transform_values |
 | params_flow.rb:103:10:103:15 | call to params | params_flow.rb:103:10:103:43 | call to transform_values! |
 | params_flow.rb:107:10:107:15 | call to params | params_flow.rb:107:10:107:33 | call to values_at |
+| params_flow.rb:107:10:107:15 | call to params | params_flow.rb:107:10:107:33 | call to values_at [element 0] |
+| params_flow.rb:107:10:107:15 | call to params | params_flow.rb:107:10:107:33 | call to values_at [element 1] |
+| params_flow.rb:107:10:107:33 | call to values_at [element 0] | params_flow.rb:107:10:107:33 | call to values_at |
+| params_flow.rb:107:10:107:33 | call to values_at [element 1] | params_flow.rb:107:10:107:33 | call to values_at |
 | params_flow.rb:111:10:111:15 | call to params | params_flow.rb:111:10:111:29 | call to merge |
+| params_flow.rb:112:10:112:29 | call to merge [splat position 0] | params_flow.rb:112:10:112:29 | call to merge |
 | params_flow.rb:112:23:112:28 | call to params | params_flow.rb:112:10:112:29 | call to merge |
+| params_flow.rb:112:23:112:28 | call to params | params_flow.rb:112:10:112:29 | call to merge [splat position 0] |
 | params_flow.rb:116:10:116:15 | call to params | params_flow.rb:116:10:116:37 | call to reverse_merge |
 | params_flow.rb:117:31:117:36 | call to params | params_flow.rb:117:10:117:37 | call to reverse_merge |
 | params_flow.rb:121:10:121:15 | call to params | params_flow.rb:121:10:121:43 | call to with_defaults |
 | params_flow.rb:122:31:122:36 | call to params | params_flow.rb:122:10:122:37 | call to with_defaults |
 | params_flow.rb:126:10:126:15 | call to params | params_flow.rb:126:10:126:30 | call to merge! |
+| params_flow.rb:127:10:127:30 | call to merge! [splat position 0] | params_flow.rb:127:10:127:30 | call to merge! |
 | params_flow.rb:127:24:127:29 | call to params | params_flow.rb:127:10:127:30 | call to merge! |
+| params_flow.rb:127:24:127:29 | call to params | params_flow.rb:127:10:127:30 | call to merge! [splat position 0] |
 | params_flow.rb:130:5:130:5 | [post] p | params_flow.rb:131:10:131:10 | p |
+| params_flow.rb:130:5:130:5 | [post] p [splat position 0] | params_flow.rb:131:10:131:10 | p |
 | params_flow.rb:130:14:130:19 | call to params | params_flow.rb:130:5:130:5 | [post] p |
+| params_flow.rb:130:14:130:19 | call to params | params_flow.rb:130:5:130:5 | [post] p [splat position 0] |
 | params_flow.rb:135:10:135:15 | call to params | params_flow.rb:135:10:135:38 | call to reverse_merge! |
 | params_flow.rb:136:32:136:37 | call to params | params_flow.rb:136:10:136:38 | call to reverse_merge! |
 | params_flow.rb:139:5:139:5 | [post] p | params_flow.rb:140:10:140:10 | p |
@@ -173,6 +184,7 @@ nodes
 | params_flow.rb:87:10:87:30 | call to to_unsafe_hash | semmle.label | call to to_unsafe_hash |
 | params_flow.rb:91:10:91:15 | call to params | semmle.label | call to params |
 | params_flow.rb:91:10:91:40 | call to transform_keys | semmle.label | call to transform_keys |
+| params_flow.rb:91:10:91:40 | call to transform_keys [element] | semmle.label | call to transform_keys [element] |
 | params_flow.rb:95:10:95:15 | call to params | semmle.label | call to params |
 | params_flow.rb:95:10:95:41 | call to transform_keys! | semmle.label | call to transform_keys! |
 | params_flow.rb:99:10:99:15 | call to params | semmle.label | call to params |
@@ -181,9 +193,12 @@ nodes
 | params_flow.rb:103:10:103:43 | call to transform_values! | semmle.label | call to transform_values! |
 | params_flow.rb:107:10:107:15 | call to params | semmle.label | call to params |
 | params_flow.rb:107:10:107:33 | call to values_at | semmle.label | call to values_at |
+| params_flow.rb:107:10:107:33 | call to values_at [element 0] | semmle.label | call to values_at [element 0] |
+| params_flow.rb:107:10:107:33 | call to values_at [element 1] | semmle.label | call to values_at [element 1] |
 | params_flow.rb:111:10:111:15 | call to params | semmle.label | call to params |
 | params_flow.rb:111:10:111:29 | call to merge | semmle.label | call to merge |
 | params_flow.rb:112:10:112:29 | call to merge | semmle.label | call to merge |
+| params_flow.rb:112:10:112:29 | call to merge [splat position 0] | semmle.label | call to merge [splat position 0] |
 | params_flow.rb:112:23:112:28 | call to params | semmle.label | call to params |
 | params_flow.rb:116:10:116:15 | call to params | semmle.label | call to params |
 | params_flow.rb:116:10:116:37 | call to reverse_merge | semmle.label | call to reverse_merge |
@@ -196,8 +211,10 @@ nodes
 | params_flow.rb:126:10:126:15 | call to params | semmle.label | call to params |
 | params_flow.rb:126:10:126:30 | call to merge! | semmle.label | call to merge! |
 | params_flow.rb:127:10:127:30 | call to merge! | semmle.label | call to merge! |
+| params_flow.rb:127:10:127:30 | call to merge! [splat position 0] | semmle.label | call to merge! [splat position 0] |
 | params_flow.rb:127:24:127:29 | call to params | semmle.label | call to params |
 | params_flow.rb:130:5:130:5 | [post] p | semmle.label | [post] p |
+| params_flow.rb:130:5:130:5 | [post] p [splat position 0] | semmle.label | [post] p [splat position 0] |
 | params_flow.rb:130:14:130:19 | call to params | semmle.label | call to params |
 | params_flow.rb:131:10:131:10 | p | semmle.label | p |
 | params_flow.rb:135:10:135:15 | call to params | semmle.label | call to params |

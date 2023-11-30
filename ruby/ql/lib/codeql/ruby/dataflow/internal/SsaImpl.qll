@@ -1,12 +1,12 @@
 private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
-private import codeql.ruby.controlflow.internal.ControlFlowGraphImplShared as ControlFlowGraphImplShared
+private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.Variable
 private import Cfg::CfgNodes::ExprNodes
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<Location> {
   private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 
   class BasicBlock = BasicBlocks::BasicBlock;
@@ -31,7 +31,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
         i = 0
         or
         // ...or a class or module block.
-        bb.getNode(i).getNode() = scope.(ModuleBase).getAControlFlowEntryNode() and
+        bb.getNode(i).getAstNode() = scope.(ModuleBase).getAControlFlowEntryNode() and
         not scope instanceof Toplevel // handled by case above
       )
       or
@@ -62,7 +62,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
   }
 }
 
-private import SsaImplCommon::Make<SsaInput> as Impl
+private import SsaImplCommon::Make<Location, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -124,10 +124,10 @@ private predicate capturedExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, Local
 private predicate namespaceSelfExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, SelfVariable v) {
   exists(Namespace ns, AstNode last |
     v.getDeclaringScope() = ns and
-    last = ControlFlowGraphImplShared::getAControlFlowExitNode(ns) and
+    last = ControlFlowGraphImpl::getAControlFlowExitNode(ns) and
     if last = ns
-    then bb.getNode(i).getAPredecessor().getNode() = last
-    else bb.getNode(i).getNode() = last
+    then bb.getNode(i).getAPredecessor().getAstNode() = last
+    else bb.getNode(i).getAstNode() = last
   )
 }
 
@@ -183,7 +183,7 @@ private predicate capturedCallRead(CallCfgNode call, Cfg::BasicBlock bb, int i, 
 private predicate variableReadActual(Cfg::BasicBlock bb, int i, LocalVariable v) {
   exists(VariableReadAccess read |
     read.getVariable() = v and
-    read = bb.getNode(i).getNode()
+    read = bb.getNode(i).getAstNode()
   )
 }
 
@@ -363,96 +363,7 @@ private module Cached {
     )
   }
 
-  pragma[noinline]
-  private predicate defReachesCallReadInOuterScope(
-    Definition def, CallCfgNode call, LocalVariable v, Cfg::CfgScope scope
-  ) {
-    exists(Cfg::BasicBlock bb, int i |
-      Impl::ssaDefReachesRead(v, def, bb, i) and
-      capturedCallRead(call, bb, i, v) and
-      scope.getOuterCfgScope() = bb.getScope()
-    )
-  }
-
-  pragma[noinline]
-  private predicate hasCapturedEntryWrite(Definition entry, LocalVariable v, Cfg::CfgScope scope) {
-    exists(Cfg::BasicBlock bb, int i |
-      capturedEntryWrite(bb, i, v) and
-      entry.definesAt(v, bb, i) and
-      bb.getScope().getOuterCfgScope*() = scope
-    )
-  }
-
-  /**
-   * Holds if there is flow for a captured variable from the enclosing scope into a block.
-   * ```rb
-   * foo = 0
-   * bar {
-   *   puts foo
-   * }
-   * ```
-   */
-  cached
-  predicate captureFlowIn(CallCfgNode call, Definition def, Definition entry) {
-    exists(LocalVariable v, Cfg::CfgScope scope |
-      defReachesCallReadInOuterScope(def, call, v, scope) and
-      hasCapturedEntryWrite(entry, v, scope)
-    |
-      // If the read happens inside a block, we restrict to the call that
-      // contains the block
-      not scope instanceof Block
-      or
-      scope = call.getExpr().(MethodCall).getBlock()
-    )
-  }
-
   private import codeql.ruby.dataflow.SSA
-
-  pragma[noinline]
-  private predicate defReachesExitReadInInnerScope(
-    Definition def, LocalVariable v, Cfg::CfgScope scope
-  ) {
-    exists(Cfg::BasicBlock bb, int i |
-      Impl::ssaDefReachesRead(v, def, bb, i) and
-      capturedExitRead(bb, i, v) and
-      scope = bb.getScope().getOuterCfgScope*()
-    )
-  }
-
-  pragma[noinline]
-  private predicate hasCapturedExitRead(
-    Definition exit, CallCfgNode call, LocalVariable v, Cfg::CfgScope scope
-  ) {
-    exists(Cfg::BasicBlock bb, int i |
-      capturedCallWrite(call, bb, i, v) and
-      exit.definesAt(v, bb, i) and
-      bb.getScope() = scope.getOuterCfgScope()
-    )
-  }
-
-  /**
-   * Holds if there is outgoing flow for a captured variable that is updated in a block.
-   * ```rb
-   * foo = 0
-   * bar {
-   *   foo += 10
-   * }
-   * puts foo
-   * ```
-   */
-  cached
-  predicate captureFlowOut(CallCfgNode call, Definition def, Definition exit) {
-    exists(LocalVariable v, Cfg::CfgScope scope |
-      defReachesExitReadInInnerScope(def, v, scope) and
-      hasCapturedExitRead(exit, call, v, _)
-    |
-      // If the read happens inside a block, we restrict to the call that
-      // contains the block
-      not scope instanceof Block
-      or
-      scope = call.getExpr().(MethodCall).getBlock()
-    )
-  }
 
   cached
   Definition phiHasInputFromBlock(PhiNode phi, Cfg::BasicBlock bb) {
@@ -570,6 +481,8 @@ import Cached
  * Only intended for internal use.
  */
 class DefinitionExt extends Impl::DefinitionExt {
+  VariableReadAccessCfgNode getARead() { result = getARead(this) }
+
   override string toString() { result = this.(Ssa::Definition).toString() }
 
   /** Gets the location of this definition. */

@@ -34,13 +34,15 @@ unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
 instructionWithoutUniqueBlock
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
 containsLoopOfForwardEdges
+missingIRType
+multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | VacuousDestructorCall.cpp:2:29:2:29 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
-| misc.c:219:47:219:48 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
-| ms_assume.cpp:11:30:11:33 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ms_assume.cpp:11:12:11:12 | int f(int, char*[]) | int f(int, char*[]) |
 | ms_try_except.cpp:9:19:9:19 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
 | ms_try_except.cpp:9:19:9:19 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
 | ms_try_except.cpp:19:17:19:21 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
@@ -58,8 +60,4 @@ thisArgumentIsNonPointer
 | pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 | pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 nonUniqueIRVariable
-missingCanonicalLanguageType
-multipleCanonicalLanguageTypes
-missingIRType
-multipleIRTypes
 missingCppType

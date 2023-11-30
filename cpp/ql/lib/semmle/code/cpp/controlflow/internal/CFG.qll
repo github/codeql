@@ -332,21 +332,12 @@ private Node getControlOrderChildSparse(Node n, int i) {
   n = any(ConditionDeclExpr cd | i = 0 and result = cd.getInitializingExpr())
   or
   n =
-    any(DeleteExpr del |
+    any(DeleteOrDeleteArrayExpr del |
       i = 0 and result = del.getExpr()
       or
       i = 1 and result = del.getDestructorCall()
       or
-      i = 2 and result = del.getAllocatorCall()
-    )
-  or
-  n =
-    any(DeleteArrayExpr del |
-      i = 0 and result = del.getExpr()
-      or
-      i = 1 and result = del.getDestructorCall()
-      or
-      i = 2 and result = del.getAllocatorCall()
+      i = 2 and result = del.getDeallocatorCall()
     )
   or
   n =

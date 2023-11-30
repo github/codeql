@@ -1,3 +1,71 @@
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The query `java/unsafe-deserialization` has been improved to detect insecure calls to `ObjectMessage.getObject` in JMS.
+
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* java/summary/lines-of-code now gives the total number of lines of Java and Kotlin code, and is the only query tagged `lines-of-code`. java/summary/lines-of-code-java and java/summary/lines-of-code-kotlin give the per-language counts.
+* The query `java/spring-disabled-csrf-protection` has been improved to detect more ways of disabling CSRF in Spring.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Most data flow queries that track flow from *remote* flow sources now use the current *threat model* configuration instead. This doesn't lead to any changes in the produced alerts (as the default configuration is *remote* flow sources) unless the threat model configuration is changed.
+
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Queries
+
+* Added the `java/trust-boundary-violation` query to detect trust boundary violations between HTTP requests and the HTTP session. Also added the `trust-boundary-violation` sink kind for sinks which may cross a trust boundary, such as calls to the `HttpSession#setAttribute` method.
+
+### Minor Analysis Improvements
+
+* The queries "Resolving XML external entity in user-controlled data" (`java/xxe`) and "Resolving XML external entity in user-controlled data from local source" (`java/xxe-local`) now recognize sinks in the MDHT library.
+
+## 0.7.3
+
+No user-facing changes.
+
+## 0.7.2
+
+### Minor Analysis Improvements
+
+* The sanitizer in `java/potentially-weak-cryptographic-algorithm` has been improved, so the query may yield additional results.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* The query "Unsafe resource fetching in Android WebView" (`java/android/unsafe-android-webview-fetch`) now recognizes WebViews where `setJavascriptEnabled`, `setAllowFileAccess`, `setAllowUniversalAccessFromFileURLs`, and/or `setAllowFileAccessFromFileURLs` are set inside the function block of the Kotlin `apply` function.
+
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* New models have been added for `org.apache.commons.lang`.
+* The query `java/unsafe-deserialization` has been updated to take into account `SerialKiller`, a library used to prevent deserialization of arbitrary classes.
+
+### Bug Fixes
+
+* The query "Arbitrary file write during archive extraction ("Zip Slip")" (`java/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.6.4
+
+No user-facing changes.
+
 ## 0.6.3
 
 ### Minor Analysis Improvements

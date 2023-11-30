@@ -1,0 +1,82 @@
+// Generated automatically from org.openhealthtools.mdht.uml.cda.Supply for testing purposes
+
+package org.openhealthtools.mdht.uml.cda;
+
+import java.util.Map;
+import org.eclipse.emf.common.util.DiagnosticChain;
+import org.eclipse.emf.common.util.EList;
+import org.openhealthtools.mdht.uml.cda.Author;
+import org.openhealthtools.mdht.uml.cda.ClinicalStatement;
+import org.openhealthtools.mdht.uml.cda.EntryRelationship;
+import org.openhealthtools.mdht.uml.cda.Informant12;
+import org.openhealthtools.mdht.uml.cda.InfrastructureRootTypeId;
+import org.openhealthtools.mdht.uml.cda.Participant2;
+import org.openhealthtools.mdht.uml.cda.Performer2;
+import org.openhealthtools.mdht.uml.cda.Precondition;
+import org.openhealthtools.mdht.uml.cda.Product;
+import org.openhealthtools.mdht.uml.cda.Reference;
+import org.openhealthtools.mdht.uml.cda.Specimen;
+import org.openhealthtools.mdht.uml.cda.Subject;
+import org.openhealthtools.mdht.uml.hl7.datatypes.BL;
+import org.openhealthtools.mdht.uml.hl7.datatypes.CD;
+import org.openhealthtools.mdht.uml.hl7.datatypes.CE;
+import org.openhealthtools.mdht.uml.hl7.datatypes.CS;
+import org.openhealthtools.mdht.uml.hl7.datatypes.ED;
+import org.openhealthtools.mdht.uml.hl7.datatypes.II;
+import org.openhealthtools.mdht.uml.hl7.datatypes.IVL_INT;
+import org.openhealthtools.mdht.uml.hl7.datatypes.IVL_TS;
+import org.openhealthtools.mdht.uml.hl7.datatypes.PQ;
+import org.openhealthtools.mdht.uml.hl7.datatypes.SXCM_TS;
+import org.openhealthtools.mdht.uml.hl7.vocab.ActClassSupply;
+import org.openhealthtools.mdht.uml.hl7.vocab.NullFlavor;
+import org.openhealthtools.mdht.uml.hl7.vocab.x_DocumentSubstanceMood;
+
+public interface Supply extends ClinicalStatement
+{
+    ActClassSupply getClassCode();
+    BL getIndependentInd();
+    CD getCode();
+    CS getStatusCode();
+    ED getText();
+    EList<Author> getAuthors();
+    EList<CE> getPriorityCodes();
+    EList<CS> getRealmCodes();
+    EList<EntryRelationship> getEntryRelationships();
+    EList<II> getIds();
+    EList<II> getTemplateIds();
+    EList<Informant12> getInformants();
+    EList<Participant2> getParticipants();
+    EList<Performer2> getPerformers();
+    EList<Precondition> getPreconditions();
+    EList<Reference> getReferences();
+    EList<SXCM_TS> getEffectiveTimes();
+    EList<Specimen> getSpecimens();
+    IVL_INT getRepeatNumber();
+    IVL_TS getExpectedUseTime();
+    InfrastructureRootTypeId getTypeId();
+    NullFlavor getNullFlavor();
+    PQ getQuantity();
+    Product getProduct();
+    Subject getSubject();
+    boolean isSetClassCode();
+    boolean isSetMoodCode();
+    boolean isSetNullFlavor();
+    boolean validateClassCode(DiagnosticChain p0, Map<Object, Object> p1);
+    void setClassCode(ActClassSupply p0);
+    void setCode(CD p0);
+    void setExpectedUseTime(IVL_TS p0);
+    void setIndependentInd(BL p0);
+    void setMoodCode(x_DocumentSubstanceMood p0);
+    void setNullFlavor(NullFlavor p0);
+    void setProduct(Product p0);
+    void setQuantity(PQ p0);
+    void setRepeatNumber(IVL_INT p0);
+    void setStatusCode(CS p0);
+    void setSubject(Subject p0);
+    void setText(ED p0);
+    void setTypeId(InfrastructureRootTypeId p0);
+    void unsetClassCode();
+    void unsetMoodCode();
+    void unsetNullFlavor();
+    x_DocumentSubstanceMood getMoodCode();
+}

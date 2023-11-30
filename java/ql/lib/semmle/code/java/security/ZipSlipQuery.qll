@@ -26,7 +26,7 @@ private class ArchiveEntryNameMethod extends Method {
  */
 module ZipSlipConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr().(MethodAccess).getMethod() instanceof ArchiveEntryNameMethod
+    source.asExpr().(MethodCall).getMethod() instanceof ArchiveEntryNameMethod
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof FileCreationSink }

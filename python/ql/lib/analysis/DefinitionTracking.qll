@@ -492,9 +492,14 @@ class NiceLocationExpr extends Expr {
     // for `import xxx` or for `import xxx as yyy`.
     this.(ImportExpr).getLocation().hasLocationInfo(f, bl, bc, el, ec)
     or
-    /* Show y for `y` in `from xxx import y` */
-    exists(string name |
-      name = this.(ImportMember).getName() and
+    // Show y for `y` in `from xxx import y`
+    // and y for `yyy as y` in `from xxx import yyy as y`.
+    exists(string name, Alias alias |
+      // This alias will always exist, as `from xxx import y`
+      // is expanded to `from xxx imprt y as y`.
+      this = alias.getValue() and
+      name = alias.getAsname().(Name).getId()
+    |
       this.(ImportMember).getLocation().hasLocationInfo(f, _, _, el, ec) and
       bl = el and
       bc = ec - name.length() + 1

@@ -25,13 +25,6 @@ module AllocationSizeOverflow {
   }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A guard node that prevents allocation-size overflow.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A sanitizer node that prevents allocation-size overflow.
    */
   abstract class Sanitizer extends DataFlow::Node { }
