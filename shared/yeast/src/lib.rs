@@ -214,9 +214,8 @@ fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Id {
         }
     }
 
-    // copy the current node, updating its id
+    // copy the current node
     let mut node = ast.nodes[transformedId].clone();
-    node.id = ast.nodes.len() - 1;
 
     // recursively descend into all the fields
     for (_, vec) in &mut node.fields {
@@ -230,6 +229,7 @@ fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Id {
         *child = applyRules(rules, ast, *child)
     }
 
+    node.id = ast.nodes.len() - 1;
     ast.nodes.push(node);
     return ast.nodes.len() - 1;
 }
