@@ -97,8 +97,8 @@ local flow. To get just the *calls* to ``re.compile``, you can use ``asSource`` 
 ``getReturn`` followed by ``asSource``, simply use ``getACall``. This will result in an
 ``API::CallNode``, which deserves a small description of its own.
 
-``API::CallNode``s are not ``API::Node``s. Instead they are ``DataFlow::Node``s with some convenience
-predicates that allows you to recover ``API::Node``s for the return value as well as for arguments
+``API::CallNode``\ s are not ``API::Node``\ s. Instead they are ``DataFlow::Node``\ s with some convenience
+predicates that allows you to recover ``API::Node``\ s for the return value as well as for arguments
 to the call. This enables you to constrain the call in various ways using the API graph. The following
 snippet finds all calls to ``re.compile`` where the ``pattern`` argument comes from parsing a command
 line argument using the ``argparse`` library.
