@@ -13,11 +13,11 @@
 import cpp
 
 /**
- * A word that might be in the name of an encryption function.
+ * Gets a word that might be in the name of an encryption function.
  */
 string encryptionWord() {
   exists(string word |
-    // `(?<!P)` is negative lookbehind, i.e. the match is not preceeded by `P`.
+    // `(?<!P)` is negative lookbehind, i.e. the match is not preceded by `P`.
     // `(?!P)` is negative lookahead, i.e. the match is not followed by `P`.
     word =
       [
@@ -27,9 +27,8 @@ string encryptionWord() {
         //"Asn[0-9]",
         "Camellia",
         //"(?<!Bit|Type)Cast",
-        "Chacha", "ChaCha", "Idea", "Poly[0-9]", "Ripemd", "Whirlpool", "Sbox", "SBox", "Cblock",
-        "CBlock", "Sub.?Byte", "Mix.?Column", "ECDH", "ECDSA", "EdDSA", "ECMQV", "ECQV",
-        "Curve[0-9][0-9]"
+        "Chacha", "ChaCha", "Poly[0-9]", "Ripemd", "Whirlpool", "Sbox", "SBox", "Cblock", "CBlock",
+        "Sub.?Byte", "Mix.?Column", "ECDH", "ECDSA", "EdDSA", "ECMQV", "ECQV", "Curve[0-9][0-9]"
       ] and
     (
       result = word or
@@ -40,8 +39,8 @@ string encryptionWord() {
 }
 
 /**
- * A function whose name suggests it may be doing encryption (but may or may
- * not actually implement an encryption primitive itself).
+ * Holds if `f` is a function whose name suggests it may be doing encryption
+ * (but may or may not actually implement an encryption primitive itself).
  */
 predicate likelyEncryptionFunction(Function f) {
   exists(string fName | fName = f.getName() |
@@ -50,8 +49,8 @@ predicate likelyEncryptionFunction(Function f) {
 }
 
 /**
- * A type that is common in encryption-like computations. That is, an integral
- * type or array of integral type elements.
+ * Holds if `t` is a type that is common in encryption-like computations. That
+ * is, an integral type or array of integral type elements.
  */
 predicate computeHeuristicType(Type t) {
   t instanceof IntegralType or
@@ -59,9 +58,10 @@ predicate computeHeuristicType(Type t) {
 }
 
 /**
- * An operation that is common in encryption-like computations. Looking for
- * clusters of these tends to find things like encrpytion, compression, random
- * number generation, graphics processing and other compute heavy algoritms.
+ * Holds if `e` is an operation that is common in encryption-like computations.
+ * Looking for clusters of these tends to find things like encrpytion,
+ * compression, random number generation, graphics processing and other compute
+ * heavy algorithms.
  */
 predicate computeHeuristic(Expr e) {
   (
