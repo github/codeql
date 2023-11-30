@@ -82,4 +82,6 @@ where
   amount = strictcount(Expr e | computeHeuristic(e) and e.getEnclosingFunction() = f) and
   amount >= 8 and
   exists(f.getFile().getRelativePath()) // exclude library files
-select f, "This may be a custom implementation of a cryptographic primitive."
+select f,
+  "This function, \"" + f.getName() +
+    "\", may be a custom implementation of a cryptographic primitive."
