@@ -3,7 +3,9 @@
 
 use std::collections::BTreeMap;
 
-mod query;
+pub mod query;
+pub mod tree_builder;
+pub mod captures;
 
 
 use serde::Serialize;
@@ -45,6 +47,12 @@ impl Ast {
     pub fn print(&self, source: &str, rootId: Id) -> Value {
         let root = &self.nodes()[rootId];
         serde_json::to_value(self.print_node(root, source)).unwrap()
+    }
+
+    fn create_node(&mut self, kind: KindId, content: NodeContent, fields: BTreeMap<FieldId, Vec<Id>>, children: Vec<Id>) -> Id {
+        let id = self.nodes.len();
+        self.nodes.push(Node { id, kind, children, fields, content });
+        id
     }
 
     /// Print a node for debugging

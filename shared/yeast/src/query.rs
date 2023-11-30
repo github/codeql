@@ -1,9 +1,9 @@
 use std::{
-    collections::{BTreeMap, HashSet},
+    collections::{BTreeMap},
     iter::Peekable,
 };
 
-use crate::{Ast, FieldId, Id, NodeContent, captures::Captures};
+use crate::{Ast, FieldId, Id, captures::Captures};
 
 #[derive(Debug, Clone)]
 pub enum QueryNode {
