@@ -202,8 +202,42 @@ impl Rule {
 }
 
 fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Id {
-    //TODO
-    return id;
+    let mut transformedId = id;
+    // apply the transformation rules on this node until fixpoint
+    loop {
+        let mut newTransformedId = transformedId;
+        for rule in rules {
+            newTransformedId = match rule.tryRule(ast, newTransformedId) {
+                Some(resultNode) => resultNode,
+                None => newTransformedId,
+            }
+        }
+
+        if newTransformedId == transformedId {
+            break;
+        } else {
+            transformedId = newTransformedId
+        }
+    }
+
+    // copy the current node
+    let mut node = ast.nodes[transformedId].clone();
+
+    // recursively descend into all the fields
+    for (_, vec) in &mut node.fields {
+        for v in vec {
+            *v = applyRules(rules, ast, *v)
+        }
+    }
+
+    // recursively descend into all the non-field children
+    for child in &mut node.children {
+        *child = applyRules(rules, ast, *child)
+    }
+
+    node.id = ast.nodes.len() - 1;
+    ast.nodes.push(node);
+    return ast.nodes.len() - 1;
 }
 
 pub struct Runner {
