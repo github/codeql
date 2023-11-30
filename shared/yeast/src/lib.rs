@@ -68,10 +68,10 @@ impl Ast {
         id
     }
 
-    pub fn create_string_token(
+    pub fn create_token(
         &mut self,
         kind: &str,
-        content: &'static str,
+        content: String,
     ) -> Id {
         let kind_id = self.language.id_for_node_kind(kind, true);
         let id = self.nodes.len();
@@ -107,7 +107,7 @@ impl Ast {
         }
         let mut value = BTreeMap::new();
         let kind = self.language.node_kind_for_id(node.kind).unwrap();
-        let content = match node.content {
+        let content = match &node.content {
             NodeContent::Range(range) => {
                 let len = range.end_byte - range.start_byte;
                 let end = range.start_byte + len;
@@ -116,7 +116,7 @@ impl Ast {
                     .map(|b| *b as char)
                     .collect()
             }
-            NodeContent::String(s) => s.to_string(),
+            NodeContent::String(s) => s.clone(),
         };
         if fields.is_empty() {
             value.insert(kind, json!(content));
@@ -146,7 +146,7 @@ impl Ast {
                         map.insert(28, vec![3]);
                         map
                     },
-                    content: NodeContent::String("x = 1"),
+                    content: "x = 1".into(),
                 },
                 // identifier
                 Node {
@@ -154,7 +154,7 @@ impl Ast {
                     kind: 1,
                     children: vec![],
                     fields: BTreeMap::new(),
-                    content: NodeContent::String("x"),
+                    content: "x".into(),
                 },
                 // "="
                 Node {
@@ -162,7 +162,7 @@ impl Ast {
                     kind: 17,
                     children: vec![],
                     fields: BTreeMap::new(),
-                    content: NodeContent::String("="),
+                    content: "=".into(),
                 },
                 // integer
                 Node {
@@ -170,7 +170,7 @@ impl Ast {
                     kind: 110,
                     children: vec![],
                     fields: BTreeMap::new(),
-                    content: NodeContent::String("1"),
+                    content: "1".into(),
                 },
             ],
         }
@@ -190,14 +190,14 @@ pub struct Node {
 /// The contents of a node is either a range in the original source file,
 /// or a new string if the node is synthesized.
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
-enum NodeContent {
+pub enum NodeContent {
     Range(#[serde(with = "range::Range")] tree_sitter::Range),
-    String(&'static str),
+    String(String),
 }
 
 impl From<&'static str> for NodeContent {
     fn from(value: &'static str) -> Self {
-        NodeContent::String(value)
+        NodeContent::String(value.to_string())
     }
 }
 
