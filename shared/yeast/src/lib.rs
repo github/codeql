@@ -4,6 +4,8 @@
 use std::collections::BTreeMap;
 
 mod query;
+mod tree_builder;
+mod captures;
 
 
 use serde::Serialize;
