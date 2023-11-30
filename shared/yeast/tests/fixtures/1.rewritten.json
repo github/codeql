@@ -1,0 +1,68 @@
+{
+  "program": {
+    "content": "",
+    "rest": [
+      {
+        "assignment": {
+          "content": "",
+          "left": [
+            {
+              "call": {
+                "arguments": [
+                  {
+                    "argument_list": {
+                      "content": "()",
+                      "rest": [
+                        {
+                          "(": "("
+                        },
+                        {
+                          ")": ")"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "content": "foo()",
+                "method": [
+                  {
+                    "identifier": "foo"
+                  }
+                ]
+              }
+            }
+          ],
+          "rest": [
+            {
+              "=": "="
+            }
+          ],
+          "right": [
+            {
+              "left_assignment_list": {
+                "content": "x, y, z",
+                "rest": [
+                  {
+                    "identifier": "x"
+                  },
+                  {
+                    ",": ","
+                  },
+                  {
+                    "identifier": "y"
+                  },
+                  {
+                    ",": ","
+                  },
+                  {
+                    "identifier": "z"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
