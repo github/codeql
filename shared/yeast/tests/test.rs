@@ -91,7 +91,7 @@ fn test_query_input() {
     let rewritten_expected = std::fs::read_to_string("tests/fixtures/1.rewritten.json").unwrap();
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
-    let mut ast = runner.run(&input);
+    let (mut ast, root) = runner.run(&input);
 
     let query = yeast::query::query!(
         program (
@@ -105,7 +105,7 @@ fn test_query_input() {
     print!("query: {:?}", query);
 
     let mut matches = Captures::new();
-    if query.do_match(&ast, 0, &mut matches).unwrap() {
+    if query.do_match(&ast, root, &mut matches).unwrap() {
         println!("match: {:?}", matches);
     } else {
         println!("no match");
@@ -123,7 +123,7 @@ fn test_query_input() {
 
     let new_id = builder.build_tree(&mut ast, &matches).unwrap();
 
-    let rewritten_actual = serde_json::to_string_pretty(&ast.print_id(new_id, &input)).unwrap();
+    let rewritten_actual = serde_json::to_string_pretty(&ast.print(&input, new_id)).unwrap();
 
     write_expected("tests/fixtures/1.rewritten.json", &rewritten_actual);
     assert_eq!(rewritten_actual, rewritten_expected);

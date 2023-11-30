@@ -3,9 +3,9 @@
 
 use std::collections::BTreeMap;
 
-mod query;
-mod tree_builder;
-mod captures;
+pub mod query;
+pub mod tree_builder;
+pub mod captures;
 
 
 use serde::Serialize;
