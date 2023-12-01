@@ -445,11 +445,13 @@ impl<'a> Visitor<'a> {
                 }
             } else if child_node.field_name.is_some() || child_node.type_name.named {
                 self.record_parse_error_for_node(
-                    "Value for unknown field: {}::{} and type {}",
+                    "Value for unknown field: {}::{} and type {}. Expecting: {}",
+
                     &[
                         diagnostics::MessageArg::Code(node.kind()),
-                        diagnostics::MessageArg::Code(child_node.field_name.unwrap_or("child")),
+                        diagnostics::MessageArg::Code(child_node.field_name.unwrap_or("extractor_child")),
                         diagnostics::MessageArg::Code(&format!("{:?}", child_node.type_name)),
+                        diagnostics::MessageArg::Code(&format!("{:?}", fields)),
                     ],
                     node,
                     false,
@@ -554,8 +556,10 @@ impl<'a> Visitor<'a> {
 
 // Emit a slice of a source file as an Arg.
 fn sliced_source_arg(source: &[u8], n: &Node) -> trap::Arg {
-    let range = n.byte_range();
-    trap::Arg::String(String::from_utf8_lossy(&source[range.start..range.end]).into_owned())
+    trap::Arg::String(n.opt_string_content().unwrap_or_else(|| {
+        let range = n.byte_range();
+        String::from_utf8_lossy(&source[range.start..range.end]).into_owned()
+    }))
 }
 
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.

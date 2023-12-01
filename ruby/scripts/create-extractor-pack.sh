@@ -3,9 +3,6 @@ set -eux
 CARGO=cargo
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   platform="linux64"
-  if which cross; then
-    CARGO=cross
-  fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   platform="osx64"
 else

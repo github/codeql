@@ -75,8 +75,12 @@ impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
     }
 
     fn field_name(&self) -> Option<&'static str> {
-        self.field_id()
-            .and_then(|id| self.ast.field_name_for_id(id))
+        if (self.field_id() == Some(CHILD_FIELD)) {
+            None
+        } else {
+            self.field_id()
+                .and_then(|id| self.ast.field_name_for_id(id))
+        }
     }
 
     fn goto_first_child(&mut self) -> bool {
@@ -452,6 +456,14 @@ impl Node {
 
     pub fn byte_range(&self) -> std::ops::Range<usize> {
         self.start_byte()..self.end_byte()
+    }
+
+    pub fn opt_string_content(&self) -> Option<String> {
+        match &self.content {
+            NodeContent::Range(_range) => None,
+            NodeContent::String(s) => Some(s.to_string()),
+            NodeContent::DynamicString(s) => Some(s.to_string()),
+        }
     }
 }
 
