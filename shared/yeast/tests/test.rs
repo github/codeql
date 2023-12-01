@@ -166,26 +166,26 @@ fn test_cursor() {
     assert_eq!(cursor.field_id(), None);
 
     assert_eq!(cursor.goto_first_child(), true);
-    assert_eq!(cursor.node().id(), 1);
+    assert_eq!(cursor.node().id(), 26);
 
     assert_eq!(cursor.goto_next_sibling(), false);
-    assert_eq!(cursor.node().id(), 1);
+    assert_eq!(cursor.node().id(), 26);
 
     assert_eq!(cursor.goto_first_child(), true);
-    assert_eq!(cursor.node().id(), 2);
+    assert_eq!(cursor.node().id(), 19);
 
     assert_eq!(cursor.goto_first_child(), true);
-    assert_eq!(cursor.node().id(), 3);
+    assert_eq!(cursor.node().id(), 14);
 
     assert_eq!(cursor.goto_first_child(), false);
-    assert_eq!(cursor.node().id(), 3);
+    assert_eq!(cursor.node().id(), 14);
 
     assert_eq!(cursor.goto_next_sibling(), true);
-    assert_eq!(cursor.node().id(), 4);
+    assert_eq!(cursor.node().id(), 15);
     assert_eq!(cursor.field_id(), Some(CHILD_FIELD));
 
     assert_eq!(cursor.goto_parent(), true);
-    assert_eq!(cursor.node().id(), 2);
+    assert_eq!(cursor.node().id(), 19);
 
     assert_eq!(cursor.field_id(), Some(18));
 

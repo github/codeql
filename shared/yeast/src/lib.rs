@@ -481,7 +481,7 @@ fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Id {
         }
     }
 
-    node.id = ast.nodes.len() - 1;
+    node.id = ast.nodes.len();
     ast.nodes.push(node);
     return ast.nodes.len() - 1;
 }
