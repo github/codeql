@@ -21,7 +21,22 @@ namespace std
 	extern ostream cout;
 }
 
+// this macro expands to some compute operations that look a bit like cryptography
+#define COMPUTE(v) \
+	v[0] ^= v[1] ^ v[2] ^ v[3] ^ v[4]; \
+	v[1] ^= v[2] ^ v[3] ^ v[4] ^ v[5]; \
+	v[2] ^= v[3] ^ v[4] ^ v[5] ^ v[6]; \
+	v[3] ^= v[4] ^ v[5] ^ v[6] ^ v[7];
+
 // ---
+
+#include "library/tests_library.h"
+
+bool isEnabledAes() {
+	// This function has "Aes" in it's name, but does not contain enough compute to
+	// be an encryption implementation.
+	return false;
+}
 
 uint32_t lookup[256];
 
@@ -78,13 +93,6 @@ void output_encrypt_decrypt_algorithms() {
 	std::cout << indent << "Twofish (" << yes_no_setting() << ")\n";
 	std::cout << indent << "Chacha (" << yes_no_setting() << ")\n";
 }
-
-// this macro expands to some compute operations that look a bit like cryptography
-#define COMPUTE(v) \
-	v[0] ^= v[1] ^ v[2] ^ v[3] ^ v[4]; \
-	v[1] ^= v[2] ^ v[3] ^ v[4] ^ v[5]; \
-	v[2] ^= v[3] ^ v[4] ^ v[5] ^ v[6]; \
-	v[3] ^= v[4] ^ v[5] ^ v[6] ^ v[7];
 
 void wideStringCharsAt(int *v) {
 	// This function has "des" and "rsa" in the name.
