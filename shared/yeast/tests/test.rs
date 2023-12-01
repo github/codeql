@@ -38,16 +38,16 @@ fn test_ruby_multiple_assignment() {
         fresh_ids.set(fresh + 1);
 
         let new_ident = format!("tmp-{}", fresh);
-        match_.insert("tmp_lhs", ast.create_token("identifier", new_ident.clone()));
+        match_.insert("tmp_lhs", ast.create_named_token("identifier", new_ident.clone()));
 
         let mut i = 0;
         match_.map_captures_to("left", "assigns", &mut |old_id| {
             let mut local_capture = Captures::new();
             local_capture.insert("lhs", old_id);
-            local_capture.insert("tmp", ast.create_token("identifier", new_ident.clone()));
+            local_capture.insert("tmp", ast.create_named_token("identifier", new_ident.clone()));
             let index: i32 = i;
             i += 1;
-            local_capture.insert("index", ast.create_token("integer", index.to_string()));
+            local_capture.insert("index", ast.create_named_token("integer", index.to_string()));
             return tree_builder!(
                 (assignment
                     left: (identifier child: (@lhs))
@@ -92,12 +92,12 @@ fn test_ruby_multiple_assignment() {
         fresh_ids2.set(fresh + 1);
 
         let new_ident = format!("tmp-{}", fresh);
-        match_.insert("tmp_rhs", ast.create_token("identifier", new_ident.clone()));
+        match_.insert("tmp_rhs", ast.create_named_token("identifier", new_ident.clone()));
         match_.insert(
             "tmp_param",
-            ast.create_token("identifier", new_ident.clone()),
+            ast.create_named_token("identifier", new_ident.clone()),
         );
-        match_.insert("each", ast.create_token("identifier", "each".to_string()));
+        match_.insert("each", ast.create_named_token("identifier", "each".to_string()));
 
         // construct the new tree here maybe
         // captures is probably a HashMap from capture name to AST node
@@ -131,7 +131,7 @@ fn test_ruby_multiple_assignment() {
     let end_query = query!(
         ("end")
     );
-    let end_transform = |ast: &mut Ast, mut match_: Captures| {
+    let end_transform = |_ast: &mut Ast, _match: Captures| {
         return vec![];
     };
     let end_rule = Rule::new(end_query, Box::new(end_transform));
@@ -141,11 +141,14 @@ fn test_ruby_multiple_assignment() {
     // Construct the thing that runs our desugaring process
     let runner = Runner::new(tree_sitter_ruby::language(), vec![assign_rule, for_rule, end_rule]);
 
-    // Run it on our example
-    let (ast, newRootId) = runner.run(input);
+    let old_root = 0;
 
-    let formattedInput = serde_json::to_string_pretty(&ast.print(&input, 0)).unwrap();
-    let formattedOutput = serde_json::to_string_pretty(&ast.print(&input, newRootId)).unwrap();
+    // Run it on our example
+    let ast = runner.run(input);
+    let new_root = ast.get_root();
+
+    let formattedInput = serde_json::to_string_pretty(&ast.print(&input, old_root)).unwrap();
+    let formattedOutput = serde_json::to_string_pretty(&ast.print(&input, new_root)).unwrap();
 
     println!("before transformation: {}", formattedInput);
     println!("after transformation: {}", formattedOutput);
@@ -189,8 +192,8 @@ fn test_parse_input() {
     let parsed_expected = std::fs::read_to_string("tests/fixtures/1.parsed.json").unwrap();
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
-    let (ast, newRootId) = runner.run(&input);
-    let parsed_actual = serde_json::to_string_pretty(&ast.print(&input, newRootId)).unwrap();
+    let ast = runner.run(&input);
+    let parsed_actual = serde_json::to_string_pretty(&ast.print(&input, ast.get_root())).unwrap();
 
     assert_eq!(parsed_actual, parsed_expected);
 }
@@ -201,7 +204,7 @@ fn test_query_input() {
     let rewritten_expected = std::fs::read_to_string("tests/fixtures/1.rewritten.json").unwrap();
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
-    let (mut ast, root) = runner.run(&input);
+    let mut ast = runner.run(&input);
 
     let query = yeast::query::query!(
         program  child:(
@@ -216,7 +219,7 @@ fn test_query_input() {
     print!("query: {:?}", query);
 
     let mut matches = Captures::new();
-    if query.do_match(&ast, root, &mut matches).unwrap() {
+    if query.do_match(&ast, ast.get_root(), &mut matches).unwrap() {
         println!("match: {:?}", matches);
     } else {
         println!("no match");
@@ -257,9 +260,49 @@ fn test_output() {
     let parsed_expected = std::fs::read_to_string("tests/fixtures/1.parsed.json").unwrap();
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
-    let (ast, root) = runner.run(&input);
-    let cursor = Cursor::new(&ast, root);
+    let ast = runner.run(&input);
+    let cursor = AstCursor::new(&ast);
     let mut printer = Printer {};
     printer.visit(cursor);
     panic!()
+}
+
+#[test]
+fn test_cursor() {
+    let input = std::fs::read_to_string("tests/fixtures/1.rb").unwrap();
+
+    let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
+    let ast = runner.run(&input);
+    let mut cursor = AstCursor::new(&ast);
+
+    assert_eq!(cursor.node().id(), ast.get_root());
+    assert_eq!(cursor.field_id(), None);
+
+    assert_eq!(cursor.goto_first_child(), true);
+    assert_eq!(cursor.node().id(), 26);
+
+    assert_eq!(cursor.goto_next_sibling(), false);
+    assert_eq!(cursor.node().id(), 26);
+
+    assert_eq!(cursor.goto_first_child(), true);
+    assert_eq!(cursor.node().id(), 19);
+
+    assert_eq!(cursor.goto_first_child(), true);
+    assert_eq!(cursor.node().id(), 14);
+
+    assert_eq!(cursor.goto_first_child(), false);
+    assert_eq!(cursor.node().id(), 14);
+
+    assert_eq!(cursor.goto_next_sibling(), true);
+    assert_eq!(cursor.node().id(), 15);
+    assert_eq!(cursor.field_id(), Some(CHILD_FIELD));
+
+    assert_eq!(cursor.goto_parent(), true);
+    assert_eq!(cursor.node().id(), 19);
+
+    assert_eq!(cursor.field_id(), Some(18));
+
+    let cursor = AstCursor::new(&ast);
+    let mut printer = Printer {};
+    printer.visit(cursor);
 }

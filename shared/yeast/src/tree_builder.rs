@@ -1,5 +1,5 @@
-use crate::{captures::Captures, Ast, FieldId, Id, NodeContent};
-use std::collections::{BTreeMap, BTreeSet};
+use crate::{captures::Captures, Ast, Id};
+use std::collections::BTreeSet;
 
 #[derive(Debug, Clone)]
 pub enum TreeBuilder {
@@ -89,7 +89,7 @@ impl TreeBuilder {
                         .ok_or(format!("Field {} does not exist in language", field))?;
                     Ok((field_id, child_ids))
                 }).collect::<Result<_,String>>()?;
-                Ok(target.create_node(ast_kind, "".into(), child_vars))
+                Ok(target.create_node(ast_kind, "".into(), child_vars, true))
             }
         }
     }
