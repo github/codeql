@@ -73,6 +73,10 @@ impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
         children.current_field()
     }
 
+    fn field_name(&self) -> Option<&'static str> {
+        self.field_id().and_then(|id| self.ast.field_name_for_id(id))
+    }
+
     fn goto_first_child(&mut self) -> bool {
         self.goto_first_child_opt().is_some()
     }
