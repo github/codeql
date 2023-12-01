@@ -1,4 +1,4 @@
-#![feature(trace_macros)]
+//#![feature(trace_macros)]
 #![cfg(test)]
 use std::cell::Cell;
 use std::path::Path;
