@@ -51,6 +51,13 @@ private predicate nestedPathRec(
         prevIsOutputOnly, prevPathLength) and
       pathLength = prevPathLength + 1
     |
+      element = prevType.(Array).getComponentType() and
+      value = prevValue + ".ArrayElement" and
+      details = element.toString() and
+      isInputOnly = prevIsInputOnly and
+      isOutputOnly = prevIsOutputOnly and
+      defType = "array"
+      or
       element = prevType.(CollectionType).getElementType() and
       value = prevValue + ".Element" and
       details = element.toString() and
