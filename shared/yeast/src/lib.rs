@@ -440,6 +440,14 @@ impl Node {
     pub fn byte_range(&self) -> std::ops::Range<usize> {
         self.start_byte()..self.end_byte()
     }
+
+    pub fn opt_string_content(&self) -> Option<String>{
+        match &self.content {
+            NodeContent::Range(_range) => None,
+            NodeContent::String(s) => Some(s.to_string()),
+            NodeContent::DynamicString(s) => Some(s.to_string()),
+        }
+    }
 }
 
 /// The contents of a node is either a range in the original source file,

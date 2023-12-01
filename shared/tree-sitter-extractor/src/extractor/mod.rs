@@ -554,8 +554,10 @@ impl<'a> Visitor<'a> {
 
 // Emit a slice of a source file as an Arg.
 fn sliced_source_arg(source: &[u8], n: &Node) -> trap::Arg {
-    let range = n.byte_range();
-    trap::Arg::String(String::from_utf8_lossy(&source[range.start..range.end]).into_owned())
+    trap::Arg::String(n.opt_string_content().unwrap_or_else(|| {
+        let range = n.byte_range();
+        String::from_utf8_lossy(&source[range.start..range.end]).into_owned()
+    }))
 }
 
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
