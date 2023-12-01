@@ -3,7 +3,33 @@
 private import java
 private import semmle.code.java.Collections
 private import semmle.code.java.Maps
+private import semmle.code.java.dataflow.internal.ContainerFlow
 private import ModelEditor
+
+/**
+ * A type representing instantiations of class types
+ * that has a method which returns an iterator.
+ */
+private class IterableClass extends Class {
+  private Type elementType;
+
+  IterableClass() {
+    elementType =
+      unique(Type et |
+        exists(Method m, RefType return, GenericType t, int position | m.getDeclaringType() = t |
+          return = m.getReturnType() and
+          return.getSourceDeclaration().hasQualifiedName("java.util", "Iterator") and
+          t.getTypeParameter(position) = return.(ParameterizedType).getTypeArgument(0) and
+          instantiates(this, t, position, et)
+        )
+      )
+  }
+
+  /**
+   * Returns the iterator element type of `this`.
+   */
+  Type getElementType() { result = elementType }
+}
 
 private predicate nestedPathBase(
   Endpoint endpoint, Element element, string value, string details, string defType,
@@ -58,12 +84,19 @@ private predicate nestedPathRec(
       isOutputOnly = prevIsOutputOnly and
       defType = "array"
       or
-      element = prevType.(CollectionType).getElementType() and
+      element = prevType.(IterableClass).getElementType() and
       value = prevValue + ".Element" and
       details = element.toString() and
       isInputOnly = prevIsInputOnly and
       isOutputOnly = prevIsOutputOnly and
       defType = "array"
+      or
+      element = prevType.(ContainerType).getElementType() and
+      value = prevValue + ".Element" and
+      details = element.toString() and
+      isInputOnly = prevIsInputOnly and
+      isOutputOnly = prevIsOutputOnly and
+      defType = "variable"
       or
       element = prevType.(MapType).getKeyType() and
       value = prevValue + ".MapKey" and
