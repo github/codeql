@@ -89,6 +89,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (options.UseNuGet)
             {
+
+                // Dirty hack
+                dllPaths.Add(packageDirectory.DirInfo.FullName);
+                dllPaths.Add(legacyPackageDirectory.DirInfo.FullName);
+
                 try
                 {
                     var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, progressMonitor);
@@ -115,7 +120,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var restoredProjects = RestoreSolutions(solutions, out var assets1);
                 var projects = allProjects.Except(restoredProjects);
                 RestoreProjects(projects, out var assets2);
-
                 var dependencies = Assets.GetCompilationDependencies(progressMonitor, assets1.Union(assets2));
 
                 var paths = dependencies
@@ -351,6 +355,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private void LogAllUnusedPackages(DependencyContainer dependencies) =>
             GetAllPackageDirectories()
                 .Where(package => !dependencies.Packages.Contains(package))
+                .OrderBy(package => package)
                 .ForEach(package => progressMonitor.LogInfo($"Unused package: {package}"));
 
         private void GenerateSourceFileFromImplicitUsings()
