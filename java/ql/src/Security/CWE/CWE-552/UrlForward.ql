@@ -1,16 +1,14 @@
 /**
  * @name URL forward from a remote source
  * @description URL forward based on unvalidated user-input
- *              may cause file information disclosure or
- *              redirection to malicious web sites.
+ *              may cause file information disclosure.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 6.1
+ * @security-severity 7.5
  * @precision high
  * @id java/unvalidated-url-forward
  * @tags security
  *       external/cwe/cwe-552
- *       external/cwe/cwe-601
  */
 
 import java

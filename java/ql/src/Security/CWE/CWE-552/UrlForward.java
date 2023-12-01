@@ -1,38 +1,17 @@
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
+public class UrlForward extends HttpServlet {
+	private static final String VALID_FORWARD = "https://cwe.mitre.org/data/definitions/552.html";
 
-@Controller
-public class UrlForward {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		ServletConfig cfg = getServletConfig();
+		ServletContext sc = cfg.getServletContext();
 
-	@GetMapping("/bad1")
-	public ModelAndView bad1(String url) {
-		return new ModelAndView(url);
-	}
+		// BAD: a request parameter is incorporated without validation into a URL forward
+		sc.getRequestDispatcher(request.getParameter("target")).forward(request, response);
 
-	@GetMapping("/bad2")
-	public void bad2(String url, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@GetMapping("/good1")
-	public void good1(String url, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			request.getRequestDispatcher("/index.jsp?token=" + url).forward(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		// GOOD: the request parameter is validated against a known fixed string
+		if (VALID_FORWARD.equals(request.getParameter("target"))) {
+			sc.getRequestDispatcher(VALID_FORWARD).forward(request, response);
 		}
 	}
 }
