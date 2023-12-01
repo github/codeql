@@ -409,31 +409,44 @@ impl Node {
         self.is_error
     }
 
+    fn fake_range(&self) -> tree_sitter::Range {
+        tree_sitter::Range {
+            start_byte: 0,
+            end_byte: 0,
+            start_point: tree_sitter::Point { row: 0, column: 0 },
+            end_point: tree_sitter::Point { row: 0, column: 0 },
+        }
+    }
+
+    fn fake_point(&self) -> tree_sitter::Point {
+        tree_sitter::Point { row: 0, column: 0 }
+    }
+
     pub fn start_position(&self) -> tree_sitter::Point {
         match self.content {
             NodeContent::Range(range) => range.start_point,
-            _ => todo!(),
+            _ => self.fake_point(),
         }
     }
 
     pub fn end_position(&self) -> tree_sitter::Point {
         match self.content {
             NodeContent::Range(range) => range.end_point,
-            _ => todo!(),
+            _ => self.fake_point(),
         }
     }
 
     pub fn start_byte(&self) -> usize {
         match self.content {
             NodeContent::Range(range) => range.start_byte,
-            _ => todo!(),
+            _ => 0,
         }
     }
 
     pub fn end_byte(&self) -> usize {
         match self.content {
             NodeContent::Range(range) => range.end_byte,
-            _ => todo!(),
+            _ => 0,
         }
     }
 
