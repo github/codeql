@@ -445,11 +445,13 @@ impl<'a> Visitor<'a> {
                 }
             } else if child_node.field_name.is_some() || child_node.type_name.named {
                 self.record_parse_error_for_node(
-                    "Value for unknown field: {}::{} and type {}",
+                    "Value for unknown field: {}::{} and type {}. Expecting: {}",
+
                     &[
                         diagnostics::MessageArg::Code(node.kind()),
-                        diagnostics::MessageArg::Code(child_node.field_name.unwrap_or("child")),
+                        diagnostics::MessageArg::Code(child_node.field_name.unwrap_or("extractor_child")),
                         diagnostics::MessageArg::Code(&format!("{:?}", child_node.type_name)),
+                        diagnostics::MessageArg::Code(&format!("{:?}", fields)),
                     ],
                     node,
                     false,

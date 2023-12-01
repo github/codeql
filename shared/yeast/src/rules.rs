@@ -46,8 +46,8 @@ pub fn rules() -> Vec<Rule> {
                     left: (identifier child: (@lhs))
                     right: (
                         element_reference
-                            left: (@tmp)
-                            right: (@index)
+                            object: (@tmp)
+                            child: (@index)
                     )
                 )
             )
