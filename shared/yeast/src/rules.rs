@@ -43,7 +43,7 @@ pub fn rules() -> Vec<Rule> {
             );
             tree_builder!(
                 (assignment
-                    left: (identifier child: (@lhs))
+                    left: (@lhs)
                     right: (
                         element_reference
                             object: (@tmp)
@@ -107,12 +107,14 @@ pub fn rules() -> Vec<Rule> {
                         block_parameters
                             child: (@tmp_param)
                     )
-                    child*: (
-                        (assignment
-                            left: (@pat)
-                            right: (@tmp_rhs)
+                    body: (block_body 
+                        child*: (
+                            (assignment
+                                left: (@pat)
+                                right: (@tmp_rhs)
+                            )
+                            (@body)*
                         )
-                        (@body)*
                     )
                 )
             )
