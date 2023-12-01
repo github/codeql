@@ -297,9 +297,9 @@ The first four values identify the callable (in this case a method) to be modele
 Threat models
 -------------
 
- A threat model is a named class of dataflow sources that can be enabled or disabled independently. Threat models allow you to control the set of dataflow sources that you want to consider unsafe. For example, one codebase may only consider remote HTTP requests to be tainted, whereas another may also consider data from local files to be unsafe. You can use threat models to ensure that the relevant taint sources are used in a CodeQL analysis.
+.. include:: ../reusables/beta-note-model-packs-java.rst
 
- .. include:: ../reusables/beta-note-threat-models.rst
+ A threat model is a named class of dataflow sources that can be enabled or disabled independently. Threat models allow you to control the set of dataflow sources that you want to consider unsafe. For example, one codebase may only consider remote HTTP requests to be tainted, whereas another may also consider data from local files to be unsafe. You can use threat models to ensure that the relevant taint sources are used in a CodeQL analysis.
  
  The ``kind`` property of the ``sourceModel`` determines which threat model a source is associated with. There are two main categories:
 
