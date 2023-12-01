@@ -1,0 +1,180 @@
+{
+  "program": {
+    "content": "for a, b in pairs_list do\n  call(a, b)\n  a+=b\nend",
+    "rest": [
+      {
+        "call": {
+          "block": [
+            {
+              "block": {
+                "content": "",
+                "parameters": [
+                  {
+                    "block_parameters": {
+                      "content": "",
+                      "rest": [
+                        {
+                          "identifier": "tmp-0"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "rest": [
+                  {
+                    "assignment": {
+                      "content": "",
+                      "left": [
+                        {
+                          "identifier": "tmp-1"
+                        }
+                      ],
+                      "right": [
+                        {
+                          "identifier": "tmp-0"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "assignment": {
+                      "content": "",
+                      "left": [
+                        {
+                          "identifier": {
+                            "content": "",
+                            "rest": [
+                              {
+                                "identifier": "a"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "right": [
+                        {
+                          "element_reference": {
+                            "content": "",
+                            "left": [
+                              {
+                                "identifier": "tmp-1"
+                              }
+                            ],
+                            "right": [
+                              {
+                                "integer": "0"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "assignment": {
+                      "content": "",
+                      "left": [
+                        {
+                          "identifier": {
+                            "content": "",
+                            "rest": [
+                              {
+                                "identifier": "b"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "right": [
+                        {
+                          "element_reference": {
+                            "content": "",
+                            "left": [
+                              {
+                                "identifier": "tmp-1"
+                              }
+                            ],
+                            "right": [
+                              {
+                                "integer": "1"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "call": {
+                      "arguments": [
+                        {
+                          "argument_list": {
+                            "content": "(a, b)",
+                            "rest": [
+                              {
+                                "(": "("
+                              },
+                              {
+                                "identifier": "a"
+                              },
+                              {
+                                ",": ","
+                              },
+                              {
+                                "identifier": "b"
+                              },
+                              {
+                                ")": ")"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "content": "call(a, b)",
+                      "method": [
+                        {
+                          "identifier": "call"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "operator_assignment": {
+                      "content": "a+=b",
+                      "left": [
+                        {
+                          "identifier": "a"
+                        }
+                      ],
+                      "operator": [
+                        {
+                          "+=": "+="
+                        }
+                      ],
+                      "right": [
+                        {
+                          "identifier": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "content": "",
+          "method": [
+            {
+              "identifier": "each"
+            }
+          ],
+          "receiver": [
+            {
+              "identifier": "pairs_list"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

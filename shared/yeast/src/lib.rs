@@ -1,15 +1,11 @@
-// Uncomment to debug macros
-//#![feature(trace_macros)]
-
-
-use std::{mem, collections::BTreeMap};
+use std::{collections::BTreeMap, mem};
 
 use serde::Serialize;
 use serde_json::{json, Value};
 
-pub mod print;
 pub mod captures;
 pub mod cursor;
+pub mod print;
 pub mod query;
 mod range;
 pub mod tree_builder;
@@ -66,7 +62,6 @@ impl<'a> AstCursor<'a> {
         self.node = self.parents.pop()?.0;
         Some(())
     }
-
 }
 impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
     fn node(&self) -> &'a Node {
@@ -192,7 +187,7 @@ impl Ast {
         &mut self,
         kind: KindId,
         content: NodeContent,
-         fields: BTreeMap<FieldId, Vec<Id>>,
+        fields: BTreeMap<FieldId, Vec<Id>>,
         is_named: bool,
     ) -> Id {
         let id = self.nodes.len();
@@ -210,11 +205,7 @@ impl Ast {
         id
     }
 
-    pub fn create_named_token(
-        &mut self,
-        kind: &'static str,
-        content: String,
-    ) -> Id {
+    pub fn create_named_token(&mut self, kind: &'static str, content: String) -> Id {
         let kind_id = self.language.id_for_node_kind(kind, true);
         let id = self.nodes.len();
         self.nodes.push(Node {
@@ -239,7 +230,7 @@ impl Ast {
         }
     }
 
-    fn field_id_for_name(&self, name : &str) -> Option<FieldId> {
+    fn field_id_for_name(&self, name: &str) -> Option<FieldId> {
         if name == CHILD_FIELD_NAME {
             Some(CHILD_FIELD)
         } else {

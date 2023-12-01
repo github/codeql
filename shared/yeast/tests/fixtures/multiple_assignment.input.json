@@ -1,0 +1,119 @@
+{
+  "program": {
+    "content": "for a, b in pairs_list do\n  call(a, b)\n  a+=b\nend",
+    "rest": [
+      {
+        "for": {
+          "body": [
+            {
+              "do": {
+                "content": "do\n  call(a, b)\n  a+=b\nend",
+                "rest": [
+                  {
+                    "do": "do"
+                  },
+                  {
+                    "call": {
+                      "arguments": [
+                        {
+                          "argument_list": {
+                            "content": "(a, b)",
+                            "rest": [
+                              {
+                                "(": "("
+                              },
+                              {
+                                "identifier": "a"
+                              },
+                              {
+                                ",": ","
+                              },
+                              {
+                                "identifier": "b"
+                              },
+                              {
+                                ")": ")"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "content": "call(a, b)",
+                      "method": [
+                        {
+                          "identifier": "call"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "operator_assignment": {
+                      "content": "a+=b",
+                      "left": [
+                        {
+                          "identifier": "a"
+                        }
+                      ],
+                      "operator": [
+                        {
+                          "+=": "+="
+                        }
+                      ],
+                      "right": [
+                        {
+                          "identifier": "b"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "end": "end"
+                  }
+                ]
+              }
+            }
+          ],
+          "content": "for a, b in pairs_list do\n  call(a, b)\n  a+=b\nend",
+          "pattern": [
+            {
+              "left_assignment_list": {
+                "content": "a, b",
+                "rest": [
+                  {
+                    "identifier": "a"
+                  },
+                  {
+                    ",": ","
+                  },
+                  {
+                    "identifier": "b"
+                  }
+                ]
+              }
+            }
+          ],
+          "rest": [
+            {
+              "for": "for"
+            }
+          ],
+          "value": [
+            {
+              "in": {
+                "content": "in pairs_list",
+                "rest": [
+                  {
+                    "in": "in"
+                  },
+                  {
+                    "identifier": "pairs_list"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
