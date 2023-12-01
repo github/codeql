@@ -1,9 +1,6 @@
-use std::{
-    collections::{BTreeMap},
-    iter::Peekable,
-};
+use std::{collections::BTreeMap, iter::Peekable};
 
-use crate::{Ast, FieldId, Id, captures::Captures};
+use crate::{captures::Captures, Ast, FieldId, Id, CHILD_FIELD};
 
 #[derive(Debug, Clone)]
 pub enum QueryNode {
@@ -39,12 +36,7 @@ pub enum Rep {
 }
 
 impl QueryNode {
-    pub fn do_match(
-        &self,
-        ast: &Ast,
-        node: Id,
-        matches: &mut Captures,
-    ) -> Result<bool, String> {
+    pub fn do_match(&self, ast: &Ast, node: Id, matches: &mut Captures) -> Result<bool, String> {
         match self {
             QueryNode::Any() => Ok(true),
             QueryNode::Node { kind, children } => {
@@ -53,7 +45,13 @@ impl QueryNode {
                 if node.kind != target_kind {
                     return Ok(false);
                 }
-                let mut child_iter = node.children.iter().cloned().peekable();
+                let mut child_iter = node
+                    .fields
+                    .get(&CHILD_FIELD)
+                    .unwrap() // assume CHILD_FIELD is always set
+                    .iter()
+                    .cloned()
+                    .peekable();
 
                 for child in children {
                     if !child.do_match(ast, &mut child_iter, &node.fields, matches)? {
@@ -228,6 +226,5 @@ mod tests {
             )
         );
         println!("{:?}", query10);
-
     }
 }

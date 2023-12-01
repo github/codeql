@@ -2,7 +2,8 @@
 use std::path::Path;
 
 use yeast::captures::Captures;
-use yeast::*;
+use yeast::{cursor::Cursor, print::Printer, *};
+
 #[test]
 fn test_ruby_multiple_assignment() {
     // We want to convert this
@@ -11,10 +12,10 @@ fn test_ruby_multiple_assignment() {
     //
     // into this
     //
-    // __tmp_1 = e
-    // x = __tmp_1[0]
-    // y = __tmp_1[1]
-    // z = __tmp_1[2]
+    // tmp = e
+    // x = tmp[0]
+    // y = tmp[1]
+    // z = tmp[2]
 
     // Define a desugaring rule, which is a query together with a transformation.
 
@@ -29,7 +30,9 @@ fn test_ruby_multiple_assignment() {
         // captures is probably a HashMap from capture name to AST node
         tree_builder!(
             @root
-        ).build_tree(ast, &match_).unwrap()
+        )
+        .build_tree(ast, &match_)
+        .unwrap()
     };
     let rule = Rule::new(query, Box::new(transform));
 
@@ -38,11 +41,14 @@ fn test_ruby_multiple_assignment() {
     // Construct the thing that runs our desugaring process
     let runner = Runner::new(tree_sitter_ruby::language(), vec![rule]);
 
-    // Run it on our example
-    let (ast, newRootId) = runner.run(input);
+    let old_root = 0;
 
-    let formattedInput = serde_json::to_string_pretty(&ast.print(&input, 0)).unwrap();
-    let formattedOutput = serde_json::to_string_pretty(&ast.print(&input, newRootId)).unwrap();
+    // Run it on our example
+    let ast = runner.run(input);
+    let new_root = ast.get_root();
+
+    let formattedInput = serde_json::to_string_pretty(&ast.print(&input, old_root)).unwrap();
+    let formattedOutput = serde_json::to_string_pretty(&ast.print(&input, new_root)).unwrap();
 
     println!("before transformation: {}", formattedInput);
     println!("after transformation: {}", formattedOutput);
@@ -86,8 +92,8 @@ fn test_parse_input() {
     let parsed_expected = std::fs::read_to_string("tests/fixtures/1.parsed.json").unwrap();
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
-    let (ast, newRootId) = runner.run(&input);
-    let parsed_actual = serde_json::to_string_pretty(&ast.print(&input, newRootId)).unwrap();
+    let ast = runner.run(&input);
+    let parsed_actual = serde_json::to_string_pretty(&ast.print(&input, ast.get_root())).unwrap();
 
     assert_eq!(parsed_actual, parsed_expected);
 }
@@ -98,7 +104,7 @@ fn test_query_input() {
     let rewritten_expected = std::fs::read_to_string("tests/fixtures/1.rewritten.json").unwrap();
 
     let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
-    let (mut ast, root) = runner.run(&input);
+    let mut ast = runner.run(&input);
 
     let query = yeast::query::query!(
         program (
@@ -112,7 +118,7 @@ fn test_query_input() {
     print!("query: {:?}", query);
 
     let mut matches = Captures::new();
-    if query.do_match(&ast, root, &mut matches).unwrap() {
+    if query.do_match(&ast, ast.get_root(), &mut matches).unwrap() {
         println!("match: {:?}", matches);
     } else {
         println!("no match");
@@ -146,4 +152,44 @@ fn write_expected<P: AsRef<Path>>(file: P, content: &str) {
         .unwrap()
         .write_all(content.as_bytes())
         .unwrap();
+}
+
+#[test]
+fn test_cursor() {
+    let input = std::fs::read_to_string("tests/fixtures/1.rb").unwrap();
+
+    let runner = Runner::new(tree_sitter_ruby::language(), vec![]);
+    let ast = runner.run(&input);
+    let mut cursor = AstCursor::new(&ast);
+
+    assert_eq!(cursor.node().id(), ast.get_root());
+    assert_eq!(cursor.field_id(), None);
+
+    assert_eq!(cursor.goto_first_child(), true);
+    assert_eq!(cursor.node().id(), 26);
+
+    assert_eq!(cursor.goto_next_sibling(), false);
+    assert_eq!(cursor.node().id(), 26);
+
+    assert_eq!(cursor.goto_first_child(), true);
+    assert_eq!(cursor.node().id(), 19);
+
+    assert_eq!(cursor.goto_first_child(), true);
+    assert_eq!(cursor.node().id(), 14);
+
+    assert_eq!(cursor.goto_first_child(), false);
+    assert_eq!(cursor.node().id(), 14);
+
+    assert_eq!(cursor.goto_next_sibling(), true);
+    assert_eq!(cursor.node().id(), 15);
+    assert_eq!(cursor.field_id(), Some(CHILD_FIELD));
+
+    assert_eq!(cursor.goto_parent(), true);
+    assert_eq!(cursor.node().id(), 19);
+
+    assert_eq!(cursor.field_id(), Some(18));
+
+    let cursor = AstCursor::new(&ast);
+    let mut printer = Printer {};
+    printer.visit(cursor);
 }
