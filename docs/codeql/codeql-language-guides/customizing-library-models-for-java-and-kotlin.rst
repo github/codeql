@@ -303,7 +303,7 @@ Threat models
  
  The ``kind`` property of the ``sourceModel`` determines which threat model a source is associated with. There are two main categories:
 
-- ``remote`` which represents remote HTTP requests. 
-- ``local`` which represents data from local files (``file``), command-line arguments (``commandargs``), database reads (``database``), and environment variables(``environement``).
+- ``remote`` which represents requests and responses from the network. 
+- ``local`` which represents data from local files (``file``), command-line arguments (``commandargs``), database reads (``database``), and environment variables(``environment``).
  
  When running a CodeQL analysis, the ``remote`` threat model is included by default. You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see `Analyzing your code with CodeQL queries <https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#running-model-packs-to-configure-threat-models>`__ and `Customizing your advanced setup for code scanning <https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models>`__.
