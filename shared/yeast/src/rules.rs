@@ -4,7 +4,7 @@ use std::rc::Rc;
 
 use crate::{captures::Captures, print::Printer, *};
 
-fn rules() -> Vec<Rule> {
+pub fn rules() -> Vec<Rule> {
     let fresh_ids = Rc::new(Cell::new(0));
     let fresh_ids2: Rc<Cell<i32>> = fresh_ids.clone();
 

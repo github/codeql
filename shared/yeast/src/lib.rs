@@ -3,12 +3,12 @@ use std::{collections::BTreeMap, mem};
 use serde::Serialize;
 use serde_json::{json, Value};
 
-pub mod rules;
 pub mod captures;
 pub mod cursor;
 pub mod print;
 pub mod query;
 mod range;
+pub mod rules;
 pub mod tree_builder;
 mod visitor;
 
@@ -75,7 +75,8 @@ impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
     }
 
     fn field_name(&self) -> Option<&'static str> {
-        self.field_id().and_then(|id| self.ast.field_name_for_id(id))
+        self.field_id()
+            .and_then(|id| self.ast.field_name_for_id(id))
     }
 
     fn goto_first_child(&mut self) -> bool {
@@ -469,10 +470,7 @@ pub struct Rule {
 
 impl Rule {
     pub fn new(query: QueryNode, transform: Box<dyn Fn(&mut Ast, Captures) -> Vec<Id>>) -> Self {
-        Self {
-            query,
-            transform,
-        }
+        Self { query, transform }
     }
 
     fn tryRule(&self, ast: &mut Ast, node: Id) -> Option<Vec<Id>> {
@@ -526,6 +524,16 @@ pub struct Runner {
 impl Runner {
     pub fn new(language: tree_sitter::Language, rules: Vec<Rule>) -> Self {
         Self { language, rules }
+    }
+
+    pub fn run_from_tree(&self, tree: &tree_sitter::Tree) -> Ast {
+        let mut ast = Ast::from_tree(self.language, &tree);
+        let res = applyRules(&self.rules, &mut ast, 0);
+        if res.len() != 1 {
+            panic!("Expected at exactly one result node, got {}", res.len());
+        }
+        ast.set_root(res[0]);
+        ast
     }
 
     pub fn run(&self, input: &str) -> Ast {

@@ -154,7 +154,8 @@ pub fn extract(
     );
 
     // HACK: Pass the tree through yeast
-    let ast = yeast::Ast::from_tree(language, &tree);
+    let runner = yeast::Runner::new(language, yeast::rules::rules());
+    let ast = runner.run_from_tree(&tree);
 
     traverse(&ast, &mut visitor);
 
