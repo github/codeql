@@ -76,12 +76,34 @@ predicate computeHeuristic(Expr e) {
   computeHeuristicType(e.getUnspecifiedType())
 }
 
+/**
+ * Gets the name of an established cryptography library or likely third party directory.
+ */
+string encryptionLibraryName() {
+  result =
+    [
+      "libssh", "openssl", "boringssl", "mbed", "libsodium", "libsrtp", "third.?party", "library",
+      "deps"
+    ]
+}
+
+/**
+ * Holds if `f` is a file that is likely to be inside an established
+ * cryptography library.
+ */
+predicate isLibrary(File f) {
+  f.getAbsolutePath().regexpMatch("(?i).*(" + concat(encryptionLibraryName(), "|") + ").*")
+  or
+  // assume that any result that would be found outside the source location is in a crypto library
+  not exists(f.getFile().getRelativePath())
+}
+
 from Function f, int amount
 where
   likelyEncryptionFunction(f) and
   amount = strictcount(Expr e | computeHeuristic(e) and e.getEnclosingFunction() = f) and
   amount >= 8 and
-  exists(f.getFile().getRelativePath()) // exclude library files
+  not isLibrary(f.getFile())
 select f,
   "This function, \"" + f.getName() +
     "\", may be a custom implementation of a cryptographic primitive."
