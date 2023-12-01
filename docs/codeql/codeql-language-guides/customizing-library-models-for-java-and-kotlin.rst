@@ -9,8 +9,6 @@ You can model the methods and callables that control data flow in any framework 
 
 .. include:: ../reusables/beta-note-model-packs-java.rst
 
-.. include:: ../reusables/beta-note-threat-models-java.rst
-
 About this article
 ------------------
 
@@ -56,7 +54,7 @@ Data extensions use union semantics, which means that the tuples of all extensio
 Publish data extension files in a CodeQL model pack to share
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can group one or more data extention files into a CodeQL model pack and publish it to the GitHub Container Registry. This makes it easy for anyone to download the model pack and use it to extend their analysis. For more information, see `Creating a CodeQL model pack <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack/>`__ and `Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs/>`__ in the CodeQL CLI documentation.
+You can group one or more data extention files into a CodeQL model pack and publish it to the GitHub Container Registry. This makes it easy for anyone to download the model pack and use it to extend their analysis. For more information, see `Creating a CodeQL model pack <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack>`__ and `Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs/>`__ in the CodeQL CLI documentation.
 
 Extensible predicates used to create custom models in Java and Kotlin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -299,11 +297,13 @@ The first four values identify the callable (in this case a method) to be modele
 Threat models
 -------------
 
- A threat model is a named class of dataflow sources that can be enabled or disabled independently. Threat models allow you to control the set of dataflow sources that you want to consider unsafe. For example, one codebase may only consider remote HTTP requests to be tainted, whereas another may also consider data from local files to be unsafe. You can use threat models to ensure that the relevant taint sources are used in a CodeQL analysis.
- 
- The ``kind`` property of the ``sourceModel`` determines which threat model a source is associated with. There are two main categories:
+.. include:: ../reusables/beta-note-threat-models-java.rst
+
+A threat model is a named class of dataflow sources that can be enabled or disabled independently. Threat models allow you to control the set of dataflow sources that you want to consider unsafe. For example, one codebase may only consider remote HTTP requests to be tainted, whereas another may also consider data from local files to be unsafe. You can use threat models to ensure that the relevant taint sources are used in a CodeQL analysis.
+
+The ``kind`` property of the ``sourceModel`` determines which threat model a source is associated with. There are two main categories:
 
 - ``remote`` which represents requests and responses from the network. 
 - ``local`` which represents data from local files (``file``), command-line arguments (``commandargs``), database reads (``database``), and environment variables(``environment``).
  
- When running a CodeQL analysis, the ``remote`` threat model is included by default. You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see `Analyzing your code with CodeQL queries <https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#running-model-packs-to-configure-threat-models>`__ and `Customizing your advanced setup for code scanning <https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models>`__.
+When running a CodeQL analysis, the ``remote`` threat model is included by default. You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see `Analyzing your code with CodeQL queries <https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#running-model-packs-to-configure-threat-models>`__ and `Customizing your advanced setup for code scanning <https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models>`__.
