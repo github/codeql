@@ -465,8 +465,8 @@ pub struct Rule {
 impl Rule {
     pub fn new(query: QueryNode, transform: Box<dyn Fn(&mut Ast, Captures) -> Vec<Id>>) -> Self {
         Self {
-            query: query,
-            transform: transform,
+            query,
+            transform,
         }
     }
 
@@ -488,8 +488,7 @@ fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Vec<Id> {
                 // We transformed it so now recurse into the result
                 return resultNode
                     .iter()
-                    .map(|node| applyRules(rules, ast, *node))
-                    .flatten()
+                    .flat_map(|node| applyRules(rules, ast, *node))
                     .collect();
             }
             None => {}
@@ -505,14 +504,13 @@ fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Vec<Id> {
         mem::swap(vec, &mut old);
         *vec = old
             .iter()
-            .map(|node| applyRules(rules, ast, *node))
-            .flatten()
+            .flat_map(|node| applyRules(rules, ast, *node))
             .collect();
     }
 
     node.id = ast.nodes.len();
     ast.nodes.push(node);
-    return vec![ast.nodes.len() - 1];
+    vec![ast.nodes.len() - 1]
 }
 
 pub struct Runner {

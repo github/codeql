@@ -3,7 +3,7 @@ use crate::{cursor::Cursor, AstCursor, Node};
 pub struct Printer {}
 
 impl Printer {
-    pub fn visit<'a>(&mut self, mut cursor: AstCursor<'a>) {
+    pub fn visit(&mut self, mut cursor: AstCursor<'_>) {
         self.enter_node(cursor.node());
         let mut recurse = true;
         loop {

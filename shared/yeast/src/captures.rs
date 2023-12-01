@@ -32,7 +32,7 @@ impl Captures {
     }
 
     pub fn insert(&mut self, key: &'static str, id: Id) {
-        self.captures.entry(key).or_insert_with(Vec::new).push(id);
+        self.captures.entry(key).or_default().push(id);
     }
 
     pub fn map_captures(&mut self, kind : &str, f: &mut impl FnMut(Id) -> Id) {
@@ -44,14 +44,14 @@ impl Captures {
     }
     pub fn map_captures_to(&mut self, from : &str, to: &'static str, f: &mut  impl FnMut(Id) -> Id) {
         if let Some(from_ids) = self.captures.get(from) {
-            let new_values = from_ids.iter().copied().map(|id| f(id)).collect();
+            let new_values = from_ids.iter().copied().map(f).collect();
             self.captures.insert(to, new_values);
         }
     }
 
     pub fn merge(&mut self, other: &Captures) {
         for (key, ids) in &other.captures {
-            self.captures.entry(key).or_insert_with(Vec::new).extend(ids);
+            self.captures.entry(key).or_default().extend(ids);
         }
     }
 
@@ -69,9 +69,7 @@ impl Captures {
                 .len();
             // TODO: better error on missing capture
             if id_iter.any(|id| self.captures.get(id).map(Vec::len).unwrap_or(0) != repeats) {
-                return Err(format!(
-                    "Repeated captures must have the same number of matches"
-                ));
+                return Err("Repeated captures must have the same number of matches".to_string());
             }
             Ok((0..repeats).map(move |iter| {
                 let mut new_vars: Captures = Captures::new();
@@ -82,7 +80,7 @@ impl Captures {
                 new_vars
             }))
         } else {
-            Err(format!("Repeated captures must have at least one capture"))
+            Err("Repeated captures must have at least one capture".to_string())
         }
     }
 }

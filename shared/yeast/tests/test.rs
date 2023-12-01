@@ -57,7 +57,7 @@ fn test_ruby_multiple_assignment() {
                 "index",
                 ast.create_named_token("integer", index.to_string()),
             );
-            return tree_builder!(
+            tree_builder!(
                 (assignment
                     left: (identifier child: (@lhs))
                     right: (
@@ -68,7 +68,7 @@ fn test_ruby_multiple_assignment() {
                 )
             )
             .build_tree(ast, &local_capture)
-            .unwrap();
+            .unwrap()
         });
 
         // construct the new tree here maybe
@@ -143,7 +143,7 @@ fn test_ruby_multiple_assignment() {
     // Just get rid of all end tokens as they aren't needed
     let end_query = query!(("end"));
     let end_transform = |_ast: &mut Ast, _match: Captures| {
-        return vec![];
+        vec![]
     };
     let end_rule = Rule::new(end_query, Box::new(end_transform));
 
@@ -161,8 +161,8 @@ fn test_ruby_multiple_assignment() {
     let ast = runner.run(input);
     let new_root = ast.get_root();
 
-    let formattedInput = serde_json::to_string_pretty(&ast.print(&input, old_root)).unwrap();
-    let formattedOutput = serde_json::to_string_pretty(&ast.print(&input, new_root)).unwrap();
+    let formattedInput = serde_json::to_string_pretty(&ast.print(input, old_root)).unwrap();
+    let formattedOutput = serde_json::to_string_pretty(&ast.print(input, new_root)).unwrap();
 
     println!("before transformation: {}", formattedInput);
     println!("after transformation: {}", formattedOutput);
@@ -256,26 +256,26 @@ fn test_cursor() {
     assert_eq!(cursor.node().id(), ast.get_root());
     assert_eq!(cursor.field_id(), None);
 
-    assert_eq!(cursor.goto_first_child(), true);
+    assert!(cursor.goto_first_child());
     assert_eq!(cursor.node().id(), 26);
 
-    assert_eq!(cursor.goto_next_sibling(), false);
+    assert!(!cursor.goto_next_sibling());
     assert_eq!(cursor.node().id(), 26);
 
-    assert_eq!(cursor.goto_first_child(), true);
+    assert!(cursor.goto_first_child());
     assert_eq!(cursor.node().id(), 19);
 
-    assert_eq!(cursor.goto_first_child(), true);
+    assert!(cursor.goto_first_child());
     assert_eq!(cursor.node().id(), 14);
 
-    assert_eq!(cursor.goto_first_child(), false);
+    assert!(!cursor.goto_first_child());
     assert_eq!(cursor.node().id(), 14);
 
-    assert_eq!(cursor.goto_next_sibling(), true);
+    assert!(cursor.goto_next_sibling());
     assert_eq!(cursor.node().id(), 15);
     assert_eq!(cursor.field_id(), Some(CHILD_FIELD));
 
-    assert_eq!(cursor.goto_parent(), true);
+    assert!(cursor.goto_parent());
     assert_eq!(cursor.node().id(), 19);
 
     assert_eq!(cursor.field_id(), Some(18));
