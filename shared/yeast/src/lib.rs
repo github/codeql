@@ -1,14 +1,15 @@
 // Uncomment to debug macros
-//#![feature(trace_macros)]
+#![feature(trace_macros)]
 
-use std::collections::BTreeMap;
+
+use std::{mem, collections::BTreeMap};
 
 use serde::Serialize;
 use serde_json::{json, Value};
 
+pub mod print;
 pub mod captures;
 pub mod cursor;
-pub mod print;
 pub mod query;
 mod range;
 pub mod tree_builder;
@@ -66,13 +67,6 @@ impl<'a> AstCursor<'a> {
         Some(())
     }
 
-    pub fn field_name(&self) -> Option<&'static str> {
-        if self.field_id() == Some(CHILD_FIELD) {
-            return None;
-        }
-        self.field_id()
-            .and_then(|id| self.ast.field_name_for_id(id))
-    }
 }
 impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
     fn node(&self) -> &'a Node {
@@ -198,12 +192,10 @@ impl Ast {
         &mut self,
         kind: KindId,
         content: NodeContent,
-        mut fields: BTreeMap<FieldId, Vec<Id>>,
-        children: Vec<Id>,
+         fields: BTreeMap<FieldId, Vec<Id>>,
         is_named: bool,
     ) -> Id {
         let id = self.nodes.len();
-        fields.insert(CHILD_FIELD, children);
         self.nodes.push(Node {
             id,
             kind,
@@ -218,6 +210,27 @@ impl Ast {
         id
     }
 
+    pub fn create_named_token(
+        &mut self,
+        kind: &'static str,
+        content: String,
+    ) -> Id {
+        let kind_id = self.language.id_for_node_kind(kind, true);
+        let id = self.nodes.len();
+        self.nodes.push(Node {
+            id,
+            kind: kind_id,
+            kind_name: kind,
+            is_named: true,
+            is_missing: false,
+            is_error: false,
+            is_extra: false,
+            fields: BTreeMap::new(),
+            content: NodeContent::DynamicString(content),
+        });
+        id
+    }
+
     fn field_name_for_id(&self, id: FieldId) -> Option<&'static str> {
         if id == CHILD_FIELD {
             Some(CHILD_FIELD_NAME)
@@ -226,13 +239,17 @@ impl Ast {
         }
     }
 
-    fn kind_name_for_id(&self, id: KindId) -> Option<&'static str> {
-        self.language.node_kind_for_id(id)
+    fn field_id_for_name(&self, name : &str) -> Option<FieldId> {
+        if name == CHILD_FIELD_NAME {
+            Some(CHILD_FIELD)
+        } else {
+            self.language.field_id_for_name(name)
+        }
     }
 
     /// Print a node for debugging
     fn print_node(&self, node: &Node, source: &str) -> Value {
-        let fields: BTreeMap<_, _> = node
+        let fields: BTreeMap<&'static str, Vec<Value>> = node
             .fields
             .iter()
             .map(|(field_id, nodes)| {
@@ -250,7 +267,7 @@ impl Ast {
             .collect();
         let mut value = BTreeMap::new();
         let kind = self.language.node_kind_for_id(node.kind).unwrap();
-        let content = match node.content {
+        let content = match &node.content {
             NodeContent::Range(range) => {
                 let len = range.end_byte - range.start_byte;
                 let end = range.start_byte + len;
@@ -260,6 +277,7 @@ impl Ast {
                     .collect()
             }
             NodeContent::String(s) => s.to_string(),
+            NodeContent::DynamicString(s) => s.clone(),
         };
         if fields.is_empty() {
             value.insert(kind, json!(content));
@@ -333,6 +351,24 @@ impl Ast {
                     is_named: true,
                 },
             ],
+        }
+    }
+
+    fn id_for_node_kind(&self, kind: &str) -> Option<KindId> {
+        let id = self.language.id_for_node_kind(kind, true);
+        if id == 0 {
+            None
+        } else {
+            Some(id)
+        }
+    }
+
+    fn id_for_unnamed_node_kind(&self, kind: &str) -> Option<KindId> {
+        let id = self.language.id_for_node_kind(kind, false);
+        if id == 0 {
+            None
+        } else {
+            Some(id)
         }
     }
 }
@@ -412,9 +448,10 @@ impl Node {
 /// The contents of a node is either a range in the original source file,
 /// or a new string if the node is synthesized.
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
-enum NodeContent {
+pub enum NodeContent {
     Range(#[serde(with = "range::Range")] tree_sitter::Range),
     String(&'static str),
+    DynamicString(String),
 }
 
 impl From<&'static str> for NodeContent {
@@ -431,18 +468,18 @@ impl From<tree_sitter::Range> for NodeContent {
 
 pub struct Rule {
     query: QueryNode,
-    transform: Box<dyn Fn(&mut Ast, Captures) -> Id>,
+    transform: Box<dyn Fn(&mut Ast, Captures) -> Vec<Id>>,
 }
 
 impl Rule {
-    pub fn new(query: QueryNode, transform: Box<dyn Fn(&mut Ast, Captures) -> Id>) -> Self {
+    pub fn new(query: QueryNode, transform: Box<dyn Fn(&mut Ast, Captures) -> Vec<Id>>) -> Self {
         Self {
             query: query,
             transform: transform,
         }
     }
 
-    fn tryRule(&self, ast: &mut Ast, node: Id) -> Option<Id> {
+    fn tryRule(&self, ast: &mut Ast, node: Id) -> Option<Vec<Id>> {
         let mut captures = Captures::new();
         if self.query.do_match(ast, node, &mut captures).unwrap() {
             Some((self.transform)(ast, captures))
@@ -452,38 +489,39 @@ impl Rule {
     }
 }
 
-fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Id {
-    let mut transformedId = id;
-    // apply the transformation rules on this node until fixpoint
-    loop {
-        let mut newTransformedId = transformedId;
-        for rule in rules {
-            newTransformedId = match rule.tryRule(ast, newTransformedId) {
-                Some(resultNode) => resultNode,
-                None => newTransformedId,
+fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Vec<Id> {
+    // apply the transformation rules on this node
+    for rule in rules {
+        match rule.tryRule(ast, id) {
+            Some(resultNode) => {
+                // We transformed it so now recurse into the result
+                return resultNode
+                    .iter()
+                    .map(|node| applyRules(rules, ast, *node))
+                    .flatten()
+                    .collect();
             }
-        }
-
-        if newTransformedId == transformedId {
-            break;
-        } else {
-            transformedId = newTransformedId
+            None => {}
         }
     }
 
     // copy the current node
-    let mut node = ast.nodes[transformedId].clone();
+    let mut node = ast.nodes[id].clone();
 
     // recursively descend into all the fields
     for (_, vec) in &mut node.fields {
-        for v in vec {
-            *v = applyRules(rules, ast, *v)
-        }
+        let mut old = Vec::new();
+        mem::swap(vec, &mut old);
+        *vec = old
+            .iter()
+            .map(|node| applyRules(rules, ast, *node))
+            .flatten()
+            .collect();
     }
 
     node.id = ast.nodes.len();
     ast.nodes.push(node);
-    return ast.nodes.len() - 1;
+    return vec![ast.nodes.len() - 1];
 }
 
 pub struct Runner {
@@ -504,7 +542,10 @@ impl Runner {
         let tree = parser.parse(input, None).unwrap();
         let mut ast = Ast::from_tree(self.language, &tree);
         let res = applyRules(&self.rules, &mut ast, 0);
-        ast.set_root(res);
+        if res.len() != 1 {
+            panic!("Expected at exactly one result node, got {}", res.len());
+        }
+        ast.set_root(res[0]);
         ast
     }
 }
