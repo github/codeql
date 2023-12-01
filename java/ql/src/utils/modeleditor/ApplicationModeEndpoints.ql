@@ -10,10 +10,6 @@ private import java
 private import ApplicationModeEndpointsQuery
 private import ModelEditor
 
-private Call aUsage(ExternalEndpoint endpoint) {
-  result.getCallee().getSourceDeclaration() = endpoint
-}
-
 from ExternalEndpoint endpoint, boolean supported, Call usage, string type, string classification
 where
   supported = isSupported(endpoint) and

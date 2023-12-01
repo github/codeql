@@ -4,6 +4,10 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import ModelEditor
 
+Call aUsage(ExternalEndpoint endpoint) {
+  result.getCallee().getSourceDeclaration() = endpoint
+}
+
 /**
  * A class of effectively public callables in library code.
  */

@@ -1,0 +1,40 @@
+input
+| System | Console | ReadLine | () | Argument[this] | Console | class |
+| System | Console | ReadLine | () | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| System | Console | ReadLine | () | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| System | Console | ReadLine | () | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| System | Console | Write | (System.Object) | Argument[0] | Object value | parameter |
+| System | Console | Write | (System.Object) | Argument[this] | Console | class |
+| System | Console | WriteLine | (System.Object) | Argument[0] | Object value | parameter |
+| System | Console | WriteLine | (System.Object) | Argument[this] | Console | class |
+| System | Console | WriteLine | (System.String) | Argument[0] | String value | parameter |
+| System | Console | WriteLine | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| System | Console | WriteLine | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| System | Console | WriteLine | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| System | Console | WriteLine | (System.String) | Argument[this] | Console | class |
+| System | Console | get_BackgroundColor | () | Argument[this] | Console | class |
+| System | Console | set_ForegroundColor | (System.ConsoleColor) | Argument[0] | ConsoleColor value | parameter |
+| System | Console | set_ForegroundColor | (System.ConsoleColor) | Argument[this] | Console | class |
+output
+| System | Console | ReadLine | () | Argument[this] | Console | class |
+| System | Console | ReadLine | () | ReturnValue | String | return |
+| System | Console | ReadLine | () | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| System | Console | ReadLine | () | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| System | Console | ReadLine | () | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| System | Console | Write | (System.Object) | Argument[0] | Object value | parameter |
+| System | Console | Write | (System.Object) | Argument[this] | Console | class |
+| System | Console | Write | (System.Object) | ReturnValue | Void | return |
+| System | Console | WriteLine | (System.Object) | Argument[0] | Object value | parameter |
+| System | Console | WriteLine | (System.Object) | Argument[this] | Console | class |
+| System | Console | WriteLine | (System.Object) | ReturnValue | Void | return |
+| System | Console | WriteLine | (System.String) | Argument[0] | String value | parameter |
+| System | Console | WriteLine | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| System | Console | WriteLine | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| System | Console | WriteLine | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| System | Console | WriteLine | (System.String) | Argument[this] | Console | class |
+| System | Console | WriteLine | (System.String) | ReturnValue | Void | return |
+| System | Console | get_BackgroundColor | () | Argument[this] | Console | class |
+| System | Console | get_BackgroundColor | () | ReturnValue | ConsoleColor | return |
+| System | Console | set_ForegroundColor | (System.ConsoleColor) | Argument[0] | ConsoleColor value | parameter |
+| System | Console | set_ForegroundColor | (System.ConsoleColor) | Argument[this] | Console | class |
+| System | Console | set_ForegroundColor | (System.ConsoleColor) | ReturnValue | Void | return |

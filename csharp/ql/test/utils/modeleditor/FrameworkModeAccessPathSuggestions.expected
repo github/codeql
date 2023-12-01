@@ -1,0 +1,202 @@
+input
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[0] | String value | parameter |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff | (T) | Argument[0] | T arg | parameter |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff | (T) | Argument[this] | PublicGenericClass`2 | class |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff2`1 | (T2) | Argument[0] | T2 arg | parameter |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff2`1 | (T2) | Argument[this] | PublicGenericClass`2 | class |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[this] | PublicGenericInterface`1 | class |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff | (T) | Argument[0] | T arg | parameter |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff | (T) | Argument[this] | PublicGenericInterface`1 | class |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff2`1 | (T2) | Argument[0] | T2 arg | parameter |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff2`1 | (T2) | Argument[this] | PublicGenericInterface`1 | class |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | Argument[this] | PublicInterface | class |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | Argument[this].Property[GitHub.CodeQL.PublicInterface.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[0] | String value | parameter |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[this] | PublicInterface | class |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicInterface.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[this] | PublicInterface | class |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicInterface.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[this] | PublicInterface | class |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicInterface.PublicProperty] | String PublicProperty | property |
+output
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | ReturnValue | String | return |
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | get_PublicProperty | () | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | protectedStuff | (System.String) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[0] | String value | parameter |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | set_PublicProperty | (System.String) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | ReturnValue | String | return |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | sourceStuff | () | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | staticStuff | (System.String) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | stuff | (System.String) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[this] | PublicClass | class |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicClass.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | ReturnValue | String | return |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicClass | summaryStuff | (System.String) | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff | (T) | Argument[0] | T arg | parameter |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff | (T) | Argument[this] | PublicGenericClass`2 | class |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff | (T) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff2`1 | (T2) | Argument[0] | T2 arg | parameter |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff2`1 | (T2) | Argument[this] | PublicGenericClass`2 | class |
+| GitHub.CodeQL | PublicGenericClass`2 | stuff2`1 | (T2) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | Argument[this] | PublicGenericInterface`1 | class |
+| GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff | (T) | Argument[0] | T arg | parameter |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff | (T) | Argument[this] | PublicGenericInterface`1 | class |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff | (T) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff2`1 | (T2) | Argument[0] | T2 arg | parameter |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff2`1 | (T2) | Argument[this] | PublicGenericInterface`1 | class |
+| GitHub.CodeQL | PublicGenericInterface`1 | stuff2`1 | (T2) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | Argument[this] | PublicInterface | class |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | Argument[this].Property[GitHub.CodeQL.PublicInterface.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | ReturnValue | String | return |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | ReturnValue.Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | ReturnValue.Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicInterface | get_PublicProperty | () | ReturnValue.Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[0] | String value | parameter |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[this] | PublicInterface | class |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicInterface.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[this] | PublicInterface | class |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicInterface.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicInterface | staticStuff | (System.String) | ReturnValue | Void | return |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[0] | String arg | parameter |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[0].Field[System.String._firstChar] | Char _firstChar | field |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[0].Field[System.String._stringLength] | Int32 _stringLength | field |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[0].Property[System.String.Length] | Int32 Length | property |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[this] | PublicInterface | class |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | Argument[this].Property[GitHub.CodeQL.PublicInterface.PublicProperty] | String PublicProperty | property |
+| GitHub.CodeQL | PublicInterface | stuff | (System.String) | ReturnValue | Void | return |

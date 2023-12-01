@@ -6,6 +6,8 @@ private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import ModelEditor
 
+Call aUsage(ExternalEndpoint api) { result.getTarget().getUnboundDeclaration() = api }
+
 /**
  * A class of effectively public callables in library code.
  */

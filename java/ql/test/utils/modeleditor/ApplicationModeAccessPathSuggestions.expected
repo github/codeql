@@ -1,0 +1,29 @@
+input
+| java.io | PrintStream | println | (Object) | Argument[0] | Object p0 | parameter |
+| java.io | PrintStream | println | (Object) | Argument[this] | PrintStream | class |
+| java.io | PrintStream | println | (String) | Argument[0] | String p0 | parameter |
+| java.io | PrintStream | println | (String) | Argument[this] | PrintStream | class |
+| java.nio.file | FileSystem | getPath | (String,String[]) | Argument[0] | String p0 | parameter |
+| java.nio.file | FileSystem | getPath | (String,String[]) | Argument[1] | String[] p1 | parameter |
+| java.nio.file | FileSystem | getPath | (String,String[]) | Argument[this] | FileSystem | class |
+| java.nio.file | FileSystems | getDefault | () | Argument[this] | FileSystems | class |
+| java.nio.file | Paths | get | (String,String[]) | Argument[0] | String p0 | parameter |
+| java.nio.file | Paths | get | (String,String[]) | Argument[1] | String[] p1 | parameter |
+| java.nio.file | Paths | get | (String,String[]) | Argument[this] | Paths | class |
+output
+| java.io | PrintStream | println | (Object) | Argument[0] | Object p0 | parameter |
+| java.io | PrintStream | println | (Object) | Argument[this] | PrintStream | class |
+| java.io | PrintStream | println | (Object) | ReturnValue | void | return |
+| java.io | PrintStream | println | (String) | Argument[0] | String p0 | parameter |
+| java.io | PrintStream | println | (String) | Argument[this] | PrintStream | class |
+| java.io | PrintStream | println | (String) | ReturnValue | void | return |
+| java.nio.file | FileSystem | getPath | (String,String[]) | Argument[0] | String p0 | parameter |
+| java.nio.file | FileSystem | getPath | (String,String[]) | Argument[1] | String[] p1 | parameter |
+| java.nio.file | FileSystem | getPath | (String,String[]) | Argument[this] | FileSystem | class |
+| java.nio.file | FileSystem | getPath | (String,String[]) | ReturnValue | Path | return |
+| java.nio.file | FileSystems | getDefault | () | Argument[this] | FileSystems | class |
+| java.nio.file | FileSystems | getDefault | () | ReturnValue | FileSystem | return |
+| java.nio.file | Paths | get | (String,String[]) | Argument[0] | String p0 | parameter |
+| java.nio.file | Paths | get | (String,String[]) | Argument[1] | String[] p1 | parameter |
+| java.nio.file | Paths | get | (String,String[]) | Argument[this] | Paths | class |
+| java.nio.file | Paths | get | (String,String[]) | ReturnValue | Path | return |

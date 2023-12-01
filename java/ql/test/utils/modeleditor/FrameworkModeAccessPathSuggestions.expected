@@ -1,0 +1,70 @@
+input
+| com.github.codeql.test | PublicClass | neutralStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | neutralStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | protectedStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | protectedStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | sinkStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | sinkStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | sourceStuff | () | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | staticStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | staticStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | stuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | stuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | summaryStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | summaryStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicGenericClass | stuff | (Object) | Argument[0] | T arg | parameter |
+| com.github.codeql.test | PublicGenericClass | stuff | (Object) | Argument[this] | PublicGenericClass | class |
+| com.github.codeql.test | PublicGenericClass | stuff2 | (Object) | Argument[0] | T3 arg | parameter |
+| com.github.codeql.test | PublicGenericClass | stuff2 | (Object) | Argument[this] | PublicGenericClass | class |
+| com.github.codeql.test | PublicGenericInterface | staticStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicGenericInterface | staticStuff | (String) | Argument[this] | PublicGenericInterface | class |
+| com.github.codeql.test | PublicGenericInterface | stuff | (Object) | Argument[0] | T arg | parameter |
+| com.github.codeql.test | PublicGenericInterface | stuff | (Object) | Argument[this] | PublicGenericInterface | class |
+| com.github.codeql.test | PublicGenericInterface | stuff2 | (Object) | Argument[0] | T2 arg | parameter |
+| com.github.codeql.test | PublicGenericInterface | stuff2 | (Object) | Argument[this] | PublicGenericInterface | class |
+| com.github.codeql.test | PublicInterface | staticStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicInterface | staticStuff | (String) | Argument[this] | PublicInterface | class |
+| com.github.codeql.test | PublicInterface | stuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicInterface | stuff | (String) | Argument[this] | PublicInterface | class |
+output
+| com.github.codeql.test | PublicClass | neutralStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | neutralStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | neutralStuff | (String) | ReturnValue | void | return |
+| com.github.codeql.test | PublicClass | protectedStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | protectedStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | protectedStuff | (String) | ReturnValue | void | return |
+| com.github.codeql.test | PublicClass | sinkStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | sinkStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | sinkStuff | (String) | ReturnValue | void | return |
+| com.github.codeql.test | PublicClass | sourceStuff | () | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | sourceStuff | () | ReturnValue | String | return |
+| com.github.codeql.test | PublicClass | staticStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | staticStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | staticStuff | (String) | ReturnValue | void | return |
+| com.github.codeql.test | PublicClass | stuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | stuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | stuff | (String) | ReturnValue | void | return |
+| com.github.codeql.test | PublicClass | summaryStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicClass | summaryStuff | (String) | Argument[this] | PublicClass | class |
+| com.github.codeql.test | PublicClass | summaryStuff | (String) | ReturnValue | String | return |
+| com.github.codeql.test | PublicGenericClass | stuff | (Object) | Argument[0] | T arg | parameter |
+| com.github.codeql.test | PublicGenericClass | stuff | (Object) | Argument[this] | PublicGenericClass | class |
+| com.github.codeql.test | PublicGenericClass | stuff | (Object) | ReturnValue | void | return |
+| com.github.codeql.test | PublicGenericClass | stuff2 | (Object) | Argument[0] | T3 arg | parameter |
+| com.github.codeql.test | PublicGenericClass | stuff2 | (Object) | Argument[this] | PublicGenericClass | class |
+| com.github.codeql.test | PublicGenericClass | stuff2 | (Object) | ReturnValue | void | return |
+| com.github.codeql.test | PublicGenericInterface | staticStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicGenericInterface | staticStuff | (String) | Argument[this] | PublicGenericInterface | class |
+| com.github.codeql.test | PublicGenericInterface | staticStuff | (String) | ReturnValue | void | return |
+| com.github.codeql.test | PublicGenericInterface | stuff | (Object) | Argument[0] | T arg | parameter |
+| com.github.codeql.test | PublicGenericInterface | stuff | (Object) | Argument[this] | PublicGenericInterface | class |
+| com.github.codeql.test | PublicGenericInterface | stuff | (Object) | ReturnValue | void | return |
+| com.github.codeql.test | PublicGenericInterface | stuff2 | (Object) | Argument[0] | T2 arg | parameter |
+| com.github.codeql.test | PublicGenericInterface | stuff2 | (Object) | Argument[this] | PublicGenericInterface | class |
+| com.github.codeql.test | PublicGenericInterface | stuff2 | (Object) | ReturnValue | void | return |
+| com.github.codeql.test | PublicInterface | staticStuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicInterface | staticStuff | (String) | Argument[this] | PublicInterface | class |
+| com.github.codeql.test | PublicInterface | staticStuff | (String) | ReturnValue | void | return |
+| com.github.codeql.test | PublicInterface | stuff | (String) | Argument[0] | String arg | parameter |
+| com.github.codeql.test | PublicInterface | stuff | (String) | Argument[this] | PublicInterface | class |
+| com.github.codeql.test | PublicInterface | stuff | (String) | ReturnValue | void | return |

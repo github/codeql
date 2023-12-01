@@ -10,8 +10,6 @@ import csharp
 import ApplicationModeEndpointsQuery
 import ModelEditor
 
-private Call aUsage(ExternalEndpoint api) { result.getTarget().getUnboundDeclaration() = api }
-
 from ExternalEndpoint endpoint, boolean supported, Call usage, string type, string classification
 where
   supported = isSupported(endpoint) and
