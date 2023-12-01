@@ -7,35 +7,35 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class UnsafeUrlForward {
+public class UrlForwardTest {
 
 	@GetMapping("/bad1")
 	public ModelAndView bad1(String url) {
-		return new ModelAndView(url); // $ hasUnsafeUrlForward
+		return new ModelAndView(url); // $ hasUrlForward
 	}
 
 	@GetMapping("/bad2")
 	public ModelAndView bad2(String url) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(url); // $ hasUnsafeUrlForward
+		modelAndView.setViewName(url); // $ hasUrlForward
 		return modelAndView;
 	}
 
 	@GetMapping("/bad3")
 	public String bad3(String url) {
-		return "forward:" + url + "/swagger-ui/index.html"; // $ hasUnsafeUrlForward
+		return "forward:" + url + "/swagger-ui/index.html"; // $ hasUrlForward
 	}
 
 	@GetMapping("/bad4")
 	public ModelAndView bad4(String url) {
-		ModelAndView modelAndView = new ModelAndView("forward:" + url); // $ hasUnsafeUrlForward
+		ModelAndView modelAndView = new ModelAndView("forward:" + url); // $ hasUrlForward
 		return modelAndView;
 	}
 
 	@GetMapping("/bad5")
 	public void bad5(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher(url).include(request, response); // $ hasUnsafeUrlForward
+			request.getRequestDispatcher(url).include(request, response); // $ hasUrlForward
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -46,7 +46,7 @@ public class UnsafeUrlForward {
 	@GetMapping("/bad6")
 	public void bad6(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response); // $ hasUnsafeUrlForward
+			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response); // $ hasUrlForward
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -57,7 +57,7 @@ public class UnsafeUrlForward {
 	@GetMapping("/bad7")
 	public void bad7(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").forward(request, response); // $ hasUnsafeUrlForward
+			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").forward(request, response); // $ hasUrlForward
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

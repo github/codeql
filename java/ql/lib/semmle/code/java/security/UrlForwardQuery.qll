@@ -1,18 +1,18 @@
-/** Provides configurations to be used in queries related to unsafe URL forwarding. */
+/** Provides a taint-tracking configuration for reasoning about URL forwarding. */
 
 import java
-import semmle.code.java.security.UnsafeUrlForward
+import semmle.code.java.security.UrlForward
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.PathSanitizer
 
 /**
- * A taint-tracking configuration for untrusted user input in a URL forward or include.
+ * A taint-tracking configuration for reasoning about URL forwarding.
  */
-module UnsafeUrlForwardFlowConfig implements DataFlow::ConfigSig {
+module UrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof ThreatModelFlowSource and
-    // TODO: move below logic to class in UnsafeUrlForward.qll? And check exactly why these were excluded.
+    // TODO: move below logic to class in UrlForward.qll? And check exactly why these were excluded.
     not exists(MethodCall ma, Method m | ma.getMethod() = m |
       (
         m instanceof HttpServletRequestGetRequestUriMethod or
@@ -23,10 +23,10 @@ module UnsafeUrlForwardFlowConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeUrlForwardSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UrlForwardSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node instanceof UnsafeUrlForwardSanitizer or
+    node instanceof UrlForwardSanitizer or
     node instanceof PathInjectionSanitizer
   }
 
@@ -35,6 +35,6 @@ module UnsafeUrlForwardFlowConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * Taint-tracking flow for untrusted user input in a URL forward or include.
+ * Taint-tracking flow for URL forwarding.
  */
-module UnsafeUrlForwardFlow = TaintTracking::Global<UnsafeUrlForwardFlowConfig>;
+module UrlForwardFlow = TaintTracking::Global<UrlForwardFlowConfig>;

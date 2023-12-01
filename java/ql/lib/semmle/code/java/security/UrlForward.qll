@@ -1,23 +1,23 @@
-/** Provides classes related to unsafe URL forwarding in Java. */
+/** Provides classes to reason about URL forward attacks. */
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 
-/** A sink for unsafe URL forward vulnerabilities. */
-abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
+/** A URL forward sink. */
+abstract class UrlForwardSink extends DataFlow::Node { }
 
-/** A default sink representing methods susceptible to unsafe URL forwarding. */
-private class DefaultUnsafeUrlForwardSink extends UnsafeUrlForwardSink {
-  DefaultUnsafeUrlForwardSink() { sinkNode(this, "url-forward") }
+/** A default sink representing methods susceptible to URL forwarding attacks. */
+private class DefaultUrlForwardSink extends UrlForwardSink {
+  DefaultUrlForwardSink() { sinkNode(this, "url-forward") }
 }
 
 /**
  * An expression appended (perhaps indirectly) to `"forward:"`, and which
  * is reachable from a Spring entry point.
  */
-private class SpringUrlForwardSink extends UnsafeUrlForwardSink {
+private class SpringUrlForwardSink extends UrlForwardSink {
   SpringUrlForwardSink() {
     // TODO: check if can use MaD "Annotated" for `SpringRequestMappingMethod` or if too complicated for MaD (probably too complicated).
     any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable()) and
@@ -32,10 +32,10 @@ private class ForwardPrefix extends InterestingPrefix {
   override int getOffset() { result = 0 }
 }
 
-/** A sanitizer for unsafe URL forward vulnerabilities. */
-abstract class UnsafeUrlForwardSanitizer extends DataFlow::Node { }
+/** A URL forward sanitizer. */
+abstract class UrlForwardSanitizer extends DataFlow::Node { }
 
-private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer {
+private class PrimitiveSanitizer extends UrlForwardSanitizer {
   PrimitiveSanitizer() {
     this.getType() instanceof PrimitiveType or
     this.getType() instanceof BoxedType or
@@ -44,7 +44,7 @@ private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer {
 }
 
 // TODO: double-check this sanitizer (and should I switch all "sanitizer" naming to "barrier" instead?)
-private class FollowsSanitizingPrefix extends UnsafeUrlForwardSanitizer {
+private class FollowsSanitizingPrefix extends UrlForwardSanitizer {
   FollowsSanitizingPrefix() { this.asExpr() = any(SanitizingPrefix fp).getAnAppendedExpression() }
 }
 

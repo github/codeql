@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class UnsafeUrlForward {
+public class UrlForward {
 
 	@GetMapping("/bad1")
 	public ModelAndView bad1(String url) {

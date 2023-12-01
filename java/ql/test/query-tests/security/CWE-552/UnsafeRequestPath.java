@@ -20,7 +20,7 @@ public class UnsafeRequestPath implements Filter {
 		String path = ((HttpServletRequest) request).getServletPath();
 		// A sample payload "/%57EB-INF/web.xml" can bypass this `startsWith` check
 		if (path != null && !path.startsWith("/WEB-INF")) {
-			request.getRequestDispatcher(path).forward(request, response); // $ hasUnsafeUrlForward
+			request.getRequestDispatcher(path).forward(request, response); // $ hasUrlForward
 		} else {
 			chain.doFilter(request, response);
 		}

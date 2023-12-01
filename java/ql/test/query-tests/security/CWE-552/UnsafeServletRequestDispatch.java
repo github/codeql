@@ -29,7 +29,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 			rd.forward(request, response);
 		} else {
 			ServletContext sc = cfg.getServletContext();
-			RequestDispatcher rd = sc.getRequestDispatcher(returnURL); // $ hasUnsafeUrlForward
+			RequestDispatcher rd = sc.getRequestDispatcher(returnURL); // $ hasUrlForward
 			rd.forward(request, response);
 		}
 	}
@@ -45,7 +45,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/Login.jsp");
 			rd.forward(request, response);
 		} else {
-			RequestDispatcher rd = request.getRequestDispatcher(returnURL); // $ hasUnsafeUrlForward
+			RequestDispatcher rd = request.getRequestDispatcher(returnURL); // $ hasUrlForward
 			rd.forward(request, response);
 		}
 	}
@@ -73,7 +73,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 		// A sample payload "/pages/welcome.jsp/../WEB-INF/web.xml" can bypass the `startsWith` check
 		// The payload "/pages/welcome.jsp/../../%57EB-INF/web.xml" can bypass the check as well since RequestDispatcher will decode `%57` as `W`
 		if (path.startsWith(BASE_PATH)) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUnsafeUrlForward
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
 		}
 	}
 
@@ -110,7 +110,7 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 		Path requestedPath = Paths.get(BASE_PATH).resolve(path).normalize();
 
 		if (!requestedPath.startsWith("/WEB-INF") && !requestedPath.startsWith("/META-INF")) {
-			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ MISSING: hasUnsafeUrlForward
+			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ MISSING: hasUrlForward
 		}
 	}
 

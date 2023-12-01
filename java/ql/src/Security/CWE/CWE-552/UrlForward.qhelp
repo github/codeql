@@ -27,7 +27,7 @@ without validating the input, which may cause file leakage. In the <code>good1</
 ordinary forwarding requests are shown, which will not cause file leakage.
 </p>
 
-<sample src="UnsafeUrlForward.java" />
+<sample src="UrlForward.java" />
 
 <p>The following examples show an HTTP request parameter or request path being used directly in a
 request dispatcher of Java EE without validating the input, which allows sensitive file exposure

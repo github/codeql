@@ -14,10 +14,10 @@
  */
 
 import java
-import semmle.code.java.security.UnsafeUrlForwardQuery
-import UnsafeUrlForwardFlow::PathGraph
+import semmle.code.java.security.UrlForwardQuery
+import UrlForwardFlow::PathGraph
 
-from UnsafeUrlForwardFlow::PathNode source, UnsafeUrlForwardFlow::PathNode sink
-where UnsafeUrlForwardFlow::flowPath(source, sink)
+from UrlForwardFlow::PathNode source, UrlForwardFlow::PathNode sink
+where UrlForwardFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Untrusted URL forward depends on a $@.", source.getNode(),
   "user-provided value"
