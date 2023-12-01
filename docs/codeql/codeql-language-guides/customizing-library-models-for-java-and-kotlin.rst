@@ -292,7 +292,7 @@ The first four values identify the callable (in this case a method) to be modele
 - The fifth value ``summary`` is the kind of the neutral.
 - The sixth value ``manual`` is the provenance of the neutral.
 
-.. _threat-models
+.. _threat-models:
 
 Threat models
 -------------
@@ -306,4 +306,4 @@ Threat models
 - ``remote`` which represents remote HTTP requests. 
 - ``local`` which represents data from local files (``file``), command-line arguments (``commandargs``), database reads (``database``), and environment variables(``environement``).
  
- When running a CodeQL analysis, the ``remote`` threat model is included by default. You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information see TODO.
+ When running a CodeQL analysis, the ``remote`` threat model is included by default. You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see `Analyzing your code with CodeQL queries <https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#running-model-packs-to-configure-threat-models>`__ and `Customizing your advanced setup for code scanning <https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models>`__.
