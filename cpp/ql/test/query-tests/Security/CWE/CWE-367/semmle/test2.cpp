@@ -411,5 +411,5 @@ void test7_1(const char *path1, const char *path2)
 
 int test8(const char *path, int mode)
 {
-    return (chmod(path, mode) == 0 ? 1 : 0);
+    return (chmod(path, mode) == 0 ? 1 : 0); // GOOD
 }
