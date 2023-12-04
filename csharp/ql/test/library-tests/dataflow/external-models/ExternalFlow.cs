@@ -185,16 +185,16 @@ namespace My.Qltest
         void M1()
         {
             var o = new object();
-            Sink(GeneratedFlow(o));
+            Sink(GeneratedFlow(o)); // no flow because the modelled method exists in source code
         }
 
         void M2()
         {
             var o1 = new object();
-            Sink(GeneratedFlowArgs(o1, null));
+            Sink(GeneratedFlowArgs(o1, null)); // no flow because the modelled method exists in source code
 
             var o2 = new object();
-            Sink(GeneratedFlowArgs(null, o2));
+            Sink(GeneratedFlowArgs(null, o2)); // no flow because the modelled method exists in source code
         }
 
         void M3()
