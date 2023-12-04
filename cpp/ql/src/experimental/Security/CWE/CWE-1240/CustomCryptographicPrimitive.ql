@@ -7,6 +7,7 @@
  * @precision medium
  * @id cpp/crypto-primitive
  * @tags security
+ *       experimental
  *       external/cwe/cwe-1240
  */
 
