@@ -1,12 +1,3 @@
-uniqueEnclosingCallable
-uniqueCallEnclosingCallable
-uniqueType
-uniqueNodeLocation
-missingLocation
-uniqueNodeToString
-parameterCallable
-localFlowIsLocal
-readStepIsLocal
 storeStepIsLocal
 | testapp/orm_form_test.py:6:1:6:28 | [orm-model] Class MyModel | testapp/tests.py:83:16:83:36 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
 | testapp/orm_form_test.py:6:1:6:28 | [orm-model] Class MyModel | testapp/tests.py:84:16:84:43 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
@@ -56,20 +47,3 @@ storeStepIsLocal
 | testapp/orm_tests.py:294:1:294:29 | [orm-model] Class TestLoad | testapp/orm_tests.py:356:12:356:33 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
 | testapp/orm_tests.py:294:1:294:29 | [orm-model] Class TestLoad | testapp/orm_tests.py:363:9:363:37 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
 | testapp/tests.py:81:33:81:37 | ControlFlowNode for Str | testapp/orm_form_test.py:6:1:6:28 | [orm-model] Class MyModel | Store step does not preserve enclosing callable. |
-compatibleTypesReflexive
-unreachableNodeCCtx
-localCallNodes
-postIsNotPre
-postHasUniquePre
-uniquePostUpdate
-postIsInSameCallable
-reverseRead
-argHasPostUpdate
-postWithInFlow
-viableImplInCallContextTooLarge
-uniqueParameterNodeAtPosition
-uniqueParameterNodePosition
-uniqueContentApprox
-identityLocalStep
-missingArgumentCall
-multipleArgumentCall
