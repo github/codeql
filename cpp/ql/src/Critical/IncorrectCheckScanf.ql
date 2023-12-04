@@ -5,11 +5,10 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.5
- * @precision medium
- * @id cpp/discarded-scanf
+ * @precision high
+ * @id cpp/incorrectly-checked-scanf
  * @tags security
  *       correctness
- *       external/cwe/cwe-252
  *       external/cwe/cwe-253
  */
 
