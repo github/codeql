@@ -21,8 +21,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 : assemblies.OrderBy(initialOrdering);
 
             return ordered
-                .ThenBy(info => info.NetCoreVersion ?? emptyVersion)
                 .ThenBy(info => info.Version ?? emptyVersion)
+                .ThenBy(info => info.NetCoreVersion ?? emptyVersion)
                 .ThenBy(info => info.Filename);
         }
     }
