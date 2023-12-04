@@ -1,8 +1,7 @@
 use std::cell::Cell;
-use std::path::Path;
 use std::rc::Rc;
 
-use crate::{captures::Captures, print::Printer, *};
+use crate::{captures::Captures, *};
 
 pub fn rules() -> Vec<Rule> {
     let fresh_ids = Rc::new(Cell::new(0));
@@ -107,7 +106,7 @@ pub fn rules() -> Vec<Rule> {
                         block_parameters
                             child: (@tmp_param)
                     )
-                    body: (block_body 
+                    body: (block_body
                         child*: (
                             (assignment
                                 left: (@pat)

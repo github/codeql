@@ -75,7 +75,7 @@ impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
     }
 
     fn field_name(&self) -> Option<&'static str> {
-        if (self.field_id() == Some(CHILD_FIELD)) {
+        if self.field_id() == Some(CHILD_FIELD) {
             None
         } else {
             self.field_id()
@@ -498,7 +498,7 @@ impl Rule {
         Self { query, transform }
     }
 
-    fn tryRule(&self, ast: &mut Ast, node: Id) -> Option<Vec<Id>> {
+    fn try_rule(&self, ast: &mut Ast, node: Id) -> Option<Vec<Id>> {
         let mut captures = Captures::new();
         if self.query.do_match(ast, node, &mut captures).unwrap() {
             Some((self.transform)(ast, captures))
@@ -508,18 +508,15 @@ impl Rule {
     }
 }
 
-fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Vec<Id> {
+fn apply_rules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Vec<Id> {
     // apply the transformation rules on this node
     for rule in rules {
-        match rule.tryRule(ast, id) {
-            Some(resultNode) => {
-                // We transformed it so now recurse into the result
-                return resultNode
-                    .iter()
-                    .flat_map(|node| applyRules(rules, ast, *node))
-                    .collect();
-            }
-            None => {}
+        if let Some(result_node) = rule.try_rule(ast, id) {
+            // We transformed it so now recurse into the result
+            return result_node
+                .iter()
+                .flat_map(|node| apply_rules(rules, ast, *node))
+                .collect();
         }
     }
 
@@ -527,12 +524,12 @@ fn applyRules(rules: &Vec<Rule>, ast: &mut Ast, id: Id) -> Vec<Id> {
     let mut node = ast.nodes[id].clone();
 
     // recursively descend into all the fields
-    for (_, vec) in &mut node.fields {
+    for vec in node.fields.values_mut() {
         let mut old = Vec::new();
         mem::swap(vec, &mut old);
         *vec = old
             .iter()
-            .flat_map(|node| applyRules(rules, ast, *node))
+            .flat_map(|node| apply_rules(rules, ast, *node))
             .collect();
     }
 
@@ -552,8 +549,8 @@ impl Runner {
     }
 
     pub fn run_from_tree(&self, tree: &tree_sitter::Tree) -> Ast {
-        let mut ast = Ast::from_tree(self.language, &tree);
-        let res = applyRules(&self.rules, &mut ast, 0);
+        let mut ast = Ast::from_tree(self.language, tree);
+        let res = apply_rules(&self.rules, &mut ast, 0);
         if res.len() != 1 {
             panic!("Expected at exactly one result node, got {}", res.len());
         }
@@ -568,7 +565,7 @@ impl Runner {
         parser.set_language(self.language).unwrap();
         let tree = parser.parse(input, None).unwrap();
         let mut ast = Ast::from_tree(self.language, &tree);
-        let res = applyRules(&self.rules, &mut ast, 0);
+        let res = apply_rules(&self.rules, &mut ast, 0);
         if res.len() != 1 {
             panic!("Expected at exactly one result node, got {}", res.len());
         }

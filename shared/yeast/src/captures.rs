@@ -7,6 +7,12 @@ pub struct Captures {
     captures: BTreeMap<&'static str, Vec<Id>>,
 }
 
+impl Default for Captures {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Captures {
     pub fn new() -> Self {
         Captures {
@@ -35,14 +41,14 @@ impl Captures {
         self.captures.entry(key).or_default().push(id);
     }
 
-    pub fn map_captures(&mut self, kind : &str, f: &mut impl FnMut(Id) -> Id) {
-        self.captures.get_mut(kind).map( |ids| {
+    pub fn map_captures(&mut self, kind: &str, f: &mut impl FnMut(Id) -> Id) {
+        if let Some(ids) = self.captures.get_mut(kind) {
             for id in ids {
                 *id = f(*id);
             }
-        });
+        }
     }
-    pub fn map_captures_to(&mut self, from : &str, to: &'static str, f: &mut  impl FnMut(Id) -> Id) {
+    pub fn map_captures_to(&mut self, from: &str, to: &'static str, f: &mut impl FnMut(Id) -> Id) {
         if let Some(from_ids) = self.captures.get(from) {
             let new_values = from_ids.iter().copied().map(f).collect();
             self.captures.insert(to, new_values);
