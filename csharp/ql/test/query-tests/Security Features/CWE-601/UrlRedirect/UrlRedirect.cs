@@ -1,5 +1,6 @@
 using System;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 public class UrlRedirectHandler : IHttpHandler
@@ -48,6 +49,13 @@ public class UrlRedirectHandler : IHttpHandler
 
         // GOOD: request parameter is URL encoded
         ctx.Response.Redirect(HttpUtility.UrlEncode(ctx.Request.QueryString["page"]));
+
+        // GOOD: whitelisted redirect
+        var url3 = ctx.Request.QueryString["page"];
+        if (new HttpRequestWrapper(ctx.Request).IsUrlLocalToHost(url3))
+        {
+            ctx.Response.Redirect(url3);
+        }
     }
 
     // Implementation as recommended by Microsoft.
