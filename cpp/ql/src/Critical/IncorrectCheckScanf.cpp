@@ -1,7 +1,7 @@
 {
   int i, j;
 
-  // BAD:The result is only checked against zero
+  // BAD: The result is only checked against zero
   if (scanf("%d %d", &i, &j)) { 
       use(i);
       use(j);

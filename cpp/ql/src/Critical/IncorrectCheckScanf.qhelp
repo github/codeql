@@ -10,11 +10,11 @@ This query finds calls of <tt>scanf</tt>-like functions with
 improper return-value checking.
 </p>
 <p>
-Specifically, the query flags uses of scanf wehere the reurn value is checked
+Specifically, the query flags uses of <code>scanf</code> where the return value is checked
 only against zero.
 </p>
 <p>
-Functions in the <tt>scanf</tt> family return either EOF (a negative value)
+Functions in the <tt>scanf</tt> family return either <tt>EOF</tt> (a negative value)
 in case of IO failure, or the number of items successfully read from the
 input. Consequently, a simple check that the return value is nonzero
 is not enough.
