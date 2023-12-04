@@ -354,12 +354,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             return new DirectoryInfo(packageDirectory.DirInfo.FullName)
                 .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
-                .Select(d => d.FullName);
+                .Select(d => d.Name);
         }
 
         private void LogAllUnusedPackages(DependencyContainer dependencies) =>
             GetAllPackageDirectories()
                 .Where(package => !dependencies.Packages.Contains(package))
+                .Order()
                 .ForEach(package => progressMonitor.LogInfo($"Unused package: {package}"));
 
         private void GenerateSourceFileFromImplicitUsings()
