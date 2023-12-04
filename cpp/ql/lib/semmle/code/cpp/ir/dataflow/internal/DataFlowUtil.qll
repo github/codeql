@@ -295,7 +295,7 @@ class Node extends TIRDataFlowNode {
    * in the above program, there will not be flow from a node `n` such that
    * `n.asDefinition() instanceof IncrementOperation` to the argument of `sink`
    * since the value passed to `sink` is the value before to the increment.
-   * However, there will be dataflow from the node `n` such that
+   * However, there will be dataflow from a node `n` such that
    * `n.asExpr() instanceof IncrementOperation` since the result of evaluating
    * the expression `x++` is passed to `sink`.
    */
