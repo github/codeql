@@ -10,14 +10,10 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 
-class CustomTestConfiguration extends DataFlow::Configuration {
-  CustomTestConfiguration() { this = "CustomTestConfiguration" }
+module CustomTestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asCfgNode().(NameNode).getId() = "CUSTOM_SOURCE" }
 
-  override predicate isSource(DataFlow::Node node) {
-    node.asCfgNode().(NameNode).getId() = "CUSTOM_SOURCE"
-  }
-
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(CallNode call |
       call.getFunction().(NameNode).getId() in ["CUSTOM_SINK", "CUSTOM_SINK_F"] and
       node.asCfgNode() = call.getAnArg()
@@ -25,6 +21,8 @@ class CustomTestConfiguration extends DataFlow::Configuration {
   }
 }
 
+module CustomTestFlow = DataFlow::Global<CustomTestConfig>;
+
 from DataFlow::Node source, DataFlow::Node sink
-where exists(CustomTestConfiguration cfg | cfg.hasFlow(source, sink))
+where CustomTestFlow::flow(source, sink)
 select source, sink
