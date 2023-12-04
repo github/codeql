@@ -115,15 +115,19 @@ class HttpServerTransferSink extends Sink {
   }
 }
 
-private predicate isLocalUrlSanitizer(Guard g, Expr e, AbstractValue v) {
-  (
-    g.(MethodCall).getTarget().hasName("IsLocalUrl") and
-    e = g.(MethodCall).getArgument(0)
+private predicate isLocalUrlSanitizerMethodCall(MethodCall guard, Expr e, AbstractValue v) {
+  exists(Method m | m = guard.getTarget() |
+    m.hasName("IsLocalUrl") and
+    e = guard.getArgument(0)
     or
-    g.(MethodCall).getTarget().hasName("IsUrlLocalToHost") and
-    e = g.(MethodCall).getArgument(1)
+    m.hasName("IsUrlLocalToHost") and
+    e = guard.getArgument(1)
   ) and
   v.(AbstractValues::BooleanValue).getValue() = true
+}
+
+private predicate isLocalUrlSanitizer(Guard g, Expr e, AbstractValue v) {
+  isLocalUrlSanitizerMethodCall(g, e, v)
 }
 
 /**
