@@ -287,7 +287,7 @@ class Node extends TIRDataFlowNode {
    * both write to `x` and read the current value of `x`, `node.asDefinition()`
    * will give the node corresponding to the value after the increment, and
    * `node.asExpr()` will give the node corresponding to the value before the
-   * increment. For an example of where this patterns, consider the following:
+   * increment. For an example of this, consider the following:
    *
    * ```cpp
    * sink(x++);
