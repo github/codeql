@@ -7,6 +7,28 @@ struct URL
 	init?(string: String, relativeTo: URL?) {}
 }
 
+class Data {
+}
+
+extension String {
+	struct Encoding {
+		static let utf8 = Encoding()
+	}
+
+	init?(data: Data, encoding: Encoding) { self.init() }
+}
+
+class SecKey {
+}
+
+class CFData {
+}
+
+class CFError {
+}
+
+func SecKeyCopyExternalRepresentation(_ key: SecKey, _ error: UnsafeMutablePointer<Unmanaged<CFError>?>?) -> CFData? { return nil }
+
 // --- tests ---
 
 var myString = ""
@@ -51,7 +73,7 @@ func test2() {
 	_ = URL(string: "http://example.com/login?key=" + get_secret_key()); // BAD
 	_ = URL(string: "http://example.com/login?key=" + get_key_press()); // GOOD (not sensitive)
 	_ = URL(string: "http://example.com/login?cert=" + get_cert_string()); // BAD
-	_ = URL(string: "http://example.com/login?cert=" + get_certain()); // GOOD (not sensitive)
+	_ = URL(string: "http://example.com/login?certain=" + get_certain()); // GOOD (not sensitive)
 }
 
 func get_string() -> String { return "" }
@@ -76,4 +98,12 @@ func test3() {
 	_ = URL(string: "http://example.com/login?tok=\(access_token)"); // BAD [NOT DETECTED]
 	_ = URL(string: "http://example.com/login?tok=\(auth_token)"); // BAD [NOT DETECTED]
 	_ = URL(string: "http://example.com/login?tok=\(next_token)"); // GOOD (not sensitive)
+}
+
+func test4(key: SecKey) {
+	if let data = SecKeyCopyExternalRepresentation(key, nil) as? Data {
+		if let string = String(data: data, encoding: .utf8) {
+			_ = URL(string: "http://example.com/login?tok=\(string)"); // BAD [NOT DETECTED]
+		}
+	}
 }
