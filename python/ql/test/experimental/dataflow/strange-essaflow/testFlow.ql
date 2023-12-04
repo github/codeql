@@ -4,16 +4,6 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPr
 
 /** Gets the EssaNode that holds the module imported by the fully qualified module name `name` */
 DataFlow::CfgNode module_import(string name) {
-  // exists(Variable var, Import imp, Alias alias |
-  //   alias = imp.getAName() and
-  //   alias.getAsname() = var.getAStore() and
-  //   (
-  //     name = alias.getValue().(ImportMember).getImportedModuleName()
-  //     or
-  //     name = alias.getValue().(ImportExpr).getImportedModuleName()
-  //   ) and
-  //   result.getVar().(AssignmentDefinition).getSourceVariable() = var
-  // )
   exists(Variable var, AssignmentDefinition def, Import imp, Alias alias |
     var = def.getSourceVariable() and
     result.getNode() = def.getDefiningNode() and
