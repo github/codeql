@@ -314,7 +314,7 @@ private module CallGraph {
         target = c.getTarget() and
         not target.hasBody()
       |
-        if target instanceof AddEventAccessor then not target.fromSource() else any()
+        if target instanceof Accessor then not target.fromSource() else any()
       ) and
       e = c.getAnArgument() and
       e.getType() instanceof SystemLinqExpressions::DelegateExtType and
