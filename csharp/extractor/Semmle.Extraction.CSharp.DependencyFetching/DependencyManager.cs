@@ -237,14 +237,32 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
 
             var frameworkPath = packagesInPrioOrder
-                    .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
-                    .FirstOrDefault(pair => pair.Path is not null);
+                .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
+                .FirstOrDefault(pair => pair.Path is not null);
 
             if (frameworkPath.Path is not null)
             {
-                dllPaths.Add(frameworkPath.Path);
-                frameworkLocations.Add(frameworkPath.Path);
-                progressMonitor.LogInfo($"Found .NET Core/Framework DLLs in NuGet packages at {frameworkPath.Path}. Not adding installation directory.");
+                var versionFolders = new DirectoryInfo(frameworkPath.Path)
+                    .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
+                    .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
+                    .ToArray();
+
+                if (versionFolders.Length > 1)
+                {
+                    var versions = string.Join(", ", versionFolders.Select(d => d.Name));
+                    progressMonitor.LogInfo($"Found multiple .NET Framework DLLs in NuGet packages at {frameworkPath.Path}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
+                }
+
+                var selectedFrameworkFolder = versionFolders.FirstOrDefault()?.FullName;
+                if (selectedFrameworkFolder is null)
+                {
+                    progressMonitor.LogInfo($"Found .NET Framework DLLs in NuGet packages at {frameworkPath.Path}, but no version folder was found.");
+                    selectedFrameworkFolder = frameworkPath.Path;
+                }
+
+                dllPaths.Add(selectedFrameworkFolder);
+                frameworkLocations.Add(selectedFrameworkFolder);
+                progressMonitor.LogInfo($"Found .NET Core/Framework DLLs in NuGet packages at {selectedFrameworkFolder}. Not adding installation directory.");
 
                 for (var i = frameworkPath.Index + 1; i < packagesInPrioOrder.Length; i++)
                 {
