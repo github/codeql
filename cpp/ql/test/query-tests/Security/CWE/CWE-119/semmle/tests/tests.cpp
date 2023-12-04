@@ -651,7 +651,7 @@ void test26(bool cond)
 	{
 		ptr += 1;
 	}
-	if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[1] [FALSE POSITIVE]
+	if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[1]
 }
 
 int tests_main(int argc, char *argv[])

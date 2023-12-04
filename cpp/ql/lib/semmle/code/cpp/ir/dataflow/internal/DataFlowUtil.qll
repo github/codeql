@@ -2069,7 +2069,7 @@ module ExprFlowCached {
       result = n.asExpr()
       or
       result = n.asDefinition() and
-      result instanceof CrementOperation
+      (result instanceof CrementOperation or result instanceof AssignOperation)
     )
   }
 
