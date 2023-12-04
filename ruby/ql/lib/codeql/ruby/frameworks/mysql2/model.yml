@@ -1,0 +1,51 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: sourceModel
+    data:
+      - ["Mysql2::Client", "Method[async_result].ReturnValue","remote"]
+      - ["Mysql2::Client", "Method[next_result].ReturnValue","remote"]
+      - ["Mysql2::Client", "Method[store_result].ReturnValue","remote"]
+      - ["Mysql2::EM::Client", "Method[async_result].ReturnValue","remote"]
+      - ["Mysql2::EM::Client", "Method[next_result].ReturnValue","remote"]
+      - ["Mysql2::EM::Client", "Method[store_result].ReturnValue","remote"]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: sinkModel
+    data:
+      - ["Mysql2::Client","Method[query].Argument[0]","sql-injection"]
+      - ["Mysql2::Client","Method[prepare].Argument[0]","sql-injection"]
+      - ["Mysql2::EM::Client","Method[query].Argument[0]","sql-injection"]
+      - ["Mysql2::EM::Client","Method[prepare].Argument[0]","sql-injection"]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - ["Mysql2::Client","Method[parse_flags_array]","Argument[1]","ReturnValue","value"]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: neutralModel
+    data:
+      - ["Mysql2::Client!","Method[default_query_options]","summary"]
+      - ["Mysql2::Client","Method[initialize]","summary"]
+      - ["Mysql2::Client","Method[parse_ssl_mode]","summary"]
+      - ["Mysql2::Client","Method[find_default_ca_path]","summary"]
+      - ["Mysql2::Client","Method[parse_connect_attrs]","summary"]
+      - ["Mysql2::Client","Method[query_info]","summary"]
+      - ["Mysql2::Client","Method[info]","summary"]
+      - ["Mysql2::EM::Client::Watcher","Method[initialize]","summary"]
+      - ["Mysql2::EM::Client::Watcher","Method[notify_readable]","summary"]
+      - ["Mysql2::EM::Client::Watcher","Method[watching?]","summary"]
+      - ["Mysql2::EM::Client::Watcher","Method[unbind]","summary"]
+      - ["Mysql2::EM::Client","Method[close]","summary"]
+      - ["Mysql2::Error!","Method[new_with_args]","summary"]
+      - ["Mysql2::Error","Method[initialize]","summary"]
+      - ["Mysql2::Statement","Method[execute]","summary"]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: typeModel
+    data: []
