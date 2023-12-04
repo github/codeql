@@ -113,3 +113,26 @@ void broadcastNodes(int *v) {
 	// This function has "cast" and "des" in the name.
 	COMPUTE(v)
 }
+
+#define ROTATE(val, amount) ( (val << amount) | (val >> (32 - amount)) )
+
+static inline void hashMix(const int *data, int &state) {
+	// This function looks like part of a hashing function.  It's not necessarily intended to
+	// be a cryptographic hash, so should not be flagged.
+	state ^= data[0];
+	ROTATE(state, 1);
+	state ^= data[1];
+	ROTATE(state, 7);
+	state ^= data[2];
+	ROTATE(state, 11);
+	state ^= data[3];
+	ROTATE(state, 3);
+	state ^= data[4];
+	ROTATE(state, 13);
+	state ^= data[5];
+	ROTATE(state, 5);
+	state ^= data[6];
+	ROTATE(state, 2);
+	state ^= data[7];
+	ROTATE(state, 17);
+}
