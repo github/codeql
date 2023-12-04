@@ -669,4 +669,11 @@ codeql::ConsumeExpr ExprTranslator::translateConsumeExpr(const swift::ConsumeExp
   return entry;
 }
 
+codeql::MaterializePackExpr ExprTranslator::translateMaterializePackExpr(
+    const swift::MaterializePackExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher.fetchLabel(expr.getFromExpr());
+  return entry;
+}
+
 }  // namespace codeql

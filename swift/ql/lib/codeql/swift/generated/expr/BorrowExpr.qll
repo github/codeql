@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.IdentityExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `BorrowExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:

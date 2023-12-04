@@ -234,7 +234,7 @@ module TS45 {
   }
 }
 
-import * as Foo3 from "./something.json" assert { type: "json" };
+import * as Foo3 from "./something.json" with { type: "json" };
 var foo = Foo3.foo;
 
 module TS46 {

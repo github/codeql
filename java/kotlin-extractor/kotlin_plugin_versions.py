@@ -27,6 +27,9 @@ class Version:
     def toTupleNoTag(self):
         return [self.major, self.minor, self.patch]
 
+    def lessThan(self, other):
+        return self.toTupleNoTag() < other.toTupleNoTag()
+
     def lessThanOrEqual(self, other):
         return self.toTupleNoTag() <= other.toTupleNoTag()
 
@@ -43,7 +46,7 @@ def version_string_to_version(version):
 # Version number used by CI.
 ci_version = '1.9.0'
 
-many_versions = [ '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20', '1.8.0', '1.9.0-Beta', '1.9.20-Beta' ]
+many_versions = [ '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20', '1.8.0', '1.9.0-Beta', '1.9.20-Beta', '2.0.0-Beta1' ]
 
 many_versions_versions = [version_string_to_version(v) for v in many_versions]
 many_versions_versions_asc  = sorted(many_versions_versions, key = lambda v: v.toTupleWithTag())
@@ -58,7 +61,7 @@ def get_single_version(fakeVersionOutput = None):
     if kotlinc is None:
         raise KotlincNotFoundException()
     versionOutput = subprocess.run([kotlinc, '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True).stderr if fakeVersionOutput is None else fakeVersionOutput
-    m = re.match(r'.* kotlinc-jvm ([0-9]+\.[0-9]+\.[0-9]+-?[a-zA-Z]*) .*', versionOutput)
+    m = re.match(r'.* kotlinc-jvm ([0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z][a-zA-Z0-9]*)?) .*', versionOutput)
     if m is None:
         raise Exception('Cannot detect version of kotlinc (got ' + str(versionOutput) + ')')
     current_version = version_string_to_version(m.group(1))

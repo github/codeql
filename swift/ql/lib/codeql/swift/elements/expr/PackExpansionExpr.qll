@@ -5,4 +5,17 @@
 
 private import codeql.swift.generated.expr.PackExpansionExpr
 
+/**
+ * A pack expansion expression.
+ *
+ * In the following example, `repeat each t` on the second line is the pack expansion expression:
+ * ```
+ * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+ *   return (repeat each t)
+ * }
+ * ```
+ *
+ * More details:
+ * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+ */
 class PackExpansionExpr extends Generated::PackExpansionExpr { }

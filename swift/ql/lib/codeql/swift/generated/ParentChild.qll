@@ -245,6 +245,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfMacroRole(MacroRole e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnspecifiedElement(
     UnspecifiedElement e, int index, string partialPredicateCall
   ) {
@@ -601,6 +614,25 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfOperatorDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfMacroDecl(MacroDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bGenericContext, int bValueDecl, int n |
+      b = 0 and
+      bGenericContext =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
+      bValueDecl =
+        bGenericContext + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfValueDecl(e, i, _)) | i) and
+      n = bValueDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfGenericContext(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfValueDecl(e, index - bGenericContext, partialPredicateCall)
       )
     )
   }
@@ -1603,6 +1635,24 @@ private module Impl {
         index = nNonescapingClosure and
         result = e.getImmediateSubExpr() and
         partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfMaterializePackExpr(
+    MaterializePackExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
   }
@@ -3638,6 +3688,24 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfDiscardStmt(
+    DiscardStmt e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bStmt, int n, int nSubExpr |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfFailStmt(FailStmt e, int index, string partialPredicateCall) {
     exists(int b, int bStmt, int n |
       b = 0 and
@@ -5050,6 +5118,8 @@ private module Impl {
     or
     result = getImmediateChildOfKeyPathComponent(e, index, partialAccessor)
     or
+    result = getImmediateChildOfMacroRole(e, index, partialAccessor)
+    or
     result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
     or
     result = getImmediateChildOfOtherAvailabilitySpec(e, index, partialAccessor)
@@ -5079,6 +5149,8 @@ private module Impl {
     result = getImmediateChildOfEnumElementDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfInfixOperatorDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMacroDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfPostfixOperatorDecl(e, index, partialAccessor)
     or
@@ -5159,6 +5231,8 @@ private module Impl {
     result = getImmediateChildOfLazyInitializationExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfMakeTemporarilyEscapableExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMaterializePackExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfObjCSelectorExpr(e, index, partialAccessor)
     or
@@ -5381,6 +5455,8 @@ private module Impl {
     result = getImmediateChildOfContinueStmt(e, index, partialAccessor)
     or
     result = getImmediateChildOfDeferStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDiscardStmt(e, index, partialAccessor)
     or
     result = getImmediateChildOfFailStmt(e, index, partialAccessor)
     or

@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.AvailabilitySpec
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `AvailabilityInfo` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An availability condition of an `if`, `while`, or `guard` statements.

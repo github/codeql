@@ -5,4 +5,17 @@
 
 private import codeql.swift.generated.expr.OpenExistentialExpr
 
+/**
+ * An implicit expression created by the compiler when a method is called on a protocol. For example in
+ * ```
+ * protocol P {
+ *   func foo() -> Int
+ * }
+ * func bar(x: P) -> Int {
+ *   return x.foo()
+ * }
+ * `x.foo()` is actually wrapped in an `OpenExistentialExpr` that "opens" `x` replacing it in its subexpression with
+ * an `OpaqueValueExpr`.
+ * ```
+ */
 class OpenExistentialExpr extends Generated::OpenExistentialExpr { }

@@ -10,6 +10,10 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.KeyPathComponent
 import codeql.swift.elements.type.TypeRepr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `KeyPathExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A key-path expression.

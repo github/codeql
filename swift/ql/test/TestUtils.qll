@@ -16,6 +16,8 @@ predicate toBeTested(Element e) {
   or
   e instanceof PackArchetypeType
   or
+  e instanceof MacroRole
+  or
   exists(ModuleDecl m |
     m = e and
     not m.isBuiltinModule() and

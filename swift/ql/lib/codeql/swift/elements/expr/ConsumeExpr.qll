@@ -5,4 +5,12 @@
 
 private import codeql.swift.generated.expr.ConsumeExpr
 
+/**
+ * An expression that forces value to be moved. In the example below, `consume` marks the move expression:
+ *
+ * ```
+ * let y = ...
+ * let x = consume y
+ * ```
+ */
 class ConsumeExpr extends Generated::ConsumeExpr { }

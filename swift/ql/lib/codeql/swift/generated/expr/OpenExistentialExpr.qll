@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `OpenExistentialExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An implicit expression created by the compiler when a method is called on a protocol. For example in

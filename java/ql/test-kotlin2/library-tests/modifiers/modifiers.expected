@@ -1,0 +1,87 @@
+| modifiers.kt:1:1:29:1 | X | Class | public |
+| modifiers.kt:1:1:29:1 | X | Constructor | public |
+| modifiers.kt:2:5:2:21 | a | Field | final |
+| modifiers.kt:2:5:2:21 | a | Field | private |
+| modifiers.kt:2:5:2:21 | a | Property | private |
+| modifiers.kt:2:5:2:21 | getA$private | Method | final |
+| modifiers.kt:2:5:2:21 | getA$private | Method | private |
+| modifiers.kt:3:5:3:23 | b | Field | final |
+| modifiers.kt:3:5:3:23 | b | Field | private |
+| modifiers.kt:3:5:3:23 | b | Property | protected |
+| modifiers.kt:3:5:3:23 | getB | Method | final |
+| modifiers.kt:3:5:3:23 | getB | Method | protected |
+| modifiers.kt:4:5:4:22 | c | Field | final |
+| modifiers.kt:4:5:4:22 | c | Field | private |
+| modifiers.kt:4:5:4:22 | c | Property | internal |
+| modifiers.kt:4:5:4:22 | getC$main | Method | final |
+| modifiers.kt:4:5:4:22 | getC$main | Method | internal |
+| modifiers.kt:5:5:5:34 | d | Field | final |
+| modifiers.kt:5:5:5:34 | d | Field | private |
+| modifiers.kt:5:5:5:34 | d | Property | public |
+| modifiers.kt:5:5:5:34 | getD | Method | final |
+| modifiers.kt:5:5:5:34 | getD | Method | public |
+| modifiers.kt:7:5:9:5 | Nested | Class | final |
+| modifiers.kt:7:5:9:5 | Nested | Class | protected |
+| modifiers.kt:7:5:9:5 | Nested | Constructor | public |
+| modifiers.kt:8:9:8:29 | e | Field | final |
+| modifiers.kt:8:9:8:29 | e | Field | private |
+| modifiers.kt:8:9:8:29 | e | Property | public |
+| modifiers.kt:8:9:8:29 | getE | Method | final |
+| modifiers.kt:8:9:8:29 | getE | Method | public |
+| modifiers.kt:11:5:15:5 | fn1 | Method | final |
+| modifiers.kt:11:5:15:5 | fn1 | Method | public |
+| modifiers.kt:12:16:14:9 |  | Constructor | public |
+| modifiers.kt:12:16:14:9 | new Object(...) { ... } | AnonymousClass | final |
+| modifiers.kt:12:16:14:9 | new Object(...) { ... } | AnonymousClass | private |
+| modifiers.kt:12:16:14:9 | new Object(...) { ... } | LocalClass | final |
+| modifiers.kt:12:16:14:9 | new Object(...) { ... } | LocalClass | private |
+| modifiers.kt:13:13:13:23 | fn | Method | final |
+| modifiers.kt:13:13:13:23 | fn | Method | public |
+| modifiers.kt:17:5:20:5 | fn2 | Method | final |
+| modifiers.kt:17:5:20:5 | fn2 | Method | public |
+| modifiers.kt:18:9:18:24 |  | Constructor | public |
+| modifiers.kt:18:9:18:24 |  | LocalClass | final |
+| modifiers.kt:18:9:18:24 |  | LocalClass | private |
+| modifiers.kt:18:9:18:24 | fnLocal | Method | final |
+| modifiers.kt:18:9:18:24 | fnLocal | Method | public |
+| modifiers.kt:22:5:24:5 | fn3 | Method | final |
+| modifiers.kt:22:5:24:5 | fn3 | Method | public |
+| modifiers.kt:23:9:23:27 | localClass | Constructor | public |
+| modifiers.kt:23:9:23:27 | localClass | LocalClass | final |
+| modifiers.kt:23:9:23:27 | localClass | LocalClass | private |
+| modifiers.kt:26:5:26:46 | fn4 | Method | final |
+| modifiers.kt:26:5:26:46 | fn4 | Method | inline |
+| modifiers.kt:26:5:26:46 | fn4 | Method | public |
+| modifiers.kt:26:20:26:41 | f | Parameter | noinline |
+| modifiers.kt:27:5:27:49 | fn5 | Method | final |
+| modifiers.kt:27:5:27:49 | fn5 | Method | inline |
+| modifiers.kt:27:5:27:49 | fn5 | Method | public |
+| modifiers.kt:27:20:27:44 | f | Parameter | crossinline |
+| modifiers.kt:28:5:28:39 | fn6 | Method | final |
+| modifiers.kt:28:5:28:39 | fn6 | Method | inline |
+| modifiers.kt:28:5:28:39 | fn6 | Method | public |
+| modifiers.kt:28:17:28:25 | T | TypeVariable | reified |
+| modifiers.kt:31:1:33:1 | Y | Class | final |
+| modifiers.kt:31:1:33:1 | Y | Class | public |
+| modifiers.kt:31:1:33:1 | Y | Constructor | public |
+| modifiers.kt:31:1:33:1 | Y | GenericType | final |
+| modifiers.kt:31:1:33:1 | Y | GenericType | public |
+| modifiers.kt:31:1:33:1 | Y | ParameterizedType | final |
+| modifiers.kt:31:1:33:1 | Y | ParameterizedType | public |
+| modifiers.kt:31:9:31:13 | T1 | TypeVariable | in |
+| modifiers.kt:31:16:31:21 | T2 | TypeVariable | out |
+| modifiers.kt:32:5:32:32 | foo | Method | final |
+| modifiers.kt:32:5:32:32 | foo | Method | public |
+| modifiers.kt:35:1:41:1 | LateInit | Class | final |
+| modifiers.kt:35:1:41:1 | LateInit | Class | public |
+| modifiers.kt:35:1:41:1 | LateInit | Constructor | public |
+| modifiers.kt:36:5:36:40 | getTest0$private | Method | final |
+| modifiers.kt:36:5:36:40 | getTest0$private | Method | private |
+| modifiers.kt:36:5:36:40 | setTest0$private | Method | final |
+| modifiers.kt:36:5:36:40 | setTest0$private | Method | private |
+| modifiers.kt:36:5:36:40 | test0 | Field | private |
+| modifiers.kt:36:5:36:40 | test0 | Property | lateinit |
+| modifiers.kt:36:5:36:40 | test0 | Property | private |
+| modifiers.kt:38:5:40:5 | fn | Method | final |
+| modifiers.kt:38:5:40:5 | fn | Method | public |
+| modifiers.kt:39:9:39:36 | LateInit test1 | LocalVariableDecl | lateinit |

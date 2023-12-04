@@ -1,0 +1,17 @@
+| GuardTest.java:6:27:6:34 | o | GuardTest.java:11:14:11:14 | s |
+| RecordTest.java:12:34:12:36 | "A" | RecordTest.java:16:14:16:18 | field |
+| RecordTest.java:12:34:12:36 | "A" | RecordTest.java:26:44:26:48 | field |
+| RecordTest.java:12:34:12:36 | "A" | RecordTest.java:33:20:33:24 | field |
+| RecordTest.java:12:34:12:36 | "A" | RecordTest.java:41:44:41:48 | field |
+| RecordTest.java:12:59:12:61 | "B" | RecordTest.java:19:14:19:18 | field |
+| RecordTest.java:12:59:12:61 | "B" | RecordTest.java:27:44:27:48 | field |
+| RecordTest.java:12:59:12:61 | "B" | RecordTest.java:35:20:35:24 | field |
+| RecordTest.java:12:59:12:61 | "B" | RecordTest.java:42:44:42:48 | field |
+| Test.java:11:23:11:25 | "A" | Test.java:15:14:15:20 | get(...) |
+| Test.java:11:23:11:25 | "A" | Test.java:25:24:25:30 | get(...) |
+| Test.java:11:23:11:25 | "A" | Test.java:32:20:32:26 | get(...) |
+| Test.java:11:23:11:25 | "A" | Test.java:40:24:40:30 | get(...) |
+| Test.java:11:36:11:38 | "B" | Test.java:18:14:18:20 | get(...) |
+| Test.java:11:36:11:38 | "B" | Test.java:26:24:26:30 | get(...) |
+| Test.java:11:36:11:38 | "B" | Test.java:34:20:34:26 | get(...) |
+| Test.java:11:36:11:38 | "B" | Test.java:41:24:41:30 | get(...) |

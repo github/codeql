@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.ArchetypeType
 import codeql.swift.elements.decl.OpaqueTypeDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `OpaqueTypeArchetypeType` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An opaque type, that is a type formally equivalent to an underlying type but abstracting it away.
