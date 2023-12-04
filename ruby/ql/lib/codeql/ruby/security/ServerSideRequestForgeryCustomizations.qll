@@ -10,6 +10,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.Sanitizers
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
@@ -41,4 +42,8 @@ module ServerSideRequestForgery {
 
   /** A string interpolation with a fixed prefix, considered as a flow sanitizer. */
   class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
+
+  private class ExternalRequestForgerySink extends Sink {
+    ExternalRequestForgerySink() { this = ModelOutput::getASinkNode("request-forgery").asSink() }
+  }
 }
