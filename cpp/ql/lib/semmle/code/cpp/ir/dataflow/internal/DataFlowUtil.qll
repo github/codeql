@@ -1214,7 +1214,7 @@ private module GetConvertedResultExpression {
     // represents the extent.
     exists(TranslatedNonConstantAllocationSize tas |
       result = tas.getExtent().getExpr() and
-      instr = tas.getInstruction(any(AllocationExtentConvertTag tag))
+      instr = tas.getInstruction(AllocationExtentConvertTag())
     )
     or
     // There's no instruction that returns `ParenthesisExpr`, but some queries
@@ -1222,6 +1222,39 @@ private module GetConvertedResultExpression {
     exists(TranslatedTransparentConversion ttc |
       result = ttc.getExpr().(ParenthesisExpr) and
       instr = ttc.getResult()
+    )
+    or
+    // Certain expressions generate `CopyValueInstruction`s only when they
+    // are needed. Examples of this include crement operations and compound
+    // assignment operations. For example:
+    // ```cpp
+    // int x = ...
+    // int y = x++;
+    // ```
+    // this generate IR like:
+    // ```
+    // r1(glval<int>) = VariableAddress[x] :
+    // r2(int)        = Constant[0]        :
+    // m3(int)        = Store[x]           : &:r1, r2
+    // r4(glval<int>) = VariableAddress[y] :
+    // r5(glval<int>) = VariableAddress[x] :
+    // r6(int)        = Load[x]            : &:r5, m3
+    // r7(int)        = Constant[1]        :
+    // r8(int)        = Add                : r6, r7
+    // m9(int)        = Store[x]           : &:r5, r8
+    // r11(int)       = CopyValue         : r6
+    // m12(int)       = Store[y]          : &:r4, r11
+    // ```
+    // When the `CopyValueInstruction` is not generated there is no instruction
+    // whose `getConvertedResultExpression` maps back to the expression. When
+    // such an instruction doesn't exist it means that the old value is not
+    // needed, and in that case the only value that will propagate forward in
+    // the program is the value that's been updated. So in those cases we just
+    // use the result of `node.asDefinition()` as the result of `node.asExpr()`.
+    exists(TranslatedCoreExpr tco |
+      tco.getInstruction(_) = instr and
+      tco.producesExprResult() and
+      result = asDefinitionImpl0(instr)
     )
   }
 
@@ -1242,7 +1275,7 @@ private module GetConvertedResultExpression {
     // `StoreInstruction` contains the result of the expression even though
     // this isn't totally aligned with the C/C++ standard.
     exists(TranslatedAssignOperation tao |
-      store = tao.getInstruction(any(AssignmentStoreTag tag)) and
+      store = tao.getInstruction(AssignmentStoreTag()) and
       result = tao.getExpr()
     )
     or
@@ -1250,7 +1283,7 @@ private module GetConvertedResultExpression {
     // `StoreInstruction` is contains the result of the expression even though
     // this isn't totally aligned with the C/C++ standard.
     exists(TranslatedCrementOperation tco |
-      store = tco.getInstruction(any(CrementStoreTag tag)) and
+      store = tco.getInstruction(CrementStoreTag()) and
       result = tco.getExpr()
     )
   }
@@ -2065,12 +2098,7 @@ module ExprFlowCached {
     isIndirectBaseOfArrayAccess(n, result)
     or
     not isIndirectBaseOfArrayAccess(n, _) and
-    (
-      result = n.asExpr()
-      or
-      result = n.asDefinition() and
-      (result instanceof CrementOperation or result instanceof AssignOperation)
-    )
+    result = n.asExpr()
   }
 
   /**

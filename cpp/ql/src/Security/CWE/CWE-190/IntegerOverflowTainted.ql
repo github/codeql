@@ -37,13 +37,8 @@ predicate isSink(DataFlow::Node sink, string kind) {
   exists(Expr use |
     not use.getUnspecifiedType() instanceof PointerType and
     outOfBoundsExpr(use, kind) and
-    not inSystemMacroExpansion(use)
-  |
-    if
-      sink.asDefinition() instanceof CrementOperation or
-      sink.asDefinition() instanceof AssignOperation
-    then use = sink.asDefinition()
-    else use = sink.asExpr()
+    not inSystemMacroExpansion(use) and
+    use = sink.asExpr()
   )
 }
 
