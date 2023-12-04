@@ -292,7 +292,7 @@ class Node extends TIRDataFlowNode {
    * ```cpp
    * sink(x++);
    * ```
-   * in the above program, there will not be flow from the node `n` such that
+   * in the above program, there will not be flow from a node `n` such that
    * `n.asDefinition() instanceof IncrementOperation` to the argument of `sink`
    * since the value passed to `sink` is the value before to the increment.
    * However, there will be dataflow from the node `n` such that
