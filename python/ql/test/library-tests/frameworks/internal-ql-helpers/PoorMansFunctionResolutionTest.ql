@@ -15,8 +15,6 @@ module InlinePoorMansFunctionResolutionTest implements TestSig {
       not exists(FunctionDef def | def.getDefinedFunction() = func |
         ref.asExpr() = def.getATarget()
       ) and
-      // exclude things like `GSSA variable func`
-      exists(ref.asExpr()) and
       // exclude decorator calls (which with our extractor rewrites does reference the
       // function)
       not ref.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()
