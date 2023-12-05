@@ -113,7 +113,7 @@ module LocalFlow {
       SsaImpl::lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
       exprFrom = bb.getNode(i) and
       exprFrom.getExpr() instanceof VariableReadAccess and
-      exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()]
+      exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode().asExpr()]
     )
   }
 
@@ -159,7 +159,7 @@ module LocalFlow {
     firstReadExt(def, nodeTo.asExpr())
     or
     // Flow from post-update read to next read
-    localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+    localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode(), nodeTo)
     or
     // Flow into phi (read) SSA definition node from def
     localFlowSsaInputFromDef(nodeFrom, def, nodeTo)
@@ -454,7 +454,7 @@ private predicate splatArgumentAt(CfgNodes::ExprNodes::CallCfgNode c, int pos) {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
-  private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
+  private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 
   cached
   newtype TNode =
@@ -573,14 +573,10 @@ private module Cached {
     VariableCapture::flowInsensitiveStep(nodeFrom, nodeTo)
   }
 
+  /** Holds if `n` wraps an SSA definition without ingoing flow. */
   private predicate entrySsaDefinition(SsaDefinitionExtNode n) {
-    n = LocalFlow::getParameterDefNode(_)
-    or
-    exists(SsaImpl::DefinitionExt def | def = n.getDefinitionExt() |
-      def instanceof Ssa::SelfDefinition
-      or
-      def instanceof Ssa::CapturedEntryDefinition
-    )
+    n.getDefinitionExt() =
+      any(SsaImpl::WriteDefinition def | not def.(Ssa::WriteDefinition).assigns(_))
   }
 
   pragma[nomagic]
@@ -595,6 +591,16 @@ private module Cached {
       reachedFromExprOrEntrySsaDef(mid) and
       localFlowStepTypeTracker(mid, n)
     )
+  }
+
+  private predicate isStoreTargetNode(Node n) {
+    TypeTrackingInput::storeStep(_, n, _)
+    or
+    TypeTrackingInput::loadStoreStep(_, n, _, _)
+    or
+    TypeTrackingInput::withContentStepImpl(_, n, _)
+    or
+    TypeTrackingInput::withoutContentStepImpl(_, n, _)
   }
 
   cached
@@ -612,11 +618,9 @@ private module Cached {
     entrySsaDefinition(n) and
     not LocalFlow::localFlowSsaParamInput(_, n)
     or
-    TypeTrackerSpecific::basicStoreStep(_, n, _)
+    isStoreTargetNode(n)
     or
-    TypeTrackerSpecific::basicLoadStep(_, n, _)
-    or
-    TypeTrackerSpecific::basicLoadStoreStep(_, n, _, _)
+    TypeTrackingInput::loadStep(_, n, _)
   }
 
   cached
@@ -631,7 +635,7 @@ private module Cached {
     TElementContentOfTypeContent(string type, Boolean includeUnknown) {
       type = any(Content::KnownElementContent content).getIndex().getValueType()
     } or
-    TNoContentSet() // Only used by type-tracking
+    deprecated TNoContentSet() // Only used by type-tracking
 
   cached
   class TContentSet =
