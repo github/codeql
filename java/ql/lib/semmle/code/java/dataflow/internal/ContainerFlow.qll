@@ -450,6 +450,14 @@ predicate arrayStoreStep(Node node1, Node node2) {
   exists(Assignment assign | assign.getSource() = node1.asExpr() |
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = assign.getDest().(ArrayAccess).getArray()
   )
+  or
+  exists(Expr arr, Call call |
+    arr = node2.asExpr() and
+    call.getArgument(1) = node1.asExpr() and
+    call.getQualifier() = arr and
+    arr.getType() instanceof ArrayType and
+    call.getCallee().getName() = "set"
+  )
 }
 
 private predicate enhancedForStmtStep(Node node1, Node node2, Type containerType) {
