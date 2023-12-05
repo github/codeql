@@ -408,6 +408,9 @@ nodes
 | E.cs:405:16:405:16 | access to local variable i |
 | E.cs:417:24:417:40 | SSA capture def(i) |
 | E.cs:417:34:417:34 | access to parameter i |
+| E.cs:435:29:435:29 | SSA param(s) |
+| E.cs:437:13:437:21 | [true] ... is ... |
+| E.cs:439:13:439:13 | access to parameter s |
 | Forwarding.cs:7:16:7:23 | SSA def(s) |
 | Forwarding.cs:9:13:9:30 | [false] !... |
 | Forwarding.cs:14:9:17:9 | if (...) ... |
@@ -798,6 +801,8 @@ edges
 | E.cs:404:9:404:18 | SSA def(i) | E.cs:405:16:405:16 | access to local variable i |
 | E.cs:404:9:404:18 | SSA def(i) | E.cs:405:16:405:16 | access to local variable i |
 | E.cs:417:24:417:40 | SSA capture def(i) | E.cs:417:34:417:34 | access to parameter i |
+| E.cs:435:29:435:29 | SSA param(s) | E.cs:437:13:437:21 | [true] ... is ... |
+| E.cs:437:13:437:21 | [true] ... is ... | E.cs:439:13:439:13 | access to parameter s |
 | Forwarding.cs:7:16:7:23 | SSA def(s) | Forwarding.cs:9:13:9:30 | [false] !... |
 | Forwarding.cs:9:13:9:30 | [false] !... | Forwarding.cs:14:9:17:9 | if (...) ... |
 | Forwarding.cs:14:9:17:9 | if (...) ... | Forwarding.cs:19:9:22:9 | if (...) ... |
