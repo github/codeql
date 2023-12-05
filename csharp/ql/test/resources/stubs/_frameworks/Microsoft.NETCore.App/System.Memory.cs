@@ -436,8 +436,9 @@ namespace System
         public static System.ReadOnlySpan<T> TrimStart<T>(this System.ReadOnlySpan<T> span, T trimElement) where T : System.IEquatable<T> => throw null;
         public static System.Span<T> TrimStart<T>(this System.Span<T> span, System.ReadOnlySpan<T> trimElements) where T : System.IEquatable<T> => throw null;
         public static System.Span<T> TrimStart<T>(this System.Span<T> span, T trimElement) where T : System.IEquatable<T> => throw null;
-        public static bool TryWrite(this System.Span<char> destination, ref System.MemoryExtensions.TryWriteInterpolatedStringHandler handler, out int charsWritten) => throw null;
-        public static bool TryWrite(this System.Span<char> destination, System.IFormatProvider provider, ref System.MemoryExtensions.TryWriteInterpolatedStringHandler handler, out int charsWritten) => throw null;
+        public static bool TryWrite(this System.Span<char> destination, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("destination")] ref System.MemoryExtensions.TryWriteInterpolatedStringHandler handler, out int charsWritten) => throw null;
+        public static bool TryWrite(this System.Span<char> destination, System.IFormatProvider provider, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument(new[] { "destination", "provider" })] ref System.MemoryExtensions.TryWriteInterpolatedStringHandler handler, out int charsWritten) => throw null;
+        [System.Runtime.CompilerServices.InterpolatedStringHandler]
         public struct TryWriteInterpolatedStringHandler
         {
             public bool AppendFormatted(System.ReadOnlySpan<char> value) => throw null;
