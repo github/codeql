@@ -115,14 +115,24 @@ class HttpServerTransferSink extends Sink {
   }
 }
 
-private predicate isLocalUrlSanitizer(Guard g, Expr e, AbstractValue v) {
-  g.(MethodCall).getTarget().hasName("IsLocalUrl") and
-  e = g.(MethodCall).getArgument(0) and
+private predicate isLocalUrlSanitizerMethodCall(MethodCall guard, Expr e, AbstractValue v) {
+  exists(Method m | m = guard.getTarget() |
+    m.hasName("IsLocalUrl") and
+    e = guard.getArgument(0)
+    or
+    m.hasName("IsUrlLocalToHost") and
+    e = guard.getArgument(1)
+  ) and
   v.(AbstractValues::BooleanValue).getValue() = true
 }
 
+private predicate isLocalUrlSanitizer(Guard g, Expr e, AbstractValue v) {
+  isLocalUrlSanitizerMethodCall(g, e, v)
+}
+
 /**
- * A URL argument to a call to `UrlHelper.isLocalUrl()` that is a sanitizer for URL redirects.
+ * A URL argument to a call to `UrlHelper.IsLocalUrl()` or `HttpRequestBase.IsUrlLocalToHost()` that
+ * is a sanitizer for URL redirects.
  */
 class LocalUrlSanitizer extends Sanitizer {
   LocalUrlSanitizer() { this = DataFlow::BarrierGuard<isLocalUrlSanitizer/3>::getABarrierNode() }
