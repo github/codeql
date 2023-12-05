@@ -16,4 +16,15 @@ class C2 {
             sink(s)
         }
     }
+
+    fun test2() {
+        val l1 = arrayOf("")
+        val l2 = arrayOf("")
+        l1[0] = taint("a")
+        l2.set(0, taint("a"))
+        sink(l1[0])
+        sink(l2[0])
+        sink(l1.get(0))
+        sink(l2.get(0))
+    }
 }
