@@ -1,4 +1,8 @@
-/** Step Summaries and Type Tracking */
+/**
+ * DEPRECATED: Use `codeql.ruby.typetracking.TypeTracking` instead.
+ *
+ * Step Summaries and Type Tracking
+ */
 
 private import TypeTrackerSpecific
 
@@ -419,6 +423,8 @@ deprecated module StepSummary {
 }
 
 /**
+ * DEPRECATED: Use `codeql.ruby.typetracking.TypeTracking` instead.
+ *
  * A summary of the steps needed to track a value to a given dataflow node.
  *
  * This can be used to track objects that implement a certain API in order to
@@ -597,6 +603,8 @@ deprecated private predicate backSmallstepProj(TypeTrackingNode nodeTo, StepSumm
 }
 
 /**
+ * DEPRECATED: Use `codeql.ruby.typetracking.TypeTracking` instead.
+ *
  * A summary of the steps needed to back-track a use of a value to a given dataflow node.
  *
  * This can for example be used to track callbacks that are passed to a certain API,
