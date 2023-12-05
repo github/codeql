@@ -4,7 +4,7 @@
 
 import javascript
 
-/** Provides classes modeling [cors](https://npmjs.com/package/cors) library. */
+/** Provides classes modeling the [cors](https://npmjs.com/package/cors) library. */
 module Cors {
   /**
    * An expression that creates a new CORS configuration.
@@ -18,7 +18,7 @@ module Cors {
     /** Holds if cors is using default configuration */
     predicate isDefault() { this.getNumArgument() = 0 }
 
-    /** Gets the value of origin */
+    /** Gets the value of the `origin` option used to configure this Cors instance. */
     DataFlow::Node getOrigin() { result = this.getOptionArgument(0, "origin") }
   }
 }

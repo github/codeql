@@ -24,7 +24,7 @@ module Apollo {
         ]).getMember("gql")
   }
 
-  /** A string that is interpreted as a GraphQL query by a `graphql` package. */
+  /** An instantiation of an `ApolloServer`.  */
   class ApolloServer extends API::NewNode {
     ApolloServer() { this = apollo().getAnInstantiation() }
   }
