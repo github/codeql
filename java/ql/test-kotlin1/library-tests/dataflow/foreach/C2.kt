@@ -8,6 +8,7 @@ class C2 {
         val l = arrayOf(taint("a"), "")
         sink(l)
         sink(l[0])
+        sink(l.get(0))
         for (i in l.indices) {
             sink(l[i])
         }
