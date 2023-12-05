@@ -1,7 +1,7 @@
 using System;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.WebPages;
 
 public class UrlRedirectHandler : IHttpHandler
 {

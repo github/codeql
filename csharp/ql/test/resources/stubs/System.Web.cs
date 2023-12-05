@@ -373,11 +373,15 @@ namespace System.Web.Helpers
     {
         public static void Validate() { }
     }
+}
 
+namespace System.Web.WebPages
+{
     public static class RequestExtensions
     {
         public static bool IsUrlLocalToHost(this System.Web.HttpRequestBase request, string url) => throw null;
     }
+
 }
 
 namespace System.Web.Script.Serialization
