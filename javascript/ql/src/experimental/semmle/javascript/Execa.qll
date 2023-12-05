@@ -3,7 +3,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RequestForgeryCustomizations
 
 /**
  * Provide model for [Execa](https://github.com/sindresorhus/execa) package
