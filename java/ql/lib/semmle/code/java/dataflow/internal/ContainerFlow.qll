@@ -4,6 +4,10 @@ import semmle.code.java.Maps
 private import semmle.code.java.dataflow.SSA
 private import DataFlowUtil
 
+private class ArrayType extends RefType {
+  ArrayType() { this.getSourceDeclaration().getASourceSupertype*() instanceof Array }
+}
+
 private class EntryType extends RefType {
   EntryType() {
     this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Map$Entry")
@@ -446,6 +450,14 @@ predicate arrayStoreStep(Node node1, Node node2) {
   exists(Assignment assign | assign.getSource() = node1.asExpr() |
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = assign.getDest().(ArrayAccess).getArray()
   )
+  or
+  exists(Expr arr, Call call |
+    arr = node2.asExpr() and
+    call.getArgument(1) = node1.asExpr() and
+    call.getQualifier() = arr and
+    arr.getType() instanceof ArrayType and
+    call.getCallee().getName() = "set"
+  )
 }
 
 private predicate enhancedForStmtStep(Node node1, Node node2, Type containerType) {
@@ -468,6 +480,14 @@ predicate arrayReadStep(Node node1, Node node2, Type elemType) {
     aa.getArray() = node1.asExpr() and
     aa.getType() = elemType and
     node2.asExpr() = aa
+  )
+  or
+  exists(Expr arr, Call call |
+    arr = node1.asExpr() and
+    call = node2.asExpr() and
+    arr.getType() instanceof ArrayType and
+    call.getCallee().getName() = "get" and
+    call.getQualifier() = arr
   )
   or
   exists(Array arr |
