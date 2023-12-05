@@ -51,8 +51,8 @@ class SensitiveCookieNameExpr extends Expr {
 }
 
 /** A method call that sets a `Set-Cookie` header. */
-class SetCookieMethodAccess extends MethodAccess {
-  SetCookieMethodAccess() {
+class SetCookieMethodCall extends MethodCall {
+  SetCookieMethodCall() {
     (
       this.getMethod() instanceof ResponseAddHeaderMethod or
       this.getMethod() instanceof ResponseSetHeaderMethod
@@ -63,7 +63,7 @@ class SetCookieMethodAccess extends MethodAccess {
 
 /**
  * A taint configuration tracking flow from the text `httponly` to argument 1 of
- * `SetCookieMethodAccess`.
+ * `SetCookieMethodCall`.
  */
 module MatchesHttpOnlyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -71,7 +71,7 @@ module MatchesHttpOnlyConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(SetCookieMethodAccess ma).getArgument(1)
+    sink.asExpr() = any(SetCookieMethodCall ma).getArgument(1)
   }
 }
 
@@ -91,26 +91,26 @@ predicate mayBeBooleanTrue(Expr expr) {
 }
 
 /** Holds if the method call may set the `HttpOnly` flag. */
-predicate setsCookieHttpOnly(MethodAccess ma) {
+predicate setsCookieHttpOnly(MethodCall ma) {
   ma.getMethod().getName() = "setHttpOnly" and
   // any use of setHttpOnly(x) where x isn't false is probably safe
   mayBeBooleanTrue(ma.getArgument(0))
 }
 
 /** Holds if `ma` removes a cookie. */
-predicate removesCookie(MethodAccess ma) {
+predicate removesCookie(MethodCall ma) {
   ma.getMethod().getName() = "setMaxAge" and
   ma.getArgument(0).(IntegerLiteral).getIntValue() = 0
 }
 
 /**
- * Holds if the MethodAccess `ma` is a test method call indicated by:
+ * Holds if the MethodCall `ma` is a test method call indicated by:
  *    a) in a test directory such as `src/test/java`
  *    b) in a test package whose name has the word `test`
  *    c) in a test class whose name has the word `test`
  *    d) in a test class implementing a test framework such as JUnit or TestNG
  */
-predicate isTestMethod(MethodAccess ma) {
+predicate isTestMethod(MethodCall ma) {
   exists(Method m |
     m = ma.getEnclosingCallable() and
     (
@@ -129,12 +129,12 @@ predicate isTestMethod(MethodAccess ma) {
 module SetHttpOnlyOrRemovesCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr() =
-      any(MethodAccess ma | setsCookieHttpOnly(ma) or removesCookie(ma)).getQualifier()
+      any(MethodCall ma | setsCookieHttpOnly(ma) or removesCookie(ma)).getQualifier()
   }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() =
-      any(MethodAccess ma | ma.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
+      any(MethodCall ma | ma.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
   }
 }
 
@@ -146,13 +146,13 @@ module SetHttpOnlyOrRemovesCookieFlow = TaintTracking::Global<SetHttpOnlyOrRemov
  */
 class CookieResponseSink extends DataFlow::ExprNode {
   CookieResponseSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       (
         ma.getMethod() instanceof ResponseAddCookieMethod and
         this.getExpr() = ma.getArgument(0) and
         not SetHttpOnlyOrRemovesCookieFlow::flowTo(this)
         or
-        ma instanceof SetCookieMethodAccess and
+        ma instanceof SetCookieMethodCall and
         this.getExpr() = ma.getArgument(1) and
         not MatchesHttpOnlyFlow::flowTo(this) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
       ) and
@@ -201,7 +201,7 @@ module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
     )
     or
     exists(
-      MethodAccess ma // cookie.toString()
+      MethodCall ma // cookie.toString()
     |
       ma.getMethod().getName() = "toString" and
       ma.getQualifier().getType() instanceof CookieClass and

@@ -10,6 +10,14 @@ predicate toBeTested(Element e) {
   or
   e instanceof ParameterizedProtocolType
   or
+  e instanceof PackType
+  or
+  e instanceof PackElementType
+  or
+  e instanceof PackArchetypeType
+  or
+  e instanceof MacroRole
+  or
   exists(ModuleDecl m |
     m = e and
     not m.isBuiltinModule() and

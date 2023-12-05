@@ -1,0 +1,78 @@
+Test.java:
+#    0| [CompilationUnit] Test
+#    1|   1: [Class] Test
+#    3|     2: [Method] test
+#    3|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    3|         0: [Parameter] inp
+#    3|           0: [TypeAccess] boolean
+#    3|       5: [BlockStmt] { ... }
+#    5|         0: [LocalVariableDeclStmt] var ...;
+#    5|           0: [TypeAccess] String
+#    5|           1: [LocalVariableDeclExpr] directTaint
+#    5|             0: [MethodCall] source(...)
+#    6|         1: [LocalVariableDeclStmt] var ...;
+#    6|           0: [TypeAccess] String
+#    6|           1: [LocalVariableDeclExpr] indirectTaint
+#    6|             0: [MethodCall] source(...)
+#    8|         2: [LocalVariableDeclStmt] var ...;
+#    8|           0: [TypeAccess] Object
+#    8|           1: [LocalVariableDeclExpr] o
+#    8|             0: [ConditionalExpr] ...?...:...
+#    8|               0: [VarAccess] inp
+#    8|               1: [VarAccess] directTaint
+#    8|               2: [ClassInstanceExpr] new Outer(...)
+#    8|                 -3: [TypeAccess] Outer
+#    8|                 0: [ClassInstanceExpr] new Inner(...)
+#    8|                   -3: [TypeAccess] Inner
+#    8|                   0: [VarAccess] indirectTaint
+#    8|                   1: [StringLiteral] "not tainted"
+#    8|                 1: [StringLiteral] "not tainted 2"
+#   10|         3: [IfStmt] if (...)
+#   10|           0: [InstanceOfExpr] ...instanceof...
+#   10|             0: [VarAccess] o
+#-----|             2: (Single Local Variable Declaration)
+#   10|               0: [TypeAccess] String
+#   10|               1: [LocalVariableDeclExpr] s
+#   10|           1: [BlockStmt] { ... }
+#   11|             0: [ExprStmt] <Expr>;
+#   11|               0: [MethodCall] sink(...)
+#   11|                 0: [VarAccess] s
+#   14|         4: [IfStmt] if (...)
+#   14|           0: [InstanceOfExpr] ...instanceof...
+#   14|             0: [VarAccess] o
+#   14|             2: [RecordPatternExpr] Outer(...)
+#   14|               -2: [TypeAccess] String
+#   14|               0: [RecordPatternExpr] Inner(...)
+#   14|                 -2: [TypeAccess] String
+#   14|                 -1: [TypeAccess] String
+#   14|                 0: [LocalVariableDeclExpr] tainted
+#   14|                 1: [LocalVariableDeclExpr] notTainted
+#   14|               1: [LocalVariableDeclExpr] alsoNotTainted
+#   14|           1: [BlockStmt] { ... }
+#   15|             0: [ExprStmt] <Expr>;
+#   15|               0: [MethodCall] sink(...)
+#   15|                 0: [VarAccess] tainted
+#   16|             1: [ExprStmt] <Expr>;
+#   16|               0: [MethodCall] sink(...)
+#   16|                 0: [VarAccess] notTainted
+#   17|             2: [ExprStmt] <Expr>;
+#   17|               0: [MethodCall] sink(...)
+#   17|                 0: [VarAccess] alsoNotTainted
+#   22|     3: [Method] source
+#   22|       3: [TypeAccess] String
+#   22|       5: [BlockStmt] { ... }
+#   22|         0: [ReturnStmt] return ...
+#   22|           0: [StringLiteral] "tainted"
+#   23|     4: [Method] sink
+#   23|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   23|         0: [Parameter] sunk
+#   23|           0: [TypeAccess] String
+#   23|       5: [BlockStmt] { ... }
+#   27|   2: [Class] Outer
+#   27|     7: [FieldDeclaration] Inner i;
+#   27|     8: [FieldDeclaration] String otherField;
+#   28|   3: [Class] Inner
+#   28|     7: [FieldDeclaration] String taintedField;
+#   28|     8: [FieldDeclaration] String nonTaintedField;

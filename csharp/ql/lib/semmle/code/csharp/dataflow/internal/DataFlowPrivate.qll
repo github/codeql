@@ -15,6 +15,7 @@ private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
+private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.cil.Ssa::Ssa as CilSsa
@@ -2488,68 +2489,3 @@ abstract class SyntheticField extends string {
  * Holds if the the content `c` is a container.
  */
 predicate containerContent(DataFlow::Content c) { c instanceof DataFlow::ElementContent }
-
-/** Gets the string representation of the parameters of `c`. */
-string parameterQualifiedTypeNamesToString(DotNet::Callable c) {
-  result =
-    concat(Parameter p, int i |
-      p = c.getParameter(i)
-    |
-      p.getType().getQualifiedName(), "," order by i
-    )
-}
-
-/**
- * A module containing predicates related to generating MaD models.
- */
-module Csv {
-  /** Holds if the summary should apply for all overrides of `c`. */
-  predicate isBaseCallableOrPrototype(DotNet::Callable c) {
-    c.getDeclaringType() instanceof Interface
-    or
-    exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
-      m.isAbstract()
-      or
-      c.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
-    )
-  }
-
-  /** Gets a string representing whether the summary should apply for all overrides of `c`. */
-  private string getCallableOverride(DotNet::Callable c) {
-    if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
-  }
-
-  private predicate partialModel(
-    DotNet::Callable c, string namespace, string type, string name, string parameters
-  ) {
-    c.getDeclaringType().hasQualifiedName(namespace, type) and
-    c.hasQualifiedName(_, name) and
-    parameters = "(" + parameterQualifiedTypeNamesToString(c) + ")"
-  }
-
-  /** Computes the first 6 columns for positive CSV rows of `c`. */
-  string asPartialModel(DotNet::Callable c) {
-    exists(string namespace, string type, string name, string parameters |
-      partialModel(c, namespace, type, name, parameters) and
-      result =
-        namespace + ";" //
-          + type + ";" //
-          + getCallableOverride(c) + ";" //
-          + name + ";" //
-          + parameters + ";" //
-          + /* ext + */ ";" //
-    )
-  }
-
-  /** Computes the first 4 columns for neutral CSV rows of `c`. */
-  string asPartialNeutralModel(DotNet::Callable c) {
-    exists(string namespace, string type, string name, string parameters |
-      partialModel(c, namespace, type, name, parameters) and
-      result =
-        namespace + ";" //
-          + type + ";" //
-          + name + ";" //
-          + parameters + ";" //
-    )
-  }
-}

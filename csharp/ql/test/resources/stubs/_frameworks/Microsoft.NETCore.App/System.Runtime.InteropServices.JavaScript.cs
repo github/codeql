@@ -12,6 +12,7 @@ namespace System
                 {
                     public JSException(string msg) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
                 public sealed class JSExportAttribute : System.Attribute
                 {
                     public JSExportAttribute() => throw null;
@@ -29,6 +30,7 @@ namespace System
                     public static System.Runtime.InteropServices.JavaScript.JSObject GlobalThis { get => throw null; }
                     public static System.Threading.Tasks.Task<System.Runtime.InteropServices.JavaScript.JSObject> ImportAsync(string moduleName, string moduleUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
                 public sealed class JSImportAttribute : System.Attribute
                 {
                     public JSImportAttribute(string functionName) => throw null;
@@ -36,6 +38,7 @@ namespace System
                     public string FunctionName { get => throw null; }
                     public string ModuleName { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)10240, Inherited = false, AllowMultiple = false)]
                 public sealed class JSMarshalAsAttribute<T> : System.Attribute where T : System.Runtime.InteropServices.JavaScript.JSType
                 {
                     public JSMarshalAsAttribute() => throw null;

@@ -53,6 +53,7 @@ namespace Microsoft
                     public abstract System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationAttribute> GetValidationAttributes();
                 }
             }
+            [System.AttributeUsage((System.AttributeTargets)132, AllowMultiple = false, Inherited = true)]
             public sealed class HiddenInputAttribute : System.Attribute
             {
                 public HiddenInputAttribute() => throw null;

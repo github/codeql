@@ -416,7 +416,10 @@ module Tornado {
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       exists(Function requestHandler | requestHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
-        result in [requestHandler.getArg(_), requestHandler.getArgByName(_)] and
+        result in [
+            requestHandler.getArg(_), requestHandler.getArgByName(_),
+            requestHandler.getVararg().(Parameter), requestHandler.getKwarg().(Parameter)
+          ] and
         not result = requestHandler.getArg(0)
       )
       or
@@ -429,6 +432,12 @@ module Tornado {
         result = requestHandler.getArg(regex.getGroupNumber(_, _))
         or
         result = requestHandler.getArgByName(regex.getGroupName(_, _))
+        or
+        exists(regex.getGroupNumber(_, _)) and
+        result = requestHandler.getVararg()
+        or
+        exists(regex.getGroupName(_, _)) and
+        result = requestHandler.getKwarg()
       )
     }
   }
@@ -446,7 +455,10 @@ module Tornado {
       // Since we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      result in [this.getArg(_), this.getArgByName(_)] and
+      result in [
+          this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+          this.getKwarg().(Parameter)
+        ] and
       not result = this.getArg(0)
     }
 

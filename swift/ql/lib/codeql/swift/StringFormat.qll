@@ -56,6 +56,19 @@ class LocalizedStringWithFormat extends FormattingFunction, Method {
 }
 
 /**
+ * A method that appends a formatted string.
+ */
+class StringMethodWithFormat extends FormattingFunction, Method {
+  StringMethodWithFormat() {
+    this.hasQualifiedName("NSMutableString", "appendFormat(_:_:)")
+    or
+    this.hasQualifiedName("StringProtocol", "appendingFormat(_:_:)")
+  }
+
+  override int getFormatParameterIndex() { result = 0 }
+}
+
+/**
  * The functions `NSLog` and `NSLogv`.
  */
 class NsLog extends FormattingFunction, FreeFunction {
@@ -71,4 +84,17 @@ class NsExceptionRaise extends FormattingFunction, Method {
   NsExceptionRaise() { this.hasQualifiedName("NSException", "raise(_:format:arguments:)") }
 
   override int getFormatParameterIndex() { result = 1 }
+}
+
+/**
+ * A function that appears to be an imported C `printf` variant.
+ */
+class PrintfFormat extends FormattingFunction, FreeFunction {
+  int formatParamIndex;
+
+  PrintfFormat() {
+    this.getShortName().matches("%printf%") and this.getParam(formatParamIndex).getName() = "format"
+  }
+
+  override int getFormatParameterIndex() { result = formatParamIndex }
 }

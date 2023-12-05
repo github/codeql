@@ -25,10 +25,12 @@ namespace Microsoft
                 public CorsPolicyMetadata(Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicy policy) => throw null;
                 public Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicy Policy { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = false)]
             public class DisableCorsAttribute : System.Attribute, Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata, Microsoft.AspNetCore.Cors.Infrastructure.IDisableCorsAttribute
             {
                 public DisableCorsAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public class EnableCorsAttribute : System.Attribute, Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata, Microsoft.AspNetCore.Cors.Infrastructure.IEnableCorsAttribute
             {
                 public EnableCorsAttribute() => throw null;

@@ -75,8 +75,6 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
    * Holds if this local variable or parameter is `scoped`.
    */
   predicate isScoped() { scoped_annotation(this, _) }
-
-  override predicate hasQualifiedName(string qualifier, string name) { none() }
 }
 
 /**
@@ -195,7 +193,12 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
 
   override string getName() { params(this, result, _, _, _, _, _) }
 
-  override Type getType() { params(this, _, getTypeRef(result), _, _, _, _) }
+  override Type getType() {
+    params(this, _, result, _, _, _, _)
+    or
+    not params(this, _, any(Type t), _, _, _, _) and
+    params(this, _, getTypeRef(result), _, _, _, _)
+  }
 
   override Location getALocation() { param_location(this, result) }
 
@@ -341,7 +344,12 @@ class LocalVariable extends LocalScopeVariable, @local_variable {
 
   override string getName() { localvars(this, _, result, _, _, _) }
 
-  override Type getType() { localvars(this, _, _, _, getTypeRef(result), _) }
+  override Type getType() {
+    localvars(this, _, _, _, result, _)
+    or
+    not localvars(this, _, _, _, any(Type t), _) and
+    localvars(this, _, _, _, getTypeRef(result), _)
+  }
 
   override Location getALocation() { localvar_location(this, result) }
 
@@ -423,7 +431,12 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
 
   override string getName() { fields(this, _, result, _, _, _) }
 
-  override Type getType() { fields(this, _, _, _, getTypeRef(result), _) }
+  override Type getType() {
+    fields(this, _, _, _, result, _)
+    or
+    not fields(this, _, _, _, any(Type t), _) and
+    fields(this, _, _, _, getTypeRef(result), _)
+  }
 
   override Location getALocation() { field_location(this, result) }
 

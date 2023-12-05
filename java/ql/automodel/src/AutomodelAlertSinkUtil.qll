@@ -90,7 +90,7 @@ class PotentialSinkModelExpr extends Expr {
     string package, string type, boolean subtypes, string name, string signature, string input
   ) {
     exists(Call call, Callable callable, int argIdx |
-      call.getCallee() = callable and
+      call.getCallee().getSourceDeclaration() = callable and
       (
         this = call.getArgument(argIdx)
         or

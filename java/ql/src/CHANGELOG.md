@@ -1,3 +1,26 @@
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The query `java/unsafe-deserialization` has been improved to detect insecure calls to `ObjectMessage.getObject` in JMS.
+
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* java/summary/lines-of-code now gives the total number of lines of Java and Kotlin code, and is the only query tagged `lines-of-code`. java/summary/lines-of-code-java and java/summary/lines-of-code-kotlin give the per-language counts.
+* The query `java/spring-disabled-csrf-protection` has been improved to detect more ways of disabling CSRF in Spring.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Most data flow queries that track flow from *remote* flow sources now use the current *threat model* configuration instead. This doesn't lead to any changes in the produced alerts (as the default configuration is *remote* flow sources) unless the threat model configuration is changed.
+
+## 0.8.0
+
+No user-facing changes.
+
 ## 0.7.5
 
 No user-facing changes.

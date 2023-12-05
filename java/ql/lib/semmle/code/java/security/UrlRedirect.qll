@@ -18,12 +18,12 @@ private class DefaultUrlRedirectSink extends UrlRedirectSink {
 /** A Servlet URL redirection sink. */
 private class ServletUrlRedirectSink extends UrlRedirectSink {
   ServletUrlRedirectSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof HttpServletResponseSendRedirectMethod and
       this.asExpr() = ma.getArgument(0)
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof ResponseSetHeaderMethod or
       ma.getMethod() instanceof ResponseAddHeaderMethod
     |

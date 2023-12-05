@@ -1,8 +1,6 @@
 .. _analyzing-data-flow-in-cpp-new:
 
-.. pull-quote:: Note
-
-   The data flow library described here is available from CodeQL 2.12.5 onwards. With the release of CodeQL 2.13.0 the library uses the new modular API for data flow. For information on the previous version of the library, see :ref:`Analyzing data flow in C and C++ <analyzing-data-flow-in-cpp>` and for information about the new modular API and how to migrate any existing queries to the updated data flow library, see `New dataflow API for CodeQL query writing <https://gh.io/codeql-new-dataflow-api>`__.
+.. include:: ../reusables/cpp-new-dataflow-api-note.rst
 
 Analyzing data flow in C and C++ (new)
 ======================================

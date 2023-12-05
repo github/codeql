@@ -1,5 +1,11 @@
 uniqueEnclosingCallable
+| test.cpp:864:44:864:58 | {...} | Node should have one enclosing callable but has 0. |
+| test.cpp:864:47:864:54 | call to source | Node should have one enclosing callable but has 0. |
+| test.cpp:872:46:872:51 | call to source | Node should have one enclosing callable but has 0. |
+| test.cpp:872:53:872:56 | 1 | Node should have one enclosing callable but has 0. |
 uniqueCallEnclosingCallable
+| test.cpp:864:47:864:54 | call to source | Call should have one enclosing callable but has 0. |
+| test.cpp:872:46:872:51 | call to source | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation
@@ -23,6 +29,8 @@ argHasPostUpdate
 | lambdas.cpp:38:2:38:2 | d | ArgumentNode is missing PostUpdateNode. |
 | lambdas.cpp:45:2:45:2 | e | ArgumentNode is missing PostUpdateNode. |
 | test.cpp:67:29:67:35 | source1 | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:813:19:813:35 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:848:23:848:25 | rpx | ArgumentNode is missing PostUpdateNode. |
 postWithInFlow
 | BarrierGuard.cpp:49:6:49:6 | x [post update] | PostUpdateNode should not be the target of local flow. |
 | BarrierGuard.cpp:60:7:60:7 | x [post update] | PostUpdateNode should not be the target of local flow. |
@@ -41,6 +49,9 @@ postWithInFlow
 | example.c:26:9:26:9 | x [post update] | PostUpdateNode should not be the target of local flow. |
 | example.c:26:19:26:24 | coords [inner post update] | PostUpdateNode should not be the target of local flow. |
 | example.c:28:23:28:25 | pos [inner post update] | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:5:5:5:12 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:5:6:5:12 | toTaint [inner post update] | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:18:17:18:17 | x [inner post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:13:5:13:19 | flowTestGlobal1 [post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:23:5:23:19 | flowTestGlobal2 [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:23:3:23:14 | v [post update] | PostUpdateNode should not be the target of local flow. |
@@ -133,6 +144,9 @@ postWithInFlow
 | test.cpp:728:3:728:4 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:728:4:728:4 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:734:41:734:41 | x [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:808:5:808:21 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:808:6:808:21 | global_indirect1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:832:5:832:17 | global_direct [post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition

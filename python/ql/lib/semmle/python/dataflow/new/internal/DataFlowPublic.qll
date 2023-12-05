@@ -10,6 +10,7 @@ import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * IPA type for data flow nodes.
@@ -23,13 +24,13 @@ private import FlowSummaryImpl as FlowSummaryImpl
  * The current implementation of these cross flows can be seen in `EssaTaintTracking`.
  */
 newtype TNode =
-  /** A node corresponding to an SSA variable. */
-  TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
   TCfgNode(ControlFlowNode node) {
     isExpressionNode(node)
     or
     node.getNode() instanceof Pattern
+    or
+    node = any(ScopeEntryDefinition def).getDefiningNode()
   } or
   /**
    * A synthetic node representing the value of an object before a state change.
@@ -117,14 +118,6 @@ newtype TNode =
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
   }
 
-/** Helper for `Node::getEnclosingCallable`. */
-private DataFlowCallable getCallableScope(Scope s) {
-  result.getScope() = s
-  or
-  not exists(DataFlowCallable c | c.getScope() = s) and
-  result = getCallableScope(s.getEnclosingScope())
-}
-
 private import semmle.python.internal.CachedStages
 
 /**
@@ -163,9 +156,6 @@ class Node extends TNode {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  /** Gets the ESSA variable corresponding to this node, if any. */
-  EssaVariable asVar() { none() }
-
   /** Gets the control-flow node corresponding to this node, if any. */
   ControlFlowNode asCfgNode() { none() }
 
@@ -176,25 +166,6 @@ class Node extends TNode {
    * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
-}
-
-/** A data-flow node corresponding to an SSA variable. */
-class EssaNode extends Node, TEssaNode {
-  EssaVariable var;
-
-  EssaNode() { this = TEssaNode(var) }
-
-  /** Gets the `EssaVariable` represented by this data-flow node. */
-  EssaVariable getVar() { result = var }
-
-  override EssaVariable asVar() { result = var }
-
-  /** Gets a textual representation of this element. */
-  override string toString() { result = var.toString() }
-
-  override Scope getScope() { result = var.getScope() }
-
-  override Location getLocation() { result = var.getLocation() }
 }
 
 /** A data-flow node corresponding to a control-flow node. */
@@ -400,7 +371,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Scope getScope() { result = mod }
 
   override string toString() {
-    result = "ModuleVariableNode in " + mod.toString() + " for " + var.getId()
+    result = "ModuleVariableNode in " + concat( | | mod.toString(), ",") + " for " + var.getId()
   }
 
   /** Gets the module in which this variable appears. */
@@ -419,8 +390,8 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   }
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
-  EssaNode getAWrite() {
-    result.getVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+  Node getAWrite() {
+    any(EssaNodeDefinition def).definedBy(var, result.asCfgNode().(DefinitionNode))
   }
 
   /** Gets the possible values of the variable at the end of import time */
@@ -595,6 +566,11 @@ newtype TContent =
     or
     // Arguments can overflow and end up in the starred parameter tuple.
     exists(any(CallNode cn).getArg(index))
+    or
+    // since flow summaries might use tuples, we ensure that we at least have valid
+    // TTupleElementContent for the 0..7 (7 was picked to match `small_tuple` in
+    // data-flow-private)
+    index in [0 .. 7]
   } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
@@ -605,7 +581,30 @@ newtype TContent =
   /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
   /** An object attribute. */
-  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
+  TAttributeContent(string attr) {
+    attr = any(Attribute a).getName()
+    or
+    // Flow summaries that target attributes rely on a TAttributeContent being
+    // available. However, since the code above only constructs a TAttributeContent
+    // based on the attribute names seen in the DB, we can end up in a scenario where
+    // flow summaries don't work due to missing TAttributeContent. To get around this,
+    // we need to add the attribute names used by flow summaries. This needs to be done
+    // both for the summaries written in QL and the ones written in data-extension
+    // files.
+    //
+    // 1) Summaries in QL. Sadly the following code leads to non-monotonic recursion
+    //   name = any(AccessPathToken a).getAnArgument("Attribute")
+    // instead we use a qltest to alert if we write a new summary in QL that uses an
+    // attribute -- see
+    // python/ql/test/experimental/dataflow/summaries-checks/missing-attribute-content.ql
+    attr in ["re", "string", "pattern"]
+    or
+    //
+    // 2) summaries in data-extension files
+    exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
+      attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
+    )
+  }
 
 /**
  * A data-flow value can have associated content.

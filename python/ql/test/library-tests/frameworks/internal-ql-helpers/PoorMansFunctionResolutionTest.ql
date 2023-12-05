@@ -11,8 +11,10 @@ module InlinePoorMansFunctionResolutionTest implements TestSig {
     exists(Function func, DataFlow::Node ref |
       ref = poorMansFunctionTracker(func) and
       not ref.asExpr() instanceof FunctionExpr and
-      // exclude things like `GSSA variable func`
-      exists(ref.asExpr()) and
+      // exclude the name of a defined function
+      not exists(FunctionDef def | def.getDefinedFunction() = func |
+        ref.asExpr() = def.getATarget()
+      ) and
       // exclude decorator calls (which with our extractor rewrites does reference the
       // function)
       not ref.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()

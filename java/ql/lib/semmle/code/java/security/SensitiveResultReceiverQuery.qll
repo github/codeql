@@ -5,7 +5,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SensitiveActions
 
-private class ResultReceiverSendCall extends MethodAccess {
+private class ResultReceiverSendCall extends MethodCall {
   ResultReceiverSendCall() {
     this.getMethod()
         .getASourceOverriddenMethod*()

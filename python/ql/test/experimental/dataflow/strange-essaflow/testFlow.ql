@@ -2,17 +2,17 @@ import python
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
-/** Gets the EssaNode that holds the module imported by the fully qualified module name `name` */
-DataFlow::EssaNode module_import(string name) {
-  exists(Variable var, Import imp, Alias alias |
+/** Gets the `CfgNode` that holds the module imported by the fully qualified module name `name`. */
+DataFlow::CfgNode module_import(string name) {
+  exists(Variable var, AssignmentDefinition def, Import imp, Alias alias |
+    var = def.getSourceVariable() and
+    result.getNode() = def.getDefiningNode() and
     alias = imp.getAName() and
-    alias.getAsname() = var.getAStore() and
-    (
-      name = alias.getValue().(ImportMember).getImportedModuleName()
-      or
-      name = alias.getValue().(ImportExpr).getImportedModuleName()
-    ) and
-    result.getVar().(AssignmentDefinition).getSourceVariable() = var
+    alias.getAsname() = var.getAStore()
+  |
+    name = alias.getValue().(ImportMember).getImportedModuleName()
+    or
+    name = alias.getValue().(ImportExpr).getImportedModuleName()
   )
 }
 
@@ -33,5 +33,5 @@ query predicate jumpStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
 
 query predicate essaFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   os_import(nodeFrom) and
-  DataFlowPrivate::EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+  DataFlowPrivate::LocalFlow::localFlowStep(nodeFrom, nodeTo)
 }

@@ -10,6 +10,7 @@ private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
 private import codeql.swift.frameworks.StandardLibrary.Array
 private import codeql.swift.frameworks.StandardLibrary.Dictionary
+private import codeql.dataflow.VariableCapture as VariableCapture
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
@@ -98,6 +99,16 @@ private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
   }
 }
 
+private class CaptureNodeImpl extends CaptureNode, NodeImpl {
+  override Location getLocationImpl() { result = this.getSynthesizedCaptureNode().getLocation() }
+
+  override string toStringImpl() { result = this.getSynthesizedCaptureNode().toString() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getSynthesizedCaptureNode().getEnclosingCallable()
+  }
+}
+
 private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
   exists(BasicBlock bb, int i | def.lastRefRedef(bb, i, next) |
     def.definesAt(_, bb, i) and
@@ -140,19 +151,22 @@ private module Cached {
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
           any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr(),
-          any(SubscriptExpr se).getBase()
+          any(SubscriptExpr se).getBase(),
+          any(ApplyExpr apply | not exists(apply.getStaticTarget())).getFunction()
         ])
     } or
     TDictionarySubscriptNode(SubscriptExpr e) {
       e.getBase().getType().getCanonicalType() instanceof CanonicalDictionaryType
-    }
+    } or
+    TCaptureNode(CaptureFlow::SynthesizedCaptureNode cn) or
+    TClosureSelfParameterNode(ClosureExpr closure)
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
     (
-      nodeTo instanceof InoutReturnNode
+      nodeTo instanceof InoutReturnNodeImpl
       implies
-      nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable().asVarDecl()
+      nodeTo.(InoutReturnNodeImpl).getParameter() = def.getSourceVariable().asVarDecl()
     )
   }
 
@@ -167,7 +181,7 @@ private module Cached {
    * Holds if `nodeFrom` is a parameter node, and `nodeTo` is a corresponding SSA node.
    */
   private predicate localFlowSsaParamInput(Node nodeFrom, Node nodeTo) {
-    nodeTo = getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    nodeTo = getParameterDefNode(nodeFrom.asParameter())
   }
 
   private predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
@@ -180,9 +194,9 @@ private module Cached {
       nodeFrom.asDefinition() = def and
       nodeTo.getCfgNode() = def.getAFirstRead() and
       (
-        nodeTo instanceof InoutReturnNode
+        nodeTo instanceof InoutReturnNodeImpl
         implies
-        nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable().asVarDecl()
+        nodeTo.(InoutReturnNodeImpl).getParameter() = def.getSourceVariable().asVarDecl()
       )
       or
       // use-use flow
@@ -247,6 +261,9 @@ private module Cached {
       nodeFrom.asExpr() = ie.getBranch(_)
     )
     or
+    // flow through OpenExistentialExpr (compiler generated expression wrapper)
+    nodeFrom.asExpr() = nodeTo.asExpr().(OpenExistentialExpr).getSubExpr()
+    or
     // flow from Expr to Pattern
     exists(Expr e, Pattern p |
       nodeFrom.asExpr() = e and
@@ -261,13 +278,19 @@ private module Cached {
         nodeFrom.asPattern().(TypedPattern).getSubPattern()
       ]
     or
-    // Flow from the unique parameter of a key path expression to
-    // the first component in the chain.
-    nodeTo.(KeyPathComponentNodeImpl).getComponent() =
-      nodeFrom.(KeyPathParameterNode).getComponent(0)
+    // Flow from the last component in a key path chain to
+    // the return node for the key path.
+    exists(KeyPathExpr keyPath |
+      nodeFrom.(KeyPathComponentNodeImpl).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
+      nodeTo.(KeyPathReturnNodeImpl).getKeyPathExpr() = keyPath
+    )
     or
-    nodeFrom.(KeyPathComponentPostUpdateNode).getComponent() =
-      nodeTo.(KeyPathParameterPostUpdateNode).getComponent(0)
+    exists(KeyPathExpr keyPath |
+      nodeTo.(KeyPathComponentPostUpdateNode).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
+      nodeFrom.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = keyPath
+    )
     or
     // Flow to the result of a keypath assignment
     exists(KeyPathApplicationExpr apply, AssignExpr assign |
@@ -279,6 +302,9 @@ private module Cached {
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
       nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    or
+    // flow step according to the closure capture library
+    captureValueStep(nodeFrom, nodeTo)
   }
 
   /**
@@ -305,7 +331,8 @@ private module Cached {
     TFieldContent(FieldDecl f) or
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
     TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
-    TCollectionContent()
+    TCollectionContent() or
+    TCapturedVariableContent(CapturedVariable v)
 }
 
 /**
@@ -342,7 +369,9 @@ private predicate hasPatternNode(PatternCfgNode n, Pattern p) {
 import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof FlowSummaryNode or n instanceof ClosureSelfParameterNode
+}
 
 /**
  * The intermediate node for a dictionary subscript operation `dict[key]`. In a write, this is used
@@ -394,6 +423,25 @@ private module ParameterNodes {
     override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
     override ParamDecl getParameter() { result = param }
+  }
+
+  class ClosureSelfParameterNode extends ParameterNodeImpl, TClosureSelfParameterNode {
+    ClosureExpr closure;
+
+    ClosureSelfParameterNode() { this = TClosureSelfParameterNode(closure) }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c.asSourceCallable() = closure and
+      pos instanceof TThisParameter
+    }
+
+    override Location getLocationImpl() { result = closure.getLocation() }
+
+    override string toStringImpl() { result = "closure self parameter" }
+
+    override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+
+    ClosureExpr getClosure() { result = closure }
   }
 
   class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
@@ -610,6 +658,18 @@ private module ArgumentNodes {
       pos = TPositionalArgument(0)
     }
   }
+
+  class SelfClosureArgumentNode extends ExprNode, ArgumentNode {
+    ApplyExprCfgNode apply;
+
+    SelfClosureArgumentNode() { n = apply.getFunction() }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      apply = call.asCall() and
+      not exists(apply.getStaticTarget()) and
+      pos instanceof ThisArgumentPosition
+    }
+  }
 }
 
 import ArgumentNodes
@@ -785,6 +845,173 @@ private module OutNodes {
 
 import OutNodes
 
+/**
+ * Holds if there is a data flow step from `e1` to `e2` that only steps from
+ * child to parent in the AST.
+ */
+private predicate simpleAstFlowStep(Expr e1, Expr e2) {
+  e2.(IfExpr).getBranch(_) = e1
+  or
+  e2.(AssignExpr).getSource() = e1
+  or
+  e2.(ArrayExpr).getAnElement() = e1
+}
+
+private predicate closureFlowStep(CaptureInput::Expr e1, CaptureInput::Expr e2) {
+  simpleAstFlowStep(e1, e2)
+  or
+  exists(Ssa::WriteDefinition def |
+    def.getARead().getNode().asAstNode() = e2 and
+    def.assigns(any(CfgNode cfg | cfg.getNode().asAstNode() = e1))
+  )
+  or
+  e2.(Pattern).getImmediateMatchingExpr() = e1
+}
+
+private module CaptureInput implements VariableCapture::InputSig<Location> {
+  private import swift as S
+  private import codeql.swift.controlflow.BasicBlocks as B
+
+  class BasicBlock instanceof B::BasicBlock {
+    string toString() { result = super.toString() }
+
+    Callable getEnclosingCallable() { result = super.getScope() }
+
+    Location getLocation() { result = super.getLocation() }
+  }
+
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
+    result.(B::BasicBlock).immediatelyDominates(bb)
+  }
+
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.(B::BasicBlock).getASuccessor() }
+
+  class CapturedVariable instanceof S::VarDecl {
+    CapturedVariable() {
+      any(S::CapturedDecl capturedDecl).getDecl() = this and
+      exists(this.getEnclosingCallable())
+    }
+
+    string toString() { result = super.toString() }
+
+    Callable getCallable() { result = super.getEnclosingCallable() }
+
+    Location getLocation() { result = super.getLocation() }
+  }
+
+  class CapturedParameter extends CapturedVariable instanceof S::ParamDecl { }
+
+  class Expr instanceof S::AstNode {
+    string toString() { result = super.toString() }
+
+    Location getLocation() { result = super.getLocation() }
+
+    predicate hasCfgNode(BasicBlock bb, int i) {
+      this = bb.(B::BasicBlock).getNode(i).getNode().asAstNode()
+    }
+  }
+
+  class VariableWrite extends Expr {
+    CapturedVariable variable;
+    Expr source;
+
+    VariableWrite() {
+      exists(S::Assignment a | this = a |
+        a.getDest().(DeclRefExpr).getDecl() = variable and
+        source = a.getSource()
+      )
+      or
+      exists(S::NamedPattern np | this = np |
+        variable = np.getVarDecl() and
+        source = np.getMatchingExpr()
+      )
+    }
+
+    CapturedVariable getVariable() { result = variable }
+
+    Expr getSource() { result = source }
+  }
+
+  class VariableRead extends Expr instanceof S::DeclRefExpr {
+    CapturedVariable v;
+
+    VariableRead() { this.getDecl() = v and not isLValue(this) }
+
+    CapturedVariable getVariable() { result = v }
+  }
+
+  class ClosureExpr extends Expr instanceof S::Callable {
+    ClosureExpr() { any(S::CapturedDecl c).getScope() = this }
+
+    predicate hasBody(Callable body) { this = body }
+
+    predicate hasAliasedAccess(Expr f) { closureFlowStep+(this, f) and not closureFlowStep(f, _) }
+  }
+
+  class Callable extends S::Callable {
+    predicate isConstructor() {
+      // A class declaration cannot capture a variable in Swift. Consider this hypothetical example:
+      // ```
+      // protocol Interface { }
+      // func foo() -> Interface {
+      //   let y = 42
+      //   class Impl : Interface {
+      //     let x : Int
+      //     init() {
+      //         x = y
+      //     }
+      //   }
+      //   let object = Impl()
+      //   return object
+      // }
+      // ```
+      // The Swift compiler will reject this with an error message such as
+      // ```
+      // error: class declaration cannot close over value 'y' defined in outer scope
+      //          x = y
+      //              ^
+      // ```
+      none()
+    }
+  }
+}
+
+class CapturedVariable = CaptureInput::CapturedVariable;
+
+class CapturedParameter = CaptureInput::CapturedParameter;
+
+module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
+
+private CaptureFlow::ClosureNode asClosureNode(Node n) {
+  result = n.(CaptureNode).getSynthesizedCaptureNode()
+  or
+  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr()
+  or
+  result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
+    n.(PostUpdateNode).getPreUpdateNode().asExpr()
+  or
+  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter()
+  or
+  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(ClosureSelfParameterNode).getClosure()
+  or
+  exists(CaptureInput::VariableWrite write |
+    result.(CaptureFlow::VariableWriteSourceNode).getVariableWrite() = write and
+    n.asExpr() = write.getSource()
+  )
+}
+
+private predicate captureStoreStep(Node node1, Content::CapturedVariableContent c, Node node2) {
+  CaptureFlow::storeStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+}
+
+private predicate captureReadStep(Node node1, Content::CapturedVariableContent c, Node node2) {
+  CaptureFlow::readStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+}
+
+predicate captureValueStep(Node node1, Node node2) {
+  CaptureFlow::localFlowStep(asClosureNode(node1), asClosureNode(node2))
+}
+
 predicate jumpStep(Node pred, Node succ) {
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
     succ.(FlowSummaryNode).getSummaryNode())
@@ -852,20 +1079,20 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::CollectionContent ac))
   )
   or
-  // array assignment `a[n] = x`
+  // subscript assignment `a[n] = x`
   exists(AssignExpr assign, SubscriptExpr subscript |
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
     subscript = assign.getDest() and
-    subscript.getBase().getType() instanceof ArrayType and
+    not any(DictionarySubscriptNode n).getExpr() = subscript and
     c.isSingleton(any(Content::CollectionContent ac))
   )
   or
   // creation of an optional via implicit wrapping keypath component
   exists(KeyPathComponent component |
     component.isOptionalWrapping() and
-    node1.(KeyPathComponentNodeImpl).getComponent() = component and
-    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
+    node1.(KeyPathComponentNodeImpl).getComponent().getNextComponent() = component and
+    node2.(KeyPathComponentNodeImpl).getComponent() = component and
     c instanceof OptionalSomeContentSet
   )
   or
@@ -897,6 +1124,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  captureStoreStep(node1, any(Content::CapturedVariableContent cvc | c.isSingleton(cvc)), node2)
 }
 
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
@@ -951,7 +1180,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   // read of a component in a key-path expression chain
   exists(KeyPathComponent component |
-    component = node1.(KeyPathComponentNodeImpl).getComponent() and
+    // the first node is either the previous element in the chain
+    node1.(KeyPathComponentNodeImpl).getComponent().getNextComponent() = component
+    or
+    // or the start node, if this is the first component in the chain
+    component = node1.(KeyPathParameterNode).getComponent(0)
+  |
+    component = node2.(KeyPathComponentNodeImpl).getComponent() and
     (
       c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
       or
@@ -965,13 +1200,6 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
         component.isOptionalChaining()
       )
     )
-  |
-    // the next node is either the next element in the chain
-    node2.(KeyPathComponentNodeImpl).getComponent() = component.getNextComponent()
-    or
-    // or the return node, if this is the last component in the chain
-    not exists(component.getNextComponent()) and
-    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
   )
   or
   // read of array or collection content via subscript operator
@@ -1001,6 +1229,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  captureReadStep(node1, any(Content::CapturedVariableContent cvc | c.isSingleton(cvc)), node2)
 }
 
 /**
@@ -1094,6 +1324,17 @@ private module PostUpdateNodes {
         result.(FlowSummaryNode).getSummaryNode())
     }
   }
+
+  class CapturePostUpdateNode extends PostUpdateNodeImpl, CaptureNode {
+    private CaptureNode pre;
+
+    CapturePostUpdateNode() {
+      CaptureFlow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+        pre.getSynthesizedCaptureNode())
+    }
+
+    override Node getPreUpdateNode() { result = pre }
+  }
 }
 
 private import PostUpdateNodes
@@ -1152,7 +1393,12 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
  * by default as a heuristic.
  */
-predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+predicate allowParameterReturnInSelf(ParameterNode p) {
+  exists(Callable c |
+    c = p.(ParameterNodeImpl).getEnclosingCallable().asSourceCallable() and
+    CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(c)
+  )
+}
 
 /** An approximated `Content`. */
 class ContentApprox = Unit;

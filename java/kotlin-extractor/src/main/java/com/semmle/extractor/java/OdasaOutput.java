@@ -49,6 +49,8 @@ import com.semmle.util.trap.dependencies.TrapDependencies;
 import com.semmle.util.trap.dependencies.TrapSet;
 import com.semmle.util.trap.pathtransformers.PathTransformer;
 
+import com.github.codeql.Compression;
+
 public class OdasaOutput {
 	private final File trapFolder;
 	private final File sourceArchiveFolder;
@@ -63,16 +65,18 @@ public class OdasaOutput {
 	private final boolean trackClassOrigins;
 
 	private final Logger log;
+	private final Compression compression;
 
 	/** DEBUG only: just use the given file as the root for TRAP, source archive etc */
-	OdasaOutput(File outputRoot, Logger log) {
+	OdasaOutput(File outputRoot, Compression compression, Logger log) {
 		this.trapFolder = new File(outputRoot, "trap");
 		this.sourceArchiveFolder = new File(outputRoot, "src_archive");
 		this.trackClassOrigins = false;
 		this.log = log;
+		this.compression = compression;
 	}
 
-	public OdasaOutput(boolean trackClassOrigins, Logger log) {
+	public OdasaOutput(boolean trackClassOrigins, Compression compression, Logger log) {
 		String trapFolderVar = Env.systemEnv().getFirstNonEmpty("CODEQL_EXTRACTOR_JAVA_TRAP_DIR", Var.TRAP_FOLDER.name());
 		if (trapFolderVar == null) {
 			throw new ResourceError("CODEQL_EXTRACTOR_JAVA_TRAP_DIR was not set");
@@ -85,6 +89,7 @@ public class OdasaOutput {
 		this.sourceArchiveFolder = new File(sourceArchiveVar);
 		this.trackClassOrigins = trackClassOrigins;
 		this.log = log;
+		this.compression = compression;
 	}
 
 	public File getTrapFolder() {
@@ -180,18 +185,18 @@ public class OdasaOutput {
 			return null;
 		return FileUtil.appendAbsolutePath(
 				currentSpecFileEntry.getTrapFolder(),
-				JARS_DIR + "/" + PathTransformer.std().fileAsDatabaseString(jarFile) + ".trap.gz");
+				JARS_DIR + "/" + PathTransformer.std().fileAsDatabaseString(jarFile) + ".trap" + compression.getExtension());
 	}
 
 	private File getTrapFileForModule(String moduleName) {
 		return FileUtil.appendAbsolutePath(
 				currentSpecFileEntry.getTrapFolder(),
-				MODULES_DIR + "/" + moduleName + ".trap.gz");
+				MODULES_DIR + "/" + moduleName + ".trap" + compression.getExtension());
 	}
 
 	private File trapFileFor(File file) {
 		return FileUtil.appendAbsolutePath(currentSpecFileEntry.getTrapFolder(),
-				PathTransformer.std().fileAsDatabaseString(file) + ".trap.gz");
+				PathTransformer.std().fileAsDatabaseString(file) + ".trap" + compression.getExtension());
 	}
 
 	private File getTrapFileForDecl(IrElement sym, String signature) {
@@ -214,7 +219,7 @@ public class OdasaOutput {
 					binaryName.replace('.', '/') +
 					signature +
 					".members" +
-					".trap.gz";
+					".trap" + compression.getExtension();
 		return result;
 	}
 
@@ -245,7 +250,7 @@ public class OdasaOutput {
 		// don't need to rewrite it only to rename it
 		// again.
 		File trapFileDir = trap.getParentFile();
-		File trapOld = new File(trapFileDir, trap.getName().replace(".trap.gz", ".trap-old.gz"));
+		File trapOld = new File(trapFileDir, trap.getName().replace(".trap" + compression.getExtension(), ".trap-old" + compression.getExtension()));
 		if (trapOld.exists()) {
 			log.trace("Not rewriting trap file for " + trap.toString() + " as the trap-old exists");
 			return null;
@@ -272,7 +277,7 @@ public class OdasaOutput {
 	}
 
 	private TrapFileManager trapWriter(File trapFile, IrElement sym, String signature) {
-		if (!trapFile.getName().endsWith(".trap.gz"))
+		if (!trapFile.getName().endsWith(".trap" + compression.getExtension()))
 			throw new CatastrophicError("OdasaOutput only supports writing to compressed trap files");
 		String relative = FileUtil.relativePath(trapFile, currentSpecFileEntry.getTrapFolder());
 		trapFile.getParentFile().mkdirs();
@@ -321,7 +326,7 @@ public class OdasaOutput {
 			writeTrapDependencies(trapDependenciesForClass);
 		}
 		private void writeTrapDependencies(TrapDependencies trapDependencies) {
-			String dep = trapDependencies.trapFile().replace(".trap.gz", ".dep");
+			String dep = trapDependencies.trapFile().replace(".trap" + compression.getExtension(), ".dep");
 			trapDependencies.save(
 					currentSpecFileEntry.getTrapFolder().toPath().resolve(dep));
 		}
@@ -335,7 +340,7 @@ public class OdasaOutput {
 	 * Trap file locking.
 	 */
 
-	private final Pattern selectClassVersionComponents = Pattern.compile("(.*)#(-?[0-9]+)\\.(-?[0-9]+)-(-?[0-9]+)-(.*)\\.trap\\.gz");
+	private final Pattern selectClassVersionComponents = Pattern.compile("(.*)#(-?[0-9]+)\\.(-?[0-9]+)-(-?[0-9]+)-(.*)\\.trap.*");
 
 	/**
 	 * <b>CAUTION</b>: to avoid the potential for deadlock between multiple concurrent extractor processes,
@@ -412,12 +417,12 @@ public class OdasaOutput {
 					trapFileVersion = new TrapClassVersion(0, 0, 0, "kotlin");
 				else
 					trapFileVersion = TrapClassVersion.fromSymbol(sym, log);
-				String baseName = normalTrapFile.getName().replace(".trap.gz", "");
+				String baseName = normalTrapFile.getName().replace(".trap" + compression.getExtension(), "");
 				// If a class has lots of inner classes, then we get lots of files
 				// in a single directory. This makes our directory listings later slow.
 				// To avoid this, rather than using files named .../Foo*, we use .../Foo/Foo*.
 				trapFileBase = new File(new File(normalTrapFile.getParentFile(), baseName), baseName);
-				trapFile = new File(trapFileBase.getPath() + '#' + trapFileVersion.toString() + ".trap.gz");
+				trapFile = new File(trapFileBase.getPath() + '#' + trapFileVersion.toString() + ".trap" + compression.getExtension());
 			}
 		}
 		private TrapLocker(File jarFile) {
@@ -488,7 +493,7 @@ public class OdasaOutput {
 						for (Pair<File, TrapClassVersion> p: pairs) {
 							if (!latestVersion.equals(p.snd())) {
 								File f = p.fst();
-								File fOld = new File(f.getParentFile(), f.getName().replace(".trap.gz", ".trap-old.gz"));
+								File fOld = new File(f.getParentFile(), f.getName().replace(".trap" + compression.getExtension(), ".trap-old" + compression.getExtension()));
 								// We aren't interested in whether or not this succeeds;
 								// it may fail because a concurrent extractor has already
 								// renamed it.

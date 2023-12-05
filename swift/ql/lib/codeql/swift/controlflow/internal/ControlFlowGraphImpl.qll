@@ -67,10 +67,13 @@ module CfgScope {
     final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
   }
 
-  private class ClosureExprScope extends Range_ instanceof ExplicitClosureExpr {
+  private class ClosureExprScope extends Range_ instanceof ClosureExpr {
     Exprs::ClosureExprTree tree;
 
-    ClosureExprScope() { tree.getAst() = this }
+    ClosureExprScope() {
+      isNormalAutoClosureOrExplicitClosure(this) and
+      tree.getAst() = this
+    }
 
     final override predicate entry(ControlFlowElement first) { first(tree, first) }
 
@@ -231,6 +234,14 @@ module Stmts {
 
     final override ControlFlowElement getChildElement(int i) {
       result.asAstNode() = ast.getResult().getFullyConverted() and i = 0
+    }
+  }
+
+  private class DiscardStmtTree extends AstStandardPostOrderTree {
+    override DiscardStmt ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
     }
   }
 
@@ -1145,12 +1156,16 @@ module Exprs {
     }
   }
 
+  /**
+   * The control flow for an explicit closure or a normal autoclosure in its
+   * role as a control flow scope.
+   */
   class ClosureExprTree extends StandardPreOrderTree, TClosureElement {
-    ExplicitClosureExpr expr;
+    ClosureExpr expr;
 
     ClosureExprTree() { this = TClosureElement(expr) }
 
-    ExplicitClosureExpr getAst() { result = expr }
+    ClosureExpr getAst() { result = expr }
 
     final override ControlFlowElement getChildElement(int i) {
       result.asAstNode() = expr.getParam(i)
@@ -1407,6 +1422,59 @@ module Exprs {
       // And then we visit the body that potentially mutates the local variable.
       i = 1 and
       result.asAstNode() = ast.getBody()
+    }
+  }
+
+  /** Control-flow for a `SingleValueStmtExpr`. See the QLDoc for `SingleValueStmtExpr` for the semantics of a `SingleValueStmtExpr`. */
+  private class SingleValueStmtExprTree extends AstStandardPostOrderTree {
+    override SingleValueStmtExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getStmt()
+    }
+  }
+
+  /** Control-flow for Pack Expansion. See the QLDoc for `PackExpansionExpr` for details. */
+  private class PackExpansionExprTree extends AstStandardPostOrderTree {
+    override PackExpansionExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getPatternExpr().getFullyConverted()
+    }
+  }
+
+  /** Control-flow for Pack Expansion. See the QLDoc for `PackElementExpr` for details. */
+  private class PackElementExprTree extends AstStandardPostOrderTree {
+    override PackElementExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
+  private class MaterializePackExprTree extends AstStandardPostOrderTree {
+    override MaterializePackExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
+  /** Control-flow for Move Semantics. See the QLDoc for `CopyExpr` for details. */
+  private class CopyExprTree extends AstStandardPostOrderTree {
+    override CopyExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
+    }
+  }
+
+  /** Control-flow for Move Semantics. See the QLDoc for `ConsumeExpr` for details. */
+  private class ConsumeExprTree extends AstStandardPostOrderTree {
+    override ConsumeExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
     }
   }
 

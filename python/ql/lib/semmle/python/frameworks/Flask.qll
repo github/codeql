@@ -279,6 +279,9 @@ module Flask {
           name = match.regexpCapture(werkzeug_rule_re(), 4)
         )
       )
+      or
+      // **kwargs
+      result = this.getARequestHandler().getKwarg()
     }
 
     override string getFramework() { result = "Flask" }
@@ -347,6 +350,12 @@ module Flask {
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       result in [this.getArg(_), this.getArgByName(_)] and
       not result = this.getArg(0)
+      or
+      // *args
+      result = this.getVararg()
+      or
+      // **kwargs
+      result = this.getKwarg()
     }
 
     override string getFramework() { result = "Flask" }

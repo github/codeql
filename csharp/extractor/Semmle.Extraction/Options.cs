@@ -28,7 +28,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Holds if CIL should be extracted.
         /// </summary>
-        public bool CIL { get; private set; } = true;
+        public bool CIL { get; private set; } = false;
 
         /// <summary>
         /// Holds if assemblies shouldn't be extracted twice.

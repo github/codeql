@@ -50,8 +50,20 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
 }
 
 predicate capturedJumpStep(Node nodeFrom, Node nodeTo) {
-  exists(SsaSourceVariable var, DefinitionNode def | var.hasDefiningNode(def) |
-    nodeTo.asVar().(ScopeEntryDefinition).getSourceVariable() = var and
+  // Jump into a capturing scope.
+  //
+  // var = expr
+  // ...
+  // def f():
+  // ..var is used..
+  //
+  // nodeFrom is `expr`
+  // nodeTo is entry node for `f`
+  exists(ScopeEntryDefinition e, SsaSourceVariable var, DefinitionNode def |
+    e.getSourceVariable() = var and
+    var.hasDefiningNode(def)
+  |
+    nodeTo.asCfgNode() = e.getDefiningNode() and
     nodeFrom.asCfgNode() = def.getValue() and
     var.getScope().getScope*() = nodeFrom.getScope()
   )
@@ -214,10 +226,11 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   predicate return = FlowSummary::SummaryComponent::return/0;
 
   // Relating nodes to summaries
-  Node argumentOf(Node call, SummaryComponent arg) {
+  Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
     exists(DataFlowDispatch::ParameterPosition pos |
       arg = FlowSummary::SummaryComponent::argument(pos) and
-      argumentPositionMatch(call, result, pos)
+      argumentPositionMatch(call, result, pos) and
+      isPostUpdate = [false, true] // todo: implement when/if Python uses post-update nodes in type tracking
     )
   }
 
@@ -227,8 +240,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
     |
       param = FlowSummary::SummaryComponent::parameter(apos) and
       DataFlowDispatch::parameterMatch(ppos, apos) and
-      // pick the SsaNode rather than the CfgNode
-      result.asVar().getDefinition().(ParameterDefinition).getParameter() = p and
+      result.asCfgNode().getNode() = p and
       (
         exists(int i | ppos.isPositional(i) |
           p = callable.getALocalSource().asExpr().(CallableExpr).getInnerScope().getArg(i)

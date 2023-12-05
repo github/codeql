@@ -1,3 +1,37 @@
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Added the [gin cors](https://github.com/gin-contrib/cors) library to the CorsMisconfiguration.ql query
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through an array was not tracked correctly in some circumstances. Taint flow was tracked correctly.
+
+## 0.7.2
+
+### Minor Analysis Improvements
+
+* Added [Request.Cookie](https://pkg.go.dev/net/http#Request.Cookie) to reflected XSS sanitizers.
+
+### Bug Fixes
+
+* Fixed a bug where data flow nodes in files that are not in the project being analyzed (such as libraries) and are not contained within a function were not given an enclosing `Callable`. Note that for nodes that are not contained within a function, the enclosing callable is considered to be the file itself. This may cause some minor changes to results.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Support has been added for file system access sinks in the following libraries: [net/http](https://pkg.go.dev/net/http), [Afero](https://github.com/spf13/afero), [beego](https://pkg.go.dev/github.com/astaxie/beego), [Echo](https://pkg.go.dev/github.com/labstack/echo), [Fiber](https://github.com/kataras/iris), [Gin](https://pkg.go.dev/github.com/gin-gonic/gin), [Iris](https://github.com/kataras/iris).
+* Added `GoKit.qll` to `go.qll` enabling the GoKit framework by default
+
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* Added Numeric and Boolean types to SQL injection sanitzers.
+
 ## 0.6.5
 
 No user-facing changes.

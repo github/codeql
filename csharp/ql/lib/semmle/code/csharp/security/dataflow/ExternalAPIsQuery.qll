@@ -69,7 +69,7 @@ class ExternalApiDataNode extends DataFlow::Node {
 
   /** Holds if the callable being use has name `name` and has qualifier `qualifier`. */
   predicate hasQualifiedName(string qualifier, string name) {
-    this.getCallable().hasQualifiedName(qualifier, name)
+    this.getCallable().hasFullyQualifiedName(qualifier, name)
   }
 
   /**
@@ -144,8 +144,8 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
     |
       this = TExternalApiParameter(m, index) and
       result =
-        m.getDeclaringType().getQualifiedName() + "." + m.toStringWithTypes() + " [" + indexString +
-          "]"
+        m.getDeclaringType().getFullyQualifiedName() + "." + m.toStringWithTypes() + " [" +
+          indexString + "]"
     )
   }
 }

@@ -71,7 +71,7 @@ class LocalSourceNode extends Node {
     or
     // We include all scope entry definitions, as these act as the local source within the scope they
     // enter.
-    this.asVar() instanceof ScopeEntryDefinition
+    this.asCfgNode() = any(ScopeEntryDefinition def).getDefiningNode()
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
@@ -165,7 +165,7 @@ class LocalSourceNodeNotModuleVariableNode extends LocalSourceNode {
   LocalSourceNodeNotModuleVariableNode() {
     this instanceof ExprNode
     or
-    this.asVar() instanceof ScopeEntryDefinition
+    this.asCfgNode() = any(ScopeEntryDefinition def).getDefiningNode()
   }
 }
 

@@ -32,7 +32,7 @@ module ClientSuppliedIpUsedInSecurityCheckConfig implements DataFlow::ConfigSig 
    * later entries may originate from more-trustworthy intermediate proxies, not the original client.
    */
   predicate isBarrier(DataFlow::Node node) {
-    exists(ArrayAccess aa, MethodAccess ma | aa.getArray() = ma |
+    exists(ArrayAccess aa, MethodCall ma | aa.getArray() = ma |
       ma.getQualifier() = node.asExpr() and
       ma.getMethod() instanceof SplitMethod and
       not aa.getIndexExpr().(CompileTimeConstantExpr).getIntValue() = 0

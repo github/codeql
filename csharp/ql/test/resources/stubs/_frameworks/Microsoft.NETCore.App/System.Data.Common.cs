@@ -747,6 +747,7 @@ namespace System
                 public virtual System.Data.Common.DbParameter CreateParameter() => throw null;
                 protected DbProviderFactory() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
             public sealed class DbProviderSpecificTypePropertyAttribute : System.Attribute
             {
                 public DbProviderSpecificTypePropertyAttribute(bool isProviderSpecificTypeProperty) => throw null;
@@ -1344,6 +1345,7 @@ namespace System
             UnspecifiedLocal = 3,
             Utc = 4,
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public class DataSysDescriptionAttribute : System.ComponentModel.DescriptionAttribute
         {
             public DataSysDescriptionAttribute(string description) => throw null;

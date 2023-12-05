@@ -23,6 +23,7 @@ namespace Microsoft
                 public LocalizationOptions() => throw null;
                 public string ResourcesPath { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
             public class ResourceLocationAttribute : System.Attribute
             {
                 public ResourceLocationAttribute(string resourceLocation) => throw null;
@@ -55,6 +56,7 @@ namespace Microsoft
                 public ResourceNamesCache() => throw null;
                 public System.Collections.Generic.IList<string> GetOrAdd(string name, System.Func<string, System.Collections.Generic.IList<string>> valueFactory) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = false, Inherited = false)]
             public class RootNamespaceAttribute : System.Attribute
             {
                 public RootNamespaceAttribute(string rootNamespace) => throw null;

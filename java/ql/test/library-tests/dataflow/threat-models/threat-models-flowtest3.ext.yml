@@ -1,10 +1,10 @@
 extensions:
 
   - addsTo:
-      pack: codeql/java-all
-      extensible: supportedThreatModels
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
     data:
-      - ["local"]
+      - ["local", true, 0]
 
   - addsTo:
       pack: codeql/java-all

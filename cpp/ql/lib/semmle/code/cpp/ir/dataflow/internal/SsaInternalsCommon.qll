@@ -228,7 +228,7 @@ private class PointerWrapperTypeIndirection extends Indirection instanceof Point
   override predicate isAdditionalDereference(Instruction deref, Operand address) {
     exists(CallInstruction call |
       operandForFullyConvertedCall(getAUse(deref), call) and
-      this = call.getStaticCallTarget().getClassAndName("operator*") and
+      this = call.getStaticCallTarget().getClassAndName(["operator*", "operator->", "get"]) and
       address = call.getThisArgumentOperand()
     )
   }
@@ -377,6 +377,9 @@ abstract private class AbstractBaseSourceVariable extends TBaseSourceVariable {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
+  /** Gets the location of this variable. */
+  abstract Location getLocation();
+
   /** Gets the type of this base source variable. */
   final DataFlowType getType() { this.getLanguageType().hasUnspecifiedType(result, _) }
 
@@ -395,6 +398,8 @@ class BaseIRVariable extends AbstractBaseSourceVariable, TBaseIRVariable {
 
   override string toString() { result = var.toString() }
 
+  override Location getLocation() { result = var.getLocation() }
+
   override CppType getLanguageType() { result = var.getLanguageType() }
 }
 
@@ -406,6 +411,8 @@ class BaseCallVariable extends AbstractBaseSourceVariable, TBaseCallVariable {
   CallInstruction getCallInstruction() { result = call }
 
   override string toString() { result = call.toString() }
+
+  override Location getLocation() { result = call.getLocation() }
 
   override CppType getLanguageType() { result = getResultLanguageType(call) }
 }
@@ -872,7 +879,7 @@ private module Cached {
       upper = countIndirectionsForCppType(type) and
       ind = ind0 + [lower .. upper] and
       indirectionIndex = ind - (ind0 + lower) and
-      (if type.hasType(any(Cpp::ArrayType arrayType), true) then lower = 0 else lower = 1)
+      lower = getMinIndirectionsForType(any(Type t | type.hasUnspecifiedType(t, _)))
     )
   }
 

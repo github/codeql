@@ -278,13 +278,11 @@ module VariableCapture {
     )
   }
 
-  private module CaptureInput implements Shared::InputSig {
+  private module CaptureInput implements Shared::InputSig<Location> {
     private import ruby as R
     private import codeql.ruby.controlflow.ControlFlowGraph
     private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
-
-    class Location = R::Location;
 
     class BasicBlock extends BasicBlocks::BasicBlock {
       Callable getEnclosingCallable() { result = this.getScope() }
@@ -366,7 +364,7 @@ module VariableCapture {
 
   class ClosureExpr = CaptureInput::ClosureExpr;
 
-  module Flow = Shared::Flow<CaptureInput>;
+  module Flow = Shared::Flow<Location, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
     result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -398,31 +396,49 @@ module VariableCapture {
     CapturedSsaDefinitionExt() { this.getSourceVariable() instanceof CapturedVariable }
   }
 
-  /**
-   * Holds if there is control-flow insensitive data-flow from `node1` to `node2`
-   * involving a captured variable. Only used in type tracking.
-   */
-  predicate flowInsensitiveStep(Node node1, Node node2) {
-    exists(CapturedSsaDefinitionExt def, CapturedVariable v |
-      // From an assignment or implicit initialization of a captured variable to its flow-insensitive node
-      def = node1.(SsaDefinitionExtNode).getDefinitionExt() and
+  // From an assignment or implicit initialization of a captured variable to its flow-insensitive node
+  private predicate flowInsensitiveWriteStep(
+    SsaDefinitionExtNode node1, CapturedVariableNode node2, CapturedVariable v
+  ) {
+    exists(CapturedSsaDefinitionExt def |
+      def = node1.getDefinitionExt() and
       def.getSourceVariable() = v and
       (
         def instanceof Ssa::WriteDefinition
         or
         def instanceof Ssa::SelfDefinition
       ) and
-      node2.(CapturedVariableNode).getVariable() = v
-      or
-      // From a captured variable node to its flow-sensitive capture nodes
-      node1.(CapturedVariableNode).getVariable() = v and
-      def = node2.(SsaDefinitionExtNode).getDefinitionExt() and
+      node2.getVariable() = v
+    )
+  }
+
+  // From a captured variable node to its flow-sensitive capture nodes
+  private predicate flowInsensitiveReadStep(
+    CapturedVariableNode node1, SsaDefinitionExtNode node2, CapturedVariable v
+  ) {
+    exists(CapturedSsaDefinitionExt def |
+      node1.getVariable() = v and
+      def = node2.getDefinitionExt() and
       def.getSourceVariable() = v and
       (
         def instanceof Ssa::CapturedCallDefinition
         or
         def instanceof Ssa::CapturedEntryDefinition
       )
+    )
+  }
+
+  /**
+   * Holds if there is control-flow insensitive data-flow from `node1` to `node2`
+   * involving a captured variable. Only used in type tracking.
+   */
+  predicate flowInsensitiveStep(Node node1, Node node2) {
+    exists(CapturedVariable v |
+      flowInsensitiveWriteStep(node1, node2, v) and
+      flowInsensitiveReadStep(_, _, v)
+      or
+      flowInsensitiveReadStep(node1, node2, v) and
+      flowInsensitiveWriteStep(_, _, v)
     )
   }
 }
@@ -443,7 +459,7 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(CfgNodes::ExprCfgNode n) or
-    TReturningNode(CfgNodes::ReturningCfgNode n) or
+    TReturningNode(CfgNodes::ReturningCfgNode n) { exists(n.getReturnedValueNode()) } or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) or
     TCapturedVariableNode(VariableCapture::CapturedVariable v) or
     TNormalParameterNode(Parameter p) {
@@ -478,11 +494,11 @@ private module Cached {
     } or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TSynthHashSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
-      exists(Argument arg | arg.isArgumentOf(c, any(ArgumentPosition pos | pos.isKeyword(_))))
-      or
-      c.getAnArgument() instanceof CfgNodes::ExprNodes::PairCfgNode
+      ArgumentNodes::synthHashSplatStore(c, _, _)
     } or
-    TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) or
+    TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
+      ArgumentNodes::synthSplatStore(c, _, _)
+    } or
     TSynthSplatArgumentShiftNode(CfgNodes::ExprNodes::CallCfgNode c, int splatPos, int n) {
       // we use -1 to represent data at an unknown index
       n in [-1 .. 10] and
@@ -596,11 +612,11 @@ private module Cached {
     entrySsaDefinition(n) and
     not LocalFlow::localFlowSsaParamInput(_, n)
     or
-    TypeTrackerSpecific::storeStepIntoSourceNode(_, n, _)
+    TypeTrackerSpecific::basicStoreStep(_, n, _)
     or
-    TypeTrackerSpecific::readStepIntoSourceNode(_, n, _)
+    TypeTrackerSpecific::basicLoadStep(_, n, _)
     or
-    TypeTrackerSpecific::readStoreStepIntoSourceNode(_, n, _, _)
+    TypeTrackerSpecific::basicLoadStoreStep(_, n, _, _)
   }
 
   cached
@@ -652,7 +668,7 @@ private module Cached {
       )
     } or
     TSplatContent(int i, Boolean shifted) { i in [0 .. 10] } or
-    THashSplatContent(ConstantValue cv) { not cv.isInt(_) } or
+    THashSplatContent(ConstantValue::ConstantSymbolValue cv) or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     // Only used by type-tracking
     TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }
@@ -1270,6 +1286,51 @@ module ArgumentNodes {
   }
 
   /**
+   * Holds if a store-step should be added from keyword argument `arg`, belonging to
+   * `call`, into a synthetic hash splat argument.
+   */
+  predicate synthHashSplatStore(
+    CfgNodes::ExprNodes::CallCfgNode call, CfgNodes::ExprCfgNode arg, ContentSet c
+  ) {
+    exists(ConstantValue cv |
+      // symbol key
+      exists(ArgumentPosition keywordPos, string name |
+        arg.(Argument).isArgumentOf(call, keywordPos) and
+        keywordPos.isKeyword(name) and
+        cv.isSymbol(name)
+      )
+      or
+      // non-symbol key
+      exists(CfgNodes::ExprNodes::PairCfgNode pair, CfgNodes::ExprCfgNode key |
+        arg = pair.getValue() and
+        pair = call.getAnArgument() and
+        key = pair.getKey() and
+        cv = key.getConstantValue() and
+        not cv.isSymbol(_)
+      )
+    |
+      if call instanceof CfgNodes::ExprNodes::HashLiteralCfgNode
+      then
+        /*
+         * Needed for cases like
+         *
+         * ```rb
+         * hash = { a: taint, b: safe }
+         *
+         * def foo(a:, b:)
+         *   sink(a)
+         * end
+         *
+         * foo(**hash)
+         * ```
+         */
+
+        c.isSingleton(Content::getElementContent(cv))
+      else c.isSingleton(THashSplatContent(cv))
+    )
+  }
+
+  /**
    * A data-flow node that represents all keyword arguments wrapped in a hash.
    *
    * The callee is responsible for filtering out the keyword arguments that are
@@ -1285,44 +1346,7 @@ module ArgumentNodes {
      * Holds if a store-step should be added from argument `arg` into this synthetic
      * hash-splat argument.
      */
-    predicate storeFrom(Node arg, ContentSet c) {
-      exists(ConstantValue cv |
-        if call_ instanceof CfgNodes::ExprNodes::HashLiteralCfgNode
-        then
-          /*
-           * Needed for cases like
-           *
-           * ```rb
-           * hash = { a: taint, b: safe }
-           *
-           * def foo(a:, b:)
-           *   sink(a)
-           * end
-           *
-           * foo(**hash)
-           * ```
-           */
-
-          c.isSingleton(TKnownElementContent(cv))
-        else c.isSingleton(THashSplatContent(cv))
-      |
-        // symbol key
-        exists(ArgumentPosition keywordPos, string name |
-          arg.asExpr().(Argument).isArgumentOf(call_, keywordPos) and
-          keywordPos.isKeyword(name) and
-          cv.isSymbol(name)
-        )
-        or
-        // non-symbol key
-        exists(CfgNodes::ExprNodes::PairCfgNode pair, CfgNodes::ExprCfgNode key |
-          arg.asExpr() = pair.getValue() and
-          pair = call_.getAnArgument() and
-          key = pair.getKey() and
-          cv = key.getConstantValue() and
-          not cv.isSymbol(_)
-        )
-      )
-    }
+    predicate storeFrom(Node arg, ContentSet c) { synthHashSplatStore(call_, arg.asExpr(), c) }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
       call = call_ and
@@ -1330,6 +1354,39 @@ module ArgumentNodes {
     }
 
     override string toStringImpl() { result = "synthetic hash-splat argument" }
+  }
+
+  /**
+   * Holds if a store-step should be added from positional argument `arg`, belonging to
+   * `call`, into a synthetic splat argument.
+   */
+  predicate synthSplatStore(CfgNodes::ExprNodes::CallCfgNode call, Argument arg, ContentSet c) {
+    exists(int n |
+      exists(ArgumentPosition pos |
+        arg.isArgumentOf(call, pos) and
+        pos.isPositional(n) and
+        not exists(int i | splatArgumentAt(call, i) and i < n)
+      )
+    |
+      if call instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode
+      then
+        /*
+         * Needed for cases like
+         *
+         * ```rb
+         * arr = [taint, safe]
+         *
+         * def foo(a, b)
+         *   sink(a)
+         * end
+         *
+         * foo(*arr)
+         * ```
+         */
+
+        c = getArrayContent(n)
+      else c = getSplatContent(n, false)
+    )
   }
 
   /**
@@ -1346,31 +1403,7 @@ module ArgumentNodes {
      * Holds if a store-step should be added from argument `arg` into this synthetic
      * splat argument.
      */
-    predicate storeFrom(Node arg, ContentSet c) {
-      exists(ArgumentPosition pos, int n |
-        arg.asExpr().(Argument).isArgumentOf(call_, pos) and
-        pos.isPositional(n) and
-        not exists(int i | splatArgumentAt(call_, i) and i < n) and
-        if call_ instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode
-        then
-          /*
-           * Needed for cases like
-           *
-           * ```rb
-           * arr = [taint, safe]
-           *
-           * def foo(a, b)
-           *   sink(a)
-           * end
-           *
-           * foo(*arr)
-           * ```
-           */
-
-          c = getArrayContent(n)
-        else c = getSplatContent(n, false)
-      )
-    }
+    predicate storeFrom(Node arg, ContentSet c) { synthSplatStore(call_, arg.asExpr(), c) }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
       call = call_ and

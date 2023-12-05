@@ -73,7 +73,7 @@ A.java:
 #   33|       0: [ExprStmt] <Expr>;
 #   33|         0: [AssignExpr] ...=...
 #   33|           0: [VarAccess] counter
-#   33|           1: [MethodAccess] doSomething(...)
+#   33|           1: [MethodCall] doSomething(...)
 #   33|             0: [StringLiteral] "hi"
 #   42|     8: [Method] doSomethingElse
 #-----|       1: (Annotations)
@@ -110,45 +110,225 @@ A.java:
 #   48|                     0: [ReturnStmt] return ...
 #   50|                 1: [IfStmt] if (...)
 #   50|                   0: [InstanceOfExpr] ...instanceof...
-#-----|                     0: (Single Local Variable Declaration)
+#   50|                     0: [VarAccess] thing
+#-----|                     2: (Single Local Variable Declaration)
 #   50|                       0: [TypeAccess] String
 #   50|                       1: [LocalVariableDeclExpr] s
-#   50|                         0: [VarAccess] thing
 #   50|                   1: [BlockStmt] { ... }
 #   51|                     0: [ThrowStmt] throw ...
 #   51|                       0: [ClassInstanceExpr] new RuntimeException(...)
 #   51|                         -3: [TypeAccess] RuntimeException
 #   51|                         0: [VarAccess] s
-#   55|           0: [CatchClause] catch (...)
+#   53|                 2: [SwitchStmt] switch (...)
+#   53|                   -1: [VarAccess] thing
+#   54|                   0: [PatternCase] case <Pattern>
+#   54|                     -1: [ExprStmt] <Expr>;
+#   54|                       0: [MethodCall] println(...)
+#   54|                         -1: [VarAccess] System.out
+#   54|                           -1: [TypeAccess] System
+#   54|                         0: [VarAccess] s
+#-----|                     0: (Single Local Variable Declaration)
+#   54|                       0: [TypeAccess] String
+#   54|                       1: [LocalVariableDeclExpr] s
+#   55|                   1: [PatternCase] case <Pattern>
+#   55|                     -1: [ExprStmt] <Expr>;
+#   55|                       0: [MethodCall] println(...)
+#   55|                         -1: [VarAccess] System.out
+#   55|                           -1: [TypeAccess] System
+#   55|                         0: [AddExpr] ... + ...
+#   55|                           0: [StringLiteral] "An integer: "
+#   55|                           1: [VarAccess] i
+#-----|                     0: (Single Local Variable Declaration)
+#   55|                       0: [TypeAccess] Integer
+#   55|                       1: [LocalVariableDeclExpr] i
+#   56|                   2: [DefaultCase] default
+#   56|                     -1: [BlockStmt] { ... }
+#   58|                 3: [SwitchStmt] switch (...)
+#   58|                   -1: [VarAccess] thing
+#   59|                   0: [PatternCase] case <Pattern>
+#-----|                     0: (Single Local Variable Declaration)
+#   59|                       0: [TypeAccess] String
+#   59|                       1: [LocalVariableDeclExpr] s
+#   60|                   1: [ExprStmt] <Expr>;
+#   60|                     0: [MethodCall] println(...)
+#   60|                       -1: [VarAccess] System.out
+#   60|                         -1: [TypeAccess] System
+#   60|                       0: [VarAccess] s
+#   61|                   2: [BreakStmt] break
+#   62|                   3: [PatternCase] case <Pattern>
+#-----|                     0: (Single Local Variable Declaration)
+#   62|                       0: [TypeAccess] Integer
+#   62|                       1: [LocalVariableDeclExpr] i
+#   63|                   4: [ExprStmt] <Expr>;
+#   63|                     0: [MethodCall] println(...)
+#   63|                       -1: [VarAccess] System.out
+#   63|                         -1: [TypeAccess] System
+#   63|                       0: [AddExpr] ... + ...
+#   63|                         0: [StringLiteral] "An integer:"
+#   63|                         1: [VarAccess] i
+#   64|                   5: [BreakStmt] break
+#   65|                   6: [DefaultCase] default
+#   66|                   7: [BreakStmt] break
+#   68|                 4: [LocalVariableDeclStmt] var ...;
+#   68|                   1: [LocalVariableDeclExpr] thingAsString
+#   68|                     0: [SwitchExpr] switch (...)
+#   68|                       -1: [VarAccess] thing
+#   69|                       0: [PatternCase] case <Pattern>
+#   69|                         -1: [VarAccess] s
+#-----|                         0: (Single Local Variable Declaration)
+#   69|                           0: [TypeAccess] String
+#   69|                           1: [LocalVariableDeclExpr] s
+#   70|                       1: [PatternCase] case <Pattern>
+#   70|                         -1: [AddExpr] ... + ...
+#   70|                           0: [StringLiteral] "An integer: "
+#   70|                           1: [VarAccess] i
+#-----|                         0: (Single Local Variable Declaration)
+#   70|                           0: [TypeAccess] Integer
+#   70|                           1: [LocalVariableDeclExpr] i
+#   71|                       2: [DefaultCase] default
+#   71|                         -1: [StringLiteral] "Something else"
+#   73|                 5: [LocalVariableDeclStmt] var ...;
+#   73|                   1: [LocalVariableDeclExpr] thingAsString2
+#   73|                     0: [SwitchExpr] switch (...)
+#   73|                       -1: [VarAccess] thing
+#   74|                       0: [PatternCase] case <Pattern>
+#-----|                         0: (Single Local Variable Declaration)
+#   74|                           0: [TypeAccess] String
+#   74|                           1: [LocalVariableDeclExpr] s
+#   75|                       1: [YieldStmt] yield ...
+#   75|                         0: [VarAccess] s
+#   76|                       2: [PatternCase] case <Pattern>
+#-----|                         0: (Single Local Variable Declaration)
+#   76|                           0: [TypeAccess] Integer
+#   76|                           1: [LocalVariableDeclExpr] i
+#   77|                       3: [YieldStmt] yield ...
+#   77|                         0: [AddExpr] ... + ...
+#   77|                           0: [StringLiteral] "An integer: "
+#   77|                           1: [VarAccess] i
+#   78|                       4: [DefaultCase] default
+#   79|                       5: [YieldStmt] yield ...
+#   79|                         0: [StringLiteral] "Something else"
+#   81|                 6: [LocalVariableDeclStmt] var ...;
+#   81|                   1: [LocalVariableDeclExpr] nullTest
+#   81|                     0: [SwitchExpr] switch (...)
+#   81|                       -1: [VarAccess] thing
+#   82|                       0: [ConstCase] case ...
+#   82|                         -1: [StringLiteral] "Null"
+#   82|                         0: [NullLiteral] null
+#   83|                       1: [DefaultCase] default
+#   83|                         -1: [StringLiteral] "Not null"
+#   85|                 7: [LocalVariableDeclStmt] var ...;
+#   85|                   1: [LocalVariableDeclExpr] whenTest
+#   85|                     0: [SwitchExpr] switch (...)
+#   85|                       -1: [CastExpr] (...)...
+#   85|                         0: [TypeAccess] String
+#   85|                         1: [VarAccess] thing
+#   86|                       0: [ConstCase] case ...
+#   86|                         -1: [StringLiteral] "It's constant"
+#   86|                         0: [StringLiteral] "constant"
+#   87|                       1: [PatternCase] case <Pattern>
+#   87|                         -3: [EQExpr] ... == ...
+#   87|                           0: [MethodCall] length(...)
+#   87|                             -1: [VarAccess] s
+#   87|                           1: [IntegerLiteral] 3
+#   87|                         -1: [StringLiteral] "It's 3 letters long"
+#-----|                         0: (Single Local Variable Declaration)
+#   87|                           0: [TypeAccess] String
+#   87|                           1: [LocalVariableDeclExpr] s
+#   88|                       2: [PatternCase] case <Pattern>
+#   88|                         -3: [EQExpr] ... == ...
+#   88|                           0: [MethodCall] length(...)
+#   88|                             -1: [VarAccess] s
+#   88|                           1: [IntegerLiteral] 5
+#   88|                         -1: [StringLiteral] "it's 5 letters long"
+#-----|                         0: (Single Local Variable Declaration)
+#   88|                           0: [TypeAccess] String
+#   88|                           1: [LocalVariableDeclExpr] s
+#   89|                       3: [DefaultCase] default
+#   89|                         -1: [StringLiteral] "It's something else"
+#   91|                 8: [LocalVariableDeclStmt] var ...;
+#   91|                   1: [LocalVariableDeclExpr] nullDefaultTest
+#   91|                     0: [SwitchExpr] switch (...)
+#   91|                       -1: [VarAccess] thing
+#   92|                       0: [PatternCase] case <Pattern>
+#   92|                         -1: [StringLiteral] "It's a string"
+#-----|                         0: (Single Local Variable Declaration)
+#   92|                           0: [TypeAccess] String
+#   92|                           1: [LocalVariableDeclExpr] s
+#   93|                       1: [NullDefaultCase] case null, default
+#   93|                         -1: [StringLiteral] "It's something else"
+#   93|                         0: [NullLiteral] null
+#   95|                 9: [LocalVariableDeclStmt] var ...;
+#   95|                   1: [LocalVariableDeclExpr] qualifiedEnumTest
+#   95|                     0: [SwitchExpr] switch (...)
+#   95|                       -1: [VarAccess] thing
+#   96|                       0: [ConstCase] case ...
+#   96|                         -1: [StringLiteral] "It's E.A"
+#   96|                         0: [VarAccess] E.A
+#   96|                           -1: [TypeAccess] E
+#   97|                       1: [DefaultCase] default
+#   97|                         -1: [StringLiteral] "It's something else"
+#   99|                 10: [LocalVariableDeclStmt] var ...;
+#   99|                   1: [LocalVariableDeclExpr] unnecessaryQualifiedEnumTest
+#   99|                     0: [SwitchExpr] switch (...)
+#   99|                       -1: [CastExpr] (...)...
+#   99|                         0: [TypeAccess] E
+#   99|                         1: [VarAccess] thing
+#  100|                       0: [ConstCase] case ...
+#  100|                         -1: [StringLiteral] "It's E.A"
+#  100|                         0: [VarAccess] A
+#  101|                       1: [ConstCase] case ...
+#  101|                         -1: [StringLiteral] "It's E.B"
+#  101|                         0: [VarAccess] E.B
+#  101|                           -1: [TypeAccess] E
+#  102|                       2: [DefaultCase] default
+#  102|                         -1: [StringLiteral] "It's something else"
+#  104|                 11: [LocalVariableDeclStmt] var ...;
+#  104|                   1: [LocalVariableDeclExpr] recordPatterntest
+#  104|                     0: [SwitchExpr] switch (...)
+#  104|                       -1: [VarAccess] thing
+#  105|                       0: [PatternCase] case <Pattern>
+#  105|                         -1: [VarAccess] field
+#  105|                         0: [RecordPatternExpr] Middle(...)
+#  105|                           0: [RecordPatternExpr] Inner(...)
+#  105|                             -1: [TypeAccess] String
+#  105|                             0: [LocalVariableDeclExpr] field
+#  106|                       1: [DefaultCase] default
+#  106|                         -1: [StringLiteral] "Doesn't match pattern Middle(Inner(...))"
+#  110|           0: [CatchClause] catch (...)
 #-----|             0: (Single Local Variable Declaration)
-#   55|               0: [TypeAccess] RuntimeException
-#   55|               1: [LocalVariableDeclExpr] rte
-#   55|             1: [BlockStmt] { ... }
-#   56|               0: [ReturnStmt] return ...
-#   60|     10: [Class] E
-#   64|       3: [FieldDeclaration] E A;
+#  110|               0: [TypeAccess] RuntimeException
+#  110|               1: [LocalVariableDeclExpr] rte
+#  110|             1: [BlockStmt] { ... }
+#  111|               0: [ReturnStmt] return ...
+#  115|     10: [Class] E
+#  119|       3: [FieldDeclaration] E A;
 #-----|         -3: (Javadoc)
-#   61|           1: [Javadoc] /** Javadoc for enum constant */
-#   62|             0: [JavadocText] Javadoc for enum constant
-#   64|         -1: [TypeAccess] E
-#   64|         0: [ClassInstanceExpr] new E(...)
-#   64|           -3: [TypeAccess] E
-#   65|       4: [FieldDeclaration] E B;
+#  116|           1: [Javadoc] /** Javadoc for enum constant */
+#  117|             0: [JavadocText] Javadoc for enum constant
+#  119|         -1: [TypeAccess] E
+#  119|         0: [ClassInstanceExpr] new E(...)
+#  119|           -3: [TypeAccess] E
+#  120|       4: [FieldDeclaration] E B;
 #-----|         -3: (Javadoc)
-#   61|           1: [Javadoc] /** Javadoc for enum constant */
-#   62|             0: [JavadocText] Javadoc for enum constant
-#   65|         -1: [TypeAccess] E
-#   65|         0: [ClassInstanceExpr] new E(...)
-#   65|           -3: [TypeAccess] E
-#   66|       5: [FieldDeclaration] E C;
+#  116|           1: [Javadoc] /** Javadoc for enum constant */
+#  117|             0: [JavadocText] Javadoc for enum constant
+#  120|         -1: [TypeAccess] E
+#  120|         0: [ClassInstanceExpr] new E(...)
+#  120|           -3: [TypeAccess] E
+#  121|       5: [FieldDeclaration] E C;
 #-----|         -3: (Javadoc)
-#   61|           1: [Javadoc] /** Javadoc for enum constant */
-#   62|             0: [JavadocText] Javadoc for enum constant
-#   66|         -1: [TypeAccess] E
-#   66|         0: [ClassInstanceExpr] new E(...)
-#   66|           -3: [TypeAccess] E
-#   72|     11: [FieldDeclaration] int i, ...;
+#  116|           1: [Javadoc] /** Javadoc for enum constant */
+#  117|             0: [JavadocText] Javadoc for enum constant
+#  121|         -1: [TypeAccess] E
+#  121|         0: [ClassInstanceExpr] new E(...)
+#  121|           -3: [TypeAccess] E
+#  127|     11: [FieldDeclaration] int i, ...;
 #-----|       -3: (Javadoc)
-#   69|         1: [Javadoc] /** Javadoc for fields */
-#   70|           0: [JavadocText] Javadoc for fields
-#   72|       -1: [TypeAccess] int
+#  124|         1: [Javadoc] /** Javadoc for fields */
+#  125|           0: [JavadocText] Javadoc for fields
+#  127|       -1: [TypeAccess] int
+#  130|   2: [Class] Inner
+#  130|     2: [FieldDeclaration] String field;
+#  131|   3: [Class] Middle
+#  131|     2: [FieldDeclaration] Inner inner;

@@ -1,5 +1,6 @@
 private import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
+private import semmle.code.cpp.internal.ExtractorVersion
 private import semmle.code.cpp.ir.IRConfiguration
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
@@ -189,10 +190,7 @@ private predicate isNativeCondition(Expr expr) {
  * depending on context.
  */
 private predicate isFlexibleCondition(Expr expr) {
-  (
-    expr instanceof ParenthesisExpr or
-    expr instanceof NotExpr
-  ) and
+  expr instanceof ParenthesisExpr and
   usedAsCondition(expr) and
   not isIRConstant(expr)
 }
@@ -215,11 +213,6 @@ private predicate usedAsCondition(Expr expr) {
     // The two-operand form of `ConditionalExpr` treats its condition as a value, since it needs to
     // be reused as a value if the condition is true.
     condExpr.getCondition().getFullyConverted() = expr and not condExpr.isTwoOperand()
-  )
-  or
-  exists(NotExpr notExpr |
-    notExpr.getOperand().getFullyConverted() = expr and
-    usedAsCondition(notExpr)
   )
   or
   exists(ParenthesisExpr paren |
@@ -360,6 +353,12 @@ predicate ignoreLoad(Expr expr) {
     expr instanceof ThisExpr
     or
     expr instanceof FunctionAccess
+    or
+    // The load is duplicated from the operand.
+    isExtractorFrontendVersion65OrHigher() and expr instanceof ParenthesisExpr
+    or
+    // The load is duplicated from the right operand.
+    isExtractorFrontendVersion65OrHigher() and expr instanceof CommaExpr
     or
     expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
       instanceof FunctionPointerType

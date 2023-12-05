@@ -31,7 +31,7 @@ query predicate modifiers(string fnptr, string modifier, string sKind) {
     fnptr = fn.toString()
   |
     cil_custom_modifiers(fn, modType, kind) and
-    modType.hasQualifiedName(qualifier, name) and
+    modType.hasFullyQualifiedName(qualifier, name) and
     modifier = getQualifiedName(qualifier, name) and
     sKind = getKind(kind)
   )

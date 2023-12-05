@@ -129,7 +129,7 @@ func forwarder() {
         (i: Int) -> Int in
         return 0
     })
-    sink(arg: clean)
+    sink(arg: clean) // clean
 }
 
 func lambdaFlows() {
@@ -875,7 +875,7 @@ func testVarargsCaller() {
 
 func testSetForEach() {
     var set1 = Set([source()])
-    
+
     for elem in set1 {
         sink(arg: elem) // $ flow=877
     }
@@ -899,3 +899,35 @@ func testAsyncFor () async {
         sink(arg: i) // $ MISSING: flow=892
     }
 }
+
+func usesAutoclosure(_ expr: @autoclosure () -> Int) {
+  sink(arg: expr()) // $ flow=908
+}
+
+func autoclosureTest() {
+  usesAutoclosure(source())
+}
+
+// ---
+
+protocol MyProtocol {
+	func source(_ label: String) -> Int
+}
+
+class MyProcotolImpl : MyProtocol {
+	func source(_ label: String) -> Int { return 0 }
+}
+
+func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
+func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
+
+func sink(arg: Int) { }
+
+func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
+	sink(arg: x.source("x.source")) // $ flow=x.source
+	sink(arg: y.source("y.source")) // $ flow=y.source
+	sink(arg: getMyProtocol().source("getMyProtocol.source")) // $ flow=getMyProtocol.source
+	sink(arg: getMyProtocolImpl().source("getMyProtocolImpl.source")) // $ flow=getMyProtocolImpl.source
+}
+
+// ---

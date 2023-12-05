@@ -1,5 +1,5 @@
 private import csharp
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.frameworks.Test
 private import ModelEditor
 

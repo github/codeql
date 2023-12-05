@@ -1,1 +1,1 @@
-experimental/Security/CWE-078/CommandInjection.ql
+queries/Security/CWE-078/CommandInjection.ql

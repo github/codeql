@@ -6077,14 +6077,11 @@ cfg.swift:
 #  525| Task<(), Never>.Type
 #-----|  -> default priority
 
-#  525| return
-#-----| return -> exit { ... } (normal)
-
 #  525| .detached(priority:operation:)
 #-----|  -> Task<(), Never>.Type
 
 #  525| call to detached(priority:operation:)
-#-----|  -> return
+#-----|  -> exit { ... } (normal)
 
 #  525| default priority
 #-----|  -> { ... }
@@ -6317,3 +6314,278 @@ cfg.swift:
 
 #  546| 0
 #-----|  -> return ...
+
+#  550| enter usesAutoclosure(_:)
+#-----|  -> usesAutoclosure(_:)
+
+#  550| exit usesAutoclosure(_:)
+
+#  550| exit usesAutoclosure(_:) (normal)
+#-----|  -> exit usesAutoclosure(_:)
+
+#  550| usesAutoclosure(_:)
+#-----|  -> expr
+
+#  550| expr
+#-----|  -> expr
+
+#  551| return ...
+#-----| return -> exit usesAutoclosure(_:) (normal)
+
+#  551| expr
+#-----|  -> call to ...
+
+#  551| call to ...
+#-----|  -> return ...
+
+#  554| autoclosureTest()
+#-----|  -> usesAutoclosure(_:)
+
+#  554| enter autoclosureTest()
+#-----|  -> autoclosureTest()
+
+#  554| exit autoclosureTest()
+
+#  554| exit autoclosureTest() (normal)
+#-----|  -> exit autoclosureTest()
+
+#  555| usesAutoclosure(_:)
+#-----|  -> { ... }
+
+#  555| call to usesAutoclosure(_:)
+#-----|  -> exit autoclosureTest() (normal)
+
+#  555| 1
+#-----|  -> return ...
+
+#  555| enter { ... }
+#-----|  -> { ... }
+
+#  555| exit { ... }
+
+#  555| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#  555| return ...
+#-----|  -> exit { ... } (normal)
+
+#  555| { ... }
+#-----|  -> 1
+
+#  555| { ... }
+#-----|  -> call to usesAutoclosure(_:)
+
+#  564| MyProcotolImpl.deinit()
+#-----|  -> self
+
+#  564| MyProcotolImpl.init()
+#-----|  -> self
+
+#  564| enter MyProcotolImpl.deinit()
+#-----|  -> MyProcotolImpl.deinit()
+
+#  564| enter MyProcotolImpl.init()
+#-----|  -> MyProcotolImpl.init()
+
+#  564| exit MyProcotolImpl.deinit()
+
+#  564| exit MyProcotolImpl.deinit() (normal)
+#-----|  -> exit MyProcotolImpl.deinit()
+
+#  564| exit MyProcotolImpl.init()
+
+#  564| exit MyProcotolImpl.init() (normal)
+#-----|  -> exit MyProcotolImpl.init()
+
+#  564| return
+#-----| return -> exit MyProcotolImpl.init() (normal)
+
+#  564| self
+#-----|  -> { ... }
+
+#  564| self
+#-----|  -> return
+
+#  564| { ... }
+#-----|  -> exit MyProcotolImpl.deinit() (normal)
+
+#  565| enter source()
+#-----|  -> source()
+
+#  565| exit source()
+
+#  565| exit source() (normal)
+#-----|  -> exit source()
+
+#  565| source()
+#-----|  -> self
+
+#  565| self
+#-----|  -> 0
+
+#  565| return ...
+#-----| return -> exit source() (normal)
+
+#  565| 0
+#-----|  -> return ...
+
+#  568| enter getMyProtocol()
+#-----|  -> getMyProtocol()
+
+#  568| exit getMyProtocol()
+
+#  568| exit getMyProtocol() (normal)
+#-----|  -> exit getMyProtocol()
+
+#  568| getMyProtocol()
+#-----|  -> MyProcotolImpl.init()
+
+#  568| return ...
+#-----| return -> exit getMyProtocol() (normal)
+
+#  568| MyProcotolImpl.Type
+#-----|  -> call to MyProcotolImpl.init()
+
+#  568| MyProcotolImpl.init()
+#-----|  -> MyProcotolImpl.Type
+
+#  568| (MyProtocol) ...
+#-----|  -> return ...
+
+#  568| call to MyProcotolImpl.init()
+#-----|  -> (MyProtocol) ...
+
+#  569| enter getMyProtocolImpl()
+#-----|  -> getMyProtocolImpl()
+
+#  569| exit getMyProtocolImpl()
+
+#  569| exit getMyProtocolImpl() (normal)
+#-----|  -> exit getMyProtocolImpl()
+
+#  569| getMyProtocolImpl()
+#-----|  -> MyProcotolImpl.init()
+
+#  569| return ...
+#-----| return -> exit getMyProtocolImpl() (normal)
+
+#  569| MyProcotolImpl.Type
+#-----|  -> call to MyProcotolImpl.init()
+
+#  569| MyProcotolImpl.init()
+#-----|  -> MyProcotolImpl.Type
+
+#  569| call to MyProcotolImpl.init()
+#-----|  -> return ...
+
+#  571| enter sink(arg:)
+#-----|  -> sink(arg:)
+
+#  571| exit sink(arg:)
+
+#  571| exit sink(arg:) (normal)
+#-----|  -> exit sink(arg:)
+
+#  571| sink(arg:)
+#-----|  -> arg
+
+#  571| arg
+#-----|  -> { ... }
+
+#  571| { ... }
+#-----|  -> exit sink(arg:) (normal)
+
+#  573| enter testOpenExistentialExpr(x:y:)
+#-----|  -> testOpenExistentialExpr(x:y:)
+
+#  573| exit testOpenExistentialExpr(x:y:)
+
+#  573| exit testOpenExistentialExpr(x:y:) (normal)
+#-----|  -> exit testOpenExistentialExpr(x:y:)
+
+#  573| testOpenExistentialExpr(x:y:)
+#-----|  -> x
+
+#  573| x
+#-----|  -> y
+
+#  573| y
+#-----|  -> sink(arg:)
+
+#  574| sink(arg:)
+#-----|  -> x
+
+#  574| call to sink(arg:)
+#-----|  -> sink(arg:)
+
+#  574| OpaqueValueExpr
+#-----|  -> call to source()
+
+#  574| x
+#-----|  -> .source()
+
+#  574| .source()
+#-----|  -> OpaqueValueExpr
+
+#  574| OpenExistentialExpr
+#-----|  -> call to sink(arg:)
+
+#  574| call to source()
+#-----|  -> OpenExistentialExpr
+
+#  575| sink(arg:)
+#-----|  -> .source()
+
+#  575| call to sink(arg:)
+#-----|  -> sink(arg:)
+
+#  575| y
+#-----|  -> call to source()
+
+#  575| .source()
+#-----|  -> y
+
+#  575| call to source()
+#-----|  -> call to sink(arg:)
+
+#  576| sink(arg:)
+#-----|  -> getMyProtocol()
+
+#  576| call to sink(arg:)
+#-----|  -> sink(arg:)
+
+#  576| getMyProtocol()
+#-----|  -> call to getMyProtocol()
+
+#  576| OpaqueValueExpr
+#-----|  -> call to source()
+
+#  576| call to getMyProtocol()
+#-----|  -> .source()
+
+#  576| .source()
+#-----|  -> OpaqueValueExpr
+
+#  576| OpenExistentialExpr
+#-----|  -> call to sink(arg:)
+
+#  576| call to source()
+#-----|  -> OpenExistentialExpr
+
+#  577| sink(arg:)
+#-----|  -> .source()
+
+#  577| call to sink(arg:)
+#-----|  -> exit testOpenExistentialExpr(x:y:) (normal)
+
+#  577| getMyProtocolImpl()
+#-----|  -> call to getMyProtocolImpl()
+
+#  577| call to getMyProtocolImpl()
+#-----|  -> call to source()
+
+#  577| .source()
+#-----|  -> getMyProtocolImpl()
+
+#  577| call to source()
+#-----|  -> call to sink(arg:)

@@ -18,10 +18,10 @@ import semmle.code.java.controlflow.Guards
 import SpringUrlRedirectFlow::PathGraph
 
 private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
-  g.(MethodAccess).getMethod().hasName("startsWith") and
-  g.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
-  g.(MethodAccess).getMethod().getNumberOfParameters() = 1 and
-  e = g.(MethodAccess).getQualifier() and
+  g.(MethodCall).getMethod().hasName("startsWith") and
+  g.(MethodCall).getMethod().getDeclaringType() instanceof TypeString and
+  g.(MethodCall).getMethod().getNumberOfParameters() = 1 and
+  e = g.(MethodCall).getQualifier() and
   branch = true
 }
 
@@ -44,7 +44,7 @@ module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
       not ae instanceof RedirectBuilderExpr
     )
     or
-    exists(MethodAccess ma, int index |
+    exists(MethodCall ma, int index |
       ma.getMethod().hasName("format") and
       ma.getMethod().getDeclaringType() instanceof TypeString and
       ma.getArgument(index) = node.asExpr() and

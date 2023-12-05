@@ -37,7 +37,7 @@ class RegexInjectionAdditionalFlowStep extends Unit {
  * These cases are modeled separately.
  */
 private class EvalRegexInjectionSink extends RegexInjectionSink {
-  EvalRegexInjectionSink() { this.asExpr() = any(RegexEval e).getRegexInput() }
+  EvalRegexInjectionSink() { this = any(RegexEval e).getRegexInputNode() }
 }
 
 /**
