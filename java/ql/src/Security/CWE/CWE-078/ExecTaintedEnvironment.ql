@@ -7,7 +7,7 @@
  * @precision medium
  * @id java/exec-tainted-environment
  * @tags security
- *     external/cwe/cwe-078
+ *    external/cwe/cwe-078
  *    external/cwe/cwe-088
  */
 

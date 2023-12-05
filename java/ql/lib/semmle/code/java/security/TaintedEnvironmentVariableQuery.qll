@@ -27,7 +27,7 @@ module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sinkNode(sink, "environment-injection")
     or
-    // sink is an added to a `ProcessBuilder::environment` map.
+    // sink is a key or value added to a `ProcessBuilder::environment` map.
     exists(MapMutation mm | mm.getAnArgument() = sink.asExpr() |
       ProcessBuilderEnvironmentFlow::flowToExpr(mm.getQualifier())
     )
