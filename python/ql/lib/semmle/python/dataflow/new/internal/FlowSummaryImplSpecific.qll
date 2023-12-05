@@ -166,6 +166,9 @@ string getMadRepresentationSpecific(SummaryComponent sc) {
 string getParameterPosition(ParameterPosition pos) {
   pos.isSelf() and result = "self"
   or
+  pos.isLambdaSelf() and
+  result = "lambda-self"
+  or
   exists(int i |
     pos.isPositional(i) and
     result = i.toString()
@@ -180,6 +183,9 @@ string getParameterPosition(ParameterPosition pos) {
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
 string getArgumentPosition(ArgumentPosition pos) {
   pos.isSelf() and result = "self"
+  or
+  pos.isLambdaSelf() and
+  result = "lambda-self"
   or
   exists(int i |
     pos.isPositional(i) and
@@ -305,6 +311,9 @@ ArgumentPosition parseParamBody(string s) {
   or
   s = "self" and
   result.isSelf()
+  or
+  s = "lambda-self" and
+  result.isLambdaSelf()
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
@@ -321,4 +330,7 @@ ParameterPosition parseArgBody(string s) {
   or
   s = "self" and
   result.isSelf()
+  or
+  s = "lambda-self" and
+  result.isLambdaSelf()
 }

@@ -91,6 +91,29 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
 
+private module LibraryCallbackSummaries {
+  private class LibraryLambdaMethod extends SummarizedCallable {
+    LibraryLambdaMethod() { this = "<library method accepting a callback>" }
+
+    final override CallCfgNode getACall() {
+      exists(ExtractedDataFlowCall call | result.getNode() = call.getNode() |
+        not exists(call.getCallable())
+      )
+    }
+
+    final override ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(int i |
+        i in [0 .. 10] and
+        input = "Argument[" + i + "]" and
+        output = "Argument[" + i + "].Parameter[lambda-self]"
+      ) and
+      preservesValue = true
+    }
+  }
+}
+
 private class SummarizedCallableFromModel extends SummarizedCallable {
   string type;
   string path;
