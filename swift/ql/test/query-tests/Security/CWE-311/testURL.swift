@@ -103,7 +103,7 @@ func test3() {
 func test4(key: SecKey) {
 	if let data = SecKeyCopyExternalRepresentation(key, nil) as? Data {
 		if let string = String(data: data, encoding: .utf8) {
-			_ = URL(string: "http://example.com/login?tok=\(string)"); // BAD [NOT DETECTED]
+			_ = URL(string: "http://example.com/login?tok=\(string)"); // BAD
 		}
 	}
 }
