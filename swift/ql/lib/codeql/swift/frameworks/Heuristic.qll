@@ -86,7 +86,7 @@ private class AppendCallStep extends AdditionalTaintStep {
       ce.getStaticTarget().(Function).getShortName() = ["append", "insert"] and
       arg.getLabel() = ["", "contentsOf"] and
       node1.asExpr() = arg.getExpr() and
-      node2.asExpr() = ce.getQualifier()
+      node2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ce.getQualifier()
     )
   }
 }
