@@ -167,3 +167,10 @@ int ptr_test(int *x, int *y) {
 
     return 0;
 }
+
+int foo(const char*, int);
+
+int ternary_test(const char *path, int mode)
+{
+    return (foo(path, mode) == 0 ? 1 : 0);
+}
