@@ -4,6 +4,10 @@ import semmle.code.java.Maps
 private import semmle.code.java.dataflow.SSA
 private import DataFlowUtil
 
+private class ArrayType extends RefType {
+  ArrayType() { this.getSourceDeclaration().getASourceSupertype*() instanceof Array }
+}
+
 private class EntryType extends RefType {
   EntryType() {
     this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Map$Entry")
@@ -468,6 +472,14 @@ predicate arrayReadStep(Node node1, Node node2, Type elemType) {
     aa.getArray() = node1.asExpr() and
     aa.getType() = elemType and
     node2.asExpr() = aa
+  )
+  or
+  exists(Expr arr, Call call |
+    arr = node1.asExpr() and
+    call = node2.asExpr() and
+    arr.getType() instanceof ArrayType and
+    call.getCallee().getName() = "get" and
+    call.getQualifier() = arr
   )
   or
   exists(Array arr |
