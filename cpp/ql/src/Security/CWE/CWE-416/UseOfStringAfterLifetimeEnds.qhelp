@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Calling <code>c_str</code> on a <code>std::string</code> object returns a pointer to the underlying character array.
+When the <code>std::string</code> object is destroyed, the pointer returned by <code>c_str</code> is no
+longer valid. If the pointer is used after the <code>std::string</code> object is destroyed, then the behavior is undefined.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Ensure that the pointer returned by <code>c_str</code> does not outlive the underlying <code>std::string</code> object.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example concatenates two <code>std::string</code> objects, and then converts the resulting string to a
+C string using <code>c_str</code> so that it can be passed to the <code>work</code> function.
+
+However, the underlying <code>std::string</code> object that represents the concatenated string is destroyed as soon as the call
+to <code>c_str</code> returns. This means that <code>work</code> is given a pointer to invalid memory.
+</p>
+
+<sample src="UseOfStringAfterLifetimeEndsBad.cpp" />
+
+<p>
+The following example fixes the above code by ensuring that the pointer returned by the call to <code>c_str</code> does
+not outlive the underlying <code>std::string</code> objects. This ensures that the pointer passed to <code>work</code>
+points to valid memory.
+</p>
+
+<sample src="UseOfStringAfterLifetimeEndsGood.cpp" />
+
+</example>
+<references>
+
+<li><a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/MEM50-CPP.+Do+not+access+freed+memory">MEM50-CPP. Do not access freed memory</a>.</li>
+
+</references>
+</qhelp>
