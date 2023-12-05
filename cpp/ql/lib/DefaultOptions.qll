@@ -62,7 +62,7 @@ class Options extends string {
     f.getASpecifier().hasName("noreturn")
     or
     f.hasGlobalOrStdName([
-        "exit", "_exit", "abort", "__assert_fail", "longjmp", "__builtin_unreachable"
+        "exit", "_exit", "_Exit", "abort", "__assert_fail", "longjmp", "__builtin_unreachable"
       ])
     or
     CustomOptions::exits(f) // old Options.qll
