@@ -1,6 +1,8 @@
 /**
- * @name ExecTaintedEnvironment.ql
- * @description Using tainted data in a call to exec() may allow an attacker to execute arbitrary commands.
+ * @name Building a command with an injected environment variable
+ * @description Using externally controlled strings in the environment variables
+ *              passed to a command line is vulnerable to malicious changes to the
+ *              environment of a subprocess.
  * @problem.severity error
  * @kind path-problem
  * @security-severity 9.8
