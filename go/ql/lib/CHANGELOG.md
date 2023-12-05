@@ -1,8 +1,14 @@
+## 0.7.4
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through a slice expression was not tracked correctly. Taint flow was tracked correctly.
+
 ## 0.7.3
 
 ### Minor Analysis Improvements
 
-* Added the [gin cors](https://github.com/gin-contrib/cors) library to the CorsMisconfiguration.ql query
+* Added the [gin-contrib/cors](https://github.com/gin-contrib/cors) library to the experimental query "CORS misconfiguration" (`go/cors-misconfiguration`).
 
 ### Bug Fixes
 

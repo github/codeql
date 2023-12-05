@@ -1,3 +1,9 @@
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Added django URLs to detected "safe" URL patterns in `js/unsafe-external-link`. 
+
 ## 0.8.3
 
 ### Query Metadata Changes
