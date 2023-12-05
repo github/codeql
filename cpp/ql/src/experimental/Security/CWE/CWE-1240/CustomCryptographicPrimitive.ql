@@ -29,7 +29,7 @@ string encryptionWord() {
         "Camellia",
         //"(?<!Bit|Type)Cast",
         "Chacha", "ChaCha", "Poly[0-9]", "Ripemd", "Whirlpool", "Sbox", "SBox", "Cblock", "CBlock",
-        "Sub.?Byte", "Mix.?Column", "ECDH", "ECDSA", "EdDSA", "ECMQV", "ECQV", "Curve[0-9][0-9]"
+        "Sub.?Bytes?", "Mix.?Columns?", "ECDH", "ECDSA", "EdDSA", "ECMQV", "ECQV", "Curve[0-9][0-9]"
       ] and
     (
       result = word or
