@@ -5,6 +5,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 deprecated import semmle.code.java.dataflow.DataFlow2
+private import semmle.code.java.dataflow.DataFlow2
 import HardcodedCredentials
 
 /**
