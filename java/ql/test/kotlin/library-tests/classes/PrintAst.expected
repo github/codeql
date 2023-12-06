@@ -111,14 +111,14 @@ classes.kt:
 #   28|       3: [TypeAccess] Unit
 #   28|       5: [BlockStmt] { ... }
 #   28|         0: [ReturnStmt] return ...
-#   28|           0: [MethodAccess] funIF1(...)
+#   28|           0: [MethodCall] funIF1(...)
 #   28|             -1: [SuperAccess] IF1.super
 #   28|               0: [TypeAccess] IF1
 #   28|     3: [Method] funIF2
 #   28|       3: [TypeAccess] Unit
 #   28|       5: [BlockStmt] { ... }
 #   28|         0: [ReturnStmt] return ...
-#   28|           0: [MethodAccess] funIF2(...)
+#   28|           0: [MethodCall] funIF2(...)
 #   28|             -1: [SuperAccess] IF2.super
 #   28|               0: [TypeAccess] IF2
 #   29|     4: [Constructor] ClassSix
@@ -136,18 +136,18 @@ classes.kt:
 #   35|         0: [SuperConstructorInvocationStmt] super(...)
 #   35|         1: [BlockStmt] { ... }
 #   39|           0: [ExprStmt] <Expr>;
-#   39|             0: [MethodAccess] f(...)
+#   39|             0: [MethodCall] f(...)
 #   39|               -1: [TypeAccess] ClassesKt
 #   39|               0: [StringLiteral] "init1"
 #   42|           1: [ExprStmt] <Expr>;
 #   42|             0: [KtInitializerAssignExpr] ...=...
 #   42|               0: [VarAccess] x
 #   45|           2: [ExprStmt] <Expr>;
-#   45|             0: [MethodAccess] f(...)
+#   45|             0: [MethodCall] f(...)
 #   45|               -1: [TypeAccess] ClassesKt
 #   45|               0: [StringLiteral] "init2"
 #   36|         2: [ExprStmt] <Expr>;
-#   36|           0: [MethodAccess] f(...)
+#   36|           0: [MethodCall] f(...)
 #   36|             -1: [TypeAccess] ClassesKt
 #   36|             0: [VarAccess] i
 #   42|     2: [Method] getX
@@ -466,7 +466,7 @@ classes.kt:
 #  112|                   0: [TypeAccess] int
 #  112|               5: [BlockStmt] { ... }
 #  114|         1: [ExprStmt] <Expr>;
-#  114|           0: [MethodAccess] foo(...)
+#  114|           0: [MethodCall] foo(...)
 #  114|             -1: [ClassInstanceExpr] new Local1<Integer>(...)
 #  114|               -3: [TypeAccess] Local1<Integer>
 #  114|                 0: [TypeAccess] Integer
@@ -500,7 +500,7 @@ classes.kt:
 #  120|                           0: [TypeAccess] int
 #  120|                       5: [BlockStmt] { ... }
 #  122|                 1: [ExprStmt] <Expr>;
-#  122|                   0: [MethodAccess] foo(...)
+#  122|                   0: [MethodCall] foo(...)
 #  122|                     -1: [ClassInstanceExpr] new Local2<Integer>(...)
 #  122|                       -3: [TypeAccess] Local2<Integer>
 #  122|                         0: [TypeAccess] Integer
@@ -538,7 +538,7 @@ classes.kt:
 #  130|                                 0: [TypeAccess] int
 #  130|                             5: [BlockStmt] { ... }
 #  132|                       1: [ExprStmt] <Expr>;
-#  132|                         0: [MethodAccess] foo(...)
+#  132|                         0: [MethodCall] foo(...)
 #  132|                           -1: [ClassInstanceExpr] new Local3<Integer>(...)
 #  132|                             -3: [TypeAccess] Local3<Integer>
 #  132|                               0: [TypeAccess] Integer
@@ -616,7 +616,7 @@ generic_anonymous.kt:
 #   11|           0: [TypeAccess] String
 #   11|       5: [BlockStmt] { ... }
 #   11|         0: [ReturnStmt] return ...
-#   11|           0: [MethodAccess] get(...)
+#   11|           0: [MethodCall] get(...)
 #   11|             -1: [ClassInstanceExpr] new Generic<String>(...)
 #   11|               -3: [TypeAccess] Generic<String>
 #   11|                 0: [TypeAccess] String
@@ -628,7 +628,7 @@ generic_anonymous.kt:
 #   13|           0: [TypeAccess] int
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [ReturnStmt] return ...
-#   13|           0: [MethodAccess] get(...)
+#   13|           0: [MethodCall] get(...)
 #   13|             -1: [ClassInstanceExpr] new Generic<Integer>(...)
 #   13|               -3: [TypeAccess] Generic<Integer>
 #   13|                 0: [TypeAccess] Integer
@@ -674,7 +674,7 @@ generic_anonymous.kt:
 #    4|                         0: [VarAccess] member
 #    4|               2: [FieldDeclaration] T member;
 #    4|                 -1: [TypeAccess] T
-#    4|                 0: [MethodAccess] getT(...)
+#    4|                 0: [MethodCall] getT(...)
 #    4|                   -1: [ThisAccess] Generic.this
 #    4|                     0: [TypeAccess] Generic
 #    4|               3: [Method] getMember
@@ -697,8 +697,8 @@ generic_anonymous.kt:
 #    7|       3: [TypeAccess] T
 #    7|       5: [BlockStmt] { ... }
 #    7|         0: [ReturnStmt] return ...
-#    7|           0: [MethodAccess] getMember(...)
-#    7|             -1: [MethodAccess] getX$private(...)
+#    7|           0: [MethodCall] getMember(...)
+#    7|             -1: [MethodCall] getX$private(...)
 #    7|               -1: [ThisAccess] this
 #   15|   4: [Class,GenericType,ParameterizedType] Outer
 #-----|     -2: (Generic Parameters)
@@ -753,14 +753,14 @@ generic_anonymous.kt:
 #   26|                               3: [TypeAccess] U2
 #   26|                               5: [BlockStmt] { ... }
 #   26|                                 0: [ReturnStmt] return ...
-#   26|                                   0: [MethodAccess] fn0(...)
+#   26|                                   0: [MethodCall] fn0(...)
 #   26|                                     -1: [SuperAccess] C0.super
 #   26|                                       0: [TypeAccess] C0
 #   26|                             3: [Method] fn1
 #   26|                               3: [TypeAccess] U3
 #   26|                               5: [BlockStmt] { ... }
 #   26|                                 0: [ReturnStmt] return ...
-#   26|                                   0: [MethodAccess] fn1(...)
+#   26|                                   0: [MethodCall] fn1(...)
 #   26|                                     -1: [SuperAccess] C1.super
 #   26|                                       0: [TypeAccess] C1
 #   26|                         1: [ExprStmt] <Expr>;
@@ -781,14 +781,14 @@ generic_anonymous.kt:
 #   27|                               3: [TypeAccess] U2
 #   27|                               5: [BlockStmt] { ... }
 #   27|                                 0: [ReturnStmt] return ...
-#   27|                                   0: [MethodAccess] fn0(...)
+#   27|                                   0: [MethodCall] fn0(...)
 #   27|                                     -1: [SuperAccess] C0.super
 #   27|                                       0: [TypeAccess] C0
 #   27|                             3: [Method] fn1
 #   27|                               3: [TypeAccess] U2
 #   27|                               5: [BlockStmt] { ... }
 #   27|                                 0: [ReturnStmt] return ...
-#   27|                                   0: [MethodAccess] fn1(...)
+#   27|                                   0: [MethodCall] fn1(...)
 #   27|                                     -1: [SuperAccess] C1.super
 #   27|                                       0: [TypeAccess] C1
 #   27|                         1: [ExprStmt] <Expr>;
@@ -809,14 +809,14 @@ generic_anonymous.kt:
 #   28|                               3: [TypeAccess] U2
 #   28|                               5: [BlockStmt] { ... }
 #   28|                                 0: [ReturnStmt] return ...
-#   28|                                   0: [MethodAccess] fn0(...)
+#   28|                                   0: [MethodCall] fn0(...)
 #   28|                                     -1: [SuperAccess] C0.super
 #   28|                                       0: [TypeAccess] C0
 #   28|                             3: [Method] fn1
 #   28|                               3: [TypeAccess] String
 #   28|                               5: [BlockStmt] { ... }
 #   28|                                 0: [ReturnStmt] return ...
-#   28|                                   0: [MethodAccess] fn1(...)
+#   28|                                   0: [MethodCall] fn1(...)
 #   28|                                     -1: [SuperAccess] C1.super
 #   28|                                       0: [TypeAccess] C1
 #   28|                         1: [ExprStmt] <Expr>;
@@ -837,7 +837,7 @@ generic_anonymous.kt:
 #   29|                               3: [TypeAccess] U2
 #   29|                               5: [BlockStmt] { ... }
 #   29|                                 0: [ReturnStmt] return ...
-#   29|                                   0: [MethodAccess] fn0(...)
+#   29|                                   0: [MethodCall] fn0(...)
 #   29|                                     -1: [SuperAccess] C0.super
 #   29|                                       0: [TypeAccess] C0
 #   29|                         1: [ExprStmt] <Expr>;
@@ -858,7 +858,7 @@ generic_anonymous.kt:
 #   30|                               3: [TypeAccess] String
 #   30|                               5: [BlockStmt] { ... }
 #   30|                                 0: [ReturnStmt] return ...
-#   30|                                   0: [MethodAccess] fn0(...)
+#   30|                                   0: [MethodCall] fn0(...)
 #   30|                                     -1: [SuperAccess] C0.super
 #   30|                                       0: [TypeAccess] C0
 #   30|                         1: [ExprStmt] <Expr>;
@@ -962,7 +962,7 @@ local_anonymous.kt:
 #   11|               3: [TypeAccess] Unit
 #   11|               5: [BlockStmt] { ... }
 #   12|         1: [ExprStmt] <Expr>;
-#   12|           0: [MethodAccess] fnLocal(...)
+#   12|           0: [MethodCall] fnLocal(...)
 #   12|             -1: [ClassInstanceExpr] new (...)
 #   12|               -3: [TypeAccess] Object
 #   15|     4: [Method] fn3
@@ -1030,7 +1030,7 @@ local_anonymous.kt:
 #   21|                     0: [Parameter] a0
 #   21|                   5: [BlockStmt] { ... }
 #   21|                     0: [ReturnStmt] return ...
-#   21|                       0: [MethodAccess] fn3(...)
+#   21|                       0: [MethodCall] fn3(...)
 #   21|                         -1: [VarAccess] a0
 #   21|               -3: [TypeAccess] Function1<Class1,Unit>
 #   21|                 0: [TypeAccess] Class1
@@ -1092,7 +1092,7 @@ local_anonymous.kt:
 #   33|                           0: [WhenExpr] when ...
 #   33|                             0: [WhenBranch] ... -> ...
 #   33|                               0: [ValueEQExpr] ... (value equals) ...
-#   33|                                 0: [MethodAccess] getX(...)
+#   33|                                 0: [MethodCall] getX(...)
 #   33|                                   -1: [ThisAccess] this
 #   33|                                 1: [IntegerLiteral] 1
 #   33|                               1: [ExprStmt] <Expr>;

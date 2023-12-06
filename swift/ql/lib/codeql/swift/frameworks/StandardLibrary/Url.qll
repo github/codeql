@@ -15,15 +15,14 @@ class UrlDecl extends StructDecl {
 /**
  * A content implying that, if a `URL` is tainted, then all its fields are tainted.
  */
-private class UriFieldsInheritTaint extends TaintInheritingContent, DataFlow::Content::FieldContent {
-  UriFieldsInheritTaint() {
+private class UrlFieldsInheritTaint extends TaintInheritingContent, DataFlow::Content::FieldContent {
+  UrlFieldsInheritTaint() {
     this.getField().getEnclosingDecl().asNominalTypeDecl() instanceof UrlDecl
   }
 }
 
 /**
- * A content implying that, if a `URLRequest` is tainted, then its fields `url`, `httpBody`,
- * `httpBodyStream`, `mainDocument` and `allHTTPHeaderFields` are tainted.
+ * A content implying that, if a `URLRequest` is tainted, then certain fields tainted.
  */
 private class UrlRequestFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
@@ -31,7 +30,10 @@ private class UrlRequestFieldsInheritTaint extends TaintInheritingContent,
   UrlRequestFieldsInheritTaint() {
     this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "URLRequest" and
     this.getField().getName() =
-      ["url", "httpBody", "httpBodyStream", "mainDocument", "allHTTPHeaderFields"]
+      [
+        "url", "httpBody", "httpBodyStream", "mainDocument", "mainDocumentURL",
+        "allHTTPHeaderFields"
+      ]
   }
 }
 
@@ -106,6 +108,8 @@ private class UrlSummaries extends SummaryModelCsv {
         ";URL;true;init(dataRepresentation:relativeTo:isAbsolute:);;;Argument[0];ReturnValue;taint",
         ";URL;true;init(dataRepresentation:relativeTo:isAbsolute:);;;Argument[1].OptionalSome;ReturnValue;taint",
         ";URL;true;init(_:strategy:);;;Argument[0];ReturnValue;taint",
+        ";URL;true;init(filePath:);;;Argument[0];ReturnValue.OptionalSome;taint",
+        ";URL;true;init(filePath:isDirectory:);;;Argument[0];ReturnValue.OptionalSome;taint",
         ";URL;true;init(filePath:directoryHint:);;;Argument[0];ReturnValue.OptionalSome;taint",
         ";URL;true;init(filePath:directoryHint:relativeTo:);;;Argument[0];ReturnValue;taint",
         ";URL;true;init(filePath:directoryHint:relativeTo:);;;Argument[2].OptionalSome;ReturnValue;taint",
@@ -126,6 +130,7 @@ private class UrlSummaries extends SummaryModelCsv {
         ";URL;true;appendingPathComponent(_:conformingTo:);;;Argument[-1..0];ReturnValue;taint",
         ";URL;true;appendPathExtension(_:);;;Argument[-1..0];Argument[-1];taint",
         ";URL;true;appendingPathExtension(_:);;;Argument[-1..0];ReturnValue;taint",
+        ";URL;true;appendingPathExtension(for:);;;Argument[-1];ReturnValue;taint",
         ";URL;true;deletingLastPathComponent();;;Argument[-1];ReturnValue;taint",
         ";URL;true;deletingPathExtension();;;Argument[-1];ReturnValue;taint",
         ";URL;true;bookmarkData(options:includingResourceValuesForKeys:relativeTo:);;;Argument[-1];ReturnValue;taint",

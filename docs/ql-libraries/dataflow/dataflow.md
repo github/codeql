@@ -618,10 +618,29 @@ impact on performance for large databases.
 
 ### Hidden nodes
 
-Certain synthetic nodes can be hidden to exclude them from occurring in path
-explanations. This is done through the following predicate:
+Certain synthetic nodes are hidden by default to prevent them from occurring in
+path explanations. Which nodes are included in this is determined by the
+following predicate:
+
 ```ql
 predicate nodeIsHidden(Node n)
+```
+
+To include these nodes in path explanations, add the following to a
+configuration:
+
+```ql
+predicate includeHiddenNodes() { any() }
+```
+
+### Show more nodes in path explanations
+
+Path explanations skip over most nodes and only show the important nodes in a
+path. To ensure that particular nodes are shown, define the following predicate
+in a configuration:
+
+```ql
+predicate neverSkip(Node n)
 ```
 
 ### Unreachable nodes

@@ -188,7 +188,7 @@ Discard.cs:
 #   10|                 0: [IntLiteral] 0
 ForeachExtension.cs:
 #    6| [Class] Extensions
-#    8|   4: [ExtensionMethod] GetEnumerator<>
+#    8|   5: [ExtensionMethod] GetEnumerator`1
 #    8|     -1: [TypeMention] IEnumerator<T>
 #    8|       1: [TypeMention] T
 #-----|     1: (Type parameters)
@@ -198,7 +198,7 @@ ForeachExtension.cs:
 #    8|         -1: [TypeMention] IEnumerator<T>
 #    8|           1: [TypeMention] T
 #    8|     4: [ParameterAccess] access to parameter enumerator
-#    9|   6: [ExtensionMethod] GetAsyncEnumerator<>
+#    9|   7: [ExtensionMethod] GetAsyncEnumerator`1
 #    9|     -1: [TypeMention] IAsyncEnumerator<T>
 #    9|       1: [TypeMention] T
 #-----|     1: (Type parameters)
@@ -322,7 +322,7 @@ FunctionPointer.cs:
 #   17|               -1: [ParameterAccess] access to parameter f
 #   17|               0: [LocalVariableAccess] access to local variable i
 #   17|               1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
-#   20|     8: [Method] M2<>
+#   20|     8: [Method] M2`1
 #   20|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   20|         0: [TypeParameter] T
@@ -363,7 +363,7 @@ FunctionPointer.cs:
 #   29|                 0: [LocalVariableAccess] access to local variable i
 #   29|                 1: [LocalVariableAccess,LocalVariableDeclExpr] Object o
 #   29|                 2: [LocalVariableAccess] access to local variable i
-#   32|     10: [Method] M4<>
+#   32|     10: [Method] M4`1
 #   32|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   32|         0: [TypeParameter] T
@@ -1358,14 +1358,14 @@ TargetType.cs:
 TypeParameterNullability.cs:
 #    1| [Interface] I1
 #    3| [Class] A2
-#    5|   5: [Method] F1<>
+#    5|   5: [Method] F1`1
 #    5|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    5|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] t
 #    5|     4: [BlockStmt] {...}
-#    6|   6: [Method] F2<>
+#    6|   6: [Method] F2`1
 #    6|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    6|       0: [TypeParameter] T
@@ -1374,28 +1374,28 @@ TypeParameterNullability.cs:
 #    6|         -1: [TypeMention] T?
 #    6|           1: [TypeMention] T
 #    6|     4: [BlockStmt] {...}
-#    7|   7: [Method] F3<>
+#    7|   7: [Method] F3`1
 #    7|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    7|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] t
 #    7|     4: [BlockStmt] {...}
-#    8|   8: [Method] F4<>
+#    8|   8: [Method] F4`1
 #    8|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    8|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    8|       0: [Parameter] t
 #    8|     4: [BlockStmt] {...}
-#    9|   9: [Method] F5<>
+#    9|   9: [Method] F5`1
 #    9|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    9|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] t
 #    9|     4: [BlockStmt] {...}
-#   10|   10: [Method] F6<>
+#   10|   10: [Method] F6`1
 #   10|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   10|       0: [TypeParameter] T
@@ -1407,14 +1407,14 @@ TypeParameterNullability.cs:
 #   13| [Class] B2
 #-----|   3: (Base types)
 #   13|     0: [TypeMention] A2
-#   15|   5: [Method] F1<>
+#   15|   5: [Method] F1`1
 #   15|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   15|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   15|       0: [Parameter] t
 #   15|     4: [BlockStmt] {...}
-#   16|   6: [Method] F2<>
+#   16|   6: [Method] F2`1
 #   16|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   16|       0: [TypeParameter] T
@@ -1423,21 +1423,21 @@ TypeParameterNullability.cs:
 #   16|         -1: [TypeMention] T?
 #   16|           1: [TypeMention] T
 #   16|     4: [BlockStmt] {...}
-#   17|   7: [Method] F3<>
+#   17|   7: [Method] F3`1
 #   17|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   17|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] t
 #   17|     4: [BlockStmt] {...}
-#   18|   8: [Method] F4<>
+#   18|   8: [Method] F4`1
 #   18|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   18|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   18|       0: [Parameter] t
 #   18|     4: [BlockStmt] {...}
-#   19|   9: [Method] F6<>
+#   19|   9: [Method] F6`1
 #   19|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   19|       0: [TypeParameter] T
@@ -1449,7 +1449,7 @@ TypeParameterNullability.cs:
 #   22| [Class] B3
 #-----|   3: (Base types)
 #   22|     0: [TypeMention] A2
-#   24|   5: [Method] F2<>
+#   24|   5: [Method] F2`1
 #   24|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   24|       0: [TypeParameter] T

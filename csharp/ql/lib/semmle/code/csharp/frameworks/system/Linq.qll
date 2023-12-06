@@ -25,9 +25,9 @@ module SystemLinq {
     SystemLinqEnumerableClass() { this.hasName("Enumerable") }
 
     /** Gets a `Count()` method. */
-    CSharp::ExtensionMethod getACountMethod() { result = this.getAMethod("Count<>") }
+    CSharp::ExtensionMethod getACountMethod() { result = this.getAMethod("Count`1") }
 
     /** Gets an `Any()` method. */
-    CSharp::ExtensionMethod getAnAnyMethod() { result = this.getAMethod("Any<>") }
+    CSharp::ExtensionMethod getAnAnyMethod() { result = this.getAMethod("Any`1") }
   }
 }

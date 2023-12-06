@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.sshd.client.session", "AbstractClientSession", True, "addPasswordIdentity", "(String)", "", "Argument[0]", "credentials-password", "manual"]
+      - ["org.apache.sshd.client.session", "ClientSessionCreator", True, "connect", "(String,SocketAddress)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["org.apache.sshd.client.session", "ClientSessionCreator", True, "connect", "(String,String,int)", "", "Argument[0]", "credentials-username", "manual"]

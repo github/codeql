@@ -797,3 +797,43 @@ void test() {
   intPointerSource(a.content, a.content);
   indirect_sink(a.content); // $ ast ir
 }
+
+namespace MoreGlobalTests {
+  int **global_indirect1;
+  int **global_indirect2;
+  int **global_direct;
+
+  void set_indirect1()
+  {
+    *global_indirect1 = indirect_source();
+  }
+
+  void read_indirect1() {
+    sink(global_indirect1); // clean
+    indirect_sink(*global_indirect1); // $ ir MISSING: ast
+  }
+
+  void set_indirect2()
+  {
+    **global_indirect2 = source();
+  }
+
+  void read_indirect2() {
+    sink(global_indirect2); // clean
+    sink(**global_indirect2); // $ ir MISSING: ast
+  }
+
+  // overload source with a boolean parameter so
+  // that we can define a variant that return an int**.
+  int** source(bool);
+
+  void set_direct()
+  {
+    global_direct = source(true);
+  }
+
+  void read_direct() {
+    sink(global_direct); // $ ir MISSING: ast
+    indirect_sink(global_direct); // clean
+  }
+}

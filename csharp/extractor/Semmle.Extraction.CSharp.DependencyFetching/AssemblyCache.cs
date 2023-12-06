@@ -27,11 +27,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (File.Exists(path))
                 {
                     pendingDllsToIndex.Enqueue(path);
+                    continue;
                 }
-                else
+
+                if (Directory.Exists(path))
                 {
                     progressMonitor.FindingFiles(path);
                     AddReferenceDirectory(path);
+                }
+                else
+                {
+                    progressMonitor.LogInfo("AssemblyCache: Path not found: " + path);
                 }
             }
             IndexReferences();

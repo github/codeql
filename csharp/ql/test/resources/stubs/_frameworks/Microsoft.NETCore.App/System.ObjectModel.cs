@@ -123,6 +123,7 @@ namespace System
             public virtual string PropertyName { get => throw null; }
         }
         public delegate void PropertyChangingEventHandler(object sender, System.ComponentModel.PropertyChangingEventArgs e);
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class TypeConverterAttribute : System.Attribute
         {
             public string ConverterTypeName { get => throw null; }
@@ -133,6 +134,7 @@ namespace System
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)4, Inherited = true)]
         public sealed class TypeDescriptionProviderAttribute : System.Attribute
         {
             public TypeDescriptionProviderAttribute(string typeName) => throw null;
@@ -160,6 +162,7 @@ namespace System
         }
         namespace Markup
         {
+            [System.AttributeUsage((System.AttributeTargets)1244, AllowMultiple = false, Inherited = true)]
             public sealed class ValueSerializerAttribute : System.Attribute
             {
                 public ValueSerializerAttribute(string valueSerializerTypeName) => throw null;

@@ -159,9 +159,6 @@ cfg.swift:
 #   31|           getArgument(2): [Argument] terminator: default terminator
 #   31|             getExpr(): [DefaultArgumentExpr] default terminator
 #   33|       getCatch(0): [CaseStmt] case ...
-#   33|         getBody(): [BraceStmt] { ... }
-#   34|           getElement(0): [ReturnStmt] return ...
-#   34|             getResult(): [IntegerLiteralExpr] 0
 #   33|         getLabel(0): [CaseLabelItem] ... is ...
 #   33|           getPattern(): [IsPattern] ... is ...
 #   33|             getSubPattern(): [EnumElementPattern] .error1
@@ -172,17 +169,25 @@ cfg.swift:
 #   33|             getFunction(): [DeclRefExpr] isZero(x:)
 #   33|             getArgument(0): [Argument] x: x
 #   33|               getExpr(): [DeclRefExpr] x
+#   33|         getBody(): [BraceStmt] { ... }
+#   34|           getElement(0): [ReturnStmt] return ...
+#   34|             getResult(): [IntegerLiteralExpr] 0
 #   35|       getCatch(1): [CaseStmt] case ...
-#   35|         getBody(): [BraceStmt] { ... }
-#   36|           getElement(0): [ReturnStmt] return ...
-#   36|             getResult(): [DeclRefExpr] withParam
 #   35|         getLabel(0): [CaseLabelItem] ... is ...
 #   35|           getPattern(): [IsPattern] ... is ...
 #   35|             getSubPattern(): [EnumElementPattern] .error3(...)
 #   35|               getSubPattern(): [TuplePattern] (...)
 #   35|                 getElement(0): [NamedPattern] withParam
 #   35|                 getElement(0).getFullyUnresolved(): [BindingPattern] let ...
+#   35|         getVariable(0): [ConcreteVarDecl] withParam
+#   35|             Type = Int
+#   35|         getBody(): [BraceStmt] { ... }
+#   36|           getElement(0): [ReturnStmt] return ...
+#   36|             getResult(): [DeclRefExpr] withParam
 #   37|       getCatch(2): [CaseStmt] case ...
+#   37|         getLabel(0): [CaseLabelItem] ... is ...
+#   37|           getPattern(): [IsPattern] ... is ...
+#   37|             getCastTypeRepr(): [TypeRepr] MyError
 #   37|         getBody(): [BraceStmt] { ... }
 #   38|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   38|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -195,10 +200,12 @@ cfg.swift:
 #   38|               getExpr(): [DefaultArgumentExpr] default separator
 #   38|             getArgument(2): [Argument] terminator: default terminator
 #   38|               getExpr(): [DefaultArgumentExpr] default terminator
-#   37|         getLabel(0): [CaseLabelItem] ... is ...
-#   37|           getPattern(): [IsPattern] ... is ...
-#   37|             getCastTypeRepr(): [TypeRepr] MyError
 #   39|       getCatch(3): [CaseStmt] case ...
+#   39|         getLabel(0): [CaseLabelItem] error
+#   39|           getPattern(): [NamedPattern] error
+#   39|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   39|         getVariable(0): [ConcreteVarDecl] error
+#   39|             Type = Error
 #   39|         getBody(): [BraceStmt] { ... }
 #   40|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   40|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -237,15 +244,8 @@ cfg.swift:
 #   40|               getExpr(): [DefaultArgumentExpr] default separator
 #   40|             getArgument(2): [Argument] terminator: default terminator
 #   40|               getExpr(): [DefaultArgumentExpr] default terminator
-#   39|         getLabel(0): [CaseLabelItem] error
-#   39|           getPattern(): [NamedPattern] error
-#   39|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
 #   42|     getElement(1): [ReturnStmt] return ...
 #   42|       getResult(): [IntegerLiteralExpr] 0
-#   35| [ConcreteVarDecl] withParam
-#   35|     Type = Int
-#   39| [ConcreteVarDecl] error
-#   39|     Type = Error
 #   45| [NamedFunction] createClosure1(s:)
 #   45|     InterfaceType = (String) -> () -> String
 #   45|   getParam(0): [ParamDecl] s
@@ -726,11 +726,6 @@ cfg.swift:
 #  140|     getElement(1): [SwitchStmt] switch x { ... }
 #  140|       getExpr(): [DeclRefExpr] x
 #  141|       getCase(0): [CaseStmt] case ...
-#  142|         getBody(): [BraceStmt] { ... }
-#  142|           getElement(0): [ReturnStmt] return ...
-#  142|             getResult(): [BooleanLiteralExpr] true
-#  143|           getElement(1): [ReturnStmt] return ...
-#  143|             getResult(): [BooleanLiteralExpr] true
 #  141|         getLabel(0): [CaseLabelItem] =~ ...
 #  141|           getPattern(): [ExprPattern] =~ ...
 #  141|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
@@ -747,10 +742,12 @@ cfg.swift:
 #  141|                 getExpr(): [IntegerLiteralExpr] 1
 #  141|               getArgument(1): [Argument] : $match
 #  141|                 getExpr(): [DeclRefExpr] $match
+#  142|         getBody(): [BraceStmt] { ... }
+#  142|           getElement(0): [ReturnStmt] return ...
+#  142|             getResult(): [BooleanLiteralExpr] true
+#  143|           getElement(1): [ReturnStmt] return ...
+#  143|             getResult(): [BooleanLiteralExpr] true
 #  144|       getCase(1): [CaseStmt] case ...
-#  145|         getBody(): [BraceStmt] { ... }
-#  145|           getElement(0): [ReturnStmt] return ...
-#  145|             getResult(): [BooleanLiteralExpr] true
 #  144|         getLabel(0): [CaseLabelItem] =~ ... where ...
 #  144|           getPattern(): [ExprPattern] =~ ...
 #  144|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
@@ -789,12 +786,15 @@ cfg.swift:
 #  144|                       getArgument(1): [Argument] : 5
 #  144|                         getExpr(): [IntegerLiteralExpr] 5
 #  144|                 getCapture(0): [CapturedDecl] x
+#  145|         getBody(): [BraceStmt] { ... }
+#  145|           getElement(0): [ReturnStmt] return ...
+#  145|             getResult(): [BooleanLiteralExpr] true
 #  146|       getCase(2): [CaseStmt] case ...
+#  146|         getLabel(0): [CaseLabelItem] _
+#  146|           getPattern(): [AnyPattern] _
 #  147|         getBody(): [BraceStmt] { ... }
 #  147|           getElement(0): [ReturnStmt] return ...
 #  147|             getResult(): [BooleanLiteralExpr] false
-#  146|         getLabel(0): [CaseLabelItem] _
-#  146|           getPattern(): [AnyPattern] _
 #  150|     getElement(2): [PatternBindingDecl] var ... = ...
 #  150|       getInit(0): [CallExpr] call to C.init(n:)
 #  150|         getFunction(): [MethodLookupExpr] C.init(n:)
@@ -2444,13 +2444,15 @@ cfg.swift:
 #  368|         getBindingDecl(1): [PatternBindingDecl] var ... = ...
 #  368|           getInit(0): [StringLiteralExpr] literal
 #  368|           getPattern(0): [NamedPattern] t
+#  368|         getVariable(0): [ConcreteVarDecl] z
+#  368|             Type = Int
+#  368|         getVariable(1): [ConcreteVarDecl] t
+#  368|             Type = String
 #  368|         getClosureBody(): [ExplicitClosureExpr] { ... }
 #  368|           getBody(): [BraceStmt] { ... }
 #  369|             getElement(0): [ReturnStmt] return ...
 #  369|               getResult(): [DeclRefExpr] z
 #  369|           getCapture(0): [CapturedDecl] z
-#  368| [ConcreteVarDecl] z
-#  368|     Type = Int
 #  373| [NamedFunction] testTupleElement(t:)
 #  373|     InterfaceType = ((a: Int, Int, c: Int)) -> Int
 #  373|   getParam(0): [ParamDecl] t
@@ -2758,38 +2760,38 @@ cfg.swift:
 #-----|           getElement(1): [SwitchStmt] switch a { ... }
 #-----|             getExpr(): [DeclRefExpr] a
 #-----|             getCase(0): [CaseStmt] case ...
+#-----|               getLabel(0): [CaseLabelItem] .A
+#-----|                 getPattern(): [EnumElementPattern] .A
 #-----|               getBody(): [BraceStmt] { ... }
 #-----|                 getElement(0): [AssignExpr]  ... = ...
 #-----|                   getDest(): [DeclRefExpr] index_a
 #-----|                   getSource(): [IntegerLiteralExpr] 0
-#-----|               getLabel(0): [CaseLabelItem] .A
-#-----|                 getPattern(): [EnumElementPattern] .A
 #-----|             getCase(1): [CaseStmt] case ...
+#-----|               getLabel(0): [CaseLabelItem] .B
+#-----|                 getPattern(): [EnumElementPattern] .B
 #-----|               getBody(): [BraceStmt] { ... }
 #-----|                 getElement(0): [AssignExpr]  ... = ...
 #-----|                   getDest(): [DeclRefExpr] index_a
 #-----|                   getSource(): [IntegerLiteralExpr] 1
-#-----|               getLabel(0): [CaseLabelItem] .B
-#-----|                 getPattern(): [EnumElementPattern] .B
 #-----|           getElement(2): [PatternBindingDecl] var ... = ...
 #-----|             getPattern(0): [TypedPattern] ... as ...
 #-----|               getSubPattern(): [NamedPattern] index_b
 #-----|           getElement(3): [SwitchStmt] switch b { ... }
 #-----|             getExpr(): [DeclRefExpr] b
 #-----|             getCase(0): [CaseStmt] case ...
+#-----|               getLabel(0): [CaseLabelItem] .A
+#-----|                 getPattern(): [EnumElementPattern] .A
 #-----|               getBody(): [BraceStmt] { ... }
 #-----|                 getElement(0): [AssignExpr]  ... = ...
 #-----|                   getDest(): [DeclRefExpr] index_b
 #-----|                   getSource(): [IntegerLiteralExpr] 0
-#-----|               getLabel(0): [CaseLabelItem] .A
-#-----|                 getPattern(): [EnumElementPattern] .A
 #-----|             getCase(1): [CaseStmt] case ...
+#-----|               getLabel(0): [CaseLabelItem] .B
+#-----|                 getPattern(): [EnumElementPattern] .B
 #-----|               getBody(): [BraceStmt] { ... }
 #-----|                 getElement(0): [AssignExpr]  ... = ...
 #-----|                   getDest(): [DeclRefExpr] index_b
 #-----|                   getSource(): [IntegerLiteralExpr] 1
-#-----|               getLabel(0): [CaseLabelItem] .B
-#-----|                 getPattern(): [EnumElementPattern] .B
 #-----|           getElement(4): [ReturnStmt] return ...
 #-----|             getResult(): [BinaryExpr] ... .==(_:_:) ...
 #-----|               getFunction(): [MethodLookupExpr] .==(_:_:)
@@ -2827,19 +2829,19 @@ cfg.swift:
 #-----|           getElement(1): [SwitchStmt] switch self { ... }
 #-----|             getExpr(): [DeclRefExpr] self
 #-----|             getCase(0): [CaseStmt] case ...
+#-----|               getLabel(0): [CaseLabelItem] .A
+#-----|                 getPattern(): [EnumElementPattern] .A
 #-----|               getBody(): [BraceStmt] { ... }
 #-----|                 getElement(0): [AssignExpr]  ... = ...
 #-----|                   getDest(): [DeclRefExpr] discriminator
 #-----|                   getSource(): [IntegerLiteralExpr] 0
-#-----|               getLabel(0): [CaseLabelItem] .A
-#-----|                 getPattern(): [EnumElementPattern] .A
 #-----|             getCase(1): [CaseStmt] case ...
+#-----|               getLabel(0): [CaseLabelItem] .B
+#-----|                 getPattern(): [EnumElementPattern] .B
 #-----|               getBody(): [BraceStmt] { ... }
 #-----|                 getElement(0): [AssignExpr]  ... = ...
 #-----|                   getDest(): [DeclRefExpr] discriminator
 #-----|                   getSource(): [IntegerLiteralExpr] 1
-#-----|               getLabel(0): [CaseLabelItem] .B
-#-----|                 getPattern(): [EnumElementPattern] .B
 #-----|           getElement(2): [CallExpr] call to combine(_:)
 #-----|             getFunction(): [MethodLookupExpr] .combine(_:)
 #-----|               getBase(): [DeclRefExpr] hasher
@@ -3246,51 +3248,49 @@ cfg.swift:
 #  524|             getParam(0): [ParamDecl] continuation
 #  524|                 Type = AsyncStream<Int>.Continuation
 #  523|             getBody(): [BraceStmt] { ... }
-#  525|               getElement(0): [BraceStmt] { ... }
-#  525|                 getElement(0): [CallExpr] call to detached(priority:operation:)
-#  525|                   getFunction(): [MethodLookupExpr] .detached(priority:operation:)
-#  525|                     getBase(): [TypeExpr] Task<(), Never>.Type
-#  525|                       getTypeRepr(): [TypeRepr] Task<(), Never>
-#  525|                     getMethodRef(): [DeclRefExpr] detached(priority:operation:)
-#  525|                   getArgument(0): [Argument] priority: default priority
-#  525|                     getExpr(): [DefaultArgumentExpr] default priority
-#  525|                   getArgument(1): [Argument] operation: { ... }
-#  525|                     getExpr(): [ExplicitClosureExpr] { ... }
-#  525|                       getBody(): [BraceStmt] { ... }
-#  526|                         getElement(0): [ForEachStmt] for ... in ... { ... }
-#  526|                           getPattern(): [NamedPattern] i
-#-----|                           getIteratorVar(): [PatternBindingDecl] var ... = ...
-#  526|                             getInit(0): [CallExpr] call to makeIterator()
-#  526|                               getFunction(): [MethodLookupExpr] .makeIterator()
-#  526|                                 getBase(): [BinaryExpr] ... ....(_:_:) ...
-#  526|                                   getFunction(): [MethodLookupExpr] ....(_:_:)
-#  526|                                     getBase(): [TypeExpr] Int.Type
-#  526|                                       getTypeRepr(): [TypeRepr] Int
-#  526|                                     getMethodRef(): [DeclRefExpr] ...(_:_:)
-#  526|                                   getArgument(0): [Argument] : 1
-#  526|                                     getExpr(): [IntegerLiteralExpr] 1
-#  526|                                   getArgument(1): [Argument] : 100
-#  526|                                     getExpr(): [IntegerLiteralExpr] 100
-#-----|                                 getMethodRef(): [DeclRefExpr] makeIterator()
-#  526|                             getPattern(0): [NamedPattern] $i$generator
-#  526|                           getNextCall(): [CallExpr] call to next()
-#  526|                             getFunction(): [MethodLookupExpr] .next()
-#  526|                               getBase(): [DeclRefExpr] $i$generator
-#  526|                               getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                               getMethodRef(): [DeclRefExpr] next()
-#  526|                           getBody(): [BraceStmt] { ... }
-#  527|                             getElement(0): [CallExpr] call to yield(_:)
-#  527|                               getFunction(): [MethodLookupExpr] .yield(_:)
-#  527|                                 getBase(): [DeclRefExpr] continuation
-#  527|                                 getMethodRef(): [DeclRefExpr] yield(_:)
-#  527|                               getArgument(0): [Argument] : i
-#  527|                                 getExpr(): [DeclRefExpr] i
-#  529|                         getElement(1): [CallExpr] call to finish()
-#  529|                           getFunction(): [MethodLookupExpr] .finish()
-#  529|                             getBase(): [DeclRefExpr] continuation
-#  529|                             getMethodRef(): [DeclRefExpr] finish()
-#  527|                       getCapture(0): [CapturedDecl] continuation
-#  525|                 getElement(1): [ReturnStmt] return
+#  525|               getElement(0): [CallExpr] call to detached(priority:operation:)
+#  525|                 getFunction(): [MethodLookupExpr] .detached(priority:operation:)
+#  525|                   getBase(): [TypeExpr] Task<(), Never>.Type
+#  525|                     getTypeRepr(): [TypeRepr] Task<(), Never>
+#  525|                   getMethodRef(): [DeclRefExpr] detached(priority:operation:)
+#  525|                 getArgument(0): [Argument] priority: default priority
+#  525|                   getExpr(): [DefaultArgumentExpr] default priority
+#  525|                 getArgument(1): [Argument] operation: { ... }
+#  525|                   getExpr(): [ExplicitClosureExpr] { ... }
+#  525|                     getBody(): [BraceStmt] { ... }
+#  526|                       getElement(0): [ForEachStmt] for ... in ... { ... }
+#  526|                         getPattern(): [NamedPattern] i
+#-----|                         getIteratorVar(): [PatternBindingDecl] var ... = ...
+#  526|                           getInit(0): [CallExpr] call to makeIterator()
+#  526|                             getFunction(): [MethodLookupExpr] .makeIterator()
+#  526|                               getBase(): [BinaryExpr] ... ....(_:_:) ...
+#  526|                                 getFunction(): [MethodLookupExpr] ....(_:_:)
+#  526|                                   getBase(): [TypeExpr] Int.Type
+#  526|                                     getTypeRepr(): [TypeRepr] Int
+#  526|                                   getMethodRef(): [DeclRefExpr] ...(_:_:)
+#  526|                                 getArgument(0): [Argument] : 1
+#  526|                                   getExpr(): [IntegerLiteralExpr] 1
+#  526|                                 getArgument(1): [Argument] : 100
+#  526|                                   getExpr(): [IntegerLiteralExpr] 100
+#-----|                               getMethodRef(): [DeclRefExpr] makeIterator()
+#  526|                           getPattern(0): [NamedPattern] $i$generator
+#  526|                         getNextCall(): [CallExpr] call to next()
+#  526|                           getFunction(): [MethodLookupExpr] .next()
+#  526|                             getBase(): [DeclRefExpr] $i$generator
+#  526|                             getBase().getFullyConverted(): [InOutExpr] &...
+#-----|                             getMethodRef(): [DeclRefExpr] next()
+#  526|                         getBody(): [BraceStmt] { ... }
+#  527|                           getElement(0): [CallExpr] call to yield(_:)
+#  527|                             getFunction(): [MethodLookupExpr] .yield(_:)
+#  527|                               getBase(): [DeclRefExpr] continuation
+#  527|                               getMethodRef(): [DeclRefExpr] yield(_:)
+#  527|                             getArgument(0): [Argument] : i
+#  527|                               getExpr(): [DeclRefExpr] i
+#  529|                       getElement(1): [CallExpr] call to finish()
+#  529|                         getFunction(): [MethodLookupExpr] .finish()
+#  529|                           getBase(): [DeclRefExpr] continuation
+#  529|                           getMethodRef(): [DeclRefExpr] finish()
+#  527|                     getCapture(0): [CapturedDecl] continuation
 #  523|       getPattern(0): [NamedPattern] stream
 #  533|     getElement(1): [ForEachStmt] for ... in ... { ... }
 #  533|       getPattern(): [NamedPattern] i
@@ -3366,6 +3366,118 @@ cfg.swift:
 #  545|       getElse(): [BraceStmt] { ... }
 #  546|         getElement(0): [ReturnStmt] return ...
 #  546|           getResult(): [IntegerLiteralExpr] 0
+#  550| [NamedFunction] usesAutoclosure(_:)
+#  550|     InterfaceType = (@autoclosure () -> Int) -> Int
+#  550|   getParam(0): [ParamDecl] expr
+#  550|       Type = () -> Int
+#  550|   getBody(): [BraceStmt] { ... }
+#  551|     getElement(0): [ReturnStmt] return ...
+#  551|       getResult(): [CallExpr] call to ...
+#  551|         getFunction(): [DeclRefExpr] expr
+#  554| [NamedFunction] autoclosureTest()
+#  554|     InterfaceType = () -> ()
+#  554|   getBody(): [BraceStmt] { ... }
+#  555|     getElement(0): [CallExpr] call to usesAutoclosure(_:)
+#  555|       getFunction(): [DeclRefExpr] usesAutoclosure(_:)
+#  555|       getArgument(0): [Argument] : { ... }
+#  555|         getExpr(): [AutoClosureExpr] { ... }
+#  555|           getBody(): [BraceStmt] { ... }
+#  555|             getElement(0): [ReturnStmt] return ...
+#  555|               getResult(): [IntegerLiteralExpr] 1
+#  558| [Comment] // ---
+#  558| 
+#  560| [ProtocolDecl] MyProtocol
+#-----|   getGenericTypeParam(0): [GenericTypeParamDecl] Self
+#  561|   getMember(0): [NamedFunction] source()
+#  561|       InterfaceType = <Self where Self : MyProtocol> (Self) -> () -> Int
+#  561|     getSelfParam(): [ParamDecl] self
+#  561|         Type = Self
+#  564| [ClassDecl] MyProcotolImpl
+#  565|   getMember(0): [NamedFunction] source()
+#  565|       InterfaceType = (MyProcotolImpl) -> () -> Int
+#  565|     getSelfParam(): [ParamDecl] self
+#  565|         Type = MyProcotolImpl
+#  565|     getBody(): [BraceStmt] { ... }
+#  565|       getElement(0): [ReturnStmt] return ...
+#  565|         getResult(): [IntegerLiteralExpr] 0
+#  564|   getMember(1): [Deinitializer] MyProcotolImpl.deinit()
+#  564|       InterfaceType = (MyProcotolImpl) -> () -> ()
+#  564|     getSelfParam(): [ParamDecl] self
+#  564|         Type = MyProcotolImpl
+#  564|     getBody(): [BraceStmt] { ... }
+#  564|   getMember(2): [Initializer] MyProcotolImpl.init()
+#  564|       InterfaceType = (MyProcotolImpl.Type) -> () -> MyProcotolImpl
+#  564|     getSelfParam(): [ParamDecl] self
+#  564|         Type = MyProcotolImpl
+#  564|     getBody(): [BraceStmt] { ... }
+#  564|       getElement(0): [ReturnStmt] return
+#  568| [NamedFunction] getMyProtocol()
+#  568|     InterfaceType = () -> MyProtocol
+#  568|   getBody(): [BraceStmt] { ... }
+#  568|     getElement(0): [ReturnStmt] return ...
+#  568|       getResult(): [CallExpr] call to MyProcotolImpl.init()
+#  568|         getFunction(): [MethodLookupExpr] MyProcotolImpl.init()
+#  568|           getBase(): [TypeExpr] MyProcotolImpl.Type
+#  568|             getTypeRepr(): [TypeRepr] MyProcotolImpl
+#  568|           getMethodRef(): [DeclRefExpr] MyProcotolImpl.init()
+#  568|       getResult().getFullyConverted(): [ErasureExpr] (MyProtocol) ...
+#  569| [NamedFunction] getMyProtocolImpl()
+#  569|     InterfaceType = () -> MyProcotolImpl
+#  569|   getBody(): [BraceStmt] { ... }
+#  569|     getElement(0): [ReturnStmt] return ...
+#  569|       getResult(): [CallExpr] call to MyProcotolImpl.init()
+#  569|         getFunction(): [MethodLookupExpr] MyProcotolImpl.init()
+#  569|           getBase(): [TypeExpr] MyProcotolImpl.Type
+#  569|             getTypeRepr(): [TypeRepr] MyProcotolImpl
+#  569|           getMethodRef(): [DeclRefExpr] MyProcotolImpl.init()
+#  571| [NamedFunction] sink(arg:)
+#  571|     InterfaceType = (Int) -> ()
+#  571|   getParam(0): [ParamDecl] arg
+#  571|       Type = Int
+#  571|   getBody(): [BraceStmt] { ... }
+#  573| [NamedFunction] testOpenExistentialExpr(x:y:)
+#  573|     InterfaceType = (MyProtocol, MyProcotolImpl) -> ()
+#  573|   getParam(0): [ParamDecl] x
+#  573|       Type = MyProtocol
+#  573|   getParam(1): [ParamDecl] y
+#  573|       Type = MyProcotolImpl
+#  573|   getBody(): [BraceStmt] { ... }
+#  574|     getElement(0): [CallExpr] call to sink(arg:)
+#  574|       getFunction(): [DeclRefExpr] sink(arg:)
+#  574|       getArgument(0): [Argument] arg: OpenExistentialExpr
+#  574|         getExpr(): [OpenExistentialExpr] OpenExistentialExpr
+#  574|           getSubExpr(): [CallExpr] call to source()
+#  574|             getFunction(): [MethodLookupExpr] .source()
+#  574|               getBase(): [OpaqueValueExpr] OpaqueValueExpr
+#  574|               getMethodRef(): [DeclRefExpr] source()
+#  574|           getExistential(): [DeclRefExpr] x
+#  575|     getElement(1): [CallExpr] call to sink(arg:)
+#  575|       getFunction(): [DeclRefExpr] sink(arg:)
+#  575|       getArgument(0): [Argument] arg: call to source()
+#  575|         getExpr(): [CallExpr] call to source()
+#  575|           getFunction(): [MethodLookupExpr] .source()
+#  575|             getBase(): [DeclRefExpr] y
+#  575|             getMethodRef(): [DeclRefExpr] source()
+#  576|     getElement(2): [CallExpr] call to sink(arg:)
+#  576|       getFunction(): [DeclRefExpr] sink(arg:)
+#  576|       getArgument(0): [Argument] arg: OpenExistentialExpr
+#  576|         getExpr(): [OpenExistentialExpr] OpenExistentialExpr
+#  576|           getSubExpr(): [CallExpr] call to source()
+#  576|             getFunction(): [MethodLookupExpr] .source()
+#  576|               getBase(): [OpaqueValueExpr] OpaqueValueExpr
+#  576|               getMethodRef(): [DeclRefExpr] source()
+#  576|           getExistential(): [CallExpr] call to getMyProtocol()
+#  576|             getFunction(): [DeclRefExpr] getMyProtocol()
+#  577|     getElement(3): [CallExpr] call to sink(arg:)
+#  577|       getFunction(): [DeclRefExpr] sink(arg:)
+#  577|       getArgument(0): [Argument] arg: call to source()
+#  577|         getExpr(): [CallExpr] call to source()
+#  577|           getFunction(): [MethodLookupExpr] .source()
+#  577|             getBase(): [CallExpr] call to getMyProtocolImpl()
+#  577|               getFunction(): [DeclRefExpr] getMyProtocolImpl()
+#  577|             getMethodRef(): [DeclRefExpr] source()
+#  580| [Comment] // ---
+#  580| 
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...
@@ -3533,80 +3645,80 @@ declarations.swift:
 #-----|       getElement(1): [SwitchStmt] switch a { ... }
 #-----|         getExpr(): [DeclRefExpr] a
 #-----|         getCase(0): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value1
+#-----|             getPattern(): [EnumElementPattern] .value1
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_a
 #-----|               getSource(): [IntegerLiteralExpr] 0
-#-----|           getLabel(0): [CaseLabelItem] .value1
-#-----|             getPattern(): [EnumElementPattern] .value1
 #-----|         getCase(1): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value2
+#-----|             getPattern(): [EnumElementPattern] .value2
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_a
 #-----|               getSource(): [IntegerLiteralExpr] 1
-#-----|           getLabel(0): [CaseLabelItem] .value2
-#-----|             getPattern(): [EnumElementPattern] .value2
 #-----|         getCase(2): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value3
+#-----|             getPattern(): [EnumElementPattern] .value3
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_a
 #-----|               getSource(): [IntegerLiteralExpr] 2
-#-----|           getLabel(0): [CaseLabelItem] .value3
-#-----|             getPattern(): [EnumElementPattern] .value3
 #-----|         getCase(3): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value4
+#-----|             getPattern(): [EnumElementPattern] .value4
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_a
 #-----|               getSource(): [IntegerLiteralExpr] 3
-#-----|           getLabel(0): [CaseLabelItem] .value4
-#-----|             getPattern(): [EnumElementPattern] .value4
 #-----|         getCase(4): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value5
+#-----|             getPattern(): [EnumElementPattern] .value5
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_a
 #-----|               getSource(): [IntegerLiteralExpr] 4
-#-----|           getLabel(0): [CaseLabelItem] .value5
-#-----|             getPattern(): [EnumElementPattern] .value5
 #-----|       getElement(2): [PatternBindingDecl] var ... = ...
 #-----|         getPattern(0): [TypedPattern] ... as ...
 #-----|           getSubPattern(): [NamedPattern] index_b
 #-----|       getElement(3): [SwitchStmt] switch b { ... }
 #-----|         getExpr(): [DeclRefExpr] b
 #-----|         getCase(0): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value1
+#-----|             getPattern(): [EnumElementPattern] .value1
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_b
 #-----|               getSource(): [IntegerLiteralExpr] 0
-#-----|           getLabel(0): [CaseLabelItem] .value1
-#-----|             getPattern(): [EnumElementPattern] .value1
 #-----|         getCase(1): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value2
+#-----|             getPattern(): [EnumElementPattern] .value2
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_b
 #-----|               getSource(): [IntegerLiteralExpr] 1
-#-----|           getLabel(0): [CaseLabelItem] .value2
-#-----|             getPattern(): [EnumElementPattern] .value2
 #-----|         getCase(2): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value3
+#-----|             getPattern(): [EnumElementPattern] .value3
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_b
 #-----|               getSource(): [IntegerLiteralExpr] 2
-#-----|           getLabel(0): [CaseLabelItem] .value3
-#-----|             getPattern(): [EnumElementPattern] .value3
 #-----|         getCase(3): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value4
+#-----|             getPattern(): [EnumElementPattern] .value4
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_b
 #-----|               getSource(): [IntegerLiteralExpr] 3
-#-----|           getLabel(0): [CaseLabelItem] .value4
-#-----|             getPattern(): [EnumElementPattern] .value4
 #-----|         getCase(4): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value5
+#-----|             getPattern(): [EnumElementPattern] .value5
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_b
 #-----|               getSource(): [IntegerLiteralExpr] 4
-#-----|           getLabel(0): [CaseLabelItem] .value5
-#-----|             getPattern(): [EnumElementPattern] .value5
 #-----|       getElement(4): [ReturnStmt] return ...
 #-----|         getResult(): [BinaryExpr] ... .==(_:_:) ...
 #-----|           getFunction(): [MethodLookupExpr] .==(_:_:)
@@ -3644,40 +3756,40 @@ declarations.swift:
 #-----|       getElement(1): [SwitchStmt] switch self { ... }
 #-----|         getExpr(): [DeclRefExpr] self
 #-----|         getCase(0): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value1
+#-----|             getPattern(): [EnumElementPattern] .value1
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] discriminator
 #-----|               getSource(): [IntegerLiteralExpr] 0
-#-----|           getLabel(0): [CaseLabelItem] .value1
-#-----|             getPattern(): [EnumElementPattern] .value1
 #-----|         getCase(1): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value2
+#-----|             getPattern(): [EnumElementPattern] .value2
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] discriminator
 #-----|               getSource(): [IntegerLiteralExpr] 1
-#-----|           getLabel(0): [CaseLabelItem] .value2
-#-----|             getPattern(): [EnumElementPattern] .value2
 #-----|         getCase(2): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value3
+#-----|             getPattern(): [EnumElementPattern] .value3
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] discriminator
 #-----|               getSource(): [IntegerLiteralExpr] 2
-#-----|           getLabel(0): [CaseLabelItem] .value3
-#-----|             getPattern(): [EnumElementPattern] .value3
 #-----|         getCase(3): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value4
+#-----|             getPattern(): [EnumElementPattern] .value4
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] discriminator
 #-----|               getSource(): [IntegerLiteralExpr] 3
-#-----|           getLabel(0): [CaseLabelItem] .value4
-#-----|             getPattern(): [EnumElementPattern] .value4
 #-----|         getCase(4): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .value5
+#-----|             getPattern(): [EnumElementPattern] .value5
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] discriminator
 #-----|               getSource(): [IntegerLiteralExpr] 4
-#-----|           getLabel(0): [CaseLabelItem] .value5
-#-----|             getPattern(): [EnumElementPattern] .value5
 #-----|       getElement(2): [CallExpr] call to combine(_:)
 #-----|         getFunction(): [MethodLookupExpr] .combine(_:)
 #-----|           getBase(): [DeclRefExpr] hasher
@@ -4429,6 +4541,86 @@ declarations.swift:
 #  182|       getElement(0): [ReturnStmt] return
 #  183| [TypeAliasDecl] A
 #  184| [TypeAliasDecl] C
+#  186| [ClassDecl] S
+#  187|   getMember(0): [PatternBindingDecl] var ... = ...
+#  187|     getInit(0): [IntegerLiteralExpr] 0
+#  187|     getPattern(0): [NamedPattern] bf1
+#  187|   getMember(1): [ConcreteVarDecl] bf1
+#  187|       Type = Int
+#  187|     getAccessor(0): [Accessor] get
+#  187|         InterfaceType = (S) -> () -> Int
+#  187|       getSelfParam(): [ParamDecl] self
+#  187|           Type = S
+#  187|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .bf1
+#-----|             getBase(): [DeclRefExpr] self
+#  187|     getAccessor(1): [Accessor] set
+#  187|         InterfaceType = (S) -> (Int) -> ()
+#  187|       getSelfParam(): [ParamDecl] self
+#  187|           Type = S
+#  187|       getParam(0): [ParamDecl] value
+#  187|           Type = Int
+#  187|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .bf1
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  187|     getAccessor(2): [Accessor] _modify
+#  187|         InterfaceType = (S) -> () -> ()
+#  187|       getSelfParam(): [ParamDecl] self
+#  187|           Type = S
+#  187|       getBody(): [BraceStmt] { ... }
+#  187|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [MemberRefExpr] .bf1
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
+#  188|   getMember(2): [NamedFunction] captureThis()
+#  188|       InterfaceType = (S) -> () -> ()
+#  188|     getSelfParam(): [ParamDecl] self
+#  188|         Type = S
+#  188|     getBody(): [BraceStmt] { ... }
+#  189|       getVariable(0): [ConcreteVarDecl] x
+#  189|           Type = Int
+#  190|       getVariable(1): [ConcreteVarDecl] f
+#  190|           Type = () -> ()
+#  189|       getElement(0): [PatternBindingDecl] var ... = ...
+#  189|         getInit(0): [IntegerLiteralExpr] 0
+#  189|         getPattern(0): [NamedPattern] x
+#  190|       getElement(1): [PatternBindingDecl] var ... = ...
+#  190|         getInit(0): [CaptureListExpr] { ... }
+#  190|           getBindingDecl(0): [PatternBindingDecl] var ... = ...
+#  190|             getInit(0): [DeclRefExpr] self
+#  190|             getPattern(0): [NamedPattern] self
+#  190|           getBindingDecl(1): [PatternBindingDecl] var ... = ...
+#  190|             getInit(0): [DeclRefExpr] x
+#  190|             getInit(0).getFullyConverted(): [LoadExpr] (Int) ...
+#  190|             getPattern(0): [NamedPattern] x
+#  190|           getVariable(0): [ConcreteVarDecl] self
+#  190|               Type = S
+#  190|           getVariable(1): [ConcreteVarDecl] x
+#  190|               Type = Int
+#  190|           getClosureBody(): [ExplicitClosureExpr] { ... }
+#  190|             getBody(): [BraceStmt] { ... }
+#  191|               getElement(0): [ReturnStmt] return ...
+#  191|                 getResult(): [AssignExpr]  ... = ...
+#  191|                   getDest(): [MemberRefExpr] .bf1
+#  191|                     getBase(): [DeclRefExpr] self
+#  191|                   getSource(): [DeclRefExpr] x
+#  191|             getCapture(0): [CapturedDecl] self
+#  191|             getCapture(1): [CapturedDecl] x
+#  190|         getPattern(0): [NamedPattern] f
+#  186|   getMember(3): [Deinitializer] S.deinit()
+#  186|       InterfaceType = (S) -> () -> ()
+#  186|     getSelfParam(): [ParamDecl] self
+#  186|         Type = S
+#  186|     getBody(): [BraceStmt] { ... }
+#  186|   getMember(4): [Initializer] S.init()
+#  186|       InterfaceType = (S.Type) -> () -> S
+#  186|     getSelfParam(): [ParamDecl] self
+#  186|         Type = S
+#  186|     getBody(): [BraceStmt] { ... }
+#  186|       getElement(0): [ReturnStmt] return
 expressions.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }
@@ -4532,24 +4724,24 @@ expressions.swift:
 #-----|       getElement(1): [SwitchStmt] switch a { ... }
 #-----|         getExpr(): [DeclRefExpr] a
 #-----|         getCase(0): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_a
 #-----|               getSource(): [IntegerLiteralExpr] 0
-#-----|           getLabel(0): [CaseLabelItem] .failed
-#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|       getElement(2): [PatternBindingDecl] var ... = ...
 #-----|         getPattern(0): [TypedPattern] ... as ...
 #-----|           getSubPattern(): [NamedPattern] index_b
 #-----|       getElement(3): [SwitchStmt] switch b { ... }
 #-----|         getExpr(): [DeclRefExpr] b
 #-----|         getCase(0): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_b
 #-----|               getSource(): [IntegerLiteralExpr] 0
-#-----|           getLabel(0): [CaseLabelItem] .failed
-#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|       getElement(4): [ReturnStmt] return ...
 #-----|         getResult(): [BinaryExpr] ... .==(_:_:) ...
 #-----|           getFunction(): [MethodLookupExpr] .==(_:_:)
@@ -4587,12 +4779,12 @@ expressions.swift:
 #-----|       getElement(1): [SwitchStmt] switch self { ... }
 #-----|         getExpr(): [DeclRefExpr] self
 #-----|         getCase(0): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] discriminator
 #-----|               getSource(): [IntegerLiteralExpr] 0
-#-----|           getLabel(0): [CaseLabelItem] .failed
-#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|       getElement(2): [CallExpr] call to combine(_:)
 #-----|         getFunction(): [MethodLookupExpr] .combine(_:)
 #-----|           getBase(): [DeclRefExpr] hasher
@@ -5760,6 +5952,27 @@ expressions.swift:
 #  183|       getPattern(0): [NamedPattern] tupleElement
 #  183| [ConcreteVarDecl] tupleElement
 #  183|     Type = WritableKeyPath<(Int, Int), Int>
+#  185| [NamedFunction] makeTuple(_:)
+#  185|     InterfaceType = <each T> (repeat each T) -> (repeat each T)
+#  185|   getGenericTypeParam(0): [GenericTypeParamDecl] T
+#  185|   getParam(0): [ParamDecl] t
+#  185|       Type = repeat each T
+#  185|   getBody(): [BraceStmt] { ... }
+#  186|     getElement(0): [ReturnStmt] return ...
+#  186|       getResult(): [TupleExpr] (...)
+#  186|         getElement(0): [PackExpansionExpr] PackExpansionExpr
+#  186|           getPatternExpr(): [PackElementExpr] PackElementExpr
+#  186|             getSubExpr(): [DeclRefExpr] t
+#  189| [TopLevelCodeDecl] { ... }
+#  189|   getBody(): [BraceStmt] { ... }
+#  189|     getElement(0): [PatternBindingDecl] var ... = ...
+#  189|       getInit(0): [CallExpr] call to makeTuple(_:)
+#  189|         getFunction(): [DeclRefExpr] makeTuple(_:)
+#  189|         getArgument(0): [Argument] : A
+#  189|           getExpr(): [StringLiteralExpr] A
+#  189|         getArgument(1): [Argument] : 2
+#  189|           getExpr(): [IntegerLiteralExpr] 2
+#  189|       getPattern(0): [AnyPattern] _
 patterns.swift:
 #    1| [NamedFunction] basic_patterns()
 #    1|     InterfaceType = () -> ()
@@ -5819,18 +6032,20 @@ patterns.swift:
 #   11|     getElement(1): [SwitchStmt] switch point { ... }
 #   11|       getExpr(): [DeclRefExpr] point
 #   12|       getCase(0): [CaseStmt] case ...
-#   12|         getBody(): [BraceStmt] { ... }
-#   12|           getElement(0): [StringLiteralExpr] binding
 #   12|         getLabel(0): [CaseLabelItem] (...)
 #   12|           getPattern(): [TuplePattern] (...)
 #   12|             getElement(0): [NamedPattern] xx
 #   12|             getElement(1): [NamedPattern] yy
 #   12|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   12|         getVariable(0): [ConcreteVarDecl] xx
+#   12|             Type = Int
+#   12|         getVariable(1): [ConcreteVarDecl] yy
+#   12|             Type = Int
+#   12|         getBody(): [BraceStmt] { ... }
+#   12|           getElement(0): [StringLiteralExpr] binding
 #   15|     getElement(2): [SwitchStmt] switch 3 { ... }
 #   15|       getExpr(): [IntegerLiteralExpr] 3
 #   16|       getCase(0): [CaseStmt] case ...
-#   16|         getBody(): [BraceStmt] { ... }
-#   16|           getElement(0): [StringLiteralExpr] expr
 #   16|         getLabel(0): [CaseLabelItem] =~ ...
 #   16|           getPattern(): [ExprPattern] =~ ...
 #   16|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
@@ -5847,11 +6062,13 @@ patterns.swift:
 #   16|                     getExpr(): [IntegerLiteralExpr] 2
 #   16|               getArgument(1): [Argument] : $match
 #   16|                 getExpr(): [DeclRefExpr] $match
+#   16|         getBody(): [BraceStmt] { ... }
+#   16|           getElement(0): [StringLiteralExpr] expr
 #   17|       getCase(1): [CaseStmt] case ...
-#   17|         getBody(): [BraceStmt] { ... }
-#   17|           getElement(0): [StringLiteralExpr] 
 #   17|         getLabel(0): [CaseLabelItem] _
 #   17|           getPattern(): [AnyPattern] _
+#   17|         getBody(): [BraceStmt] { ... }
+#   17|           getElement(0): [StringLiteralExpr] 
 #   20|     getElement(3): [EnumDecl] Foo
 #   21|       getMember(0): [EnumCaseDecl] case ...
 #   21|       getMember(1): [EnumElementDecl] bar
@@ -5871,19 +6088,23 @@ patterns.swift:
 #   26|     getElement(5): [SwitchStmt] switch v { ... }
 #   26|       getExpr(): [DeclRefExpr] v
 #   27|       getCase(0): [CaseStmt] case ...
-#   27|         getBody(): [BraceStmt] { ... }
-#   27|           getElement(0): [StringLiteralExpr] bar
 #   27|         getLabel(0): [CaseLabelItem] .bar
 #   27|           getPattern(): [EnumElementPattern] .bar
+#   27|         getBody(): [BraceStmt] { ... }
+#   27|           getElement(0): [StringLiteralExpr] bar
 #   28|       getCase(1): [CaseStmt] case ...
-#   28|         getBody(): [BraceStmt] { ... }
-#   28|           getElement(0): [DeclRefExpr] i
 #   28|         getLabel(0): [CaseLabelItem] .baz(...)
 #   28|           getPattern(): [EnumElementPattern] .baz(...)
 #   28|             getSubPattern(): [TuplePattern] (...)
 #   28|               getElement(0): [NamedPattern] i
 #   28|               getElement(1): [NamedPattern] s
 #   28|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   28|         getVariable(0): [ConcreteVarDecl] i
+#   28|             Type = Int
+#   28|         getVariable(1): [ConcreteVarDecl] s
+#   28|             Type = String
+#   28|         getBody(): [BraceStmt] { ... }
+#   28|           getElement(0): [DeclRefExpr] i
 #   31|     getElement(6): [PatternBindingDecl] var ... = ...
 #   31|       getInit(0): [NilLiteralExpr] nil
 #   31|       getPattern(0): [TypedPattern] ... as ...
@@ -5892,17 +6113,19 @@ patterns.swift:
 #   33|     getElement(7): [SwitchStmt] switch w { ... }
 #   33|       getExpr(): [DeclRefExpr] w
 #   34|       getCase(0): [CaseStmt] case ...
-#   34|         getBody(): [BraceStmt] { ... }
-#   34|           getElement(0): [DeclRefExpr] n
 #   34|         getLabel(0): [CaseLabelItem] let ...?
 #   34|           getPattern(): [OptionalSomePattern] let ...?
 #   34|             getSubPattern(): [NamedPattern] n
 #   34|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   34|         getVariable(0): [ConcreteVarDecl] n
+#   34|             Type = Int
+#   34|         getBody(): [BraceStmt] { ... }
+#   34|           getElement(0): [DeclRefExpr] n
 #   35|       getCase(1): [CaseStmt] case ...
-#   35|         getBody(): [BraceStmt] { ... }
-#   35|           getElement(0): [StringLiteralExpr] none
 #   35|         getLabel(0): [CaseLabelItem] _
 #   35|           getPattern(): [AnyPattern] _
+#   35|         getBody(): [BraceStmt] { ... }
+#   35|           getElement(0): [StringLiteralExpr] none
 #   38|     getElement(8): [PatternBindingDecl] var ... = ...
 #   38|       getInit(0): [StringLiteralExpr] any
 #   38|       getInit(0).getFullyConverted(): [ErasureExpr] (Any) ...
@@ -5912,53 +6135,43 @@ patterns.swift:
 #   40|     getElement(9): [SwitchStmt] switch a { ... }
 #   40|       getExpr(): [DeclRefExpr] a
 #   41|       getCase(0): [CaseStmt] case ...
-#   41|         getBody(): [BraceStmt] { ... }
-#   41|           getElement(0): [StringLiteralExpr] is pattern
 #   41|         getLabel(0): [CaseLabelItem] ... is ...
 #   41|           getPattern(): [IsPattern] ... is ...
 #   41|             getCastTypeRepr(): [TypeRepr] Int
+#   41|         getBody(): [BraceStmt] { ... }
+#   41|           getElement(0): [StringLiteralExpr] is pattern
 #   42|       getCase(1): [CaseStmt] case ...
-#   42|         getBody(): [BraceStmt] { ... }
-#   42|           getElement(0): [StringLiteralExpr] as pattern
 #   42|         getLabel(0): [CaseLabelItem] ... is ...
 #   42|           getPattern(): [IsPattern] ... is ...
 #   42|             getCastTypeRepr(): [TypeRepr] String
 #   42|             getSubPattern(): [NamedPattern] x
 #   42|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   42|         getVariable(0): [ConcreteVarDecl] x
+#   42|             Type = String
+#   42|         getBody(): [BraceStmt] { ... }
+#   42|           getElement(0): [StringLiteralExpr] as pattern
 #   43|       getCase(2): [CaseStmt] case ...
-#   43|         getBody(): [BraceStmt] { ... }
-#   43|           getElement(0): [StringLiteralExpr] other
 #   43|         getLabel(0): [CaseLabelItem] _
 #   43|           getPattern(): [AnyPattern] _
+#   43|         getBody(): [BraceStmt] { ... }
+#   43|           getElement(0): [StringLiteralExpr] other
 #   46|     getElement(10): [PatternBindingDecl] var ... = ...
 #   46|       getInit(0): [BooleanLiteralExpr] true
 #   46|       getPattern(0): [NamedPattern] b
 #   48|     getElement(11): [SwitchStmt] switch b { ... }
 #   48|       getExpr(): [DeclRefExpr] b
 #   49|       getCase(0): [CaseStmt] case ...
-#   49|         getBody(): [BraceStmt] { ... }
-#   49|           getElement(0): [StringLiteralExpr] true
 #   49|         getLabel(0): [CaseLabelItem] true
 #   49|           getPattern(): [BoolPattern] true
+#   49|         getBody(): [BraceStmt] { ... }
+#   49|           getElement(0): [StringLiteralExpr] true
 #   50|       getCase(1): [CaseStmt] case ...
-#   50|         getBody(): [BraceStmt] { ... }
-#   50|           getElement(0): [StringLiteralExpr] false
 #   50|         getLabel(0): [CaseLabelItem] false
 #   50|           getPattern(): [BoolPattern] false
-#   12| [ConcreteVarDecl] xx
-#   12|     Type = Int
-#   12| [ConcreteVarDecl] yy
-#   12|     Type = Int
+#   50|         getBody(): [BraceStmt] { ... }
+#   50|           getElement(0): [StringLiteralExpr] false
 #   16| [ConcreteVarDecl] $match
 #   16|     Type = Int
-#   28| [ConcreteVarDecl] i
-#   28|     Type = Int
-#   28| [ConcreteVarDecl] s
-#   28|     Type = String
-#   34| [ConcreteVarDecl] n
-#   34|     Type = Int
-#   42| [ConcreteVarDecl] x
-#   42|     Type = String
 #   54| [NamedFunction] bound_and_unbound()
 #   54|     InterfaceType = () -> ()
 #   54|   getBody(): [BraceStmt] { ... }
@@ -6029,8 +6242,6 @@ patterns.swift:
 #   60|     getElement(3): [SwitchStmt] switch a { ... }
 #   60|       getExpr(): [DeclRefExpr] a
 #   61|       getCase(0): [CaseStmt] case ...
-#   61|         getBody(): [BraceStmt] { ... }
-#   61|           getElement(0): [StringLiteralExpr] equals c
 #   61|         getLabel(0): [CaseLabelItem] =~ ...
 #   61|           getPattern(): [ExprPattern] =~ ...
 #   61|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
@@ -6039,18 +6250,24 @@ patterns.swift:
 #   61|                 getExpr(): [DeclRefExpr] c
 #   61|               getArgument(1): [Argument] : $match
 #   61|                 getExpr(): [DeclRefExpr] $match
+#   61|         getBody(): [BraceStmt] { ... }
+#   61|           getElement(0): [StringLiteralExpr] equals c
 #   62|       getCase(1): [CaseStmt] case ...
-#   62|         getBody(): [BraceStmt] { ... }
-#   62|           getElement(0): [StringLiteralExpr] binds c
 #   62|         getLabel(0): [CaseLabelItem] c
 #   62|           getPattern(): [NamedPattern] c
 #   62|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   62|         getVariable(0): [ConcreteVarDecl] c
+#   62|             Type = Int
+#   62|         getBody(): [BraceStmt] { ... }
+#   62|           getElement(0): [StringLiteralExpr] binds c
 #   63|       getCase(2): [CaseStmt] case ...
-#   63|         getBody(): [BraceStmt] { ... }
-#   63|           getElement(0): [StringLiteralExpr] default
 #   63|         getLabel(0): [CaseLabelItem] _
 #   63|           getPattern(): [AnyPattern] _
+#   63|         getBody(): [BraceStmt] { ... }
+#   63|           getElement(0): [StringLiteralExpr] default
 #   57| [ConcreteVarDecl] a
+#   57|     Type = Int
+#   57| [ConcreteVarDecl] b
 #   57|     Type = Int
 #   57| [ConcreteVarDecl] c
 #   57|     Type = Int
@@ -6058,10 +6275,10 @@ patterns.swift:
 #   58|     Type = Int
 #   58| [ConcreteVarDecl] b
 #   58|     Type = Int
+#   58| [ConcreteVarDecl] c
+#   58|     Type = Int
 #   61| [ConcreteVarDecl] $match
 #   61|     Type = Int
-#   62| [ConcreteVarDecl] c
-#   62|     Type = Int
 #   67| [NamedFunction] source()
 #   67|     InterfaceType = () -> Int
 #   67|   getBody(): [BraceStmt] { ... }
@@ -6110,22 +6327,35 @@ patterns.swift:
 #   80|       getExpr(): [DeclRefExpr] a
 #   80|       getExpr().getFullyConverted(): [LoadExpr] (MyEnum) ...
 #   81|       getCase(0): [CaseStmt] case ...
-#   82|         getBody(): [BraceStmt] { ... }
-#   82|           getElement(0): [TupleExpr] (...)
 #   81|         getLabel(0): [CaseLabelItem] .myNone
 #   81|           getPattern(): [EnumElementPattern] .myNone
+#   82|         getBody(): [BraceStmt] { ... }
+#   82|           getElement(0): [TupleExpr] (...)
 #   83|       getCase(1): [CaseStmt] case ...
-#   84|         getBody(): [BraceStmt] { ... }
-#   84|           getElement(0): [CallExpr] call to sink(arg:)
-#   84|             getFunction(): [DeclRefExpr] sink(arg:)
-#   84|             getArgument(0): [Argument] arg: a
-#   84|               getExpr(): [DeclRefExpr] a
 #   83|         getLabel(0): [CaseLabelItem] .mySingle(...)
 #   83|           getPattern(): [EnumElementPattern] .mySingle(...)
 #   83|             getSubPattern(): [NamedPattern] a
 #   83|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
 #   83|               getSubPattern(): [BindingPattern] let ...
+#   83|         getVariable(0): [ConcreteVarDecl] a
+#   83|             Type = (Int)
+#   84|         getBody(): [BraceStmt] { ... }
+#   84|           getElement(0): [CallExpr] call to sink(arg:)
+#   84|             getFunction(): [DeclRefExpr] sink(arg:)
+#   84|             getArgument(0): [Argument] arg: a
+#   84|               getExpr(): [DeclRefExpr] a
 #   85|       getCase(2): [CaseStmt] case ...
+#   85|         getLabel(0): [CaseLabelItem] .myPair(...)
+#   85|           getPattern(): [EnumElementPattern] .myPair(...)
+#   85|             getSubPattern(): [TuplePattern] (...)
+#   85|               getElement(0): [NamedPattern] a
+#   85|               getElement(0).getFullyUnresolved(): [BindingPattern] let ...
+#   85|               getElement(1): [NamedPattern] b
+#   85|               getElement(1).getFullyUnresolved(): [BindingPattern] let ...
+#   85|         getVariable(0): [ConcreteVarDecl] a
+#   85|             Type = Int
+#   85|         getVariable(1): [ConcreteVarDecl] b
+#   85|             Type = Int
 #   86|         getBody(): [BraceStmt] { ... }
 #   86|           getElement(0): [CallExpr] call to sink(arg:)
 #   86|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6135,25 +6365,20 @@ patterns.swift:
 #   87|             getFunction(): [DeclRefExpr] sink(arg:)
 #   87|             getArgument(0): [Argument] arg: b
 #   87|               getExpr(): [DeclRefExpr] b
-#   85|         getLabel(0): [CaseLabelItem] .myPair(...)
-#   85|           getPattern(): [EnumElementPattern] .myPair(...)
-#   85|             getSubPattern(): [TuplePattern] (...)
-#   85|               getElement(0): [NamedPattern] a
-#   85|               getElement(0).getFullyUnresolved(): [BindingPattern] let ...
-#   85|               getElement(1): [NamedPattern] b
-#   85|               getElement(1).getFullyUnresolved(): [BindingPattern] let ...
 #   88|       getCase(3): [CaseStmt] case ...
-#   89|         getBody(): [BraceStmt] { ... }
-#   89|           getElement(0): [CallExpr] call to sink(arg:)
-#   89|             getFunction(): [DeclRefExpr] sink(arg:)
-#   89|             getArgument(0): [Argument] arg: a
-#   89|               getExpr(): [DeclRefExpr] a
 #   88|         getLabel(0): [CaseLabelItem] .myCons(...)
 #   88|           getPattern(): [EnumElementPattern] .myCons(...)
 #   88|             getSubPattern(): [TuplePattern] (...)
 #   88|               getElement(0): [NamedPattern] a
 #   88|               getElement(1): [AnyPattern] _
 #   88|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   88|         getVariable(0): [ConcreteVarDecl] a
+#   88|             Type = Int
+#   89|         getBody(): [BraceStmt] { ... }
+#   89|           getElement(0): [CallExpr] call to sink(arg:)
+#   89|             getFunction(): [DeclRefExpr] sink(arg:)
+#   89|             getArgument(0): [Argument] arg: a
+#   89|               getExpr(): [DeclRefExpr] a
 #   92|     getElement(2): [IfStmt] if ... then { ... }
 #   92|       getCondition(): [StmtCondition] StmtCondition
 #   92|         getElement(0): [ConditionElement] .mySingle(...) = ... 
@@ -6202,22 +6427,35 @@ patterns.swift:
 #  102|       getExpr(): [DeclRefExpr] a
 #  102|       getExpr().getFullyConverted(): [LoadExpr] (MyEnum) ...
 #  103|       getCase(0): [CaseStmt] case ...
-#  104|         getBody(): [BraceStmt] { ... }
-#  104|           getElement(0): [TupleExpr] (...)
 #  103|         getLabel(0): [CaseLabelItem] .myNone
 #  103|           getPattern(): [EnumElementPattern] .myNone
+#  104|         getBody(): [BraceStmt] { ... }
+#  104|           getElement(0): [TupleExpr] (...)
 #  105|       getCase(1): [CaseStmt] case ...
-#  106|         getBody(): [BraceStmt] { ... }
-#  106|           getElement(0): [CallExpr] call to sink(arg:)
-#  106|             getFunction(): [DeclRefExpr] sink(arg:)
-#  106|             getArgument(0): [Argument] arg: a
-#  106|               getExpr(): [DeclRefExpr] a
 #  105|         getLabel(0): [CaseLabelItem] .mySingle(...)
 #  105|           getPattern(): [EnumElementPattern] .mySingle(...)
 #  105|             getSubPattern(): [NamedPattern] a
 #  105|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
 #  105|               getSubPattern(): [BindingPattern] let ...
+#  105|         getVariable(0): [ConcreteVarDecl] a
+#  105|             Type = (Int)
+#  106|         getBody(): [BraceStmt] { ... }
+#  106|           getElement(0): [CallExpr] call to sink(arg:)
+#  106|             getFunction(): [DeclRefExpr] sink(arg:)
+#  106|             getArgument(0): [Argument] arg: a
+#  106|               getExpr(): [DeclRefExpr] a
 #  107|       getCase(2): [CaseStmt] case ...
+#  107|         getLabel(0): [CaseLabelItem] .myPair(...)
+#  107|           getPattern(): [EnumElementPattern] .myPair(...)
+#  107|             getSubPattern(): [TuplePattern] (...)
+#  107|               getElement(0): [NamedPattern] a
+#  107|               getElement(0).getFullyUnresolved(): [BindingPattern] let ...
+#  107|               getElement(1): [NamedPattern] b
+#  107|               getElement(1).getFullyUnresolved(): [BindingPattern] let ...
+#  107|         getVariable(0): [ConcreteVarDecl] a
+#  107|             Type = Int
+#  107|         getVariable(1): [ConcreteVarDecl] b
+#  107|             Type = Int
 #  108|         getBody(): [BraceStmt] { ... }
 #  108|           getElement(0): [CallExpr] call to sink(arg:)
 #  108|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6227,25 +6465,20 @@ patterns.swift:
 #  109|             getFunction(): [DeclRefExpr] sink(arg:)
 #  109|             getArgument(0): [Argument] arg: b
 #  109|               getExpr(): [DeclRefExpr] b
-#  107|         getLabel(0): [CaseLabelItem] .myPair(...)
-#  107|           getPattern(): [EnumElementPattern] .myPair(...)
-#  107|             getSubPattern(): [TuplePattern] (...)
-#  107|               getElement(0): [NamedPattern] a
-#  107|               getElement(0).getFullyUnresolved(): [BindingPattern] let ...
-#  107|               getElement(1): [NamedPattern] b
-#  107|               getElement(1).getFullyUnresolved(): [BindingPattern] let ...
 #  110|       getCase(3): [CaseStmt] case ...
-#  111|         getBody(): [BraceStmt] { ... }
-#  111|           getElement(0): [CallExpr] call to sink(arg:)
-#  111|             getFunction(): [DeclRefExpr] sink(arg:)
-#  111|             getArgument(0): [Argument] arg: a
-#  111|               getExpr(): [DeclRefExpr] a
 #  110|         getLabel(0): [CaseLabelItem] .myCons(...)
 #  110|           getPattern(): [EnumElementPattern] .myCons(...)
 #  110|             getSubPattern(): [TuplePattern] (...)
 #  110|               getElement(0): [NamedPattern] a
 #  110|               getElement(1): [AnyPattern] _
 #  110|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#  110|         getVariable(0): [ConcreteVarDecl] a
+#  110|             Type = Int
+#  111|         getBody(): [BraceStmt] { ... }
+#  111|           getElement(0): [CallExpr] call to sink(arg:)
+#  111|             getFunction(): [DeclRefExpr] sink(arg:)
+#  111|             getArgument(0): [Argument] arg: a
+#  111|               getExpr(): [DeclRefExpr] a
 #  114|     getElement(6): [IfStmt] if ... then { ... }
 #  114|       getCondition(): [StmtCondition] StmtCondition
 #  114|         getElement(0): [ConditionElement] .mySingle(...) = ... 
@@ -6296,22 +6529,35 @@ patterns.swift:
 #  124|       getExpr(): [DeclRefExpr] a
 #  124|       getExpr().getFullyConverted(): [LoadExpr] (MyEnum) ...
 #  125|       getCase(0): [CaseStmt] case ...
-#  126|         getBody(): [BraceStmt] { ... }
-#  126|           getElement(0): [TupleExpr] (...)
 #  125|         getLabel(0): [CaseLabelItem] .myNone
 #  125|           getPattern(): [EnumElementPattern] .myNone
+#  126|         getBody(): [BraceStmt] { ... }
+#  126|           getElement(0): [TupleExpr] (...)
 #  127|       getCase(1): [CaseStmt] case ...
-#  128|         getBody(): [BraceStmt] { ... }
-#  128|           getElement(0): [CallExpr] call to sink(arg:)
-#  128|             getFunction(): [DeclRefExpr] sink(arg:)
-#  128|             getArgument(0): [Argument] arg: a
-#  128|               getExpr(): [DeclRefExpr] a
 #  127|         getLabel(0): [CaseLabelItem] .mySingle(...)
 #  127|           getPattern(): [EnumElementPattern] .mySingle(...)
 #  127|             getSubPattern(): [NamedPattern] a
 #  127|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
 #  127|               getSubPattern(): [BindingPattern] let ...
+#  127|         getVariable(0): [ConcreteVarDecl] a
+#  127|             Type = (Int)
+#  128|         getBody(): [BraceStmt] { ... }
+#  128|           getElement(0): [CallExpr] call to sink(arg:)
+#  128|             getFunction(): [DeclRefExpr] sink(arg:)
+#  128|             getArgument(0): [Argument] arg: a
+#  128|               getExpr(): [DeclRefExpr] a
 #  129|       getCase(2): [CaseStmt] case ...
+#  129|         getLabel(0): [CaseLabelItem] .myPair(...)
+#  129|           getPattern(): [EnumElementPattern] .myPair(...)
+#  129|             getSubPattern(): [TuplePattern] (...)
+#  129|               getElement(0): [NamedPattern] a
+#  129|               getElement(0).getFullyUnresolved(): [BindingPattern] let ...
+#  129|               getElement(1): [NamedPattern] b
+#  129|               getElement(1).getFullyUnresolved(): [BindingPattern] let ...
+#  129|         getVariable(0): [ConcreteVarDecl] a
+#  129|             Type = Int
+#  129|         getVariable(1): [ConcreteVarDecl] b
+#  129|             Type = Int
 #  130|         getBody(): [BraceStmt] { ... }
 #  130|           getElement(0): [CallExpr] call to sink(arg:)
 #  130|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6321,25 +6567,20 @@ patterns.swift:
 #  131|             getFunction(): [DeclRefExpr] sink(arg:)
 #  131|             getArgument(0): [Argument] arg: b
 #  131|               getExpr(): [DeclRefExpr] b
-#  129|         getLabel(0): [CaseLabelItem] .myPair(...)
-#  129|           getPattern(): [EnumElementPattern] .myPair(...)
-#  129|             getSubPattern(): [TuplePattern] (...)
-#  129|               getElement(0): [NamedPattern] a
-#  129|               getElement(0).getFullyUnresolved(): [BindingPattern] let ...
-#  129|               getElement(1): [NamedPattern] b
-#  129|               getElement(1).getFullyUnresolved(): [BindingPattern] let ...
 #  132|       getCase(3): [CaseStmt] case ...
-#  133|         getBody(): [BraceStmt] { ... }
-#  133|           getElement(0): [CallExpr] call to sink(arg:)
-#  133|             getFunction(): [DeclRefExpr] sink(arg:)
-#  133|             getArgument(0): [Argument] arg: a
-#  133|               getExpr(): [DeclRefExpr] a
 #  132|         getLabel(0): [CaseLabelItem] .myCons(...)
 #  132|           getPattern(): [EnumElementPattern] .myCons(...)
 #  132|             getSubPattern(): [TuplePattern] (...)
 #  132|               getElement(0): [NamedPattern] a
 #  132|               getElement(1): [AnyPattern] _
 #  132|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#  132|         getVariable(0): [ConcreteVarDecl] a
+#  132|             Type = Int
+#  133|         getBody(): [BraceStmt] { ... }
+#  133|           getElement(0): [CallExpr] call to sink(arg:)
+#  133|             getFunction(): [DeclRefExpr] sink(arg:)
+#  133|             getArgument(0): [Argument] arg: a
+#  133|               getExpr(): [DeclRefExpr] a
 #  136|     getElement(10): [IfStmt] if ... then { ... }
 #  136|       getCondition(): [StmtCondition] StmtCondition
 #  136|         getElement(0): [ConditionElement] .mySingle(...) = ... 
@@ -6391,22 +6632,35 @@ patterns.swift:
 #  146|     getElement(13): [SwitchStmt] switch b { ... }
 #  146|       getExpr(): [DeclRefExpr] b
 #  147|       getCase(0): [CaseStmt] case ...
-#  148|         getBody(): [BraceStmt] { ... }
-#  148|           getElement(0): [TupleExpr] (...)
 #  147|         getLabel(0): [CaseLabelItem] .myNone
 #  147|           getPattern(): [EnumElementPattern] .myNone
+#  148|         getBody(): [BraceStmt] { ... }
+#  148|           getElement(0): [TupleExpr] (...)
 #  149|       getCase(1): [CaseStmt] case ...
-#  150|         getBody(): [BraceStmt] { ... }
-#  150|           getElement(0): [CallExpr] call to sink(arg:)
-#  150|             getFunction(): [DeclRefExpr] sink(arg:)
-#  150|             getArgument(0): [Argument] arg: a
-#  150|               getExpr(): [DeclRefExpr] a
 #  149|         getLabel(0): [CaseLabelItem] .mySingle(...)
 #  149|           getPattern(): [EnumElementPattern] .mySingle(...)
 #  149|             getSubPattern(): [NamedPattern] a
 #  149|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
 #  149|               getSubPattern(): [BindingPattern] let ...
+#  149|         getVariable(0): [ConcreteVarDecl] a
+#  149|             Type = (Int)
+#  150|         getBody(): [BraceStmt] { ... }
+#  150|           getElement(0): [CallExpr] call to sink(arg:)
+#  150|             getFunction(): [DeclRefExpr] sink(arg:)
+#  150|             getArgument(0): [Argument] arg: a
+#  150|               getExpr(): [DeclRefExpr] a
 #  151|       getCase(2): [CaseStmt] case ...
+#  151|         getLabel(0): [CaseLabelItem] .myPair(...)
+#  151|           getPattern(): [EnumElementPattern] .myPair(...)
+#  151|             getSubPattern(): [TuplePattern] (...)
+#  151|               getElement(0): [NamedPattern] a
+#  151|               getElement(0).getFullyUnresolved(): [BindingPattern] let ...
+#  151|               getElement(1): [NamedPattern] b
+#  151|               getElement(1).getFullyUnresolved(): [BindingPattern] let ...
+#  151|         getVariable(0): [ConcreteVarDecl] a
+#  151|             Type = Int
+#  151|         getVariable(1): [ConcreteVarDecl] b
+#  151|             Type = Int
 #  152|         getBody(): [BraceStmt] { ... }
 #  152|           getElement(0): [CallExpr] call to sink(arg:)
 #  152|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6416,14 +6670,22 @@ patterns.swift:
 #  153|             getFunction(): [DeclRefExpr] sink(arg:)
 #  153|             getArgument(0): [Argument] arg: b
 #  153|               getExpr(): [DeclRefExpr] b
-#  151|         getLabel(0): [CaseLabelItem] .myPair(...)
-#  151|           getPattern(): [EnumElementPattern] .myPair(...)
-#  151|             getSubPattern(): [TuplePattern] (...)
-#  151|               getElement(0): [NamedPattern] a
-#  151|               getElement(0).getFullyUnresolved(): [BindingPattern] let ...
-#  151|               getElement(1): [NamedPattern] b
-#  151|               getElement(1).getFullyUnresolved(): [BindingPattern] let ...
 #  154|       getCase(3): [CaseStmt] case ...
+#  154|         getLabel(0): [CaseLabelItem] .myCons(...)
+#  154|           getPattern(): [EnumElementPattern] .myCons(...)
+#  154|             getSubPattern(): [TuplePattern] (...)
+#  154|               getElement(0): [NamedPattern] a
+#  154|               getElement(1): [EnumElementPattern] .myPair(...)
+#  154|                 getSubPattern(): [TuplePattern] (...)
+#  154|                   getElement(0): [NamedPattern] b
+#  154|                   getElement(1): [NamedPattern] c
+#  154|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#  154|         getVariable(0): [ConcreteVarDecl] a
+#  154|             Type = Int
+#  154|         getVariable(1): [ConcreteVarDecl] b
+#  154|             Type = Int
+#  154|         getVariable(2): [ConcreteVarDecl] c
+#  154|             Type = Int
 #  155|         getBody(): [BraceStmt] { ... }
 #  155|           getElement(0): [CallExpr] call to sink(arg:)
 #  155|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6437,27 +6699,20 @@ patterns.swift:
 #  157|             getFunction(): [DeclRefExpr] sink(arg:)
 #  157|             getArgument(0): [Argument] arg: c
 #  157|               getExpr(): [DeclRefExpr] c
-#  154|         getLabel(0): [CaseLabelItem] .myCons(...)
-#  154|           getPattern(): [EnumElementPattern] .myCons(...)
-#  154|             getSubPattern(): [TuplePattern] (...)
-#  154|               getElement(0): [NamedPattern] a
-#  154|               getElement(1): [EnumElementPattern] .myPair(...)
-#  154|                 getSubPattern(): [TuplePattern] (...)
-#  154|                   getElement(0): [NamedPattern] b
-#  154|                   getElement(1): [NamedPattern] c
-#  154|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
 #  158|       getCase(4): [CaseStmt] case ...
-#  159|         getBody(): [BraceStmt] { ... }
-#  159|           getElement(0): [CallExpr] call to sink(arg:)
-#  159|             getFunction(): [DeclRefExpr] sink(arg:)
-#  159|             getArgument(0): [Argument] arg: a
-#  159|               getExpr(): [DeclRefExpr] a
 #  158|         getLabel(0): [CaseLabelItem] .myCons(...)
 #  158|           getPattern(): [EnumElementPattern] .myCons(...)
 #  158|             getSubPattern(): [TuplePattern] (...)
 #  158|               getElement(0): [NamedPattern] a
 #  158|               getElement(1): [AnyPattern] _
 #  158|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#  158|         getVariable(0): [ConcreteVarDecl] a
+#  158|             Type = Int
+#  159|         getBody(): [BraceStmt] { ... }
+#  159|           getElement(0): [CallExpr] call to sink(arg:)
+#  159|             getFunction(): [DeclRefExpr] sink(arg:)
+#  159|             getArgument(0): [Argument] arg: a
+#  159|               getExpr(): [DeclRefExpr] a
 #  162|     getElement(14): [IfStmt] if ... then { ... }
 #  162|       getCondition(): [StmtCondition] StmtCondition
 #  162|         getElement(0): [ConditionElement] .mySingle(...) = ... 
@@ -6531,6 +6786,30 @@ patterns.swift:
 #  173|         getElement(0).getFullyConverted(): [LoadExpr] (MyEnum) ...
 #  173|         getElement(1): [DeclRefExpr] b
 #  174|       getCase(0): [CaseStmt] case ...
+#  174|         getLabel(0): [CaseLabelItem] (...)
+#  174|           getPattern(): [TuplePattern] (...)
+#  174|             getElement(0): [EnumElementPattern] .myPair(...)
+#  174|               getSubPattern(): [TuplePattern] (...)
+#  174|                 getElement(0): [NamedPattern] a
+#  174|                 getElement(1): [NamedPattern] b
+#  174|             getElement(1): [EnumElementPattern] .myCons(...)
+#  174|               getSubPattern(): [TuplePattern] (...)
+#  174|                 getElement(0): [NamedPattern] c
+#  174|                 getElement(1): [EnumElementPattern] .myPair(...)
+#  174|                   getSubPattern(): [TuplePattern] (...)
+#  174|                     getElement(0): [NamedPattern] d
+#  174|                     getElement(1): [NamedPattern] e
+#  174|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#  174|         getVariable(0): [ConcreteVarDecl] a
+#  174|             Type = Int
+#  174|         getVariable(1): [ConcreteVarDecl] b
+#  174|             Type = Int
+#  174|         getVariable(2): [ConcreteVarDecl] c
+#  174|             Type = Int
+#  174|         getVariable(3): [ConcreteVarDecl] d
+#  174|             Type = Int
+#  174|         getVariable(4): [ConcreteVarDecl] e
+#  174|             Type = Int
 #  175|         getBody(): [BraceStmt] { ... }
 #  175|           getElement(0): [CallExpr] call to sink(arg:)
 #  175|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6552,81 +6831,29 @@ patterns.swift:
 #  179|             getFunction(): [DeclRefExpr] sink(arg:)
 #  179|             getArgument(0): [Argument] arg: e
 #  179|               getExpr(): [DeclRefExpr] e
-#  174|         getLabel(0): [CaseLabelItem] (...)
-#  174|           getPattern(): [TuplePattern] (...)
-#  174|             getElement(0): [EnumElementPattern] .myPair(...)
-#  174|               getSubPattern(): [TuplePattern] (...)
-#  174|                 getElement(0): [NamedPattern] a
-#  174|                 getElement(1): [NamedPattern] b
-#  174|             getElement(1): [EnumElementPattern] .myCons(...)
-#  174|               getSubPattern(): [TuplePattern] (...)
-#  174|                 getElement(0): [NamedPattern] c
-#  174|                 getElement(1): [EnumElementPattern] .myPair(...)
-#  174|                   getSubPattern(): [TuplePattern] (...)
-#  174|                     getElement(0): [NamedPattern] d
-#  174|                     getElement(1): [NamedPattern] e
-#  174|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
 #  180|       getCase(1): [CaseStmt] case ...
-#  181|         getBody(): [BraceStmt] { ... }
-#  181|           getElement(0): [TupleExpr] (...)
 #  180|         getLabel(0): [CaseLabelItem] _
 #  180|           getPattern(): [AnyPattern] _
-#   83| [ConcreteVarDecl] a
-#   83|     Type = (Int)
-#   85| [ConcreteVarDecl] a
-#   85|     Type = Int
-#   85| [ConcreteVarDecl] b
-#   85|     Type = Int
-#   88| [ConcreteVarDecl] a
-#   88|     Type = Int
+#  181|         getBody(): [BraceStmt] { ... }
+#  181|           getElement(0): [TupleExpr] (...)
 #   92| [ConcreteVarDecl] x
 #   92|     Type = (Int)
 #   95| [ConcreteVarDecl] x
 #   95|     Type = Int
 #   95| [ConcreteVarDecl] y
 #   95|     Type = Int
-#  105| [ConcreteVarDecl] a
-#  105|     Type = (Int)
-#  107| [ConcreteVarDecl] a
-#  107|     Type = Int
-#  107| [ConcreteVarDecl] b
-#  107|     Type = Int
-#  110| [ConcreteVarDecl] a
-#  110|     Type = Int
 #  114| [ConcreteVarDecl] x
 #  114|     Type = (Int)
 #  117| [ConcreteVarDecl] x
 #  117|     Type = Int
 #  117| [ConcreteVarDecl] y
 #  117|     Type = Int
-#  127| [ConcreteVarDecl] a
-#  127|     Type = (Int)
-#  129| [ConcreteVarDecl] a
-#  129|     Type = Int
-#  129| [ConcreteVarDecl] b
-#  129|     Type = Int
-#  132| [ConcreteVarDecl] a
-#  132|     Type = Int
 #  136| [ConcreteVarDecl] x
 #  136|     Type = (Int)
 #  139| [ConcreteVarDecl] x
 #  139|     Type = Int
 #  139| [ConcreteVarDecl] y
 #  139|     Type = Int
-#  149| [ConcreteVarDecl] a
-#  149|     Type = (Int)
-#  151| [ConcreteVarDecl] a
-#  151|     Type = Int
-#  151| [ConcreteVarDecl] b
-#  151|     Type = Int
-#  154| [ConcreteVarDecl] a
-#  154|     Type = Int
-#  154| [ConcreteVarDecl] b
-#  154|     Type = Int
-#  154| [ConcreteVarDecl] c
-#  154|     Type = Int
-#  158| [ConcreteVarDecl] a
-#  158|     Type = Int
 #  162| [ConcreteVarDecl] x
 #  162|     Type = (Int)
 #  165| [ConcreteVarDecl] x
@@ -6635,16 +6862,6 @@ patterns.swift:
 #  165|     Type = Int
 #  169| [ConcreteVarDecl] c
 #  169|     Type = Int
-#  174| [ConcreteVarDecl] a
-#  174|     Type = Int
-#  174| [ConcreteVarDecl] b
-#  174|     Type = Int
-#  174| [ConcreteVarDecl] c
-#  174|     Type = Int
-#  174| [ConcreteVarDecl] d
-#  174|     Type = Int
-#  174| [ConcreteVarDecl] e
-#  174|     Type = Int
 statements.swift:
 #    1| [NamedFunction] loop()
 #    1|     InterfaceType = () -> ()
@@ -6755,6 +6972,11 @@ statements.swift:
 #   20|             getArgument(0): [Argument] : 11
 #   20|               getExpr(): [IntegerLiteralExpr] 11
 #   21|       getCatch(0): [CaseStmt] case ...
+#   21|         getLabel(0): [CaseLabelItem] error
+#   21|           getPattern(): [NamedPattern] error
+#   21|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   21|         getVariable(0): [ConcreteVarDecl] error
+#   21|             Type = Error
 #   21|         getBody(): [BraceStmt] { ... }
 #   22|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   22|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -6767,9 +6989,6 @@ statements.swift:
 #   22|               getExpr(): [DefaultArgumentExpr] default separator
 #   22|             getArgument(2): [Argument] terminator: default terminator
 #   22|               getExpr(): [DefaultArgumentExpr] default terminator
-#   21|         getLabel(0): [CaseLabelItem] error
-#   21|           getPattern(): [NamedPattern] error
-#   21|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
 #   25|     getElement(6): [DoCatchStmt] do { ... } catch { ... }
 #   25|       getBody(): [BraceStmt] { ... }
 #   26|         getElement(0): [TryExpr] try ...
@@ -6778,6 +6997,9 @@ statements.swift:
 #   26|             getArgument(0): [Argument] : 11
 #   26|               getExpr(): [IntegerLiteralExpr] 11
 #   27|       getCatch(0): [CaseStmt] case ...
+#   27|         getLabel(0): [CaseLabelItem] ... is ...
+#   27|           getPattern(): [IsPattern] ... is ...
+#   27|             getSubPattern(): [EnumElementPattern] .failed
 #   27|         getBody(): [BraceStmt] { ... }
 #   28|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   28|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -6790,10 +7012,12 @@ statements.swift:
 #   28|               getExpr(): [DefaultArgumentExpr] default separator
 #   28|             getArgument(2): [Argument] terminator: default terminator
 #   28|               getExpr(): [DefaultArgumentExpr] default terminator
-#   27|         getLabel(0): [CaseLabelItem] ... is ...
-#   27|           getPattern(): [IsPattern] ... is ...
-#   27|             getSubPattern(): [EnumElementPattern] .failed
 #   29|       getCatch(1): [CaseStmt] case ...
+#   29|         getLabel(0): [CaseLabelItem] error
+#   29|           getPattern(): [NamedPattern] error
+#   29|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   29|         getVariable(0): [ConcreteVarDecl] error
+#   29|             Type = Error
 #   29|         getBody(): [BraceStmt] { ... }
 #   30|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   30|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -6806,17 +7030,10 @@ statements.swift:
 #   30|               getExpr(): [DefaultArgumentExpr] default separator
 #   30|             getArgument(2): [Argument] terminator: default terminator
 #   30|               getExpr(): [DefaultArgumentExpr] default terminator
-#   29|         getLabel(0): [CaseLabelItem] error
-#   29|           getPattern(): [NamedPattern] error
-#   29|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
 #    2| [ConcreteVarDecl] i
 #    2|     Type = Int
 #    2| [ConcreteVarDecl] $i$generator
 #    2|     Type = IndexingIterator<ClosedRange<Int>>
-#   21| [ConcreteVarDecl] error
-#   21|     Type = Error
-#   29| [ConcreteVarDecl] error
-#   29|     Type = Error
 #   34| [EnumDecl] AnError
 #   35|   getMember(0): [EnumCaseDecl] case ...
 #   35|   getMember(1): [EnumElementDecl] failed
@@ -6835,24 +7052,24 @@ statements.swift:
 #-----|       getElement(1): [SwitchStmt] switch a { ... }
 #-----|         getExpr(): [DeclRefExpr] a
 #-----|         getCase(0): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_a
 #-----|               getSource(): [IntegerLiteralExpr] 0
-#-----|           getLabel(0): [CaseLabelItem] .failed
-#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|       getElement(2): [PatternBindingDecl] var ... = ...
 #-----|         getPattern(0): [TypedPattern] ... as ...
 #-----|           getSubPattern(): [NamedPattern] index_b
 #-----|       getElement(3): [SwitchStmt] switch b { ... }
 #-----|         getExpr(): [DeclRefExpr] b
 #-----|         getCase(0): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] index_b
 #-----|               getSource(): [IntegerLiteralExpr] 0
-#-----|           getLabel(0): [CaseLabelItem] .failed
-#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|       getElement(4): [ReturnStmt] return ...
 #-----|         getResult(): [BinaryExpr] ... .==(_:_:) ...
 #-----|           getFunction(): [MethodLookupExpr] .==(_:_:)
@@ -6890,12 +7107,12 @@ statements.swift:
 #-----|       getElement(1): [SwitchStmt] switch self { ... }
 #-----|         getExpr(): [DeclRefExpr] self
 #-----|         getCase(0): [CaseStmt] case ...
+#-----|           getLabel(0): [CaseLabelItem] .failed
+#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|           getBody(): [BraceStmt] { ... }
 #-----|             getElement(0): [AssignExpr]  ... = ...
 #-----|               getDest(): [DeclRefExpr] discriminator
 #-----|               getSource(): [IntegerLiteralExpr] 0
-#-----|           getLabel(0): [CaseLabelItem] .failed
-#-----|             getPattern(): [EnumElementPattern] .failed
 #-----|       getElement(2): [CallExpr] call to combine(_:)
 #-----|         getFunction(): [MethodLookupExpr] .combine(_:)
 #-----|           getBase(): [DeclRefExpr] hasher
@@ -6970,6 +7187,14 @@ statements.swift:
 #   53|     getElement(0): [SwitchStmt] switch index { ... }
 #   53|       getExpr(): [DeclRefExpr] index
 #   54|       getCase(0): [CaseStmt] case ...
+#   54|         getLabel(0): [CaseLabelItem] =~ ...
+#   54|           getPattern(): [ExprPattern] =~ ...
+#   54|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#   54|               getFunction(): [DeclRefExpr] ~=(_:_:)
+#   54|               getArgument(0): [Argument] : 1
+#   54|                 getExpr(): [IntegerLiteralExpr] 1
+#   54|               getArgument(1): [Argument] : $match
+#   54|                 getExpr(): [DeclRefExpr] $match
 #   55|         getBody(): [BraceStmt] { ... }
 #   55|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   55|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -6983,28 +7208,7 @@ statements.swift:
 #   55|             getArgument(2): [Argument] terminator: default terminator
 #   55|               getExpr(): [DefaultArgumentExpr] default terminator
 #   56|           getElement(1): [FallthroughStmt] fallthrough
-#   54|         getLabel(0): [CaseLabelItem] =~ ...
-#   54|           getPattern(): [ExprPattern] =~ ...
-#   54|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
-#   54|               getFunction(): [DeclRefExpr] ~=(_:_:)
-#   54|               getArgument(0): [Argument] : 1
-#   54|                 getExpr(): [IntegerLiteralExpr] 1
-#   54|               getArgument(1): [Argument] : $match
-#   54|                 getExpr(): [DeclRefExpr] $match
 #   57|       getCase(1): [CaseStmt] case ...
-#   58|         getBody(): [BraceStmt] { ... }
-#   58|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
-#   58|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
-#   58|             getArgument(0): [Argument] : [...]
-#   58|               getExpr(): [VarargExpansionExpr] [...]
-#   58|                 getSubExpr(): [ArrayExpr] [...]
-#   58|                   getElement(0): [StringLiteralExpr] 5, 10
-#   58|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
-#   58|             getArgument(1): [Argument] separator: default separator
-#   58|               getExpr(): [DefaultArgumentExpr] default separator
-#   58|             getArgument(2): [Argument] terminator: default terminator
-#   58|               getExpr(): [DefaultArgumentExpr] default terminator
-#   59|           getElement(1): [BreakStmt] break
 #   57|         getLabel(0): [CaseLabelItem] =~ ...
 #   57|           getPattern(): [ExprPattern] =~ ...
 #   57|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
@@ -7021,7 +7225,22 @@ statements.swift:
 #   57|                 getExpr(): [IntegerLiteralExpr] 10
 #   57|               getArgument(1): [Argument] : $match
 #   57|                 getExpr(): [DeclRefExpr] $match
+#   58|         getBody(): [BraceStmt] { ... }
+#   58|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   58|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   58|             getArgument(0): [Argument] : [...]
+#   58|               getExpr(): [VarargExpansionExpr] [...]
+#   58|                 getSubExpr(): [ArrayExpr] [...]
+#   58|                   getElement(0): [StringLiteralExpr] 5, 10
+#   58|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   58|             getArgument(1): [Argument] separator: default separator
+#   58|               getExpr(): [DefaultArgumentExpr] default separator
+#   58|             getArgument(2): [Argument] terminator: default terminator
+#   58|               getExpr(): [DefaultArgumentExpr] default terminator
+#   59|           getElement(1): [BreakStmt] break
 #   60|       getCase(2): [CaseStmt] case ...
+#   60|         getLabel(0): [CaseLabelItem] _
+#   60|           getPattern(): [AnyPattern] _
 #   61|         getBody(): [BraceStmt] { ... }
 #   61|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   61|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -7034,8 +7253,6 @@ statements.swift:
 #   61|               getExpr(): [DefaultArgumentExpr] default separator
 #   61|             getArgument(2): [Argument] terminator: default terminator
 #   61|               getExpr(): [DefaultArgumentExpr] default terminator
-#   60|         getLabel(0): [CaseLabelItem] _
-#   60|           getPattern(): [AnyPattern] _
 #   54| [ConcreteVarDecl] $match
 #   54|     Type = Int
 #   57| [ConcreteVarDecl] $match
@@ -7062,6 +7279,8 @@ statements.swift:
 #   65|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
 #   65|           getInitializer(): [DeclRefExpr] x
 #   65|       getThen(): [BraceStmt] { ... }
+#   65| [ConcreteVarDecl] xx
+#   65|     Type = Int
 #   67| [TopLevelCodeDecl] { ... }
 #   67|   getBody(): [BraceStmt] { ... }
 #   67|     getElement(0): [IfStmt] if ... then { ... }

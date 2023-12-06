@@ -1,3 +1,32 @@
+## 0.12.0
+
+### Breaking Changes
+
+* The expressions `AssignPointerAddExpr` and `AssignPointerSubExpr` are no longer subtypes of `AssignBitwiseOperation`.
+
+### Minor Analysis Improvements
+
+* The "Returning stack-allocated memory" (`cpp/return-stack-allocated-memory`) query now also detects returning stack-allocated memory allocated by calls to `alloca`, `strdupa`, and `strndupa`.
+* Added models for `strlcpy` and `strlcat`.
+* Added models for the `sprintf` variants from the `StrSafe.h` header.
+* Added SQL API models for `ODBC`.
+* Added taint models for `realloc` and related functions.
+
+## 0.11.0
+
+### Breaking Changes
+
+* The `Container` and `Folder` classes now derive from `ElementBase` instead of `Locatable`, and no longer expose the `getLocation` predicate. Use `getURL` instead.
+
+### New Features
+
+* Added a new class `AdditionalCallTarget` for specifying additional call targets.
+
+### Minor Analysis Improvements
+
+* More field accesses are identified as `ImplicitThisFieldAccess`.
+* Added support for new floating-point types in C23 and C++23.
+
 ## 0.10.1
 
 ### Minor Analysis Improvements

@@ -53,7 +53,7 @@ predicate controlledByAuth(Expr controlled, Expr condition) {
   exists(ConditionBlock b |
     condition = b.getCondition() and
     b.controls(controlled.getBasicBlock(), _) and
-    condition.(MethodAccess).getMethod() instanceof AuthMethod
+    condition.(MethodCall).getMethod() instanceof AuthMethod
   )
 }
 
@@ -71,7 +71,7 @@ predicate controlledByAuth(Expr controlled, Expr condition) {
  *   no idea which ones were meant to be secure.
  */
 
-from MethodAccess connection, Expr condition
+from MethodCall connection, Expr condition
 where
   connection.getMethod() instanceof ConnectionMethod and
   controlledByAuth(connection, condition)

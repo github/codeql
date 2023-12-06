@@ -268,3 +268,29 @@ void test_free_assign() {
 	void *b;
 	free(b = a); // GOOD 
 }
+
+struct MyStruct {
+  char* buf;
+};
+
+void test_free_struct(MyStruct* s) {
+  free(s->buf);
+  char c = s->buf[0]; // BAD [FALSE NEGATIVE]
+}
+
+void test_free_struct2(MyStruct s) {
+  free(s.buf);
+  char c = s.buf[0]; // BAD [FALSE NEGATIVE]
+}
+
+void test_free_struct3(MyStruct s) {
+  char* buf = s.buf;
+  free(buf);
+  char c = s.buf[0]; // BAD [FALSE NEGATIVE]
+}
+
+void test_free_struct4(char* buf, MyStruct s) {
+  free(buf);
+  s.buf = buf;
+  char c = s.buf[0]; // BAD
+}

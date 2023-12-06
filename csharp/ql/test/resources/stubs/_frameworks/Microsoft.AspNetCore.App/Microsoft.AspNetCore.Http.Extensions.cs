@@ -6,11 +6,13 @@ namespace Microsoft
     {
         namespace Http
         {
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
             public sealed class EndpointDescriptionAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.IEndpointDescriptionMetadata
             {
                 public EndpointDescriptionAttribute(string description) => throw null;
                 public string Description { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
             public sealed class EndpointSummaryAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.IEndpointSummaryMetadata
             {
                 public EndpointSummaryAttribute(string summary) => throw null;
@@ -195,6 +197,7 @@ namespace Microsoft
                 public static void SetInt32(this Microsoft.AspNetCore.Http.ISession session, string key, int value) => throw null;
                 public static void SetString(this Microsoft.AspNetCore.Http.ISession session, string key, string value) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4164, Inherited = false, AllowMultiple = false)]
             public sealed class TagsAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.ITagsMetadata
             {
                 public TagsAttribute(params string[] tags) => throw null;

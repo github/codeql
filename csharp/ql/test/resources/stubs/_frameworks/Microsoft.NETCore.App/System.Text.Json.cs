@@ -501,6 +501,7 @@ namespace System
                 {
                     protected JsonAttribute() => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)32, AllowMultiple = false)]
                 public sealed class JsonConstructorAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonConstructorAttribute() => throw null;
@@ -519,6 +520,7 @@ namespace System
                     public abstract void Write(System.Text.Json.Utf8JsonWriter writer, T value, System.Text.Json.JsonSerializerOptions options);
                     public virtual void WriteAsPropertyName(System.Text.Json.Utf8JsonWriter writer, T value, System.Text.Json.JsonSerializerOptions options) => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)1436, AllowMultiple = false)]
                 public class JsonConverterAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public System.Type ConverterType { get => throw null; }
@@ -531,6 +533,7 @@ namespace System
                     public abstract System.Text.Json.Serialization.JsonConverter CreateConverter(System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options);
                     protected JsonConverterFactory() => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)1028, AllowMultiple = true, Inherited = false)]
                 public class JsonDerivedTypeAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonDerivedTypeAttribute(System.Type derivedType) => throw null;
@@ -539,10 +542,12 @@ namespace System
                     public System.Type DerivedType { get => throw null; }
                     public object TypeDiscriminator { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public sealed class JsonExtensionDataAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonExtensionDataAttribute() => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public sealed class JsonIgnoreAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public System.Text.Json.Serialization.JsonIgnoreCondition Condition { get => throw null; set { } }
@@ -555,6 +560,7 @@ namespace System
                     WhenWritingDefault = 2,
                     WhenWritingNull = 3,
                 }
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public sealed class JsonIncludeAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonIncludeAttribute() => throw null;
@@ -572,11 +578,13 @@ namespace System
                     WriteAsString = 2,
                     AllowNamedFloatingPointLiterals = 4,
                 }
+                [System.AttributeUsage((System.AttributeTargets)396, AllowMultiple = false)]
                 public sealed class JsonNumberHandlingAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonNumberHandlingAttribute(System.Text.Json.Serialization.JsonNumberHandling handling) => throw null;
                     public System.Text.Json.Serialization.JsonNumberHandling Handling { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)1028, AllowMultiple = false, Inherited = false)]
                 public sealed class JsonPolymorphicAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonPolymorphicAttribute() => throw null;
@@ -584,20 +592,24 @@ namespace System
                     public string TypeDiscriminatorPropertyName { get => throw null; set { } }
                     public System.Text.Json.Serialization.JsonUnknownDerivedTypeHandling UnknownDerivedTypeHandling { get => throw null; set { } }
                 }
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public sealed class JsonPropertyNameAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonPropertyNameAttribute(string name) => throw null;
                     public string Name { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public sealed class JsonPropertyOrderAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonPropertyOrderAttribute(int order) => throw null;
                     public int Order { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)384, AllowMultiple = false)]
                 public sealed class JsonRequiredAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonRequiredAttribute() => throw null;
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true)]
                 public sealed class JsonSerializableAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonSerializableAttribute(System.Type type) => throw null;
@@ -619,6 +631,7 @@ namespace System
                     Metadata = 1,
                     Serialization = 2,
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false)]
                 public sealed class JsonSourceGenerationOptionsAttribute : System.Text.Json.Serialization.JsonAttribute
                 {
                     public JsonSourceGenerationOptionsAttribute() => throw null;

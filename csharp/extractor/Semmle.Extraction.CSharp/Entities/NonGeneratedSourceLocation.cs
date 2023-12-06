@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
                 Position.Span.End.Line + 1, Position.Span.End.Character);
 
-            var mapped = Symbol!.GetMappedLineSpan();
+            var mapped = Symbol.GetMappedLineSpan();
             if (mapped.HasMappedPath && mapped.IsValid)
             {
                 var mappedLoc = Create(Context, Location.Create(mapped.Path, default, mapped.Span));

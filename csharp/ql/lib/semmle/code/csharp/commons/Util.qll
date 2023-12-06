@@ -8,7 +8,7 @@ class MainMethod extends Method {
     (
       this.hasName("Main")
       or
-      this.hasQualifiedName("Program", "<Main>$")
+      this.hasFullyQualifiedName("Program", "<Main>$")
     ) and
     this.isStatic() and
     (this.getReturnType() instanceof VoidType or this.getReturnType() instanceof IntType) and

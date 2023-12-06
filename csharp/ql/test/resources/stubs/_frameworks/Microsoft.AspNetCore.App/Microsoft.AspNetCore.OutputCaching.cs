@@ -39,6 +39,7 @@ namespace Microsoft
                 System.Threading.Tasks.ValueTask<byte[]> GetAsync(string key, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.ValueTask SetAsync(string key, byte[] value, string[] tags, System.TimeSpan validFor, System.Threading.CancellationToken cancellationToken);
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public sealed class OutputCacheAttribute : System.Attribute
             {
                 public OutputCacheAttribute() => throw null;

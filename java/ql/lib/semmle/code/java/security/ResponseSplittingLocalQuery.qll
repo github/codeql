@@ -17,7 +17,7 @@ module ResponseSplittingLocalConfig implements DataFlow::ConfigSig {
     or
     node.getType() instanceof BoxedType
     or
-    exists(MethodAccess ma, string methodName, CompileTimeConstantExpr target |
+    exists(MethodCall ma, string methodName, CompileTimeConstantExpr target |
       node.asExpr() = ma and
       ma.getMethod().hasQualifiedName("java.lang", "String", methodName) and
       target = ma.getArgument(0) and

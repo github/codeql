@@ -22,7 +22,7 @@ module Flows = DataFlow::Global<Config>;
 import Flows::PathGraph
 
 // int explorationLimit() { result = 5 }
-// module FlowsPartial = Flows::FlowExploration<explorationLimit/0>;
+// module FlowsPartial = Flows::FlowExplorationFwd<explorationLimit/0>;
 // import FlowsPartial::PartialPathGraph
 from Flows::PathNode source, Flows::PathNode sink
 where Flows::flowPath(source, sink)

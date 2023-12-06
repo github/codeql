@@ -20,17 +20,17 @@ test.kt:
 #  184|           0: [TypeAccess] String
 #  184|       5: [BlockStmt] { ... }
 #  185|         0: [ExprStmt] <Expr>;
-#  185|           0: [MethodAccess] sink(...)
+#  185|           0: [MethodCall] sink(...)
 #  185|             -1: [TypeAccess] TestKt
 #  185|             0: [VarAccess] x
 #  186|         1: [ExprStmt] <Expr>;
-#  186|           0: [MethodAccess] sink(...)
+#  186|           0: [MethodCall] sink(...)
 #  186|             -1: [TypeAccess] TestKt
 #  186|             0: [ArrayAccess] ...[...]
 #  186|               0: [VarAccess] y
 #  186|               1: [IntegerLiteral] 0
 #  187|         2: [ExprStmt] <Expr>;
-#  187|           0: [MethodAccess] sink(...)
+#  187|           0: [MethodCall] sink(...)
 #  187|             -1: [TypeAccess] TestKt
 #  187|             0: [VarAccess] z
 #  184|     3: [Method] varargsTest$default
@@ -83,7 +83,7 @@ test.kt:
 #  184|               0: [VarAccess] p2
 #  184|               1: [StringLiteral] "after-vararg-default sunk"
 #  184|         3: [ReturnStmt] return ...
-#  184|           0: [MethodAccess] varargsTest(...)
+#  184|           0: [MethodCall] varargsTest(...)
 #  184|             -1: [TypeAccess] TestKt
 #  184|             0: [VarAccess] p0
 #  184|             1: [VarAccess] p1
@@ -92,7 +92,7 @@ test.kt:
 #  190|       3: [TypeAccess] Unit
 #  190|       5: [BlockStmt] { ... }
 #  191|         0: [ExprStmt] <Expr>;
-#  191|           0: [MethodAccess] varargsTest$default(...)
+#  191|           0: [MethodCall] varargsTest$default(...)
 #  191|             -1: [TypeAccess] TestKt
 #    1|             0: [NullLiteral] null
 #    1|             1: [NullLiteral] null
@@ -100,7 +100,7 @@ test.kt:
 #    1|             3: [IntegerLiteral] 0
 #    1|             4: [NullLiteral] null
 #  192|         1: [ExprStmt] <Expr>;
-#  192|           0: [MethodAccess] varargsTest$default(...)
+#  192|           0: [MethodCall] varargsTest$default(...)
 #  192|             -1: [TypeAccess] TestKt
 #  192|             0: [StringLiteral] "no-varargs-before, no-z-parameter sunk"
 #    1|             1: [NullLiteral] null
@@ -108,7 +108,7 @@ test.kt:
 #    1|             3: [IntegerLiteral] 1
 #    1|             4: [NullLiteral] null
 #  193|         2: [ExprStmt] <Expr>;
-#  193|           0: [MethodAccess] varargsTest$default(...)
+#  193|           0: [MethodCall] varargsTest$default(...)
 #  193|             -1: [TypeAccess] TestKt
 #  193|             0: [StringLiteral] "no-varargs-before sunk"
 #    1|             1: [NullLiteral] null
@@ -116,20 +116,20 @@ test.kt:
 #    1|             3: [IntegerLiteral] 5
 #    1|             4: [NullLiteral] null
 #  194|         3: [ExprStmt] <Expr>;
-#  194|           0: [MethodAccess] varargsTest(...)
+#  194|           0: [MethodCall] varargsTest(...)
 #  194|             -1: [TypeAccess] TestKt
 #  194|             0: [StringLiteral] "one-vararg-before sunk"
 #  194|             1: [StringLiteral] "one-vararg sunk"
 #  194|             2: [StringLiteral] "one-vararg-after sunk"
 #  195|         4: [ExprStmt] <Expr>;
-#  195|           0: [MethodAccess] varargsTest(...)
+#  195|           0: [MethodCall] varargsTest(...)
 #  195|             -1: [TypeAccess] TestKt
 #  195|             0: [StringLiteral] "two-varargs-before sunk"
 #  195|             1: [StringLiteral] "two-vararg-first sunk"
 #  195|             2: [StringLiteral] "two-vararg-second sunk"
 #  195|             3: [StringLiteral] "two-varargs-after sunk"
 #  196|         5: [ExprStmt] <Expr>;
-#  196|           0: [MethodAccess] varargsTest$default(...)
+#  196|           0: [MethodCall] varargsTest$default(...)
 #  196|             -1: [TypeAccess] TestKt
 #  196|             0: [StringLiteral] "no-z-parmeter sunk"
 #  196|             1: [ArrayCreationExpr] new String[]
@@ -154,7 +154,7 @@ test.kt:
 #  199|           0: [TypeAccess] String
 #  199|       5: [BlockStmt] { ... }
 #  200|         0: [ExprStmt] <Expr>;
-#  200|           0: [MethodAccess] sink(...)
+#  200|           0: [MethodCall] sink(...)
 #  200|             -1: [TypeAccess] TestKt
 #  200|             0: [ArrayAccess] ...[...]
 #  200|               0: [VarAccess] y
@@ -209,7 +209,7 @@ test.kt:
 #  199|               0: [VarAccess] p2
 #  199|               1: [StringLiteral] "after-vararg-default not sunk 2"
 #  199|         3: [ReturnStmt] return ...
-#  199|           0: [MethodAccess] varargsTestOnlySinkVarargs(...)
+#  199|           0: [MethodCall] varargsTestOnlySinkVarargs(...)
 #  199|             -1: [TypeAccess] TestKt
 #  199|             0: [VarAccess] p0
 #  199|             1: [VarAccess] p1
@@ -218,7 +218,7 @@ test.kt:
 #  203|       3: [TypeAccess] Unit
 #  203|       5: [BlockStmt] { ... }
 #  204|         0: [ExprStmt] <Expr>;
-#  204|           0: [MethodAccess] varargsTestOnlySinkVarargs$default(...)
+#  204|           0: [MethodCall] varargsTestOnlySinkVarargs$default(...)
 #  204|             -1: [TypeAccess] TestKt
 #    1|             0: [NullLiteral] null
 #    1|             1: [NullLiteral] null
@@ -226,7 +226,7 @@ test.kt:
 #    1|             3: [IntegerLiteral] 0
 #    1|             4: [NullLiteral] null
 #  205|         1: [ExprStmt] <Expr>;
-#  205|           0: [MethodAccess] varargsTestOnlySinkVarargs$default(...)
+#  205|           0: [MethodCall] varargsTestOnlySinkVarargs$default(...)
 #  205|             -1: [TypeAccess] TestKt
 #  205|             0: [StringLiteral] "no-varargs-before, no-z-parameter not sunk 2"
 #    1|             1: [NullLiteral] null
@@ -234,7 +234,7 @@ test.kt:
 #    1|             3: [IntegerLiteral] 1
 #    1|             4: [NullLiteral] null
 #  206|         2: [ExprStmt] <Expr>;
-#  206|           0: [MethodAccess] varargsTestOnlySinkVarargs$default(...)
+#  206|           0: [MethodCall] varargsTestOnlySinkVarargs$default(...)
 #  206|             -1: [TypeAccess] TestKt
 #  206|             0: [StringLiteral] "no-varargs-before not sunk 2"
 #    1|             1: [NullLiteral] null
@@ -242,20 +242,20 @@ test.kt:
 #    1|             3: [IntegerLiteral] 5
 #    1|             4: [NullLiteral] null
 #  207|         3: [ExprStmt] <Expr>;
-#  207|           0: [MethodAccess] varargsTestOnlySinkVarargs(...)
+#  207|           0: [MethodCall] varargsTestOnlySinkVarargs(...)
 #  207|             -1: [TypeAccess] TestKt
 #  207|             0: [StringLiteral] "one-vararg-before not sunk 2"
 #  207|             1: [StringLiteral] "one-vararg sunk 2"
 #  207|             2: [StringLiteral] "one-vararg-after not sunk 2"
 #  208|         4: [ExprStmt] <Expr>;
-#  208|           0: [MethodAccess] varargsTestOnlySinkVarargs(...)
+#  208|           0: [MethodCall] varargsTestOnlySinkVarargs(...)
 #  208|             -1: [TypeAccess] TestKt
 #  208|             0: [StringLiteral] "two-varargs-before not sunk 2"
 #  208|             1: [StringLiteral] "two-vararg-first sunk 2"
 #  208|             2: [StringLiteral] "two-vararg-second sunk 2"
 #  208|             3: [StringLiteral] "two-varargs-after not sunk 2"
 #  209|         5: [ExprStmt] <Expr>;
-#  209|           0: [MethodAccess] varargsTestOnlySinkVarargs$default(...)
+#  209|           0: [MethodCall] varargsTestOnlySinkVarargs$default(...)
 #  209|             -1: [TypeAccess] TestKt
 #  209|             0: [StringLiteral] "no-z-parmeter not sunk 2"
 #  209|             1: [ArrayCreationExpr] new String[]
@@ -280,11 +280,11 @@ test.kt:
 #  212|           0: [TypeAccess] String
 #  212|       5: [BlockStmt] { ... }
 #  213|         0: [ExprStmt] <Expr>;
-#  213|           0: [MethodAccess] sink(...)
+#  213|           0: [MethodCall] sink(...)
 #  213|             -1: [TypeAccess] TestKt
 #  213|             0: [VarAccess] x
 #  214|         1: [ExprStmt] <Expr>;
-#  214|           0: [MethodAccess] sink(...)
+#  214|           0: [MethodCall] sink(...)
 #  214|             -1: [TypeAccess] TestKt
 #  214|             0: [VarAccess] z
 #  212|     9: [Method] varargsTestOnlySinkRegularArgs$default
@@ -337,7 +337,7 @@ test.kt:
 #  212|               0: [VarAccess] p2
 #  212|               1: [StringLiteral] "after-vararg-default sunk 3"
 #  212|         3: [ReturnStmt] return ...
-#  212|           0: [MethodAccess] varargsTestOnlySinkRegularArgs(...)
+#  212|           0: [MethodCall] varargsTestOnlySinkRegularArgs(...)
 #  212|             -1: [TypeAccess] TestKt
 #  212|             0: [VarAccess] p0
 #  212|             1: [VarAccess] p1
@@ -346,7 +346,7 @@ test.kt:
 #  217|       3: [TypeAccess] Unit
 #  217|       5: [BlockStmt] { ... }
 #  218|         0: [ExprStmt] <Expr>;
-#  218|           0: [MethodAccess] varargsTestOnlySinkRegularArgs$default(...)
+#  218|           0: [MethodCall] varargsTestOnlySinkRegularArgs$default(...)
 #  218|             -1: [TypeAccess] TestKt
 #    1|             0: [NullLiteral] null
 #    1|             1: [NullLiteral] null
@@ -354,7 +354,7 @@ test.kt:
 #    1|             3: [IntegerLiteral] 0
 #    1|             4: [NullLiteral] null
 #  219|         1: [ExprStmt] <Expr>;
-#  219|           0: [MethodAccess] varargsTestOnlySinkRegularArgs$default(...)
+#  219|           0: [MethodCall] varargsTestOnlySinkRegularArgs$default(...)
 #  219|             -1: [TypeAccess] TestKt
 #  219|             0: [StringLiteral] "no-varargs-before, no-z-parameter sunk 3"
 #    1|             1: [NullLiteral] null
@@ -362,7 +362,7 @@ test.kt:
 #    1|             3: [IntegerLiteral] 1
 #    1|             4: [NullLiteral] null
 #  220|         2: [ExprStmt] <Expr>;
-#  220|           0: [MethodAccess] varargsTestOnlySinkRegularArgs$default(...)
+#  220|           0: [MethodCall] varargsTestOnlySinkRegularArgs$default(...)
 #  220|             -1: [TypeAccess] TestKt
 #  220|             0: [StringLiteral] "no-varargs-before sunk 3"
 #    1|             1: [NullLiteral] null
@@ -370,20 +370,20 @@ test.kt:
 #    1|             3: [IntegerLiteral] 5
 #    1|             4: [NullLiteral] null
 #  221|         3: [ExprStmt] <Expr>;
-#  221|           0: [MethodAccess] varargsTestOnlySinkRegularArgs(...)
+#  221|           0: [MethodCall] varargsTestOnlySinkRegularArgs(...)
 #  221|             -1: [TypeAccess] TestKt
 #  221|             0: [StringLiteral] "one-vararg-before sunk 3"
 #  221|             1: [StringLiteral] "one-vararg not sunk 3"
 #  221|             2: [StringLiteral] "one-vararg-after sunk 3"
 #  222|         4: [ExprStmt] <Expr>;
-#  222|           0: [MethodAccess] varargsTestOnlySinkRegularArgs(...)
+#  222|           0: [MethodCall] varargsTestOnlySinkRegularArgs(...)
 #  222|             -1: [TypeAccess] TestKt
 #  222|             0: [StringLiteral] "two-varargs-before sunk 3"
 #  222|             1: [StringLiteral] "two-vararg-first not sunk 3"
 #  222|             2: [StringLiteral] "two-vararg-second not sunk 3"
 #  222|             3: [StringLiteral] "two-varargs-after sunk 3"
 #  223|         5: [ExprStmt] <Expr>;
-#  223|           0: [MethodAccess] varargsTestOnlySinkRegularArgs$default(...)
+#  223|           0: [MethodCall] varargsTestOnlySinkRegularArgs$default(...)
 #  223|             -1: [TypeAccess] TestKt
 #  223|             0: [StringLiteral] "no-z-parmeter sunk 3"
 #  223|             1: [ArrayCreationExpr] new String[]
@@ -428,7 +428,7 @@ test.kt:
 #    5|           0: [TypeAccess] String
 #    5|       5: [BlockStmt] { ... }
 #    6|         0: [ExprStmt] <Expr>;
-#    6|           0: [MethodAccess] sink(...)
+#    6|           0: [MethodCall] sink(...)
 #    6|             -1: [TypeAccess] TestKt
 #    6|             0: [VarAccess] y
 #    5|     3: [Method] f$default
@@ -468,7 +468,7 @@ test.kt:
 #    5|               0: [VarAccess] p3
 #    5|               1: [StringLiteral] "hello world"
 #    5|         2: [ReturnStmt] return ...
-#    5|           0: [MethodAccess] f(...)
+#    5|           0: [MethodCall] f(...)
 #    5|             -1: [VarAccess] p0
 #    5|             0: [VarAccess] p1
 #    5|             1: [VarAccess] p2
@@ -477,7 +477,7 @@ test.kt:
 #    9|       3: [TypeAccess] Unit
 #    9|       5: [BlockStmt] { ... }
 #   10|         0: [ExprStmt] <Expr>;
-#   10|           0: [MethodAccess] f$default(...)
+#   10|           0: [MethodCall] f$default(...)
 #   10|             -1: [TypeAccess] TestMember
 #   10|             0: [ThisAccess] this
 #   10|             1: [StringLiteral] "member sunk"
@@ -486,7 +486,7 @@ test.kt:
 #    1|             4: [IntegerLiteral] 1
 #    1|             5: [NullLiteral] null
 #   11|         1: [ExprStmt] <Expr>;
-#   11|           0: [MethodAccess] f$default(...)
+#   11|           0: [MethodCall] f$default(...)
 #   11|             -1: [TypeAccess] TestMember
 #   11|             0: [ThisAccess] this
 #   11|             1: [StringLiteral] "member sunk fp"
@@ -495,7 +495,7 @@ test.kt:
 #    1|             4: [IntegerLiteral] 3
 #    1|             5: [NullLiteral] null
 #   12|         2: [ExprStmt] <Expr>;
-#   12|           0: [MethodAccess] f(...)
+#   12|           0: [MethodCall] f(...)
 #   12|             -1: [ThisAccess] this
 #   12|             0: [StringLiteral] "not sunk"
 #   12|             1: [StringLiteral] "member sunk 3"
@@ -518,11 +518,11 @@ test.kt:
 #   19|           0: [TypeAccess] String
 #   19|       5: [BlockStmt] { ... }
 #   20|         0: [ExprStmt] <Expr>;
-#   20|           0: [MethodAccess] sink(...)
+#   20|           0: [MethodCall] sink(...)
 #   20|             -1: [TypeAccess] TestKt
 #   20|             0: [ExtensionReceiverAccess] this
 #   21|         1: [ExprStmt] <Expr>;
-#   21|           0: [MethodAccess] sink(...)
+#   21|           0: [MethodCall] sink(...)
 #   21|             -1: [TypeAccess] TestKt
 #   21|             0: [VarAccess] y
 #   19|     3: [ExtensionMethod] f$default
@@ -564,7 +564,7 @@ test.kt:
 #   19|               0: [VarAccess] p4
 #   19|               1: [StringLiteral] "hello world"
 #   19|         2: [ReturnStmt] return ...
-#   19|           0: [MethodAccess] f(...)
+#   19|           0: [MethodCall] f(...)
 #   19|             -1: [VarAccess] p0
 #   19|             0: [ExtensionReceiverAccess] this
 #   19|             1: [VarAccess] p2
@@ -577,7 +577,7 @@ test.kt:
 #   24|           0: [TypeAccess] String
 #   24|       5: [BlockStmt] { ... }
 #   25|         0: [ExprStmt] <Expr>;
-#   25|           0: [MethodAccess] f$default(...)
+#   25|           0: [MethodCall] f$default(...)
 #   25|             -1: [TypeAccess] TestExtensionMember
 #   25|             0: [ThisAccess] this
 #   25|             1: [VarAccess] sunk
@@ -587,7 +587,7 @@ test.kt:
 #    1|             5: [IntegerLiteral] 1
 #    1|             6: [NullLiteral] null
 #   26|         1: [ExprStmt] <Expr>;
-#   26|           0: [MethodAccess] f$default(...)
+#   26|           0: [MethodCall] f$default(...)
 #   26|             -1: [TypeAccess] TestExtensionMember
 #   26|             0: [ThisAccess] this
 #   26|             1: [VarAccess] sunk
@@ -597,7 +597,7 @@ test.kt:
 #    1|             5: [IntegerLiteral] 3
 #    1|             6: [NullLiteral] null
 #   27|         2: [ExprStmt] <Expr>;
-#   27|           0: [MethodAccess] f(...)
+#   27|           0: [MethodCall] f(...)
 #   27|             -1: [ThisAccess] this
 #   27|             0: [VarAccess] sunk
 #   27|             1: [StringLiteral] "not sunk"
@@ -621,7 +621,7 @@ test.kt:
 #   34|           0: [TypeAccess] String
 #   34|       5: [BlockStmt] { ... }
 #   35|         0: [ExprStmt] <Expr>;
-#   35|           0: [MethodAccess] sink(...)
+#   35|           0: [MethodCall] sink(...)
 #   35|             -1: [TypeAccess] TestKt
 #   35|             0: [VarAccess] y
 #   34|     3: [Method] f$default
@@ -659,7 +659,7 @@ test.kt:
 #   34|               0: [VarAccess] p2
 #   34|               1: [StringLiteral] "hello world"
 #   34|         2: [ReturnStmt] return ...
-#   34|           0: [MethodAccess] f(...)
+#   34|           0: [MethodCall] f(...)
 #   34|             -1: [TypeAccess] TestStaticMember
 #   34|             0: [VarAccess] p0
 #   34|             1: [VarAccess] p1
@@ -668,7 +668,7 @@ test.kt:
 #   38|       3: [TypeAccess] Unit
 #   38|       5: [BlockStmt] { ... }
 #   39|         0: [ExprStmt] <Expr>;
-#   39|           0: [MethodAccess] f$default(...)
+#   39|           0: [MethodCall] f$default(...)
 #   39|             -1: [TypeAccess] TestStaticMember
 #   39|             0: [StringLiteral] "static sunk"
 #    1|             1: [NullLiteral] null
@@ -676,7 +676,7 @@ test.kt:
 #    1|             3: [IntegerLiteral] 1
 #    1|             4: [NullLiteral] null
 #   40|         1: [ExprStmt] <Expr>;
-#   40|           0: [MethodAccess] f$default(...)
+#   40|           0: [MethodCall] f$default(...)
 #   40|             -1: [TypeAccess] TestStaticMember
 #   40|             0: [StringLiteral] "static sunk fp"
 #   40|             1: [StringLiteral] "static sunk 2"
@@ -684,7 +684,7 @@ test.kt:
 #    1|             3: [IntegerLiteral] 3
 #    1|             4: [NullLiteral] null
 #   41|         2: [ExprStmt] <Expr>;
-#   41|           0: [MethodAccess] f(...)
+#   41|           0: [MethodCall] f(...)
 #   41|             -1: [TypeAccess] TestStaticMember
 #   41|             0: [StringLiteral] "not sunk"
 #   41|             1: [StringLiteral] "static sunk 3"
@@ -728,7 +728,7 @@ test.kt:
 #   56|           0: [TypeAccess] String
 #   56|       5: [BlockStmt] { ... }
 #   57|         0: [ExprStmt] <Expr>;
-#   57|           0: [MethodAccess] sink(...)
+#   57|           0: [MethodCall] sink(...)
 #   57|             -1: [TypeAccess] TestKt
 #   57|             0: [VarAccess] y
 #   56|     4: [ExtensionMethod] test$default
@@ -758,9 +758,9 @@ test.kt:
 #   56|           1: [ExprStmt] <Expr>;
 #   56|             0: [AssignExpr] ...=...
 #   56|               0: [VarAccess] p3
-#   56|               1: [MethodAccess] f(...)
+#   56|               1: [MethodCall] f(...)
 #   56|                 -1: [VarAccess] p0
-#   56|                 0: [MethodAccess] g(...)
+#   56|                 0: [MethodCall] g(...)
 #   56|                   -1: [VarAccess] p0
 #   56|                   0: [VarAccess] p2
 #   56|         1: [IfStmt] if (...)
@@ -774,7 +774,7 @@ test.kt:
 #   56|               0: [VarAccess] p4
 #   56|               1: [StringLiteral] "hello world"
 #   56|         2: [ReturnStmt] return ...
-#   56|           0: [MethodAccess] test(...)
+#   56|           0: [MethodCall] test(...)
 #   56|             -1: [VarAccess] p0
 #   56|             0: [ExtensionReceiverAccess] this
 #   56|             1: [VarAccess] p2
@@ -787,7 +787,7 @@ test.kt:
 #   60|           0: [TypeAccess] ExtendMe
 #   60|       5: [BlockStmt] { ... }
 #   61|         0: [ExprStmt] <Expr>;
-#   61|           0: [MethodAccess] test$default(...)
+#   61|           0: [MethodCall] test$default(...)
 #   61|             -1: [TypeAccess] TestReceiverReferences
 #   61|             0: [ThisAccess] this
 #   61|             1: [VarAccess] t
@@ -797,7 +797,7 @@ test.kt:
 #    1|             5: [IntegerLiteral] 1
 #    1|             6: [NullLiteral] null
 #   62|         1: [ExprStmt] <Expr>;
-#   62|           0: [MethodAccess] test$default(...)
+#   62|           0: [MethodCall] test$default(...)
 #   62|             -1: [TypeAccess] TestReceiverReferences
 #   62|             0: [ThisAccess] this
 #   62|             1: [VarAccess] t
@@ -807,7 +807,7 @@ test.kt:
 #    1|             5: [IntegerLiteral] 3
 #    1|             6: [NullLiteral] null
 #   63|         2: [ExprStmt] <Expr>;
-#   63|           0: [MethodAccess] test(...)
+#   63|           0: [MethodCall] test(...)
 #   63|             -1: [ThisAccess] this
 #   63|             0: [VarAccess] t
 #   63|             1: [StringLiteral] "not sunk"
@@ -826,7 +826,7 @@ test.kt:
 #   68|         0: [SuperConstructorInvocationStmt] super(...)
 #   68|         1: [BlockStmt] { ... }
 #   71|           0: [ExprStmt] <Expr>;
-#   71|             0: [MethodAccess] sink(...)
+#   71|             0: [MethodCall] sink(...)
 #   71|               -1: [TypeAccess] TestKt
 #   71|               0: [VarAccess] y
 #   68|     2: [Constructor] TestConstructor
@@ -921,7 +921,7 @@ test.kt:
 #   86|                   0: [TypeAccess] String
 #   86|               5: [BlockStmt] { ... }
 #   87|                 0: [ExprStmt] <Expr>;
-#   87|                   0: [MethodAccess] sink(...)
+#   87|                   0: [MethodCall] sink(...)
 #   87|                     -1: [TypeAccess] TestKt
 #   87|                     0: [VarAccess] y
 #   86|             3: [Method] f$default
@@ -959,7 +959,7 @@ test.kt:
 #   86|                       0: [VarAccess] p2
 #   86|                       1: [StringLiteral] "hello world"
 #   86|                 2: [ReturnStmt] return ...
-#   86|                   0: [MethodAccess] f(...)
+#   86|                   0: [MethodCall] f(...)
 #   86|                     -1: [ClassInstanceExpr] new (...)
 #   86|                       -3: [TypeAccess] Object
 #   86|                     0: [VarAccess] p0
@@ -974,7 +974,7 @@ test.kt:
 #   90|               3: [TypeAccess] Unit
 #   90|               5: [BlockStmt] { ... }
 #   91|                 0: [ExprStmt] <Expr>;
-#   91|                   0: [MethodAccess] f$default(...)
+#   91|                   0: [MethodCall] f$default(...)
 #   91|                     -1: [TypeAccess] 
 #   91|                     0: [StringLiteral] "local sunk"
 #    1|                     1: [NullLiteral] null
@@ -982,7 +982,7 @@ test.kt:
 #    1|                     3: [IntegerLiteral] 1
 #    1|                     4: [NullLiteral] null
 #   92|                 1: [ExprStmt] <Expr>;
-#   92|                   0: [MethodAccess] f$default(...)
+#   92|                   0: [MethodCall] f$default(...)
 #   92|                     -1: [TypeAccess] 
 #   92|                     0: [StringLiteral] "local sunk fp"
 #   92|                     1: [StringLiteral] "local sunk 2"
@@ -990,7 +990,7 @@ test.kt:
 #    1|                     3: [IntegerLiteral] 3
 #    1|                     4: [NullLiteral] null
 #   93|                 2: [ExprStmt] <Expr>;
-#   93|                   0: [MethodAccess] f(...)
+#   93|                   0: [MethodCall] f(...)
 #   93|                     -1: [ClassInstanceExpr] new (...)
 #   93|                       -3: [TypeAccess] Object
 #   93|                     0: [StringLiteral] "not sunk"
@@ -1021,7 +1021,7 @@ test.kt:
 #  106|                   0: [TypeAccess] String
 #  106|               5: [BlockStmt] { ... }
 #  107|                 0: [ExprStmt] <Expr>;
-#  107|                   0: [MethodAccess] sink(...)
+#  107|                   0: [MethodCall] sink(...)
 #  107|                     -1: [TypeAccess] TestKt
 #  107|                     0: [VarAccess] y
 #  106|             3: [Method] f$default
@@ -1061,7 +1061,7 @@ test.kt:
 #  106|                       0: [VarAccess] p3
 #  106|                       1: [StringLiteral] "hello world"
 #  106|                 2: [ReturnStmt] return ...
-#  106|                   0: [MethodAccess] f(...)
+#  106|                   0: [MethodCall] f(...)
 #  106|                     -1: [VarAccess] p0
 #  106|                     0: [VarAccess] p1
 #  106|                     1: [VarAccess] p2
@@ -1070,7 +1070,7 @@ test.kt:
 #  110|               3: [TypeAccess] Unit
 #  110|               5: [BlockStmt] { ... }
 #  111|                 0: [ExprStmt] <Expr>;
-#  111|                   0: [MethodAccess] f$default(...)
+#  111|                   0: [MethodCall] f$default(...)
 #  111|                     -1: [TypeAccess] EnclosingLocalClass
 #  111|                     0: [ThisAccess] this
 #  111|                     1: [StringLiteral] "local sunk"
@@ -1079,7 +1079,7 @@ test.kt:
 #    1|                     4: [IntegerLiteral] 1
 #    1|                     5: [NullLiteral] null
 #  112|                 1: [ExprStmt] <Expr>;
-#  112|                   0: [MethodAccess] f$default(...)
+#  112|                   0: [MethodCall] f$default(...)
 #  112|                     -1: [TypeAccess] EnclosingLocalClass
 #  112|                     0: [ThisAccess] this
 #  112|                     1: [StringLiteral] "local sunk fp"
@@ -1088,7 +1088,7 @@ test.kt:
 #    1|                     4: [IntegerLiteral] 3
 #    1|                     5: [NullLiteral] null
 #  113|                 2: [ExprStmt] <Expr>;
-#  113|                   0: [MethodAccess] f(...)
+#  113|                   0: [MethodCall] f(...)
 #  113|                     -1: [ThisAccess] this
 #  113|                     0: [StringLiteral] "not sunk"
 #  113|                     1: [StringLiteral] "local sunk 3"
@@ -1111,7 +1111,7 @@ test.kt:
 #  124|           0: [TypeAccess] T
 #  124|       5: [BlockStmt] { ... }
 #  125|         0: [ExprStmt] <Expr>;
-#  125|           0: [MethodAccess] sink(...)
+#  125|           0: [MethodCall] sink(...)
 #  125|             -1: [TypeAccess] TestKt
 #  125|             0: [VarAccess] y
 #  124|     3: [Method] f$default
@@ -1151,7 +1151,7 @@ test.kt:
 #  124|               0: [VarAccess] p3
 #  124|               1: [NullLiteral] null
 #  124|         2: [ReturnStmt] return ...
-#  124|           0: [MethodAccess] f(...)
+#  124|           0: [MethodCall] f(...)
 #  124|             -1: [VarAccess] p0
 #  124|             0: [VarAccess] p1
 #  124|             1: [VarAccess] p2
@@ -1167,7 +1167,7 @@ test.kt:
 #  128|             0: [TypeAccess] CharSequence
 #  128|       5: [BlockStmt] { ... }
 #  129|         0: [ExprStmt] <Expr>;
-#  129|           0: [MethodAccess] f$default(...)
+#  129|           0: [MethodCall] f$default(...)
 #  129|             -1: [TypeAccess] TestGeneric<>
 #  129|             0: [VarAccess] tgs
 #  129|             1: [StringLiteral] "generic sunk"
@@ -1176,7 +1176,7 @@ test.kt:
 #    1|             4: [IntegerLiteral] 1
 #    1|             5: [NullLiteral] null
 #  130|         1: [ExprStmt] <Expr>;
-#  130|           0: [MethodAccess] f$default(...)
+#  130|           0: [MethodCall] f$default(...)
 #  130|             -1: [TypeAccess] TestGeneric<>
 #  130|             0: [VarAccess] tcs
 #  130|             1: [StringLiteral] "generic sunk fp"
@@ -1185,13 +1185,13 @@ test.kt:
 #    1|             4: [IntegerLiteral] 3
 #    1|             5: [NullLiteral] null
 #  131|         2: [ExprStmt] <Expr>;
-#  131|           0: [MethodAccess] f(...)
+#  131|           0: [MethodCall] f(...)
 #  131|             -1: [VarAccess] tgs
 #  131|             0: [StringLiteral] "not sunk"
 #  131|             1: [StringLiteral] "generic sunk 3"
 #  131|             2: [StringLiteral] "not sunk"
 #  132|         3: [ExprStmt] <Expr>;
-#  132|           0: [MethodAccess] f(...)
+#  132|           0: [MethodCall] f(...)
 #  132|             -1: [VarAccess] tcs
 #  132|             0: [StringLiteral] "not sunk"
 #  132|             1: [StringLiteral] "generic sunk 3"
@@ -1231,7 +1231,7 @@ test.kt:
 #  135|               0: [VarAccess] p2
 #  135|               1: [NullLiteral] null
 #  135|         1: [ReturnStmt] return ...
-#  135|           0: [MethodAccess] testReturn(...)
+#  135|           0: [MethodCall] testReturn(...)
 #  135|             -1: [VarAccess] p0
 #  135|             0: [VarAccess] p1
 #  135|             1: [VarAccess] p2
@@ -1243,9 +1243,9 @@ test.kt:
 #  137|             0: [TypeAccess] String
 #  137|       5: [BlockStmt] { ... }
 #  138|         0: [ExprStmt] <Expr>;
-#  138|           0: [MethodAccess] sink(...)
+#  138|           0: [MethodCall] sink(...)
 #  138|             -1: [TypeAccess] TestKt
-#  138|             0: [MethodAccess] testReturn$default(...)
+#  138|             0: [MethodCall] testReturn$default(...)
 #  138|               -1: [TypeAccess] TestGeneric<>
 #  138|               0: [VarAccess] tgs
 #  138|               1: [StringLiteral] "sunk return value"
@@ -1282,7 +1282,7 @@ test.kt:
 #  145|               0: [TypeAccess] S
 #  145|       5: [BlockStmt] { ... }
 #  146|         0: [ExprStmt] <Expr>;
-#  146|           0: [MethodAccess] sink(...)
+#  146|           0: [MethodCall] sink(...)
 #  146|             -1: [TypeAccess] TestKt
 #  146|             0: [VarAccess] y
 #  145|     3: [Method] f$default
@@ -1336,7 +1336,7 @@ test.kt:
 #  145|           1: [ExprStmt] <Expr>;
 #  145|             0: [AssignExpr] ...=...
 #  145|               0: [VarAccess] p4
-#  145|               1: [MethodAccess] listOf(...)
+#  145|               1: [MethodCall] listOf(...)
 #  145|                 -2: [TypeAccess] T
 #  145|                 -1: [TypeAccess] CollectionsKt
 #  145|                 0: [VarAccess] p2
@@ -1359,12 +1359,12 @@ test.kt:
 #  145|           1: [ExprStmt] <Expr>;
 #  145|             0: [AssignExpr] ...=...
 #  145|               0: [VarAccess] p6
-#  145|               1: [MethodAccess] listOf(...)
+#  145|               1: [MethodCall] listOf(...)
 #  145|                 -2: [TypeAccess] S
 #  145|                 -1: [TypeAccess] CollectionsKt
 #  145|                 0: [VarAccess] p1
 #  145|         5: [ReturnStmt] return ...
-#  145|           0: [MethodAccess] f(...)
+#  145|           0: [MethodCall] f(...)
 #  145|             -1: [VarAccess] p0
 #  145|             0: [VarAccess] p1
 #  145|             1: [VarAccess] p2
@@ -1380,7 +1380,7 @@ test.kt:
 #  149|             0: [TypeAccess] String
 #  149|       5: [BlockStmt] { ... }
 #  150|         0: [ExprStmt] <Expr>;
-#  150|           0: [MethodAccess] f$default(...)
+#  150|           0: [MethodCall] f$default(...)
 #  150|             -1: [TypeAccess] TestGenericFunction<>
 #  150|             0: [VarAccess] inst
 #  150|             1: [StringLiteral] "generic function sunk"
@@ -1392,7 +1392,7 @@ test.kt:
 #    1|             7: [IntegerLiteral] 1
 #    1|             8: [NullLiteral] null
 #  151|         1: [ExprStmt] <Expr>;
-#  151|           0: [MethodAccess] f$default(...)
+#  151|           0: [MethodCall] f$default(...)
 #  151|             -1: [TypeAccess] TestGenericFunction<>
 #  151|             0: [VarAccess] inst
 #  151|             1: [StringLiteral] "generic function sunk fp"
@@ -1445,7 +1445,7 @@ test.kt:
 #  158|               0: [VarAccess] p2
 #  158|               1: [IntegerLiteral] 0
 #  158|         1: [ReturnStmt] return ...
-#  158|           0: [MethodAccess] f(...)
+#  158|           0: [MethodCall] f(...)
 #  158|             -1: [VarAccess] p0
 #  158|             0: [VarAccess] p1
 #  158|             1: [VarAccess] p2
@@ -1486,7 +1486,7 @@ test.kt:
 #  159|               0: [VarAccess] p2
 #  159|               1: [IntegerLiteral] 0
 #  159|         1: [ReturnStmt] return ...
-#  159|           0: [MethodAccess] g$main(...)
+#  159|           0: [MethodCall] g$main(...)
 #  159|             -1: [VarAccess] p0
 #  159|             0: [VarAccess] p1
 #  159|             1: [VarAccess] p2
@@ -1527,7 +1527,7 @@ test.kt:
 #  160|               0: [VarAccess] p2
 #  160|               1: [IntegerLiteral] 0
 #  160|         1: [ReturnStmt] return ...
-#  160|           0: [MethodAccess] h(...)
+#  160|           0: [MethodCall] h(...)
 #  160|             -1: [VarAccess] p0
 #  160|             0: [VarAccess] p1
 #  160|             1: [VarAccess] p2
@@ -1568,7 +1568,7 @@ test.kt:
 #  161|               0: [VarAccess] p2
 #  161|               1: [IntegerLiteral] 0
 #  161|         1: [ReturnStmt] return ...
-#  161|           0: [MethodAccess] i(...)
+#  161|           0: [MethodCall] i(...)
 #  161|             -1: [VarAccess] p0
 #  161|             0: [VarAccess] p1
 #  161|             1: [VarAccess] p2
@@ -1610,13 +1610,13 @@ test.kt:
 #  171|           1: [ExprStmt] <Expr>;
 #  171|             0: [AssignExpr] ...=...
 #  171|               0: [VarAccess] p2
-#  171|               1: [MethodAccess] ident(...)
+#  171|               1: [MethodCall] ident(...)
 #  171|                 -1: [ClassInstanceExpr] new TestGenericUsedWithinDefaultValue<String>(...)
 #  171|                   -3: [TypeAccess] TestGenericUsedWithinDefaultValue<String>
 #  171|                     0: [TypeAccess] String
 #  171|                 0: [StringLiteral] "Hello world"
 #  171|         1: [ReturnStmt] return ...
-#  171|           0: [MethodAccess] f(...)
+#  171|           0: [MethodCall] f(...)
 #  171|             -1: [VarAccess] p0
 #  171|             0: [VarAccess] p1
 #  171|             1: [VarAccess] p2
@@ -1666,7 +1666,7 @@ test.kt:
 #  179|               0: [VarAccess] p2
 #  179|               1: [StringLiteral] "Hello world"
 #  179|         1: [ReturnStmt] return ...
-#  179|           0: [MethodAccess] f(...)
+#  179|           0: [MethodCall] f(...)
 #  179|             -1: [VarAccess] p0
 #  179|             0: [VarAccess] p1
 #  179|             1: [VarAccess] p2
@@ -1703,7 +1703,7 @@ test.kt:
 #  180|               0: [VarAccess] p2
 #  180|               1: [IntegerLiteral] 0
 #  180|         1: [ReturnStmt] return ...
-#  180|           0: [MethodAccess] f(...)
+#  180|           0: [MethodCall] f(...)
 #  180|             -1: [VarAccess] p0
 #  180|             0: [VarAccess] p1
 #  180|             1: [VarAccess] p2
@@ -1720,6 +1720,6 @@ test.kt:
 #  226|         0: [SuperConstructorInvocationStmt] super(...)
 #  226|         1: [BlockStmt] { ... }
 #  228|           0: [ExprStmt] <Expr>;
-#  228|             0: [MethodAccess] sink(...)
+#  228|             0: [MethodCall] sink(...)
 #  228|               -1: [TypeAccess] TestKt
 #  228|               0: [VarAccess] x

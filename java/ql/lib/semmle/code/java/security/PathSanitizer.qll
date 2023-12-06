@@ -16,7 +16,7 @@ abstract class PathInjectionSanitizer extends DataFlow::Node { }
 private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
   /** Gets a node that is safely guarded by a method that uses the given guard check. */
   DataFlow::Node getAValidatedNode() {
-    exists(MethodAccess ma, int pos, RValue rv |
+    exists(MethodCall ma, int pos, VarRead rv |
       validationMethod(ma.getMethod(), pos) and
       ma.getArgument(pos) = rv and
       adjacentUseUseSameVar(rv, result.asExpr()) and
@@ -47,7 +47,7 @@ private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
  * Holds if `g` is guard that compares a path to a trusted value.
  */
 private predicate exactPathMatchGuard(Guard g, Expr e, boolean branch) {
-  exists(MethodAccess ma, RefType t |
+  exists(MethodCall ma, RefType t |
     t instanceof TypeString or
     t instanceof TypeUri or
     t instanceof TypePath or
@@ -84,7 +84,7 @@ private predicate localTaintFlowToPathGuard(Expr e, PathGuard g) {
   TaintTracking::LocalTaintFlow<anyNode/1, pathGuardNode/1>::hasExprFlow(e, g.getCheckedExpr())
 }
 
-private class AllowedPrefixGuard extends PathGuard instanceof MethodAccess {
+private class AllowedPrefixGuard extends PathGuard instanceof MethodCall {
   AllowedPrefixGuard() {
     (isStringPrefixMatch(this) or isPathPrefixMatch(this)) and
     not isDisallowedWord(super.getAnArgument())
@@ -151,7 +151,7 @@ private class DotDotCheckSanitizer extends PathInjectionSanitizer {
   }
 }
 
-private class BlockListGuard extends PathGuard instanceof MethodAccess {
+private class BlockListGuard extends PathGuard instanceof MethodCall {
   BlockListGuard() {
     (isStringPartialMatch(this) or isPathPrefixMatch(this)) and
     isDisallowedWord(super.getAnArgument())
@@ -203,7 +203,7 @@ private class ConstantOrRegex extends Expr {
   }
 }
 
-private predicate isStringPrefixMatch(MethodAccess ma) {
+private predicate isStringPrefixMatch(MethodCall ma) {
   exists(Method m, RefType t |
     m.getDeclaringType() = t and
     (t instanceof TypeString or t instanceof StringsKt) and
@@ -222,7 +222,7 @@ private predicate isStringPrefixMatch(MethodAccess ma) {
 /**
  * Holds if `ma` is a call to a method that checks a partial string match.
  */
-private predicate isStringPartialMatch(MethodAccess ma) {
+private predicate isStringPartialMatch(MethodCall ma) {
   isStringPrefixMatch(ma)
   or
   exists(RefType t | t = ma.getMethod().getDeclaringType() |
@@ -235,7 +235,7 @@ private predicate isStringPartialMatch(MethodAccess ma) {
 /**
  * Holds if `ma` is a call to a method that checks whether a path starts with a prefix.
  */
-private predicate isPathPrefixMatch(MethodAccess ma) {
+private predicate isPathPrefixMatch(MethodCall ma) {
   exists(RefType t | t = ma.getMethod().getDeclaringType() |
     t instanceof TypePath or t instanceof FilesKt
   ) and
@@ -251,7 +251,7 @@ private class PathTraversalGuard extends PathGuard {
   Expr checkedExpr;
 
   PathTraversalGuard() {
-    exists(MethodAccess ma, Method m, RefType t |
+    exists(MethodCall ma, Method m, RefType t |
       m = ma.getMethod() and
       t = m.getDeclaringType() and
       (t instanceof TypeString or t instanceof StringsKt) and
@@ -273,14 +273,14 @@ private class PathTraversalGuard extends PathGuard {
   override Expr getCheckedExpr() { result = checkedExpr }
 
   boolean getBranch() {
-    this instanceof MethodAccess and result = false
+    this instanceof MethodCall and result = false
     or
     result = this.(EqualityTest).polarity()
   }
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
-private class PathNormalizeSanitizer extends MethodAccess {
+private class PathNormalizeSanitizer extends MethodCall {
   PathNormalizeSanitizer() {
     exists(RefType t | this.getMethod().getDeclaringType() = t |
       (t instanceof TypePath or t instanceof FilesKt) and
@@ -297,7 +297,7 @@ private class PathNormalizeSanitizer extends MethodAccess {
  * This is a helper predicate to solve discrepancies between
  * what `getQualifier` actually gets in Java and Kotlin.
  */
-private Expr getVisualQualifier(MethodAccess ma) {
+private Expr getVisualQualifier(MethodCall ma) {
   if ma.getMethod() instanceof ExtensionMethod
   then
     result = ma.getArgument(ma.getMethod().(ExtensionMethod).getExtensionReceiverParameterIndex())
@@ -310,7 +310,7 @@ private Expr getVisualQualifier(MethodAccess ma) {
  * what `getArgument` actually gets in Java and Kotlin.
  */
 bindingset[argPos]
-private Argument getVisualArgument(MethodAccess ma, int argPos) {
+private Argument getVisualArgument(MethodCall ma, int argPos) {
   if ma.getMethod() instanceof ExtensionMethod
   then
     result =

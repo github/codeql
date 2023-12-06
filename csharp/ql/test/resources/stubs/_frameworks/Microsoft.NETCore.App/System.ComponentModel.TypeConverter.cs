@@ -11,6 +11,7 @@ namespace System
             public object NewObject { get => throw null; set { } }
         }
         public delegate void AddingNewEventHandler(object sender, System.ComponentModel.AddingNewEventArgs e);
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class AmbientValueAttribute : System.Attribute
         {
             public AmbientValueAttribute(bool value) => throw null;
@@ -57,6 +58,7 @@ namespace System
             public virtual System.Attribute this[int index] { get => throw null; }
             public virtual System.Attribute this[System.Type attributeType] { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public class AttributeProviderAttribute : System.Attribute
         {
             public AttributeProviderAttribute(string typeName) => throw null;
@@ -72,6 +74,7 @@ namespace System
             public override object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value) => throw null;
             public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class BindableAttribute : System.Attribute
         {
             public bool Bindable { get => throw null; }
@@ -186,6 +189,7 @@ namespace System
             public CollectionConverter() => throw null;
             public override System.ComponentModel.PropertyDescriptorCollection GetProperties(System.ComponentModel.ITypeDescriptorContext context, object value, System.Attribute[] attributes) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class ComplexBindingPropertiesAttribute : System.Attribute
         {
             public ComplexBindingPropertiesAttribute() => throw null;
@@ -264,6 +268,7 @@ namespace System
             public virtual System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Attribute[] attributes) => throw null;
             public virtual object GetPropertyOwner(System.ComponentModel.PropertyDescriptor pd) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class DataObjectAttribute : System.Attribute
         {
             public DataObjectAttribute() => throw null;
@@ -276,6 +281,7 @@ namespace System
             public override bool IsDefaultAttribute() => throw null;
             public static readonly System.ComponentModel.DataObjectAttribute NonDataObject;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class DataObjectFieldAttribute : System.Attribute
         {
             public DataObjectFieldAttribute(bool primaryKey) => throw null;
@@ -289,6 +295,7 @@ namespace System
             public int Length { get => throw null; }
             public bool PrimaryKey { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)64)]
         public sealed class DataObjectMethodAttribute : System.Attribute
         {
             public DataObjectMethodAttribute(System.ComponentModel.DataObjectMethodType methodType) => throw null;
@@ -337,6 +344,7 @@ namespace System
             public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) => throw null;
             public DecimalConverter() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class DefaultBindingPropertyAttribute : System.Attribute
         {
             public DefaultBindingPropertyAttribute() => throw null;
@@ -346,6 +354,7 @@ namespace System
             public override int GetHashCode() => throw null;
             public string Name { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class DefaultEventAttribute : System.Attribute
         {
             public DefaultEventAttribute(string name) => throw null;
@@ -354,6 +363,7 @@ namespace System
             public override int GetHashCode() => throw null;
             public string Name { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class DefaultPropertyAttribute : System.Attribute
         {
             public DefaultPropertyAttribute(string name) => throw null;
@@ -536,6 +546,7 @@ namespace System
                 Selection = 2,
                 ToolWindowSelection = 3,
             }
+            [System.AttributeUsage((System.AttributeTargets)32767, AllowMultiple = false, Inherited = false)]
             public sealed class HelpKeywordAttribute : System.Attribute
             {
                 public HelpKeywordAttribute() => throw null;
@@ -805,6 +816,7 @@ namespace System
                     public object this[int level] { get => throw null; }
                     public object this[System.Type type] { get => throw null; }
                 }
+                [System.AttributeUsage((System.AttributeTargets)4, Inherited = false)]
                 public sealed class DefaultSerializationProviderAttribute : System.Attribute
                 {
                     public DefaultSerializationProviderAttribute(string providerTypeName) => throw null;
@@ -904,6 +916,7 @@ namespace System
                     public object Value { get => throw null; set { } }
                 }
                 public delegate void ResolveNameEventHandler(object sender, System.ComponentModel.Design.Serialization.ResolveNameEventArgs e);
+                [System.AttributeUsage((System.AttributeTargets)1028, AllowMultiple = true, Inherited = true)]
                 public sealed class RootDesignerSerializerAttribute : System.Attribute
                 {
                     public RootDesignerSerializerAttribute(string serializerTypeName, string baseSerializerTypeName, bool reloadable) => throw null;
@@ -1024,6 +1037,7 @@ namespace System
                 Default = 2,
             }
         }
+        [System.AttributeUsage((System.AttributeTargets)1028)]
         public sealed class DesignTimeVisibleAttribute : System.Attribute
         {
             public DesignTimeVisibleAttribute() => throw null;
@@ -1111,6 +1125,7 @@ namespace System
             public override System.ComponentModel.PropertyDescriptorCollection GetProperties(System.ComponentModel.ITypeDescriptorContext context, object value, System.Attribute[] attributes) => throw null;
             public override bool GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class ExtenderProvidedPropertyAttribute : System.Attribute
         {
             public ExtenderProvidedPropertyAttribute() => throw null;
@@ -1230,6 +1245,7 @@ namespace System
         {
             string FullName { get; }
         }
+        [System.AttributeUsage((System.AttributeTargets)896)]
         public sealed class InheritanceAttribute : System.Attribute
         {
             public InheritanceAttribute() => throw null;
@@ -1250,6 +1266,7 @@ namespace System
             InheritedReadOnly = 2,
             NotInherited = 3,
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public class InstallerTypeAttribute : System.Attribute
         {
             public InstallerTypeAttribute(string typeName) => throw null;
@@ -1345,6 +1362,7 @@ namespace System
             protected LicenseProvider() => throw null;
             public abstract System.ComponentModel.License GetLicense(System.ComponentModel.LicenseContext context, System.Type type, object instance, bool allowExceptions);
         }
+        [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
         public sealed class LicenseProviderAttribute : System.Attribute
         {
             public LicenseProviderAttribute() => throw null;
@@ -1368,6 +1386,7 @@ namespace System
             public override System.ComponentModel.License GetLicense(System.ComponentModel.LicenseContext context, System.Type type, object instance, bool allowExceptions) => throw null;
             protected virtual bool IsKeyValid(string key, System.Type type) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class ListBindableAttribute : System.Attribute
         {
             public ListBindableAttribute(bool listBindable) => throw null;
@@ -1435,6 +1454,7 @@ namespace System
             Ascending = 0,
             Descending = 1,
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class LookupBindingPropertiesAttribute : System.Attribute
         {
             public LookupBindingPropertiesAttribute() => throw null;
@@ -1621,6 +1641,7 @@ namespace System
             public System.Type UnderlyingType { get => throw null; }
             public System.ComponentModel.TypeConverter UnderlyingTypeConverter { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class PasswordPropertyTextAttribute : System.Attribute
         {
             public PasswordPropertyTextAttribute() => throw null;
@@ -1715,6 +1736,7 @@ namespace System
             public virtual System.ComponentModel.PropertyDescriptor this[string name] { get => throw null; }
             System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public class PropertyTabAttribute : System.Attribute
         {
             public PropertyTabAttribute() => throw null;
@@ -1738,6 +1760,7 @@ namespace System
             Document = 2,
             Component = 3,
         }
+        [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true)]
         public sealed class ProvidePropertyAttribute : System.Attribute
         {
             public ProvidePropertyAttribute(string propertyName, string receiverTypeName) => throw null;
@@ -1748,6 +1771,7 @@ namespace System
             public string ReceiverTypeName { get => throw null; }
             public override object TypeId { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public class RecommendedAsConfigurableAttribute : System.Attribute
         {
             public RecommendedAsConfigurableAttribute(bool recommendedAsConfigurable) => throw null;
@@ -1778,6 +1802,7 @@ namespace System
             public System.Type TypeChanged { get => throw null; }
         }
         public delegate void RefreshEventHandler(System.ComponentModel.RefreshEventArgs e);
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public class RunInstallerAttribute : System.Attribute
         {
             public RunInstallerAttribute(bool runInstaller) => throw null;
@@ -1793,6 +1818,7 @@ namespace System
         {
             public SByteConverter() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class SettingsBindableAttribute : System.Attribute
         {
             public bool Bindable { get => throw null; }
@@ -1834,6 +1860,7 @@ namespace System
             public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) => throw null;
             public TimeSpanConverter() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public class ToolboxItemAttribute : System.Attribute
         {
             public ToolboxItemAttribute(bool defaultType) => throw null;
@@ -1847,6 +1874,7 @@ namespace System
             public System.Type ToolboxItemType { get => throw null; }
             public string ToolboxItemTypeName { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = true)]
         public sealed class ToolboxItemFilterAttribute : System.Attribute
         {
             public ToolboxItemFilterAttribute(string filterString) => throw null;
@@ -2167,6 +2195,7 @@ namespace System
             public void Stop() => throw null;
             public System.ComponentModel.ISynchronizeInvoke SynchronizingObject { get => throw null; set { } }
         }
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public class TimersDescriptionAttribute : System.ComponentModel.DescriptionAttribute
         {
             public TimersDescriptionAttribute(string description) => throw null;

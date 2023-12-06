@@ -7,7 +7,7 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 from string namespace, int pkgs, string kind, string part, int n
 where modelCoverage(namespace, pkgs, kind, part, n)

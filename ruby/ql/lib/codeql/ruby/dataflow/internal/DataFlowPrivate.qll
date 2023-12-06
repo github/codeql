@@ -596,11 +596,11 @@ private module Cached {
     entrySsaDefinition(n) and
     not LocalFlow::localFlowSsaParamInput(_, n)
     or
-    TypeTrackerSpecific::storeStepIntoSourceNode(_, n, _)
+    TypeTrackerSpecific::basicStoreStep(_, n, _)
     or
-    TypeTrackerSpecific::readStepIntoSourceNode(_, n, _)
+    TypeTrackerSpecific::basicLoadStep(_, n, _)
     or
-    TypeTrackerSpecific::readStoreStepIntoSourceNode(_, n, _, _)
+    TypeTrackerSpecific::basicLoadStoreStep(_, n, _, _)
   }
 
   cached

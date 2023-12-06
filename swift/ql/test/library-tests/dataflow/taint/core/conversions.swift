@@ -6,7 +6,7 @@ func sourceFloat() -> Float { 0.0 }
 func sourceFloat80() -> Float80 { 0.0 }
 func sourceDouble() -> Double { 0.0 }
 func sourceString() -> String { "" }
-func sourceArray() -> [Int] { [] }
+func sourceArray(_ label: String) -> [Int] { [] }
 
 func sink(arg: Any) { }
 
@@ -37,11 +37,11 @@ func testConversions() {
 	sink(arg: String(sourceInt()).utf8) // $ tainted=37
 
 	let arr = [1, 2, sourceInt()]
-	sink(arg: arr)
+	sink(arg: arr) // $ tainted=39
 	sink(arg: arr[0]) // $ tainted=39
-	sink(arg: [MyInt](arr))
+	sink(arg: [MyInt](arr)) // $ tainted=39
 	sink(arg: [MyInt](arr)[0]) // $ tainted=39
-	sink(arg: [UInt8](sourceString().utf8))
+	sink(arg: [UInt8](sourceString().utf8)) // $ tainted=44
 	sink(arg: [UInt8](sourceString().utf8)[0]) // $ tainted=45
 
 	if let v = sourceInt() as? UInt {
@@ -168,25 +168,25 @@ func testCEnum() {
 
 class TestArrayConversion {
 	init() {
-		let arr1 = sourceArray()
+		let arr1 = sourceArray("init1")
 		let arr2 = [sourceInt()]
-		sink(arg: arr1) // $ tainted=171
-		sink(arg: arr2)
-		sink(arg: arr1[0]) // $ tainted=171
+		sink(arg: arr1) // $ tainted=init1
+		sink(arg: arr2) // $ tainted=172
+		sink(arg: arr1[0]) // $ tainted=init1
 		sink(arg: arr2[0]) // $ tainted=172
 
 		let arr1b = try Array(arr1)
 		let arr2b = try Array(arr2)
-		sink(arg: arr1b)
-		sink(arg: arr2b)
-		sink(arg: arr1b[0]) // $ tainted=171
+		sink(arg: arr1b) // $ tainted=init1
+		sink(arg: arr2b) // $ tainted=172
+		sink(arg: arr1b[0]) // $ tainted=init1
 		sink(arg: arr2b[0]) // $ tainted=172
 
 		let arr1c = ContiguousArray(arr1)
 		let arr2c = ContiguousArray(arr2)
-		sink(arg: arr1c)
-		sink(arg: arr2c)
-		sink(arg: arr1c[0]) // $ tainted=171
+		sink(arg: arr1c) // $ tainted=init1
+		sink(arg: arr2c) // $ tainted=172
+		sink(arg: arr1c[0]) // $ tainted=init1
 		sink(arg: arr2c[0]) // $ tainted=172
 	}
 }

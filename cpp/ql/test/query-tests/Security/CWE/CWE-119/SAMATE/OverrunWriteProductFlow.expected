@@ -4,7 +4,6 @@ edges
 | test.cpp:18:10:18:15 | str indirection [post update] [string] | test.cpp:19:5:19:7 | str indirection [string] |
 | test.cpp:18:19:18:24 | call to malloc | test.cpp:18:5:18:30 | ... = ... |
 | test.cpp:19:5:19:7 | str indirection [string] | test.cpp:16:11:16:21 | mk_string_t indirection [string] |
-| test.cpp:19:5:19:7 | str indirection [string] | test.cpp:19:5:19:7 | str indirection [string] |
 | test.cpp:39:21:39:31 | call to mk_string_t indirection [string] | test.cpp:42:13:42:15 | str indirection [string] |
 | test.cpp:39:21:39:31 | call to mk_string_t indirection [string] | test.cpp:72:17:72:19 | str indirection [string] |
 | test.cpp:39:21:39:31 | call to mk_string_t indirection [string] | test.cpp:80:17:80:19 | str indirection [string] |
@@ -16,7 +15,6 @@ edges
 | test.cpp:90:10:90:15 | str indirection [post update] [string] | test.cpp:91:5:91:7 | str indirection [string] |
 | test.cpp:90:19:90:24 | call to malloc | test.cpp:90:5:90:34 | ... = ... |
 | test.cpp:91:5:91:7 | str indirection [string] | test.cpp:88:11:88:30 | mk_string_t_plus_one indirection [string] |
-| test.cpp:91:5:91:7 | str indirection [string] | test.cpp:91:5:91:7 | str indirection [string] |
 | test.cpp:96:21:96:40 | call to mk_string_t_plus_one indirection [string] | test.cpp:99:13:99:15 | str indirection [string] |
 | test.cpp:96:21:96:40 | call to mk_string_t_plus_one indirection [string] | test.cpp:129:17:129:19 | str indirection [string] |
 | test.cpp:96:21:96:40 | call to mk_string_t_plus_one indirection [string] | test.cpp:137:17:137:19 | str indirection [string] |
@@ -26,7 +24,6 @@ edges
 | test.cpp:147:5:147:34 | ... = ... | test.cpp:147:10:147:15 | str indirection [post update] [string] |
 | test.cpp:147:10:147:15 | str indirection [post update] [string] | test.cpp:148:5:148:7 | str indirection [string] |
 | test.cpp:147:19:147:24 | call to malloc | test.cpp:147:5:147:34 | ... = ... |
-| test.cpp:148:5:148:7 | str indirection [string] | test.cpp:148:5:148:7 | str indirection [string] |
 | test.cpp:148:5:148:7 | str indirection [string] | test.cpp:152:13:152:15 | str indirection [string] |
 | test.cpp:148:5:148:7 | str indirection [string] | test.cpp:154:13:154:15 | str indirection [string] |
 | test.cpp:148:5:148:7 | str indirection [string] | test.cpp:156:13:156:15 | str indirection [string] |

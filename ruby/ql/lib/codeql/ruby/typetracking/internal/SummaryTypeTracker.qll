@@ -73,8 +73,12 @@ signature module Input {
   }
 
   // Relating nodes to summaries
-  /** Gets a dataflow node respresenting the argument of `call` indicated by `arg`. */
-  Node argumentOf(Node call, SummaryComponent arg);
+  /**
+   * Gets a dataflow node respresenting the argument of `call` indicated by `arg`.
+   *
+   * Returns the post-update node of the argument when `isPostUpdate` is true.
+   */
+  Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate);
 
   /** Gets a dataflow node respresenting the parameter of `callable` indicated by `param`. */
   Node parameterOf(Node callable, SummaryComponent param);
@@ -221,14 +225,18 @@ module SummaryFlow<Input I> implements Output<I> {
 
   /**
    * Gets a data flow `I::Node` corresponding an argument or return value of `call`,
-   * as specified by `component`.
+   * as specified by `component`. `isOutput` indicates whether the node represents
+   * an output node or an input node.
    */
   bindingset[call, component]
-  private I::Node evaluateSummaryComponentLocal(I::Node call, I::SummaryComponent component) {
-    result = I::argumentOf(call, component)
+  private I::Node evaluateSummaryComponentLocal(
+    I::Node call, I::SummaryComponent component, boolean isOutput
+  ) {
+    result = I::argumentOf(call, component, isOutput)
     or
     component = I::return() and
-    result = call
+    result = call and
+    isOutput = true
   }
 
   /**
@@ -280,27 +288,40 @@ module SummaryFlow<Input I> implements Output<I> {
    */
   pragma[nomagic]
   private I::Node evaluateSummaryComponentStackLocal(
-    I::SummarizedCallable callable, I::Node call, I::SummaryComponentStack stack
+    I::SummarizedCallable callable, I::Node call, I::SummaryComponentStack stack, boolean isOutput
   ) {
     exists(I::SummaryComponent component |
       dependsOnSummaryComponentStackLeaf(callable, component) and
       stack = I::singleton(component) and
       call = I::callTo(callable) and
-      result = evaluateSummaryComponentLocal(call, component)
+      result = evaluateSummaryComponentLocal(call, component, isOutput)
     )
     or
-    exists(I::Node prev, I::SummaryComponent head, I::SummaryComponentStack tail |
-      prev = evaluateSummaryComponentStackLocal(callable, call, tail) and
+    exists(
+      I::Node prev, I::SummaryComponent head, I::SummaryComponentStack tail, boolean isOutput0
+    |
+      prev = evaluateSummaryComponentStackLocal(callable, call, tail, isOutput0) and
       dependsOnSummaryComponentStackConsLocal(callable, pragma[only_bind_into](head),
         pragma[only_bind_out](tail)) and
       stack = I::push(pragma[only_bind_out](head), pragma[only_bind_out](tail))
     |
-      result = I::parameterOf(prev, head)
+      // `Parameter[X]` is only allowed in the output of flow summaries (hence `isOutput = true`),
+      // however the target of the parameter (e.g. `Argument[Y].Parameter[X]`) should be fetched
+      // not from a post-update argument node (hence `isOutput0 = false`)
+      result = I::parameterOf(prev, head) and
+      isOutput0 = false and
+      isOutput = true
       or
-      result = I::returnOf(prev, head)
+      // `ReturnValue` is only allowed in the input of flow summaries (hence `isOutput = false`),
+      // and the target of the return value (e.g. `Argument[X].ReturnValue`) should be fetched not
+      // from a post-update argument node (hence `isOutput0 = false`)
+      result = I::returnOf(prev, head) and
+      isOutput0 = false and
+      isOutput = false
       or
       componentLevelStep(head) and
-      result = prev
+      result = prev and
+      isOutput = isOutput0
     )
   }
 
@@ -312,8 +333,8 @@ module SummaryFlow<Input I> implements Output<I> {
     |
       callable.propagatesFlow(input, output, true) and
       call = I::callTo(callable) and
-      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
-      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input, false) and
+      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output, true)
     )
   }
 
@@ -325,8 +346,8 @@ module SummaryFlow<Input I> implements Output<I> {
       hasLoadSummary(callable, content, pragma[only_bind_into](input),
         pragma[only_bind_into](output)) and
       call = I::callTo(callable) and
-      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
-      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input, false) and
+      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output, true)
     )
   }
 
@@ -338,8 +359,8 @@ module SummaryFlow<Input I> implements Output<I> {
       hasStoreSummary(callable, content, pragma[only_bind_into](input),
         pragma[only_bind_into](output)) and
       call = I::callTo(callable) and
-      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
-      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input, false) and
+      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output, true)
     )
   }
 
@@ -354,8 +375,8 @@ module SummaryFlow<Input I> implements Output<I> {
       hasLoadStoreSummary(callable, loadContent, storeContent, pragma[only_bind_into](input),
         pragma[only_bind_into](output)) and
       call = I::callTo(callable) and
-      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
-      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input, false) and
+      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output, true)
     )
   }
 
@@ -369,8 +390,8 @@ module SummaryFlow<Input I> implements Output<I> {
       hasWithoutContentSummary(callable, filter, pragma[only_bind_into](input),
         pragma[only_bind_into](output)) and
       call = I::callTo(callable) and
-      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
-      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input, false) and
+      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output, true)
     )
   }
 
@@ -384,8 +405,8 @@ module SummaryFlow<Input I> implements Output<I> {
       hasWithContentSummary(callable, filter, pragma[only_bind_into](input),
         pragma[only_bind_into](output)) and
       call = I::callTo(callable) and
-      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
-      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+      nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input, false) and
+      nodeTo = evaluateSummaryComponentStackLocal(callable, call, output, true)
     )
   }
 }

@@ -10,7 +10,7 @@ import semmle.code.java.frameworks.Properties
 /** A sink for MyBatis Mapper method call an argument. */
 class MyBatisMapperMethodCallAnArgument extends DataFlow::Node {
   MyBatisMapperMethodCallAnArgument() {
-    exists(MyBatisMapperSqlOperation mbmxe, MethodAccess ma |
+    exists(MyBatisMapperSqlOperation mbmxe, MethodCall ma |
       mbmxe.getMapperMethod() = ma.getMethod()
     |
       ma.getAnArgument() = this.asExpr()

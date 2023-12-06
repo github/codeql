@@ -187,7 +187,7 @@
 | conversions.swift:170:2:170:2 | self | conversions.swift:170:2:170:2 | SSA def(self) |
 | conversions.swift:171:7:171:7 | SSA def(arr1) | conversions.swift:173:13:173:13 | arr1 |
 | conversions.swift:171:7:171:7 | arr1 | conversions.swift:171:7:171:7 | SSA def(arr1) |
-| conversions.swift:171:14:171:26 | call to sourceArray() | conversions.swift:171:7:171:7 | arr1 |
+| conversions.swift:171:14:171:33 | call to sourceArray(_:) | conversions.swift:171:7:171:7 | arr1 |
 | conversions.swift:172:7:172:7 | SSA def(arr2) | conversions.swift:174:13:174:13 | arr2 |
 | conversions.swift:172:7:172:7 | arr2 | conversions.swift:172:7:172:7 | SSA def(arr2) |
 | conversions.swift:172:14:172:26 | [...] | conversions.swift:172:7:172:7 | arr2 |
@@ -354,6 +354,55 @@
 | simple.swift:85:13:85:20 | call to source() | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... |
 | simple.swift:85:26:85:26 | 1 | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... |
 | simple.swift:87:14:87:21 | call to source() | simple.swift:87:13:87:21 | call to ~(_:) |
+| simple.swift:97:7:97:7 | SSA def(self) | simple.swift:97:7:97:7 | self[return] |
+| simple.swift:97:7:97:7 | SSA def(self) | simple.swift:97:7:97:7 | self[return] |
+| simple.swift:97:7:97:7 | self | simple.swift:97:7:97:7 | SSA def(self) |
+| simple.swift:97:7:97:7 | self | simple.swift:97:7:97:7 | SSA def(self) |
+| simple.swift:98:6:98:6 | self | simple.swift:98:6:98:6 | SSA def(self) |
+| simple.swift:99:6:99:6 | self | simple.swift:99:6:99:6 | SSA def(self) |
+| simple.swift:100:6:100:6 | self | simple.swift:100:6:100:6 | SSA def(self) |
+| simple.swift:101:6:101:6 | self | simple.swift:101:6:101:6 | SSA def(self) |
+| simple.swift:101:6:101:6 | self | simple.swift:101:6:101:6 | SSA def(self) |
+| simple.swift:101:6:101:6 | self | simple.swift:101:6:101:6 | SSA def(self) |
+| simple.swift:101:6:101:6 | value | simple.swift:101:6:101:6 | SSA def(value) |
+| simple.swift:103:13:103:13 | self | simple.swift:103:13:103:13 | SSA def(self) |
+| simple.swift:104:13:104:13 | self | simple.swift:104:13:104:13 | SSA def(self) |
+| simple.swift:105:13:105:13 | self | simple.swift:105:13:105:13 | SSA def(self) |
+| simple.swift:106:13:106:13 | self | simple.swift:106:13:106:13 | SSA def(self) |
+| simple.swift:106:13:106:13 | self | simple.swift:106:13:106:13 | SSA def(self) |
+| simple.swift:106:13:106:13 | self | simple.swift:106:13:106:13 | SSA def(self) |
+| simple.swift:106:13:106:13 | value | simple.swift:106:13:106:13 | SSA def(value) |
+| simple.swift:108:7:108:7 | SSA def(self) | simple.swift:116:13:116:13 | self |
+| simple.swift:108:7:108:7 | self | simple.swift:108:7:108:7 | SSA def(self) |
+| simple.swift:113:3:113:8 | SSA def(gv) | simple.swift:114:13:114:13 | gv |
+| simple.swift:113:8:113:8 | 0 | simple.swift:113:3:113:8 | SSA def(gv) |
+| simple.swift:116:13:116:13 | [post] self | simple.swift:117:13:117:13 | self |
+| simple.swift:116:13:116:13 | self | simple.swift:117:13:117:13 | self |
+| simple.swift:117:13:117:13 | [post] self | simple.swift:118:13:118:13 | self |
+| simple.swift:117:13:117:13 | self | simple.swift:118:13:118:13 | self |
+| simple.swift:118:13:118:13 | [post] self | simple.swift:119:13:119:13 | self |
+| simple.swift:118:13:118:13 | self | simple.swift:119:13:119:13 | self |
+| simple.swift:119:13:119:13 | [post] self | simple.swift:120:3:120:3 | self |
+| simple.swift:119:13:119:13 | self | simple.swift:120:3:120:3 | self |
+| simple.swift:120:3:120:3 | [post] self | simple.swift:121:13:121:13 | self |
+| simple.swift:120:3:120:3 | self | simple.swift:121:13:121:13 | self |
+| simple.swift:121:13:121:13 | [post] self | simple.swift:108:2:129:2 | self[return] |
+| simple.swift:121:13:121:13 | self | simple.swift:108:2:129:2 | self[return] |
+| simple.swift:133:7:133:7 | SSA def(mc) | simple.swift:135:3:135:3 | mc |
+| simple.swift:133:7:133:7 | mc | simple.swift:133:7:133:7 | SSA def(mc) |
+| simple.swift:133:12:133:20 | call to MyClass.init() | simple.swift:133:7:133:7 | mc |
+| simple.swift:135:3:135:3 | [post] mc | simple.swift:138:13:138:13 | mc |
+| simple.swift:135:3:135:3 | mc | simple.swift:138:13:138:13 | mc |
+| simple.swift:142:7:142:7 | SSA def(self) | simple.swift:142:7:142:7 | self[return] |
+| simple.swift:142:7:142:7 | SSA def(self) | simple.swift:142:7:142:7 | self[return] |
+| simple.swift:142:7:142:7 | self | simple.swift:142:7:142:7 | SSA def(self) |
+| simple.swift:142:7:142:7 | self | simple.swift:142:7:142:7 | SSA def(self) |
+| simple.swift:143:6:143:6 | self | simple.swift:143:6:143:6 | SSA def(self) |
+| simple.swift:144:13:144:13 | self | simple.swift:144:13:144:13 | SSA def(self) |
+| simple.swift:146:7:146:7 | SSA def(self) | simple.swift:148:13:148:13 | self |
+| simple.swift:146:7:146:7 | self | simple.swift:146:7:146:7 | SSA def(self) |
+| simple.swift:148:13:148:13 | [post] self | simple.swift:146:2:150:3 | self[return] |
+| simple.swift:148:13:148:13 | self | simple.swift:146:2:150:3 | self[return] |
 | stringinterpolation.swift:5:7:5:7 | SSA def(self) | stringinterpolation.swift:5:7:5:7 | self[return] |
 | stringinterpolation.swift:5:7:5:7 | SSA def(self) | stringinterpolation.swift:5:7:5:7 | self[return] |
 | stringinterpolation.swift:5:7:5:7 | self | stringinterpolation.swift:5:7:5:7 | SSA def(self) |

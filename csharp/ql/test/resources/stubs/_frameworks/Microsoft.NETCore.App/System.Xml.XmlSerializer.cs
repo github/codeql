@@ -54,6 +54,7 @@ namespace System
             public abstract class SchemaImporter
             {
             }
+            [System.AttributeUsage((System.AttributeTargets)10624)]
             public class SoapAttributeAttribute : System.Attribute
             {
                 public string AttributeName { get => throw null; set { } }
@@ -81,6 +82,7 @@ namespace System
                 public bool SoapIgnore { get => throw null; set { } }
                 public System.Xml.Serialization.SoapTypeAttribute SoapType { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624)]
             public class SoapElementAttribute : System.Attribute
             {
                 public SoapElementAttribute() => throw null;
@@ -89,16 +91,19 @@ namespace System
                 public string ElementName { get => throw null; set { } }
                 public bool IsNullable { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)256)]
             public class SoapEnumAttribute : System.Attribute
             {
                 public SoapEnumAttribute() => throw null;
                 public SoapEnumAttribute(string name) => throw null;
                 public string Name { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624)]
             public class SoapIgnoreAttribute : System.Attribute
             {
                 public SoapIgnoreAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)1100, AllowMultiple = true)]
             public class SoapIncludeAttribute : System.Attribute
             {
                 public SoapIncludeAttribute(System.Type type) => throw null;
@@ -125,6 +130,7 @@ namespace System
                 public string MemberName { get => throw null; set { } }
                 public System.Xml.XmlQualifiedName MemberType { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)1052)]
             public class SoapTypeAttribute : System.Attribute
             {
                 public SoapTypeAttribute() => throw null;
@@ -152,6 +158,7 @@ namespace System
                 public void Remove(System.Xml.Serialization.XmlAnyElementAttribute attribute) => throw null;
                 public System.Xml.Serialization.XmlAnyElementAttribute this[int index] { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, AllowMultiple = false)]
             public class XmlArrayAttribute : System.Attribute
             {
                 public XmlArrayAttribute() => throw null;
@@ -162,6 +169,7 @@ namespace System
                 public string Namespace { get => throw null; set { } }
                 public int Order { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, AllowMultiple = true)]
             public class XmlArrayItemAttribute : System.Attribute
             {
                 public XmlArrayItemAttribute() => throw null;
@@ -223,6 +231,7 @@ namespace System
                 public System.Xml.Serialization.XmlTextAttribute XmlText { get => throw null; set { } }
                 public System.Xml.Serialization.XmlTypeAttribute XmlType { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, AllowMultiple = false)]
             public class XmlChoiceIdentifierAttribute : System.Attribute
             {
                 public XmlChoiceIdentifierAttribute() => throw null;
@@ -256,6 +265,7 @@ namespace System
                 public object ObjectBeingDeserialized { get => throw null; }
             }
             public delegate void XmlElementEventHandler(object sender, System.Xml.Serialization.XmlElementEventArgs e);
+            [System.AttributeUsage((System.AttributeTargets)1100, AllowMultiple = true)]
             public class XmlIncludeAttribute : System.Attribute
             {
                 public XmlIncludeAttribute(System.Type type) => throw null;
@@ -635,6 +645,7 @@ namespace System
                 public event System.Xml.Serialization.XmlNodeEventHandler UnknownNode;
                 public event System.Xml.Serialization.UnreferencedObjectEventHandler UnreferencedObject;
             }
+            [System.AttributeUsage((System.AttributeTargets)1052, AllowMultiple = false)]
             public sealed class XmlSerializerAssemblyAttribute : System.Attribute
             {
                 public string AssemblyName { get => throw null; set { } }
@@ -666,6 +677,7 @@ namespace System
                 public virtual System.Collections.Hashtable WriteMethods { get => throw null; }
                 public virtual System.Xml.Serialization.XmlSerializationWriter Writer { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)1)]
             public sealed class XmlSerializerVersionAttribute : System.Attribute
             {
                 public XmlSerializerVersionAttribute() => throw null;
@@ -675,6 +687,7 @@ namespace System
                 public System.Type Type { get => throw null; set { } }
                 public string Version { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)1052)]
             public class XmlTypeAttribute : System.Attribute
             {
                 public bool AnonymousType { get => throw null; set { } }

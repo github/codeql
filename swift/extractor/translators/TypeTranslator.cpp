@@ -163,8 +163,10 @@ void TypeTranslator::fillAnyGenericType(const swift::AnyGenericType& type,
 }
 
 void TypeTranslator::fillType(const swift::TypeBase& type, codeql::Type& entry) {
-  entry.name = type.getString();
+  // Preserve the order as getCanonicalType() forces computation of the canonical type
+  // without which getString may crash sometimes
   entry.canonical_type = dispatcher.fetchLabel(type.getCanonicalType());
+  entry.name = type.getString();
 }
 
 void TypeTranslator::fillArchetypeType(const swift::ArchetypeType& type, ArchetypeType& entry) {
@@ -265,4 +267,40 @@ codeql::ParameterizedProtocolType TypeTranslator::translateParameterizedProtocol
   entry.args = dispatcher.fetchRepeatedLabels(type.getArgs());
   return entry;
 }
+
+codeql::PackArchetypeType TypeTranslator::translatePackArchetypeType(
+    const swift::PackArchetypeType& type) {
+  auto entry = createTypeEntry(type);
+  fillArchetypeType(type, entry);
+  return entry;
+}
+
+codeql::ElementArchetypeType TypeTranslator::translateElementArchetypeType(
+    const swift::ElementArchetypeType& type) {
+  auto entry = createTypeEntry(type);
+  fillArchetypeType(type, entry);
+  return entry;
+}
+
+codeql::PackType TypeTranslator::translatePackType(const swift::PackType& type) {
+  auto entry = createTypeEntry(type);
+  entry.elements = dispatcher.fetchRepeatedLabels(type.getElementTypes());
+  return entry;
+}
+
+codeql::PackElementType TypeTranslator::translatePackElementType(
+    const swift::PackElementType& type) {
+  auto entry = createTypeEntry(type);
+  entry.pack_type = dispatcher.fetchLabel(type.getPackType());
+  return entry;
+}
+
+codeql::PackExpansionType TypeTranslator::translatePackExpansionType(
+    const swift::PackExpansionType& type) {
+  auto entry = createTypeEntry(type);
+  entry.pattern_type = dispatcher.fetchLabel(type.getPatternType());
+  entry.count_type = dispatcher.fetchLabel(type.getCountType());
+  return entry;
+}
+
 }  // namespace codeql

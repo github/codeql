@@ -879,10 +879,12 @@ namespace System
                 void ReadXml(System.Xml.XmlReader reader);
                 void WriteXml(System.Xml.XmlWriter writer);
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, AllowMultiple = false)]
             public class XmlAnyAttributeAttribute : System.Attribute
             {
                 public XmlAnyAttributeAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, AllowMultiple = true)]
             public class XmlAnyElementAttribute : System.Attribute
             {
                 public XmlAnyElementAttribute() => throw null;
@@ -892,6 +894,7 @@ namespace System
                 public string Namespace { get => throw null; set { } }
                 public int Order { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624)]
             public class XmlAttributeAttribute : System.Attribute
             {
                 public string AttributeName { get => throw null; set { } }
@@ -904,6 +907,7 @@ namespace System
                 public string Namespace { get => throw null; set { } }
                 public System.Type Type { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, AllowMultiple = true)]
             public class XmlElementAttribute : System.Attribute
             {
                 public XmlElementAttribute() => throw null;
@@ -918,20 +922,24 @@ namespace System
                 public int Order { get => throw null; set { } }
                 public System.Type Type { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)256)]
             public class XmlEnumAttribute : System.Attribute
             {
                 public XmlEnumAttribute() => throw null;
                 public XmlEnumAttribute(string name) => throw null;
                 public string Name { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)10624)]
             public class XmlIgnoreAttribute : System.Attribute
             {
                 public XmlIgnoreAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)10624, AllowMultiple = false)]
             public class XmlNamespaceDeclarationsAttribute : System.Attribute
             {
                 public XmlNamespaceDeclarationsAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)9244)]
             public class XmlRootAttribute : System.Attribute
             {
                 public XmlRootAttribute() => throw null;
@@ -941,6 +949,7 @@ namespace System
                 public bool IsNullable { get => throw null; set { } }
                 public string Namespace { get => throw null; set { } }
             }
+            [System.AttributeUsage((System.AttributeTargets)1036)]
             public sealed class XmlSchemaProviderAttribute : System.Attribute
             {
                 public XmlSchemaProviderAttribute(string methodName) => throw null;
@@ -956,6 +965,7 @@ namespace System
                 public XmlSerializerNamespaces(System.Xml.XmlQualifiedName[] namespaces) => throw null;
                 public System.Xml.XmlQualifiedName[] ToArray() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)10624)]
             public class XmlTextAttribute : System.Attribute
             {
                 public XmlTextAttribute() => throw null;

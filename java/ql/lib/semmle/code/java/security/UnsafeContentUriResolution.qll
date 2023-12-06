@@ -23,7 +23,7 @@ class ContentUriResolutionAdditionalTaintStep extends Unit {
 /** The URI argument of a call to a `ContentResolver` URI-opening method. */
 private class DefaultContentUriResolutionSink extends ContentUriResolutionSink {
   DefaultContentUriResolutionSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof UriOpeningContentResolverMethod and
       this.asExpr() = ma.getAnArgument() and
       this.getType().(RefType).hasQualifiedName("android.net", "Uri")
@@ -55,7 +55,7 @@ private class PathSanitizer extends ContentUriResolutionSanitizer instanceof Pat
 
 private class FilenameOnlySanitizer extends ContentUriResolutionSanitizer {
   FilenameOnlySanitizer() {
-    exists(Method m | this.asExpr().(MethodAccess).getMethod() = m |
+    exists(Method m | this.asExpr().(MethodCall).getMethod() = m |
       m.hasQualifiedName("java.io", "File", "getName") or
       m.hasQualifiedName("kotlin.io", "FilesKt", ["getNameWithoutExtension", "getExtension"]) or
       m.hasQualifiedName("org.apache.commons.io", "FilenameUtils", "getName")
@@ -70,7 +70,7 @@ private class FilenameOnlySanitizer extends ContentUriResolutionSanitizer {
  */
 private class DecodedAsAnImageSanitizer extends ContentUriResolutionSanitizer {
   DecodedAsAnImageSanitizer() {
-    exists(Argument decodeArg, MethodAccess decode |
+    exists(Argument decodeArg, MethodCall decode |
       decode.getArgument(0) = decodeArg and
       decode
           .getMethod()
