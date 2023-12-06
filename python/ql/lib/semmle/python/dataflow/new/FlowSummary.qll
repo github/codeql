@@ -96,9 +96,7 @@ private module LibraryCallbackSummaries {
     LibraryLambdaMethod() { this = "<library method accepting a callback>" }
 
     final override CallCfgNode getACall() {
-      exists(ExtractedDataFlowCall call | result.getNode() = call.getNode() |
-        not exists(call.getCallable())
-      )
+      not exists(NormalCall call | result.getNode() = call.getNode())
     }
 
     final override ArgumentNode getACallback() { none() }
