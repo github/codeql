@@ -1,4 +1,4 @@
-name: jnunemaker/httparty-ruby
+name: rack/rack-ruby
 version: 0.0.0
 library: true
 extensionTargets:
