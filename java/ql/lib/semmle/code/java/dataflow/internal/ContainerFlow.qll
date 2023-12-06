@@ -452,7 +452,7 @@ predicate arrayStoreStep(Node node1, Node node2) {
   )
   or
   exists(Expr arr, Call call |
-    arr = node2.asExpr() and
+    arr = node2.(PostUpdateNode).getPreUpdateNode().asExpr() and
     call.getArgument(1) = node1.asExpr() and
     call.getQualifier() = arr and
     arr.getType() instanceof ArrayType and
