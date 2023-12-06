@@ -257,7 +257,6 @@ astGuardsControl
 | test.c:175:13:175:32 | ... == ... | false | 175 | 175 |
 | test.c:175:13:175:32 | ... == ... | true | 175 | 175 |
 | test.c:181:9:181:9 | x | false | 183 | 184 |
-| test.c:181:9:181:9 | x | false | 186 | 180 |
 | test.c:181:9:181:9 | x | true | 181 | 182 |
 | test.c:181:9:181:9 | x | true | 186 | 180 |
 | test.cpp:18:8:18:10 | call to get | true | 19 | 19 |
