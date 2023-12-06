@@ -140,6 +140,9 @@ private module Input implements InputSig<PythonDataFlow> {
       arg = other.getArgument(any(ArgumentPosition p | p.isSelf())) and
       other.getNode().getScope() = f
     )
+    or
+    arg = call.getArgument(_) and
+    arg instanceof CaptureArgumentNode
   }
 }
 
