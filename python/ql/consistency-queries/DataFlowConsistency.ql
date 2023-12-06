@@ -14,6 +14,8 @@ private module Input implements InputSig<PythonDataFlow> {
   private import Private
   private import Public
 
+  predicate postWithInFlowExclude(Node n) { n instanceof FlowSummaryNode }
+
   predicate argHasPostUpdateExclude(ArgumentNode n) {
     // TODO: Implement post-updates for *args, see tests added in https://github.com/github/codeql/pull/14936
     exists(ArgumentPosition apos | n.argumentOf(_, apos) and apos.isStarArgs(_))
