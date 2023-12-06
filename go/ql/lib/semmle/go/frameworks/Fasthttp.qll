@@ -81,18 +81,14 @@ module Fasthttp {
     }
   }
 
-  /**
-   * The methods that can write to HTTP Response Body.
-   * These methods can be dangerous if they are user controllable.
-   */
-  class HttpResponseBodySink extends SharedXss::Sink {
-    HttpResponseBodySink() {
-      exists(Method m |
-        m.hasQualifiedName(packagePath(), "RequestCtx", ["Success", "SuccessString"]) and
-        this = m.getACall().getArgument(1)
-      )
-    }
+  private predicate responseBodyWriterResult(DataFlow::Node src) {
+    exists(Method responseBodyWriter |
+      responseBodyWriter.hasQualifiedName(packagePath(), "Response", "BodyWriter") and
+      src = responseBodyWriter.getACall().getResult(0)
+    )
   }
+
+  private module ResponseBodyWriterFlow = DataFlow::SimpleGlobal<responseBodyWriterResult/1>;
 
   private class ResponseBody extends Http::ResponseBody::Range {
     DataFlow::MethodCallNode call;
@@ -112,6 +108,14 @@ module Fasthttp {
           "AppendBody", "AppendBodyString", "SetBody", "SetBodyRaw", "SetBodyStream",
           "SetBodyString", "Success", "SuccessString"
         ]
+      or
+      exists(Method write, DataFlow::CallNode writeCall |
+        write.hasQualifiedName("io", "Writer", "Write") and
+        writeCall = write.getACall() and
+        ResponseBodyWriterFlow::flowsTo(writeCall.getReceiver()) and
+        this = writeCall.getArgument(0)
+      ) and
+      methodName = "BodyWriter"
     }
 
     override Http::ResponseWriter getResponseWriter() { result.getANode() = call.getReceiver() }

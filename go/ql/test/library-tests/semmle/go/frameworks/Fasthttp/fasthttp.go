@@ -174,6 +174,7 @@ func fasthttpServer() {
 		// Response methods
 		// Xss Sinks Related method
 		userInput := "user Controlled input"
+		requestCtx.SetContentType("text/html")
 		userInputByte := []byte("user Controlled input")
 		requestCtx.Response.AppendBody(userInputByte)   // $ XssSink=userInputByte
 		requestCtx.Response.AppendBodyString(userInput) // $ XssSink=userInput
