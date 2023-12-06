@@ -995,15 +995,23 @@ module RangeStage<
   }
 
   /**
-   * Holds if `e` has an upper (for `upper = true`) or lower
-   * (for `upper = false`) bound of `b`.
+   * Holds if `e` has an intrinsic upper (for `upper = true`) or lower
+   * (for `upper = false`) bound of `b + delta` as a base case for range analysis.
    */
-  private predicate baseBound(Sem::Expr e, D::Delta b, boolean upper) {
-    hasConstantBound(e, b, upper)
-    or
-    upper = false and
-    b = D::fromInt(0) and
-    semPositive(e.(Sem::BitAndExpr).getAnOperand())
+  private predicate baseBound(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
+    includeBound(b) and
+    (
+      e = b.getExpr(delta) and
+      upper = [true, false]
+      or
+      hasConstantBound(e, delta, upper) and
+      b instanceof SemZeroBound
+      or
+      upper = false and
+      delta = D::fromInt(0) and
+      semPositive(e.(Sem::BitAndExpr).getAnOperand()) and
+      b instanceof SemZeroBound
+    )
   }
 
   /**
@@ -1129,19 +1137,10 @@ module RangeStage<
   ) {
     not ignoreExprBound(e) and
     (
-      e = b.getExpr(delta) and
-      (upper = true or upper = false) and
+      baseBound(e, b, delta, upper) and
       fromBackEdge = false and
       origdelta = delta and
-      reason = TSemNoReason() and
-      includeBound(b)
-      or
-      baseBound(e, delta, upper) and
-      b instanceof SemZeroBound and
-      fromBackEdge = false and
-      origdelta = delta and
-      reason = TSemNoReason() and
-      includeBound(b)
+      reason = TSemNoReason()
       or
       exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
         boundedSsa(v, b, delta, bb, upper, fromBackEdge, origdelta, reason) and
