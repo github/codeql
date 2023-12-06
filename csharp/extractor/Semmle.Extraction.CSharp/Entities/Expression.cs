@@ -103,7 +103,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child) =>
             CreateFromNode(new ExpressionNodeInfo(cx, node, parent, child));
 
-        public static Expression CreateFromNode(ExpressionNodeInfo info) => Expressions.ImplicitCast.Create(info);
+        public static Expression CreateFromNode(ExpressionNodeInfo info) => Expressions.CastOperator.CreateImplicit(info);
 
         /// <summary>
         /// Creates an expression from a syntax node.
@@ -214,12 +214,17 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (type.SpecialType is SpecialType.None)
             {
-                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+                return CastOperator.CreateImplicitGenerated(cx, parent, childIndex, type, defaultValue, location);
             }
 
             if (type.SpecialType is SpecialType.System_DateTime)
             {
                 return DateTimeObjectCreation.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+            }
+
+            if (type.SpecialType is SpecialType.System_UIntPtr || type.SpecialType is SpecialType.System_IntPtr)
+            {
+                return CastOperator.CreateExplicitGenerated(cx, parent, childIndex, type, defaultValue, location);
             }
 
             // const literal:
