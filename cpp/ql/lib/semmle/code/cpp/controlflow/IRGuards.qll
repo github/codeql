@@ -223,6 +223,9 @@ private class GuardConditionFromIR extends GuardCondition {
       or
       instr = tce.getInstruction(ConditionValueFalseTempAddressTag())
     )
+    or
+    // Exclude unreached instructions, as their AST is the whole function and not a block.
+    instr instanceof UnreachedInstruction
   }
 }
 
