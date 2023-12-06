@@ -682,60 +682,65 @@ module RangeStage<
    * - `upper = false` : `e2 >= e1 + delta`
    */
   private predicate boundFlowStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
-    valueFlowStep(e2, e1, delta) and
-    (upper = true or upper = false)
-    or
-    e2.(SafeCastExpr).getOperand() = e1 and
-    delta = D::fromInt(0) and
-    (upper = true or upper = false)
-    or
-    javaCompatibility() and
-    exists(Sem::Expr x, Sem::SubExpr sub |
-      e2 = sub and
-      sub.getLeftOperand() = e1 and
-      sub.getRightOperand() = x
-    |
-      // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
-      not x instanceof Sem::ConstantIntegerExpr and
-      if strictlyPositiveIntegralExpr(x)
-      then upper = true and delta = D::fromInt(-1)
-      else
-        if semPositive(x)
-        then upper = true and delta = D::fromInt(0)
+    // Constants have easy, base-case bounds, so let's not infer any recursive bounds.
+    not e2 instanceof Sem::ConstantIntegerExpr and
+    (
+      valueFlowStep(e2, e1, delta) and
+      upper = [true, false]
+      or
+      e2.(SafeCastExpr).getOperand() = e1 and
+      delta = D::fromInt(0) and
+      upper = [true, false]
+      or
+      javaCompatibility() and
+      exists(Sem::Expr x, Sem::SubExpr sub |
+        e2 = sub and
+        sub.getLeftOperand() = e1 and
+        sub.getRightOperand() = x
+      |
+        // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
+        not x instanceof Sem::ConstantIntegerExpr and
+        if strictlyPositiveIntegralExpr(x)
+        then upper = true and delta = D::fromInt(-1)
         else
-          if strictlyNegativeIntegralExpr(x)
-          then upper = false and delta = D::fromInt(1)
+          if semPositive(x)
+          then upper = true and delta = D::fromInt(0)
           else
-            if semNegative(x)
-            then upper = false and delta = D::fromInt(0)
-            else none()
+            if strictlyNegativeIntegralExpr(x)
+            then upper = false and delta = D::fromInt(1)
+            else
+              if semNegative(x)
+              then upper = false and delta = D::fromInt(0)
+              else none()
+      )
+      or
+      e2.(Sem::RemExpr).getRightOperand() = e1 and
+      semPositive(e1) and
+      delta = D::fromInt(-1) and
+      upper = true
+      or
+      e2.(Sem::RemExpr).getLeftOperand() = e1 and
+      semPositive(e1) and
+      delta = D::fromInt(0) and
+      upper = true
+      or
+      e2.(Sem::BitAndExpr).getAnOperand() = e1 and
+      semPositive(e1) and
+      delta = D::fromInt(0) and
+      upper = true
+      or
+      e2.(Sem::BitOrExpr).getAnOperand() = e1 and
+      semPositive(e2) and
+      delta = D::fromInt(0) and
+      upper = false
+      or
+      additionalBoundFlowStep(e2, e1, delta, upper)
     )
-    or
-    e2.(Sem::RemExpr).getRightOperand() = e1 and
-    semPositive(e1) and
-    delta = D::fromInt(-1) and
-    upper = true
-    or
-    e2.(Sem::RemExpr).getLeftOperand() = e1 and
-    semPositive(e1) and
-    delta = D::fromInt(0) and
-    upper = true
-    or
-    e2.(Sem::BitAndExpr).getAnOperand() = e1 and
-    semPositive(e1) and
-    delta = D::fromInt(0) and
-    upper = true
-    or
-    e2.(Sem::BitOrExpr).getAnOperand() = e1 and
-    semPositive(e2) and
-    delta = D::fromInt(0) and
-    upper = false
-    or
-    additionalBoundFlowStep(e2, e1, delta, upper)
   }
 
   /** Holds if `e2 = e1 * factor` and `factor > 0`. */
   private predicate boundFlowStepMul(Sem::Expr e2, Sem::Expr e1, D::Delta factor) {
+    not e2 instanceof Sem::ConstantIntegerExpr and
     exists(Sem::ConstantIntegerExpr c, int k | k = c.getIntValue() and k > 0 |
       e2.(Sem::MulExpr).hasOperands(e1, c) and factor = D::fromInt(k)
       or
@@ -755,6 +760,7 @@ module RangeStage<
    * therefore only valid for non-negative numbers.
    */
   private predicate boundFlowStepDiv(Sem::Expr e2, Sem::Expr e1, D::Delta factor) {
+    not e2 instanceof Sem::ConstantIntegerExpr and
     Sem::getExprType(e2) instanceof Sem::IntegerType and
     exists(Sem::ConstantIntegerExpr c, D::Delta k |
       k = D::fromInt(c.getIntValue()) and D::toFloat(k) > 0
@@ -1149,8 +1155,6 @@ module RangeStage<
       or
       exists(Sem::Expr mid, D::Delta d1, D::Delta d2 |
         boundFlowStep(e, mid, d1, upper) and
-        // Constants have easy, base-case bounds, so let's not infer any recursive bounds.
-        not e instanceof Sem::ConstantIntegerExpr and
         bounded(mid, b, d2, upper, fromBackEdge, origdelta, reason) and
         // upper = true:  e <= mid + d1 <= b + d1 + d2 = b + delta
         // upper = false: e >= mid + d1 >= b + d1 + d2 = b + delta
@@ -1164,7 +1168,6 @@ module RangeStage<
       or
       exists(Sem::Expr mid, D::Delta factor, D::Delta d |
         boundFlowStepMul(e, mid, factor) and
-        not e instanceof Sem::ConstantIntegerExpr and
         bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
         b instanceof SemZeroBound and
         delta = D::fromFloat(D::toFloat(d) * D::toFloat(factor))
@@ -1172,7 +1175,6 @@ module RangeStage<
       or
       exists(Sem::Expr mid, D::Delta factor, D::Delta d |
         boundFlowStepDiv(e, mid, factor) and
-        not e instanceof Sem::ConstantIntegerExpr and
         bounded(mid, b, d, upper, fromBackEdge, origdelta, reason) and
         b instanceof SemZeroBound and
         D::toFloat(d) >= 0 and
