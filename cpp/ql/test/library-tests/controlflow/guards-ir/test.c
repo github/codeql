@@ -174,3 +174,13 @@ int ternary_test(const char *path, int mode)
 {
     return (foo(path, mode) == 0 ? 1 : 0);
 }
+
+void abort(void);
+
+int abort_test(int x) {
+    if (x) {
+        x += 1;
+    } else {
+        abort();
+    }
+}
