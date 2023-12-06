@@ -16,6 +16,109 @@ module Fasthttp {
   /** Gets the path for the root package of fasthttp. */
   string packagePath() { result = package(v1modulePath(), "") }
 
+  private class HeaderWrite extends Http::HeaderWrite::Range, DataFlow::MethodCallNode {
+    string methodName;
+
+    HeaderWrite() {
+      this.getTarget().hasQualifiedName(packagePath(), "ResponseHeader", methodName) and
+      methodName in [
+          "Add", "AddBytesK", "AddBytesKV", "AddBytesV", "Set", "SetBytesK", "SetBytesKV",
+          "SetCanonical", "SetContentType", "SetContentTypeBytes"
+        ]
+      or
+      this.getTarget().hasQualifiedName(packagePath(), "RequestCtx", methodName) and
+      methodName in ["SetContentType", "SetContentTypeBytes", "Success", "SuccessString"]
+    }
+
+    override DataFlow::Node getName() {
+      methodName =
+        [
+          "Add", "AddBytesK", "AddBytesKV", "AddBytesV", "Set", "SetBytesK", "SetBytesKV",
+          "SetCanonical"
+        ] and
+      result = this.getArgument(0)
+    }
+
+    override string getHeaderName() {
+      result = Http::HeaderWrite::Range.super.getHeaderName()
+      or
+      methodName = ["SetContentType", "SetContentTypeBytes", "Success", "SuccessString"] and
+      result = "content-type"
+    }
+
+    override DataFlow::Node getValue() {
+      if methodName = ["SetContentType", "SetContentTypeBytes", "Success", "SuccessString"]
+      then result = this.getArgument(0)
+      else result = this.getArgument(1)
+    }
+
+    override Http::ResponseWriter getResponseWriter() {
+      result.(ResponseWriter).getAHeaderObject() = this
+    }
+  }
+
+  private class ResponseWriter extends Http::ResponseWriter::Range {
+    SsaWithFields v;
+
+    ResponseWriter() {
+      this = v.getBaseVariable().getSourceVariable() and
+      (
+        v.getType().hasQualifiedName(packagePath(), ["Response", "ResponseHeader"]) or
+        v.getType().(PointerType).getBaseType().hasQualifiedName(packagePath(), "RequestCtx")
+      )
+    }
+
+    override DataFlow::Node getANode() { result = v.similar().getAUse().getASuccessor*() }
+
+    /** Gets a header object that corresponds to this HTTP response. */
+    DataFlow::MethodCallNode getAHeaderObject() {
+      result.getTarget().getName() =
+        [
+          "Add", "AddBytesK", "AddBytesKV", "AddBytesV", "Set", "SetBytesK", "SetBytesKV",
+          "SetCanonical", "SetContentType", "SetContentTypeBytes", "Success", "SuccessString"
+        ] and
+      this.getANode() = result.getReceiver()
+    }
+  }
+
+  /**
+   * The methods that can write to HTTP Response Body.
+   * These methods can be dangerous if they are user controllable.
+   */
+  class HttpResponseBodySink extends SharedXss::Sink {
+    HttpResponseBodySink() {
+      exists(Method m |
+        m.hasQualifiedName(packagePath(), "RequestCtx", ["Success", "SuccessString"]) and
+        this = m.getACall().getArgument(1)
+      )
+    }
+  }
+
+  private class ResponseBody extends Http::ResponseBody::Range {
+    DataFlow::MethodCallNode call;
+    string methodName;
+
+    ResponseBody() {
+      exists(Method m |
+        m.hasQualifiedName(packagePath(), "Response", methodName) and
+        call = m.getACall() and
+        this = call.getArgument(0)
+        or
+        m.hasQualifiedName(packagePath(), "RequestCtx", ["Success", "SuccessString"]) and
+        this = m.getACall().getArgument(1)
+      ) and
+      methodName =
+        [
+          "AppendBody", "AppendBodyString", "SetBody", "SetBodyRaw", "SetBodyStream",
+          "SetBodyString", "Success", "SuccessString"
+        ]
+    }
+
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = call.getReceiver() }
+
+    override string getAContentType() { result = super.getAContentType() }
+  }
+
   /**
    * Provide models for sanitizer/Dangerous Functions of fasthttp.
    */
@@ -208,7 +311,7 @@ module Fasthttp {
    */
   module Response {
     /**
-     * A Method That send files from its input.
+     * A Method that sends files from its input.
      * It does not check the input path against path traversal attacks, So it is a dangerous method.
      */
     class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
@@ -221,39 +324,6 @@ module Fasthttp {
 
       override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
     }
-
-    /**
-     * The methods that can write to HTTP Response Body.
-     * These methods can be dangerous if they are user controllable.
-     */
-    class HttpResponseBodySink extends SharedXss::Sink {
-      HttpResponseBodySink() {
-        exists(Method m |
-          m.hasQualifiedName(packagePath(), "Response",
-            [
-              "AppendBody", "AppendBodyString", "SetBody", "SetBodyRaw", "SetBodyStream",
-              "SetBodyString"
-            ]) and
-          this = m.getACall().getArgument(0)
-        )
-        or
-        exists(Method write, DataFlow::CallNode writeCall |
-          write.hasQualifiedName("io", "Writer", "Write") and
-          writeCall = write.getACall() and
-          ResponseBodyWriterFlow::flowsTo(writeCall.getReceiver()) and
-          this = writeCall.getArgument(0)
-        )
-      }
-    }
-
-    private predicate responseBodyWriterResult(DataFlow::Node src) {
-      exists(Method responseBodyWriter |
-        responseBodyWriter.hasQualifiedName(packagePath(), "Response", "BodyWriter") and
-        src = responseBodyWriter.getACall().getResult(0)
-      )
-    }
-
-    private module ResponseBodyWriterFlow = DataFlow::SimpleGlobal<responseBodyWriterResult/1>;
   }
 
   /**
@@ -345,19 +415,6 @@ module Fasthttp {
               "UserAgent"
             ]) and
           this = m.getACall().getResult(0)
-        )
-      }
-    }
-
-    /**
-     * The methods that can write to HTTP Response Body.
-     * These methods can be dangerous if they are user controllable.
-     */
-    class HttpResponseBodySink extends SharedXss::Sink {
-      HttpResponseBodySink() {
-        exists(Method m |
-          m.hasQualifiedName(packagePath(), "RequestCtx", ["Success", "SuccessString"]) and
-          this = m.getACall().getArgument(1)
         )
       }
     }

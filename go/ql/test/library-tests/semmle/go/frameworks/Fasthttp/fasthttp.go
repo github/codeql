@@ -160,10 +160,10 @@ func fasthttpServer() {
 		requestCtx.Request.Host()                         // $ UntrustedFlowSource="call to Host"
 		requestCtx.Request.Body()                         // $ UntrustedFlowSource="call to Body"
 		requestCtx.Request.RequestURI()                   // $ UntrustedFlowSource="call to RequestURI"
-		body1, _ := requestCtx.Request.BodyGunzip()       //$ UntrustedFlowSource="... := ...[0]"
-		body2, _ := requestCtx.Request.BodyInflate()      //$ UntrustedFlowSource="... := ...[0]"
-		body3, _ := requestCtx.Request.BodyUnbrotli()     //$ UntrustedFlowSource="... := ...[0]"
-		body4, _ := requestCtx.Request.BodyUncompressed() //$ UntrustedFlowSource="... := ...[0]"
+		body1, _ := requestCtx.Request.BodyGunzip()       // $ UntrustedFlowSource="... := ...[0]"
+		body2, _ := requestCtx.Request.BodyInflate()      // $ UntrustedFlowSource="... := ...[0]"
+		body3, _ := requestCtx.Request.BodyUnbrotli()     // $ UntrustedFlowSource="... := ...[0]"
+		body4, _ := requestCtx.Request.BodyUncompressed() // $ UntrustedFlowSource="... := ...[0]"
 		requestCtx.Request.BodyStream()                   // $ UntrustedFlowSource="call to BodyStream"
 		requestCtx.Request.ReadBody(dstReader, 100, 1000)
 		requestCtx.Request.ReadLimitBody(dstReader, 100)
@@ -175,9 +175,9 @@ func fasthttpServer() {
 		// Xss Sinks Related method
 		userInput := "user Controlled input"
 		userInputByte := []byte("user Controlled input")
-		requestCtx.Response.AppendBody(userInputByte)     // $ XssSink=userInputByte
-		requestCtx.Response.AppendBodyString(userInput)   // $ XssSink=userInput
-		rspWriter := requestCtx.Response.BodyWriter()     // IDK how to handle this that returns a `io.Writer`
+		requestCtx.Response.AppendBody(userInputByte)   // $ XssSink=userInputByte
+		requestCtx.Response.AppendBodyString(userInput) // $ XssSink=userInput
+		rspWriter := requestCtx.Response.BodyWriter()
 		rspWriter.Write(userInputByte)                    // $ XssSink=userInputByte
 		requestCtx.Response.SetBody(userInputByte)        // $ XssSink=userInputByte
 		requestCtx.Response.SetBodyString(userInput)      // $ XssSink=userInput
