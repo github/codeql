@@ -27,4 +27,14 @@ class C2 {
         sink(l1.get(0))
         sink(l2.get(0))
     }
+
+    fun setWrapper(l: Array<String>, v: String) {
+        l.set(0, v)
+    }
+    fun test3() {
+        val l = arrayOf("")
+        setWrapper(l, taint("a"))
+        sink(l[0])
+        sink(l.get(0))
+    }
 }
