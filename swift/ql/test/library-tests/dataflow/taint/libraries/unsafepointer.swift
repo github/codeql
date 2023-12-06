@@ -1,8 +1,8 @@
 
 // --- stubs ---
 
-func sourceString() -> String { return "" }
-func sourceUInt8() -> UInt8 { return 0 }
+func sourceString(_ label: String) -> String { return "" }
+func sourceUInt8(_ label: String) -> UInt8 { return 0 }
 func sink(arg: Any) {}
 
 // --- tests ---
@@ -18,14 +18,14 @@ func taintPointer(ptr: UnsafeMutablePointer<String>) {
   sink(arg: ptr.pointee)
   sink(arg: ptr)
 
-  ptr.pointee = sourceString()
+  ptr.pointee = sourceString("taintPointer")
 
-  sink(arg: ptr.pointee) // $ tainted=21
+  sink(arg: ptr.pointee) // $ tainted=taintPointer
   sink(arg: ptr)
 }
 
 func clearPointer2(ptr: UnsafeMutablePointer<String>) {
-  sink(arg: ptr.pointee) // $ tainted=21
+  sink(arg: ptr.pointee) // $ tainted=taintPointer
   sink(arg: ptr)
 
   ptr.pointee = "abc"
@@ -42,12 +42,12 @@ func testMutatingPointerInCall(ptr: UnsafeMutablePointer<String>) {
 
   taintPointer(ptr: ptr) // mutates `ptr` pointee with a tainted value
 
-  sink(arg: ptr.pointee) // $ tainted=21
+  sink(arg: ptr.pointee) // $ tainted=taintPointer
   sink(arg: ptr)
 
   clearPointer2(ptr: ptr)
 
-  sink(arg: ptr.pointee) // $ SPURIOUS: tainted=21
+  sink(arg: ptr.pointee) // $ SPURIOUS: tainted=taintPointer
   sink(arg: ptr)
 }
 
@@ -57,10 +57,10 @@ func taintBuffer(buffer: UnsafeMutableBufferPointer<UInt8>) {
   sink(arg: buffer[0])
   sink(arg: buffer)
 
-  buffer[0] = sourceUInt8()
+  buffer[0] = sourceUInt8("taintBuffer")
 
-  sink(arg: buffer[0]) // $ tainted=60
-  sink(arg: buffer) // $ tainted=60
+  sink(arg: buffer[0]) // $ tainted=taintBuffer
+  sink(arg: buffer) // $ tainted=taintBuffer
 }
 
 func testMutatingBufferInCall(ptr: UnsafeMutablePointer<UInt8>) {
@@ -71,8 +71,8 @@ func testMutatingBufferInCall(ptr: UnsafeMutablePointer<UInt8>) {
 
   taintBuffer(buffer: buffer) // mutates `buffer` contents with a tainted value
 
-  sink(arg: buffer[0]) // $ tainted=60
-  sink(arg: buffer) // $ tainted=60
+  sink(arg: buffer[0]) // $ tainted=taintBuffer
+  sink(arg: buffer) // $ tainted=taintBuffer
 
 }
 
@@ -84,9 +84,9 @@ func taintMyPointer(ptr: MyPointer) {
   sink(arg: ptr.pointee)
   sink(arg: ptr)
 
-  ptr.pointee = sourceString()
+  ptr.pointee = sourceString("taintMyPointer")
 
-  sink(arg: ptr.pointee) // $ tainted=87
+  sink(arg: ptr.pointee) // $ tainted=taintMyPointer
   sink(arg: ptr)
 }
 
@@ -96,7 +96,7 @@ func testMutatingMyPointerInCall(ptr: MyPointer) {
 
   taintMyPointer(ptr: ptr) // mutates `ptr` pointee with a tainted value
 
-  sink(arg: ptr.pointee) // $ MISSING: tainted=87
+  sink(arg: ptr.pointee) // $ MISSING: tainted=taintMyPointer
   sink(arg: ptr)
 }
 
@@ -111,19 +111,19 @@ struct MyGenericPointerContainer<T> {
 }
 
 func writePointerContainer(mpc: MyPointerContainer) {
-  mpc.ptr.pointee = sourceString()
-  sink(arg: mpc.ptr.pointee) // $ tainted=114
+  mpc.ptr.pointee = sourceString("writePointerContainer")
+  sink(arg: mpc.ptr.pointee) // $ tainted=writePointerContainer
 }
 
 func writeGenericPointerContainer<T>(mgpc: MyGenericPointerContainer<T>) {
-  mgpc.ptr.pointee = sourceString() as! T
-  sink(arg: mgpc.ptr.pointee) // $ tainted=119
+  mgpc.ptr.pointee = sourceString("writeGenericPointerContainer") as! T
+  sink(arg: mgpc.ptr.pointee) // $ tainted=writeGenericPointerContainer
 }
 
 func testWritingPointerContainersInCalls(mpc: MyPointerContainer, mgpc: MyGenericPointerContainer<Int>) {
   writePointerContainer(mpc: mpc)
-  sink(arg: mpc.ptr.pointee) // $ tainted=114
+  sink(arg: mpc.ptr.pointee) // $ tainted=writePointerContainer
 
   writeGenericPointerContainer(mgpc: mgpc)
-  sink(arg: mgpc.ptr.pointee) // $ tainted=119
+  sink(arg: mgpc.ptr.pointee) // $ tainted=writeGenericPointerContainer
 }
