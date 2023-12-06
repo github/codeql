@@ -25,6 +25,8 @@ def parse_args():
                         help='Build for a specific version/kind')
     parser.add_argument('--single-version-embeddable', action='store_true',
                         help='When building a single version, build an embeddable extractor (default is standalone)')
+    parser.add_argument(
+        '--output', help='When building a single version, set the output filename')
     return parser.parse_args()
 
 
@@ -205,31 +207,31 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
     shutil.rmtree(tmp_src_dir)
 
 
-def compile_embeddable(version):
+def compile_embeddable(version, output=None):
     compile(['kotlin-stdlib-' + version, 'kotlin-compiler-embeddable-' + version],
             ['kotlin-stdlib-' + version],
             kotlin_dependency_folder,
             transform_to_embeddable,
-            'codeql-extractor-kotlin-embeddable-%s.jar' % (version),
+            output or f'codeql-extractor-kotlin-embeddable-{version}.jar',
             'build_embeddable_' + version,
             version)
 
 
-def compile_standalone(version):
+def compile_standalone(version, output=None):
     compile(['kotlin-stdlib-' + version, 'kotlin-compiler-' + version],
             ['kotlin-stdlib-' + version],
             kotlin_dependency_folder,
             lambda srcs: None,
-            'codeql-extractor-kotlin-standalone-%s.jar' % (version),
+            output or f'codeql-extractor-kotlin-standalone-{version}.jar',
             'build_standalone_' + version,
             version)
 
 
 if args.single_version:
     if args.single_version_embeddable == True:
-        compile_embeddable(args.single_version)
+        compile_embeddable(args.single_version, args.output)
     else:
-        compile_standalone(args.single_version)
+        compile_standalone(args.single_version, args.output)
 elif args.single_version_embeddable == True:
     print("--single-version-embeddable requires --single-version", file=sys.stderr)
     sys.exit(1)
@@ -238,4 +240,5 @@ elif args.many:
         compile_standalone(version)
         compile_embeddable(version)
 else:
-    compile_standalone(kotlin_plugin_versions.get_single_version())
+    compile_standalone(
+        kotlin_plugin_versions.get_single_version(), args.output)
