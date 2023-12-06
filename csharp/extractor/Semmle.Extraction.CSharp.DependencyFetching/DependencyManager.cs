@@ -230,6 +230,31 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private void SelectNewestFrameworkPath(string frameworkPath, string frameworkType, ISet<string> dllPaths, ISet<string> frameworkLocations)
+        {
+            var versionFolders = new DirectoryInfo(frameworkPath)
+                .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
+                .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
+                .ToArray();
+
+            if (versionFolders.Length > 1)
+            {
+                var versions = string.Join(", ", versionFolders.Select(d => d.Name));
+                progressMonitor.LogInfo($"Found multiple {frameworkType} DLLs in NuGet packages at {frameworkPath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
+            }
+
+            var selectedFrameworkFolder = versionFolders.FirstOrDefault()?.FullName;
+            if (selectedFrameworkFolder is null)
+            {
+                progressMonitor.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {frameworkPath}, but no version folder was found.");
+                selectedFrameworkFolder = frameworkPath;
+            }
+
+            dllPaths.Add(selectedFrameworkFolder);
+            frameworkLocations.Add(selectedFrameworkFolder);
+            progressMonitor.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}. Not adding installation directory.");
+        }
+
         private void AddNetFrameworkDlls(ISet<string> dllPaths, ISet<string> frameworkLocations)
         {
             // Multiple dotnet framework packages could be present.
@@ -237,14 +262,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
 
             var frameworkPath = packagesInPrioOrder
-                    .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
-                    .FirstOrDefault(pair => pair.Path is not null);
+                .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
+                .FirstOrDefault(pair => pair.Path is not null);
 
             if (frameworkPath.Path is not null)
             {
-                dllPaths.Add(frameworkPath.Path);
-                frameworkLocations.Add(frameworkPath.Path);
-                progressMonitor.LogInfo($"Found .NET Core/Framework DLLs in NuGet packages at {frameworkPath.Path}. Not adding installation directory.");
+                SelectNewestFrameworkPath(frameworkPath.Path, ".NET Framework", dllPaths, frameworkLocations);
 
                 for (var i = frameworkPath.Index + 1; i < packagesInPrioOrder.Length; i++)
                 {
@@ -308,9 +331,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // First try to find ASP.NET Core assemblies in the NuGet packages
             if (GetPackageDirectory(FrameworkPackageNames.AspNetCoreFramework) is string aspNetCorePackage)
             {
-                progressMonitor.LogInfo($"Found ASP.NET Core in NuGet packages. Not adding installation directory.");
-                dllPaths.Add(aspNetCorePackage);
-                frameworkLocations.Add(aspNetCorePackage);
+                SelectNewestFrameworkPath(aspNetCorePackage, "ASP.NET Core", dllPaths, frameworkLocations);
                 return;
             }
 
@@ -326,9 +347,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             if (GetPackageDirectory(FrameworkPackageNames.WindowsDesktopFramework) is string windowsDesktopApp)
             {
-                progressMonitor.LogInfo($"Found Windows Desktop App in NuGet packages.");
-                dllPaths.Add(windowsDesktopApp);
-                frameworkLocations.Add(windowsDesktopApp);
+                SelectNewestFrameworkPath(windowsDesktopApp, "Windows Desktop App", dllPaths, frameworkLocations);
             }
         }
 
