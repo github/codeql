@@ -1,3 +1,7 @@
+## 0.9.4
+
+No user-facing changes.
+
 ## 0.9.3
 
 ### Minor Analysis Improvements
