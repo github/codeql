@@ -268,11 +268,11 @@ edges
 | GlobalDataFlow.cs:427:9:427:11 | value : String | GlobalDataFlow.cs:427:41:427:46 | access to local variable sink20 |
 | GlobalDataFlow.cs:438:22:438:35 | "taint source" : String | GlobalDataFlow.cs:201:22:201:32 | access to property OutProperty : String |
 | GlobalDataFlow.cs:446:64:446:64 | s : String | GlobalDataFlow.cs:448:19:448:19 | access to parameter s : String |
-| GlobalDataFlow.cs:448:19:448:19 | access to parameter s : String | GlobalDataFlow.cs:448:9:448:10 | [post] access to parameter sb : StringBuilder [element] : String |
-| GlobalDataFlow.cs:454:31:454:32 | [post] access to local variable sb : StringBuilder [element] : String | GlobalDataFlow.cs:455:22:455:23 | access to local variable sb : StringBuilder [element] : String |
+| GlobalDataFlow.cs:448:19:448:19 | access to parameter s : String | GlobalDataFlow.cs:448:9:448:10 | [post] access to parameter sb : StringBuilder |
+| GlobalDataFlow.cs:454:31:454:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlow.cs:455:22:455:23 | access to local variable sb : StringBuilder |
 | GlobalDataFlow.cs:454:35:454:48 | "taint source" : String | GlobalDataFlow.cs:446:64:446:64 | s : String |
-| GlobalDataFlow.cs:454:35:454:48 | "taint source" : String | GlobalDataFlow.cs:454:31:454:32 | [post] access to local variable sb : StringBuilder [element] : String |
-| GlobalDataFlow.cs:455:22:455:23 | access to local variable sb : StringBuilder [element] : String | GlobalDataFlow.cs:455:22:455:34 | call to method ToString : String |
+| GlobalDataFlow.cs:454:35:454:48 | "taint source" : String | GlobalDataFlow.cs:454:31:454:32 | [post] access to local variable sb : StringBuilder |
+| GlobalDataFlow.cs:455:22:455:23 | access to local variable sb : StringBuilder | GlobalDataFlow.cs:455:22:455:34 | call to method ToString : String |
 | GlobalDataFlow.cs:455:22:455:34 | call to method ToString : String | GlobalDataFlow.cs:456:15:456:20 | access to local variable sink43 |
 | GlobalDataFlow.cs:465:22:465:65 | call to method Join : String | GlobalDataFlow.cs:466:15:466:20 | access to local variable sink44 |
 | GlobalDataFlow.cs:465:51:465:64 | "taint source" : String | GlobalDataFlow.cs:465:22:465:65 | call to method Join : String |
@@ -592,11 +592,11 @@ nodes
 | GlobalDataFlow.cs:427:41:427:46 | access to local variable sink20 | semmle.label | access to local variable sink20 |
 | GlobalDataFlow.cs:438:22:438:35 | "taint source" : String | semmle.label | "taint source" : String |
 | GlobalDataFlow.cs:446:64:446:64 | s : String | semmle.label | s : String |
-| GlobalDataFlow.cs:448:9:448:10 | [post] access to parameter sb : StringBuilder [element] : String | semmle.label | [post] access to parameter sb : StringBuilder [element] : String |
+| GlobalDataFlow.cs:448:9:448:10 | [post] access to parameter sb : StringBuilder | semmle.label | [post] access to parameter sb : StringBuilder |
 | GlobalDataFlow.cs:448:19:448:19 | access to parameter s : String | semmle.label | access to parameter s : String |
-| GlobalDataFlow.cs:454:31:454:32 | [post] access to local variable sb : StringBuilder [element] : String | semmle.label | [post] access to local variable sb : StringBuilder [element] : String |
+| GlobalDataFlow.cs:454:31:454:32 | [post] access to local variable sb : StringBuilder | semmle.label | [post] access to local variable sb : StringBuilder |
 | GlobalDataFlow.cs:454:35:454:48 | "taint source" : String | semmle.label | "taint source" : String |
-| GlobalDataFlow.cs:455:22:455:23 | access to local variable sb : StringBuilder [element] : String | semmle.label | access to local variable sb : StringBuilder [element] : String |
+| GlobalDataFlow.cs:455:22:455:23 | access to local variable sb : StringBuilder | semmle.label | access to local variable sb : StringBuilder |
 | GlobalDataFlow.cs:455:22:455:34 | call to method ToString : String | semmle.label | call to method ToString : String |
 | GlobalDataFlow.cs:456:15:456:20 | access to local variable sink43 | semmle.label | access to local variable sink43 |
 | GlobalDataFlow.cs:465:22:465:65 | call to method Join : String | semmle.label | call to method Join : String |
@@ -707,7 +707,7 @@ subpaths
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:300:27:300:28 | x0 : String | GlobalDataFlow.cs:300:33:300:34 | access to parameter x0 : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
-| GlobalDataFlow.cs:454:35:454:48 | "taint source" : String | GlobalDataFlow.cs:446:64:446:64 | s : String | GlobalDataFlow.cs:448:9:448:10 | [post] access to parameter sb : StringBuilder [element] : String | GlobalDataFlow.cs:454:31:454:32 | [post] access to local variable sb : StringBuilder [element] : String |
+| GlobalDataFlow.cs:454:35:454:48 | "taint source" : String | GlobalDataFlow.cs:446:64:446:64 | s : String | GlobalDataFlow.cs:448:9:448:10 | [post] access to parameter sb : StringBuilder | GlobalDataFlow.cs:454:31:454:32 | [post] access to local variable sb : StringBuilder |
 | GlobalDataFlow.cs:575:46:575:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String | GlobalDataFlow.cs:81:84:81:84 | access to parameter x : String | GlobalDataFlow.cs:575:44:575:47 | delegate call : String |
 | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String |
 | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String |
