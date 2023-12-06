@@ -1706,12 +1706,6 @@ integer_literal_exprs(  //dir=expr
 | @typed_pattern
 ;
 
-#keyset[id]
-pattern_types(  //dir=pattern
-  int id: @pattern ref,
-  int type_: @type_or_none ref
-);
-
 any_patterns(  //dir=pattern
   unique int id: @any_pattern
 );
