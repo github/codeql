@@ -4,7 +4,6 @@
  */
 
 import swift
-import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.ExternalFlow
 
@@ -35,7 +34,7 @@ class WeakSensitiveDataHashingAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
-private class WeakHashingSinks extends SinkModelCsv {
+private class WeakSensitiveDataHashingSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -68,10 +67,10 @@ private class WeakHashingSinks extends SinkModelCsv {
 /**
  * A sink defined in a CSV model.
  */
-private class DefaultWeakHashingSink extends WeakSensitiveDataHashingSink {
+private class DefaultWeakSenitiveDataHashingSink extends WeakSensitiveDataHashingSink {
   string algorithm;
 
-  DefaultWeakHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
+  DefaultWeakSenitiveDataHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
 
   override string getAlgorithm() { result = algorithm }
 }
