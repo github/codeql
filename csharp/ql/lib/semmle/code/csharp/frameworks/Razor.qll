@@ -215,3 +215,53 @@ private class RelativeViewCallFilepath extends NormalizableFilepath {
   /** Holds if this string is the `idx`th path that will be searched for the `vc` call. */
   predicate hasViewCallWithIndex(ViewCall vc, int idx) { vc = vc_ and idx = idx_ }
 }
+
+/** A subclass of `Microsoft.AspNetCore.Mvc.RazorPages.PageModel` */
+class PageModelClass extends Class {
+  PageModelClass() {
+    this.getABaseType+().hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "PageModel")
+  }
+
+  /** A handler method such as `OnGetAsync` */
+  Method getAHandlerMethod() {
+    result = this.getAMethod() and
+    result.getName().matches("On%") and
+    not exists(Attribute attr |
+      attr = result.getAnAttribute() and
+      attr.getType()
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "NonHandlerAttribute")
+    )
+  }
+
+  /** Gets the Razor Page that this PageModel refers to. */
+  RazorViewClass getPage() {
+    exists(Field modelField |
+      modelField.hasName("Model") and
+      modelField.getType() = this and
+      modelField.getDeclaringType() = result
+    )
+  }
+}
+
+private MethodCall getAPageCall(PageModelClass pm) {
+  result.getEnclosingCallable() = pm.getAHandlerMethod() and
+  result
+      .getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "PageModel",
+        ["Page", "RedirectToPage"])
+}
+
+private class PageModelJumpNode extends DataFlow::NonLocalJumpNode {
+  PageModelClass pm;
+
+  PageModelJumpNode() { this.asExpr() = getAPageCall(pm).getQualifier() }
+
+  override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
+    preservesValue = true and
+    exists(PropertyAccess modelProp |
+      result.asExpr() = modelProp and
+      modelProp.getTarget().hasName("Model") and
+      modelProp.getEnclosingCallable().getDeclaringType() = pm.getPage()
+    )
+  }
+}
