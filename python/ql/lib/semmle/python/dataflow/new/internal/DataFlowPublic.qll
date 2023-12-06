@@ -30,7 +30,7 @@ newtype TNode =
     or
     node.getNode() instanceof Pattern
     or
-    node = any(ScopeEntryDefinition def).getDefiningNode()
+    node = any(ScopeEntryDefinition def | not def.getScope() instanceof Module).getDefiningNode()
   } or
   /**
    * A synthetic node representing the value of an object before a state change.
