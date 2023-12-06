@@ -18,8 +18,8 @@ class StrBuilderTest {
 
         StrBuilder sb1 = new StrBuilder(); sb1.append(taint().toCharArray()); sink(sb1.toString()); // $hasTaintFlow
         StrBuilder sb2 = new StrBuilder(); sb2.append(taint().toCharArray(), 0, 0); sink(sb2.toString()); // $hasTaintFlow
-        StrBuilder sb3 = new StrBuilder(); sb3.append(CharBuffer.wrap(taint().toCharArray())); sink(sb3.toString()); // $ MISSING: hasTaintFlow
-        StrBuilder sb4 = new StrBuilder(); sb4.append(CharBuffer.wrap(taint().toCharArray()), 0, 0); sink(sb4.toString()); // $ MISSING: hasTaintFlow
+        StrBuilder sb3 = new StrBuilder(); sb3.append(CharBuffer.wrap(taint().toCharArray())); sink(sb3.toString()); // $ hasTaintFlow
+        StrBuilder sb4 = new StrBuilder(); sb4.append(CharBuffer.wrap(taint().toCharArray()), 0, 0); sink(sb4.toString()); // $ hasTaintFlow
         StrBuilder sb5 = new StrBuilder(); sb5.append((CharSequence)taint()); sink(sb5.toString()); // $hasTaintFlow
         StrBuilder sb6 = new StrBuilder(); sb6.append((CharSequence)taint(), 0, 0); sink(sb6.toString()); // $hasTaintFlow
         StrBuilder sb7 = new StrBuilder(); sb7.append((Object)taint()); sink(sb7.toString()); // $hasTaintFlow
