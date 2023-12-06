@@ -5,15 +5,15 @@
  * @problem.severity warning
  * @security-severity 7.5
  * @precision high
- * @id csharp/weak-password-hashing
+ * @id swift/weak-password-hashing
  * @tags security
  *       external/cwe/cwe-327
  *       external/cwe/cwe-328
  *       external/cwe/cwe-916
  */
 
-import csharp
-import WeakPasswordHashingQuery
+import swift
+import codeql.swift.security.WeakPasswordHashingQuery
 import WeakHashingFlow::PathGraph
 
 from

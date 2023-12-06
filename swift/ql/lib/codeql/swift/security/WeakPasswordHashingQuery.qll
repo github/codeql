@@ -3,10 +3,10 @@
  * cryptographic hashing algorithms on passwords.
  */
 
-import csharp
-import semmle.code.csharp.security.SensitiveActions
-import semmle.code.csharp.dataflow.DataFlow
-import semmle.code.csharp.dataflow.TaintTracking
+import swift
+import codeql.swift.security.SensitiveExprs
+import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.TaintTracking
 
 /**
  * A taint tracking configuration from password expressions to inappropriate
@@ -31,7 +31,7 @@ module WeakHashingPasswordConfig implements DataFlow::ConfigSig {
 module WeakHashingFlow = TaintTracking::Global<WeakHashingPasswordConfig>;
 
 // TODO: rewrite with data extensions in mind, ref the Swift implementation
-class WeakPasswordHashingSink extends DataFlow::Node {   
+class WeakPasswordHashingSink extends DataFlow::Node {
   string algorithm;
 
   WeakPasswordHashingSink() {
