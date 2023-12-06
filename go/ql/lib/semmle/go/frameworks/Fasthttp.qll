@@ -148,15 +148,20 @@ module Fasthttp {
     /**
      * A function that can be used as a sanitizer for XSS.
      */
-    class HtmlQuoteSanitizer extends SharedXss::Sanitizer {
+    class HtmlQuoteSanitizer extends EscapeFunction::Range {
+      boolean isHTMLEscape;
+
       HtmlQuoteSanitizer() {
-        exists(DataFlow::CallNode c |
-          c.getTarget()
-              .hasQualifiedName(packagePath(),
-                ["AppendHTMLEscape", "AppendHTMLEscapeBytes", "AppendQuotedArg"])
-        |
-          this = c.getArgument(1)
-        )
+        this.hasQualifiedName(packagePath(), ["AppendHTMLEscape", "AppendHTMLEscapeBytes"]) and
+        isHTMLEscape = true
+        or
+        this.hasQualifiedName(packagePath(), "AppendQuotedArg") and isHTMLEscape = false
+      }
+
+      override string kind() {
+        isHTMLEscape = true and result = "html"
+        or
+        isHTMLEscape = false and result = "url"
       }
     }
 
