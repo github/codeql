@@ -67,7 +67,7 @@ class Endpoint extends DataFlow::MethodNode {
    */
   bindingset[this]
   string getParameterTypes() {
-    // For now, return the names of postional parameters. We don't always have type information, so we can't return type names.
+    // For now, return the names of postional and keyword parameters. We don't always have type information, so we can't return type names.
     // We don't yet handle splat params or block params.
     result =
       "(" +
@@ -98,10 +98,7 @@ class Endpoint extends DataFlow::MethodNode {
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
-  predicate isNeutral() {
-    none()
-    // this instanceof FlowSummaryImpl::Public::NeutralCallable
-  }
+  predicate isNeutral() { none() }
 
   /**
    * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
@@ -161,7 +158,7 @@ class SourceCallable extends DataFlow::CallableNode {
     exists(string type, string path, string method |
       method = path.regexpCapture("(Method\\[[^\\]]+\\]).*", 1) and
       Util::pathToMethod(this, type, method) and
-      sinkModel(type, path, _)
+      sourceModel(type, path, _)
     )
   }
 }
