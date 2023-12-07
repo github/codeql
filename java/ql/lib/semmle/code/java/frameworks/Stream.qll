@@ -32,11 +32,9 @@ private class CollectToContainer extends SyntheticCallable {
           ])
   }
 
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    input = SummaryComponentStack::elementOf(SummaryComponentStack::qualifier()) and
-    output = SummaryComponentStack::elementOf(SummaryComponentStack::return()) and
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[this].Element" and
+    output = "ReturnValue.Element" and
     preservesValue = true
   }
 }
@@ -46,11 +44,9 @@ private class CollectToJoining extends SyntheticCallable {
 
   override Call getACall() { result.(CollectCall).getArgument(0).(Collector).hasName("joining") }
 
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    input = SummaryComponentStack::elementOf(SummaryComponentStack::qualifier()) and
-    output = SummaryComponentStack::return() and
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[this].Element" and
+    output = "ReturnValue" and
     preservesValue = false
   }
 
@@ -70,28 +66,9 @@ private class CollectToGroupingBy extends SyntheticCallable {
     )
   }
 
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    input = SummaryComponentStack::elementOf(SummaryComponentStack::qualifier()) and
-    output =
-      SummaryComponentStack::elementOf(SummaryComponentStack::mapValueOf(SummaryComponentStack::return())) and
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[this].Element" and
+    output = "ReturnValue.MapValue.Element" and
     preservesValue = true
-  }
-}
-
-private class RequiredComponentStackForCollect extends RequiredSummaryComponentStack {
-  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-    head = SummaryComponent::element() and
-    tail = SummaryComponentStack::qualifier()
-    or
-    head = SummaryComponent::element() and
-    tail = SummaryComponentStack::return()
-    or
-    head = SummaryComponent::element() and
-    tail = SummaryComponentStack::mapValueOf(SummaryComponentStack::return())
-    or
-    head = SummaryComponent::mapValue() and
-    tail = SummaryComponentStack::return()
   }
 }
