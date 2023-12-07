@@ -1145,6 +1145,11 @@ class ModuleNode instanceof Module {
   bindingset[this]
   pragma[inline]
   API::Node trackInstance() { result = API::Internal::getModuleInstance(this) }
+
+  /**
+   * Holds if this is a built-in module, e.g. `Object`.
+   */
+  predicate isBuiltin() { super.isBuiltin() }
 }
 
 /**

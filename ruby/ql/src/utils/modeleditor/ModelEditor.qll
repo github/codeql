@@ -9,6 +9,9 @@ private import codeql.ruby.frameworks.core.Gem
 private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.frameworks.data.internal.ApiGraphModelsExtensions
 private import queries.modeling.internal.Util as Util
+private import codeql.util.Unit
+private import codeql.ruby.AST
+private import codeql.ruby.ast.Module
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(DataFlow::MethodNode c) {
@@ -26,56 +29,78 @@ private predicate gemFileStep(Gem::GemSpec gem, Folder folder, int n) {
 }
 
 /**
- * A callable method or accessor from either the Ruby Standard Library, a 3rd party library, or from the source.
+ * Gets the namespace of an endpoint in `file`.
  */
-class Endpoint extends DataFlow::MethodNode {
-  Endpoint() { this.isPublic() and not isUninteresting(this) }
+string getNamespace(File file) {
+  exists(Folder folder | folder = file.getParentContainer() |
+    // The nearest gemspec to this endpoint, if one exists
+    result = min(Gem::GemSpec g, int n | gemFileStep(g, folder, n) | g order by n).getName()
+    or
+    not gemFileStep(_, folder, _) and
+    result = ""
+  )
+}
 
-  File getFile() { result = this.getLocation().getFile() }
+abstract class Endpoint instanceof AstNode {
+  string getNamespace() { result = getNamespace(this.(AstNode).getLocation().getFile()) }
 
-  string getName() { result = this.getMethodName() }
+  string getFileName() { result = this.(AstNode).getLocation().getFile().getBaseName() }
 
-  /**
-   * Gets the namespace of this endpoint.
-   */
-  bindingset[this]
-  string getNamespace() {
-    exists(Folder folder | folder = this.getFile().getParentContainer() |
-      // The nearest gemspec to this endpoint, if one exists
-      result = min(Gem::GemSpec g, int n | gemFileStep(g, folder, n) | g order by n).getName()
-      or
-      not gemFileStep(_, folder, _) and
-      result = ""
-    )
+  string toString() { result = this.(AstNode).toString() }
+
+  abstract string getType();
+
+  abstract string getName();
+
+  abstract string getParameters();
+
+  abstract boolean getSupportedStatus();
+
+  abstract string getSupportedType();
+}
+
+/**
+ * A callable method or accessor from source code.
+ */
+class MethodEndpoint extends Endpoint {
+  private DataFlow::MethodNode methodNode;
+
+  MethodEndpoint() {
+    this = methodNode.asExpr().getExpr() and
+    methodNode.isPublic() and
+    not isUninteresting(methodNode)
   }
+
+  DataFlow::MethodNode getNode() { result = methodNode }
+
+  override string getName() { result = methodNode.getMethodName() }
 
   /**
    * Gets the unbound type name of this endpoint.
    */
-  bindingset[this]
-  string getTypeName() {
+  override string getType() {
     result =
-      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getMethodName()) = this)
+      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getName()) = methodNode)
           .getQualifiedName() or
     result =
-      any(DataFlow::ModuleNode m | m.getOwnSingletonMethod(this.getMethodName()) = this)
+      any(DataFlow::ModuleNode m | m.getOwnSingletonMethod(this.getName()) = methodNode)
             .getQualifiedName() + "!"
   }
 
   /**
    * Gets the parameter types of this endpoint.
    */
-  bindingset[this]
-  string getParameterTypes() {
+  override string getParameters() {
     // For now, return the names of postional parameters. We don't always have type information, so we can't return type names.
     // We don't yet handle splat params or block params.
     result =
       "(" +
         concat(string key, string value |
-          value = any(int i | i.toString() = key | this.asCallable().getParameter(i)).getName()
+          value =
+            any(int i | i.toString() = key | methodNode.asCallable().getParameter(i)).getName()
           or
           exists(DataFlow::ParameterNode param |
-            param = this.asCallable().getKeywordParameter(key)
+            param = methodNode.asCallable().getKeywordParameter(key)
           |
             value = key + ":"
           )
@@ -90,11 +115,11 @@ class Endpoint extends DataFlow::MethodNode {
 
   /** Holds if this API is a known source. */
   pragma[nomagic]
-  abstract predicate isSource();
+  predicate isSource() { this.getNode() instanceof SourceCallable }
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
-  abstract predicate isSink();
+  predicate isSink() { this.getNode() instanceof SinkCallable }
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
@@ -111,9 +136,11 @@ class Endpoint extends DataFlow::MethodNode {
     this.hasSummary() or this.isSource() or this.isSink() or this.isNeutral()
   }
 
-  boolean getSupportedStatus() { if this.isSupported() then result = true else result = false }
+  override boolean getSupportedStatus() {
+    if this.isSupported() then result = true else result = false
+  }
 
-  string getSupportedType() {
+  override string getSupportedType() {
     this.isSink() and result = "sink"
     or
     this.isSource() and result = "source"
@@ -135,7 +162,7 @@ string methodClassification(Call method) {
 
 class TestFile extends File {
   TestFile() {
-    this.getRelativePath().regexpMatch(".*(test|spec).+") and
+    this.getRelativePath().regexpMatch(".*(test|spec|examples).+") and
     not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
   }
 }
@@ -167,10 +194,32 @@ class SourceCallable extends DataFlow::CallableNode {
 }
 
 /**
- * A class of effectively public callables from source code.
+ * A module defined in source code
  */
-class PublicEndpointFromSource extends Endpoint {
-  override predicate isSource() { this instanceof SourceCallable }
+class ModuleEndpoint extends Endpoint {
+  private DataFlow::ModuleNode moduleNode;
 
-  override predicate isSink() { this instanceof SinkCallable }
+  ModuleEndpoint() {
+    this =
+      min(AstNode n, Location loc |
+        n = moduleNode.getADeclaration() and
+        loc = n.getLocation()
+      |
+        n order by loc.getFile().getAbsolutePath(), loc.getStartLine(), loc.getStartColumn()
+      ) and
+    not moduleNode.(Module).isBuiltin() and
+    not moduleNode.getLocation().getFile() instanceof TestFile
+  }
+
+  DataFlow::ModuleNode getNode() { result = moduleNode }
+
+  override string getType() { result = this.getNode().getQualifiedName() }
+
+  override string getName() { result = "" }
+
+  override string getParameters() { result = "" }
+
+  override boolean getSupportedStatus() { result = false }
+
+  override string getSupportedType() { result = "" }
 }
