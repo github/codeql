@@ -135,33 +135,33 @@ func testManualMemoryManagement() {
   let i1 = sourceInt("i1")
   let r1 = withUnsafePointer(to: i1, {
     ptr in
-    sink(arg: ptr)
-    sink(arg: ptr[0]) // $ MISSING: tainted=i1
+    sink(arg: ptr) // $ tainted=i1
+    sink(arg: ptr[0]) // $ tainted=i1
     sink(arg: ptr.pointee) // $ MISSING: tainted=i1
     return sourceInt("r1")
   })
-  sink(arg: r1) // $ MISSING: tainted=r1
+  sink(arg: r1) // $ tainted=r1
 
   var i2 = sourceInt("i2")
   let r2 = withUnsafeMutablePointer(to: &i2, {
     ptr in
-    sink(arg: ptr)
-    sink(arg: ptr[0]) // $ MISSING: tainted=i2
+    sink(arg: ptr) // $ tainted=i2
+    sink(arg: ptr[0]) // $ tainted=i2
     sink(arg: ptr.pointee) // $ MISSING: tainted=i2
     ptr.pointee = sourceInt("i2_overwrite")
-    sink(arg: ptr)
-    sink(arg: ptr[0]) // $ MISSING: tainted=i2_overwrite
+    sink(arg: ptr) // $ SPURIOUS: tainted=i2
+    sink(arg: ptr[0]) // $ MISSING: tainted=i2_overwrite SPURIOUS: tainted=i2
     sink(arg: ptr.pointee) // $ tainted=i2_overwrite
     return sourceInt("r2")
   })
-  sink(arg: r2) // $ MISSING: tainted=r2
+  sink(arg: r2) // $ tainted=r2
   sink(arg: i2) // $ MISSING: tainted=i2_overwrite SPURIOUS: tainted=i2
 
   let i3 = sourceInt("i3")
   let r3 = withUnsafeBytes(of: i3, {
     ptr in
-    sink(arg: ptr)
-    sink(arg: ptr[0]) // $ MISSING: tainted=i3
+    sink(arg: ptr) // $ tainted=i3
+    sink(arg: ptr[0]) // $ tainted=i3
     ptr.withMemoryRebound(to: Int.self, {
       buffer in
       sink(arg: buffer)
@@ -172,20 +172,20 @@ func testManualMemoryManagement() {
     sink(arg: buffer2[0]) // $ MISSING: tainted=i3
     return sourceInt("r3")
   })
-  sink(arg: r3) // $ MISSING: tainted=r3
+  sink(arg: r3) // $ tainted=r3
 
   var i4 = sourceInt("i4")
   let r4 = withUnsafeMutableBytes(of: &i4, {
     ptr in
-    sink(arg: ptr)
-    sink(arg: ptr[0]) // $ MISSING: tainted=i4
+    sink(arg: ptr) // $ tainted=i4
+    sink(arg: ptr[0]) // $ tainted=i4
     ptr[0] = sourceUInt8("i4_partialwrite")
-    sink(arg: ptr) // $ tainted=i4_partialwrite MISSING: tainted=i4
-    sink(arg: ptr[0]) // $ tainted=i4_partialwrite
+    sink(arg: ptr) // $ tainted=i4_partialwrite tainted=i4
+    sink(arg: ptr[0]) // $ tainted=i4_partialwrite SPURIOUS: tainted=i4
     return sourceInt("r4")
   })
-  sink(arg: r4) // $ MISSING: tainted=r4
-  sink(arg: i4) // $ tainted=i4 MISSING: tainted=i4_partialwrite
+  sink(arg: r4) // $ tainted=r4
+  sink(arg: i4) // $ tainted=i4 tainted=i4_partialwrite
 
   let r5 = withUnsafeTemporaryAllocation(of: Int.self, capacity: 10, {
     buffer in
@@ -196,10 +196,10 @@ func testManualMemoryManagement() {
     sink(arg: buffer[0]) // $ tainted=buffer5
     return sourceInt("r5")
   })
-  sink(arg: r5) // $ MISSING: tainted=r5
+  sink(arg: r5) // $ tainted=r5
 
   let r6 = withExtendedLifetime(sourceInt("i6"), {
     return sourceInt("r6")
   })
-  sink(arg: r6) // $ MISSING: tainted=r6
+  sink(arg: r6) // $ tainted=r6
 }

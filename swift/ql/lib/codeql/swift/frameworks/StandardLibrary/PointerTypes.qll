@@ -68,6 +68,19 @@ private class PointerSummaries extends SummaryModelCsv {
       [
         ";UnsafeMutablePointer;true;init(mutating:);;;Argument[0];ReturnValue;taint",
         ";UnsafeMutableBufferPointer;true;update(repeating:);;;Argument[0];Argument[-1].CollectionElement;value",
+        ";;false;withUnsafePointer(to:_:);;;Argument[0];Argument[1].Parameter[0].CollectionElement;taint",
+        ";;false;withUnsafePointer(to:_:);;;Argument[1].ReturnValue;ReturnValue;value",
+        ";;false;withUnsafeMutablePointer(to:_:);;;Argument[0];Argument[1].Parameter[0].CollectionElement;taint",
+        ";;false;withUnsafeMutablePointer(to:_:);;;Argument[1].Parameter[0].CollectionElement;Argument[0];value",
+        ";;false;withUnsafeMutablePointer(to:_:);;;Argument[1].ReturnValue;ReturnValue;value",
+        ";;false;withUnsafeBytes(of:_:);;;Argument[0];Argument[1].Parameter[0].CollectionElement;taint",
+        ";;false;withUnsafeBytes(of:_:);;;Argument[1].ReturnValue;ReturnValue;value",
+        ";;false;withUnsafeMutableBytes(of:_:);;;Argument[0];Argument[1].Parameter[0].CollectionElement;taint",
+        ";;false;withUnsafeMutableBytes(of:_:);;;Argument[1].Parameter[0].CollectionElement;Argument[0];taint",
+        ";;false;withUnsafeMutableBytes(of:_:);;;Argument[1].ReturnValue;ReturnValue;value",
+        ";;false;withUnsafeTemporaryAllocation(of:capacity:_:);;;Argument[2].ReturnValue;ReturnValue;value",
+        ";;false;withUnsafeTemporaryAllocation(byteCount:alignment:_:);;;Argument[2].ReturnValue;ReturnValue;value",
+        ";;false;withExtendedLifetime(_:_:);;;Argument[1].ReturnValue;ReturnValue;value",
       ]
   }
 }
