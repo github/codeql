@@ -4,14 +4,13 @@
  * It must export the following members:
  * ```ql
  * class Unit // a unit type
- * module AccessPathSyntax // a re-export of the AccessPathSyntax module
  * class InvokeNode // a type representing an invocation connected to the API graph
  * module API // the API graph module
  * predicate isPackageUsed(string package)
  * API::Node getExtraNodeFromPath(string package, string type, string path, int n)
- * API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token)
- * API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token)
- * predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToken token)
+ * API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token)
+ * API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathTokenBase token)
+ * predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathTokenBase token)
  * InvokeNode getAnInvocationOf(API::Node node)
  * predicate isExtraValidTokenNameInIdentifyingAccessPath(string name)
  * predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name)
@@ -25,9 +24,7 @@ private import ApiGraphModels
 // Re-export libraries needed by ApiGraphModels.qll
 module API = JS::API;
 
-import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
 import JS::DataFlow as DataFlow
-private import AccessPathSyntax
 
 /**
  * Holds if `rawType` represents the JavaScript type `qualifiedName` from the given NPM `package`.
@@ -137,7 +134,7 @@ API::Node getExtraNodeFromType(string type) {
  * Gets a JavaScript-specific API graph successor of `node` reachable by resolving `token`.
  */
 bindingset[token]
-API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
+API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   token.getName() = "Member" and
   result = node.getMember(token.getAnArgument())
   or
@@ -183,7 +180,7 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
  * Gets a JavaScript-specific API graph successor of `node` reachable by resolving `token`.
  */
 bindingset[token]
-API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken token) {
+API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathTokenBase token) {
   token.getName() = "Instance" and
   result = node.getInstance()
   or
@@ -233,7 +230,7 @@ API::Node getAFuzzySuccessor(API::Node node) {
  * Holds if `invoke` matches the JS-specific call site filter in `token`.
  */
 bindingset[token]
-predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPathToken token) {
+predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPathTokenBase token) {
   token.getName() = "NewCall" and
   invoke instanceof API::NewNode
   or
@@ -246,9 +243,8 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
     operand = token.getAnArgument() and
     argIndex = operand.splitAt("=", 0) and
     stringValue = operand.splitAt("=", 1) and
-    invoke
-        .getArgument(AccessPath::parseIntWithArity(argIndex, invoke.getNumArgument()))
-        .getStringValue() = stringValue
+    invoke.getArgument(parseIntWithArity(argIndex, invoke.getNumArgument())).getStringValue() =
+      stringValue
   )
 }
 
@@ -338,7 +334,7 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
   or
   name = "WithStringArgument" and
   exists(argument.indexOf("=")) and
-  exists(AccessPath::parseIntWithArity(argument.splitAt("=", 0), 10))
+  exists(parseIntWithArity(argument.splitAt("=", 0), 10))
 }
 
 module ModelOutputSpecific {
