@@ -35,8 +35,9 @@
  *    or method, or a parameter.
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
- *    element selected by the first 6 columns. An `input` can be either "",
- *    "Argument[n]", "Argument[n1..n2]", "ReturnValue":
+ *    element selected by the first 6 columns. An `input` can be a dot separated
+ *    path consisting of either "", "Argument[n]", "Argument[n1..n2]",
+ *    "ReturnValue", "Element", "WithoutElement", or "WithElement":
  *    - "": Selects a write to the selected element in case this is a field.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
  *      The arguments are zero-indexed, and `this` specifies the qualifier.
@@ -44,9 +45,15 @@
  *      the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      This requires that the selected element is a method with a body.
+ *    - "Element": Selects the collection elements of the selected element.
+ *    - "WithoutElement": Selects the selected element but without
+ *       its collection elements.
+ *    - "WithElement": Selects the collection elements of the selected element, but
+ *       points to the selected element.
  *
- *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
- *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
+ *    An `output` can be can be a dot separated path consisting of either "",
+ *    "Argument[n]", "Argument[n1..n2]", "Parameter", "Parameter[n]",
+ *    "Parameter[n1..n2]", "ReturnValue", or "Element":
  *    - "": Selects a read of a selected field, or a selected parameter.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
@@ -61,6 +68,7 @@
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
+ *    - "Element": Selects the collection elements of the selected element.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
@@ -85,8 +93,9 @@ private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
-private import ExternalFlowExtensions as Extensions
+private import internal.ExternalFlowExtensions as Extensions
 private import FlowSummary
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
  * A class for activating additional model rows.
@@ -265,86 +274,17 @@ module ModelValidation {
     )
   }
 
-  private class OutdatedSinkKind extends string {
-    OutdatedSinkKind() {
-      this =
-        [
-          "sql", "url-redirect", "xpath", "ssti", "logging", "groovy", "jexl", "mvel", "xslt",
-          "ldap", "pending-intent-sent", "intent-start", "set-hostname-verifier",
-          "header-splitting", "xss", "write-file", "create-file", "read-file", "open-url",
-          "jdbc-url"
-        ]
-    }
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
 
-    private string replacementKind() {
-      this = ["sql", "xpath", "groovy", "jexl", "mvel", "xslt", "ldap"] and
-      result = this + "-injection"
-      or
-      this = "url-redirect" and result = "url-redirection"
-      or
-      this = "ssti" and result = "template-injection"
-      or
-      this = "logging" and result = "log-injection"
-      or
-      this = "pending-intent-sent" and result = "pending-intents"
-      or
-      this = "intent-start" and result = "intent-redirection"
-      or
-      this = "set-hostname-verifier" and result = "hostname-verification"
-      or
-      this = "header-splitting" and result = "response-splitting"
-      or
-      this = "xss" and result = "html-injection\" or \"js-injection"
-      or
-      this = "write-file" and result = "file-content-store"
-      or
-      this = ["create-file", "read-file"] and result = "path-injection"
-      or
-      this = ["open-url", "jdbc-url"] and result = "request-forgery"
-    }
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
 
-    string outdatedMessage() {
-      result =
-        "The kind \"" + this + "\" is outdated. Use \"" + this.replacementKind() + "\" instead."
-    }
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
 
-  private string getInvalidModelKind() {
-    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string kind, string msg | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind =
-        [
-          "request-forgery", "jndi-injection", "ldap-injection", "sql-injection", "log-injection",
-          "mvel-injection", "xpath-injection", "groovy-injection", "html-injection", "js-injection",
-          "ognl-injection", "intent-redirection", "pending-intents", "url-redirection",
-          "path-injection", "file-content-store", "hostname-verification", "response-splitting",
-          "information-leak", "xslt-injection", "jexl-injection", "bean-validation",
-          "template-injection", "fragment-injection", "command-injection"
-        ] and
-      not kind.matches("regex-use%") and
-      not kind.matches("qltest%") and
-      msg = "Invalid kind \"" + kind + "\" in sink model." and
-      // The part of this message that refers to outdated sink kinds can be deleted after June 1st, 2024.
-      if kind instanceof OutdatedSinkKind
-      then result = msg + " " + kind.(OutdatedSinkKind).outdatedMessage()
-      else result = msg
-    )
-    or
-    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["remote", "contentprovider", "android-external-storage-dir"] and
-      not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
-    or
-    exists(string kind | neutralModel(_, _, _, _, kind, _) |
-      not kind = ["summary", "source", "sink"] and
-      result = "Invalid kind \"" + kind + "\" in neutral model."
-    )
-  }
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSignature() {
     exists(
@@ -387,7 +327,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelKind()
+        KindVal::getInvalidModelKind()
       ]
   }
 }
@@ -405,6 +345,29 @@ private predicate elementSpec(
   neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
+private string getNestedName(Type t) {
+  not t instanceof RefType and result = t.toString()
+  or
+  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).nestedName()
+  or
+  result =
+    t.(Array).getElementType().(NestedType).getEnclosingType().nestedName() + "$" + t.getName()
+}
+
+private string getQualifiedName(Type t) {
+  not t instanceof RefType and result = t.toString()
+  or
+  result = t.(RefType).getQualifiedName()
+  or
+  exists(Array a, Type c | a = t and c = a.getElementType() |
+    not c instanceof RefType and result = t.toString()
+    or
+    exists(string pkgName | pkgName = c.(RefType).getPackage().getName() |
+      if pkgName = "" then result = getNestedName(a) else result = pkgName + "." + getNestedName(a)
+    )
+  )
+}
+
 /**
  * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
  *
@@ -414,31 +377,39 @@ private predicate elementSpec(
 cached
 string paramsString(Callable c) {
   result =
-    "(" + concat(int i | | c.getParameterType(i).getErasure().toString(), "," order by i) + ")"
+    "(" + concat(int i | | getNestedName(c.getParameterType(i).getErasure()), "," order by i) + ")"
+}
+
+private string paramsStringQualified(Callable c) {
+  result =
+    "(" + concat(int i | | getQualifiedName(c.getParameterType(i).getErasure()), "," order by i) +
+      ")"
 }
 
 private Element interpretElement0(
   string package, string type, boolean subtypes, string name, string signature
 ) {
   elementSpec(package, type, subtypes, name, signature, _) and
-  exists(RefType t | t.hasQualifiedName(package, type) |
+  (
     exists(Member m |
       (
         result = m
         or
         subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m)
       ) and
-      m.getDeclaringType() = t and
-      m.hasName(name)
+      m.hasQualifiedName(package, type, name)
     |
       signature = "" or
-      m.(Callable).getSignature() = any(string nameprefix) + signature or
+      paramsStringQualified(m) = signature or
       paramsString(m) = signature
     )
     or
-    (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
-    name = "" and
-    signature = ""
+    exists(RefType t |
+      t.hasQualifiedName(package, type) and
+      (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
+      name = "" and
+      signature = ""
+    )
   )
 }
 

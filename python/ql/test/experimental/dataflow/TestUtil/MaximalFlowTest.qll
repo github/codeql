@@ -3,25 +3,23 @@ import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
 import FlowTest
 
-class MaximalFlowTest extends FlowTest {
-  MaximalFlowTest() { this = "MaximalFlowTest" }
+module MaximalFlowTest implements FlowTestSig {
+  string flowTag() { result = "flow" }
 
-  override string flowTag() { result = "flow" }
-
-  override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
+  predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
     source != sink and
-    exists(MaximalFlowsConfig cfg | cfg.hasFlow(source, sink))
+    MaximalFlows::flow(source, sink)
   }
 }
+
+import MakeTest<MakeTestSig<MaximalFlowTest>>
 
 /**
  * A configuration to find all "maximal" flows.
  * To be used on small programs.
  */
-class MaximalFlowsConfig extends DataFlow::Configuration {
-  MaximalFlowsConfig() { this = "MaximalFlowsConfig" }
-
-  override predicate isSource(DataFlow::Node node) {
+module MaximalFlowsConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     exists(node.getLocation().getFile().getRelativePath()) and
     not node.asCfgNode() instanceof CallNode and
     not node.asCfgNode().getNode() instanceof Return and
@@ -32,7 +30,7 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
     not DataFlow::localFlowStep(_, node)
   }
 
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(node.getLocation().getFile().getRelativePath()) and
     not any(CallNode c).getArg(_) = node.asCfgNode() and
     not node instanceof DataFlow::ArgumentNode and
@@ -40,3 +38,5 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
     not DataFlow::localFlowStep(node, _)
   }
 }
+
+module MaximalFlows = DataFlow::Global<MaximalFlowsConfig>;

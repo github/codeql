@@ -1,4 +1,4 @@
 import python
 import semmle.python.dataflow.TaintTracking
 
-abstract class SqlInjectionSink extends TaintSink { }
+abstract deprecated class SqlInjectionSink extends TaintSink { }

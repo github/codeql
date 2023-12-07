@@ -7,6 +7,7 @@ extensions:
       - ["java.io", "File", False, "File", "(String)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
       - ["java.io", "File", False, "File", "(String,String)", "", "Argument[0..1]", "path-injection", "manual"] # old PathCreation
       - ["java.io", "File", False, "File", "(URI)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.io", "File", True, "createNewFile", "()", "", "Argument[this]", "path-injection", "ai-manual"]
       - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "path-injection", "ai-manual"]
       - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
@@ -83,6 +84,7 @@ extensions:
       - ["java.io", "File", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "FilterOutputStream", True, "FilterOutputStream", "(OutputStream)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.io", "InputStream", True, "read", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[])", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[],int,int)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "InputStream", True, "readAllBytes", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -123,7 +125,11 @@ extensions:
       - ["java.io", "DataInput", "readLong", "()", "summary", "manual"]        # taint-numeric
       - ["java.io", "DataOutput", "writeInt", "(int)", "summary", "manual"]    # taint-numeric
       - ["java.io", "DataOutput", "writeLong", "(long)", "summary", "manual"]  # taint-numeric
-
       # sink neutrals
       - ["java.io", "File", "compareTo", "", "sink", "hq-manual"]
       - ["java.io", "File", "exists", "()", "sink", "hq-manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.io", "FileInputStream", True, "FileInputStream", "", "", "Argument[this]", "file", "manual"]

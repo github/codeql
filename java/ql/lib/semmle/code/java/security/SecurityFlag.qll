@@ -37,7 +37,7 @@ abstract class FlagKind extends string {
     or
     exists(StringLiteral s | s.getValue() = this.getAFlagName() | flag.asExpr() = s)
     or
-    exists(MethodAccess ma | ma.getMethod().getName() = this.getAFlagName() |
+    exists(MethodCall ma | ma.getMethod().getName() = this.getAFlagName() |
       flag.asExpr() = ma and
       ma.getType() instanceof FlagType
     )
@@ -83,11 +83,11 @@ private class FlagType extends Type {
 private predicate flagFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
   DataFlow::localFlowStep(node1, node2)
   or
-  exists(MethodAccess ma | ma.getMethod() = any(EnvReadMethod m) |
+  exists(MethodCall ma | ma.getMethod() = any(EnvReadMethod m) |
     ma = node2.asExpr() and ma.getAnArgument() = node1.asExpr()
   )
   or
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma.getMethod().hasName("parseBoolean") and
     ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Boolean")
   |

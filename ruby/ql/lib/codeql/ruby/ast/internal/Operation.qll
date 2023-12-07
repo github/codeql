@@ -35,6 +35,16 @@ class UnaryOperationGenerated extends UnaryOperationImpl {
   final override string getOperatorImpl() { result = g.getOperator() }
 }
 
+abstract class NotExprImpl extends UnaryOperationImpl, TNotExpr { }
+
+class NotExprReal extends NotExprImpl, UnaryOperationGenerated, TNotExprReal { }
+
+class NotExprSynth extends NotExprImpl, TNotExprSynth {
+  final override string getOperatorImpl() { result = "!" }
+
+  final override Expr getOperandImpl() { synthChild(this, 0, result) }
+}
+
 class SplatExprReal extends UnaryOperationImpl, TSplatExprReal {
   private Ruby::SplatArgument g;
 
@@ -65,6 +75,16 @@ class HashSplatExprImpl extends UnaryOperationImpl, THashSplatExpr {
   }
 
   final override string getOperatorImpl() { result = "**" }
+}
+
+abstract class DefinedExprImpl extends UnaryOperationImpl, TDefinedExpr { }
+
+class DefinedExprReal extends DefinedExprImpl, UnaryOperationGenerated, TDefinedExprReal { }
+
+class DefinedExprSynth extends DefinedExprImpl, TDefinedExprSynth {
+  final override string getOperatorImpl() { result = "defined?" }
+
+  final override Expr getOperandImpl() { synthChild(this, 0, result) }
 }
 
 abstract class BinaryOperationImpl extends OperationImpl, MethodCallImpl, TBinaryOperation {

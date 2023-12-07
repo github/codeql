@@ -4,26 +4,22 @@ import experimental.dataflow.TestUtil.FlowTest
 private import semmle.python.dataflow.new.internal.PrintNode
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DP
 
-class ImportTimeLocalFlowTest extends FlowTest {
-  ImportTimeLocalFlowTest() { this = "ImportTimeLocalFlowTest" }
+module ImportTimeLocalFlowTest implements FlowTestSig {
+  string flowTag() { result = "importTimeFlow" }
 
-  override string flowTag() { result = "importTimeFlow" }
-
-  override predicate relevantFlow(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  predicate relevantFlow(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     nodeFrom.getLocation().getFile().getBaseName() = "multiphase.py" and
     // results are displayed next to `nodeTo`, so we need a line to write on
     nodeTo.getLocation().getStartLine() > 0 and
     nodeTo.asVar() instanceof GlobalSsaVariable and
-    DP::importTimeLocalFlowStep(nodeFrom, nodeTo)
+    DP::PhaseDependentFlow<DP::LocalFlow::localFlowStep/2>::importTimeStep(nodeFrom, nodeTo)
   }
 }
 
-class RuntimeLocalFlowTest extends FlowTest {
-  RuntimeLocalFlowTest() { this = "RuntimeLocalFlowTest" }
+module RuntimeLocalFlowTest implements FlowTestSig {
+  string flowTag() { result = "runtimeFlow" }
 
-  override string flowTag() { result = "runtimeFlow" }
-
-  override predicate relevantFlow(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  predicate relevantFlow(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     nodeFrom.getLocation().getFile().getBaseName() = "multiphase.py" and
     // results are displayed next to `nodeTo`, so we need a line to write on
     nodeTo.getLocation().getStartLine() > 0 and
@@ -34,3 +30,5 @@ class RuntimeLocalFlowTest extends FlowTest {
     DP::runtimeJumpStep(nodeFrom, nodeTo)
   }
 }
+
+import MakeTest<MergeTests<MakeTestSig<ImportTimeLocalFlowTest>, MakeTestSig<RuntimeLocalFlowTest>>>

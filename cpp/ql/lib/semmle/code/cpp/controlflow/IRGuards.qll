@@ -30,11 +30,6 @@ class GuardCondition extends Expr {
     or
     // no binary operators in the IR
     this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
-    or
-    // the IR short-circuits if(!x)
-    // don't produce a guard condition for `y = !x` and other non-short-circuited cases
-    not exists(Instruction inst | this.getFullyConverted() = inst.getAst()) and
-    exists(IRGuardCondition ir | this.(NotExpr).getOperand() = ir.getAst())
   }
 
   /**
@@ -141,39 +136,6 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
 }
 
 /**
- * A `!` operator in the AST that guards one or more basic blocks, and does not have a corresponding
- * IR instruction.
- */
-private class GuardConditionFromShortCircuitNot extends GuardCondition, NotExpr {
-  GuardConditionFromShortCircuitNot() {
-    not exists(Instruction inst | this.getFullyConverted() = inst.getAst()) and
-    exists(IRGuardCondition ir | this.getOperand() = ir.getAst())
-  }
-
-  override predicate controls(BasicBlock controlled, boolean testIsTrue) {
-    this.getOperand().(GuardCondition).controls(controlled, testIsTrue.booleanNot())
-  }
-
-  override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
-    this.getOperand()
-        .(GuardCondition)
-        .comparesLt(left, right, k, isLessThan, testIsTrue.booleanNot())
-  }
-
-  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
-    this.getOperand().(GuardCondition).ensuresLt(left, right, k, block, isLessThan.booleanNot())
-  }
-
-  override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
-    this.getOperand().(GuardCondition).comparesEq(left, right, k, areEqual, testIsTrue.booleanNot())
-  }
-
-  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
-    this.getOperand().(GuardCondition).ensuresEq(left, right, k, block, areEqual.booleanNot())
-  }
-}
-
-/**
  * A Boolean condition in the AST that guards one or more basic blocks and has a corresponding IR
  * instruction.
  */
@@ -240,7 +202,7 @@ private class GuardConditionFromIR extends GuardCondition {
    */
   private predicate controlsBlock(BasicBlock controlled, boolean testIsTrue) {
     exists(IRBlock irb |
-      forex(IRGuardCondition inst | inst = ir | inst.controls(irb, testIsTrue)) and
+      ir.controls(irb, testIsTrue) and
       irb.getAnInstruction().getAst().(ControlFlowNode).getBasicBlock() = controlled and
       not isUnreachedBlock(irb)
     )
@@ -627,6 +589,20 @@ private predicate sub_lt(
     x = int_value(rhs.getRight()) and
     k = c - x
   )
+  or
+  exists(PointerSubInstruction lhs, int c, int x |
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    left = lhs.getLeftOperand() and
+    x = int_value(lhs.getRight()) and
+    k = c + x
+  )
+  or
+  exists(PointerSubInstruction rhs, int c, int x |
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    right = rhs.getLeftOperand() and
+    x = int_value(rhs.getRight()) and
+    k = c - x
+  )
 }
 
 // left + x < right + c => left < right + (c-x)
@@ -645,6 +621,26 @@ private predicate add_lt(
   )
   or
   exists(AddInstruction rhs, int c, int x |
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    (
+      right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
+      or
+      right = rhs.getRightOperand() and x = int_value(rhs.getLeft())
+    ) and
+    k = c + x
+  )
+  or
+  exists(PointerAddInstruction lhs, int c, int x |
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
+  )
+  or
+  exists(PointerAddInstruction rhs, int c, int x |
     compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
@@ -673,6 +669,20 @@ private predicate sub_eq(
     x = int_value(rhs.getRight()) and
     k = c - x
   )
+  or
+  exists(PointerSubInstruction lhs, int c, int x |
+    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+    left = lhs.getLeftOperand() and
+    x = int_value(lhs.getRight()) and
+    k = c + x
+  )
+  or
+  exists(PointerSubInstruction rhs, int c, int x |
+    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+    right = rhs.getLeftOperand() and
+    x = int_value(rhs.getRight()) and
+    k = c - x
+  )
 }
 
 // left + x == right + c => left == right + (c-x)
@@ -691,6 +701,26 @@ private predicate add_eq(
   )
   or
   exists(AddInstruction rhs, int c, int x |
+    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+    (
+      right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
+      or
+      right = rhs.getRightOperand() and x = int_value(rhs.getLeft())
+    ) and
+    k = c + x
+  )
+  or
+  exists(PointerAddInstruction lhs, int c, int x |
+    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
+  )
+  or
+  exists(PointerAddInstruction rhs, int c, int x |
     compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())

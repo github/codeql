@@ -1,12 +1,12 @@
 ﻿using Xunit;
-using Semmle.Autobuild.Shared;
-using Semmle.Util;
-using System.Collections.Generic;
 using System;
-using System.Linq;
-using Microsoft.Build.Construction;
-using System.Xml;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Xml;
+using Microsoft.Build.Construction;
+using Semmle.Util;
+using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp.Tests
 {
@@ -159,9 +159,9 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         bool IBuildActions.IsMacOs() => IsMacOs;
 
-        public bool IsArm { get; set; }
+        public bool IsRunningOnAppleSilicon { get; set; }
 
-        bool IBuildActions.IsArm() => IsArm;
+        bool IBuildActions.IsRunningOnAppleSilicon() => IsRunningOnAppleSilicon;
 
         public string PathCombine(params string[] parts)
         {
@@ -557,7 +557,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionSuccess()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone --references:."] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -571,7 +571,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionFailed()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone --references:."] = 10;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 10;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -585,7 +585,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionSolution()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --references:."] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -725,7 +725,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestWindowsCmdIgnoreErrors()
         {
-            actions.RunProcess["cmd.exe /C ^\"build.cmd --skip-tests^\""] = 3;
+            actions.RunProcess["cmd.exe /C ^\"build.cmd^ --skip-tests^\""] = 3;
             actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             actions.RunProcess[@"cmd.exe /C C:\codeql\tools\codeql index --xml --extensions config"] = 0;
             actions.FileExists["csharp.log"] = true;
@@ -744,9 +744,9 @@ namespace Semmle.Autobuild.CSharp.Tests
         public void TestWindowCSharpMsBuild()
         {
             actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test1.sln -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
             actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test2.sln -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test2.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test2.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
@@ -775,9 +775,9 @@ namespace Semmle.Autobuild.CSharp.Tests
         public void TestWindowCSharpMsBuildMultipleSolutions()
         {
             actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test1.csproj -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.csproj /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.csproj /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
             actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test2.csproj -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test2.csproj /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test2.csproj /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\test1.csproj"] = true;
             actions.FileExists[@"C:\Project\test2.csproj"] = true;
@@ -820,7 +820,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         public void TestWindowCSharpMsBuildFailed()
         {
             actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test1.sln -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 1;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 1;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
@@ -846,8 +846,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestSkipNugetMsBuild()
         {
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test2.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test2.sln /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
@@ -873,7 +873,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestSkipNugetBuildless()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --references:. --skip-nuget"] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --skip-nuget"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -1037,7 +1037,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\dirs.proj -DisableParallelProcessing"] = 1;
             actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\dirs.proj -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\dirs.proj /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\dirs.proj /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\a\test.csproj"] = true;
             actions.FileExists[@"C:\Project\dirs.proj"] = true;

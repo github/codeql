@@ -224,7 +224,6 @@ const astProperties: string[] = [
     "argument",
     "argumentExpression",
     "arguments",
-    "assertClause",
     "assertsModifier",
     "asteriskToken",
     "attributes",
@@ -361,7 +360,10 @@ function handleParseCommand(command: ParseCommand, checkPending = true) {
     let filename = command.filename;
     let expectedFilename = state.pendingFiles[state.pendingFileIndex];
     if (expectedFilename !== filename && checkPending) {
-        throw new Error("File requested out of order. Expected '" + expectedFilename + "' but got '" + filename + "'");
+        // File was requested out of order. This happens in rare cases because the Java process decided against extracting it,
+        // for example because it was too large. Just recover and accept that some work was wasted.
+        state.pendingResponse = null;
+        state.pendingFileIndex = state.pendingFiles.indexOf(filename);
     }
     ++state.pendingFileIndex;
     let response = state.pendingResponse || extractFile(command.filename);

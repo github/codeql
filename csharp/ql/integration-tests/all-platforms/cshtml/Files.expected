@@ -1,4 +1,5 @@
 | Program.cs:0:0:0:0 | Program.cs |
+| Views/Home/Index.cshtml:0:0:0:0 | Views/Home/Index.cshtml |
 | obj/Debug/net7.0/.NETCoreApp,Version=v7.0.AssemblyAttributes.cs:0:0:0:0 | obj/Debug/net7.0/.NETCoreApp,Version=v7.0.AssemblyAttributes.cs |
 | obj/Debug/net7.0/cshtml.AssemblyInfo.cs:0:0:0:0 | obj/Debug/net7.0/cshtml.AssemblyInfo.cs |
 | obj/Debug/net7.0/cshtml.GlobalUsings.g.cs:0:0:0:0 | obj/Debug/net7.0/cshtml.GlobalUsings.g.cs |

@@ -15,7 +15,7 @@
 import java
 import semmle.code.java.security.Mail
 
-from MethodAccess ma
+from MethodCall ma
 where
   ma.getMethod() instanceof MailSessionGetInstanceMethod and
   isInsecureMailPropertyConfig(ma.getArgument(0).(VarAccess).getVariable())

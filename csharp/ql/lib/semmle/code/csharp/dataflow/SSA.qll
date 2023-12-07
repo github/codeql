@@ -120,7 +120,7 @@ module Ssa {
           result = prefix + "." + this.getAssignable()
         |
           if f.(Modifiable).isStatic()
-          then prefix = f.getDeclaringType().getQualifiedName()
+          then prefix = f.getDeclaringType().getFullyQualifiedName()
           else prefix = "this"
         )
       }
@@ -411,7 +411,7 @@ module Ssa {
      * This is either an expression, for example `x = 0`, a parameter, or a
      * callable. Phi nodes have no associated syntax element.
      */
-    Element getElement() { result = this.getControlFlowNode().getElement() }
+    Element getElement() { result = this.getControlFlowNode().getAstNode() }
 
     /** Gets the callable to which this SSA definition belongs. */
     final Callable getEnclosingCallable() {

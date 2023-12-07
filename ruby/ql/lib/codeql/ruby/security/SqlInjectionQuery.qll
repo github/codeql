@@ -9,13 +9,27 @@ import SqlInjectionCustomizations::SqlInjection
 
 /**
  * A taint-tracking configuration for detecting SQL injection vulnerabilities.
+ * DEPRECATED: Use `SqlInjectionFlow`
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "SqlInjectionConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSink(DataFlow::Node source) { source instanceof Sink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+private module SqlInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * Taint-tracking for detecting SQL injection vulnerabilities.
+ */
+module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;

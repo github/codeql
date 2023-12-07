@@ -102,7 +102,8 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
     return f"{prop_name} of this {class_name}"
 
 
-def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.Class], prev_child: str = "") -> ql.Property:
+def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.Class],
+                    prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
         qltest_skip="qltest_skip" in prop.pragmas,
@@ -113,6 +114,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         description=prop.description,
         synth=bool(cls.synth) or prop.synth,
         type_is_hideable=lookup[prop.type].hideable if prop.type in lookup else False,
+        internal="ql_internal" in prop.pragmas,
     )
     if prop.is_single:
         args.update(
@@ -150,7 +152,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
 
 
 def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> ql.Class:
-    pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
+    pragmas = {k: True for k in cls.pragmas if k.startswith("qltest")}
     prev_child = ""
     properties = []
     for p in cls.properties:
@@ -166,6 +168,7 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> q
         dir=pathlib.Path(cls.group or ""),
         doc=cls.doc,
         hideable=cls.hideable,
+        internal="ql_internal" in cls.pragmas,
         **pragmas,
     )
 
@@ -310,7 +313,34 @@ def _get_stub(cls: schema.Class, base_import: str, generated_import_prefix: str)
             ]
     else:
         accessors = []
-    return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix, synth_accessors=accessors)
+    return ql.Stub(name=cls.name, base_import=base_import, import_prefix=generated_import_prefix,
+                   doc=cls.doc, synth_accessors=accessors,
+                   internal="ql_internal" in cls.pragmas)
+
+
+_stub_qldoc_header = "// the following QLdoc is generated: if you need to edit it, do it in the schema file\n"
+
+_class_qldoc_re = re.compile(
+    rf"(?P<qldoc>(?:{re.escape(_stub_qldoc_header)})?/\*\*.*?\*/\s*|^\s*)(?:class\s+(?P<class>\w+))?",
+    re.MULTILINE | re.DOTALL)
+
+
+def _patch_class_qldoc(cls: str, qldoc: str, stub_file: pathlib.Path):
+    """ Replace or insert `qldoc` as the QLdoc of class `cls` in `stub_file` """
+    if not qldoc or not stub_file.exists():
+        return
+    qldoc = "\n".join(l.rstrip() for l in qldoc.splitlines())
+    with open(stub_file) as input:
+        contents = input.read()
+    for match in _class_qldoc_re.finditer(contents):
+        if match["class"] == cls:
+            qldoc_start, qldoc_end = match.span("qldoc")
+            contents = f"{contents[:qldoc_start]}{_stub_qldoc_header}{qldoc}\n{contents[qldoc_end:]}"
+            tmp = stub_file.with_suffix(f"{stub_file.suffix}.bkp")
+            with open(tmp, "w") as out:
+                out.write(contents)
+            tmp.rename(stub_file)
+            return
 
 
 def generate(opts, renderer):
@@ -360,12 +390,16 @@ def generate(opts, renderer):
         for c in data.classes.values():
             path = _get_path(c)
             stub_file = stub_out / path
+            base_import = get_import(out / path, opts.root_dir)
+            stub = _get_stub(c, base_import, generated_import_prefix)
             if not renderer.is_customized_stub(stub_file):
-                base_import = get_import(out / path, opts.root_dir)
-                renderer.render(_get_stub(c, base_import, generated_import_prefix), stub_file)
+                renderer.render(stub, stub_file)
+            else:
+                qldoc = renderer.render_str(stub, template='ql_stub_class_qldoc')
+                _patch_class_qldoc(c.name, qldoc, stub_file)
 
         # for example path/to/elements -> path/to/elements.qll
-        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].ql_internal]),
+        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].internal]),
                         include_file)
 
         elements_module = get_import(include_file, opts.root_dir)
@@ -373,7 +407,7 @@ def generate(opts, renderer):
         renderer.render(
             ql.GetParentImplementation(
                 classes=list(classes.values()),
-                imports=[elements_module] + [i for name, i in imports.items() if classes[name].ql_internal],
+                imports=[elements_module] + [i for name, i in imports.items() if classes[name].internal],
             ),
             out / 'ParentChild.qll')
 
@@ -381,7 +415,8 @@ def generate(opts, renderer):
             for c in data.classes.values():
                 if _should_skip_qltest(c, data.classes):
                     continue
-                test_dir = test_out / c.group / c.name
+                test_with = data.classes[c.test_with] if c.test_with else c
+                test_dir = test_out / test_with.group / test_with.name
                 test_dir.mkdir(parents=True, exist_ok=True)
                 if all(f.suffix in (".txt", ".ql", ".actual", ".expected") for f in test_dir.glob("*.*")):
                     log.warning(f"no test source in {test_dir.relative_to(test_out)}")
@@ -425,7 +460,7 @@ def generate(opts, renderer):
         for stub_file, data in stubs.items():
             renderer.render(data, stub_file)
         renderer.render(ql.Synth.Types(root.name, generated_import_prefix,
-                        final_synth_types, non_final_synth_types), out / "Synth.qll")
+                                       final_synth_types, non_final_synth_types), out / "Synth.qll")
         renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
         renderer.render(ql.ImportList(synth_constructor_imports), out / "PureSynthConstructors.qll")
         if opts.ql_format:

@@ -46,12 +46,22 @@ class LogMessage(private val kind: String, private val message: String) {
     private fun escape(str: String): String {
         return str.replace("\\", "\\\\")
                   .replace("\"", "\\\"")
-                  .replace("/", "\\/")
-                  .replace("\b", "\\b")
+                  .replace("\u0000", "\\u0000")
+                  .replace("\u0001", "\\u0001")
+                  .replace("\u0002", "\\u0002")
+                  .replace("\u0003", "\\u0003")
+                  .replace("\u0004", "\\u0004")
+                  .replace("\u0005", "\\u0005")
+                  .replace("\u0006", "\\u0006")
+                  .replace("\u0007", "\\u0007")
+                  .replace("\u0008", "\\b")
+                  .replace("\u0009", "\\t")
+                  .replace("\u000A", "\\n")
+                  .replace("\u000B", "\\u000B")
                   .replace("\u000C", "\\f")
-                  .replace("\n", "\\n")
-                  .replace("\r", "\\r")
-                  .replace("\t", "\\t")
+                  .replace("\u000D", "\\r")
+                  .replace("\u000E", "\\u000E")
+                  .replace("\u000F", "\\u000F")
     }
 
     fun toJsonLine(): String {
@@ -107,7 +117,7 @@ open class LoggerBase(val logCounter: LogCounter) {
         file_number_diagnostic_number = 0
     }
 
-    fun diagnostic(tw: TrapWriter, severity: Severity, msg: String, extraInfo: String?, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
+    fun diagnostic(dtw: DiagnosticTrapWriter, severity: Severity, msg: String, extraInfo: String?, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { dtw.unknownLocation }) {
         val diagnosticLoc = getDiagnosticLocation()
         val diagnosticLocStr = if(diagnosticLoc == null) "<unknown location>" else diagnosticLoc
         val suffix =
@@ -121,7 +131,7 @@ open class LoggerBase(val logCounter: LogCounter) {
                     // counting machinery
                     if (verbosity >= 1) {
                         val message = "Severity mismatch ($severity vs ${oldInfo.first}) at $diagnosticLoc"
-                        emitDiagnostic(tw, Severity.Error, "Inconsistency", message, message)
+                        emitDiagnostic(dtw, Severity.Error, "Inconsistency", message, message)
                     }
                 }
                 val newCount = oldInfo.second + 1
@@ -149,18 +159,18 @@ open class LoggerBase(val logCounter: LogCounter) {
         fullMsgBuilder.append(suffix)
 
         val fullMsg = fullMsgBuilder.toString()
-        emitDiagnostic(tw, severity, diagnosticLocStr, msg, fullMsg, locationString, mkLocationId)
+        emitDiagnostic(dtw, severity, diagnosticLocStr, msg, fullMsg, locationString, mkLocationId)
     }
 
-    private fun emitDiagnostic(tw: TrapWriter, severity: Severity, diagnosticLocStr: String, msg: String, fullMsg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
+    private fun emitDiagnostic(dtw: DiagnosticTrapWriter, severity: Severity, diagnosticLocStr: String, msg: String, fullMsg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { dtw.unknownLocation }) {
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
         val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
         val logMessage = LogMessage(kind, "Diagnostic($diagnosticLocStr): $locStr$fullMsg")
         // We don't actually make the location until after the `return` above
         val locationId = mkLocationId()
-        val diagLabel = tw.getFreshIdLabel<DbDiagnostic>()
-        tw.writeDiagnostics(diagLabel, "CodeQL Kotlin extractor", severity.sev, "", msg, "${logMessage.timestamp} $fullMsg", locationId)
-        tw.writeDiagnostic_for(diagLabel, StringLabel("compilation"), file_number, file_number_diagnostic_number++)
+        val diagLabel = dtw.getFreshIdLabel<DbDiagnostic>()
+        dtw.writeDiagnostics(diagLabel, "CodeQL Kotlin extractor", severity.sev, "", msg, "${logMessage.timestamp} $fullMsg", locationId)
+        dtw.writeDiagnostic_for(diagLabel, StringLabel("compilation"), file_number, file_number_diagnostic_number++)
         logStream.write(logMessage.toJsonLine())
     }
 
@@ -188,28 +198,25 @@ open class LoggerBase(val logCounter: LogCounter) {
         }
     }
 
-    fun warn(tw: TrapWriter, msg: String, extraInfo: String?) {
+    fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         if (verbosity >= 2) {
-            diagnostic(tw, Severity.Warn, msg, extraInfo)
+            diagnostic(dtw, Severity.Warn, msg, extraInfo)
         }
     }
-    fun error(tw: TrapWriter, msg: String, extraInfo: String?) {
+    fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         if (verbosity >= 1) {
-            diagnostic(tw, Severity.Error, msg, extraInfo)
+            diagnostic(dtw, Severity.Error, msg, extraInfo)
         }
     }
 
-    fun printLimitedDiagnosticCounts(tw: TrapWriter) {
+    fun printLimitedDiagnosticCounts(dtw: DiagnosticTrapWriter) {
         for((caller, info) in logCounter.diagnosticInfo) {
             val severity = info.first
             val count = info.second
             if(count >= logCounter.diagnosticLimit) {
-                // We don't know if this location relates to an error
-                // or a warning, so we just declare hitting the limit
-                // to be an error regardless.
                 val message = "Total of $count diagnostics (reached limit of ${logCounter.diagnosticLimit}) from $caller."
                 if (verbosity >= 1) {
-                    emitDiagnostic(tw, severity, "Limit", message, message)
+                    emitDiagnostic(dtw, severity, "Limit", message, message)
                 }
             }
         }
@@ -224,28 +231,28 @@ open class LoggerBase(val logCounter: LogCounter) {
     }
 }
 
-open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
+open class Logger(val loggerBase: LoggerBase, open val dtw: DiagnosticTrapWriter) {
     fun flush() {
-        tw.flush()
+        dtw.flush()
         loggerBase.flush()
     }
 
     fun trace(msg: String) {
-        loggerBase.trace(tw, msg)
+        loggerBase.trace(dtw, msg)
     }
     fun trace(msg: String, exn: Throwable) {
         trace(msg + "\n" + exn.stackTraceToString())
     }
     fun debug(msg: String) {
-        loggerBase.debug(tw, msg)
+        loggerBase.debug(dtw, msg)
     }
 
     fun info(msg: String) {
-        loggerBase.info(tw, msg)
+        loggerBase.info(dtw, msg)
     }
 
     private fun warn(msg: String, extraInfo: String?) {
-        loggerBase.warn(tw, msg, extraInfo)
+        loggerBase.warn(dtw, msg, extraInfo)
     }
     fun warn(msg: String, exn: Throwable) {
         warn(msg, exn.stackTraceToString())
@@ -255,7 +262,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
     }
 
     private fun error(msg: String, extraInfo: String?) {
-        loggerBase.error(tw, msg, extraInfo)
+        loggerBase.error(dtw, msg, extraInfo)
     }
     fun error(msg: String) {
         error(msg, null)
@@ -265,16 +272,16 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
     }
 }
 
-class FileLogger(loggerBase: LoggerBase, override val tw: FileTrapWriter): Logger(loggerBase, tw) {
+class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter): Logger(loggerBase, ftw.getDiagnosticTrapWriter()) {
     fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
-        val locationString = tw.getLocationString(element)
-        val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Warn, msg, exn?.stackTraceToString(), locationString, mkLocationId)
+        val locationString = ftw.getLocationString(element)
+        val mkLocationId = { ftw.getLocation(element) }
+        loggerBase.diagnostic(ftw.getDiagnosticTrapWriter(), Severity.Warn, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 
     fun errorElement(msg: String, element: IrElement, exn: Throwable? = null) {
-        val locationString = tw.getLocationString(element)
-        val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Error, msg, exn?.stackTraceToString(), locationString, mkLocationId)
+        val locationString = ftw.getLocationString(element)
+        val mkLocationId = { ftw.getLocation(element) }
+        loggerBase.diagnostic(ftw.getDiagnosticTrapWriter(), Severity.Error, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 }

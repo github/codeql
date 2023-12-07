@@ -1,7 +1,6 @@
+using System.IO;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
-using Semmle.Extraction.Entities;
-using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {

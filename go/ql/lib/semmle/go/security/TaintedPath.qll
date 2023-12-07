@@ -12,9 +12,11 @@ module TaintedPath {
   import TaintedPathCustomizations::TaintedPath
 
   /**
+   * DEPRECATED: Use `Flow` instead.
+   *
    * A taint-tracking configuration for reasoning about path-traversal vulnerabilities.
    */
-  class Configuration extends TaintTracking::Configuration {
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "TaintedPath" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -26,4 +28,15 @@ module TaintedPath {
       node instanceof Sanitizer
     }
   }
+
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  }
+
+  /** Tracks taint flow for reasoning about path-traversal vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
 }

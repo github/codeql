@@ -1,34 +1,18 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
 
 private import csharp
-private import dotnet
 private import semmle.code.csharp.dispatch.Dispatch
-private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
-private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
-
-pragma[nomagic]
-private predicate isTestNamespace(Namespace ns) {
-  ns.getFullName()
-      .matches([
-          "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
-        ])
-}
-
-/**
- * A test library.
- */
-class TestLibrary extends RefType {
-  TestLibrary() { isTestNamespace(this.getNamespace()) }
-}
+private import TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
-private predicate isUninteresting(DotNet::Callable c) {
+private predicate isUninteresting(Callable c) {
   c.getDeclaringType() instanceof TestLibrary or
   c.(Constructor).isParameterless()
 }
@@ -36,7 +20,7 @@ private predicate isUninteresting(DotNet::Callable c) {
 /**
  * An external API from either the C# Standard Library or a 3rd party library.
  */
-class ExternalApi extends DotNet::Callable {
+class ExternalApi extends Callable {
   ExternalApi() {
     this.isUnboundDeclaration() and
     this.fromLibrary() and
@@ -50,7 +34,7 @@ class ExternalApi extends DotNet::Callable {
   bindingset[this]
   private string getSignature() {
     result =
-      this.getDeclaringType().getUnboundDeclaration() + "." + this.getName() + "(" +
+      nestedName(this.getDeclaringType().getUnboundDeclaration()) + "." + this.getName() + "(" +
         parameterQualifiedTypeNamesToString(this) + ")"
   }
 
@@ -58,7 +42,7 @@ class ExternalApi extends DotNet::Callable {
    * Gets the namespace of this API.
    */
   bindingset[this]
-  string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
+  string getNamespace() { this.getDeclaringType().hasFullyQualifiedName(result, _) }
 
   /**
    * Gets the namespace and signature of this API.
@@ -77,13 +61,11 @@ class ExternalApi extends DotNet::Callable {
 
   /** Gets a node that is an output from a call to this API. */
   private DataFlow::Node getAnOutput() {
-    exists(
-      Call c, DataFlowDispatch::NonDelegateDataFlowCall dc, DataFlowImplCommon::ReturnKindExt ret
-    |
+    exists(Call c, DataFlowDispatch::NonDelegateDataFlowCall dc |
       dc.getDispatchCall().getCall() = c and
       c.getTarget().getUnboundDeclaration() = this
     |
-      result = ret.getAnOutNode(dc)
+      result = DataFlowDispatch::getAnOutNode(dc, _)
     )
   }
 
@@ -119,9 +101,23 @@ class ExternalApi extends DotNet::Callable {
 }
 
 /**
+ * Gets the nested name of the type `t`.
+ *
+ * If the type is not a nested type, the result is the same as \`getName()\`.
+ * Otherwise the name of the nested type is prefixed with a \`+\` and appended to
+ * the name of the enclosing type, which might be a nested type as well.
+ */
+private string nestedName(Type t) {
+  not exists(t.getDeclaringType().getUnboundDeclaration()) and
+  result = t.getName()
+  or
+  nestedName(t.getDeclaringType().getUnboundDeclaration()) + "+" + t.getName() = result
+}
+
+/**
  * Gets the limit for the number of results produced by a telemetry query.
  */
-int resultLimit() { result = 1000 }
+int resultLimit() { result = 100 }
 
 /**
  * Holds if it is relevant to count usages of `api`.

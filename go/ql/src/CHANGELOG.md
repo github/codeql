@@ -1,3 +1,57 @@
+## 0.7.3
+
+No user-facing changes.
+
+## 0.7.2
+
+### Minor Analysis Improvements
+
+* The query `go/incorrect-integer-conversion` now correctly recognizes more guards of the form `if val <= x` to protect a conversion `uintX(val)`.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* The query "Incorrect conversion between integer types" (`go/incorrect-integer-conversion`) has been improved. It can now detect parsing an unsigned integer type (like `uint32`) and converting it to the signed integer type of the same size (like `int32`), which may lead to more results. It also treats `int` and `uint` more carefully, which may lead to more results or fewer incorrect results.
+
+## 0.7.0
+
+No user-facing changes.
+
+## 0.6.5
+
+No user-facing changes.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+No user-facing changes.
+
+## 0.6.2
+
+No user-facing changes.
+
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### Bug Fixes
+
+* The query "Arbitrary file write during zip extraction ("zip slip")" (`go/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+No user-facing changes.
+
 ## 0.5.2
 
 No user-facing changes.

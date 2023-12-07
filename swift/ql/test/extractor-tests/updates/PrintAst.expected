@@ -33,9 +33,9 @@ v5.8.swift:
 #    5|           Type = Temperature
 #    5|       getBody(): [BraceStmt] { ... }
 #    5|         getElement(0): [YieldStmt] yield ...
-#-----|           getResult(0): [InOutExpr] &...
-#-----|             getSubExpr(): [MemberRefExpr] .degreesCelsius
-#-----|               getBase(): [DeclRefExpr] self
+#-----|           getResult(0): [MemberRefExpr] .degreesCelsius
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
 #    4|   getMember(2): [Initializer] Temperature.init(degreesCelsius:)
 #    4|       InterfaceType = (Temperature.Type) -> (Double) -> Temperature
 #    4|     getSelfParam(): [ParamDecl] self
@@ -92,26 +92,26 @@ v5.8.swift:
 #   19|     getElement(0): [SwitchStmt] switch arr { ... }
 #   19|       getExpr(): [DeclRefExpr] arr
 #   20|       getCase(0): [CaseStmt] case ...
-#   21|         getBody(): [BraceStmt] { ... }
-#   21|           getElement(0): [IntegerLiteralExpr] 0
 #   20|         getLabel(0): [CaseLabelItem] ... is ...
 #   20|           getPattern(): [IsPattern] ... is ...
 #   20|             getCastTypeRepr(): [TypeRepr] [Int]
 #   20|             getSubPattern(): [NamedPattern] ints
 #   20|           getPattern().getFullyUnresolved(): [BindingPattern] let ...
+#   20|         getVariable(0): [ConcreteVarDecl] ints
+#   20|             Type = [Int]
+#   21|         getBody(): [BraceStmt] { ... }
+#   21|           getElement(0): [IntegerLiteralExpr] 0
 #   22|       getCase(1): [CaseStmt] case ...
-#   23|         getBody(): [BraceStmt] { ... }
-#   23|           getElement(0): [IntegerLiteralExpr] 1
 #   22|         getLabel(0): [CaseLabelItem] ... is ...
 #   22|           getPattern(): [IsPattern] ... is ...
 #   22|             getCastTypeRepr(): [TypeRepr] [Bool]
+#   23|         getBody(): [BraceStmt] { ... }
+#   23|           getElement(0): [IntegerLiteralExpr] 1
 #   24|       getCase(2): [CaseStmt] case ...
-#   25|         getBody(): [BraceStmt] { ... }
-#   25|           getElement(0): [IntegerLiteralExpr] 2
 #   24|         getLabel(0): [CaseLabelItem] _
 #   24|           getPattern(): [AnyPattern] _
-#   20| [ConcreteVarDecl] ints
-#   20|     Type = [Int]
+#   25|         getBody(): [BraceStmt] { ... }
+#   25|           getElement(0): [IntegerLiteralExpr] 2
 #   29| [StructDecl] Button
 #   30|   getMember(0): [PatternBindingDecl] var ... = ...
 #-----|     getInit(0): [NilLiteralExpr] nil
@@ -145,21 +145,21 @@ v5.8.swift:
 #   30|           Type = Button
 #   30|       getBody(): [BraceStmt] { ... }
 #   30|         getElement(0): [YieldStmt] yield ...
-#-----|           getResult(0): [InOutExpr] &...
-#-----|             getSubExpr(): [MemberRefExpr] .tapHandler
-#-----|               getBase(): [DeclRefExpr] self
-#   29|   getMember(2): [Initializer] Button.init()
-#   29|       InterfaceType = (Button.Type) -> () -> Button
-#   29|     getSelfParam(): [ParamDecl] self
-#   29|         Type = Button
-#   29|     getBody(): [BraceStmt] { ... }
-#   29|       getElement(0): [ReturnStmt] return
-#   29|   getMember(3): [Initializer] Button.init(tapHandler:)
+#-----|           getResult(0): [MemberRefExpr] .tapHandler
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
+#   29|   getMember(2): [Initializer] Button.init(tapHandler:)
 #   29|       InterfaceType = (Button.Type) -> ((() -> ())?) -> Button
 #   29|     getSelfParam(): [ParamDecl] self
 #   29|         Type = Button
 #   29|     getParam(0): [ParamDecl] tapHandler
 #   29|         Type = (() -> ())?
+#   29|   getMember(3): [Initializer] Button.init()
+#   29|       InterfaceType = (Button.Type) -> () -> Button
+#   29|     getSelfParam(): [ParamDecl] self
+#   29|         Type = Button
+#   29|     getBody(): [BraceStmt] { ... }
+#   29|       getElement(0): [ReturnStmt] return
 #   33| [ClassDecl] ViewController
 #   34|   getMember(0): [PatternBindingDecl] var ... = ...
 #   34|     getInit(0): [CallExpr] call to Button.init()
@@ -197,9 +197,9 @@ v5.8.swift:
 #   34|           Type = ViewController
 #   34|       getBody(): [BraceStmt] { ... }
 #   34|         getElement(0): [YieldStmt] yield ...
-#-----|           getResult(0): [InOutExpr] &...
-#-----|             getSubExpr(): [MemberRefExpr] .button
-#-----|               getBase(): [DeclRefExpr] self
+#-----|           getResult(0): [MemberRefExpr] .button
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
 #   36|   getMember(2): [NamedFunction] setup()
 #   36|       InterfaceType = (ViewController) -> () -> ()
 #   36|     getSelfParam(): [ParamDecl] self
@@ -214,6 +214,8 @@ v5.8.swift:
 #   37|             getInit(0): [DeclRefExpr] self
 #   37|             getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (ViewController?) ...
 #   37|             getPattern(0): [NamedPattern] self
+#   37|           getVariable(0): [ConcreteVarDecl] self
+#   37|               Type = ViewController?
 #   37|           getClosureBody(): [ExplicitClosureExpr] { ... }
 #   37|             getBody(): [BraceStmt] { ... }
 #   38|               getElement(0): [GuardStmt] guard ... else { ... }
@@ -248,8 +250,6 @@ v5.8.swift:
 #   33|         Type = ViewController
 #   33|     getBody(): [BraceStmt] { ... }
 #   33|       getElement(0): [ReturnStmt] return
-#   37| [ConcreteVarDecl] self
-#   37|     Type = ViewController?
 #   38| [ConcreteVarDecl] self
 #   38|     Type = ViewController
 #   39| [Comment] // refers to `self.dismiss()`

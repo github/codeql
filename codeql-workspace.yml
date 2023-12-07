@@ -1,10 +1,12 @@
 provide:
   - "*/ql/src/qlpack.yml"
   - "*/ql/lib/qlpack.yml"
-  - "*/ql/test/qlpack.yml"
+  - "*/ql/test*/qlpack.yml"
   - "*/ql/examples/qlpack.yml"
   - "*/ql/consistency-queries/qlpack.yml"
-  - "shared/*/qlpack.yml"
+  - "*/ql/automodel/src/qlpack.yml"
+  - "*/ql/automodel/test/qlpack.yml"
+  - "shared/**/qlpack.yml"
   - "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml"
   - "go/ql/config/legacy-support/qlpack.yml"
   - "go/build/codeql-extractor-go/codeql-extractor.yml"
@@ -27,6 +29,7 @@ provide:
   - "swift/extractor-pack/codeql-extractor.yml"
   - "swift/integration-tests/qlpack.yml"
   - "ql/extractor-pack/codeql-extractor.yml"
+  - ".github/codeql/extensions/**/codeql-pack.yml"
 
 versionPolicies:
   default:

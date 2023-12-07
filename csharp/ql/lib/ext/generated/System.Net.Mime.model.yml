@@ -1,0 +1,42 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Net.Mime", "ContentDisposition", False, "ContentDisposition", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", False, "get_DispositionType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", False, "set_DispositionType", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentType", False, "ContentType", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentType", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentType", False, "get_Boundary", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentType", False, "get_CharSet", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentType", False, "get_MediaType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentType", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentType", False, "get_Parameters", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentType", False, "set_MediaType", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Net.Mime", "ContentDisposition", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "GetHashCode", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "get_CreationDate", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "get_FileName", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "get_Inline", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "get_ModificationDate", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "get_Parameters", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "get_ReadDate", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "get_Size", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "set_CreationDate", "(System.DateTime)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "set_FileName", "(System.String)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "set_Inline", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "set_ModificationDate", "(System.DateTime)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "set_ReadDate", "(System.DateTime)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", "set_Size", "(System.Int64)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentType", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentType", "GetHashCode", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentType", "set_Boundary", "(System.String)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentType", "set_CharSet", "(System.String)", "summary", "df-generated"]
+      - ["System.Net.Mime", "ContentType", "set_Name", "(System.String)", "summary", "df-generated"]

@@ -4,11 +4,11 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPr
 private import semmle.python.ApiGraphs
 import TestUtilities.InlineExpectationsTest
 
-class UnresolvedCallExpectations extends InlineExpectationsTest {
-  UnresolvedCallExpectations() { this = "UnresolvedCallExpectations" }
+signature module UnresolvedCallExpectationsSig {
+  predicate unresolvedCall(CallNode call);
+}
 
-  override string getARelevantTag() { result = "unresolved_call" }
-
+module DefaultUnresolvedCallExpectations implements UnresolvedCallExpectationsSig {
   predicate unresolvedCall(CallNode call) {
     not exists(DataFlowPrivate::DataFlowCall dfc |
       exists(dfc.getCallable()) and dfc.getNode() = call
@@ -16,14 +16,22 @@ class UnresolvedCallExpectations extends InlineExpectationsTest {
     not DataFlowPrivate::resolveClassCall(call, _) and
     not call = API::builtin(_).getACall().asCfgNode()
   }
+}
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
-    exists(CallNode call | this.unresolvedCall(call) |
-      location = call.getLocation() and
-      tag = "unresolved_call" and
-      value = prettyExpr(call.getNode()) and
-      element = call.toString()
-    )
+module MakeUnresolvedCallExpectations<UnresolvedCallExpectationsSig Impl> {
+  private module UnresolvedCallExpectations implements TestSig {
+    string getARelevantTag() { result = "unresolved_call" }
+
+    predicate hasActualResult(Location location, string element, string tag, string value) {
+      exists(location.getFile().getRelativePath()) and
+      exists(CallNode call | Impl::unresolvedCall(call) |
+        location = call.getLocation() and
+        tag = "unresolved_call" and
+        value = prettyExpr(call.getNode()) and
+        element = call.toString()
+      )
+    }
   }
+
+  import MakeTest<UnresolvedCallExpectations>
 }

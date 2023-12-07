@@ -138,7 +138,7 @@ predicate jumpStep(Node n1, Node n2) {
  * Thus, `node2` references an object with a content `x` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content c, Node node2) {
+predicate storeStep(Node node1, ContentSet c, Node node2) {
   // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
   // which in turn flows into the pointer content of `p`
   exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
@@ -165,7 +165,7 @@ predicate storeStep(Node node1, Content c, Node node2) {
  * Thus, `node1` references an object with a content `c` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content c, Node node2) {
+predicate readStep(Node node1, ContentSet c, Node node2) {
   node1 = node2.(PointerDereferenceNode).getOperand() and
   c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
   or
@@ -184,7 +184,7 @@ predicate readStep(Node node1, Content c, Node node2) {
 /**
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   // Because our post-update nodes are shared between multiple pre-update
   // nodes, attempting to clear content causes summary stores into arg in
   // particular to malfunction.
@@ -204,6 +204,8 @@ predicate expectsContent(Node n, ContentSet c) {
 }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
@@ -228,6 +230,16 @@ class CastNode extends ExprNode {
   override ConversionExpr expr;
 }
 
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) {
+  exists(DataFlow::FunctionModel fm | fm.getAnInputNode(_) = n or fm.getAnOutputNode(_) = n)
+  or
+  exists(TaintTracking::FunctionModel fm | fm.getAnInputNode(_) = n or fm.getAnOutputNode(_) = n)
+}
+
 class DataFlowExpr = Expr;
 
 private newtype TDataFlowType =
@@ -244,6 +256,7 @@ class DataFlowLocation = Location;
 private newtype TDataFlowCallable =
   TCallable(Callable c) or
   TFileScope(File f) or
+  TExternalFileScope() or
   TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
 class DataFlowCallable extends TDataFlowCallable {
@@ -256,6 +269,11 @@ class DataFlowCallable extends TDataFlowCallable {
    * Gets the `File` whose root scope corresponds to this `DataFlowCallable`, if any.
    */
   File asFileScope() { this = TFileScope(result) }
+
+  /**
+   * Holds if this `DataFlowCallable` is an external file scope.
+   */
+  predicate isExternalFileScope() { this = TExternalFileScope() }
 
   /**
    * Gets the `SummarizedCallable` corresponding to this `DataFlowCallable`, if any.
@@ -361,8 +379,6 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
   getAFalsifiedGuard(call).dominates(n.getBasicBlock())
 }
 
-int accessPathLimit() { result = 5 }
-
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
@@ -413,12 +429,3 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

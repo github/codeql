@@ -45,6 +45,17 @@ private class NokogiriXmlParserCall extends XmlParserCall::Range, DataFlow::Call
   }
 }
 
+/** Execution of a XPath statement. */
+private class NokogiriXPathExecution extends XPathExecution::Range, DataFlow::CallNode {
+  NokogiriXPathExecution() {
+    exists(NokogiriXmlParserCall parserCall |
+      this = parserCall.getAMethodCall(["xpath", "at_xpath", "search", "at"])
+    )
+  }
+
+  override DataFlow::Node getXPath() { result = this.getArgument(0) }
+}
+
 /**
  * Holds if `assign` enables the `default_substitute_entities` option in
  * libxml-ruby.
@@ -121,6 +132,40 @@ private predicate setsXmlMiniBackendToLibXml(DataFlow::CallNode call) {
 private predicate xmlMiniEntitySubstitutionEnabled() {
   setsXmlMiniBackendToLibXml(_) and
   enablesLibXmlDefaultEntitySubstitution(_)
+}
+
+/** Execution of a XPath statement. */
+private class LibXmlXPathExecution extends XPathExecution::Range, DataFlow::CallNode {
+  LibXmlXPathExecution() {
+    exists(LibXmlRubyXmlParserCall parserCall |
+      this = parserCall.getAMethodCall(["find", "find_first"])
+    )
+  }
+
+  override DataFlow::Node getXPath() { result = this.getArgument(0) }
+}
+
+/** A call to `REXML::Document.new`, considered as a XML parsing. */
+private class RexmlParserCall extends XmlParserCall::Range, DataFlow::CallNode {
+  RexmlParserCall() {
+    this = API::getTopLevelMember("REXML").getMember("Document").getAnInstantiation()
+  }
+
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
+
+  /** No option for parsing */
+  override predicate externalEntitiesEnabled() { none() }
+}
+
+/** Execution of a XPath statement. */
+private class RexmlXPathExecution extends XPathExecution::Range, DataFlow::CallNode {
+  RexmlXPathExecution() {
+    this =
+      [API::getTopLevelMember("REXML").getMember("XPath"), API::getTopLevelMember("XPath")]
+          .getAMethodCall(["each", "first", "match"])
+  }
+
+  override DataFlow::Node getXPath() { result = this.getArgument(1) }
 }
 
 /**

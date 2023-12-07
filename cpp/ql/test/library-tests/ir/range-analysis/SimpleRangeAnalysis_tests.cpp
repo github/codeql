@@ -18,7 +18,7 @@ int test2(struct List* p) {
   int count = 0;
   for (; p; p = p->next) {
     count = (count+1) % 10;
-    range(count); // $ range=<=9 range=>=-9 range="<=Phi: p | Store: count+1"
+    range(count); // $ range=<=9 range=>=-9
   }
   range(count); // $ range=>=-9 range=<=9
   return count;
@@ -29,7 +29,7 @@ int test3(struct List* p) {
   for (; p; p = p->next) {
     range(count++); // $ range=>=-9 range=<=9
     count = count % 10;
-    range(count); // $ range=<=9 range=>=-9 range="<=Store: ... +++0" range="<=Phi: p | Store: count+1" 
+    range(count); // $ range=<=9 range=>=-9
   }
   range(count); // $ range=>=-9 range=<=9
   return count;
@@ -317,7 +317,7 @@ int test_mult01(int a, int b) {
     range(b); // $ range=<=23 range=>=-13
     int r = a*b;  // $ overflow=+- -143 .. 253
     range(r);
-    total += r; // $ overflow=+
+    total += r; // $ overflow=+-
     range(total); // $ MISSING: range=">=... * ...+0"
   }
   if (3 <= a && a <= 11 && -13 <= b && b <= 0) {
@@ -365,7 +365,7 @@ int test_mult02(int a, int b) {
     range(b); // $ range=<=23 range=>=-13
     int r = a*b;  // $ overflow=+- -143 .. 253
     range(r);
-    total += r; // $ overflow=+
+    total += r; // $ overflow=+-
     range(total); // $ MISSING: range=">=... * ...+0"
   }
   if (0 <= a && a <= 11 && -13 <= b && b <= 0) {
@@ -460,7 +460,7 @@ int test_mult04(int a, int b) {
     range(b); // $ range=<=23 range=>=-13
     int r = a*b;  // $ overflow=+- -391 .. 221
     range(r);
-    total += r; // $ overflow=-
+    total += r; // $ overflow=+-
     range(total); // $ MISSING: range="<=... * ...+0"
   }
   if (-17 <= a && a <= 0 && -13 <= b && b <= 0) {
@@ -508,7 +508,7 @@ int test_mult05(int a, int b) {
     range(b); // $ range=<=23 range=>=-13
     int r = a*b;  // $ overflow=+- -391 .. 221
     range(r);
-    total += r; // $ overflow=-
+    total += r; // $ overflow=+-
     range(total); // $ MISSING: range="<=... * ...+0"
   }
   if (-17 <= a && a <= -2 && -13 <= b && b <= 0) {
@@ -672,7 +672,7 @@ void test17() {
   range(i); // $ range===50
 
   i = 20 + (j -= 10);
-  range(i); // $ range="==Store: ... += ... | Store: ... = ...+10" range===60
+  range(i); // $ range="==Store: ... += ... | Store: ... = ...+10" range===60 range="==Store: ... -= ...+20"
 }
 
 // Tests for unsigned multiplication.
@@ -974,7 +974,7 @@ void test_mod_neg(int s) {
 
 void test_mod_ternary(int s, bool b) {
   int s2 = s % (b ? 5 : 500);
-  range(s2); // $ range=>=-499 range=<=499 range="<=Phi: ... ? ... : ...-1"
+  range(s2); // $ range=>=-499 range=<=499
 }
 
 void test_mod_ternary2(int s, bool b1, bool b2) {
@@ -1008,12 +1008,12 @@ label:
 
 void test_overflow() {
   const int x = 2147483647; // 2^31-1
-  range(x);
+  range(x); // $ range===2147483647
   const int y = 256;
-  range(y);
+  range(y); // $ range===256
   if ((x + y) <= 512) {
-    range(x);
-    range(y);
+    range(x); // $ range===2147483647
+    range(y); // $ range===256
     range(x + y); // $ range===-2147483393
   }
 }
@@ -1027,5 +1027,74 @@ void test_negate_unsigned(unsigned u) {
 void test_negate_signed(int s) {
   if(10 < s && s < 20) {
     range<int>(-s); // $ range=<=-11 range=>=-19
+  }
+}
+
+// By setting the guard after the use in another guard we 
+// don't get the useful information
+void test_guard_after_use(int pos, int size, int offset) {
+  if (pos + offset >= size) { // $ overflow=+-
+    return;
+  }
+  if (offset != 1) {
+    return;
+  }
+  range(pos + 1); // $ overflow=+ range="==InitializeParameter: pos+1" MISSING: range="<=InitializeParameter: size-1"
+} 
+
+int cond();
+
+
+// This is basically what we get when we have a loop that calls 
+// realloc in some iterations
+void alloc_in_loop(int origLen) {
+  if (origLen <= 10) {
+    return;
+  }
+  int len = origLen;
+  int index = 0;
+  while (cond()) {
+    if (index == len) {
+      if (len >= 1000) {
+        return;
+      }
+      len = len * 2; // $ overflow=-
+    }
+    // We want that index < len
+    range(index); // $ MISSING: range="<=InitializeParameter: len-1"
+    index++;
+  }
+}
+
+// This came from a case where it handled the leftovers before an unrolled loop 
+void mask_at_start(int len) {
+  if (len < 0) {
+    return;
+  }
+  int leftOver = len & 63; 
+  for (int i = 0; i < leftOver; i++) {
+    range(i); // $ range=<=62 range=>=0  range="<=Store: ... & ... | Store: leftOver-1" range="<=InitializeParameter: len-1"
+  }
+  // Do something with leftOver
+  for (int index = leftOver; index < len; index+=64) {
+    range(index);  // $ range="<=InitializeParameter: len-64" range=">=Store: ... & ... | Store: leftOver+0"
+    range(index + 63); // $ range="<=InitializeParameter: len-1" range="==Phi: index+63" range=">=Store: ... & ... | Store: leftOver+63"
+  }
+}
+
+
+// Same as above but with modulo
+void mod_at_start(int len) {
+  if (len < 0) {
+    return;
+  }
+  int leftOver = len % 64;
+  for (int i = 0; i < leftOver; i++) {
+    range(i); // $ range=<=62 range=>=0  range="<=Store: ... % ... | Store: leftOver-1"  range="<=InitializeParameter: len-1"
+  }
+  // Do something with leftOver
+  for (int index = leftOver; index < len; index+=64) {
+    range(index);  // $ range="<=InitializeParameter: len-64" range=">=Store: ... % ... | Store: leftOver+0"
+    range(index + 63); // $ range="<=InitializeParameter: len-1" range="==Phi: index+63" range=">=Store: ... % ... | Store: leftOver+63"
   }
 }

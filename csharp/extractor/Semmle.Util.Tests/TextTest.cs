@@ -1,8 +1,8 @@
-using System;
 using Xunit;
-using Assert = Xunit.Assert;
-
+using System;
 using Semmle.Util;
+
+using Assert = Xunit.Assert;
 
 namespace SemmleTests
 {

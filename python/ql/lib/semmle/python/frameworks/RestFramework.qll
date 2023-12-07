@@ -131,7 +131,10 @@ private module RestFramework {
           "initial", "http_method_not_allowed", "permission_denied", "throttled",
           "get_authenticate_header", "perform_content_negotiation", "perform_authentication",
           "check_permissions", "check_object_permissions", "check_throttles", "determine_version",
-          "initialize_request", "finalize_response", "dispatch", "options"
+          "initialize_request", "finalize_response", "dispatch", "options",
+          // ModelViewSet
+          // https://github.com/encode/django-rest-framework/blob/master/rest_framework/viewsets.py
+          "create", "retrieve", "update", "partial_update", "destroy", "list"
         ]
     }
   }
@@ -169,7 +172,10 @@ private module RestFramework {
       // Since we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      result in [this.getArg(_), this.getArgByName(_)] and
+      result in [
+          this.getArg(_), this.getArgByName(_), //
+          this.getVararg().(Parameter), this.getKwarg().(Parameter), // TODO: These sources should be modeled as storing content!
+        ] and
       not result = any(int i | i < this.getFirstPossibleRoutedParamIndex() | this.getArg(i))
     }
 

@@ -1,6 +1,12 @@
 import experimental.meta.InlineTaintTest
 import semmle.python.dataflow.new.BarrierGuards
 
-class CustomSanitizerOverrides extends TestTaintTrackingConfiguration {
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof StringConstCompareBarrier }
+module CustomSanitizerOverridesConfig implements DataFlow::ConfigSig {
+  predicate isSource = TestTaintTrackingConfig::isSource/1;
+
+  predicate isSink = TestTaintTrackingConfig::isSink/1;
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof StringConstCompareBarrier }
 }
+
+import MakeInlineTaintTest<CustomSanitizerOverridesConfig>

@@ -1,12 +1,16 @@
 name: codeql/java-all
-version: 0.6.3-dev
+version: 0.8.4-dev
 groups: java
 dbscheme: config/semmlecode.dbscheme
 extractor: java
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/dataflow: ${workspace}
+  codeql/mad: ${workspace}
+  codeql/rangeanalysis: ${workspace}
   codeql/regex: ${workspace}
+  codeql/threat-models: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/typetracking: ${workspace}
   codeql/util: ${workspace}

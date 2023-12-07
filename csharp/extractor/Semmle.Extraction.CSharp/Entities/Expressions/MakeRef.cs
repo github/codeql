@@ -1,6 +1,6 @@
-﻿using Semmle.Extraction.Kinds; // lgtm[cs/similar-file]
+﻿using System.IO; // lgtm[cs/similar-file]
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.IO;
+using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {

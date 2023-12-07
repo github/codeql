@@ -445,7 +445,7 @@
 | tst.js:146:15:146:21 | (\\d\|5)* | Strings with many repetitions of '0' can start matching anywhere after the start of the preceeding ((\\d\|5)*)" |
 | tst.js:149:15:149:24 | (\\s\|[\\f])* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding ((\\s\|[\\f])*)" |
 | tst.js:152:15:152:28 | (\\s\|[\\v]\|\\\\v)* | Strings with many repetitions of '\\t' can start matching anywhere after the start of the preceeding ((\\s\|[\\v]\|\\\\v)*)" |
-| tst.js:155:15:155:24 | (\\f\|[\\f])* | Strings with many repetitions of '\u000c' can start matching anywhere after the start of the preceeding ((\\f\|[\\f])*)" |
+| tst.js:155:15:155:24 | (\\f\|[\\f])* | Strings with many repetitions of '\\u000c' can start matching anywhere after the start of the preceeding ((\\f\|[\\f])*)" |
 | tst.js:158:15:158:22 | (\\W\|\\D)* | Strings with many repetitions of '/' can start matching anywhere after the start of the preceeding ((\\W\|\\D)*)" |
 | tst.js:161:15:161:22 | (\\S\|\\w)* | Strings with many repetitions of '!' can start matching anywhere after the start of the preceeding ((\\S\|\\w)*)" |
 | tst.js:164:15:164:24 | (\\S\|[\\w])* | Strings with many repetitions of '!' can start matching anywhere after the start of the preceeding ((\\S\|[\\w])*)" |

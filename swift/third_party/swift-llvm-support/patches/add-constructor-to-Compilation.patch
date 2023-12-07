@@ -1,0 +1,17 @@
+In C++20 aggregate initialization on classes with user-declared constructor is not
+available, while in C++11-C++17 it was available if they were defaulted or deleted.
+
+diff --git a/include/swift/Driver/Compilation.h b/include/swift/Driver/Compilation.h
+index ee76f92e0de..bd987157593 100644
+--- a/include/swift/Driver/Compilation.h
++++ b/include/swift/Driver/Compilation.h
+@@ -89,6 +89,9 @@ public:
+     /// This data is used for cross-module module dependencies.
+     fine_grained_dependencies::ModuleDepGraph depGraph;
+
++    Result(bool hadAbnormalExit = false, int exitCode = 0, fine_grained_dependencies::ModuleDepGraph depGraph = {})
++        : hadAbnormalExit{hadAbnormalExit}, exitCode{exitCode}, depGraph{std::move(depGraph)} {}
++
+     Result(const Result &) = delete;
+     Result &operator=(const Result &) = delete;
+

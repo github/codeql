@@ -12,7 +12,6 @@
  */
 
 import go
-import DataFlow::PathGraph
 
 /**
  * A method that creates a new URL that will send the user
@@ -24,18 +23,12 @@ class AuthCodeUrl extends Method {
   }
 }
 
-/**
- * A flow of a constant string value to a call to `AuthCodeURL` as the
- * `state` parameter.
- */
-class ConstantStateFlowConf extends DataFlow::Configuration {
-  ConstantStateFlowConf() { this = "ConstantStateFlowConf" }
-
-  predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
+module ConstantStateFlowConfig implements DataFlow::ConfigSig {
+  additional predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
     exists(AuthCodeUrl m | call = m.getACall() | sink = call.getArgument(0))
   }
 
-  override predicate isSource(DataFlow::Node source) {
+  predicate isSource(DataFlow::Node source) {
     source.isConst() and
     not DataFlow::isReturnedWithError(source) and
     // Avoid duplicate paths by not considering reads from constants as sources themselves:
@@ -46,8 +39,16 @@ class ConstantStateFlowConf extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSinkCall(sink, _) }
+  predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
 }
+
+/**
+ * Tracks data flow of a constant string value to a call to `AuthCodeURL` as
+ * the `state` parameter.
+ */
+module Flow = DataFlow::Global<ConstantStateFlowConfig>;
+
+import Flow::PathGraph
 
 /**
  * Holds if `pred` writes a URL to the `RedirectURL` field of the `succ` `Config` object.
@@ -77,17 +78,8 @@ string getAnOobOauth2Url() {
   result.matches("%://127.0.0.1%")
 }
 
-/**
- * A flow of a URL indicating the OAuth redirect doesn't point to a publicly
- * accessible address, to the receiver of an `AuthCodeURL` call.
- *
- * Note we accept localhost and 127.0.0.1 on the assumption this is probably a transient
- * listener; if it actually is a persistent server then that really is vulnerable to CSRF.
- */
-class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
-  PrivateUrlFlowsToAuthCodeUrlCall() { this = "PrivateUrlFlowsToConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+module PrivateUrlFlowsToAuthCodeUrlCallConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.getStringValue() = getAnOobOauth2Url() and
     // Avoid duplicate paths by excluding constant variable references from
     // themselves being sources:
@@ -98,7 +90,7 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     )
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     // Propagate from a RedirectURL field to a whole Config
     isUrlTaintingConfigStep(pred, succ)
     or
@@ -113,12 +105,22 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     )
   }
 
-  predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
+  additional predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
     exists(AuthCodeUrl m | call = m.getACall() | sink = call.getReceiver())
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSinkCall(sink, _) }
+  predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
 }
+
+/**
+ * Tracks data flow from a URL indicating the OAuth redirect doesn't point to a publicly
+ * accessible address to the receiver of an `AuthCodeURL` call.
+ *
+ * Note we accept localhost and 127.0.0.1 on the assumption this is probably a transient
+ * listener; if it actually is a persistent server then that really is vulnerable to CSRF.
+ */
+module PrivateUrlFlowsToAuthCodeUrlCallFlow =
+  DataFlow::Global<PrivateUrlFlowsToAuthCodeUrlCallConfig>;
 
 /**
  * Holds if a URL indicating the OAuth redirect doesn't point to a publicly
@@ -128,33 +130,27 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
  * listener; if it actually is a persistent server then that really is vulnerable to CSRF.
  */
 predicate privateUrlFlowsToAuthCodeUrlCall(DataFlow::CallNode call) {
-  exists(PrivateUrlFlowsToAuthCodeUrlCall flowConfig, DataFlow::Node receiver |
-    flowConfig.hasFlowTo(receiver) and
-    flowConfig.isSinkCall(receiver, call)
+  exists(DataFlow::Node receiver |
+    PrivateUrlFlowsToAuthCodeUrlCallFlow::flowTo(receiver) and
+    PrivateUrlFlowsToAuthCodeUrlCallConfig::isSinkCall(receiver, call)
   )
 }
 
-/** A flow from `golang.org/x/oauth2.Config.AuthCodeUrl`'s result to a logging function. */
-class FlowToPrint extends DataFlow::Configuration {
-  FlowToPrint() { this = "FlowToPrint" }
-
-  predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
+module FlowToPrintConfig implements DataFlow::ConfigSig {
+  additional predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
     exists(LoggerCall logCall | call = logCall | sink = logCall.getAMessageComponent())
   }
 
-  override predicate isSource(DataFlow::Node source) {
-    source = any(AuthCodeUrl m).getACall().getResult()
-  }
+  predicate isSource(DataFlow::Node source) { source = any(AuthCodeUrl m).getACall().getResult() }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSinkCall(sink, _) }
+  predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
 }
+
+module FlowToPrintFlow = DataFlow::Global<FlowToPrintConfig>;
 
 /** Holds if the provided `CallNode`'s result flows to an argument of a printer call. */
 predicate resultFlowsToPrinter(DataFlow::CallNode authCodeUrlCall) {
-  exists(FlowToPrint cfg, DataFlow::PathNode source |
-    cfg.hasFlowPath(source, _) and
-    authCodeUrlCall.getResult() = source.getNode()
-  )
+  FlowToPrintFlow::flow(authCodeUrlCall.getResult(), _)
 }
 
 /** Get a data-flow node that reads the value of `os.Stdin`. */
@@ -197,12 +193,10 @@ predicate seemsLikeDoneWithinATerminal(DataFlow::CallNode authCodeUrlCall) {
   containsCallToStdinScanner(authCodeUrlCall.getRoot())
 }
 
-from
-  ConstantStateFlowConf cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
-  DataFlow::CallNode sinkCall
+from Flow::PathNode source, Flow::PathNode sink, DataFlow::CallNode sinkCall
 where
-  cfg.hasFlowPath(source, sink) and
-  cfg.isSinkCall(sink.getNode(), sinkCall) and
+  Flow::flowPath(source, sink) and
+  ConstantStateFlowConfig::isSinkCall(sink.getNode(), sinkCall) and
   // Exclude cases that seem to be oauth flows done from within a terminal:
   not seemsLikeDoneWithinATerminal(sinkCall) and
   not privateUrlFlowsToAuthCodeUrlCall(sinkCall)

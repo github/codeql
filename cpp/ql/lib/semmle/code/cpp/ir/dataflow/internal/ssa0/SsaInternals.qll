@@ -15,15 +15,12 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 
 private module SourceVariables {
-  class SourceVariable instanceof BaseSourceVariable {
-    string toString() { result = BaseSourceVariable.super.toString() }
-
+  class SourceVariable extends BaseSourceVariable {
+    /**
+     * Gets the base source variable of this `SourceVariable`.
+     */
     BaseSourceVariable getBaseVariable() { result = this }
   }
-
-  class SourceIRVariable = BaseIRVariable;
-
-  class CallVariable = BaseCallVariable;
 }
 
 import SourceVariables
@@ -232,7 +229,7 @@ private class FinalParameterUse extends UseImpl, TFinalParameterUse {
   override predicate isCertain() { any() }
 }
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<Location> {
   import InputSigCommon
   import SourceVariables
 
@@ -338,7 +335,7 @@ class Def extends DefOrUse {
   predicate isIteratorDef() { defOrUse instanceof IteratorDef }
 }
 
-private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
 class PhiNode extends SsaImpl::DefinitionExt {
   PhiNode() {

@@ -19,8 +19,9 @@ sh_binary(
 pkg_files(
     name = "scripts",
     srcs = [
-        ":identify-environment",
+        "autobuild.cmd",
         ":autobuild",
+        ":identify-environment",
         ":qltest",
     ],
     attributes = pkg_attributes(mode = "0755"),

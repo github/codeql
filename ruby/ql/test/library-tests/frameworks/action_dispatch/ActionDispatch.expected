@@ -55,12 +55,12 @@ underscore
 | LotsOfCapitalLetters | lots_of_capital_letters |
 | invalid | invalid |
 mimeTypeInstances
-| mime_type.rb:2:6:2:28 | Use getMember("Mime").getContent(element_text/html) |
-| mime_type.rb:3:6:3:32 | Use getMember("Mime").getMember("Type").getMethod("new").getReturn() |
-| mime_type.rb:4:6:4:35 | Use getMember("Mime").getMember("Type").getMethod("lookup").getReturn() |
-| mime_type.rb:5:6:5:43 | Use getMember("Mime").getMember("Type").getMethod("lookup_by_extension").getReturn() |
-| mime_type.rb:6:6:6:47 | Use getMember("Mime").getMember("Type").getMethod("register").getReturn() |
-| mime_type.rb:7:6:7:64 | Use getMember("Mime").getMember("Type").getMethod("register_alias").getReturn() |
+| mime_type.rb:2:6:2:28 | ForwardNode(call to fetch) |
+| mime_type.rb:3:6:3:32 | ForwardNode(call to new) |
+| mime_type.rb:4:6:4:35 | ForwardNode(call to lookup) |
+| mime_type.rb:5:6:5:43 | ForwardNode(call to lookup_by_extension) |
+| mime_type.rb:6:6:6:47 | ForwardNode(call to register) |
+| mime_type.rb:7:6:7:64 | ForwardNode(call to register_alias) |
 mimeTypeMatchRegExpInterpretations
 | mime_type.rb:11:11:11:19 | "foo/bar" |
 | mime_type.rb:12:7:12:15 | "foo/bar" |

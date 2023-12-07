@@ -7,4 +7,4 @@ jobs:
     - env:
         BODY: ${{ github.event.issue.body }}
       run: |
-        echo '$BODY'
+        echo "$BODY"

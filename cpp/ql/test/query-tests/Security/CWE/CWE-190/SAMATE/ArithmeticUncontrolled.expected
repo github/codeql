@@ -5,18 +5,6 @@ edges
 | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
 | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
 | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
 | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
 | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
 | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
@@ -30,19 +18,7 @@ nodes
 | examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
 | examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
 | examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
 | examples.cpp:25:31:25:34 | data | semmle.label | data |
-| examples.cpp:35:26:35:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:35:26:35:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:35:26:35:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:35:26:35:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:35:26:35:33 | call to rand | semmle.label | call to rand |
-| examples.cpp:35:26:35:33 | call to rand | semmle.label | call to rand |
 | examples.cpp:35:26:35:33 | call to rand | semmle.label | call to rand |
 | examples.cpp:35:26:35:33 | call to rand | semmle.label | call to rand |
 | examples.cpp:35:26:35:33 | call to rand | semmle.label | call to rand |
@@ -58,18 +34,6 @@ subpaths
 | examples.cpp:25:31:25:34 | data | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:22:26:22:33 | call to rand | uncontrolled value |
 | examples.cpp:25:31:25:34 | data | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:22:26:22:33 | call to rand | uncontrolled value |
 | examples.cpp:25:31:25:34 | data | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:22:26:22:33 | call to rand | uncontrolled value |
-| examples.cpp:25:31:25:34 | data | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:22:26:22:33 | call to rand | uncontrolled value |
-| examples.cpp:25:31:25:34 | data | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:22:26:22:33 | call to rand | uncontrolled value |
-| examples.cpp:25:31:25:34 | data | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:22:26:22:33 | call to rand | uncontrolled value |
-| examples.cpp:25:31:25:34 | data | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:22:26:22:33 | call to rand | uncontrolled value |
-| examples.cpp:25:31:25:34 | data | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:22:26:22:33 | call to rand | uncontrolled value |
-| examples.cpp:25:31:25:34 | data | examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:22:26:22:33 | call to rand | uncontrolled value |
-| examples.cpp:38:9:38:12 | data | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:35:26:35:33 | call to rand | uncontrolled value |
-| examples.cpp:38:9:38:12 | data | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:35:26:35:33 | call to rand | uncontrolled value |
-| examples.cpp:38:9:38:12 | data | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:35:26:35:33 | call to rand | uncontrolled value |
-| examples.cpp:38:9:38:12 | data | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:35:26:35:33 | call to rand | uncontrolled value |
-| examples.cpp:38:9:38:12 | data | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:35:26:35:33 | call to rand | uncontrolled value |
-| examples.cpp:38:9:38:12 | data | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:35:26:35:33 | call to rand | uncontrolled value |
 | examples.cpp:38:9:38:12 | data | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:35:26:35:33 | call to rand | uncontrolled value |
 | examples.cpp:38:9:38:12 | data | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:35:26:35:33 | call to rand | uncontrolled value |
 | examples.cpp:38:9:38:12 | data | examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | This arithmetic expression depends on an $@, potentially causing an underflow. | examples.cpp:35:26:35:33 | call to rand | uncontrolled value |

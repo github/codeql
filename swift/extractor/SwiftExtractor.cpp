@@ -14,7 +14,6 @@
 #include "swift/extractor/infra/file/Path.h"
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
-#include "swift/extractor/mangler/SwiftMangler.h"
 #include "swift/logging/SwiftAssert.h"
 
 using namespace codeql;
@@ -49,24 +48,20 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   }
 }
 
-// TODO: This should be factored out/replaced with simplified version of custom mangling
-static std::string mangledDeclName(const swift::ValueDecl& decl) {
-  std::string_view moduleName = decl.getModuleContext()->getRealName().str();
-  // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
-  if (decl.getKind() == swift::DeclKind::Module) {
-    return std::string{moduleName};
+static std::string mangledDeclName(const swift::Decl& decl) {
+  // SwiftRecursiveMangler mangled name cannot be used directly as it can be too long for file names
+  // so we build some minimal human readable info for debuggability and append a hash
+  auto ret = decl.getModuleContext()->getRealName().str().str();
+  ret += '/';
+  ret += swift::Decl::getKindName(decl.getKind());
+  ret += '_';
+  if (auto valueDecl = llvm::dyn_cast<swift::ValueDecl>(&decl); valueDecl && valueDecl->hasName()) {
+    ret += valueDecl->getBaseName().userFacingName();
+    ret += '_';
   }
-  swift::Mangle::ASTMangler mangler;
-  if (decl.getKind() == swift::DeclKind::TypeAlias) {
-    // In cases like this (when coming from PCM)
-    //  typealias CFXMLTree = CFTree
-    //  typealias CFXMLTreeRef = CFXMLTree
-    // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
-    // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
-    // prefix adds a couple of special symbols, we don't necessary need them
-    return mangler.mangleEntity(&decl);
-  }
-  return mangler.mangleAnyDecl(&decl, /* prefix = */ false);
+  SwiftRecursiveMangler mangler;
+  ret += mangler.mangleDecl(decl).hash();
+  return ret;
 }
 
 static fs::path getFilename(swift::ModuleDecl& module,
@@ -76,20 +71,7 @@ static fs::path getFilename(swift::ModuleDecl& module,
     return resolvePath(primaryFile->getFilename());
   }
   if (lazyDeclaration) {
-    // this code will be thrown away in the near future
-    auto decl = llvm::dyn_cast<swift::ValueDecl>(lazyDeclaration);
-    CODEQL_ASSERT(decl, "not a ValueDecl");
-    auto mangled = mangledDeclName(*decl);
-    // mangled name can be too long to use as a file name, so we can't use it directly
-    mangled = picosha2::hash256_hex_string(mangled);
-    std::string ret;
-    ret += module.getRealName().str();
-    ret += '_';
-    ret += decl->getBaseName().userFacingName();
-    ret += '_';
-    // half a SHA2 is enough
-    ret += std::string_view(mangled).substr(0, mangled.size() / 2);
-    return ret;
+    return mangledDeclName(*lazyDeclaration);
   }
   // PCM clang module
   if (module.isNonSwiftModule()) {
@@ -188,6 +170,9 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
                        bodyEmissionStrategy);
   auto topLevelDecls = getTopLevelDecls(module, primaryFile, lazyDeclaration);
   for (auto decl : topLevelDecls) {
+    if (swift::AvailableAttr::isUnavailable(decl)) {
+      continue;
+    }
     visitor.extract(decl);
   }
   for (auto& comment : comments) {

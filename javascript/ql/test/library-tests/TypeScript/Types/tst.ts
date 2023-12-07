@@ -234,7 +234,7 @@ module TS45 {
   }
 }
 
-import * as Foo3 from "./something.json" assert { type: "json" };
+import * as Foo3 from "./something.json" with { type: "json" };
 var foo = Foo3.foo;
 
 module TS46 {
@@ -465,4 +465,20 @@ module TS50 {
     const foo = myConstIdFunction(["a", "b" ,"c"]);
     
     const b = foo[1]; // <- "b"
+}
+
+/////////////////
+
+module TS52 {
+    class SomeClass {
+        @((_target, _context) => {})
+        foo = 123;
+    }
+    
+    console.log(SomeClass[Symbol.metadata]); // <- has type DecoratorMetadataObject
+
+    // named and anonymous tuple elements. 
+    type Pair3<T> = [first: T, T];
+
+    console.log(["hello", "world"] satisfies Pair3<string>);
 }

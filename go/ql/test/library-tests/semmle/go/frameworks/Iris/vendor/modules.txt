@@ -1,0 +1,93 @@
+# github.com/kataras/iris/v12 v12.2.5
+## explicit
+github.com/kataras/iris/v12
+# github.com/Shopify/goreferrer v0.0.0-20220729165902-8cddb4f5de06
+## explicit
+github.com/Shopify/goreferrer
+# github.com/andybalholm/brotli v1.0.5
+## explicit
+github.com/andybalholm/brotli
+# github.com/aymerick/douceur v0.2.0
+## explicit
+github.com/aymerick/douceur
+# github.com/fatih/structs v1.1.0
+## explicit
+github.com/fatih/structs
+# github.com/golang/snappy v0.0.4
+## explicit
+github.com/golang/snappy
+# github.com/gomarkdown/markdown v0.0.0-20230716120725-531d2d74bc12
+## explicit
+github.com/gomarkdown/markdown
+# github.com/google/go-cmp v0.5.9
+## explicit
+github.com/google/go-cmp
+# github.com/google/uuid v1.3.0
+## explicit
+github.com/google/uuid
+# github.com/gorilla/css v1.0.0
+## explicit
+github.com/gorilla/css
+# github.com/iris-contrib/schema v0.0.6
+## explicit
+github.com/iris-contrib/schema
+# github.com/josharian/intern v1.0.0
+## explicit
+github.com/josharian/intern
+# github.com/kataras/golog v0.1.9
+## explicit
+github.com/kataras/golog
+# github.com/kataras/pio v0.0.12
+## explicit
+github.com/kataras/pio
+# github.com/klauspost/compress v1.16.7
+## explicit
+github.com/klauspost/compress
+# github.com/kr/pretty v0.3.1
+## explicit
+github.com/kr/pretty
+# github.com/mailru/easyjson v0.7.7
+## explicit
+github.com/mailru/easyjson
+# github.com/microcosm-cc/bluemonday v1.0.25
+## explicit
+github.com/microcosm-cc/bluemonday
+# github.com/rogpeppe/go-internal v1.10.0
+## explicit
+github.com/rogpeppe/go-internal
+# github.com/tdewolff/minify/v2 v2.12.8
+## explicit
+github.com/tdewolff/minify/v2
+# github.com/tdewolff/parse/v2 v2.6.7
+## explicit
+github.com/tdewolff/parse/v2
+# github.com/vmihailenco/msgpack/v5 v5.3.5
+## explicit
+github.com/vmihailenco/msgpack/v5
+# github.com/vmihailenco/tagparser/v2 v2.0.0
+## explicit
+github.com/vmihailenco/tagparser/v2
+# golang.org/x/crypto v0.12.0
+## explicit
+golang.org/x/crypto
+# golang.org/x/net v0.14.0
+## explicit
+golang.org/x/net
+# golang.org/x/sys v0.11.0
+## explicit
+golang.org/x/sys
+# golang.org/x/text v0.12.0
+## explicit
+golang.org/x/text
+# golang.org/x/time v0.3.0
+## explicit
+golang.org/x/time
+# google.golang.org/protobuf v1.31.0
+## explicit
+google.golang.org/protobuf
+# gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
+## explicit
+gopkg.in/check.v1
+# gopkg.in/yaml.v3 v3.0.1
+## explicit
+gopkg.in/yaml.v3

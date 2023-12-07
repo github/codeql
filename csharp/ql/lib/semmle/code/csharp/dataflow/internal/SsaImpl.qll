@@ -6,7 +6,7 @@ import csharp
 private import codeql.ssa.Ssa as SsaImplCommon
 private import AssignableDefinitions
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<Location> {
   class BasicBlock = ControlFlow::BasicBlock;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
@@ -49,7 +49,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
   }
 }
 
-private import SsaImplCommon::Make<SsaInput> as Impl
+private import SsaImplCommon::Make<Location, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -71,7 +71,7 @@ module ExposedForTestingOnly {
  * Holds if the `i`th node of basic block `bb` reads source variable `v`.
  */
 private predicate variableReadActual(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
-  v.getAnAccess().(AssignableRead) = bb.getNode(i).getElement()
+  v.getAnAccess().(AssignableRead) = bb.getNode(i).getAstNode()
 }
 
 private module SourceVariableImpl {
@@ -939,7 +939,7 @@ private module CapturedVariableLivenessImpl {
     CapturedReadLocalScopeVariable captured, Callable c, boolean libraryDelegateCall
   ) {
     implicitReadCandidate(v, call) and
-    c = getARuntimeTarget(call.getElement(), libraryDelegateCall) and
+    c = getARuntimeTarget(call.getAstNode(), libraryDelegateCall) and
     captured = v.getAssignable() and
     capturerReads(_, captured)
   }
@@ -1159,6 +1159,7 @@ private predicate adjacentDefReachesUncertainRead(
   )
 }
 
+pragma[nomagic]
 private predicate adjacentDefReachesUncertainReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {

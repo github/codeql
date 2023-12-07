@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Windows.Markup", "ValueSerializerAttribute", False, "ValueSerializerAttribute", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Windows.Markup", "ValueSerializerAttribute", False, "ValueSerializerAttribute", "(System.Type)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Windows.Markup", "ValueSerializerAttribute", False, "get_ValueSerializerType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Windows.Markup", "ValueSerializerAttribute", False, "get_ValueSerializerTypeName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

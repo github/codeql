@@ -193,6 +193,43 @@ API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken toke
 }
 
 /**
+ * Holds if `name` is the name of a built-in method on Object, Array, or String.
+ */
+private predicate isCommonBuiltinMethodName(string name) {
+  exists(JS::ExternalInstanceMemberDecl member |
+    member.getBaseName() in ["Object", "Array", "String"] and
+    name = member.getName()
+  )
+}
+
+/**
+ * Holds if fuzzy evaluation should not traverse through `call`.
+ */
+private predicate blockFuzzyCall(DataFlow::CallNode call) {
+  isCommonBuiltinMethodName(call.getCalleeName())
+}
+
+pragma[inline]
+API::Node getAFuzzySuccessor(API::Node node) {
+  result = node.getAMember() and
+  // Block traversal into calls to built-ins like .toString() and .substring()
+  // Since there is no API node representing the call itself, block flow into the callee node.
+  not exists(DataFlow::CallNode call |
+    node.asSource() = call.getCalleeNode() and
+    blockFuzzyCall(call)
+  )
+  or
+  result = node.getAParameter()
+  or
+  result = node.getReturn()
+  or
+  result = node.getPromised()
+  or
+  // include 'this' parameters but not 'this' arguments
+  result = node.getReceiver() and result.asSource() instanceof DataFlow::ThisNode
+}
+
+/**
  * Holds if `invoke` matches the JS-specific call site filter in `token`.
  */
 bindingset[token]

@@ -58,4 +58,6 @@ extensions:
       - ["okhttp3", "HttpUrl$Builder", False, "setQueryParameter", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["okhttp3", "HttpUrl$Builder", False, "setQueryParameter", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["okhttp3", "HttpUrl$Builder", False, "username", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["okhttp3", "Request$Builder", False, "get", "()", "", "Argument[this]", "ReturnValue", "value", "ai-manual"]
+      - ["okhttp3", "Request$Builder", False, "url", "(String)", "", "Argument[this]", "ReturnValue", "value", "ai-manual"]
       - ["okhttp3", "Request$Builder", True, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "ai-manual"]

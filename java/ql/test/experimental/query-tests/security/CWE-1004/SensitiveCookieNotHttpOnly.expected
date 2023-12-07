@@ -1,6 +1,5 @@
 edges
 | SensitiveCookieNotHttpOnly.java:24:33:24:43 | "jwt_token" : String | SensitiveCookieNotHttpOnly.java:25:39:25:52 | tokenCookieStr : String |
-| SensitiveCookieNotHttpOnly.java:24:33:24:43 | "jwt_token" : String | SensitiveCookieNotHttpOnly.java:31:28:31:36 | jwtCookie |
 | SensitiveCookieNotHttpOnly.java:25:28:25:64 | new Cookie(...) : Cookie | SensitiveCookieNotHttpOnly.java:31:28:31:36 | jwtCookie |
 | SensitiveCookieNotHttpOnly.java:25:39:25:52 | tokenCookieStr : String | SensitiveCookieNotHttpOnly.java:25:28:25:64 | new Cookie(...) : Cookie |
 | SensitiveCookieNotHttpOnly.java:42:42:42:49 | "token=" : String | SensitiveCookieNotHttpOnly.java:42:42:42:69 | ... + ... |
@@ -15,7 +14,6 @@ edges
 | SensitiveCookieNotHttpOnly.java:70:28:70:43 | ... + ... : String | SensitiveCookieNotHttpOnly.java:71:42:71:50 | secString |
 | SensitiveCookieNotHttpOnly.java:70:28:70:55 | ... + ... : String | SensitiveCookieNotHttpOnly.java:71:42:71:50 | secString |
 | SensitiveCookieNotHttpOnly.java:88:35:88:51 | "Presto-UI-Token" : String | SensitiveCookieNotHttpOnly.java:89:36:89:51 | PRESTO_UI_COOKIE : String |
-| SensitiveCookieNotHttpOnly.java:88:35:88:51 | "Presto-UI-Token" : String | SensitiveCookieNotHttpOnly.java:91:16:91:21 | cookie : Cookie |
 | SensitiveCookieNotHttpOnly.java:89:25:89:57 | new Cookie(...) : Cookie | SensitiveCookieNotHttpOnly.java:91:16:91:21 | cookie : Cookie |
 | SensitiveCookieNotHttpOnly.java:89:36:89:51 | PRESTO_UI_COOKIE : String | SensitiveCookieNotHttpOnly.java:89:25:89:57 | new Cookie(...) : Cookie |
 | SensitiveCookieNotHttpOnly.java:91:16:91:21 | cookie : Cookie | SensitiveCookieNotHttpOnly.java:110:25:110:64 | createAuthenticationCookie(...) : Cookie |

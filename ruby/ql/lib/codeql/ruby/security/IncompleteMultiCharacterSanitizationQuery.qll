@@ -15,6 +15,14 @@ private class DangerousPrefix extends string {
     this = "<!--" or
     this = "<" + ["iframe", "script", "cript", "scrip", "style"]
   }
+
+  /**
+   * Gets a character that is important to the dangerous prefix.
+   * That is, a char that should be mentioned in a regular expression that explicitly sanitizes the dangerous prefix.
+   */
+  string getAnImportantChar() {
+    if this = ["/..", "../"] then result = ["/", "."] else result = "<"
+  }
 }
 
 /**
@@ -62,7 +70,11 @@ private DangerousPrefixSubstring getADangerousMatchedChar(EmptyReplaceRegExpTerm
  */
 private DangerousPrefix getADangerousMatchedPrefix(EmptyReplaceRegExpTerm t) {
   result = getADangerousMatchedPrefixSubstring(t) and
-  not exists(EmptyReplaceRegExpTerm pred | pred = t.getPredecessor+() and not pred.isNullable())
+  not exists(EmptyReplaceRegExpTerm pred | pred = t.getPredecessor+() and not pred.isNullable()) and
+  // the regex must explicitly mention a char important to the prefix.
+  forex(string char | char = result.getAnImportantChar() |
+    t.getRootTerm().getAChild*().(RegExpConstant).getValue().matches("%" + char + "%")
+  )
 }
 
 /**

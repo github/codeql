@@ -1,5 +1,6 @@
 edges
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join |
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate |
+| UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join |
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname |
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name |
 | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate |
@@ -13,6 +14,7 @@ edges
 nodes
 | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | semmle.label | definition of candidate |
 | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | semmle.label | call to Join |
+| UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | semmle.label | candidate |
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | semmle.label | ... := ...[0] |
 | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | semmle.label | selection of Linkname |
 | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | semmle.label | selection of Name |

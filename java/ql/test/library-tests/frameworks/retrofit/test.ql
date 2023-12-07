@@ -1,5 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.ExternalFlow
 import TestUtilities.InlineFlowTest
 
 module FlowConfig implements DataFlow::ConfigSig {
@@ -10,8 +11,4 @@ module FlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module Flow = DataFlow::Global<FlowConfig>;
-
-class RetrofitFlowTest extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { Flow::flow(src, sink) }
-}
+import FlowTest<FlowConfig, DefaultFlowConfig>

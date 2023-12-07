@@ -15,11 +15,11 @@
 
 import codeql.ruby.AST
 import codeql.ruby.security.CommandInjectionQuery
-import DataFlow::PathGraph
+import CommandInjectionFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, Source sourceNode
+from CommandInjectionFlow::PathNode source, CommandInjectionFlow::PathNode sink, Source sourceNode
 where
-  config.hasFlowPath(source, sink) and
+  CommandInjectionFlow::flowPath(source, sink) and
   sourceNode = source.getNode()
 select sink.getNode(), source, sink, "This command depends on a $@.", sourceNode,
   sourceNode.getSourceType()

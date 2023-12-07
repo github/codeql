@@ -29,8 +29,8 @@ class Configuration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizerEdge(DataFlow::Node source, DataFlow::Node sink) {
-    this.strictSanitizingPrefixEdge(source, sink)
+  override predicate isSanitizerOut(DataFlow::Node node) {
+    this.strictSanitizingPrefixEdge(node, _)
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode nd) {

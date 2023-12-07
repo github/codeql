@@ -2,43 +2,65 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
+
 <overview>
-<p>Code that passes user input directly to
-<code>require('child_process').exec</code>, or some other library
-routine that executes a command, allows the user to execute malicious
-code.</p>
-
+<p>Code that passes untrusted user input directly to
+<code>child_process.exec</code> or similar APIs that execute shell commands
+allows the user to execute malicious code.</p>
 </overview>
+
 <recommendation>
+<p>If possible, use APIs that don't run shell commands and that accept command
+arguments as an array of strings rather than a single concatenated string. This
+is both safer and more portable.</p>
 
-<p>If possible, use hard-coded string literals to specify the command to run
-or library to load. Instead of passing the user input directly to the
-process or library function, examine the user input and then choose
-among hard-coded string literals.</p>
+<p>If given arguments as a single string, avoid simply splitting the string on 
+whitespace. Arguments may contain quoted whitespace, causing them to split into 
+multiple arguments. Use a library like <code>shell-quote</code> to parse the string 
+into an array of arguments instead.</p>
 
-<p>If the applicable libraries or commands cannot be determined at
-compile time, then add code to verify that the user input string is
-safe before using it.</p>
-
+<p>If this approach is not viable, then add code to verify that the user input
+string is safe before using it.</p>
 </recommendation>
-<example>
 
-<p>The following example shows code that takes a shell script that can be changed
-maliciously by a user, and passes it straight to <code>child_process.exec</code>
-without examining it first.</p>
+<example>
+<p>The following example shows code that extracts a filename from an HTTP query
+parameter that may contain untrusted data, and then embeds it into a shell
+command to count its lines without examining it first:</p>
 
 <sample src="examples/command-injection.js" />
 
-</example>
-<references>
+<p>A malicious user can take advantage of this code by executing arbitrary shell commands. For example, by providing a filename like <code>foo.txt; rm -rf .</code>, the user can first count the lines in <code>foo.txt</code> and subsequently delete all files in the current directory. </p>
 
+<p>To avoid this catastrophic behavior, use an API such as
+<code>child_process.execFileSync</code> that does not spawn a shell by
+default:</p>
+
+<sample src="examples/command-injection_fixed.js" />
+
+<p>If you want to allow the user to specify other options to <code>wc</code>,
+you can use a library like <code>shell-quote</code> to parse the user input into
+an array of arguments without risking command injection:</p>
+
+<sample src="examples/command-injection_shellquote.js" />
+
+<p>Alternatively, the original example can be made safe by checking the filename
+against an allowlist of safe characters before using it:</p>
+
+<sample src="examples/command-injection_allowlist.js" />
+</example>
+
+<references>
 <li>
 OWASP:
 <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
 </li>
-
+<li>
+npm:
+<a href="https://www.npmjs.com/package/shell-quote">shell-quote</a>.
+</li>
 <!--  LocalWords:  CWE untrusted unsanitized Runtime
  -->
-
 </references>
+
 </qhelp>
