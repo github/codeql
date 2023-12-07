@@ -15,7 +15,6 @@ postIsNotPre
 | flowOut.cpp:84:3:84:14 | access to array indirection | PostUpdateNode should not equal its pre-update node. |
 postHasUniquePre
 uniquePostUpdate
-| example.c:24:13:24:18 | coords indirection | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
 reverseRead
 argHasPostUpdate
