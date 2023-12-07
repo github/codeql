@@ -29,6 +29,8 @@ deprecated class Configuration extends TaintTracking::Configuration {
     node instanceof StringConstCompareBarrier or
     node instanceof StringConstArrayInclusionCallBarrier
   }
+
+  override predicate isSanitizerOut(DataFlow::Node node) { node instanceof SanitizerOut }
 }
 
 private module ServerSideRequestForgeryConfig implements DataFlow::ConfigSig {
@@ -41,6 +43,8 @@ private module ServerSideRequestForgeryConfig implements DataFlow::ConfigSig {
     node instanceof StringConstCompareBarrier or
     node instanceof StringConstArrayInclusionCallBarrier
   }
+
+  predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerOut }
 }
 
 /**

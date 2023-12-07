@@ -25,6 +25,8 @@ deprecated class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
+  override predicate isSanitizerOut(DataFlow::Node node) { node instanceof SanitizerOut }
+
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     UrlRedirect::isAdditionalTaintStep(node1, node2)
   }
@@ -36,6 +38,8 @@ private module UrlRedirectConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerOut }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     UrlRedirect::isAdditionalTaintStep(node1, node2)
