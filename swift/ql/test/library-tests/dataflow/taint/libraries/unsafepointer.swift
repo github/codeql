@@ -164,12 +164,12 @@ func testManualMemoryManagement() {
     sink(arg: ptr[0]) // $ tainted=i3
     ptr.withMemoryRebound(to: Int.self, {
       buffer in
-      sink(arg: buffer)
-      sink(arg: buffer[0]) // $ MISSING: tainted=i3
+      sink(arg: buffer) // $ tainted=i3
+      sink(arg: buffer[0]) // $ tainted=i3
     })
     let buffer2 = ptr.bindMemory(to: Int.self)
-    sink(arg: buffer2)
-    sink(arg: buffer2[0]) // $ MISSING: tainted=i3
+    sink(arg: buffer2) // $ tainted=i3
+    sink(arg: buffer2[0]) // $ tainted=i3
     return sourceInt("r3")
   })
   sink(arg: r3) // $ tainted=r3
