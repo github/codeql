@@ -180,6 +180,7 @@ func fasthttpServer() {
 		requestCtx.Response.AppendBodyString(userInput) // $ XssSink=userInput
 		rspWriter := requestCtx.Response.BodyWriter()
 		rspWriter.Write(userInputByte)                    // $ XssSink=userInputByte
+		fmt.Fprintf(rspWriter, "%s", userInputByte)       // $ XssSink=userInputByte
 		requestCtx.Response.SetBody(userInputByte)        // $ XssSink=userInputByte
 		requestCtx.Response.SetBodyString(userInput)      // $ XssSink=userInput
 		requestCtx.Response.SetBodyRaw(userInputByte)     // $ XssSink=userInputByte

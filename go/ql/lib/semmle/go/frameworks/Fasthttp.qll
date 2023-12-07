@@ -81,47 +81,42 @@ module Fasthttp {
     }
   }
 
-  private predicate responseBodyWriterResult(DataFlow::Node src) {
-    exists(Method responseBodyWriter |
-      responseBodyWriter.hasQualifiedName(packagePath(), "Response", "BodyWriter") and
-      src = responseBodyWriter.getACall().getResult(0)
-    )
-  }
-
-  private module ResponseBodyWriterFlow = DataFlow::SimpleGlobal<responseBodyWriterResult/1>;
-
   private class ResponseBody extends Http::ResponseBody::Range {
     DataFlow::MethodCallNode call;
-    string methodName;
 
     ResponseBody() {
       exists(Method m |
-        m.hasQualifiedName(packagePath(), "Response", methodName) and
+        m.hasQualifiedName(packagePath(), "Response",
+          [
+            "AppendBody", "AppendBodyString", "SetBody", "SetBodyRaw", "SetBodyStream",
+            "SetBodyString", "Success", "SuccessString"
+          ]) and
         call = m.getACall() and
         this = call.getArgument(0)
         or
         m.hasQualifiedName(packagePath(), "RequestCtx", ["Success", "SuccessString"]) and
         call = m.getACall() and
         this = call.getArgument(1)
-      ) and
-      methodName =
-        [
-          "AppendBody", "AppendBodyString", "SetBody", "SetBodyRaw", "SetBodyStream",
-          "SetBodyString", "Success", "SuccessString"
-        ]
+      )
       or
-      exists(Method write, DataFlow::CallNode writeCall |
-        write.hasQualifiedName("io", "Writer", "Write") and
-        writeCall = write.getACall() and
-        ResponseBodyWriterFlow::flowsTo(writeCall.getReceiver()) and
-        this = writeCall.getArgument(0)
-      ) and
-      methodName = "BodyWriter"
+      exists(Method responseBodyWriter, DataFlow::CallNode writerCall |
+        responseBodyWriter.hasQualifiedName(packagePath(), "Response", "BodyWriter") and
+        call = responseBodyWriter.getACall() and
+        writerCall = any(Method write | write.hasQualifiedName("io", "Writer", "Write")).getACall() and
+        this = writerCall.getArgument(0) and
+        DataFlow::localFlow(call.getResult(0), writerCall.getReceiver())
+      )
+      or
+      exists(Method responseBodyWriter, DataFlow::CallNode writerCall |
+        responseBodyWriter.hasQualifiedName(packagePath(), "Response", "BodyWriter") and
+        call = responseBodyWriter.getACall() and
+        writerCall = any(Function fprintf | fprintf.hasQualifiedName("fmt", "Fprintf")).getACall() and
+        this = writerCall.getSyntacticArgument(any(int i | i > 1)) and
+        DataFlow::localFlow(call.getResult(0), writerCall.getArgument(0))
+      )
     }
 
     override Http::ResponseWriter getResponseWriter() { result.getANode() = call.getReceiver() }
-
-    override string getAContentType() { result = super.getAContentType() }
   }
 
   /**
