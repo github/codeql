@@ -18,6 +18,7 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.internal.DataFlowPublic
 import experimental.semmle.python.security.DecompressionBomb
+import FileAndFormRemoteFlowSource::FileAndFormRemoteFlowSource
 
 /**
  * `io.TextIOWrapper(ip, encoding='utf-8')` like following:
@@ -39,59 +40,12 @@ predicate isAdditionalTaintStepTextIOWrapper(DataFlow::Node nodeFrom, DataFlow::
   )
 }
 
-module FileAndFormRemoteFlowSource {
-  class FastAPI extends RemoteFlowSource::Range {
-    FastAPI() {
-      exists(API::Node fastApiParam, Expr fastApiUploadFile |
-        fastApiParam =
-          API::moduleImport("fastapi")
-              .getMember("FastAPI")
-              .getReturn()
-              .getMember("post")
-              .getReturn()
-              .getParameter(0)
-              .getKeywordParameter(_) and
-        fastApiUploadFile =
-          API::moduleImport("fastapi")
-              .getMember("UploadFile")
-              .getASubclass*()
-              .getAValueReachableFromSource()
-              .asExpr()
-      |
-        fastApiUploadFile =
-          fastApiParam.asSource().asExpr().(Parameter).getAnnotation().getASubExpression*() and
-        // Multiple Uploaded files as list of fastapi.UploadFile
-        exists(For f, Attribute attr |
-          fastApiParam.getAValueReachableFromSource().asExpr() = f.getIter().getASubExpression*()
-        |
-          TaintTracking::localExprTaint(f.getIter(), attr.getObject()) and
-          attr.getName() = ["filename", "content_type", "headers", "file", "read"] and
-          this.asExpr() = attr
-        )
-        or
-        // one Uploaded file as fastapi.UploadFile
-        this =
-          [
-            fastApiParam.getMember(["filename", "content_type", "headers"]).asSource(),
-            fastApiParam
-                .getMember("file")
-                .getMember(["readlines", "readline", "read"])
-                .getReturn()
-                .asSource(), fastApiParam.getMember("read").getReturn().asSource()
-          ]
-      )
-    }
-
-    override string getSourceType() { result = "fastapi HTTP FORM files" }
-  }
-}
-
 module BombsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     (
       source instanceof RemoteFlowSource
       or
-      source instanceof FileAndFormRemoteFlowSource::FastAPI
+      source instanceof FastAPI
     ) and
     not source.getLocation().getFile().inStdlib() and
     not source.getLocation().getFile().getRelativePath().matches("%venv%")
@@ -113,11 +67,11 @@ module BombsConfig implements DataFlow::ConfigSig {
   }
 }
 
-module Bombs = TaintTracking::Global<BombsConfig>;
+module BombsFlow = TaintTracking::Global<BombsConfig>;
 
-import Bombs::PathGraph
+import BombsFlow::PathGraph
 
-from Bombs::PathNode source, Bombs::PathNode sink
-where Bombs::flowPath(source, sink)
+from BombsFlow::PathNode source, BombsFlow::PathNode sink
+where BombsFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This uncontrolled file extraction is $@.", source.getNode(),
   "depends on this user controlled data"

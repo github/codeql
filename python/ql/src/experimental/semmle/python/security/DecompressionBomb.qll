@@ -7,13 +7,6 @@ import semmle.python.dataflow.new.internal.DataFlowPublic
 
 module DecompressionBomb {
   /**
-   * The Sinks of uncontrolled data decompression, use this class in your queries
-   */
-  class Sink extends DataFlow::Node {
-    Sink() { this = any(Range r).sink() }
-  }
-
-  /**
    * The additional taint steps that need for creating taint tracking or dataflow.
    */
   abstract class AdditionalTaintStep extends string {
@@ -28,15 +21,7 @@ module DecompressionBomb {
   /**
    * A abstract class responsible for extending new decompression sinks
    */
-  abstract class Range extends API::Node {
-    /**
-     * Gets the sink of responsible for decompression node
-     *
-     * it can be a path, stream of compressed data,
-     * or a call to function that use pipe
-     */
-    abstract DataFlow::Node sink();
-  }
+  abstract class Sink extends DataFlow::Node { }
 }
 
 module ZipFile {
@@ -56,68 +41,26 @@ module ZipFile {
   }
 
   /**
-   * The Decompression Sinks of `zipfile` library
-   *
-   * ```python
-   * myzip = zipfile.ZipFile("zipfileName.zip")
-   * myzip.open('eggs.txt',"r").read()
-   * myzip.extractall()
-   * ```
+   * A Call to `extractall`, `extract()`, or `extractfile()` on an open ZipFile.
    */
-  class DecompressionSink extends DecompressionBomb::Range {
-    override string toString() { result = "DecompressionSink" }
-
-    DecompressionSink() { this = zipFileClass() }
-
-    /**
-     * An function call of tarfile for extracting compressed data
-     *
-     * `tarfile.open(filepath).extractall()` or `tarfile.open(filepath).extract()`or `tarfile.open(filepath).extractfile()`
-     * or `tarfile.Tarfile.xzopen()` or `tarfile.Tarfile.gzopen()` or `tarfile.Tarfile.bz2open()`
-     */
-    override DataFlow::Node sink() {
-      (
-        result = this.getReturn().getMember(["extractall", "read", "extract", "testzip"]).getACall()
-        or
-        exists(API::Node openInstance |
-          openInstance = this.getReturn().getMember("open") and
-          (
-            not exists(
-              openInstance
-                  .getACall()
-                  .getParameter(1, "mode")
-                  .getAValueReachingSink()
-                  .asExpr()
-                  .(StrConst)
-                  .getText()
-            ) or
-            openInstance
-                .getACall()
-                .getParameter(1, "mode")
-                .getAValueReachingSink()
-                .asExpr()
-                .(StrConst)
-                .getText() = "r"
-          ) and
-          (
-            not exists(
-              this.getACall()
-                  .getParameter(1, "mode")
-                  .getAValueReachingSink()
-                  .asExpr()
-                  .(StrConst)
-                  .getText()
-            ) or
-            this.getACall()
-                .getParameter(1, "mode")
-                .getAValueReachingSink()
-                .asExpr()
-                .(StrConst)
-                .getText() = "r"
-          ) and
-          not zipFileDecompressionBombSanitizer(this) and
-          result = openInstance.getACall()
-        )
+  class DecompressionSink extends DecompressionBomb::Sink {
+    DecompressionSink() {
+      this =
+        zipFileClass()
+            .getReturn()
+            .getMember(["extractall", "read", "extract", "testzip"])
+            .getACall()
+      or
+      exists(API::Node zipOpen | zipOpen = zipFileClass().getReturn().getMember("open") |
+        // this open function must reads uncompressed data with buffer
+        // and checks the accumulated size at the end of each read to be called safe
+        not TaintTracking::localExprTaint(zipOpen
+              .getReturn()
+              .getMember("read")
+              .getParameter(0)
+              .asSink()
+              .asExpr(), any(Compare i).getASubExpression*()) and
+        this = zipOpen.getACall()
       )
     }
   }
@@ -157,17 +100,16 @@ module ZipFile {
     DecompressionAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
     override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(DecompressionSink zipFileInstance |
+      exists(API::Node zipFileInstance | zipFileInstance = zipFileClass() |
         nodeFrom =
           [zipFileInstance.getACall().getParameter(0, "file").asSink(), zipFileInstance.getACall()] and
         nodeTo =
           [
-            zipFileInstance.sink(),
             zipFileInstance
                 .getACall()
                 .getReturn()
                 .getMember(["extractall", "read", "extract", "testzip"])
-                .getACall()
+                .getACall(), zipFileInstance.getReturn().getMember("open").getACall()
           ]
       )
     }
@@ -179,20 +121,17 @@ module ZipFile {
  */
 module TarFile {
   /**
-   * The Decompression Sinks of `tarfile` library
+   * A Call to `extractall`, `extract()`, or `extractfile()` on an open tarfile,
+   *  or
+   * A Call to `gzopen`, `xzopen()`, or `bz2open()` on a tarfile.Tarfile.
    */
-  class DecompressionSink extends DecompressionBomb::Range {
-    override string toString() { result = "DecompressionSink" }
-
-    DecompressionSink() { this = tarfileExtractMember() }
-
-    /**
-     * An function call of tarfile for extracting compressed data
-     * `tarfile.open(filepath).extractall()` or `tarfile.open(filepath).extract()`or `tarfile.open(filepath).extractfile()`
-     * or `tarfile.Tarfile.xzopen()` or `tarfile.Tarfile.gzopen()` or `tarfile.Tarfile.bz2open()`
-     */
-    override DataFlow::Node sink() {
-      result = this.getReturn().getMember(["extractall", "extract", "extractfile"]).getACall()
+  class DecompressionSink extends DecompressionBomb::Sink {
+    DecompressionSink() {
+      this =
+        tarfileExtractMember()
+            .getReturn()
+            .getMember(["extractall", "extract", "extractfile"])
+            .getACall()
     }
   }
 
@@ -251,34 +190,34 @@ module Pandas {
   /**
    * The Decompression Sinks of `pandas` library
    */
-  class DecompressionSink extends DecompressionBomb::Range {
-    override string toString() { result = "DecompressionSink" }
-
-    DecompressionSink() { this = API::moduleImport("pandas") }
-
-    override DataFlow::Node sink() {
-      exists(API::CallNode calltoPandasMethods |
+  class DecompressionSink extends DecompressionBomb::Sink {
+    DecompressionSink() {
+      exists(API::CallNode callToPandasMethods |
         (
-          calltoPandasMethods =
-            this.getMember([
-                "read_csv", "read_json", "read_sas", "read_stata", "read_table", "read_xml"
-              ]).getACall() and
-          result = calltoPandasMethods.getArg(0)
+          callToPandasMethods =
+            API::moduleImport("pandas")
+                .getMember([
+                    "read_csv", "read_json", "read_sas", "read_stata", "read_table", "read_xml"
+                  ])
+                .getACall() and
+          this = callToPandasMethods.getArg(0)
           or
-          calltoPandasMethods =
-            this.getMember(["read_csv", "read_sas", "read_stata", "read_table"]).getACall() and
-          result = calltoPandasMethods.getArgByName("filepath_or_buffer")
+          callToPandasMethods =
+            API::moduleImport("pandas")
+                .getMember(["read_csv", "read_sas", "read_stata", "read_table"])
+                .getACall() and
+          this = callToPandasMethods.getArgByName("filepath_or_buffer")
           or
-          calltoPandasMethods = this.getMember("read_json").getACall() and
-          result = calltoPandasMethods.getArgByName("path_or_buf")
+          callToPandasMethods = API::moduleImport("pandas").getMember("read_json").getACall() and
+          this = callToPandasMethods.getArgByName("path_or_buf")
           or
-          calltoPandasMethods = this.getMember("read_xml").getACall() and
-          result = calltoPandasMethods.getArgByName("path_or_buffer")
+          callToPandasMethods = API::moduleImport("pandas").getMember("read_xml").getACall() and
+          this = callToPandasMethods.getArgByName("path_or_buffer")
         ) and
         (
-          not exists(calltoPandasMethods.getArgByName("compression"))
+          not exists(callToPandasMethods.getArgByName("compression"))
           or
-          not calltoPandasMethods
+          not callToPandasMethods
               .getKeywordParameter("compression")
               .getAValueReachingSink()
               .asExpr()
@@ -297,12 +236,15 @@ module Shutil {
   /**
    * The Decompression Sinks of `shutil` library
    */
-  class DecompressionSink extends DecompressionBomb::Range {
-    override string toString() { result = "DecompressionSink" }
-
-    DecompressionSink() { this = API::moduleImport("shutil").getMember("unpack_archive") }
-
-    override DataFlow::Node sink() { result = this.getACall().getParameter(0, "filename").asSink() }
+  class DecompressionSink extends DecompressionBomb::Sink {
+    DecompressionSink() {
+      this =
+        API::moduleImport("shutil")
+            .getMember("unpack_archive")
+            .getACall()
+            .getParameter(0, "filename")
+            .asSink()
+    }
   }
 }
 
@@ -322,14 +264,10 @@ module Gzip {
    *
    * only read mode is sink
    */
-  class DecompressionSink extends DecompressionBomb::Range {
-    override string toString() { result = "DecompressionSink" }
-
-    DecompressionSink() { this = gzipInstance() }
-
-    override DataFlow::Node sink() {
-      exists(API::CallNode gzipCall | gzipCall = this.getACall() |
-        result = gzipCall.getParameter(0, "filename").asSink() and
+  class DecompressionSink extends DecompressionBomb::Sink {
+    DecompressionSink() {
+      exists(API::CallNode gzipCall | gzipCall = gzipInstance().getACall() |
+        this = gzipCall.getParameter(0, "filename").asSink() and
         (
           not exists(
             gzipCall.getParameter(1, "mode").getAValueReachingSink().asExpr().(StrConst).getText()
@@ -363,14 +301,10 @@ module Bz2 {
    *
    * only read mode is sink
    */
-  class DecompressionSink extends DecompressionBomb::Range {
-    override string toString() { result = "DecompressionSink" }
-
-    DecompressionSink() { this = bz2Instance() }
-
-    override DataFlow::Node sink() {
-      exists(API::CallNode bz2Call | bz2Call = this.getACall() |
-        result = bz2Call.getParameter(0, "filename").asSink() and
+  class DecompressionSink extends DecompressionBomb::Sink {
+    DecompressionSink() {
+      exists(API::CallNode bz2Call | bz2Call = bz2Instance().getACall() |
+        this = bz2Call.getParameter(0, "filename").asSink() and
         (
           not exists(
             bz2Call.getParameter(1, "mode").getAValueReachingSink().asExpr().(StrConst).getText()
@@ -404,14 +338,10 @@ module Lzma {
    *
    * only read mode is sink
    */
-  class DecompressionSink extends DecompressionBomb::Range {
-    override string toString() { result = "DecompressionSink" }
-
-    DecompressionSink() { this = lzmaInstance() }
-
-    override DataFlow::Node sink() {
-      exists(API::CallNode lzmaCall | lzmaCall = this.getACall() |
-        result = lzmaCall.getParameter(0, "filename").asSink() and
+  class DecompressionSink extends DecompressionBomb::Sink {
+    DecompressionSink() {
+      exists(API::CallNode lzmaCall | lzmaCall = lzmaInstance().getACall() |
+        this = lzmaCall.getParameter(0, "filename").asSink() and
         (
           not exists(
             lzmaCall.getParameter(1, "mode").getAValueReachingSink().asExpr().(StrConst).getText()
