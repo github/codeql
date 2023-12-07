@@ -18,7 +18,13 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) {
+  exists(MethodCall mc |
+    mc.getTarget().hasFullyQualifiedName("System.Text.StringBuilder", "Clear")
+  |
+    node.asExpr() = mc.getQualifier()
+  )
+}
 
 /**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
