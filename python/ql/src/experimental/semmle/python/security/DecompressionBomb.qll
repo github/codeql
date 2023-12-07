@@ -4,6 +4,7 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.internal.DataFlowPublic
+import FileAndFormRemoteFlowSource::FileAndFormRemoteFlowSource
 
 module DecompressionBomb {
   /**
@@ -358,3 +359,42 @@ module Lzma {
     }
   }
 }
+
+/**
+ * `io.TextIOWrapper(ip, encoding='utf-8')` like following:
+ * ```python
+ * with gzip.open(bomb_input, 'rb') as ip:
+ *   with io.TextIOWrapper(ip, encoding='utf-8') as decoder:
+ *     content = decoder.read()
+ *     print(content)
+ * ```
+ * I saw this builtin method many places so I added it as a AdditionalTaintStep.
+ * it would be nice if it is added as a global AdditionalTaintStep
+ */
+predicate isAdditionalTaintStepTextIOWrapper(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  exists(API::CallNode textIOWrapper |
+    textIOWrapper = API::moduleImport("io").getMember("TextIOWrapper").getACall()
+  |
+    nodeFrom = textIOWrapper.getParameter(0, "input").asSink() and
+    nodeTo = textIOWrapper
+  )
+}
+
+module BombsConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source instanceof RemoteFlowSource
+    or
+    source instanceof FastAPI
+  }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionBomb::Sink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    (
+      any(DecompressionBomb::AdditionalTaintStep a).isAdditionalTaintStep(pred, succ) or
+      isAdditionalTaintStepTextIOWrapper(pred, succ)
+    )
+  }
+}
+
+module BombsFlow = TaintTracking::Global<BombsConfig>;
