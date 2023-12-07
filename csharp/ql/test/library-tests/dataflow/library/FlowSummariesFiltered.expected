@@ -10900,7 +10900,7 @@ summary
 | System.Text;StringBuilder;false;Append;(System.Decimal);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;Append;(System.Double);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;Append;(System.IFormatProvider,System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[1];Argument[this];taint;manual |
-| System.Text;StringBuilder;false;Append;(System.IFormatProvider,System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[1];ReturnValue;taint;manual |
+| System.Text;StringBuilder;false;Append;(System.IFormatProvider,System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;Append;(System.Int16);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;Append;(System.Int32);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;Append;(System.Int64);;Argument[this];ReturnValue;value;manual |
@@ -10917,7 +10917,7 @@ summary
 | System.Text;StringBuilder;false;Append;(System.Text.StringBuilder);;Argument[0];Argument[this];taint;manual |
 | System.Text;StringBuilder;false;Append;(System.Text.StringBuilder);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;Append;(System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[0];Argument[this];taint;manual |
-| System.Text;StringBuilder;false;Append;(System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[0];ReturnValue;taint;manual |
+| System.Text;StringBuilder;false;Append;(System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;Append;(System.Text.StringBuilder,System.Int32,System.Int32);;Argument[0];Argument[this];taint;manual |
 | System.Text;StringBuilder;false;Append;(System.Text.StringBuilder,System.Int32,System.Int32);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;Append;(System.UInt16);;Argument[this];ReturnValue;value;manual |
@@ -10970,11 +10970,11 @@ summary
 | System.Text;StringBuilder;false;AppendJoin<T>;(System.String,System.Collections.Generic.IEnumerable<T>);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;AppendLine;();;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;AppendLine;(System.IFormatProvider,System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[1];Argument[this];taint;manual |
-| System.Text;StringBuilder;false;AppendLine;(System.IFormatProvider,System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[1];ReturnValue;taint;manual |
+| System.Text;StringBuilder;false;AppendLine;(System.IFormatProvider,System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[0];Argument[this];taint;manual |
 | System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;AppendLine;(System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[0];Argument[this];taint;manual |
-| System.Text;StringBuilder;false;AppendLine;(System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[0];ReturnValue;taint;manual |
+| System.Text;StringBuilder;false;AppendLine;(System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;GetChunks;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Text;StringBuilder;false;GetObjectData;(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext);;Argument[this];Argument[0];taint;df-generated |
 | System.Text;StringBuilder;false;Insert;(System.Int32,System.Boolean);;Argument[this];ReturnValue;taint;df-generated |
