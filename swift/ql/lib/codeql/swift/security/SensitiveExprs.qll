@@ -176,12 +176,12 @@ class SensitiveExpr extends Expr {
     not label.regexpMatch(regexpProbablySafe())
     or
     (
-      // modelled sensitive credential
+      // modeled sensitive credential
       sourceNode(DataFlow::exprNode(this), "sensitive-credential") and
       sensitiveType = TCredential() and
       label = "credential"
       or
-      // modelled sensitive private information
+      // modeled sensitive private information
       sourceNode(DataFlow::exprNode(this), "sensitive-private-info") and
       sensitiveType = TPrivateInfo() and
       label = "private information"
