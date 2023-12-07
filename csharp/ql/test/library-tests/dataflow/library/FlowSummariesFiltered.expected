@@ -10998,8 +10998,8 @@ summary
 | System.Text;StringBuilder;false;StringBuilder;(System.String);;Argument[0];Argument[this];taint;manual |
 | System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32);;Argument[0];Argument[this];taint;manual |
 | System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32,System.Int32,System.Int32);;Argument[0];Argument[this];taint;manual |
-| System.Text;StringBuilder;false;ToString;();;Argument[this].Element;ReturnValue;taint;manual |
-| System.Text;StringBuilder;false;ToString;(System.Int32,System.Int32);;Argument[this].Element;ReturnValue;taint;manual |
+| System.Text;StringBuilder;false;ToString;();;Argument[this];ReturnValue;taint;manual |
+| System.Text;StringBuilder;false;ToString;(System.Int32,System.Int32);;Argument[this];ReturnValue;taint;manual |
 | System.Text;StringRuneEnumerator;false;GetEnumerator;();;Argument[this];ReturnValue;value;df-generated |
 | System.Text;StringRuneEnumerator;false;get_Current;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Threading.Channels;Channel;false;CreateBounded<T>;(System.Threading.Channels.BoundedChannelOptions,System.Action<T>);;Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
