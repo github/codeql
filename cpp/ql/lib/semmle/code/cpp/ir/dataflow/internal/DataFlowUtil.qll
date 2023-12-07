@@ -18,17 +18,17 @@ private import codeql.util.Unit
 
 /**
  * The IR dataflow graph consists of the following nodes:
- * - `Node0`, which injects most instructions and operands directly into the dataflow graph.
+ * - `Node0`, which injects most instructions and operands directly into the
+ *    dataflow graph.
  * - `VariableNode`, which is used to model flow through global variables.
- * - `PostFieldUpdateNode`, which is used to model the state of a field after a value has been stored
- * into an address after a number of loads.
- * - `SsaPhiNode`, which represents phi nodes as computed by the shared SSA library.
- * - `IndirectArgumentOutNode`, which represents the value of an argument (and its indirections) after
- * it leaves a function call.
- * - `RawIndirectOperand`, which represents the value of `operand` after loading the address a number
- * of times.
- * - `RawIndirectInstruction`, which represents the value of `instr` after loading the address a number
- * of times.
+ * - `PostUpdateNodeImpl`, which is used to model the state of an object after
+ *    an update after a number of loads.
+ * - `SsaPhiNode`, which represents phi nodes as computed by the shared SSA
+ *    library.
+ * - `RawIndirectOperand`, which represents the value of `operand` after
+ *    loading the address a number of times.
+ * - `RawIndirectInstruction`, which represents the value of `instr` after
+ *    loading the address a number of times.
  */
 cached
 private newtype TIRDataFlowNode =
@@ -37,14 +37,13 @@ private newtype TIRDataFlowNode =
     indirectionIndex =
       [getMinIndirectionsForType(var.getUnspecifiedType()) .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
-  TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
-    indirectionIndex =
-      [1 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType())]
-  } or
-  TSsaPhiNode(Ssa::PhiNode phi) or
-  TIndirectArgumentOutNode(ArgumentOperand operand, int indirectionIndex) {
+  TPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
+    operand = any(FieldAddress fa).getObjectAddressOperand() and
+    indirectionIndex = [1 .. Ssa::countIndirectionsForCppType(Ssa::getLanguageType(operand))]
+    or
     Ssa::isModifiableByCall(operand, indirectionIndex)
   } or
+  TSsaPhiNode(Ssa::PhiNode phi) or
   TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
     Ssa::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
   } or
@@ -84,7 +83,7 @@ private predicate parameterIsRedefined(Parameter p) {
 class FieldAddress extends Operand {
   FieldAddressInstruction fai;
 
-  FieldAddress() { fai = this.getDef() }
+  FieldAddress() { fai = this.getDef() and not Ssa::ignoreOperand(this) }
 
   /** Gets the field associated with this instruction. */
   Field getField() { result = fai.getField() }
@@ -550,37 +549,43 @@ Type stripPointer(Type t) {
   result = t.(FunctionPointerIshType).getBaseType()
 }
 
+private class PostUpdateNodeImpl extends PartialDefinitionNode, TPostUpdateNodeImpl {
+  int indirectionIndex;
+  Operand operand;
+
+  PostUpdateNodeImpl() { this = TPostUpdateNodeImpl(operand, indirectionIndex) }
+
+  override Declaration getFunction() { result = operand.getUse().getEnclosingFunction() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  /** Gets the operand associated with this node. */
+  Operand getOperand() { result = operand }
+
+  int getIndirectionIndex() { result = indirectionIndex }
+
+  override Location getLocationImpl() { result = operand.getLocation() }
+
+  final override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, indirectionIndex) }
+
+  final override Expr getDefinedExpr() {
+    result = operand.getDef().getUnconvertedResultExpression()
+  }
+}
+
 /**
  * INTERNAL: do not use.
  *
  * The node representing the value of a field after it has been updated.
  */
-class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
-  int indirectionIndex;
+class PostFieldUpdateNode extends PostUpdateNodeImpl {
   FieldAddress fieldAddress;
 
-  PostFieldUpdateNode() { this = TPostFieldUpdateNode(fieldAddress, indirectionIndex) }
-
-  override Declaration getFunction() { result = fieldAddress.getUse().getEnclosingFunction() }
-
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  PostFieldUpdateNode() { operand = fieldAddress.getObjectAddressOperand() }
 
   FieldAddress getFieldAddress() { result = fieldAddress }
 
-  Field getUpdatedField() { result = fieldAddress.getField() }
-
-  int getIndirectionIndex() { result = indirectionIndex }
-
-  override Node getPreUpdateNode() {
-    hasOperandAndIndex(result, pragma[only_bind_into](fieldAddress).getObjectAddressOperand(),
-      indirectionIndex)
-  }
-
-  override Expr getDefinedExpr() {
-    result = fieldAddress.getObjectAddress().getUnconvertedResultExpression()
-  }
-
-  override Location getLocationImpl() { result = fieldAddress.getLocation() }
+  Field getUpdatedField() { result = this.getFieldAddress().getField() }
 
   override string toStringImpl() { result = this.getPreUpdateNode() + " [post update]" }
 }
@@ -816,13 +821,8 @@ class IndirectReturnNode extends Node {
  * A node representing the indirection of a value after it
  * has been returned from a function.
  */
-class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDefinitionNode {
-  ArgumentOperand operand;
-  int indirectionIndex;
-
-  IndirectArgumentOutNode() { this = TIndirectArgumentOutNode(operand, indirectionIndex) }
-
-  int getIndirectionIndex() { result = indirectionIndex }
+class IndirectArgumentOutNode extends PostUpdateNodeImpl {
+  override ArgumentOperand operand;
 
   int getArgumentIndex() {
     exists(CallInstruction call | call.getArgumentOperand(result) = operand)
@@ -834,12 +834,6 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDef
 
   Function getStaticCallTarget() { result = this.getCallInstruction().getStaticCallTarget() }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
-
-  override Declaration getFunction() { result = this.getCallInstruction().getEnclosingFunction() }
-
-  override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, indirectionIndex) }
-
   override string toStringImpl() {
     // This string should be unique enough to be helpful but common enough to
     // avoid storing too many different strings.
@@ -848,10 +842,6 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDef
     not exists(this.getStaticCallTarget()) and
     result = "output argument"
   }
-
-  override Location getLocationImpl() { result = operand.getLocation() }
-
-  override Expr getDefinedExpr() { result = operand.getDef().getUnconvertedResultExpression() }
 }
 
 /**
