@@ -166,10 +166,18 @@
 | GlobalDataFlow.cs:545:17:545:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:545:17:545:33 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:558:44:558:47 | delegate call | normal | GlobalDataFlow.cs:558:44:558:47 | delegate call |
 | GlobalDataFlowStringBuilder.cs:19:9:19:20 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:19:9:19:20 | call to method Append |
-| GlobalDataFlowStringBuilder.cs:24:18:24:36 | object creation of type StringBuilder | normal | GlobalDataFlowStringBuilder.cs:24:18:24:36 | object creation of type StringBuilder |
-| GlobalDataFlowStringBuilder.cs:26:22:26:34 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:26:22:26:34 | call to method ToString |
-| GlobalDataFlowStringBuilder.cs:29:9:29:18 | call to method Clear | normal | GlobalDataFlowStringBuilder.cs:29:9:29:18 | call to method Clear |
-| GlobalDataFlowStringBuilder.cs:30:23:30:35 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:30:23:30:35 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:24:9:24:27 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:24:9:24:27 | call to method Append |
+| GlobalDataFlowStringBuilder.cs:29:18:29:36 | object creation of type StringBuilder | normal | GlobalDataFlowStringBuilder.cs:29:18:29:36 | object creation of type StringBuilder |
+| GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:34:19:34:37 | object creation of type StringBuilder | normal | GlobalDataFlowStringBuilder.cs:34:19:34:37 | object creation of type StringBuilder |
+| GlobalDataFlowStringBuilder.cs:35:9:35:22 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:35:9:35:22 | call to method Append |
+| GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:39:19:39:37 | object creation of type StringBuilder | normal | GlobalDataFlowStringBuilder.cs:39:19:39:37 | object creation of type StringBuilder |
+| GlobalDataFlowStringBuilder.cs:40:9:40:27 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:40:9:40:27 | call to method Append |
+| GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:44:9:44:18 | call to method Clear | normal | GlobalDataFlowStringBuilder.cs:44:9:44:18 | call to method Clear |
+| GlobalDataFlowStringBuilder.cs:45:23:45:35 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:45:23:45:35 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> |
 | Splitting.cs:20:22:20:30 | call to method Return<String> | normal | Splitting.cs:20:22:20:30 | call to method Return<String> |
