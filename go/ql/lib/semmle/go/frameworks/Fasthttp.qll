@@ -101,7 +101,8 @@ module Fasthttp {
         this = call.getArgument(0)
         or
         m.hasQualifiedName(packagePath(), "RequestCtx", ["Success", "SuccessString"]) and
-        this = m.getACall().getArgument(1)
+        call = m.getACall() and
+        this = call.getArgument(1)
       ) and
       methodName =
         [
@@ -149,19 +150,19 @@ module Fasthttp {
      * A function that can be used as a sanitizer for XSS.
      */
     class HtmlQuoteSanitizer extends EscapeFunction::Range {
-      boolean isHTMLEscape;
+      boolean isHtmlEscape;
 
       HtmlQuoteSanitizer() {
         this.hasQualifiedName(packagePath(), ["AppendHTMLEscape", "AppendHTMLEscapeBytes"]) and
-        isHTMLEscape = true
+        isHtmlEscape = true
         or
-        this.hasQualifiedName(packagePath(), "AppendQuotedArg") and isHTMLEscape = false
+        this.hasQualifiedName(packagePath(), "AppendQuotedArg") and isHtmlEscape = false
       }
 
       override string kind() {
-        isHTMLEscape = true and result = "html"
+        isHtmlEscape = true and result = "html"
         or
-        isHTMLEscape = false and result = "url"
+        isHtmlEscape = false and result = "url"
       }
     }
 
