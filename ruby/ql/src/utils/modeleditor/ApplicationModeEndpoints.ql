@@ -6,7 +6,12 @@
  * @tags modeleditor endpoints application-mode
  */
 
+import codeql.ruby.AST
+
 // This query is empty as Application Mode is not yet supported for Ruby.
-from int n
+from
+  Callable endpoint, Call usage, string package, string type, string name, string parameters,
+  boolean supported, string namespace, string version, string supportedType, string classification
 where none()
-select n
+select usage, namespace, type, name, parameters, supported, namespace, version, supportedType,
+  classification
