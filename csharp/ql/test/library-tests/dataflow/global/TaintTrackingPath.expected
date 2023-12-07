@@ -328,11 +328,28 @@ edges
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | GlobalDataFlow.cs:558:44:558:47 | delegate call : String |
 | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | GlobalDataFlowStringBuilder.cs:19:19:19:19 | access to parameter s : String |
 | GlobalDataFlowStringBuilder.cs:19:19:19:19 | access to parameter s : String | GlobalDataFlowStringBuilder.cs:19:9:19:10 | [post] access to parameter sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:22:76:22:76 | s : String | GlobalDataFlowStringBuilder.cs:24:19:24:26 | (...) ... : AppendInterpolatedStringHandler |
+| GlobalDataFlowStringBuilder.cs:24:19:24:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:31:21:31:22 | access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:35:20:35:21 | access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler |
 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String |
 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:31:21:31:22 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString : String |
 | GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:32:15:32:19 | access to local variable sink0 |
+| GlobalDataFlowStringBuilder.cs:35:9:35:11 | [post] access to local variable sb1 : StringBuilder | GlobalDataFlowStringBuilder.cs:36:21:36:23 | access to local variable sb1 : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:35:20:35:21 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:35:9:35:11 | [post] access to local variable sb1 : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:36:21:36:23 | access to local variable sb1 : StringBuilder | GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString : String |
+| GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 |
+| GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String |
+| GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 |
+| GlobalDataFlowStringBuilder.cs:48:43:48:44 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:49:21:49:22 | access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:22:76:22:76 | s : String |
+| GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:48:43:48:44 | [post] access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:49:21:49:22 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString : String |
+| GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
@@ -657,11 +674,29 @@ nodes
 | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | semmle.label | s : String |
 | GlobalDataFlowStringBuilder.cs:19:9:19:10 | [post] access to parameter sb : StringBuilder | semmle.label | [post] access to parameter sb : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:19:19:19:19 | access to parameter s : String | semmle.label | access to parameter s : String |
+| GlobalDataFlowStringBuilder.cs:22:76:22:76 | s : String | semmle.label | s : String |
+| GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder | semmle.label | [post] access to parameter sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:24:19:24:26 | (...) ... : AppendInterpolatedStringHandler | semmle.label | (...) ... : AppendInterpolatedStringHandler |
 | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | semmle.label | [post] access to local variable sb : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | semmle.label | "taint source" : String |
 | GlobalDataFlowStringBuilder.cs:31:21:31:22 | access to local variable sb : StringBuilder | semmle.label | access to local variable sb : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString : String | semmle.label | call to method ToString : String |
 | GlobalDataFlowStringBuilder.cs:32:15:32:19 | access to local variable sink0 | semmle.label | access to local variable sink0 |
+| GlobalDataFlowStringBuilder.cs:35:9:35:11 | [post] access to local variable sb1 : StringBuilder | semmle.label | [post] access to local variable sb1 : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:35:20:35:21 | access to local variable sb : StringBuilder | semmle.label | access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:36:21:36:23 | access to local variable sb1 : StringBuilder | semmle.label | access to local variable sb1 : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString : String | semmle.label | call to method ToString : String |
+| GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 | semmle.label | access to local variable sink1 |
+| GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | semmle.label | [post] access to local variable sb2 : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | semmle.label | (...) ... : AppendInterpolatedStringHandler |
+| GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | semmle.label | access to local variable sb2 : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | semmle.label | call to method ToString : String |
+| GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 | semmle.label | access to local variable sink2 |
+| GlobalDataFlowStringBuilder.cs:48:43:48:44 | [post] access to local variable sb : StringBuilder | semmle.label | [post] access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | semmle.label | "taint source" : String |
+| GlobalDataFlowStringBuilder.cs:49:21:49:22 | access to local variable sb : StringBuilder | semmle.label | access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString : String | semmle.label | call to method ToString : String |
+| GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 | semmle.label | access to local variable sink3 |
 | Splitting.cs:3:28:3:34 | tainted : String | semmle.label | tainted : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String | semmle.label | [b (line 3): false] call to method Return<String> : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String | semmle.label | [b (line 3): true] call to method Return<String> : String |
@@ -709,6 +744,7 @@ subpaths
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:300:27:300:28 | x0 : String | GlobalDataFlow.cs:300:33:300:34 | access to parameter x0 : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String | GlobalDataFlow.cs:81:84:81:84 | access to parameter x : String | GlobalDataFlow.cs:558:44:558:47 | delegate call : String |
 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | GlobalDataFlowStringBuilder.cs:19:9:19:10 | [post] access to parameter sb : StringBuilder | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:22:76:22:76 | s : String | GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder | GlobalDataFlowStringBuilder.cs:48:43:48:44 | [post] access to local variable sb : StringBuilder |
 | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String |
 | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String |
 | Splitting.cs:20:29:20:29 | access to parameter s : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String |
@@ -791,6 +827,9 @@ subpaths
 | GlobalDataFlow.cs:539:15:539:22 | access to field field | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | GlobalDataFlow.cs:539:15:539:22 | access to field field | access to field field |
 | GlobalDataFlow.cs:547:15:547:21 | access to field field | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | GlobalDataFlow.cs:547:15:547:21 | access to field field | access to field field |
 | GlobalDataFlowStringBuilder.cs:32:15:32:19 | access to local variable sink0 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:32:15:32:19 | access to local variable sink0 | access to local variable sink0 |
+| GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 | access to local variable sink1 |
+| GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 | access to local variable sink2 |
+| GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 | GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 | access to local variable sink3 |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:11:19:11:19 | access to local variable x | access to local variable x |

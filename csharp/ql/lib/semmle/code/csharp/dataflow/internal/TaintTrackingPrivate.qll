@@ -87,6 +87,19 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
       or
       e1 = e2.(AwaitExpr).getExpr() and
       scope = e2
+      or
+      // Taint flows from the operand of a cast to the cast expression if the cast is to an interpolated string handler.
+      e2 =
+        any(CastExpr ce |
+          e1 = ce.getExpr() and
+          scope = ce and
+          ce.getTargetType()
+              .(Attributable)
+              .getAnAttribute()
+              .getType()
+              .hasFullyQualifiedName("System.Runtime.CompilerServices",
+                "InterpolatedStringHandlerAttribute")
+        )
     )
   }
 }

@@ -73,6 +73,9 @@
 | GlobalDataFlow.cs:539:15:539:22 | access to field field |
 | GlobalDataFlow.cs:547:15:547:21 | access to field field |
 | GlobalDataFlowStringBuilder.cs:32:15:32:19 | access to local variable sink0 |
+| GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 |
+| GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 |
+| GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |
