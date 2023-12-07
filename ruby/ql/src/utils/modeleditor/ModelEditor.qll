@@ -48,6 +48,8 @@ abstract class Endpoint instanceof AstNode {
 
   string toString() { result = this.(AstNode).toString() }
 
+  Location getLocation() { result = this.(AstNode).getLocation() }
+
   abstract string getType();
 
   abstract string getName();
