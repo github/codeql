@@ -1133,6 +1133,50 @@ module RangeStage<
   private float truncatingDiv(float x, float y) { result = (x - (x % y)) / y }
 
   /**
+   * Holds if `b + delta` is a valid bound for `e` that can be found using only
+   * simple forward-flowing steps and disregarding phi-nodes.
+   * - `upper = true`  : `e <= b + delta`
+   * - `upper = false` : `e >= b + delta`
+   *
+   * This predicate is used as a fast approximation for `bounded` to avoid
+   * excessive computation in certain cases. In particular, this applies to
+   * loop-unrolled code like
+   * ```
+   * if (..) x+=1; else x+=100;
+   * x &= 7;
+   * if (..) x+=1; else x+=100;
+   * x &= 7;
+   * if (..) x+=1; else x+=100;
+   * x &= 7;
+   * ...
+   * ```
+   */
+  private predicate preBounded(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
+    baseBound(e, b, delta, upper)
+    or
+    exists(Sem::Expr mid, D::Delta d1, D::Delta d2 |
+      boundFlowStep(e, mid, d1, upper) and
+      preBounded(mid, b, d2, upper) and
+      delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
+    )
+    or
+    exists(Sem::SsaVariable v, SsaReadPositionBlock bb, Sem::Expr mid, D::Delta d1, D::Delta d2 |
+      boundFlowStepSsa(v, bb, mid, d1, upper, _) and
+      preBounded(mid, b, d2, upper) and
+      delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2)) and
+      bb.getAnSsaRead(v) = e
+    )
+  }
+
+  private predicate bestPreBound(Sem::Expr e, SemBound b, D::Delta delta, boolean upper) {
+    delta = min(D::Delta d | preBounded(e, b, d, upper) | d order by D::toFloat(d)) and
+    upper = true
+    or
+    delta = max(D::Delta d | preBounded(e, b, d, upper) | d order by D::toFloat(d)) and
+    upper = false
+  }
+
+  /**
    * Holds if `b + delta` is a valid bound for `e`.
    * - `upper = true`  : `e <= b + delta`
    * - `upper = false` : `e >= b + delta`
@@ -1142,6 +1186,12 @@ module RangeStage<
     D::Delta origdelta, SemReason reason
   ) {
     not ignoreExprBound(e) and
+    // ignore poor bounds
+    not exists(D::Delta d | bestPreBound(e, b, d, upper) |
+      D::toFloat(delta) > D::toFloat(d) and upper = true
+      or
+      D::toFloat(delta) < D::toFloat(d) and upper = false
+    ) and
     (
       baseBound(e, b, delta, upper) and
       fromBackEdge = false and
