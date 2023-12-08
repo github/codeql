@@ -12,7 +12,6 @@
  */
 
 import go
-import semmle.go.dataflow.Properties
 import MultipartAndFormRemoteSource
 import experimental.frameworks.DecompressionBombs
 
@@ -28,7 +27,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
     sink instanceof DecompressionBombs::Sink and
     state =
       [
-        "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
+        "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnappyNewReader",
         "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost"
       ]
   }

@@ -1,5 +1,4 @@
 import go
-import semmle.go.dataflow.Properties
 
 class MimeMultipartFileHeader extends UntrustedFlowSource::Range {
   MimeMultipartFileHeader() {

@@ -5,7 +5,7 @@ module DecompressionBombs {
     FlowState() {
       this =
         [
-          "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
+          "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnappyNewReader",
           "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost", ""
         ]
     }
@@ -36,7 +36,7 @@ module DecompressionBombs {
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * Provides Decompression Sinks and additional flow steps for `github.com/DataDog/zstd` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/DataDog/zstd` package
    */
   module DataDogZstd {
     class TheSink extends Sink {
@@ -71,7 +71,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional flow steps for `github.com/klauspost/compress/zstd` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/zstd` package
    */
   module KlauspostZstd {
     class TheSink extends Sink {
@@ -181,7 +181,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `github.com/ulikunitz/xz` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/ulikunitz/xz` package
    */
   module UlikunitzXz {
     class TheSink extends Sink {
@@ -215,7 +215,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `compress/gzip` package
+   * Provides decompression bomb sinks and additional flow steps for `compress/gzip` package
    */
   module CompressGzip {
     class TheSink extends Sink {
@@ -250,7 +250,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/gzip` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/gzip` package
    */
   module KlauspostGzip {
     class TheSink extends Sink {
@@ -295,7 +295,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `compress/bzip2` package
+   * Provides decompression bomb sinks and additional flow steps for `compress/bzip2` package
    */
   module CompressBzip2 {
     class TheSink extends Sink {
@@ -330,7 +330,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `github.com/dsnet/compress/bzip2` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/dsnet/compress/bzip2` package
    */
   module DsnetBzip2 {
     class TheSink extends Sink {
@@ -365,7 +365,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `github.com/dsnet/compress/flate` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/dsnet/compress/flate` package
    */
   module DsnetFlate {
     class TheSink extends Sink {
@@ -400,7 +400,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `compress/flate` package
+   * Provides decompression bomb sinks and additional flow steps for `compress/flate` package
    */
   module CompressFlate {
     class TheSink extends Sink {
@@ -435,7 +435,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/flate` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/flate` package
    */
   module KlauspostFlate {
     class TheSink extends Sink {
@@ -472,7 +472,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/zlib` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/zlib` package
    */
   module KlauspostZlib {
     class TheSink extends Sink {
@@ -509,7 +509,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `compress/zlib` package
+   * Provides decompression bomb sinks and additional flow steps for `compress/zlib` package
    */
   module CompressZlib {
     class TheSink extends Sink {
@@ -544,7 +544,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `github.com/golang/snappy` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/golang/snappy` package
    */
   module GolangSnappy {
     class TheSink extends Sink {
@@ -570,7 +570,7 @@ module DecompressionBombs {
           fromNode = call.getArgument(0) and
           toNode = call.getResult(0) and
           fromState = "" and
-          toState = "SnapyNewReader"
+          toState = "SnappyNewReader"
         )
       }
 
@@ -581,7 +581,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression additional taint steps for `github.com/klauspost/compress/snappy` package
+   * Provides decompression bombs sinks and additional flow steps for `github.com/klauspost/compress/snappy` package
    */
   module KlauspostSnappy {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -597,7 +597,7 @@ module DecompressionBombs {
           fromNode = call.getArgument(0) and
           toNode = call.getResult(0) and
           fromState = "" and
-          toState = "SnapyNewReader"
+          toState = "SnappyNewReader"
         )
       }
 
@@ -619,7 +619,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/s2` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/s2` package
    */
   module KlauspostS2 {
     class TheSink extends DataFlow::Node {
@@ -658,7 +658,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides Decompression Sinks for packages that use some standard IO interfaces/methods for reading decompressed data
+   * Provides decompression bomb sinks for packages that use some standard IO interfaces/methods for reading decompressed data
    */
   module GeneralReadIoSink {
     class TheSink extends Sink {
