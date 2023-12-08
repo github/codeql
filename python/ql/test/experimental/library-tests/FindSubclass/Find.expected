@@ -1,3 +1,7 @@
+| Django.Views.View~Subclass | find_subclass_test | Member[ViewAliasInExcept] |
+| Django.Views.View~Subclass | find_subclass_test | Member[ViewAliasInTry] |
+| Django.Views.View~Subclass | find_subclass_test | Member[__name__] |
+| Django.Views.View~Subclass | find_subclass_test | Member[__package__] |
 | Django.Views.View~Subclass | find_subclass_test | Member[clash2] |
 | Django.Views.View~Subclass | find_subclass_test | Member[clash3] |
 | Django.Views.View~Subclass | find_subclass_test | Member[clash] |
@@ -9,6 +13,8 @@
 | flask.View~Subclass | find_subclass_test | Member[ViewAlias] |
 | flask.View~Subclass | find_subclass_test | Member[ViewAlias_no_use] |
 | flask.View~Subclass | find_subclass_test | Member[View] |
+| flask.View~Subclass | find_subclass_test | Member[__name__] |
+| flask.View~Subclass | find_subclass_test | Member[__package__] |
 | flask.View~Subclass | find_subclass_test | Member[clash2] |
 | flask.View~Subclass | find_subclass_test | Member[clash3] |
 | flask.View~Subclass | find_subclass_test | Member[clash] |

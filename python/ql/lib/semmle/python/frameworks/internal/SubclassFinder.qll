@@ -199,11 +199,7 @@ module NotExposed {
       relevantClass = newOrExistingModeling(spec).getASubclass*() and
       ImportResolution::module_export(mod, relevantName, def) and
       value = relevantClass.getAValueReachableFromSource().asCfgNode() and
-      (
-        value = def.asVar().getDefinition().(AssignmentDefinition).getValue()
-        or
-        value = def.asCfgNode()
-      )
+      value = def.asCfgNode()
       // value could be a ClassExpr if a new class is defined, or a Name if defining an alias
     ) and
     (
