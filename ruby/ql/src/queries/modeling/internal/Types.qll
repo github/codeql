@@ -47,7 +47,6 @@ module Types {
     or
     // class Type2 < Type1
     // class Type2; include Type1
-    // class Type2; extend Type1
     exists(Module m1, Module m2 |
       m2.getAnImmediateAncestor() = m1 and not m2.isBuiltin() and not m1.isBuiltin()
     |
