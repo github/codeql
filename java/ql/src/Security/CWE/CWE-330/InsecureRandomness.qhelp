@@ -16,17 +16,16 @@
 
 	</overview>
 	<recommendation>
-		<p>
-			Use a cryptographically secure pseudo-random number generator if the output is to be used in a
-			security-sensitive context. As a general rule, a value should be considered "security-sensitive"
-			if predicting it would allow the attacker to perform an action that they would otherwise be unable
-			to perform. For example, if an attacker could predict the random password generated for a new user,
-			they would be able to log in as that new user.
-		</p>
-
         <p>
-            For Java, <code>java.util.Random</code> is not cryptographically secure. Use <code>java.security.SecureRandom</code> instead.
+           The <code>java.util.Random</code> random number generator is not cryptographically secure. Use a secure random number generator such as <code>java.security.SecureRandom</code> instead.
         </p>
+        <p>
+		Use a cryptographically secure pseudo-random number generator if the output is to be used in a
+		security-sensitive context. As a general rule, a value should be considered "security-sensitive"
+		if predicting it would allow the attacker to perform an action that they would otherwise be unable
+		to perform. For example, if an attacker could predict the random password generated for a new user,
+		they would be able to log in as that new user.
+	</p>
 	</recommendation>
 
 	<example>
@@ -44,7 +43,7 @@
         <sample src="examples/InsecureRandomnessCookie.java" />
 
         <p>
-            In the second case, we generate a fresh cookie by appending a random integer to the end of a static
+            In the second (GOOD) case, we generate a fresh cookie by appending a random integer to the end of a static
             string. The random number generator used (<code>SecureRandom</code>) is cryptographically secure,
             so it is not possible for an attacker to predict the generated cookie.
         </p>
