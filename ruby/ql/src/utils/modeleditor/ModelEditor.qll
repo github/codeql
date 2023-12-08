@@ -9,9 +9,6 @@ private import codeql.ruby.frameworks.core.Gem
 private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.frameworks.data.internal.ApiGraphModelsExtensions
 private import queries.modeling.internal.Util as Util
-private import codeql.util.Unit
-private import codeql.ruby.AST
-private import codeql.ruby.ast.Module
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(DataFlow::MethodNode c) {
