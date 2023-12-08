@@ -514,5 +514,9 @@ where
   ) and
   fullyQualifiedToYamlFormat(newModelFullyQualified, type2, path) and
   not Extensions::typeModel(spec, type2, path) and
-  not newModelFullyQualified.regexpMatch("(?i).*tests?_?.*")
+  (
+    not newModelFullyQualified.regexpMatch("(?i).*tests?_?.*")
+    or
+    type2 = "find_subclass_test"
+  )
 select spec.(string), type2, path

@@ -113,6 +113,9 @@ module NotExposed {
   }
 
   predicate isAllowedModule(Module mod) {
+    // for tests
+    mod.getName() = "find_subclass_test"
+    or
     // don't include anything found in site-packages
     exists(mod.getFile().getRelativePath()) and
     not mod.getFile().getRelativePath().regexpMatch("(?i)((^|/)examples?|^docs)/.*") and
