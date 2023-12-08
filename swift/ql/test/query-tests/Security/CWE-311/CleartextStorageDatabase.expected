@@ -555,6 +555,8 @@ nodes
 | testCoreData.swift:95:15:95:15 | x | semmle.label | x |
 | testCoreData.swift:96:15:96:15 | y | semmle.label | y |
 | testCoreData.swift:97:15:97:15 | z | semmle.label | z |
+| testCoreData.swift:128:15:128:33 | call to generateSecretKey() | semmle.label | call to generateSecretKey() |
+| testCoreData.swift:129:15:129:30 | call to getCertificate() | semmle.label | call to getCertificate() |
 | testGRDB.swift:73:56:73:65 | [...] | semmle.label | [...] |
 | testGRDB.swift:73:56:73:65 | [...] [Collection element] | semmle.label | [...] [Collection element] |
 | testGRDB.swift:73:57:73:57 | password | semmle.label | password |
@@ -825,6 +827,8 @@ subpaths
 | testCoreData.swift:95:15:95:15 | x | testCoreData.swift:91:10:91:10 | passwd | testCoreData.swift:95:15:95:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:91:10:91:10 | passwd | passwd |
 | testCoreData.swift:96:15:96:15 | y | testCoreData.swift:92:10:92:10 | passwd | testCoreData.swift:96:15:96:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:92:10:92:10 | passwd | passwd |
 | testCoreData.swift:97:15:97:15 | z | testCoreData.swift:93:10:93:10 | passwd | testCoreData.swift:97:15:97:15 | z | This operation stores 'z' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:93:10:93:10 | passwd | passwd |
+| testCoreData.swift:128:15:128:33 | call to generateSecretKey() | testCoreData.swift:128:15:128:33 | call to generateSecretKey() | testCoreData.swift:128:15:128:33 | call to generateSecretKey() | This operation stores 'call to generateSecretKey()' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:128:15:128:33 | call to generateSecretKey() | call to generateSecretKey() |
+| testCoreData.swift:129:15:129:30 | call to getCertificate() | testCoreData.swift:129:15:129:30 | call to getCertificate() | testCoreData.swift:129:15:129:30 | call to getCertificate() | This operation stores 'call to getCertificate()' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:129:15:129:30 | call to getCertificate() | call to getCertificate() |
 | testGRDB.swift:73:56:73:65 | [...] | testGRDB.swift:73:57:73:57 | password | testGRDB.swift:73:56:73:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:73:57:73:57 | password | password |
 | testGRDB.swift:76:42:76:51 | [...] | testGRDB.swift:76:43:76:43 | password | testGRDB.swift:76:42:76:51 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:76:43:76:43 | password | password |
 | testGRDB.swift:81:44:81:53 | [...] | testGRDB.swift:81:45:81:45 | password | testGRDB.swift:81:44:81:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:81:45:81:45 | password | password |
