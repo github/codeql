@@ -327,7 +327,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             Assert.Equal("codeql", startCallbackIn[0]);
             Assert.Equal("", endCallbackIn[0]);
             Assert.Equal(0, endCallbackReturn[0]);
-            Assert.Equal(1, endCallbackReturn.Count);
+            Assert.Single(endCallbackReturn);
         }
 
         [Fact]
