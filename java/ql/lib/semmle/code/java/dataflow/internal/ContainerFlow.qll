@@ -4,10 +4,6 @@ import semmle.code.java.Maps
 private import semmle.code.java.dataflow.SSA
 private import DataFlowUtil
 
-private class ArrayType extends RefType {
-  ArrayType() { this.getSourceDeclaration().getASourceSupertype*() instanceof Array }
-}
-
 private class EntryType extends RefType {
   EntryType() {
     this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Map$Entry")
@@ -455,7 +451,7 @@ predicate arrayStoreStep(Node node1, Node node2) {
     arr = node2.(PostUpdateNode).getPreUpdateNode().asExpr() and
     call.getArgument(1) = node1.asExpr() and
     call.getQualifier() = arr and
-    arr.getType() instanceof ArrayType and
+    arr.getType() instanceof Array and
     call.getCallee().getName() = "set"
   )
 }
@@ -485,7 +481,7 @@ predicate arrayReadStep(Node node1, Node node2, Type elemType) {
   exists(Expr arr, Call call |
     arr = node1.asExpr() and
     call = node2.asExpr() and
-    arr.getType() instanceof ArrayType and
+    arr.getType().(Array).getComponentType() = elemType and
     call.getCallee().getName() = "get" and
     call.getQualifier() = arr
   )
