@@ -417,56 +417,10 @@ class BaseCallVariable extends AbstractBaseSourceVariable, TBaseCallVariable {
   override CppType getLanguageType() { result = getResultLanguageType(call) }
 }
 
-/**
- * Holds if the value pointed to by `operand` can potentially be
- * modified be the caller.
- */
-predicate isModifiableByCall(ArgumentOperand operand, int indirectionIndex) {
-  exists(CallInstruction call, int index, CppType type |
-    indirectionIndex = [1 .. countIndirectionsForCppType(type)] and
-    type = getLanguageType(operand) and
-    call.getArgumentOperand(index) = operand and
-    if index = -1
-    then
-      // A qualifier is "modifiable" if:
-      // 1. the member function is not const specified, or
-      // 2. the member function is `const` specified, but returns a pointer or reference
-      // type that is non-const.
-      //
-      // To see why this is necessary, consider the following function:
-      // ```
-      // struct C {
-      //   void* data_;
-      //   void* data() const { return data; }
-      // };
-      // ...
-      // C c;
-      // memcpy(c.data(), source, 16)
-      // ```
-      // the data pointed to by `c.data_` is potentially modified by the call to `memcpy` even though
-      // `C::data` has a const specifier. So we further place the restriction that the type returned
-      // by `call` should not be of the form `const T*` (for some deeply const type `T`).
-      if call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
-      then
-        exists(PointerOrArrayOrReferenceType resultType |
-          resultType = call.getResultType() and
-          not resultType.isDeeplyConstBelow()
-        )
-      else any()
-    else
-      // An argument is modifiable if it's a non-const pointer or reference type.
-      isModifiableAt(type, indirectionIndex)
-  )
-}
-
-/**
- * Holds if `t` is a pointer or reference type that supports at least `indirectionIndex` number
- * of indirections, and the `indirectionIndex` indirection cannot be modfiied by passing a
- * value of `t` to a function.
- */
-private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
-  indirectionIndex = [1 .. countIndirectionsForCppType(cppType)] and
-  (
+private module IsModifiableAtImpl {
+  bindingset[cppType, indirectionIndex]
+  pragma[inline_late]
+  private predicate impl(CppType cppType, int indirectionIndex) {
     exists(Type pointerType, Type base, Type t |
       pointerType = t.getUnderlyingType() and
       pointerType = any(Indirection ind).getUnderlyingType() and
@@ -480,28 +434,93 @@ private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
       // one of the members was modified.
       exists(base.stripType().(Cpp::Class).getAField())
     )
+  }
+
+  private predicate isModifiableAtImplAtLeast1(CppType cppType, int indirectionIndex) {
+    indirectionIndex = [1 .. countIndirectionsForCppType(cppType)] and
+    (
+      impl(cppType, indirectionIndex)
+      or
+      // If the `indirectionIndex`'th dereference of a type can be modified
+      // then so can the  `indirectionIndex + 1`'th dereference.
+      isModifiableAtImplAtLeast1(cppType, indirectionIndex - 1)
+    )
+  }
+
+  private predicate isModifiableAtImplAt0(CppType cppType) { impl(cppType, 0) }
+
+  /**
+   * Holds if `t` is a pointer or reference type that supports at least `indirectionIndex` number
+   * of indirections, and the `indirectionIndex` indirection cannot be modfiied by passing a
+   * value of `t` to a function.
+   */
+  private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
+    isModifiableAtImplAtLeast1(cppType, indirectionIndex)
     or
-    // If the `indirectionIndex`'th dereference of a type can be modified
-    // then so can the  `indirectionIndex + 1`'th dereference.
-    isModifiableAtImpl(cppType, indirectionIndex - 1)
-  )
+    indirectionIndex = 0 and
+    isModifiableAtImplAt0(cppType)
+  }
+
+  /**
+   * Holds if `t` is a type with at least `indirectionIndex` number of indirections,
+   * and the `indirectionIndex` indirection can be modified by passing a value of
+   * type `t` to a function function.
+   */
+  bindingset[indirectionIndex]
+  predicate isModifiableAt(CppType cppType, int indirectionIndex) {
+    isModifiableAtImpl(cppType, indirectionIndex)
+    or
+    exists(PointerWrapper pw, Type t |
+      cppType.hasType(t, _) and
+      t.stripType() = pw and
+      not pw.pointsToConst()
+    )
+  }
+
+  /**
+   * Holds if the value pointed to by `operand` can potentially be
+   * modified be the caller.
+   */
+  predicate isModifiableByCall(ArgumentOperand operand, int indirectionIndex) {
+    exists(CallInstruction call, int index, CppType type |
+      indirectionIndex = [0 .. countIndirectionsForCppType(type)] and
+      type = getLanguageType(operand) and
+      call.getArgumentOperand(index) = operand and
+      if index = -1
+      then
+        // A qualifier is "modifiable" if:
+        // 1. the member function is not const specified, or
+        // 2. the member function is `const` specified, but returns a pointer or reference
+        // type that is non-const.
+        //
+        // To see why this is necessary, consider the following function:
+        // ```
+        // struct C {
+        //   void* data_;
+        //   void* data() const { return data; }
+        // };
+        // ...
+        // C c;
+        // memcpy(c.data(), source, 16)
+        // ```
+        // the data pointed to by `c.data_` is potentially modified by the call to `memcpy` even though
+        // `C::data` has a const specifier. So we further place the restriction that the type returned
+        // by `call` should not be of the form `const T*` (for some deeply const type `T`).
+        if call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
+        then
+          exists(PointerOrArrayOrReferenceType resultType |
+            resultType = call.getResultType() and
+            not resultType.isDeeplyConstBelow()
+          )
+        else any()
+      else
+        // An argument is modifiable if it's a non-const pointer or reference type.
+        isModifiableAt(type, indirectionIndex)
+    )
+  }
 }
 
-/**
- * Holds if `t` is a type with at least `indirectionIndex` number of indirections,
- * and the `indirectionIndex` indirection can be modified by passing a value of
- * type `t` to a function function.
- */
-bindingset[indirectionIndex]
-predicate isModifiableAt(CppType cppType, int indirectionIndex) {
-  isModifiableAtImpl(cppType, indirectionIndex)
-  or
-  exists(PointerWrapper pw, Type t |
-    cppType.hasType(t, _) and
-    t.stripType() = pw and
-    not pw.pointsToConst()
-  )
-}
+import IsModifiableAtImpl
 
 abstract class BaseSourceVariableInstruction extends Instruction {
   /** Gets the base source variable accessed by this instruction. */
