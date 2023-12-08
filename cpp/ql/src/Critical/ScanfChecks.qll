@@ -1,23 +1,17 @@
 private import cpp
 private import semmle.code.cpp.commons.Scanf
+private import semmle.code.cpp.controlflow.IRGuards
+private import semmle.code.cpp.ir.ValueNumbering
 
 private predicate exprInBooleanContext(Expr e) {
-  e.getParent() instanceof BinaryLogicalOperation
-  or
-  e.getParent() instanceof UnaryLogicalOperation
-  or
-  e = any(IfStmt ifStmt).getCondition()
-  or
-  e = any(WhileStmt whileStmt).getCondition()
-  or
-  exists(EqualityOperation eqOp, Expr other |
-    eqOp.hasOperands(e, other) and
-    other.getValue() = "0"
-  )
-  or
-  exists(Variable v |
-    v.getAnAssignedValue() = e and
-    forex(Expr use | use = v.getAnAccess() | exprInBooleanContext(use))
+  exists(IRGuardCondition gc |
+    exists(Instruction i, ConstantInstruction zero |
+      zero.getValue() = "0" and
+      i.getUnconvertedResultExpression() = e and
+      gc.comparesEq(valueNumber(i).getAUse(), zero.getAUse(), 0, _, _)
+    )
+    or
+    gc.getUnconvertedResultExpression() = e
   )
 }
 
