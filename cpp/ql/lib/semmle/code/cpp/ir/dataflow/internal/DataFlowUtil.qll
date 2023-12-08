@@ -39,7 +39,7 @@ private newtype TIRDataFlowNode =
   } or
   TPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
     operand = any(FieldAddress fa).getObjectAddressOperand() and
-    indirectionIndex = [1 .. Ssa::countIndirectionsForCppType(Ssa::getLanguageType(operand))]
+    indirectionIndex = [0 .. Ssa::countIndirectionsForCppType(Ssa::getLanguageType(operand))]
     or
     Ssa::isModifiableByCall(operand, indirectionIndex)
   } or
@@ -436,7 +436,12 @@ class Node extends TIRDataFlowNode {
    * `x.set(taint())` is a partial definition of `x`, and `transfer(&x, taint())` is
    * a partial definition of `&x`).
    */
-  Expr asPartialDefinition() { result = this.(PartialDefinitionNode).getDefinedExpr() }
+  Expr asPartialDefinition() {
+    exists(PartialDefinitionNode pdn | this = pdn |
+      pdn.getIndirectionIndex() > 0 and
+      result = pdn.getDefinedExpr()
+    )
+  }
 
   /**
    * Gets an upper bound on the type of this node.
@@ -562,11 +567,17 @@ private class PostUpdateNodeImpl extends PartialDefinitionNode, TPostUpdateNodeI
   /** Gets the operand associated with this node. */
   Operand getOperand() { result = operand }
 
-  int getIndirectionIndex() { result = indirectionIndex }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override Location getLocationImpl() { result = operand.getLocation() }
 
-  final override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, indirectionIndex) }
+  final override Node getPreUpdateNode() {
+    indirectionIndex > 0 and
+    hasOperandAndIndex(result, operand, indirectionIndex)
+    or
+    indirectionIndex = 0 and
+    result.asOperand() = operand
+  }
 
   final override Expr getDefinedExpr() {
     result = operand.getDef().getUnconvertedResultExpression()
@@ -835,12 +846,14 @@ class IndirectArgumentOutNode extends PostUpdateNodeImpl {
   Function getStaticCallTarget() { result = this.getCallInstruction().getStaticCallTarget() }
 
   override string toStringImpl() {
-    // This string should be unique enough to be helpful but common enough to
-    // avoid storing too many different strings.
-    result = this.getStaticCallTarget().getName() + " output argument"
-    or
-    not exists(this.getStaticCallTarget()) and
-    result = "output argument"
+    exists(string prefix | if indirectionIndex > 0 then prefix = "" else prefix = "pointer to " |
+      // This string should be unique enough to be helpful but common enough to
+      // avoid storing too many different strings.
+      result = prefix + this.getStaticCallTarget().getName() + " output argument"
+      or
+      not exists(this.getStaticCallTarget()) and
+      result = prefix + "output argument"
+    )
   }
 }
 
@@ -1698,6 +1711,10 @@ abstract class PostUpdateNode extends Node {
  * ```
  */
 abstract private class PartialDefinitionNode extends PostUpdateNode {
+  /** Gets the indirection index of this node. */
+  abstract int getIndirectionIndex();
+
+  /** Gets the expression that is partially defined by this node. */
   abstract Expr getDefinedExpr();
 }
 
@@ -1712,6 +1729,8 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
  * `getVariableAccess()` equal to `x`.
  */
 class DefinitionByReferenceNode extends IndirectArgumentOutNode {
+  DefinitionByReferenceNode() { this.getIndirectionIndex() > 0 }
+
   /** Gets the unconverted argument corresponding to this node. */
   Expr getArgument() { result = this.getAddressOperand().getDef().getUnconvertedResultExpression() }
 
