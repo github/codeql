@@ -10,8 +10,8 @@ import codeql.ruby.AST
 
 // This query is empty as Application Mode is not yet supported for Ruby.
 from
-  Callable endpoint, Call usage, string package, string type, string name, string parameters,
-  boolean supported, string namespace, string version, string supportedType, string classification
+  Call usage, string package, string type, string name, string parameters, boolean supported,
+  string namespace, string version, string supportedType, string classification
 where none()
-select usage, namespace, type, name, parameters, supported, namespace, version, supportedType,
-  classification
+select usage, package, namespace, type, name, parameters, supported, namespace, version,
+  supportedType, classification
