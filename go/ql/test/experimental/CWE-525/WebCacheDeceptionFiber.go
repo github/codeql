@@ -1,4 +1,4 @@
-package bad
+package main
 
 import (
 	"fmt"

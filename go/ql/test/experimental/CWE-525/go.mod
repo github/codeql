@@ -1,10 +1,10 @@
-module test
+module wcd
 
-go 1.21.1
+go 1.21
 
 require (
-    github.com/gofiber/fiber/v2 v2.51.0
-    github.com/go-chi/chi/v5 v5.0.10
+	github.com/go-chi/chi/v5 v5.0.10
+	github.com/gofiber/fiber/v2 v2.51.0
 )
 
 require (
