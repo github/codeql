@@ -10,14 +10,14 @@
  *       external/cwe/cwe-525
  */
 
- import go
+import go
 
- from DataFlow::CallNode httpHandleFuncCall, ImportSpec importSpec
- where
-    importSpec.getPath() = "github.com/go-chi/chi/v5" and
-    httpHandleFuncCall.getCall().getArgument(0).toString().matches("%/*%") and
-    not httpHandleFuncCall.getCall().getArgument(0).toString().matches("%$%") and
-    importSpec.getFile() = httpHandleFuncCall.getFile()
- select httpHandleFuncCall.getCall().getArgument(0), importSpec,
-   "Wildcard Endpoint used with " + httpHandleFuncCall.getCall().getArgument(0) + " in file: " + importSpec.getFile().getBaseName()
- 
+from DataFlow::CallNode httpHandleFuncCall, ImportSpec importSpec
+where
+  importSpec.getPath() = "github.com/go-chi/chi/v5" and
+  httpHandleFuncCall.getCall().getArgument(0).toString().matches("%/*%") and
+  not httpHandleFuncCall.getCall().getArgument(0).toString().matches("%$%") and
+  importSpec.getFile() = httpHandleFuncCall.getFile()
+select httpHandleFuncCall.getCall().getArgument(0), importSpec,
+  "Wildcard Endpoint used with " + httpHandleFuncCall.getCall().getArgument(0) + " in file: " +
+    importSpec.getFile().getBaseName()
