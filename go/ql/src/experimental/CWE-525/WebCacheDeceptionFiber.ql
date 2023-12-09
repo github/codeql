@@ -12,10 +12,10 @@
 
 import go
 
-from DataFlow::CallNode httpHandleFuncCall, ImportSpec importSpec, Function f
-where 
+from DataFlow::CallNode httpHandleFuncCall, ImportSpec importSpec
+where
   importSpec.getPath() = "github.com/gofiber/fiber/v2" and
   httpHandleFuncCall.getCall().getArgument(0).toString().matches("%/*%") and
   not httpHandleFuncCall.getCall().getArgument(0).toString().matches("%$%")
 select httpHandleFuncCall.getCall().getArgument(0),
-"Wildcard Endpoint used with " + httpHandleFuncCall.getCall().getArgument(0)
+  "Wildcard Endpoint used with " + httpHandleFuncCall.getCall().getArgument(0)
