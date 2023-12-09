@@ -1,0 +1,2 @@
+| WebCacheDeceptionFiber.go:15:10:15:17 | "/api/*" | Wildcard Endpoint used with "/api/*" |
+| WebCacheDeceptionFiber.go:20:11:20:18 | "/api/*" | Wildcard Endpoint used with "/api/*" |
