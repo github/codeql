@@ -16,6 +16,7 @@ from DataFlow::CallNode httpHandleFuncCall, ImportSpec importSpec
 where
   importSpec.getPath() = "github.com/gofiber/fiber/v2" and
   httpHandleFuncCall.getCall().getArgument(0).toString().matches("%/*%") and
-  not httpHandleFuncCall.getCall().getArgument(0).toString().matches("%$%")
+  not httpHandleFuncCall.getCall().getArgument(0).toString().matches("%$%") and
+  importSpec.getFile() = httpHandleFuncCall.getFile()
 select httpHandleFuncCall.getCall().getArgument(0),
   "Wildcard Endpoint used with " + httpHandleFuncCall.getCall().getArgument(0)
