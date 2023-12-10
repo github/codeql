@@ -605,7 +605,12 @@ module DecompressionBombs {
         none()
       }
     }
+  }
 
+  /**
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/s2` package
+   */
+  module KlauspostS2 {
     class TheSink extends Sink {
       TheSink() {
         exists(Method m |
@@ -613,23 +618,6 @@ module DecompressionBombs {
             ["DecodeConcurrent", "ReadByte", "Read"])
         |
           this = m.getACall().getReceiver()
-        )
-      }
-    }
-  }
-
-  /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/s2` package
-   */
-  module KlauspostS2 {
-    class TheSink extends DataFlow::Node {
-      TheSink() {
-        exists(Method m |
-          m.getType()
-              .getUnderlyingType()
-              .hasQualifiedName("github.com/klauspost/compress/s2", "Reader")
-        |
-          this = m.getACall()
         )
       }
     }

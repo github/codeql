@@ -55,8 +55,8 @@ func (_ *ReadSeeker) Seek(_ int64, _ int) (int64, error) {
 
 type Reader struct{}
 
-func (_ *Reader) DecodeConcurrent(_ io.Writer, _ int) (int64, error) {
-	return 0, nil
+func (_ *Reader) DecodeConcurrent(_ io.Writer, _ int) (*ReadSeeker, error) {
+	return nil, nil
 }
 
 func (_ *Reader) Read(_ []byte) (int, error) {

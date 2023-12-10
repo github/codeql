@@ -69,6 +69,7 @@ func DecompressHandler(w http.ResponseWriter, request *http.Request) {
 	ZlibKlauspost(request.Body)
 	Zlib(request.Body)
 	Snappy(request.Body)
+	SnappyKlauspost(request.Body)
 	S2(request.Body)
 	Gzip(request.Body)
 	GzipKlauspost(request.Body)

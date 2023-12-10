@@ -9,9 +9,11 @@ package snappy
 
 import (
 	io "io"
+	s2 "github.com/klauspost/compress/s2"
+	
 )
 
-type Reader struct{}
+type Reader = s2.Reader
 
 func NewReader(_ io.Reader) *Reader {
 	return nil
