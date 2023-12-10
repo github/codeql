@@ -95,7 +95,7 @@ To do quick evaluations of partial flow it is often easiest to add a predicate t
 
 .. code-block:: ql
 
-    predicate adhocPartialFlow(Callable c, MyPartialFlow::PartialPathNode n, Node src, int dist) {
+    predicate adhocPartialFlow(Callable c, MyPartialFlow::PartialPathNode n, DataFlow::Node src, int dist) {
       exists(MyPartialFlow::PartialPathNode source |
         MyPartialFlow::partialFlow(source, n, dist) and
         src = source.getNode() and

@@ -81,9 +81,9 @@ newtype TReturnKind =
  */
 class DataFlowSummarizedCallable instanceof FlowSummary::SummarizedCallable {
   DataFlowSummarizedCallable() {
-    not this.fromSource()
+    not this.hasBody()
     or
-    this.fromSource() and not this.applyGeneratedModel()
+    this.hasBody() and not this.applyGeneratedModel()
   }
 
   string toString() { result = super.toString() }

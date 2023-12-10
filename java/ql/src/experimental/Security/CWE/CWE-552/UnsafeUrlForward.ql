@@ -8,7 +8,7 @@
  * @id java/unsafe-url-forward-dispatch-load
  * @tags security
  *       experimental
- *       external/cwe-552
+ *       external/cwe/cwe-552
  */
 
 import java

@@ -1,9 +1,5 @@
 | /avalara.avatax/21.10.0/lib/netstandard20/Avalara.AvaTax.netstandard20.dll |
 | /microsoft.bcl.asyncinterfaces/6.0.0/lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll |
-| /microsoft.netcore.app.ref/3.1.0/ref/netcoreapp3.1/System.Runtime.InteropServices.WindowsRuntime.dll |
-| /microsoft.netcore.app.ref/6.0.13/ref/net6.0/System.Data.dll |
-| /microsoft.netcore.app.ref/6.0.13/ref/net6.0/System.Xml.dll |
-| /microsoft.netcore.app.ref/6.0.13/ref/net6.0/System.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/Microsoft.CSharp.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/Microsoft.VisualBasic.Core.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/Microsoft.VisualBasic.dll |
@@ -27,6 +23,7 @@
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Core.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Data.Common.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Data.DataSetExtensions.dll |
+| /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Data.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Diagnostics.Contracts.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Diagnostics.Debug.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Diagnostics.DiagnosticSource.dll |
@@ -161,6 +158,8 @@
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Xml.XPath.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Xml.XmlDocument.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Xml.XmlSerializer.dll |
+| /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.Xml.dll |
+| /microsoft.netcore.app.ref/7.0.2/ref/net7.0/System.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/WindowsBase.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/mscorlib.dll |
 | /microsoft.netcore.app.ref/7.0.2/ref/net7.0/netstandard.dll |

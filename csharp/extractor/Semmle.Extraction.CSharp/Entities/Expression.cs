@@ -214,12 +214,17 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (type.SpecialType is SpecialType.None)
             {
-                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+                return ImplicitCast.CreateGeneratedConversion(cx, parent, childIndex, type, defaultValue, location);
             }
 
             if (type.SpecialType is SpecialType.System_DateTime)
             {
                 return DateTimeObjectCreation.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+            }
+
+            if (type.SpecialType is SpecialType.System_IntPtr || type.SpecialType is SpecialType.System_UIntPtr)
+            {
+                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
             }
 
             // const literal:

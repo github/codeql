@@ -203,10 +203,12 @@ internal sealed class StubVisitor : SymbolVisitor
 
     private static readonly HashSet<string> attributeAllowList = new() {
         "System.FlagsAttribute",
-        "System.AttributeUsageAttribute"
+        "System.AttributeUsageAttribute",
+        "System.Runtime.CompilerServices.InterpolatedStringHandlerAttribute",
+        "System.Runtime.CompilerServices.InterpolatedStringHandlerArgumentAttribute",
     };
 
-    private void StubAttribute(AttributeData a, string prefix)
+    private void StubAttribute(AttributeData a, string prefix, bool addNewLine)
     {
         if (a.AttributeClass is not INamedTypeSymbol @class)
             return;
@@ -232,14 +234,18 @@ internal sealed class StubVisitor : SymbolVisitor
             });
             stubWriter.Write(")");
         }
-        stubWriter.WriteLine("]");
+        stubWriter.Write("]");
+        if (addNewLine)
+        {
+            stubWriter.WriteLine();
+        }
     }
 
-    public void StubAttributes(IEnumerable<AttributeData> a, string prefix = "")
+    public void StubAttributes(IEnumerable<AttributeData> a, string prefix = "", bool addNewLine = true)
     {
         foreach (var attribute in a)
         {
-            StubAttribute(attribute, prefix);
+            StubAttribute(attribute, prefix, addNewLine);
         }
     }
 
@@ -513,6 +519,8 @@ internal sealed class StubVisitor : SymbolVisitor
     {
         WriteCommaSep(parameters, parameter =>
         {
+            StubAttributes(parameter.GetAttributes(), addNewLine: false);
+
             switch (parameter.RefKind)
             {
                 case RefKind.None:

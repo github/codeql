@@ -6,6 +6,8 @@
 
 import swift
 import internal.SensitiveDataHeuristics
+private import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.ExternalFlow
 
 private newtype TSensitiveDataType =
   TCredential() or
@@ -172,6 +174,18 @@ class SensitiveExpr extends Expr {
     ) and
     // do not mark as sensitive it if it is probably safe
     not label.regexpMatch(regexpProbablySafe())
+    or
+    (
+      // modeled sensitive credential
+      sourceNode(DataFlow::exprNode(this), "sensitive-credential") and
+      sensitiveType = TCredential() and
+      label = "credential"
+      or
+      // modeled sensitive private information
+      sourceNode(DataFlow::exprNode(this), "sensitive-private-info") and
+      sensitiveType = TPrivateInfo() and
+      label = "private information"
+    )
   }
 
   /**
