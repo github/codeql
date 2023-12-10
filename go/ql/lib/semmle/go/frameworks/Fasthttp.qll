@@ -81,8 +81,34 @@ module Fasthttp {
     }
   }
 
+  private predicate responseBodyWriterResult(DataFlow::Node src) {
+    exists(Method responseBodyWriter |
+      responseBodyWriter.hasQualifiedName(packagePath(), "Response", "BodyWriter") and
+      src = responseBodyWriter.getACall().getResult(0)
+    )
+  }
+
+  private predicate writerSinkAndBody(DataFlow::Node sink, DataFlow::Node body) {
+    exists(DataFlow::CallNode writerCall |
+      writerCall = any(Method write | write.hasQualifiedName("io", "Writer", "Write")).getACall() and
+      sink = writerCall.getReceiver() and
+      body = writerCall.getArgument(0)
+    )
+    or
+    exists(DataFlow::CallNode writerCall |
+      writerCall = any(Function fprintf | fprintf.hasQualifiedName("fmt", "Fprintf")).getACall() and
+      sink = writerCall.getArgument(0) and
+      body = writerCall.getSyntacticArgument(any(int i | i > 1))
+    )
+  }
+
+  private predicate writerSink(DataFlow::Node sink) { writerSinkAndBody(sink, _) }
+
+  private module ResponseBodyWriterFlow =
+    DataFlow::SimpleGlobal<responseBodyWriterResult/1>::Graph<writerSink/1>;
+
   private class ResponseBody extends Http::ResponseBody::Range {
-    DataFlow::MethodCallNode call;
+    DataFlow::MethodCallNode responseWriterMethodCall;
 
     ResponseBody() {
       exists(Method m |
@@ -91,32 +117,24 @@ module Fasthttp {
             "AppendBody", "AppendBodyString", "SetBody", "SetBodyRaw", "SetBodyStream",
             "SetBodyString", "Success", "SuccessString"
           ]) and
-        call = m.getACall() and
-        this = call.getArgument(0)
+        responseWriterMethodCall = m.getACall() and
+        this = responseWriterMethodCall.getArgument(0)
         or
         m.hasQualifiedName(packagePath(), "RequestCtx", ["Success", "SuccessString"]) and
-        call = m.getACall() and
-        this = call.getArgument(1)
+        responseWriterMethodCall = m.getACall() and
+        this = responseWriterMethodCall.getArgument(1)
       )
       or
-      exists(Method responseBodyWriter, DataFlow::CallNode writerCall |
-        responseBodyWriter.hasQualifiedName(packagePath(), "Response", "BodyWriter") and
-        call = responseBodyWriter.getACall() and
-        writerCall = any(Method write | write.hasQualifiedName("io", "Writer", "Write")).getACall() and
-        this = writerCall.getArgument(0) and
-        DataFlow::localFlow(call.getResult(0), writerCall.getReceiver())
-      )
-      or
-      exists(Method responseBodyWriter, DataFlow::CallNode writerCall |
-        responseBodyWriter.hasQualifiedName(packagePath(), "Response", "BodyWriter") and
-        call = responseBodyWriter.getACall() and
-        writerCall = any(Function fprintf | fprintf.hasQualifiedName("fmt", "Fprintf")).getACall() and
-        this = writerCall.getSyntacticArgument(any(int i | i > 1)) and
-        DataFlow::localFlow(call.getResult(0), writerCall.getArgument(0))
+      exists(ResponseBodyWriterFlow::PathNode source, ResponseBodyWriterFlow::PathNode sink |
+        ResponseBodyWriterFlow::flowPath(source, sink) and
+        responseWriterMethodCall = source.getNode() and
+        writerSinkAndBody(sink.getNode(), this)
       )
     }
 
-    override Http::ResponseWriter getResponseWriter() { result.getANode() = call.getReceiver() }
+    override Http::ResponseWriter getResponseWriter() {
+      result.getANode() = responseWriterMethodCall.getReceiver()
+    }
   }
 
   /**
